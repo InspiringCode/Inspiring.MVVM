@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BehaviorNotFound" xml:space="preserve">
+    <value>Could not find a behavior of type '{0}' in the chain of behaviors. Make sure that the list contains a behavior of that type before calling this operation or add a behavior of that type before.</value>
+  </data>
+  <data name="BehaviorNotRegistered" xml:space="preserve">
+    <value>The behavior '{0}' ist not registered. Make sure you specified the exact type of an already registered behavior.</value>
+  </data>
+  <data name="CannotPassClosedTypeBehavior" xml:space="preserve">
+    <value>Cannot register or search for a closed generic type. Pass 'typeof(ExampleBehavior&lt;,&gt;)' instead of 'typeof(ExampleBehavior&lt;A, B&gt;)'.</value>
+  </data>
+  <data name="CannotSetValueOfEmptyPropertyPath" xml:space="preserve">
+    <value>The value of an empty property path cannot be set. Make sure the path contains at least one property access like 'x =&gt; x.Address'.</value>
+  </data>
+  <data name="CouldNotResolveView" xml:space="preserve">
+    <value>Cannot set the attached property 'View.Model' to an instance of type '{0}' because no view implementation is registered that implements 'IView&lt;T&gt;' where T is '{0}' or a base type . Make sure you assigned the correct value or use your dependency injection container to register an appropriate view.</value>
+  </data>
+  <data name="DisplayValueHasWrongType" xml:space="preserve">
+    <value>Could not set the display value of the 'VMProperty' '{0}' because the value has the wrong type. Make sure that you only set it to values that are compatible with '{1}' our use an 'IVMValueConverter' with the property that does the conversion. The orignal value was: '{2}'.</value>
+  </data>
+  <data name="ExpressionCannotContainFields" xml:space="preserve">
+    <value>Fields are not supported in property paths. Make sure you only reference properties.</value>
+  </data>
+  <data name="ExpressionContainsMoreThanOneProperty" xml:space="preserve">
+    <value>The given expression consists of more than one property. It must select a single property like 'x =&gt; x.Address'.</value>
+  </data>
+  <data name="ExpressionContainsNoProperties" xml:space="preserve">
+    <value>The given expression does not select a property. It must select a single property like 'x =&gt; x.Address'.</value>
+  </data>
+  <data name="FieldNotSet" xml:space="preserve">
+    <value>No value is currently set for the passed 'FieldDefinition'. Either call 'SetValue' before 'GetValue' or use 'GetValueOrDefault'.</value>
+  </data>
+  <data name="ForeignField" xml:space="preserve">
+    <value>The passed field does not belong to the same 'FieldDefinitionCollection' as this 'FieldValueHolder'. Make sure you only access 'FieldDefintion's that were defined on the same 'FieldDefintionCollection' instance that was used to create the 'FieldValueHolder'.</value>
+  </data>
+  <data name="GetPropertiesWithAttributesIsNotSupport" xml:space="preserve">
+    <value>'GetProperties' with an 'attributes' parameter to filter the returned properties is not supported.</value>
+  </data>
+  <data name="InvalidComponentInstance" xml:space="preserve">
+    <value>Parameter 'component' is not a valid 'ViewModel'. Make sure you pass an object that is derived from 'ViewModel' to 'TypeDescriptor.GetValue' and 'TypeDescriptor.SetValue'. The value of 'component' was: '{0}'.</value>
+  </data>
+  <data name="NoServiceLocatorConfigured" xml:space="preserve">
+    <value>No service locator is configured. Make sure you call 'ServiceLocator.SetServiceLocator' and pass in your implementation of the 'IServiceLocator' interface.</value>
+  </data>
+  <data name="NoSetterDelegate" xml:space="preserve">
+    <value>Cannot set calculated property because no setter delegate was specified.</value>
+  </data>
+  <data name="PropertyIsReadonly" xml:space="preserve">
+    <value>Cannot set the value of property path '{0}' because the property '{1}' does not have a setter.</value>
+  </data>
+  <data name="PropertyStepIsNull" xml:space="preserve">
+    <value>Could not get or set the value of the property path '{0}' because '{1}' is null on object '{2}'.</value>
+  </data>
+  <data name="ScreenConductorNotFound" xml:space="preserve">
+    <value>No 'ScreenConductor' with a 'ScreenId' of '{0}' could be found. Make sure that the current screen hierarchy contains a 'ScreenConductor' instance that implements 'IIdentifiedScreen' and returns the given id (this only applies if the 'screenId' is not null).</value>
+  </data>
+  <data name="ScreenNotContainedByConductor" xml:space="preserve">
+    <value>The given screen is not contained by this conductor.</value>
+  </data>
+  <data name="TypeIsNoBehavior" xml:space="preserve">
+    <value>The passed type must be a non-abstract class that implements 'IBehavior'.</value>
+  </data>
+  <data name="UnsupportedCollectionChangedAction" xml:space="preserve">
+    <value>The given 'NotifyCollectionChangedAction' is not supported.</value>
+  </data>
+  <data name="UnsupportedParameterlessPropertyExpression" xml:space="preserve">
+    <value>The given expression does not select a single property. Make sure it has the form '() =&gt; FirstName'.</value>
+  </data>
+  <data name="UnsupportedPropertyPathExpression" xml:space="preserve">
+    <value>The given expression is not a valid property path. It must only select properties like  'x =&gt; x.Address.City'.</value>
+  </data>
+  <data name="UnsupportedTargetTypeForModelProperty" xml:space="preserve">
+    <value>Cannot set the attached property 'View.Model' on an object of type '{0}' to an object of type '{1}'. Make sure the value is of a type 'T' for which you have registered an 'IView&lt;T&gt;' implementation. Also note that this property can only be set on instances of 'ContentControl', 'ContentPresenter' and 'IView&lt;T&gt;' where T is '{1}' (or a base type).</value>
+  </data>
+</root>

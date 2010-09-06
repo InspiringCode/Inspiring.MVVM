@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B2E313EF-1DB8-423E-AB2E-5767F02BD026}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Inspiring.Mvvm</RootNamespace>
+    <AssemblyName>InspiringMvvm</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>False</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>False</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>False</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>False</CodeContractsArithmeticObligations>
+    <CodeContractsContainerAnalysis>False</CodeContractsContainerAnalysis>
+    <CodeContractsRedundantAssumptions>False</CodeContractsRedundantAssumptions>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>False</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsBaseLineFile />
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="StructureMap">
+      <HintPath>..\Libs\StructureMap\StructureMap.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MvvmApplication.cs" />
+    <Compile Include="Common\NotifyObject.cs" />
+    <Compile Include="IServiceLocator.cs" />
+    <Compile Include="Screens\IIdentifiedScreen.cs" />
+    <Compile Include="Screens\IScreen.cs" />
+    <Compile Include="Screens\IScreenFactory.cs" />
+    <Compile Include="Screens\Screen.cs" />
+    <Compile Include="Screens\ScreenCollection.cs" />
+    <Compile Include="Screens\ScreenConductor.cs" />
+    <Compile Include="Screens\ScreenFactory.cs" />
+    <Compile Include="Screens\ScreenInitializer.cs" />
+    <Compile Include="ServiceLocator.cs" />
+    <Compile Include="ViewModels\Behaviors\VMPropertyBehavior.cs" />
+    <Compile Include="ViewModels\Behaviors\VMPropertyBehaviorChain.cs" />
+    <Compile Include="ViewModels\Behaviors\IBehavior.cs" />
+    <Compile Include="ViewModels\Behaviors\Dynamic Fields\FieldDefinition.cs" />
+    <Compile Include="ViewModels\Behaviors\Dynamic Fields\FieldDefinitionCollection.cs" />
+    <Compile Include="ViewModels\Behaviors\Dynamic Fields\FieldDefinitionGroup.cs" />
+    <Compile Include="ViewModels\Behaviors\Dynamic Fields\FieldValueHolder.cs" />
+    <Compile Include="Common\IHideObjectMembers.cs" />
+    <Compile Include="Common\PropertyPath.cs" />
+    <Compile Include="Common\ExpressionService.cs" />
+    <Compile Include="ExceptionTexts.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExceptionTexts.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\Behaviors\IBehaviorContext.cs" />
+    <Compile Include="ViewModels\VMBehaviors.cs" />
+    <Compile Include="ViewModels\Behaviors\10 Dispaly Value Behaviors\10 AllowInvalidDisplayValuesBehavior.cs" />
+    <Compile Include="ViewModels\Behaviors\10 Dispaly Value Behaviors\11 DisplayValueValidationBehavior.cs" />
+    <Compile Include="ViewModels\Behaviors\20 Various Behaviors\21 DisconnectedVMBehavior.cs" />
+    <Compile Include="ViewModels\Behaviors\30 Source Behaviors\30 CalculatedPropertyBehavior.cs" />
+    <Compile Include="ViewModels\Behaviors\BehaviorFactory.cs" />
+    <Compile Include="ViewModels\Behaviors\DynamicFieldGroups.cs" />
+    <Compile Include="ViewModels\Behaviors\30 Source Behaviors\30 InstancePropertyBehavior.cs" />
+    <Compile Include="ViewModels\Behaviors\00 Interfaces\IAccessPropertyBehavior.cs" />
+    <Compile Include="ViewModels\Behaviors\00 Interfaces\IDisconnectedVMBehavior.cs" />
+    <Compile Include="ViewModels\Behaviors\00 Interfaces\IHandlePropertyChangedBehavior.cs" />
+    <Compile Include="ViewModels\Behaviors\00 Interfaces\IHandlePropertyChangingBehavior.cs" />
+    <Compile Include="ViewModels\Behaviors\00 Interfaces\IValidationBehavior.cs" />
+    <Compile Include="ViewModels\Behaviors\30 Source Behaviors\30 MappedPropertyBehavior.cs" />
+    <Compile Include="ViewModels\Behaviors\20 Various Behaviors\22 PropertyChangedBehavior.cs" />
+    <Compile Include="ViewModels\Behaviors\10 Dispaly Value Behaviors\12 DisplayValueAccessorBehavior.cs" />
+    <Compile Include="ViewModels\Behaviors\20 Various Behaviors\20 ValidationBehavior.cs" />
+    <Compile Include="ViewModels\Behaviors\10 Dispaly Value Behaviors\VMPropertyDescriptor.cs" />
+    <Compile Include="ViewModels\Behaviors\10 Dispaly Value Behaviors\ChangeValueRequest.cs" />
+    <Compile Include="ViewModels\Behaviors\10 Dispaly Value Behaviors\IVMValueConverter.cs" />
+    <Compile Include="ViewModels\Fluent\IVMBehaviorConfigurator.cs" />
+    <Compile Include="ViewModels\Fluent\IVMDescriptorBuilder.cs" />
+    <Compile Include="ViewModels\Fluent\IVMDescriptorConfigurator.cs" />
+    <Compile Include="ViewModels\Fluent\IVMPropertyFactoryProvider.cs" />
+    <Compile Include="ViewModels\Fluent\IVMDependencyConfigurator.cs" />
+    <Compile Include="ViewModels\IVMPropertyFactory.cs" />
+    <Compile Include="ViewModels\Fluent\IVMValidationConfigurator.cs" />
+    <Compile Include="ViewModels\ViewModel.cs" />
+    <Compile Include="ViewModels\VMDescriptor.cs" />
+    <Compile Include="ViewModels\VMDescriptorBuilder.cs" />
+    <Compile Include="ViewModels\VMProperty.cs" />
+    <Compile Include="ViewModels\VMPropertyFactory.cs" />
+    <Compile Include="Views\Binder\BinderBuildStep.cs" />
+    <Compile Include="Views\Binder\BinderContext.cs" />
+    <Compile Include="Views\Binder\BinderExpression.cs" />
+    <Compile Include="Views\Binder\BinderRootExpression.cs" />
+    <Compile Include="Views\Binder\SetBindingBuildStep.cs" />
+    <Compile Include="Views\Binder\SetDefaultPropertyBuildStep.cs" />
+    <Compile Include="Views\IView.cs" />
+    <Compile Include="Views\IWindowService.cs" />
+    <Compile Include="Views\ScreenConductorAdapter.cs" />
+    <Compile Include="Views\View.cs" />
+    <Compile Include="Views\ViewBinder.cs" />
+    <Compile Include="Views\ViewFactory.cs" />
+    <Compile Include="Views\WindowService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="license.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ExceptionTexts.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExceptionTexts.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModels\Descriptor\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
