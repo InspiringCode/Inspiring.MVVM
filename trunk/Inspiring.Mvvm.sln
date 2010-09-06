@@ -29,9 +29,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Moq", "Moq", "{13484309-541
 		Libs\Moq\Moq.xml = Libs\Moq\Moq.xml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvmContrib", "MvvmContrib\MvvmContrib.csproj", "{7D10FFF8-1916-49C7-9532-9AFC7ED22B03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvmContribTest", "MvvmContribTest\MvvmContribTest.csproj", "{D5D740C6-50C5-4B64-BDAA-7F848FD0F4B3}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
+		SccNumberOfProjects = 6
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs17
 		SccLocalPath0 = .
@@ -44,6 +48,12 @@ Global
 		SccProjectUniqueName3 = MvvmTest\\MvvmTest.csproj
 		SccProjectName3 = MvvmTest
 		SccLocalPath3 = MvvmTest
+		SccProjectUniqueName4 = MvvmContrib\\MvvmContrib.csproj
+		SccProjectName4 = MvvmContrib
+		SccLocalPath4 = MvvmContrib
+		SccProjectUniqueName5 = MvvmContribTest\\MvvmContribTest.csproj
+		SccProjectName5 = MvvmContribTest
+		SccLocalPath5 = MvvmContribTest
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Berghold.Architecture.vsmdi
@@ -87,6 +97,26 @@ Global
 		{BF31E840-F483-49B5-9BDF-4B7E38770159}.Release|Mixed Platforms.Build.0 = Release|x86
 		{BF31E840-F483-49B5-9BDF-4B7E38770159}.Release|x86.ActiveCfg = Release|x86
 		{BF31E840-F483-49B5-9BDF-4B7E38770159}.Release|x86.Build.0 = Release|x86
+		{7D10FFF8-1916-49C7-9532-9AFC7ED22B03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D10FFF8-1916-49C7-9532-9AFC7ED22B03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D10FFF8-1916-49C7-9532-9AFC7ED22B03}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7D10FFF8-1916-49C7-9532-9AFC7ED22B03}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7D10FFF8-1916-49C7-9532-9AFC7ED22B03}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7D10FFF8-1916-49C7-9532-9AFC7ED22B03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D10FFF8-1916-49C7-9532-9AFC7ED22B03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D10FFF8-1916-49C7-9532-9AFC7ED22B03}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7D10FFF8-1916-49C7-9532-9AFC7ED22B03}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7D10FFF8-1916-49C7-9532-9AFC7ED22B03}.Release|x86.ActiveCfg = Release|Any CPU
+		{D5D740C6-50C5-4B64-BDAA-7F848FD0F4B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5D740C6-50C5-4B64-BDAA-7F848FD0F4B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5D740C6-50C5-4B64-BDAA-7F848FD0F4B3}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D5D740C6-50C5-4B64-BDAA-7F848FD0F4B3}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D5D740C6-50C5-4B64-BDAA-7F848FD0F4B3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D5D740C6-50C5-4B64-BDAA-7F848FD0F4B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5D740C6-50C5-4B64-BDAA-7F848FD0F4B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5D740C6-50C5-4B64-BDAA-7F848FD0F4B3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D5D740C6-50C5-4B64-BDAA-7F848FD0F4B3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D5D740C6-50C5-4B64-BDAA-7F848FD0F4B3}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
