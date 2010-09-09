@@ -153,20 +153,33 @@ namespace Inspiring.MvvmTest.Common {
 
       private class FirstBehavior : VMPropertyBehavior, IFirstBehavior {
 
+         public override BehaviorPosition Position {
+            get { throw new NotImplementedException(); }
+         }
       }
 
       private class SecondBehavior : VMPropertyBehavior, ISecondBehavior {
          public int ReturnFive() {
             return 5;
          }
+
+         public override BehaviorPosition Position {
+            get { throw new NotImplementedException(); }
+         }
       }
 
       private class ThirdBehavior : VMPropertyBehavior {
 
+         public override BehaviorPosition Position {
+            get { throw new NotImplementedException(); }
+         }
       }
 
       private class FourthBehavior : VMPropertyBehavior {
 
+         public override BehaviorPosition Position {
+            get { throw new NotImplementedException(); }
+         }
       }
    }
 }

@@ -12,6 +12,10 @@
 
       private PropertyPath<TVM, TValue> _path;
 
+      public override BehaviorPosition Position {
+         get { return BehaviorPosition.SourceValueAccessor; }
+      }
+
       public MappedPropertyBehavior(PropertyPath<TVM, TValue> path) {
          Contract.Requires(path != null);
          _path = path;

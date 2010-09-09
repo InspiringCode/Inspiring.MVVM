@@ -7,6 +7,8 @@
 
       public IBehavior Successor { get; set; }
 
+      public abstract BehaviorPosition Position { get; }
+
       /// <summary>
       ///   Gets the next behavior in the stack and throws an 'ArgumentException'
       ///   if no behavior that implements 'TBehavior' can be found.
@@ -43,7 +45,7 @@
          return true;
       }
 
-      internal void Initialize(FieldDefinitionCollection fields, string propertyName) {
+      internal virtual void Initialize(FieldDefinitionCollection fields, string propertyName) {
          OnDefineDynamicFields(fields);
          OnInitialize(propertyName);
          _initialized = true;

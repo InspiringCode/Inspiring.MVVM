@@ -1,6 +1,15 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Behaviors {
-   internal sealed class DisconnectedVMBehavior<TValue> : VMPropertyBehavior, IDisconnectedVMBehavior<TValue> {
+   internal sealed class CacheValueBehavior<TValue> : VMPropertyBehavior, ICacheValueBehavior<TValue> {
       FieldDefinition<TValue> _localCopyField;
+      BehaviorPosition _position;
+
+      public CacheValueBehavior(BehaviorPosition position) {
+         _position = position;
+      }
+
+      public override BehaviorPosition Position {
+         get { return _position; }
+      }
 
       public void CopyFromSource(IBehaviorContext vm) {
          AssertInitialized();
@@ -18,6 +27,9 @@
 
       public TValue GetValue(IBehaviorContext vm) {
          AssertInitialized();
+         if (!vm.FieldValues.HasValue(_localCopyField)) {
+            CopyFromSource(vm);
+         }
          return vm.FieldValues.GetValue(_localCopyField);
       }
 
@@ -25,6 +37,7 @@
          AssertInitialized();
          vm.FieldValues.SetValue(_localCopyField, value);
       }
+
       protected override void OnDefineDynamicFields(FieldDefinitionCollection fields) {
          _localCopyField = fields.DefineField<TValue>(DynamicFieldGroups.LocalCopyGroup);
       }

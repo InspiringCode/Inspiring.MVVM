@@ -9,6 +9,11 @@
          Contract.Requires(property != null);
          _property = property;
       }
+
+      public override BehaviorPosition Position {
+         get { return BehaviorPosition.PropertyChangedTrigger; }
+      }
+
       public TValue GetValue(IBehaviorContext vm) {
          return GetNextBehavior<IAccessPropertyBehavior<TValue>>().GetValue(vm);
       }

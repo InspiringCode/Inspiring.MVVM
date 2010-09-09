@@ -129,6 +129,9 @@
   <data name="CannotSetValueOfEmptyPropertyPath" xml:space="preserve">
     <value>The value of an empty property path cannot be set. Make sure the path contains at least one property access like 'x =&gt; x.Address'.</value>
   </data>
+  <data name="CannotSetVMCollectionProperties" xml:space="preserve">
+    <value>The value of a 'VMCollectionProperty' cannot be set because it is created and managed by the view model framework. Use the 'VMCollection' methods to modify the content of the collection.</value>
+  </data>
   <data name="CouldNotResolveView" xml:space="preserve">
     <value>Cannot set the attached property 'View.Model' to an instance of type '{0}' because no view implementation is registered that implements 'IView&lt;T&gt;' where T is '{0}' or a base type . Make sure you assigned the correct value or use your dependency injection container to register an appropriate view.</value>
   </data>
@@ -188,5 +191,8 @@
   </data>
   <data name="UnsupportedTargetTypeForModelProperty" xml:space="preserve">
     <value>Cannot set the attached property 'View.Model' on an object of type '{0}' to an object of type '{1}'. Make sure the value is of a type 'T' for which you have registered an 'IView&lt;T&gt;' implementation. Also note that this property can only be set on instances of 'ContentControl', 'ContentPresenter' and 'IView&lt;T&gt;' where T is '{1}' (or a base type).</value>
+  </data>
+  <data name="ParameterMustBeABinderExpression" xml:space="preserve">
+    <value>Parameter 'binderExpression' must be a 'BinderExpression' (or subtype).</value>
   </data>
 </root>

@@ -8,6 +8,10 @@
    public sealed class InstancePropertyBehavior<TValue> : VMPropertyBehavior, IAccessPropertyBehavior<TValue> {
       private FieldDefinition<TValue> _backingField;
 
+      public override BehaviorPosition Position {
+         get { return BehaviorPosition.SourceValueAccessor; }
+      }
+
       public TValue GetValue(IBehaviorContext vm) {
          AssertInitialized();
          return vm.FieldValues.GetValueOrDefault(_backingField);

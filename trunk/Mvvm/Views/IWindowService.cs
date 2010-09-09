@@ -4,5 +4,7 @@
 
    public interface IWindowService {
       Window CreateWindow<TScreen>(IScreenFactory<TScreen> screen) where TScreen : IScreen;
+
+      void ConfigureWindow<TScreen>(Window window, IScreenFactory<TScreen> forScreen) where TScreen : IScreen;
    }
 }

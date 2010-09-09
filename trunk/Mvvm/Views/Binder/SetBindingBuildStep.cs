@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.Mvvm.Views.Binder {
    using System;
    using System.Diagnostics.Contracts;
+   using System.Windows;
    using System.Windows.Data;
 
    public sealed class SetBindingBuildStep : IBinderBuildStep {
@@ -11,6 +12,8 @@
             context.Binding != null &&
             !String.IsNullOrWhiteSpace(context.PropertyPath)
          );
+
+         context.Binding.Path = new PropertyPath(context.PropertyPath);
 
          BindingOperations.SetBinding(
             context.TargetObject,

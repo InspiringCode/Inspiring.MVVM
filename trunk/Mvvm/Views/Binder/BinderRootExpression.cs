@@ -1,17 +1,29 @@
 ﻿namespace Inspiring.Mvvm.Views.Binder {
    using System;
+   using System.Collections.Generic;
+   using System.Diagnostics.Contracts;
 
    public abstract class BinderRootExpression {
+      private List<BinderContext> _queuedExecutions = new List<BinderContext>();
+      private List<IBinderBuildStep> _buildSteps = new List<IBinderBuildStep>();
+
       public void InsertBuildStep(IBinderBuildStep step) {
-         throw new NotImplementedException();
+         Contract.Requires<ArgumentNullException>(step != null);
+         _buildSteps.Add(step);
       }
 
       public virtual BinderContext QueueBuilderExecution() {
-         throw new NotImplementedException();
+         BinderContext execution = new BinderContext();
+         _queuedExecutions.Add(execution);
+         return execution;
       }
 
       public void Execute() {
-         // foreach build step execute with context...
+         foreach (BinderContext context in _queuedExecutions) {
+            foreach (IBinderBuildStep step in _buildSteps) {
+               step.Execute(context);
+            }
+         }
       }
    }
 }

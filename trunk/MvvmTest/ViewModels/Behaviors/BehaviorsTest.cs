@@ -8,10 +8,11 @@ namespace Inspiring.MvvmTest.ViewModels.Behaviors {
       [TestMethod]
       public void InstanceProperty() {
          EmployeeVM vm = new EmployeeVM();
-         FieldDefinitionCollection fields = EmployeeVM.Descriptor.DynamicFields;
 
          VMProperty<int> intProperty = new VMProperty<int>(new InstancePropertyBehavior<int>());
          VMProperty<string> stringProperty = new VMProperty<string>(new InstancePropertyBehavior<string>());
+         intProperty.Initialize(EmployeeVM.Descriptor.DynamicFields, "Test");
+         stringProperty.Initialize(EmployeeVM.Descriptor.DynamicFields, "Test");
 
          Assert.AreEqual(0, intProperty.GetValue(vm));
          intProperty.SetValue(vm, 5);

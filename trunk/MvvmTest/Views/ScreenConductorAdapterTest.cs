@@ -37,14 +37,14 @@
          var adapter = adapterMock.Object;
 
          Assert.AreEqual(null, adapter.ActiveView);
-         Assert.IsFalse(adapter.Views.Any());
+         Assert.IsFalse(adapter.Views.Cast<object>().Any());
 
          expectedViews.Add(_firstView);
          SetupServiceLocator(_firstView);
          conductor.OpenScreen(_firstFactory);
 
          Assert.AreEqual(_firstView, adapter.ActiveView);
-         CollectionAssert.AreEquivalent(expectedViews, adapter.Views.ToArray());
+         CollectionAssert.AreEquivalent(expectedViews, adapter.Views.Cast<object>().ToArray());
          adapterMock.Protected().Verify("OnViewAdded", Times.Once(), _firstView);
          adapterMock.Protected().Verify("OnActiveViewChanged", Times.Once(), _firstView);
 
@@ -53,7 +53,7 @@
          conductor.OpenScreen(_secondFactory);
 
          Assert.AreEqual(_secondView, adapter.ActiveView);
-         CollectionAssert.AreEquivalent(expectedViews, adapter.Views.ToArray());
+         CollectionAssert.AreEquivalent(expectedViews, adapter.Views.Cast<object>().ToArray());
          adapterMock.Protected().Verify("OnViewAdded", Times.Once(), _secondView);
          adapterMock.Protected().Verify("OnActiveViewChanged", Times.Once(), _secondView);
       }
@@ -69,7 +69,7 @@
          var adapterMock = new Mock<ScreenConductorAdapter>(conductor) { CallBase = true };
          var adapter = adapterMock.Object;
 
-         CollectionAssert.AreEquivalent(expectedViews, adapter.Views.ToArray());
+         CollectionAssert.AreEquivalent(expectedViews, adapter.Views.Cast<object>().ToArray());
          Assert.AreEqual(_secondView, adapter.ActiveView);
          adapterMock.Protected().Verify("OnViewAdded", Times.Once(), _firstView);
          adapterMock.Protected().Verify("OnViewAdded", Times.Once(), _secondView);
@@ -91,7 +91,7 @@
          conductor.CloseScreen(_secondScreen);
 
          Assert.AreEqual(_firstView, adapter.ActiveView);
-         CollectionAssert.AreEquivalent(expectedViews, adapter.Views.ToArray());
+         CollectionAssert.AreEquivalent(expectedViews, adapter.Views.Cast<object>().ToArray());
          adapterMock.Protected().Verify("OnViewRemoved", Times.Once(), _secondView);
          adapterMock.Protected().Verify("OnActiveViewChanged", Times.Once(), _firstView);
 
@@ -99,7 +99,7 @@
          conductor.CloseScreen(_firstScreen);
 
          Assert.AreEqual(null, adapter.ActiveView);
-         CollectionAssert.AreEquivalent(expectedViews, adapter.Views.ToArray());
+         CollectionAssert.AreEquivalent(expectedViews, adapter.Views.Cast<object>().ToArray());
          adapterMock.Protected().Verify("OnViewRemoved", Times.Once(), _firstView);
          adapterMock.Protected().Verify("OnActiveViewChanged", Times.Once(), ItExpr.IsNull<object>());
       }

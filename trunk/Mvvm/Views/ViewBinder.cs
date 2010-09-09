@@ -12,7 +12,7 @@
          IBindableView<ViewModel<TDescriptor>> view,
          Action<IVMBinder<TDescriptor>> bindingConfigurator
       ) where TDescriptor : VMDescriptor {
-         VMBinder<TDescriptor> binder = new VMBinder<TDescriptor>();
+         VMPropertyBinder<TDescriptor> binder = new VMPropertyBinder<TDescriptor>();
          bindingConfigurator(binder);
          binder.Execute();
       }
@@ -52,13 +52,13 @@
 
       public void BindVM<TDescriptor>(Expression<Func<TScreen, ViewModel<TDescriptor>>> viewModelSelector, Action<IVMBinder<TDescriptor>> bindingConfigurator) where TDescriptor : VMDescriptor {
          string pathPrefix = ExpressionService.GetPropertyPathString(viewModelSelector);
-         VMBinder<TDescriptor> binder = new VMBinder<TDescriptor>(pathPrefix);
+         VMPropertyBinder<TDescriptor> binder = new VMPropertyBinder<TDescriptor>(pathPrefix);
          bindingConfigurator(binder);
          binder.Execute();
       }
 
       public IBindToExpression<IScreen> BindChildScreen(Expression<Func<TScreen, IScreen>> screenSelector) {
-         VMBinderExpression<IScreen> exp = new VMBinderExpression<IScreen>(
+         PropertyBinderExpression<IScreen> exp = new PropertyBinderExpression<IScreen>(
             context: QueueBuilderExecution()
          );
 
@@ -71,39 +71,10 @@
       }
    }
 
-   public class VMBinder<TDescriptor> : BinderRootExpression, IVMBinder<TDescriptor> {
-      private string _pathPrefix;
 
-      public VMBinder(string pathPrefix = null) {
-         _pathPrefix = pathPrefix;
-         InsertBuildStep(new SetBindingBuildStep());
-         InsertBuildStep(new SetDefaultPropertyBuildStep());
-      }
 
-      public IBindToExpression<T> Property<T>(
-         Expression<Func<TDescriptor, T>> sourcePropertySelector
-      ) {
-         VMBinderExpression<T> exp = new VMBinderExpression<T>(
-            context: QueueBuilderExecution()
-         );
-
-         BinderExpression.ExposeContext(this, c => {
-            string pathPostfix = ExpressionService.GetPropertyPathString(sourcePropertySelector);
-            c.ExtendPropertyPath(pathPostfix);
-         });
-
-         return exp;
-      }
-
-      public override BinderContext QueueBuilderExecution() {
-         BinderContext context = base.QueueBuilderExecution();
-         context.ExtendPropertyPath(_pathPrefix);
-         return context;
-      }
-   }
-
-   public class VMBinderExpression<T> : BinderExpression, IBindToExpression<T>, IOptionsExpression<T> {
-      public VMBinderExpression(BinderContext context)
+   public class PropertyBinderExpression<T> : BinderExpression, IBindToExpression<T>, IOptionsExpression<T> {
+      public PropertyBinderExpression(BinderContext context)
          : base(context) {
       }
 

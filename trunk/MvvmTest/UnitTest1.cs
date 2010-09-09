@@ -20,9 +20,11 @@ namespace Inspiring.MvvmTest {
       //   public void Bar<U>() where T : U { }
       //}
 
-      public class Foo {
+      //public class Foo<T> {
+      //   public void Bar<Z>() where T : Z {
 
-      }
+      //   }
+      //}
 
       [TestMethod]
       public void MyTestMethod() {

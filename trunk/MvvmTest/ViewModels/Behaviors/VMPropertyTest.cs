@@ -28,6 +28,10 @@ namespace Inspiring.MvvmTest.ViewModels.Behaviors {
          public void SetValue(IBehaviorContext vm, T value) {
             Value = value;
          }
+
+         public override BehaviorPosition Position {
+            get { return BehaviorPosition.SourceValueAccessor; }
+         }
       }
    }
 }

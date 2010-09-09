@@ -1,14 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using Inspiring.Mvvm.Common;
-namespace Inspiring.Mvvm.Screens {
+﻿namespace Inspiring.Mvvm.Screens {
+   using System;
+   using System.Collections.Generic;
+   using System.Diagnostics.Contracts;
+   using System.Linq;
+   using Inspiring.Mvvm.Common;
 
    public class Screen : NotifyObject, IScreen {
       public Screen() {
          Children = new ScreenCollection(this);
+         Behaviors = new List<ScreenBehavior>();
+         AddBehavior(new ChildrenBehavior(Children));
       }
 
       IScreen IScreen.Parent { get; set; }
+
+      internal List<ScreenBehavior> Behaviors { get; private set; }
 
       protected ScreenCollection Children { get; private set; }
 
@@ -27,27 +33,54 @@ namespace Inspiring.Mvvm.Screens {
          conductor.OpenScreen(screen);
       }
 
+      public static void AddBehavior(Screen screen, ScreenBehavior behavior) {
+         screen.AddBehavior(behavior);
+      }
+
+      public static TBehavior GetBehavior<TBehavior>(Screen screen) where TBehavior : ScreenBehavior {
+         return screen.Behaviors.OfType<TBehavior>().FirstOrDefault();
+      }
+
       void IScreen.Initialize() {
+         Behaviors.ForEach(b => b.BeforeInitialize());
          OnInitialize();
+         Behaviors.ForEach(b => b.AfterInitialize());
       }
 
       void IScreen.Activate() {
+         Behaviors.ForEach(b => b.BeforeActivate());
          OnActivate();
-         Children.Activate();
+         Behaviors.ForEach(b => b.AfterActivate());
+
+         InvokeAfterInitialized();
       }
 
       void IScreen.Deactivate() {
-         Children.Deactivate();
+         Behaviors.ForEach(b => b.BeforeDeactivate());
          OnDeactivate();
+         Behaviors.ForEach(b => b.AfterDeactivate());
       }
 
       bool IScreen.RequestClose() {
-         return Children.RequestClose() && OnRequestClose();
+         return
+            Behaviors.All(b => b.BeforeRequestClose()) &&
+            OnRequestClose() &&
+            Behaviors.All(b => b.AfterRequestClose());
       }
 
       void IScreen.Close() {
-         Children.Close();
+         Behaviors.ForEach(b => b.BeforeClose());
          OnClose();
+         Behaviors.ForEach(b => b.AfterClose());
+      }
+
+      internal virtual void InvokeAfterInitialized() {
+         Behaviors.ForEach(b => b.AfterInitialized());
+      }
+
+      protected void AddBehavior(ScreenBehavior behavior) {
+         Contract.Requires<ArgumentNullException>(behavior != null);
+         Behaviors.Add(behavior);
       }
 
       protected virtual void OnInitialize() {
@@ -115,11 +148,42 @@ namespace Inspiring.Mvvm.Screens {
 
          return null;
       }
+
+      private class ChildrenBehavior : ScreenBehavior {
+         private ScreenCollection _children;
+
+         public ChildrenBehavior(ScreenCollection children) {
+            _children = children;
+         }
+
+         protected internal override void AfterActivate() {
+            _children.Activate();
+         }
+
+         protected internal override void BeforeDeactivate() {
+            _children.Deactivate();
+         }
+
+         protected internal override bool BeforeRequestClose() {
+            return _children.RequestClose();
+         }
+
+         protected internal override void BeforeClose() {
+            _children.Close();
+         }
+      }
    }
 
    public class Screen<TSubject> : Screen, IScreen<TSubject> {
       void IScreen<TSubject>.Initialize(TSubject subject) {
+         Behaviors.ForEach(b => b.BeforeInitialize(subject));
          OnInitialize(subject);
+         Behaviors.ForEach(b => b.AfterInitialize(subject));
+         InvokeAfterInitialized();
+      }
+
+      internal override void InvokeAfterInitialized() {
+         // Do not invoke AfterInitalized this time
       }
 
       protected virtual void OnInitialize(TSubject subject) {

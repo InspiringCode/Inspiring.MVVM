@@ -1,7 +1,9 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
+   using System.Collections.Generic;
    using System.Linq.Expressions;
    using Inspiring.Mvvm.Common;
+   using Inspiring.Mvvm.ViewModels.Behaviors;
 
    /// <summary>
    ///   A factory that creates <see cref="VMProperty"/> instances configured 
@@ -58,6 +60,11 @@
       ///      second argument is the new value of the 'VMProperty'.</para>
       /// </param>
       VMProperty<T> Calculated<T>(Func<TSource, T> getter, Action<TSource, T> setter = null);
+
+      // TODO: Document me
+      IVMCollectionPropertyFactory<TItem> MappedCollection<TItem>(
+         Expression<Func<TSource, IEnumerable<TItem>>> sourceCollectionSelector
+      );
    }
 
    /// <summary>
@@ -113,5 +120,14 @@
       ///   with all the 'VMProperty' features.
       /// </summary>
       VMProperty<TValue> Simple<TValue>();
+
+      // TODO: Document me
+      IVMCollectionPropertyFactory<TItem> MappedCollection<TItem>(
+         Expression<Func<TVM, IEnumerable<TItem>>> sourceCollectionSelector
+      );
+   }
+
+   public interface IVMCollectionPropertyFactory<TSourceItem> {
+      VMCollectionProperty<TVM> Of<TVM>() where TVM : ICanInitializeFrom<TSourceItem>;
    }
 }

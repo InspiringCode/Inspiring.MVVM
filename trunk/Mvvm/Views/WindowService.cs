@@ -6,7 +6,7 @@
    using Inspiring.Mvvm.Screens;
 
    public class WindowService : IWindowService {
-      public Window CreateWindow<TScreen>(IScreenFactory<TScreen> screen) where TScreen : IScreen {
+      public virtual Window CreateWindow<TScreen>(IScreenFactory<TScreen> screen) where TScreen : IScreen {
          Window window = CreateWindow();
          ConfigureWindow(window, screen);
          return window;
@@ -22,7 +22,7 @@
          return window;
       }
 
-      protected virtual void ConfigureWindow<TScreen>(
+      public virtual void ConfigureWindow<TScreen>(
          Window window,
          IScreenFactory<TScreen> forScreen
       ) where TScreen : IScreen {

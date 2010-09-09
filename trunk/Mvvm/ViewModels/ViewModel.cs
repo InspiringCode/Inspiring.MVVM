@@ -17,17 +17,17 @@
 
       public event PropertyChangedEventHandler PropertyChanged;
 
-      protected internal void SetValue<T>(VMProperty<T> property, T value) {
+      protected internal void SetValue<T>(VMPropertyBase<T> property, T value) {
          Contract.Requires<ArgumentNullException>(property != null);
          property.SetValue(this, value);
       }
 
-      protected internal T GetValue<T>(VMProperty<T> property) {
+      protected internal T GetValue<T>(VMPropertyBase<T> property) {
          Contract.Requires<ArgumentNullException>(property != null);
          return property.GetValue(this);
       }
 
-      protected virtual void OnPropertyChanged<T>(VMProperty<T> property) {
+      protected virtual void OnPropertyChanged<T>(VMPropertyBase<T> property) {
          PropertyChangedEventHandler handler = PropertyChanged;
          if (handler != null) {
             handler(this, new PropertyChangedEventArgs(property.PropertyName));

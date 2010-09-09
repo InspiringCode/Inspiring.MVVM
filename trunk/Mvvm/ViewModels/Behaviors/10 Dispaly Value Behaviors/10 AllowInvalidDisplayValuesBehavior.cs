@@ -28,6 +28,10 @@
          Contract.Requires(dynamicFields != null);
       }
 
+      public override BehaviorPosition Position {
+         get { return BehaviorPosition.InvalidDisplayValueCache; }
+      }
+
       public object GetValue(IBehaviorContext vm) {
          object invalidValue;
          if (vm.FieldValues.TryGetValue(_invalidValueField, out invalidValue)) {

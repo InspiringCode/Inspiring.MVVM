@@ -9,6 +9,10 @@
          _propertyName = propertyName;
       }
 
+      public override BehaviorPosition Position {
+         get { return BehaviorPosition.DisplayValueAccessor; }
+      }
+
       public object GetValue(IBehaviorContext vm) {
          AssertInitialized();
 

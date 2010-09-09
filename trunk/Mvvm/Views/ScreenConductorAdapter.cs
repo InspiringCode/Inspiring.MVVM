@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.Views {
    using System;
+   using System.Collections;
    using System.Collections.Generic;
    using System.Collections.ObjectModel;
    using System.Collections.Specialized;
@@ -14,10 +15,15 @@
 
       private ScreenConductor _screens;
       private Dictionary<IScreen, object> _screenViews = new Dictionary<IScreen, object>();
-      private ObservableCollection<object> _views = new ObservableCollection<object>();
+      private IList _views;
       private object _activeView;
 
-      public ScreenConductorAdapter(ScreenConductor screens) {
+      public ScreenConductorAdapter(ScreenConductor screens)
+         : this(screens, new ObservableCollection<object>()) {
+      }
+
+      public ScreenConductorAdapter(ScreenConductor screens, IList viewCollection) {
+         _views = viewCollection;
          _screens = screens;
 
          INotifyCollectionChanged notify = (INotifyCollectionChanged)_screens.Screens;
@@ -31,8 +37,7 @@
          OnActiveViewChanged(view);
       }
 
-
-      public IEnumerable<object> Views {
+      public IEnumerable Views {
          get { return _views; }
       }
 

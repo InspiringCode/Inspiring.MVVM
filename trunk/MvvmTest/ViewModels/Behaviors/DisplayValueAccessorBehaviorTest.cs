@@ -100,6 +100,11 @@
             get { return null; }
             set { }
          }
+
+
+         public BehaviorPosition Position {
+            get { throw new NotImplementedException(); }
+         }
       }
 
 

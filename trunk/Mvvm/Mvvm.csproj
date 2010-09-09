@@ -74,15 +74,21 @@
     <Compile Include="MvvmApplication.cs" />
     <Compile Include="Common\NotifyObject.cs" />
     <Compile Include="IServiceLocator.cs" />
+    <Compile Include="Screens\DelegateCommand.cs" />
     <Compile Include="Screens\IIdentifiedScreen.cs" />
     <Compile Include="Screens\IScreen.cs" />
     <Compile Include="Screens\IScreenFactory.cs" />
     <Compile Include="Screens\Screen.cs" />
+    <Compile Include="Screens\ScreenBehavior.cs" />
     <Compile Include="Screens\ScreenCollection.cs" />
     <Compile Include="Screens\ScreenConductor.cs" />
     <Compile Include="Screens\ScreenFactory.cs" />
     <Compile Include="Screens\ScreenInitializer.cs" />
     <Compile Include="ServiceLocator.cs" />
+    <Compile Include="ViewModels\Behaviors\05 Collection Behaviors\CollectionFactoryBehavior.cs" />
+    <Compile Include="ViewModels\Behaviors\05 Collection Behaviors\CollectionPopulatorBehavior.cs" />
+    <Compile Include="ViewModels\Behaviors\BehaviorPosition.cs" />
+    <Compile Include="ViewModels\Behaviors\VMCollectionProperty.cs" />
     <Compile Include="ViewModels\Behaviors\VMPropertyBehavior.cs" />
     <Compile Include="ViewModels\Behaviors\VMPropertyBehaviorChain.cs" />
     <Compile Include="ViewModels\Behaviors\IBehavior.cs" />
@@ -103,6 +109,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\Behaviors\IBehaviorContext.cs" />
+    <Compile Include="ViewModels\ICanInitializeFrom.cs" />
     <Compile Include="ViewModels\VMBehaviors.cs" />
     <Compile Include="ViewModels\Behaviors\10 Dispaly Value Behaviors\10 AllowInvalidDisplayValuesBehavior.cs" />
     <Compile Include="ViewModels\Behaviors\10 Dispaly Value Behaviors\11 DisplayValueValidationBehavior.cs" />
@@ -131,6 +138,7 @@
     <Compile Include="ViewModels\IVMPropertyFactory.cs" />
     <Compile Include="ViewModels\Fluent\IVMValidationConfigurator.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
+    <Compile Include="ViewModels\VMCollection.cs" />
     <Compile Include="ViewModels\VMDescriptor.cs" />
     <Compile Include="ViewModels\VMDescriptorBuilder.cs" />
     <Compile Include="ViewModels\VMProperty.cs" />
@@ -141,6 +149,7 @@
     <Compile Include="Views\Binder\BinderRootExpression.cs" />
     <Compile Include="Views\Binder\SetBindingBuildStep.cs" />
     <Compile Include="Views\Binder\SetDefaultPropertyBuildStep.cs" />
+    <Compile Include="Views\Binder\VMPropertyBinder.cs" />
     <Compile Include="Views\IView.cs" />
     <Compile Include="Views\IWindowService.cs" />
     <Compile Include="Views\ScreenConductorAdapter.cs" />

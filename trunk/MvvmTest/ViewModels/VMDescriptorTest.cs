@@ -5,18 +5,18 @@
 
    [TestClass]
    public class VMDescriptorTest {
-      [TestMethod]
-      public void TestInitialization() {
-         PersonVMDescriptor d = new PersonVMDescriptor();
+      //[TestMethod]
+      //public void TestInitialization() {
+      //   PersonVMDescriptor d = new PersonVMDescriptor();
 
-         Assert.IsNotNull(d.Name);
-         Assert.IsNotNull(d.BirthDate);
-         Assert.IsNotNull(d.Salary);
+      //   Assert.IsNotNull(d.Name);
+      //   Assert.IsNotNull(d.BirthDate);
+      //   Assert.IsNotNull(d.Salary);
 
-         Assert.AreEqual("Name", d.Name.PropertyName);
-         Assert.AreEqual("BirthDate", d.BirthDate.PropertyName);
-         Assert.AreEqual("Salary", d.Salary.PropertyName);
-      }
+      //   Assert.AreEqual("Name", d.Name.PropertyName);
+      //   Assert.AreEqual("BirthDate", d.BirthDate.PropertyName);
+      //   Assert.AreEqual("Salary", d.Salary.PropertyName);
+      //}
 
       private class PersonVMDescriptor : VMDescriptor {
          public VMProperty<string> Name { get; private set; }

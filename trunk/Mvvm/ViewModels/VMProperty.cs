@@ -66,21 +66,22 @@
 
    }
 
-   public class VMProperty<T> : VMProperty {
-      public VMProperty(IAccessPropertyBehavior<T> accessorBehavior)
+   public abstract class VMPropertyBase<T> : VMProperty {
+
+      public VMPropertyBase()
          : base(typeof(T)) {
-         Contract.Requires<ArgumentNullException>(accessorBehavior != null);
-         EnableBehavior(accessorBehavior, VMBehaviors.BehaviorStack);
-         EnableDefaultBehaviors();
       }
 
       internal override IBehavior EnsureBehavior(VMBehaviorFactory behavior) {
-         IBehavior b;
-         if (!TryGetBehavior(behavior.BehaviorType, out b)) {
-            b = behavior.Create<T>();
-            EnableBehavior(b, VMBehaviors.BehaviorStack);
+         for (IBehavior b = this; b != null; b = b.Successor) {
+            if (behavior.Matches(b)) {
+               return b;
+            }
          }
-         return b;
+
+         IBehavior newBehavior = behavior.Create<T>();
+         InsertBehavior(newBehavior);
+         return newBehavior;
       }
 
       internal T GetValue(IBehaviorContext vm) {
@@ -94,11 +95,23 @@
       }
 
       internal void AddValidation(Func<object, ValidationResult> validation) {
-         EnsureBehavior<DisplayValueValidationBehavior>().Add(validation);
+         EnsureBehavior(() => new DisplayValueValidationBehavior()).Add(validation);
       }
 
       internal void AddValidation(Func<T, ValidationResult> validation) {
-         EnsureBehavior<ValidationBehavior<T>>().Add(validation);
+         EnsureBehavior(() => new ValidationBehavior<T>()).Add(validation);
+      }
+
+      //protected IEnumerable<Type> GetPotentialBehaviorsOrder() {
+
+      //}
+   }
+
+   public class VMProperty<T> : VMPropertyBase<T> {
+      public VMProperty(IAccessPropertyBehavior<T> accessorBehavior) {
+         Contract.Requires<ArgumentNullException>(accessorBehavior != null);
+         InsertBehavior(accessorBehavior);
+         EnableDefaultBehaviors();
       }
 
       private void EnableDefaultBehaviors() {

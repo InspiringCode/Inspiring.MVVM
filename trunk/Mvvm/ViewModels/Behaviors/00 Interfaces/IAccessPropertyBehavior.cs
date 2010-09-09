@@ -19,11 +19,15 @@
       void SetValue(IBehaviorContext vm, object value);
    }
 
-   //public static class AccessPropertyBehaviorExtension {
-   //   public static T NextGetValue<T>(this IAccessPropertyBehavior<T> behavior, IBehaviorContext vm) {
-   //      return ((Behavior)behavior).GetNextBehavior<IAccessPropertyBehavior<T>>().GetValue(vm);
-   //   }
-   //}
+   public static class AccessPropertyBehaviorExtension {
+      public static T GetNextValue<T>(this IAccessPropertyBehavior<T> behavior, IBehaviorContext vm) {
+         return ((VMPropertyBehavior)behavior).GetNextBehavior<IAccessPropertyBehavior<T>>().GetValue(vm);
+      }
+
+      public static void SetNextValue<T>(this IAccessPropertyBehavior<T> behavior, IBehaviorContext vm, T value) {
+         ((VMPropertyBehavior)behavior).GetNextBehavior<IAccessPropertyBehavior<T>>().SetValue(vm, value);
+      }
+   }
 
    [ContractClassFor(typeof(IAccessPropertyBehavior<>))]
    internal abstract class AccessPropertyBehaviorContracts<TValue> : IAccessPropertyBehavior<TValue> {
@@ -44,6 +48,11 @@
          set {
             throw new NotImplementedException();
          }
+      }
+
+
+      public BehaviorPosition Position {
+         get { throw new NotImplementedException(); }
       }
    }
 
@@ -66,6 +75,11 @@
          set {
             throw new NotImplementedException();
          }
+      }
+
+
+      public BehaviorPosition Position {
+         get { throw new NotImplementedException(); }
       }
    }
 }

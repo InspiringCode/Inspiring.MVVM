@@ -25,6 +25,10 @@
          _innerAccessor = innerAccessor;
       }
 
+      public override BehaviorPosition Position {
+         get { return BehaviorPosition.SourceValueAccessor; }
+      }
+
       public TValue GetValue(IBehaviorContext vm) {
          return _getter(GetSourceValue(vm));
       }

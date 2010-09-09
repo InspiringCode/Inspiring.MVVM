@@ -97,6 +97,15 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The value of a &apos;VMCollectionProperty&apos; cannot be set because it is created and managed by the view model framework. Use the &apos;VMCollection&apos; methods to modify the content of the collection..
+        /// </summary>
+        internal static string CannotSetVMCollectionProperties {
+            get {
+                return ResourceManager.GetString("CannotSetVMCollectionProperties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot set the attached property &apos;View.Model&apos; to an instance of type &apos;{0}&apos; because no view implementation is registered that implements &apos;IView&lt;T&gt;&apos; where T is &apos;{0}&apos; or a base type . Make sure you assigned the correct value or use your dependency injection container to register an appropriate view..
         /// </summary>
         internal static string CouldNotResolveView {
@@ -192,6 +201,15 @@ namespace Inspiring.Mvvm {
         internal static string NoSetterDelegate {
             get {
                 return ResourceManager.GetString("NoSetterDelegate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter &apos;binderExpression&apos; must be a &apos;BinderExpression&apos; (or subtype)..
+        /// </summary>
+        internal static string ParameterMustBeABinderExpression {
+            get {
+                return ResourceManager.GetString("ParameterMustBeABinderExpression", resourceCulture);
             }
         }
         

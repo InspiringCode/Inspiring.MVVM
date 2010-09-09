@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
+   using System.Collections.Generic;
    using System.Linq.Expressions;
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.ViewModels.Behaviors;
@@ -44,5 +45,32 @@
          IAccessPropertyBehavior<TValue> accessBehavior = new InstancePropertyBehavior<TValue>();
          return new VMProperty<TValue>(accessBehavior);
       }
+
+
+      public IVMCollectionPropertyFactory<TItem> MappedCollection<TItem>(
+         Expression<Func<TSource, IEnumerable<TItem>>> sourceCollectionSelector
+      ) {
+         PropertyPath<TSource, IEnumerable<TItem>> sourceCollectionPath = PropertyPath.Create(sourceCollectionSelector);
+         PropertyPath<TVM, IEnumerable<TItem>> path = PropertyPath.Concat(_sourceObjectPath, sourceCollectionPath);
+
+         return new VMCollectionPropertyFactory<TItem>(
+            sourceCollectionAccessor: new MappedPropertyBehavior<TVM, IEnumerable<TItem>>(path)
+         );
+      }
    }
+
+   public class VMCollectionPropertyFactory<TItem> : IVMCollectionPropertyFactory<TItem> {
+      private IAccessPropertyBehavior<IEnumerable<TItem>> _sourceCollectionAcessor;
+
+      public VMCollectionPropertyFactory(IAccessPropertyBehavior<IEnumerable<TItem>> sourceCollectionAccessor) {
+         _sourceCollectionAcessor = sourceCollectionAccessor;
+      }
+
+      public VMCollectionProperty<TVM> Of<TVM>() where TVM : ICanInitializeFrom<TItem> {
+         return new VMCollectionProperty<TVM>(
+            collectionPopulator: new CollectionPopulatorBehavior<TVM, TItem>(_sourceCollectionAcessor)
+         );
+      }
+   }
+
 }

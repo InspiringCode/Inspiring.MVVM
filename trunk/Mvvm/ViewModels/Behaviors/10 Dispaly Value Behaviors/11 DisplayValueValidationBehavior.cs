@@ -7,6 +7,10 @@
       private FieldDefinition<string> _validationErrorField;
       private List<Func<object, ValidationResult>> _validations = new List<Func<object, ValidationResult>>();
 
+      public override BehaviorPosition Position {
+         get { return BehaviorPosition.DisplayValueValidator; }
+      }
+
       object IAccessPropertyBehavior.GetValue(IBehaviorContext vm) {
          AssertInitialized();
          return GetNextBehavior<IAccessPropertyBehavior>().GetValue(vm);

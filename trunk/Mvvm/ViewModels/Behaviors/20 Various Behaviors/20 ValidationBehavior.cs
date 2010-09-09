@@ -4,6 +4,10 @@
    internal sealed class ValidationBehavior<TValue> : VMPropertyBehavior, IAccessPropertyBehavior<TValue>, IValidationBehavior {
       private FieldDefinition<string> _errorMessageField;
 
+      public override BehaviorPosition Position {
+         get { return BehaviorPosition.Validator; }
+      }
+
       public void Add(Func<TValue, ValidationResult> validation) {
          throw new NotImplementedException();
       }
