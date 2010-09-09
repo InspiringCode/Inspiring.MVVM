@@ -2,7 +2,7 @@
    using System;
    using Inspiring.Mvvm.ViewModels;
 
-   internal class PersonVM : ViewModel<PersonVMDescriptor> {
+   public class PersonVM : ViewModel<PersonVMDescriptor>, ICanInitializeFrom<Person> {
       public static readonly PersonVMDescriptor Descriptor = VMDescriptorBuilder
             .For<PersonVM>()
             .CreateDescriptor(c => {
@@ -26,15 +26,23 @@
             })
             .Build();
 
-      public PersonVM(Person person)
+      public PersonVM()
          : base(Descriptor) {
+      }
+
+      public PersonVM(Person person)
+         : this() {
          Person = person;
       }
 
       public Person Person { get; set; }
+
+      public void InitializeFrom(Person source) {
+         Person = source;
+      }
    }
 
-   internal class PersonVMDescriptor : VMDescriptor {
+   public class PersonVMDescriptor : VMDescriptor {
       public VMProperty<string> Name { get; set; }
       public VMProperty<string> FirstName { get; set; }
       public VMProperty<string> LastName { get; set; }
@@ -43,7 +51,7 @@
       public VMProperty<bool> IsSelected { get; set; }
    }
 
-   internal class Person {
+   public class Person {
       public string FirstName { get; set; }
       public string LastName { get; set; }
       public DateTime BirthDate { get; set; }

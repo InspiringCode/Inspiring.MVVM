@@ -73,12 +73,15 @@
     <Compile Include="Screens\ScreenTest.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="ViewModels\Behaviors\BehaviorsTest.cs" />
+    <Compile Include="ViewModels\Behaviors\CollectionFactoryTest.cs" />
+    <Compile Include="ViewModels\Behaviors\CollectionPopulatorTest.cs" />
     <Compile Include="ViewModels\Behaviors\DisplayValueAccessorBehaviorTest.cs" />
     <Compile Include="ViewModels\Behaviors\VMPropertyTest.cs" />
     <Compile Include="ViewModels\PersonVM.cs" />
     <Compile Include="ViewModels\TypeDescriptorTest.cs" />
     <Compile Include="ViewModels\ViewModelsTest.cs" />
     <Compile Include="ViewModels\ViewModelTest.cs" />
+    <Compile Include="ViewModels\VMCollectionPropertyTest.cs" />
     <Compile Include="ViewModels\VMDescriptorBuilderTest.cs" />
     <Compile Include="ViewModels\VMDescriptorTest.cs" />
     <Compile Include="Views\CustomPropertyDescriptorTest.cs" />
