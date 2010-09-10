@@ -170,13 +170,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ViewModels\Behaviors\00 Interfaces\" />
-    <Folder Include="ViewModels\Behaviors\05 Collection Behaviors\" />
-    <Folder Include="ViewModels\Behaviors\10 Dispaly Value Behaviors\" />
-    <Folder Include="ViewModels\Behaviors\20 Various Behaviors\" />
-    <Folder Include="ViewModels\Behaviors\30 Source Behaviors\" />
     <Folder Include="ViewModels\Descriptor\" />
-    <Folder Include="ViewModels\Fluent\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
