@@ -12,8 +12,35 @@ namespace Inspiring.MvvmTest {
    public class UnitTest1 {
       public class MyAttribute : Attribute {
          public MyAttribute(object obj) {
+            INeedsInitialization<object> bar = new Handler();
+            INeedsInitialization<B> x = bar;
 
          }
+      }
+
+      [TestMethod]
+      public void Tryis() {
+         var x = new Handler();
+         Assert.IsTrue(x is INeedsInitialization<int>);
+      }
+
+      class Handler : INeedsInitialization<object> {
+
+         public void Init(object subject) {
+            throw new NotImplementedException();
+         }
+      }
+
+      public interface INeedsInitialization<in T> {
+         void Init(T subject);
+      }
+
+      class A {
+
+      }
+
+      class B : A {
+
       }
 
       //public class Test<T> {

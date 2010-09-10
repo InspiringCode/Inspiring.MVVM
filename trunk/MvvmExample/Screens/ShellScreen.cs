@@ -1,11 +1,10 @@
 ﻿namespace Inspiring.MvvmExample.Screens {
    using Inspiring.Mvvm.Screens;
 
-   public sealed class ShellScreen : Screen {
+   public sealed class ShellScreen : Screen, INeedsInitialization {
       public ScreenConductor WorkScreens { get; private set; }
 
-      protected override void OnInitialize() {
-         base.OnInitialize();
+      public void Initialize() {
          WorkScreens = Children.AddNew(ScreenFactory.For<ScreenConductor>());
       }
    }

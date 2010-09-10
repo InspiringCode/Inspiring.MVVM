@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 namespace Inspiring.Mvvm.Screens {
 
-   public class ScreenConductor : Screen<ScreenConductorSubject>, IIdentifiedScreen {
+   public class ScreenConductor : Screen {
       private IScreen _activeScreen;
-      private ScreenCollection _screens;
-      private object _conductorId;
+      private LifecycleHandlerCollection<IScreen> _screens;
 
       public ScreenConductor() {
-         _screens = new ScreenCollection(this);
+         _screens = new LifecycleHandlerCollection<IScreen>(this);
       }
 
       public IScreen ActiveScreen {
@@ -30,11 +29,7 @@ namespace Inspiring.Mvvm.Screens {
       }
 
       public IEnumerable<IScreen> Screens {
-         get { return _screens.Screens; }
-      }
-
-      object IIdentifiedScreen.ScreenId {
-         get { return _conductorId; }
+         get { return _screens.Items; }
       }
 
       public void OpenScreen<TScreen>(IScreenFactory<TScreen> screen) where TScreen : IScreen {
@@ -42,7 +37,7 @@ namespace Inspiring.Mvvm.Screens {
       }
 
       public void CloseScreen(IScreen screen) {
-         if (!_screens.Screens.Contains(screen)) {
+         if (!_screens.Items.Contains(screen)) {
             throw new ArgumentException(ExceptionTexts.ScreenNotContainedByConductor);
          }
 
@@ -50,39 +45,27 @@ namespace Inspiring.Mvvm.Screens {
             IScreen next = ChooseNextScreen(screen);
             ActiveScreen = next;
             screen.Close();
-            _screens.Screens.Remove(screen);
+            _screens.Items.Remove(screen);
          }
       }
 
       protected virtual IScreen ChooseNextScreen(IScreen screen) {
-         if (_screens.Screens.Count == 1) {
+         if (_screens.Items.Count == 1) {
             return null;
          }
 
-         int index = _screens.Screens.IndexOf(screen);
+         int index = _screens.Items.IndexOf(screen);
          Contract.Assert(index != -1);
 
-         return _screens.Screens[(index + 1) % _screens.Screens.Count];
-      }
-
-      protected override void OnInitialize(ScreenConductorSubject subject) {
-         _conductorId = subject.ConductorId;
+         return _screens.Items[(index + 1) % _screens.Items.Count];
       }
 
       protected override bool OnRequestClose() {
-         return _screens.RequestClose();
+         return _screens.RequestCloseAll();
       }
 
       protected override void OnClose() {
-         _screens.Close();
+         _screens.CloseAll();
       }
-   }
-
-   public class ScreenConductorSubject {
-      public ScreenConductorSubject(object conductorId) {
-         ConductorId = conductorId;
-      }
-
-      public object ConductorId { get; private set; }
    }
 }

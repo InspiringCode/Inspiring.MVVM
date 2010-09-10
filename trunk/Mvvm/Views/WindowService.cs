@@ -26,7 +26,7 @@
          Window window,
          IScreenFactory<TScreen> forScreen
       ) where TScreen : IScreen {
-         TScreen s = forScreen.Create(new ScreenInitializer(parent: null));
+         TScreen s = forScreen.Create(x => { });
          s.Activate();
 
          View.SetModel(window, s);

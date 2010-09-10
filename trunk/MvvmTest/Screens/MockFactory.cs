@@ -5,23 +5,25 @@
 
    internal sealed class MockObjectFactory {
       public static Mock<IScreenFactory<TScreen>> MockScreenFactory<TScreen, TSubject>(TScreen screen, TSubject subject)
-         where TScreen : IScreen<TSubject> {
-         var factory = new Mock<IScreenFactory<TScreen>>();
-         factory
-            .Setup(x => x.Create(It.IsAny<IScreenInitializer>()))
-            .Callback<IScreenInitializer>(x => x.Initialize<TSubject>(screen, subject))
-            .Returns(screen);
-         return factory;
+      where TScreen : IScreen {
+         //var factory = new Mock<IScreenFactory<TScreen>>();
+         //factory
+         //   .Setup(x => x.Create(It.IsAny<IScreenInitializer>()))
+         //   .Callback<IScreenInitializer>(x => x.Initialize<TSubject>(screen, subject))
+         //   .Returns(screen);
+         //return factory;
+         return null;
       }
 
       public static Mock<IScreenFactory<TScreen>> MockScreenFactory<TScreen>(TScreen screen)
          where TScreen : IScreen {
-         var factory = new Mock<IScreenFactory<TScreen>>();
-         factory
-            .Setup(x => x.Create(It.IsAny<IScreenInitializer>()))
-            .Callback<IScreenInitializer>(x => x.Initialize(screen))
-            .Returns(screen);
-         return factory;
+         //var factory = new Mock<IScreenFactory<TScreen>>();
+         //factory
+         //   .Setup(x => x.Create(It.IsAny<IScreenInitializer>()))
+         //   .Callback<IScreenInitializer>(x => x.Initialize(screen))
+         //   .Returns(screen);
+         //return factory;
+         return null;
       }
 
       public static IScreen MockScreen() {
