@@ -87,6 +87,9 @@
     <Compile Include="Screens\ScreenConductor.cs" />
     <Compile Include="Screens\ScreenFactory.cs" />
     <Compile Include="ServiceLocator.cs" />
+    <Compile Include="ViewModels\Core\New\BehaviorConfiguration.cs" />
+    <Compile Include="ViewModels\Core\New\IBehaviorFactory.cs" />
+    <Compile Include="ViewModels\Core\New\VMBehaviors.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionPopulatorBehavior.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorPosition.cs" />

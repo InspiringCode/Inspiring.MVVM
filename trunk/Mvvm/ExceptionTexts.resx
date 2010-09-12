@@ -195,4 +195,7 @@
   <data name="ParameterMustBeABinderExpression" xml:space="preserve">
     <value>Parameter 'binderExpression' must be a 'BinderExpression' (or subtype).</value>
   </data>
+  <data name="BehaviorNotContainedByConfiguration" xml:space="preserve">
+    <value>This configuration does not contain the specified behavior '{0}'.</value>
+  </data>
 </root>

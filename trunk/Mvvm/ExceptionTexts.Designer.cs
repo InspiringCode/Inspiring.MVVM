@@ -61,6 +61,15 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This configuration does not contain the specified behavior &apos;{0}&apos;..
+        /// </summary>
+        internal static string BehaviorNotContainedByConfiguration {
+            get {
+                return ResourceManager.GetString("BehaviorNotContainedByConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not find a behavior of type &apos;{0}&apos; in the chain of behaviors. Make sure that the list contains a behavior of that type before calling this operation or add a behavior of that type before..
         /// </summary>
         internal static string BehaviorNotFound {
