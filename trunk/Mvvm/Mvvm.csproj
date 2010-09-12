@@ -87,15 +87,18 @@
     <Compile Include="Screens\ScreenConductor.cs" />
     <Compile Include="Screens\ScreenFactory.cs" />
     <Compile Include="ServiceLocator.cs" />
-    <Compile Include="ViewModels\Core\New\BehaviorConfiguration.cs" />
-    <Compile Include="ViewModels\Core\New\IBehaviorFactory.cs" />
-    <Compile Include="ViewModels\Core\New\VMBehaviors.cs" />
+    <Compile Include="ViewModels\Core\Builder\BehaviorConfigurationDictionary.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\BehaviorConfiguration.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\BehaviorConfigurationFactory.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\ConstantBehaviorFactory.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\DefaultBehaviorFactory.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\IBehaviorConfigurationExpression.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\IBehaviorFactory.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\VMBehaviorKey.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionPopulatorBehavior.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\BehaviorPosition.cs" />
-    <Compile Include="ViewModels\Core\VMCollectionProperty.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\VMPropertyBehavior.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\VMPropertyBehaviorChain.cs" />
+    <Compile Include="ViewModels\VMCollectionProperty.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Behavior.cs" />
     <Compile Include="ViewModels\Core\Behaviors\IBehavior.cs" />
     <Compile Include="ViewModels\Core\DynamicFields\FieldDefinition.cs" />
     <Compile Include="ViewModels\Core\DynamicFields\FieldDefinitionCollection.cs" />
@@ -115,12 +118,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\Core\Behaviors\IBehaviorContext.cs" />
     <Compile Include="ViewModels\ICanInitializeFrom.cs" />
-    <Compile Include="ViewModels\VMBehaviors.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\AllowInvalidDisplayValuesBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\DisplayValueValidationBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\DisconnectedVMBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\CalculatedPropertyBehavior.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\BehaviorFactory.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\DynamicFieldGroups.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\InstancePropertyBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\IAccessPropertyBehavior.cs" />
@@ -137,10 +138,9 @@
     <Compile Include="ViewModels\IVMValueConverter.cs" />
     <Compile Include="ViewModels\Core\Builder\IVMBehaviorConfigurator.cs" />
     <Compile Include="ViewModels\Core\Builder\IVMDescriptorBuilder.cs" />
-    <Compile Include="ViewModels\Core\Builder\IVMDescriptorConfigurator.cs" />
     <Compile Include="ViewModels\Core\Builder\IVMPropertyFactoryProvider.cs" />
     <Compile Include="ViewModels\Core\Builder\IVMDependencyConfigurator.cs" />
-    <Compile Include="ViewModels\IVMPropertyFactory.cs" />
+    <Compile Include="ViewModels\Core\Builder\IVMPropertyFactory.cs" />
     <Compile Include="ViewModels\Core\Builder\IVMValidationConfigurator.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
     <Compile Include="ViewModels\VMCollection.cs" />
@@ -171,6 +171,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ExceptionTexts.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModels\Core\New\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

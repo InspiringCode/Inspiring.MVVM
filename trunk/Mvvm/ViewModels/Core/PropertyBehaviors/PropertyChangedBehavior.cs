@@ -1,17 +1,13 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Behaviors {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Diagnostics.Contracts;
 
-   public sealed class PropertyChangedBehavior<TValue> : VMPropertyBehavior, IAccessPropertyBehavior<TValue> {
+   public sealed class PropertyChangedBehavior<TValue> : Behavior, IAccessPropertyBehavior<TValue> {
       private VMProperty<TValue> _property;
 
       public PropertyChangedBehavior(VMProperty<TValue> property) {
          Contract.Requires(property != null);
          _property = property;
-      }
-
-      public override BehaviorPosition Position {
-         get { return BehaviorPosition.PropertyChangedTrigger; }
       }
 
       public TValue GetValue(IBehaviorContext vm) {

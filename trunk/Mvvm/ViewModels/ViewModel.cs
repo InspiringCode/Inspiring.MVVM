@@ -2,7 +2,7 @@
    using System;
    using System.ComponentModel;
    using System.Diagnostics.Contracts;
-   using Inspiring.Mvvm.ViewModels.Behaviors;
+   using Inspiring.Mvvm.ViewModels.Core;
 
 
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Inspiring.Mvvm.ViewModels;
-using Inspiring.Mvvm.ViewModels.Behaviors;
+using Inspiring.Mvvm.ViewModels.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -69,8 +69,9 @@ namespace Inspiring.MvvmTest.ViewModels.Behaviors {
 
       [TestMethod]
       public void TestCollectionProperty() {
-         var prop = new VMCollectionProperty<PersonVM>(_populator);
-         prop.Initialize(_fieldDefinitions, "Test");
+         var prop = new VMCollectionProperty<PersonVM>();
+         prop.Behaviors = new Behavior { Successor = _populator };
+         //_.Initialize(new BehaviorInitializationContext("Test", _fieldDefinitions));
 
          VerifySourceAccessorNotCalled();
          VerifyVMCollectionAccessorNotCalled();
@@ -130,6 +131,10 @@ namespace Inspiring.MvvmTest.ViewModels.Behaviors {
          _sourceAccessor
             .Setup(x => x.GetValue(It.IsAny<IBehaviorContext>()))
             .Returns(sourceCollection);
+
+         _sourceAccessor
+            .Setup(x => x.Successor)
+            .Returns((IBehavior)null);
       }
 
       private void SetupContext() {
@@ -141,10 +146,14 @@ namespace Inspiring.MvvmTest.ViewModels.Behaviors {
       private void SetupVMCollectionAccessor() {
          _vmCollectionAccesor = new Mock<IAccessPropertyBehavior<VMCollection<PersonVM>>>(MockBehavior.Strict);
          _vmCollectionAccesor.Setup(x => x.GetValue(It.IsAny<IBehaviorContext>())).Returns(_vmCollection);
+         _vmCollectionAccesor
+            .Setup(x => x.Successor)
+            .Returns(_sourceAccessor.Object);
       }
 
       private void SetupPopulator() {
-         _populator = new CollectionPopulatorBehavior<PersonVM, Person>(_sourceAccessor.Object);
+         _populator = new CollectionPopulatorBehavior<PersonVM, Person>();
+         _populator.Successor = _sourceAccessor.Object;
       }
    }
 }

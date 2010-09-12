@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Fluent {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using Inspiring.Mvvm.Common;
 
@@ -11,7 +11,7 @@
       ///   subclass and assign its 'VMProperty' properties.
       /// </summary>
       /// <typeparam name="TDescriptor">
-      ///   The type of the descriptor that is created by this method. You do
+      ///   The type of the descriptor that is created by this method. You do not
       ///   have to specify it because it can be inferred. Note that this type
       ///   must be the same as the first generic parameter of the 'ViewModel'
       ///   class. Example: If 'PersonVM' derives from 'ViewModel(of 
@@ -31,8 +31,64 @@
       ///      })</code>.
       ///   </para>
       /// </param>
-      IVMDescriptorConfigurator<TVM, TDescriptor> CreateDescriptor<TDescriptor>(
+      IVMDescriptorBuilder<TVM, TDescriptor> CreateDescriptor<TDescriptor>(
          Func<IVMPropertyFactoryProvider<TVM>, TDescriptor> descriptorFactory
       ) where TDescriptor : VMDescriptor;
+   }
+
+   /// <summary>
+   /// Part of the fluent interface syntax.
+   /// </summary>
+   public interface IVMDescriptorBuilder<TVM, TDescriptor>
+      where TDescriptor : VMDescriptor {
+
+      /// <summary>
+      ///   Use this method to configure how the VM properties of the 
+      ///   'VMDescriptor' created in the first step are validated.
+      /// </summary>
+      /// <param name="validationConfigurator">
+      ///   The first argument is the 'VMDescriptor' instance created in the 
+      ///   first step. The second argument is an object used to configure 
+      ///   validations. Example: <code>WithValidations((d, c) => {
+      ///      c.Check(d.FirstName).HasValue();
+      ///   })</code>.
+      /// </param>
+      IVMDescriptorBuilder<TVM, TDescriptor> WithValidations(
+         Action<TDescriptor, IVMValidationConfigurator> validationConfigurator
+      );
+
+      /// <summary>
+      ///   Use this method to setup dependencies between properties. A property
+      ///   'A' depends on 'B' if a change of 'B' also results in a change of 'A'.
+      ///   Example: If 'Name' is calculated by 'FirstName + " "  + LastName' the
+      ///   property 'Name' depends on the properties 'FirstName' and 'LastName'.
+      ///   This relation is important for correct change notification.
+      /// </summary>
+      /// <param name="dependencyConfigurator">
+      ///   The first argument is the 'VMDescriptor' instance created in the 
+      ///   first step. The second argument is an object used to setup 
+      ///   dependencies. Example: <code>WithDependencies((d, c) => {
+      ///      c.Properties(d.Name).DependOn(d.FirstName, d.LastName);
+      ///   })</code>.
+      /// </param>
+      IVMDescriptorBuilder<TVM, TDescriptor> WithDependencies(
+         Action<TDescriptor, IVMDependencyConfigurator> dependencyConfigurator
+      );
+
+      IVMDescriptorBuilder<TVM, TDescriptor> WithBehaviors(
+         Action<TDescriptor, IVMBehaviorConfigurator> behaviorConfigurator
+      );
+
+      /// <summary>
+      ///   The last step is to return the fully configured 'VMDescriptor'. You
+      ///   should assign the result to a public static readonly field and pass
+      ///   it to the base constructor of your 'ViewModel'. See example.
+      /// </summary>     
+      /// <example>
+      ///   <code>
+      ///      TODO: Example here.
+      ///   </code>
+      /// </example>
+      TDescriptor Build();
    }
 }

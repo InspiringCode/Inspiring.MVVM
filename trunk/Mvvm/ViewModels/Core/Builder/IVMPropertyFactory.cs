@@ -3,7 +3,6 @@
    using System.Collections.Generic;
    using System.Linq.Expressions;
    using Inspiring.Mvvm.Common;
-   using Inspiring.Mvvm.ViewModels.Behaviors;
 
    /// <summary>
    ///   A factory that creates <see cref="VMProperty"/> instances configured 
@@ -62,7 +61,7 @@
       VMProperty<T> Calculated<T>(Func<TSource, T> getter, Action<TSource, T> setter = null);
 
       // TODO: Document me
-      IVMCollectionPropertyFactory<TItem> MappedCollection<TItem>(
+      IVMCollectionPropertyFactoryExpression<TItem> MappedCollection<TItem>(
          Expression<Func<TSource, IEnumerable<TItem>>> sourceCollectionSelector
       );
    }
@@ -119,15 +118,15 @@
       ///   value. You can think of it as a normal instance property enhanced
       ///   with all the 'VMProperty' features.
       /// </summary>
-      VMProperty<TValue> Simple<TValue>();
+      VMProperty<TValue> Local<TValue>();
 
       // TODO: Document me
-      IVMCollectionPropertyFactory<TItem> MappedCollection<TItem>(
+      IVMCollectionPropertyFactoryExpression<TItem> MappedCollection<TItem>(
          Expression<Func<TVM, IEnumerable<TItem>>> sourceCollectionSelector
       );
    }
 
-   public interface IVMCollectionPropertyFactory<TSourceItem> {
+   public interface IVMCollectionPropertyFactoryExpression<TSourceItem> {
       VMCollectionProperty<TVM> Of<TVM>() where TVM : ICanInitializeFrom<TSourceItem>;
    }
 }

@@ -1,24 +1,17 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Behaviors {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
 
-   public sealed class DisplayValueValidationBehavior : VMPropertyBehavior, IAccessPropertyBehavior, IValidationBehavior {
+   public sealed class DisplayValueValidationBehavior : Behavior, IAccessPropertyBehavior, IValidationBehavior {
       private FieldDefinition<string> _validationErrorField;
       private List<Func<object, ValidationResult>> _validations = new List<Func<object, ValidationResult>>();
 
-      public override BehaviorPosition Position {
-         get { return BehaviorPosition.DisplayValueValidator; }
-      }
-
       object IAccessPropertyBehavior.GetValue(IBehaviorContext vm) {
-         AssertInitialized();
          return GetNextBehavior<IAccessPropertyBehavior>().GetValue(vm);
       }
 
       void IAccessPropertyBehavior.SetValue(IBehaviorContext vm, object value) {
-         AssertInitialized();
-
          foreach (Func<object, ValidationResult> validation in _validations) {
             ValidationResult result = validation(value);
             if (!result.Successful) {
@@ -32,8 +25,6 @@
       }
 
       ValidationResult IValidationBehavior.GetValidationResult(IBehaviorContext vm) {
-         AssertInitialized();
-
          string errorMessage;
          return vm.FieldValues.TryGetValue(_validationErrorField, out errorMessage) ?
             ValidationResult.Failure(errorMessage) :
@@ -45,9 +36,9 @@
          _validations.Add(validation);
       }
 
-      protected override void OnDefineDynamicFields(FieldDefinitionCollection fields) {
-         base.OnDefineDynamicFields(fields);
-         _validationErrorField = fields.DefineField<string>(
+      protected override void Initialize(BehaviorInitializationContext context) {
+         base.Initialize(context);
+         _validationErrorField = context.DynamicFields.DefineField<string>(
             DynamicFieldGroups.DisplayValueValidationErrorGroup
          );
       }

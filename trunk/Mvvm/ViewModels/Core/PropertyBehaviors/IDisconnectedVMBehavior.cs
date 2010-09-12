@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Behaviors {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Diagnostics.Contracts;
 
@@ -16,34 +16,25 @@
    internal abstract class DisconnectedVMBehaviorContracts<TValue> : ICacheValueBehavior<TValue> {
       public void CopyFromSource(IBehaviorContext vm) {
          Contract.Requires<ArgumentNullException>(vm != null);
-         throw new NotImplementedException();
       }
 
       public void CopyToSource(IBehaviorContext vm) {
          Contract.Requires<ArgumentNullException>(vm != null);
-         throw new NotImplementedException();
       }
 
       public TValue GetValue(IBehaviorContext vm) {
-         throw new NotImplementedException();
+         return default(TValue);
       }
 
       public void SetValue(IBehaviorContext vm, TValue value) {
-         throw new NotImplementedException();
       }
 
       public IBehavior Successor {
-         get {
-            throw new NotImplementedException();
-         }
-         set {
-            throw new NotImplementedException();
-         }
+         get { return default(IBehavior); }
+         set { }
       }
 
-
-      public BehaviorPosition Position {
-         get { throw new NotImplementedException(); }
+      public void Initialize(BehaviorInitializationContext context) {
       }
    }
 }

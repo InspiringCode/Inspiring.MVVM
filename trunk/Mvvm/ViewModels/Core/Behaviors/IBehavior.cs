@@ -1,7 +1,26 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Behaviors {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    public interface IBehavior {
       IBehavior Successor { get; set; }
 
-      BehaviorPosition Position { get; }
+      void Initialize(BehaviorInitializationContext context);
+   }
+
+   public class BehaviorInitializationContext {
+      internal BehaviorInitializationContext(VMProperty property)
+         : this(property.PropertyName, property.Descriptor.DynamicFields) {
+      }
+
+      internal BehaviorInitializationContext(
+         string propertyName,
+         FieldDefinitionCollection dynamicFields
+      ) {
+         PropertyName = propertyName;
+         DynamicFields = dynamicFields;
+      }
+
+
+      public string PropertyName { get; private set; }
+
+      public FieldDefinitionCollection DynamicFields { get; private set; }
    }
 }

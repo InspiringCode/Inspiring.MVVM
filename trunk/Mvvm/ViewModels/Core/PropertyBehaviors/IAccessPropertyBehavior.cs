@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Behaviors {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Diagnostics.Contracts;
 
@@ -21,11 +21,11 @@
 
    public static class AccessPropertyBehaviorExtension {
       public static T GetNextValue<T>(this IAccessPropertyBehavior<T> behavior, IBehaviorContext vm) {
-         return ((VMPropertyBehavior)behavior).GetNextBehavior<IAccessPropertyBehavior<T>>().GetValue(vm);
+         return ((Behavior)behavior).GetNextBehavior<IAccessPropertyBehavior<T>>().GetValue(vm);
       }
 
       public static void SetNextValue<T>(this IAccessPropertyBehavior<T> behavior, IBehaviorContext vm, T value) {
-         ((VMPropertyBehavior)behavior).GetNextBehavior<IAccessPropertyBehavior<T>>().SetValue(vm, value);
+         ((Behavior)behavior).GetNextBehavior<IAccessPropertyBehavior<T>>().SetValue(vm, value);
       }
    }
 
@@ -33,26 +33,19 @@
    internal abstract class AccessPropertyBehaviorContracts<TValue> : IAccessPropertyBehavior<TValue> {
       public TValue GetValue(IBehaviorContext vm) {
          Contract.Requires<ArgumentNullException>(vm != null);
-         throw new NotImplementedException();
+         return default(TValue);
       }
 
       public void SetValue(IBehaviorContext vm, TValue value) {
          Contract.Requires<ArgumentNullException>(vm != null);
-         throw new NotImplementedException();
       }
 
       public IBehavior Successor {
-         get {
-            throw new NotImplementedException();
-         }
-         set {
-            throw new NotImplementedException();
-         }
+         get { return default(IBehavior); }
+         set { }
       }
 
-
-      public BehaviorPosition Position {
-         get { throw new NotImplementedException(); }
+      public void Initialize(BehaviorInitializationContext context) {
       }
    }
 
@@ -60,26 +53,19 @@
    internal abstract class AccessPropertyBehaviorContracts : IAccessPropertyBehavior {
       public object GetValue(IBehaviorContext vm) {
          Contract.Requires<ArgumentNullException>(vm != null);
-         throw new NotImplementedException();
+         return default(object);
       }
 
       public void SetValue(IBehaviorContext vm, object value) {
          Contract.Requires<ArgumentNullException>(vm != null);
-         throw new NotImplementedException();
       }
 
       public IBehavior Successor {
-         get {
-            throw new NotImplementedException();
-         }
-         set {
-            throw new NotImplementedException();
-         }
+         get { return default(IBehavior); }
+         set { }
       }
 
-
-      public BehaviorPosition Position {
-         get { throw new NotImplementedException(); }
+      public void Initialize(BehaviorInitializationContext context) {
       }
    }
 }

@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Behaviors {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
 
    public interface IHandlePropertyChangingBehavior {
       void HandlePropertyChanging(IBehaviorContext vm);

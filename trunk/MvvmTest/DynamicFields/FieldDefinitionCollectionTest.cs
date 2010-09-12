@@ -1,4 +1,4 @@
-﻿using Inspiring.Mvvm.ViewModels.Behaviors;
+﻿using Inspiring.Mvvm.ViewModels.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Inspiring.MvvmTest.DynamicFields {

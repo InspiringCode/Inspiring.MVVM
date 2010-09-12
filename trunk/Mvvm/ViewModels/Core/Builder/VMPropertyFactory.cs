@@ -3,74 +3,133 @@
    using System.Collections.Generic;
    using System.Linq.Expressions;
    using Inspiring.Mvvm.Common;
-   using Inspiring.Mvvm.ViewModels.Behaviors;
+   using Inspiring.Mvvm.ViewModels.Core;
 
    /// <inheritdoc/>
    internal class VMPropertyFactory<TVM, TSource> : IVMPropertyFactory<TSource>, IRootVMPropertyFactory<TSource> where TVM : ViewModel {
-      private PropertyPath<TVM, TSource> _sourceObjectPath;
+      private PropertyPath<TVM, TSource> _sourceObjectPropertyPath;
+      private BehaviorConfigurationDictionary _configurations;
 
       /// <param name="sourceObjectPath">
-      ///   Pass 'PropertyPath.Empty&lt;TVM&gt;' if you want to create a root
-      ///   factory for the VM.
+      ///   Pass 'PropertyPath.Empty{TVM}' if you want to create a root factory
+      ///   for the VM.
       /// </param>
       public VMPropertyFactory(
-         PropertyPath<TVM, TSource> sourceObjectPath
+         PropertyPath<TVM, TSource> sourceObjectPath,
+         BehaviorConfigurationDictionary configurations
       ) {
-         _sourceObjectPath = sourceObjectPath;
+         _sourceObjectPropertyPath = sourceObjectPath;
+         _configurations = configurations;
       }
 
+      /// <inheritdoc/>
       public VMProperty<T> Mapped<T>(Expression<Func<TSource, T>> sourcePropertySelector) {
-         PropertyPath<TSource, T> sourcePropertyPath = PropertyPath.Create(sourcePropertySelector);
-         PropertyPath<TVM, T> path = PropertyPath.Concat(_sourceObjectPath, sourcePropertyPath);
+         var property = new VMProperty<T>();
+         var config = BehaviorConfigurationFactory.CreateConfiguration();
 
-         IAccessPropertyBehavior<T> accessBehavior = new MappedPropertyBehavior<TVM, T>(path);
-         return new VMProperty<T>(accessBehavior);
-      }
-
-      public VMProperty<T> Calculated<T>(Func<TSource, T> getter, Action<TSource, T> setter = null) {
-         IAccessPropertyBehavior<TSource> sourceAccessBehavior = _sourceObjectPath.IsEmpty ?
-            null :
-            new MappedPropertyBehavior<TVM, TSource>(_sourceObjectPath);
-
-         IAccessPropertyBehavior<T> accessBehavior = new CalculatedPropertyBehavior<TSource, T>(
-            getter,
-            setter,
-            sourceAccessBehavior
+         var propertyPath = PropertyPath.Concat(
+            _sourceObjectPropertyPath,
+            PropertyPath.Create(sourcePropertySelector)
          );
 
-         return new VMProperty<T>(accessBehavior);
+         config.OverridePermanently(
+            behavior: VMBehaviorKey.PropertyValueAcessor,
+            withBehavior: new ConstantBehaviorFactory(
+               new MappedPropertyBehavior<TVM, T>(propertyPath)
+            )
+         );
+
+         _configurations.Add(property, config);
+         return property;
       }
 
-      public VMProperty<TValue> Simple<TValue>() {
-         IAccessPropertyBehavior<TValue> accessBehavior = new InstancePropertyBehavior<TValue>();
-         return new VMProperty<TValue>(accessBehavior);
+      /// <inheritdoc/>
+      public VMProperty<T> Calculated<T>(Func<TSource, T> getter, Action<TSource, T> setter = null) {
+         var property = new VMProperty<T>();
+         var config = BehaviorConfigurationFactory.CreateConfiguration();
+
+         if (!_sourceObjectPropertyPath.IsEmpty) {
+            config.OverridePermanently(
+               behavior: VMBehaviorKey.SourceValueAccessor,
+               withBehavior: new ConstantBehaviorFactory(
+                  new MappedPropertyBehavior<TVM, TSource>(_sourceObjectPropertyPath)
+               )
+            );
+         }
+
+         config.OverridePermanently(
+            behavior: VMBehaviorKey.PropertyValueAcessor,
+            withBehavior: new ConstantBehaviorFactory(
+               new CalculatedPropertyBehavior<TSource, T>(getter, setter)
+            )
+         );
+
+         _configurations.Add(property, config);
+         return property;
       }
 
+      /// <inheritdoc/>
+      public VMProperty<TValue> Local<TValue>() {
+         VMProperty<TValue> property = new VMProperty<TValue>();
+         BehaviorConfiguration config = BehaviorConfigurationFactory.CreateConfiguration();
 
-      public IVMCollectionPropertyFactory<TItem> MappedCollection<TItem>(
+         config.OverridePermanently(
+            behavior: VMBehaviorKey.PropertyValueAcessor,
+            withBehavior: new ConstantBehaviorFactory(
+               new InstancePropertyBehavior<TValue>()
+            )
+         );
+
+         _configurations.Add(property, config);
+         return property;
+      }
+
+      /// <inheritdoc/>
+      public IVMCollectionPropertyFactoryExpression<TItem> MappedCollection<TItem>(
          Expression<Func<TSource, IEnumerable<TItem>>> sourceCollectionSelector
       ) {
-         PropertyPath<TSource, IEnumerable<TItem>> sourceCollectionPath = PropertyPath.Create(sourceCollectionSelector);
-         PropertyPath<TVM, IEnumerable<TItem>> path = PropertyPath.Concat(_sourceObjectPath, sourceCollectionPath);
+         var config = BehaviorConfigurationFactory.CreateCollectionConfiguration();
 
-         return new VMCollectionPropertyFactory<TItem>(
-            sourceCollectionAccessor: new MappedPropertyBehavior<TVM, IEnumerable<TItem>>(path)
+         PropertyPath<TVM, IEnumerable<TItem>> sourceCollectionPropertyPath = PropertyPath.Concat(
+            _sourceObjectPropertyPath,
+            PropertyPath.Create(sourceCollectionSelector)
          );
+
+         config.OverridePermanently(
+            behavior: VMBehaviorKey.SourceValueAccessor,
+            withBehavior: new ConstantBehaviorFactory(
+               new MappedPropertyBehavior<TVM, IEnumerable<TItem>>(sourceCollectionPropertyPath)
+            )
+         );
+
+         return new VMCollectionPropertyFactoryExpression<TItem>(config, _configurations);
+      }
+
+      private class VMCollectionPropertyFactoryExpression<TItem> : IVMCollectionPropertyFactoryExpression<TItem> {
+         private BehaviorConfiguration _config;
+         private BehaviorConfigurationDictionary _configurations;
+
+         public VMCollectionPropertyFactoryExpression(
+            BehaviorConfiguration config,
+            BehaviorConfigurationDictionary configurations
+         ) {
+            _config = config;
+            _configurations = configurations;
+         }
+
+         public VMCollectionProperty<TVM> Of<TVM>() where TVM : ICanInitializeFrom<TItem> {
+            var property = new VMCollectionProperty<TVM>();
+
+            _config.OverridePermanently(
+               behavior: VMBehaviorKey.CollectionPopulator,
+               withBehavior: new ConstantBehaviorFactory(
+                  new CollectionPopulatorBehavior<TVM, TItem>()
+               )
+            );
+
+            _configurations.Add(property, _config);
+            return property;
+         }
       }
    }
-
-   public class VMCollectionPropertyFactory<TItem> : IVMCollectionPropertyFactory<TItem> {
-      private IAccessPropertyBehavior<IEnumerable<TItem>> _sourceCollectionAcessor;
-
-      public VMCollectionPropertyFactory(IAccessPropertyBehavior<IEnumerable<TItem>> sourceCollectionAccessor) {
-         _sourceCollectionAcessor = sourceCollectionAccessor;
-      }
-
-      public VMCollectionProperty<TVM> Of<TVM>() where TVM : ICanInitializeFrom<TItem> {
-         return new VMCollectionProperty<TVM>(
-            collectionPopulator: new CollectionPopulatorBehavior<TVM, TItem>(_sourceCollectionAcessor)
-         );
-      }
-   }
-
 }

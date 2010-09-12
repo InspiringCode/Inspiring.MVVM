@@ -3,7 +3,7 @@
    using System.ComponentModel;
    using System.Linq;
    using System.Reflection;
-   using Inspiring.Mvvm.ViewModels.Behaviors;
+   using Inspiring.Mvvm.ViewModels.Core;
 
    public class VMDescriptor {
       private List<VMProperty> _properties = new List<VMProperty>();
@@ -29,14 +29,14 @@
          }
       }
 
-      internal void Initialize() {
+      internal void InitializeProperties() {
          GetType()
             .GetProperties(BindingFlags.Public | BindingFlags.Instance)
             .Where(p => typeof(VMProperty).IsAssignableFrom(p.PropertyType))
             .ForEach(p => {
                VMProperty property = (VMProperty)p.GetValue(this, null);
-               _properties.Add(property);
                if (property != null) {
+                  _properties.Add(property);
                   property.Initialize(p.Name, this);
                }
             });

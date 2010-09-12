@@ -1,5 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Behaviors {
-   using System.Diagnostics.Contracts;
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
 
    /// <summary>
    ///   A behavior that allows the display value of a VMProperty to take on an
@@ -17,20 +16,11 @@
    ///   the binding synchronizes.</para>
    /// </remarks>
    public sealed class AllowInvalidDisplayValuesBehavior :
-      VMPropertyBehavior,
+      Behavior,
       IAccessPropertyBehavior,
       IHandlePropertyChangingBehavior {
 
-
       private FieldDefinition<object> _invalidValueField;
-
-      public AllowInvalidDisplayValuesBehavior(FieldDefinitionCollection dynamicFields) {
-         Contract.Requires(dynamicFields != null);
-      }
-
-      public override BehaviorPosition Position {
-         get { return BehaviorPosition.InvalidDisplayValueCache; }
-      }
 
       public object GetValue(IBehaviorContext vm) {
          object invalidValue;
@@ -42,22 +32,21 @@
       }
 
       public void SetValue(IBehaviorContext vm, object value) {
-         AssertInitialized();
          vm.FieldValues.SetValue(_invalidValueField, value);
          GetNextBehavior<IAccessPropertyBehavior>().SetValue(vm, value);
       }
 
       public void HandlePropertyChanging(IBehaviorContext vm) {
-         AssertInitialized();
-
          // The value was set successfully on the source object: discard invalid
          // value and return the actual value next time!
          vm.FieldValues.ClearField(_invalidValueField);
       }
 
-      protected override void OnDefineDynamicFields(FieldDefinitionCollection fields) {
-         base.OnDefineDynamicFields(fields);
-         _invalidValueField = fields.DefineField<object>(DynamicFieldGroups.InvalidValueGroup);
+      protected override void Initialize(BehaviorInitializationContext context) {
+         base.Initialize(context);
+         _invalidValueField = context.DynamicFields.DefineField<object>(
+            DynamicFieldGroups.InvalidValueGroup
+         );
       }
    }
 }

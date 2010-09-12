@@ -1,7 +1,7 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Behaviors {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
 
-   internal sealed class DisplayValueAccessorBehavior<TValue> : VMPropertyBehavior, IAccessPropertyBehavior, IValidationBehavior {
+   internal sealed class DisplayValueAccessorBehavior<TValue> : Behavior, IAccessPropertyBehavior, IValidationBehavior {
       private FieldDefinition<string> _conversionErrorField;
       private string _propertyName;
 
@@ -9,13 +9,7 @@
          _propertyName = propertyName;
       }
 
-      public override BehaviorPosition Position {
-         get { return BehaviorPosition.DisplayValueAccessor; }
-      }
-
       public object GetValue(IBehaviorContext vm) {
-         AssertInitialized();
-
          IAccessPropertyBehavior<TValue> accessBehavior =
             GetNextBehavior<IAccessPropertyBehavior<TValue>>();
 
@@ -23,8 +17,6 @@
       }
 
       public void SetValue(IBehaviorContext vm, object value) {
-         AssertInitialized();
-
          IAccessPropertyBehavior<TValue> accessBehavior =
             GetNextBehavior<IAccessPropertyBehavior<TValue>>();
 
@@ -53,16 +45,16 @@
       }
 
       public ValidationResult GetValidationResult(IBehaviorContext vm) {
-         AssertInitialized();
-
          return vm.FieldValues.HasValue(_conversionErrorField) ?
             ValidationResult.Failure(vm.FieldValues.GetValue(_conversionErrorField)) :
             ValidationResult.Success();
       }
 
-      protected override void OnDefineDynamicFields(FieldDefinitionCollection fields) {
-         base.OnDefineDynamicFields(fields);
-         _conversionErrorField = fields.DefineField<string>(DynamicFieldGroups.ConversionErrorGroup);
+      protected override void Initialize(BehaviorInitializationContext context) {
+         base.Initialize(context);
+         _conversionErrorField = context.DynamicFields.DefineField<string>(
+            DynamicFieldGroups.ConversionErrorGroup
+         );
       }
    }
 }

@@ -1,26 +1,14 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Behaviors {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Collections.Generic;
 
    internal sealed class CollectionPopulatorBehavior<TVM, TSourceItem> :
-      VMPropertyBehavior, IAccessPropertyBehavior<VMCollection<TVM>>
+      Behavior, IAccessPropertyBehavior<VMCollection<TVM>>
       where TVM : ICanInitializeFrom<TSourceItem> {
-
-      private IAccessPropertyBehavior<IEnumerable<TSourceItem>> _sourceAccessor;
-
-      public CollectionPopulatorBehavior(
-         IAccessPropertyBehavior<IEnumerable<TSourceItem>> sourceAccessor
-      ) {
-         _sourceAccessor = sourceAccessor;
-      }
-
-      public override BehaviorPosition Position {
-         get { return BehaviorPosition.CollectionPopulator; }
-      }
 
       public VMCollection<TVM> GetValue(IBehaviorContext vm) {
          VMCollection<TVM> collection = this.GetNextValue(vm);
-         IEnumerable<TSourceItem> source = _sourceAccessor.GetValue(vm);
+         IEnumerable<TSourceItem> source = GetSourceCollection(vm);
          PopulateCollection(collection, source);
          return collection;
       }
@@ -29,6 +17,10 @@
          throw new NotSupportedException(
             ExceptionTexts.CannotSetVMCollectionProperties
          );
+      }
+
+      private IEnumerable<TSourceItem> GetSourceCollection(IBehaviorContext vm) {
+         return GetNextBehavior<IAccessPropertyBehavior<IEnumerable<TSourceItem>>>().GetValue(vm);
       }
 
       private void PopulateCollection(VMCollection<TVM> collection, IEnumerable<TSourceItem> source) {

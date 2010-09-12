@@ -1,5 +1,5 @@
 ﻿using Inspiring.Mvvm.ViewModels;
-using Inspiring.Mvvm.ViewModels.Behaviors;
+using Inspiring.Mvvm.ViewModels.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

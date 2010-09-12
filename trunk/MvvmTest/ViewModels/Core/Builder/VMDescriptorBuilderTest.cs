@@ -3,7 +3,7 @@
    using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
-   using Inspiring.Mvvm.ViewModels.Behaviors;
+   using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
@@ -45,12 +45,12 @@
          InstancePropertyBehavior<bool> boolInstanceBehavior;
          CollectionPopulatorBehavior<PersonVM, Person> collectionPopulator;
 
-         Assert.IsTrue(_descriptor.Name.TryGetBehavior(out calculatedStringBehavior));
-         Assert.IsTrue(_descriptor.BirthDate.TryGetBehavior(out mappedDateTimeBehavior));
-         Assert.IsTrue(_descriptor.Salary.TryGetBehavior(out mappedDecimalBehavior));
-         Assert.IsTrue(_descriptor.IsSelected.TryGetBehavior(out boolInstanceBehavior));
-         Assert.IsTrue(_companyDescriptor.Employees.TryGetBehavior(out collectionPopulator));
-         Assert.IsTrue(_companyDescriptor.Customers.TryGetBehavior(out collectionPopulator));
+         Assert.IsTrue(_descriptor.Name.Behaviors.TryGetBehavior(out calculatedStringBehavior));
+         Assert.IsTrue(_descriptor.BirthDate.Behaviors.TryGetBehavior(out mappedDateTimeBehavior));
+         Assert.IsTrue(_descriptor.Salary.Behaviors.TryGetBehavior(out mappedDecimalBehavior));
+         Assert.IsTrue(_descriptor.IsSelected.Behaviors.TryGetBehavior(out boolInstanceBehavior));
+         Assert.IsTrue(_companyDescriptor.Employees.Behaviors.TryGetBehavior(out collectionPopulator));
+         Assert.IsTrue(_companyDescriptor.Customers.Behaviors.TryGetBehavior(out collectionPopulator));
       }
 
       [TestMethod]
@@ -117,7 +117,7 @@
                   BirthDate = p.Mapped(x => x.BirthDate),
                   Salary = p.Mapped(x => x.Salary),
                   Name = p.Calculated(x => String.Format("{0} {1}", x.FirstName, x.LastName)),
-                  IsSelected = v.Simple<bool>()
+                  IsSelected = v.Local<bool>()
                };
             })
             .WithValidations((d, c) => {
@@ -127,7 +127,6 @@
 
             })
             .WithBehaviors((d, c) => {
-               c.EnableBehavior(VMBehaviors.DisconnectedViewModel);
             })
             .Build();
          public PersonVM()

@@ -1,5 +1,4 @@
-﻿using Inspiring.Mvvm.ViewModels;
-using Inspiring.Mvvm.ViewModels.Behaviors;
+﻿using Inspiring.Mvvm.ViewModels.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Inspiring.MvvmTest.ViewModels.Behaviors {
@@ -9,16 +8,16 @@ namespace Inspiring.MvvmTest.ViewModels.Behaviors {
       public void TestMethod1() {
          EmployeeVM vm = new EmployeeVM();
          AccessPropertyBehaviorFake<string> source = new AccessPropertyBehaviorFake<string>();
-         VMProperty<string> p = new VMProperty<string>(source);
+         //VMProperty<string> p = new VMProperty<string>(source);
 
-         Assert.AreEqual(null, p.GetValue(vm));
-         source.Value = "Value 1";
-         Assert.AreEqual("Value 1", p.GetValue(vm));
-         p.SetValue(vm, "Value 2");
-         Assert.AreEqual("Value 2", source.Value);
+         //Assert.AreEqual(null, p.GetValue(vm));
+         //source.Value = "Value 1";
+         //Assert.AreEqual("Value 1", p.GetValue(vm));
+         //p.SetValue(vm, "Value 2");
+         //Assert.AreEqual("Value 2", source.Value);
       }
 
-      private class AccessPropertyBehaviorFake<T> : VMPropertyBehavior, IAccessPropertyBehavior<T> {
+      private class AccessPropertyBehaviorFake<T> : Behavior, IAccessPropertyBehavior<T> {
          public T Value { get; set; }
 
          public T GetValue(IBehaviorContext vm) {
@@ -27,10 +26,6 @@ namespace Inspiring.MvvmTest.ViewModels.Behaviors {
 
          public void SetValue(IBehaviorContext vm, T value) {
             Value = value;
-         }
-
-         public override BehaviorPosition Position {
-            get { return BehaviorPosition.SourceValueAccessor; }
          }
       }
    }

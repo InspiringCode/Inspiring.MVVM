@@ -66,7 +66,7 @@
     <Compile Include="DynamicFields\DynamicFieldsTest.cs" />
     <Compile Include="EmployeeVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Screens\MockFactory.cs" />
+    <Compile Include="MockFactory.cs" />
     <Compile Include="Screens\ScreenConductorTest.cs" />
     <Compile Include="Screens\ScreenFactoryTest.cs" />
     <Compile Include="Screens\ScreenTest.cs" />
@@ -76,13 +76,13 @@
     <Compile Include="ViewModels\Behaviors\CollectionPopulatorTest.cs" />
     <Compile Include="ViewModels\Behaviors\DisplayValueAccessorBehaviorTest.cs" />
     <Compile Include="ViewModels\Behaviors\VMPropertyTest.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\BehaviorConfigurationTest.cs" />
+    <Compile Include="ViewModels\Core\Builder\VMPropertyFactoryTest.cs" />
     <Compile Include="ViewModels\PersonVM.cs" />
     <Compile Include="ViewModels\TypeDescriptorTest.cs" />
     <Compile Include="ViewModels\ViewModelsTest.cs" />
-    <Compile Include="ViewModels\ViewModelTest.cs" />
     <Compile Include="ViewModels\VMCollectionPropertyTest.cs" />
-    <Compile Include="ViewModels\VMDescriptorBuilderTest.cs" />
-    <Compile Include="ViewModels\VMDescriptorTest.cs" />
+    <Compile Include="ViewModels\Core\Builder\VMDescriptorBuilderTest.cs" />
     <Compile Include="Views\CustomPropertyDescriptorTest.cs" />
     <Compile Include="Views\PersonView.xaml.cs">
       <DependentUpon>PersonView.xaml</DependentUpon>

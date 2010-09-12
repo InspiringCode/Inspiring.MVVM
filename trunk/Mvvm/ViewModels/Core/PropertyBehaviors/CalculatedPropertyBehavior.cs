@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Behaviors {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Diagnostics.Contracts;
 
@@ -6,15 +6,13 @@
    ///   A <see cref="IAccessPropertyBehavior"/> that uses the specified delegates
    ///   to implement get/set operation of a <see cref="VMProperty"/>.
    /// </summary>
-   public sealed class CalculatedPropertyBehavior<TSource, TValue> : VMPropertyBehavior, IAccessPropertyBehavior<TValue> {
+   public sealed class CalculatedPropertyBehavior<TSource, TValue> : Behavior, IAccessPropertyBehavior<TValue> {
       private Func<TSource, TValue> _getter;
       private Action<TSource, TValue> _setter;
-      private IAccessPropertyBehavior<TSource> _innerAccessor;
 
       public CalculatedPropertyBehavior(
          Func<TSource, TValue> getter,
-         Action<TSource, TValue> setter = null,
-         IAccessPropertyBehavior<TSource> innerAccessor = null
+         Action<TSource, TValue> setter = null
       ) {
          Contract.Requires<ArgumentNullException>(getter != null);
 
@@ -22,11 +20,6 @@
          _setter = setter ?? delegate {
             throw new InvalidOperationException(ExceptionTexts.NoSetterDelegate);
          };
-         _innerAccessor = innerAccessor;
-      }
-
-      public override BehaviorPosition Position {
-         get { return BehaviorPosition.SourceValueAccessor; }
       }
 
       public TValue GetValue(IBehaviorContext vm) {
@@ -39,9 +32,11 @@
       }
 
       private TSource GetSourceValue(IBehaviorContext vm) {
-         return _innerAccessor != null ?
-            _innerAccessor.GetValue(vm) :
-            (TSource)(object)vm;
+         IAccessPropertyBehavior<TSource> innerAccessor;
+
+         return TryGetBehavior(out innerAccessor) ?
+            innerAccessor.GetValue(vm) :
+            (TSource)vm;
       }
    }
 }

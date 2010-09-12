@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Behaviors {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.Common;
 
@@ -7,14 +7,10 @@
    ///   operation of a <see cref="VMProperty"/> by using the target of a CLR
    ///   property defined on a target object of the view model.
    /// </summary>
-   internal sealed class MappedPropertyBehavior<TVM, TValue> : VMPropertyBehavior, IAccessPropertyBehavior<TValue>
+   internal sealed class MappedPropertyBehavior<TVM, TValue> : Behavior, IAccessPropertyBehavior<TValue>
       where TVM : IBehaviorContext {
 
       private PropertyPath<TVM, TValue> _path;
-
-      public override BehaviorPosition Position {
-         get { return BehaviorPosition.SourceValueAccessor; }
-      }
 
       public MappedPropertyBehavior(PropertyPath<TVM, TValue> path) {
          Contract.Requires(path != null);

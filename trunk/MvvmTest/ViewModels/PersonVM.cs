@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels {
    using System;
+   using System.Collections.Generic;
    using Inspiring.Mvvm.ViewModels;
 
    public class PersonVM : ViewModel<PersonVMDescriptor>, ICanInitializeFrom<Person> {
@@ -15,7 +16,7 @@
                   BirthDate = p.Mapped(x => x.BirthDate),
                   Salary = p.Mapped(x => x.Salary),
                   Name = p.Calculated(x => String.Format("{0} {1}", x.FirstName, x.LastName)),
-                  IsSelected = v.Simple<bool>()
+                  IsSelected = v.Local<bool>()
                };
             })
             .WithValidations((d, c) => {
@@ -37,6 +38,8 @@
 
       public Person Person { get; set; }
 
+      public IEnumerable<Project> Projects { get; set; }
+
       public void InitializeFrom(Person source) {
          Person = source;
       }
@@ -49,6 +52,44 @@
       public VMProperty<DateTime> BirthDate { get; set; }
       public VMProperty<decimal> Salary { get; set; }
       public VMProperty<bool> IsSelected { get; set; }
+      public VMCollection<ProjectVM> Projects { get; set; }
+   }
+
+   public class ProjectVM : ViewModel<ProjectVMDescriptor>, ICanInitializeFrom<Project> {
+      public static readonly ProjectVMDescriptor Descriptor = VMDescriptorBuilder
+            .For<ProjectVM>()
+            .CreateDescriptor(c => {
+               var v = c.GetPropertyFactory();
+
+               return new ProjectVMDescriptor {
+               };
+            })
+            .WithValidations((d, c) => {
+            })
+            .WithDependencies((d, c) => {
+            })
+            .WithBehaviors((d, c) => {
+            })
+            .Build();
+
+      public ProjectVM()
+         : base(Descriptor) {
+      }
+
+      public ProjectVM(Project project)
+         : this() {
+         Project = project;
+      }
+
+      public Project Project { get; set; }
+
+      public void InitializeFrom(Project source) {
+         Project = source;
+      }
+   }
+
+   public class ProjectVMDescriptor : VMDescriptor {
+      public VMProperty<string> Name { get; set; }
    }
 
    public class Person {
@@ -56,6 +97,11 @@
       public string LastName { get; set; }
       public DateTime BirthDate { get; set; }
       public decimal Salary { get; set; }
+      public ICollection<Project> Projects { get; set; }
+   }
+
+   public class Project {
+      public string Name { get; set; }
    }
 
    internal class SampleDataFactory {

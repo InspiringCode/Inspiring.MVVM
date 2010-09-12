@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Fluent {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using Inspiring.Mvvm.Common;
 
    public interface IVMDependencyConfigurator : IHideObjectMembers {

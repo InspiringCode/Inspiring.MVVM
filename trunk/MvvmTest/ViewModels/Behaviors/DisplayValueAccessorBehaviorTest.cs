@@ -1,7 +1,7 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Behaviors {
    using System;
    using Inspiring.Mvvm.ViewModels;
-   using Inspiring.Mvvm.ViewModels.Behaviors;
+   using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Moq;
 
@@ -21,7 +21,7 @@
          _innerAccessor = new InnerAccessor();
 
          _behavior = new DisplayValueAccessorBehavior<int>(propertyName: "Test");
-         _behavior.Initialize(_dynamicFields, "Test");
+         ((IBehavior)_behavior).Initialize(new BehaviorInitializationContext("Test", _dynamicFields));
          _behavior.Successor = _innerAccessor;
 
          var mock = new Mock<IBehaviorContext>();
@@ -102,8 +102,7 @@
          }
 
 
-         public BehaviorPosition Position {
-            get { throw new NotImplementedException(); }
+         public void Initialize(BehaviorInitializationContext context) {
          }
       }
 

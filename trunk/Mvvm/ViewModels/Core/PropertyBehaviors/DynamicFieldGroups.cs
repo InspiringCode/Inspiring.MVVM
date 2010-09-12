@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Behaviors {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
 
    internal static class DynamicFieldGroups {
       public static readonly FieldDefinitionGroup DisplayValueValidationErrorGroup = new FieldDefinitionGroup();

@@ -1,14 +1,14 @@
 ﻿using System;
-using Inspiring.Mvvm.ViewModels.Behaviors;
+using Inspiring.Mvvm.ViewModels.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Inspiring.MvvmTest.Common {
    [TestClass]
    public class BehaviorsTest {
-      private VMPropertyBehavior _first;
-      private VMPropertyBehavior _second;
-      private VMPropertyBehavior _third;
-      private VMPropertyBehavior _fourth;
+      private Behavior _first;
+      private Behavior _second;
+      private Behavior _third;
+      private Behavior _fourth;
 
       [TestInitialize]
       public void TestInitialize() {
@@ -119,7 +119,7 @@ namespace Inspiring.MvvmTest.Common {
          //Assert.AreEqual(null, chainResult);
       }
 
-      private void AssertChainTypes(VMPropertyBehaviorChain chain, params Type[] behaviorTypes) {
+      private void AssertChainTypes(Behavior chain, params Type[] behaviorTypes) {
          IBehavior behavior = chain.Successor;
 
          foreach (Type type in behaviorTypes) {
@@ -131,10 +131,10 @@ namespace Inspiring.MvvmTest.Common {
          Assert.IsNull(behavior, "Chain contains more behaviors than expected.");
       }
 
-      private void AssertChain(VMPropertyBehaviorChain chain, params VMPropertyBehavior[] behaviors) {
+      private void AssertChain(Behavior chain, params Behavior[] behaviors) {
          IBehavior actual = chain.Successor;
 
-         foreach (VMPropertyBehavior expected in behaviors) {
+         foreach (Behavior expected in behaviors) {
             Assert.IsNotNull(actual, "Behavior {0} was not found in the chain.", expected);
             Assert.AreSame(actual, expected, "Expected behavior {0} but found behavior {1}.", expected, actual);
             actual = actual.Successor;
@@ -151,35 +151,23 @@ namespace Inspiring.MvvmTest.Common {
          int ReturnFive();
       }
 
-      private class FirstBehavior : VMPropertyBehavior, IFirstBehavior {
+      private class FirstBehavior : Behavior, IFirstBehavior {
 
-         public override BehaviorPosition Position {
-            get { throw new NotImplementedException(); }
-         }
       }
 
-      private class SecondBehavior : VMPropertyBehavior, ISecondBehavior {
+      private class SecondBehavior : Behavior, ISecondBehavior {
          public int ReturnFive() {
             return 5;
          }
 
-         public override BehaviorPosition Position {
-            get { throw new NotImplementedException(); }
-         }
       }
 
-      private class ThirdBehavior : VMPropertyBehavior {
+      private class ThirdBehavior : Behavior {
 
-         public override BehaviorPosition Position {
-            get { throw new NotImplementedException(); }
-         }
       }
 
-      private class FourthBehavior : VMPropertyBehavior {
+      private class FourthBehavior : Behavior {
 
-         public override BehaviorPosition Position {
-            get { throw new NotImplementedException(); }
-         }
       }
    }
 }

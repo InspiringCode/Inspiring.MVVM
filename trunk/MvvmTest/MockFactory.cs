@@ -1,5 +1,6 @@
-﻿namespace Inspiring.MvvmTest.Screens {
+﻿namespace Inspiring.MvvmTest {
    using Inspiring.Mvvm.Screens;
+   using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.Mvvm.Views;
    using Moq;
 
@@ -34,6 +35,16 @@
 
       public static IView<object> MockView() {
          return new Mock<IView<object>>().Object;
+      }
+
+      public static IBehavior Behavior() {
+         return new Mock<IBehavior>().Object;
+      }
+
+      public static Mock<IBehaviorFactory> BehaviorFactory<TValue>(IBehavior behavior) {
+         var mock = new Mock<IBehaviorFactory>();
+         mock.Setup(x => x.Create<TValue>()).Returns(behavior);
+         return mock;
       }
    }
 }

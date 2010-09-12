@@ -1,11 +1,7 @@
 ﻿using System;
-namespace Inspiring.Mvvm.ViewModels.Behaviors {
+namespace Inspiring.Mvvm.ViewModels.Core {
    internal sealed class CollectionFactoryBehavior<TVM> :
-      VMPropertyBehavior, IAccessPropertyBehavior<VMCollection<TVM>> {
-
-      public override BehaviorPosition Position {
-         get { return BehaviorPosition.CollectionFactory; }
-      }
+      Behavior, IAccessPropertyBehavior<VMCollection<TVM>> {
 
       public VMCollection<TVM> GetValue(IBehaviorContext vm) {
          return new VMCollection<TVM>();
