@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using Inspiring.Mvvm.ViewModels;
 namespace Inspiring.Mvvm.Views.Binder {
 
    public sealed class DefaultPropertyBuildStep : IBinderBuildStep {
@@ -26,7 +27,11 @@ namespace Inspiring.Mvvm.Views.Binder {
 
       public void Execute(BinderContext context) {
          if (context.TargetProperty == null) {
-            context.TargetProperty = GetDefaultProperty(context.TargetObject);
+            if (typeof(ViewModel).IsAssignableFrom(context.SourcePropertyType)) {
+               context.TargetProperty = View.ModelProperty;
+            } else {
+               context.TargetProperty = GetDefaultProperty(context.TargetObject);
+            }
          }
       }
 

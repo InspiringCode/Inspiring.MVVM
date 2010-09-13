@@ -10,6 +10,8 @@
 
       public string PropertyPath { get; private set; }
 
+      public Type SourcePropertyType { get; set; }
+
       public DependencyObject TargetObject { get; set; }
 
       public DependencyProperty TargetProperty { get; set; }

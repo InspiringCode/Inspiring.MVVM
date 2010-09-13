@@ -23,6 +23,7 @@
 
          BinderContext context = QueueBuilderExecution();
          context.ExtendPropertyPath(path);
+         context.SourcePropertyType = typeof(T);
 
          return new PropertyBinderExpression<T>(context);
       }

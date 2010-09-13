@@ -51,7 +51,7 @@ namespace Inspiring.MvvmTest.Views {
          grid.Columns.Add(memberCountColumn);
 
          ViewBinder.BindVM(view, b => {
-            b.Collection<ProjectVMDescriptor>(x => x.Projects).To(grid, i => {
+            b.Collection(x => x.Projects).To(grid, i => {
                i.Property(x => x.Name).To(nameColumn);
                i.Property(x => x.MemberCount).To(memberCountColumn);
             });
