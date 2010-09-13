@@ -5,10 +5,6 @@
       private FieldDefinition<string> _conversionErrorField;
       private string _propertyName;
 
-      public DisplayValueAccessorBehavior(string propertyName) {
-         _propertyName = propertyName;
-      }
-
       public object GetValue(IBehaviorContext vm) {
          IAccessPropertyBehavior<TValue> accessBehavior =
             GetNextBehavior<IAccessPropertyBehavior<TValue>>();
@@ -55,6 +51,7 @@
          _conversionErrorField = context.DynamicFields.DefineField<string>(
             DynamicFieldGroups.ConversionErrorGroup
          );
+         _propertyName = context.PropertyName;
       }
    }
 }

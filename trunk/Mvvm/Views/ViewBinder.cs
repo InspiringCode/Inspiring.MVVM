@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.Views {
    using System;
+   using System.ComponentModel;
    using System.Linq.Expressions;
    using System.Windows;
    using Inspiring.Mvvm.Common;
@@ -12,6 +13,10 @@
          IBindableView<ViewModel<TDescriptor>> view,
          Action<IVMBinder<TDescriptor>> bindingConfigurator
       ) where TDescriptor : VMDescriptor {
+         if (DesignerProperties.GetIsInDesignMode((DependencyObject)view)) {
+            return;
+         }
+
          VMPropertyBinder<TDescriptor> binder = new VMPropertyBinder<TDescriptor>();
          bindingConfigurator(binder);
          binder.Execute();
@@ -21,6 +26,10 @@
          IView<TScreen> screen,
          Action<IScreenBinder<TScreen>> bindingConfigurator
       ) where TScreen : IScreen {
+         if (DesignerProperties.GetIsInDesignMode((DependencyObject)screen)) {
+            return;
+         }
+
          ScreenBinder<TScreen> binder = new ScreenBinder<TScreen>();
          bindingConfigurator(binder);
          binder.Execute();
@@ -32,6 +41,10 @@
          Expression<Func<TScreen, ViewModel<TDescriptor>>> viewModelSelector,
          Action<IVMBinder<TDescriptor>> bindingConfigurator
       ) where TDescriptor : VMDescriptor;
+
+      IBindToExpression<ViewModel> BindVM(
+         Expression<Func<TScreen, ViewModel>> viewModelSelector
+      );
 
       IBindToExpression<IScreen> BindChildScreen(Expression<Func<TScreen, IScreen>> screenSelector);
    }
@@ -56,6 +69,10 @@
    }
 
    public class ScreenBinder<TScreen> : BinderRootExpression, IScreenBinder<TScreen> where TScreen : IScreen {
+      public ScreenBinder() {
+         // TODO: Does this config apply to all queued executions?
+         BinderBuildStepRegistry.AddVMPropertyBuildSteps(this);
+      }
 
       public void BindVM<TDescriptor>(Expression<Func<TScreen, ViewModel<TDescriptor>>> viewModelSelector, Action<IVMBinder<TDescriptor>> bindingConfigurator) where TDescriptor : VMDescriptor {
          string pathPrefix = ExpressionService.GetPropertyPathString(viewModelSelector);
@@ -75,6 +92,16 @@
          });
 
          return exp;
+      }
+
+      public IBindToExpression<ViewModel> BindVM(Expression<Func<TScreen, ViewModel>> viewModelSelector) {
+         BinderContext context = QueueBuilderExecution();
+         context.SourcePropertyType = typeof(ViewModel); // TODO: Clean up how types are assigned, also check if IBindToExpression has to be generic...
+         context.ExtendPropertyPath(
+            ExpressionService.GetPropertyPathString(viewModelSelector)
+         );
+
+         return new PropertyBinderExpression<ViewModel>(context);
       }
    }
 

@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.Screens {
    using System;
+   using System.Collections.Generic;
    using System.Diagnostics.Contracts;
    using System.Linq;
    using System.Reflection;
@@ -25,15 +26,14 @@
          IScreenLifecycle handler,
          string lifecycleMethodName
       ) {
-         MethodInfo method = new Type[] { handler.GetType() }
-            .Concat(handler.GetType().GetInterfaces())
-            .Select(t =>
-               t.GetMethod(
-                  lifecycleMethodName,
-                  BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance
-               )
-            )
-            .FirstOrDefault(t => t != null);
+         Type handlerType = handler.GetType();
+         MethodInfo method = handlerType
+            .GetInterfaces()
+            .SelectMany(itf => FindInterfaceMethods(
+               handlerType.GetInterfaceMap(itf),
+               lifecycleMethodName
+            ))
+            .FirstOrDefault();
 
          if (method == null) {
             Contract.Assert(lifecycleMethodName == "Initialize");
@@ -49,6 +49,13 @@
          return attr != null ?
             attr.Order :
             InvocationOrder.Parent;
+      }
+
+      private static IEnumerable<MethodInfo> FindInterfaceMethods(InterfaceMapping mapping, string methodName) {
+         return Enumerable
+            .Range(0, mapping.InterfaceMethods.Length)
+            .Where(index => mapping.InterfaceMethods[index].Name == methodName)
+            .Select(foundIndex => mapping.TargetMethods[foundIndex]);
       }
    }
 }

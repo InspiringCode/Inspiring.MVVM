@@ -196,6 +196,24 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The collection contains no &apos;IScreenLifecycle&apos; of type &apos;{0}&apos;. Use &apos;Contains&apos; to check if an &apos;IScreenLifecycle&apos; is contained in a collection..
+        /// </summary>
+        internal static string LifecycleTypeNotFound {
+            get {
+                return ResourceManager.GetString("LifecycleTypeNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The collection contains more than one &apos;IScreenLifecycle&apos; of type &apos;{0}&apos;. You can use &apos;Contains&apos; before you add a &apos;IScreenLifecycle&apos; to ensure that only one instance of a certain type is added..
+        /// </summary>
+        internal static string MoreThanOneLifecycleTypeFound {
+            get {
+                return ResourceManager.GetString("MoreThanOneLifecycleTypeFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No service locator is configured. Make sure you call &apos;ServiceLocator.SetServiceLocator&apos; and pass in your implementation of the &apos;IServiceLocator&apos; interface..
         /// </summary>
         internal static string NoServiceLocatorConfigured {

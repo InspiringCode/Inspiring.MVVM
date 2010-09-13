@@ -198,4 +198,10 @@
   <data name="BehaviorNotContainedByConfiguration" xml:space="preserve">
     <value>This configuration does not contain the specified behavior '{0}'.</value>
   </data>
+  <data name="LifecycleTypeNotFound" xml:space="preserve">
+    <value>The collection contains no 'IScreenLifecycle' of type '{0}'. Use 'Contains' to check if an 'IScreenLifecycle' is contained in a collection.</value>
+  </data>
+  <data name="MoreThanOneLifecycleTypeFound" xml:space="preserve">
+    <value>The collection contains more than one 'IScreenLifecycle' of type '{0}'. You can use 'Contains' before you add a 'IScreenLifecycle' to ensure that only one instance of a certain type is added.</value>
+  </data>
 </root>

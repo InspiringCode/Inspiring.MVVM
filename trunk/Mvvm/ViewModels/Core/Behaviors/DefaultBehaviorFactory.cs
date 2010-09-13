@@ -15,7 +15,7 @@
             case VMBehaviorKey.DisplayValueValidator:
                return new DisplayValueValidationBehavior();
             case VMBehaviorKey.DisplayValueAccessor:
-               return new DisplayValueValidationBehavior();
+               return new DisplayValueAccessorBehavior<TValue>();
             case VMBehaviorKey.Validator:
                return new ValidationBehavior<TValue>();
             case VMBehaviorKey.DisconnectedViewModelBehavior:

@@ -28,6 +28,28 @@
          });
       }
 
+      public bool Contains<TChild>()
+         where TChild : IScreenLifecycle {
+         return Items.OfType<TChild>().Any();
+      }
+
+      public TChild Expose<TChild>()
+         where TChild : IScreenLifecycle {
+         IEnumerable<TChild> children = Items.OfType<TChild>();
+         switch (children.Count()) {
+            case 0:
+               throw new ArgumentException(
+                  ExceptionTexts.LifecycleTypeNotFound.FormatWith(typeof(TChild).Name)
+               );
+            case 1:
+               return children.Single();
+            default:
+               throw new ArgumentException(
+                  ExceptionTexts.MoreThanOneLifecycleTypeFound.FormatWith(typeof(TChild).Name)
+               );
+         }
+      }
+
       internal void ActivateAll(Action parentCallback = null) {
          Invoke("Activate", h => h.Activate(), parentCallback);
       }

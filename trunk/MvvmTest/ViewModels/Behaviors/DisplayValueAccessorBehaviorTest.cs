@@ -20,7 +20,7 @@
 
          _innerAccessor = new InnerAccessor();
 
-         _behavior = new DisplayValueAccessorBehavior<int>(propertyName: "Test");
+         _behavior = new DisplayValueAccessorBehavior<int>();
          ((IBehavior)_behavior).Initialize(new BehaviorInitializationContext("Test", _dynamicFields));
          _behavior.Successor = _innerAccessor;
 
