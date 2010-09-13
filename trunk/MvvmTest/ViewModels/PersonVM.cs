@@ -53,6 +53,7 @@
       public VMProperty<DateTime> BirthDate { get; set; }
       public VMProperty<decimal> Salary { get; set; }
       public VMProperty<bool> IsSelected { get; set; }
+      public VMProperty<ProjectVM> CurrentProject { get; set; }
       public VMCollectionProperty<ProjectVM> Projects { get; set; }
    }
 
@@ -101,6 +102,7 @@
       public DateTime BirthDate { get; set; }
       public decimal Salary { get; set; }
       public ICollection<Project> Projects { get; set; }
+      public Project CurrentProject { get; set; }
    }
 
    public class Project {

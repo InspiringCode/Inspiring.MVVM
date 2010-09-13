@@ -64,6 +64,11 @@
       IVMCollectionPropertyFactoryExpression<TItem> MappedCollection<TItem>(
          Expression<Func<TSource, IEnumerable<TItem>>> sourceCollectionSelector
       );
+
+      // TODO: Document me
+      IVMViewModelPropertyFactoryExpression<TVMSource> MappedVM<TVMSource>(
+         Expression<Func<TSource, TVMSource>> viewModelSourceSelector
+      );
    }
 
    /// <summary>
@@ -124,9 +129,18 @@
       IVMCollectionPropertyFactoryExpression<TItem> MappedCollection<TItem>(
          Expression<Func<TVM, IEnumerable<TItem>>> sourceCollectionSelector
       );
+
+      // TODO: Document me
+      IVMViewModelPropertyFactoryExpression<TVMSource> MappedVM<TVMSource>(
+         Expression<Func<TVM, TVMSource>> viewModelSourceSelector
+      );
    }
 
    public interface IVMCollectionPropertyFactoryExpression<TSourceItem> {
       VMCollectionProperty<TVM> Of<TVM>() where TVM : ICanInitializeFrom<TSourceItem>;
+   }
+
+   public interface IVMViewModelPropertyFactoryExpression<TVMSource> {
+      VMProperty<TVM> Of<TVM>() where TVM : ViewModel, ICanInitializeFrom<TVMSource>;
    }
 }

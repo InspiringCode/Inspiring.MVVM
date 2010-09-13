@@ -105,6 +105,26 @@
          return new VMCollectionPropertyFactoryExpression<TItem>(config, _configurations);
       }
 
+      public IVMViewModelPropertyFactoryExpression<TVMSource> MappedVM<TVMSource>(
+         Expression<Func<TSource, TVMSource>> viewModelSourceSelector
+      ) {
+         var config = BehaviorConfigurationFactory.CreateViewModelPropertyConfiguration();
+
+         PropertyPath<TVM, TVMSource> sourcePropertyPath = PropertyPath.Concat(
+            _sourceObjectPropertyPath,
+            PropertyPath.Create(viewModelSourceSelector)
+         );
+
+         config.OverridePermanently(
+            behavior: VMBehaviorKey.SourceValueAccessor,
+            withBehavior: new ConstantBehaviorFactory(
+               new MappedPropertyBehavior<TVM, TVMSource>(sourcePropertyPath)
+            )
+         );
+
+         return new VMViewModelPropertyFactoryExpression<TVMSource>(config, _configurations);
+      }
+
       private class VMCollectionPropertyFactoryExpression<TItem> : IVMCollectionPropertyFactoryExpression<TItem> {
          private BehaviorConfiguration _config;
          private BehaviorConfigurationDictionary _configurations;
@@ -131,5 +151,33 @@
             return property;
          }
       }
+
+      private class VMViewModelPropertyFactoryExpression<TVMSource> : IVMViewModelPropertyFactoryExpression<TVMSource> {
+         private BehaviorConfiguration _config;
+         private BehaviorConfigurationDictionary _configurations;
+
+         public VMViewModelPropertyFactoryExpression(
+            BehaviorConfiguration config,
+            BehaviorConfigurationDictionary configurations
+         ) {
+            _config = config;
+            _configurations = configurations;
+         }
+
+         public VMProperty<TVM> Of<TVM>() where TVM : ViewModel, ICanInitializeFrom<TVMSource> {
+            var property = new VMProperty<TVM>();
+
+            _config.OverridePermanently(
+               behavior: VMBehaviorKey.ViewModelFactory,
+               withBehavior: new ConstantBehaviorFactory(
+                  new ViewModelFactoryBehavior<TVM, TVMSource>()
+               )
+            );
+
+            _configurations.Add(property, _config);
+            return property;
+         }
+      }
+
    }
 }

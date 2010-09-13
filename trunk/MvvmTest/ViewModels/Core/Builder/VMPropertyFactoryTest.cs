@@ -53,10 +53,31 @@
          BehaviorConfigurationFactory.OverrideDefaultCollectionConfiguration(defaultConfig);
       }
 
+      private static void OverrideDefaultViewModelPropertyConfiguration() {
+         BehaviorConfiguration defaultConfig = new BehaviorConfiguration();
+
+         defaultConfig.Add(
+            VMBehaviorKey.ViewModelFactory,
+            new DefaultBehaviorFactory(VMBehaviorKey.ViewModelFactory),
+            BehaviorOrderModifier.After,
+            VMBehaviorKey.Last
+         );
+
+         defaultConfig.Add(
+            VMBehaviorKey.SourceValueAccessor,
+            new DefaultBehaviorFactory(VMBehaviorKey.SourceValueAccessor),
+            BehaviorOrderModifier.After,
+            VMBehaviorKey.Last
+         );
+
+         BehaviorConfigurationFactory.OverrideDefaultViewModelPropertyConfiguration(defaultConfig);
+      }
+
       [TestInitialize]
       public void Setup() {
          OverrideDefaultPropertyConfiguration();
          OverrideDefaultCollectionConfiguration();
+         OverrideDefaultViewModelPropertyConfiguration();
 
          _configs = new BehaviorConfigurationDictionary();
          _rootFactory = new VMPropertyFactory<PersonVM, PersonVM>(PropertyPath.Empty<PersonVM>(), _configs);
@@ -107,6 +128,23 @@
             property,
             typeof(CollectionPopulatorBehavior<ProjectVM, Project>),
             typeof(MappedPropertyBehavior<PersonVM, IEnumerable<Project>>)
+         );
+      }
+
+      [TestMethod]
+      public void ViewModelProperty() {
+         var property = _rootFactory.MappedVM(x => x.Person.CurrentProject).Of<ProjectVM>();
+         AssertBehaviors(
+            property,
+            typeof(ViewModelFactoryBehavior<ProjectVM, Project>),
+            typeof(MappedPropertyBehavior<PersonVM, Project>)
+         );
+
+         property = _personFactory.MappedVM(x => x.CurrentProject).Of<ProjectVM>();
+         AssertBehaviors(
+            property,
+            typeof(ViewModelFactoryBehavior<ProjectVM, Project>),
+            typeof(MappedPropertyBehavior<PersonVM, Project>)
          );
       }
 

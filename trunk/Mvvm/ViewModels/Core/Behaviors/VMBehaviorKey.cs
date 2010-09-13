@@ -19,6 +19,9 @@
       CollectionInstanceCache,
       CollectionFactory,
 
+      ViewModelFactory,
+      ViewModelValueCache,
+
       CustomOne,
       CustomTwo,
       CustomThree,
