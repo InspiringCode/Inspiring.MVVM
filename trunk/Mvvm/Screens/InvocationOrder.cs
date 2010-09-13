@@ -22,7 +22,7 @@
       public InvocationOrder Order { get; private set; }
 
       internal static InvocationOrder GetOrder(
-         ILifecycleHandler handler,
+         IScreenLifecycle handler,
          string lifecycleMethodName
       ) {
          MethodInfo method = new Type[] { handler.GetType() }

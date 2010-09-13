@@ -5,10 +5,10 @@ namespace Inspiring.Mvvm.Screens {
 
    public class ScreenConductor : Screen {
       private IScreen _activeScreen;
-      private LifecycleHandlerCollection<IScreen> _screens;
+      private ScreenLifecycleCollection<IScreen> _screens;
 
       public ScreenConductor() {
-         _screens = new LifecycleHandlerCollection<IScreen>(this);
+         _screens = new ScreenLifecycleCollection<IScreen>(this);
       }
 
       public IScreen ActiveScreen {

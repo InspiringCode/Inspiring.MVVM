@@ -1,5 +1,5 @@
 ﻿namespace Inspiring.Mvvm.Screens {
-   public class Screen : ParentLifecycleHandler, IScreen {
+   public class Screen : ParentScreenLifecycle, IScreen {
 
    }
 }

@@ -26,8 +26,8 @@
 
    partial class ScreenFactory {
       private static void Initialize(
-         ILifecycleHandler handler,
-         Action<ILifecycleHandler> initializer
+         IScreenLifecycle handler,
+         Action<IScreenLifecycle> initializer
       ) {
          Initialize(handler, initializer, InvocationOrder.First);
          Initialize(handler, initializer, InvocationOrder.BeforeParent);
@@ -37,8 +37,8 @@
       }
 
       private static void Initialize(
-         ILifecycleHandler handler,
-         Action<ILifecycleHandler> initializer,
+         IScreenLifecycle handler,
+         Action<IScreenLifecycle> initializer,
          InvocationOrder order
       ) {
          // TODO: Handling for multiple Initialize methods...

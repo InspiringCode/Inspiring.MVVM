@@ -5,10 +5,10 @@
    using System.Diagnostics.Contracts;
    using System.Linq;
 
-   public class LifecycleHandlerCollection<T> where T : ILifecycleHandler {
-      private ILifecycleHandler _parent;
+   public class ScreenLifecycleCollection<T> where T : IScreenLifecycle {
+      private IScreenLifecycle _parent;
 
-      internal LifecycleHandlerCollection(ILifecycleHandler parent) {
+      internal ScreenLifecycleCollection(IScreenLifecycle parent) {
          _parent = parent;
          Items = new ObservableCollection<T>();
       }

@@ -1,32 +1,28 @@
 ﻿namespace Inspiring.Mvvm.Screens {
    using Inspiring.Mvvm.Common;
 
-   public class ParentLifecycleHandler : NotifyObject, ILifecycleHandler {
-      public ParentLifecycleHandler() {
-         Children = new LifecycleHandlerCollection<ILifecycleHandler>(this);
+   public class ParentScreenLifecycle : NotifyObject, IScreenLifecycle {
+      public ParentScreenLifecycle() {
+         Children = new ScreenLifecycleCollection<IScreenLifecycle>(this);
       }
 
-      public LifecycleHandlerCollection<ILifecycleHandler> Children { get; private set; }
+      public ScreenLifecycleCollection<IScreenLifecycle> Children { get; private set; }
 
-      public ILifecycleHandler Parent { get; set; }
+      public IScreenLifecycle Parent { get; set; }
 
-      public void Add(ILifecycleHandler handler) {
-         handler.Parent = Parent;
-      }
-
-      void ILifecycleHandler.Activate() {
+      void IScreenLifecycle.Activate() {
          Children.ActivateAll(parentCallback: OnActivate);
       }
 
-      void ILifecycleHandler.Deactivate() {
+      void IScreenLifecycle.Deactivate() {
          Children.DeactivateAll(parentCallback: OnDeactivate);
       }
 
-      bool ILifecycleHandler.RequestClose() {
+      bool IScreenLifecycle.RequestClose() {
          return Children.RequestCloseAll(parentCallback: OnRequestClose);
       }
 
-      void ILifecycleHandler.Close() {
+      void IScreenLifecycle.Close() {
          Children.CloseAll(parentCallback: OnClose);
       }
 

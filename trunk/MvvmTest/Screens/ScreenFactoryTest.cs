@@ -54,7 +54,7 @@
          }
 
 
-         public ILifecycleHandler Parent {
+         public IScreenLifecycle Parent {
             get {
                throw new NotImplementedException();
             }
@@ -63,7 +63,7 @@
             }
          }
 
-         bool ILifecycleHandler.RequestClose() {
+         bool IScreenLifecycle.RequestClose() {
             throw new NotImplementedException();
          }
       }
