@@ -38,6 +38,39 @@ namespace Inspiring.MvvmTest.Views {
          });
       }
 
+      [TestMethod]
+      public void BindCollection() {
+         PersonVM vm = null;
+         PersonVMView view = new PersonVMView();
+         DataGrid grid = new DataGrid();
+
+         var nameColumn = new DataGridTextColumn();
+         var memberCountColumn = new DataGridTextColumn();
+
+         grid.Columns.Add(nameColumn);
+         grid.Columns.Add(memberCountColumn);
+
+         ViewBinder.BindVM(view, b => {
+            b.Collection<ProjectVMDescriptor>(x => x.Projects).To(grid, i => {
+               i.Property(x => x.Name).To(nameColumn);
+               i.Property(x => x.MemberCount).To(memberCountColumn);
+            });
+         });
+
+         Binding itemsSourceBinding = BindingOperations.GetBinding(grid, DataGrid.ItemsSourceProperty);
+         Assert.IsNotNull(itemsSourceBinding);
+         Assert.IsNull(itemsSourceBinding.Source);
+         Assert.AreEqual("Projects", itemsSourceBinding.Path.Path);
+
+         Binding nameBinding = (Binding)nameColumn.Binding;
+         Binding memberCountBinding = (Binding)memberCountColumn.Binding;
+
+         Assert.AreEqual("Name", nameBinding.Path.Path);
+         Assert.AreEqual("MemberCount", memberCountBinding.Path.Path);
+         Assert.IsNull(nameBinding.Source);
+         Assert.IsNull(memberCountBinding.Source);
+      }
+
       private class PersonScreenView : IView<PersonScreen> {
 
          public PersonScreen Model {

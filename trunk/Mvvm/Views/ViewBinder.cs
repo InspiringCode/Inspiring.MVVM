@@ -37,7 +37,10 @@
    }
 
    public interface IVMBinder<TDescriptor> {
-      IBindToExpression<T> Property<T>(Expression<Func<TDescriptor, T>> sourcePropertySelector);
+      IBindToExpression<T> Property<T>(Expression<Func<TDescriptor, VMProperty<T>>> sourcePropertySelector);
+      IBindCollectionExpression<TItemDescriptor> Collection<TItemDescriptor>(
+         Expression<Func<TDescriptor, IVMCollectionProperty<ViewModel<TItemDescriptor>>>> collectionPropertySelector
+      ) where TItemDescriptor : VMDescriptor;
    }
 
    public interface IBindToExpression<T> {
@@ -46,6 +49,10 @@
 
    public interface IOptionsExpression<T> {
       IOptionsExpression<T> On(DependencyProperty property);
+   }
+
+   public interface IBindCollectionExpression<TDescriptor> {
+      void To(DependencyObject itemsControl, Action<IVMBinder<TDescriptor>> itemBinder);
    }
 
    public class ScreenBinder<TScreen> : BinderRootExpression, IScreenBinder<TScreen> where TScreen : IScreen {

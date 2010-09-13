@@ -9,7 +9,7 @@
 
       public void InsertBuildStep(IBinderBuildStep step) {
          Contract.Requires<ArgumentNullException>(step != null);
-         _buildSteps.Add(step);
+         _buildSteps.Insert(0, step);
       }
 
       public virtual BinderContext QueueBuilderExecution() {
@@ -22,6 +22,10 @@
          foreach (BinderContext context in _queuedExecutions) {
             foreach (IBinderBuildStep step in _buildSteps) {
                step.Execute(context);
+
+               if (context.Complete) {
+                  break;
+               }
             }
          }
       }

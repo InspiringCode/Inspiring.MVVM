@@ -27,5 +27,9 @@
             propertyPathPostfix :
             PropertyPath + "." + propertyPathPostfix;
       }
+
+      public void PrepareBinding() {
+         Binding.Path = new PropertyPath(PropertyPath);
+      }
    }
 }

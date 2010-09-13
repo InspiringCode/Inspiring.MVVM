@@ -16,7 +16,8 @@
                   BirthDate = p.Mapped(x => x.BirthDate),
                   Salary = p.Mapped(x => x.Salary),
                   Name = p.Calculated(x => String.Format("{0} {1}", x.FirstName, x.LastName)),
-                  IsSelected = v.Local<bool>()
+                  IsSelected = v.Local<bool>(),
+                  Projects = p.MappedCollection(x => x.Projects).Of<ProjectVM>()
                };
             })
             .WithValidations((d, c) => {
@@ -52,7 +53,7 @@
       public VMProperty<DateTime> BirthDate { get; set; }
       public VMProperty<decimal> Salary { get; set; }
       public VMProperty<bool> IsSelected { get; set; }
-      public VMCollection<ProjectVM> Projects { get; set; }
+      public VMCollectionProperty<ProjectVM> Projects { get; set; }
    }
 
    public class ProjectVM : ViewModel<ProjectVMDescriptor>, ICanInitializeFrom<Project> {
@@ -62,6 +63,7 @@
                var v = c.GetPropertyFactory();
 
                return new ProjectVMDescriptor {
+                  Name = v.Mapped(x => x.Project.Name)
                };
             })
             .WithValidations((d, c) => {
@@ -90,6 +92,7 @@
 
    public class ProjectVMDescriptor : VMDescriptor {
       public VMProperty<string> Name { get; set; }
+      public VMProperty<int> MemberCount { get; set; }
    }
 
    public class Person {

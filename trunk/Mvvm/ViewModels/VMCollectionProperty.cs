@@ -1,5 +1,9 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
 
-   public sealed class VMCollectionProperty<TVM> : VMPropertyBase<VMCollection<TVM>> {
+   public interface IVMCollectionProperty<out TVM> {
+
+   }
+
+   public sealed class VMCollectionProperty<TVM> : VMPropertyBase<VMCollection<TVM>>, IVMCollectionProperty<TVM> {
    }
 }

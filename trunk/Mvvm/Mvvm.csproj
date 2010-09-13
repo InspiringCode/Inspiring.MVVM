@@ -149,11 +149,13 @@
     <Compile Include="ViewModels\VMProperty.cs" />
     <Compile Include="ViewModels\Core\Builder\VMPropertyFactory.cs" />
     <Compile Include="Views\Binder\BinderBuildStep.cs" />
+    <Compile Include="Views\Binder\BinderBuildStepRegistry.cs" />
     <Compile Include="Views\Binder\BinderContext.cs" />
     <Compile Include="Views\Binder\BinderExpression.cs" />
     <Compile Include="Views\Binder\BinderRootExpression.cs" />
+    <Compile Include="Views\Binder\DataGridBinderBuildStep.cs" />
     <Compile Include="Views\Binder\SetBindingBuildStep.cs" />
-    <Compile Include="Views\Binder\SetDefaultPropertyBuildStep.cs" />
+    <Compile Include="Views\Binder\DefaultPropertyBuildStep.cs" />
     <Compile Include="Views\Binder\VMPropertyBinder.cs" />
     <Compile Include="Views\IView.cs" />
     <Compile Include="Views\IWindowService.cs" />
