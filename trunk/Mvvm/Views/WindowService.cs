@@ -29,7 +29,10 @@
          TScreen s = forScreen.Create(x => { });
          s.Activate();
 
-         View.SetModel(window, s);
+         if (!ViewFactory.TryInitializeView(window, s)) {
+            // TODO: Exception text...
+            throw new InvalidOperationException();
+         }
 
          window.Closing += delegate(object sender, CancelEventArgs e) {
             e.Cancel = !s.RequestClose();

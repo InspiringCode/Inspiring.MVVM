@@ -25,22 +25,27 @@
 
          object model = e.NewValue;
 
-         if (ViewFactory.TryInitializeView(view, model)) {
-            return;
-         }
+         //if (ViewFactory.TryInitializeView(view, model)) {
+         //   return;
+         //}
 
          ContentControl contentControl = view as ContentControl;
          if (contentControl != null) {
-            contentControl.Content = ViewFactory.CreateView(model);
+            if (!ViewFactory.TryInitializeView(contentControl.Content, model)) {
+               contentControl.Content = ViewFactory.CreateView(model);
+            }
             return;
          }
 
          ContentPresenter presenter = view as ContentPresenter;
          if (presenter != null) {
-            presenter.Content = ViewFactory.CreateView(model);
+            if (!ViewFactory.TryInitializeView(presenter.Content, model)) {
+               presenter.Content = ViewFactory.CreateView(model);
+            }
             return;
          }
 
+         // TODO: Update exception text...
          throw new ArgumentException(
             ExceptionTexts.UnsupportedTargetTypeForModelProperty.FormatWith(
                view.GetType().Name,

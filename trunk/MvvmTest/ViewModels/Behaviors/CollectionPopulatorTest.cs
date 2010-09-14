@@ -27,7 +27,7 @@ namespace Inspiring.MvvmTest.ViewModels.Behaviors {
       public void Setup() {
          _fieldDefinitions = new FieldDefinitionCollection();
          _fieldValues = _fieldDefinitions.CreateValueHolder();
-         _vmCollection = new VMCollection<PersonVM>();
+         _vmCollection = new VMCollection<PersonVM>(PersonVM.Descriptor);
          SetupSourceAccesor();
          SetupContext();
          SetupVMCollectionAccessor();
@@ -63,7 +63,7 @@ namespace Inspiring.MvvmTest.ViewModels.Behaviors {
       [TestMethod]
       public void SetValue() {
          AssertHelper.Throws<NotSupportedException>(() => {
-            _populator.SetValue(_context, new VMCollection<PersonVM>());
+            _populator.SetValue(_context, new VMCollection<PersonVM>(PersonVM.Descriptor));
          });
       }
 

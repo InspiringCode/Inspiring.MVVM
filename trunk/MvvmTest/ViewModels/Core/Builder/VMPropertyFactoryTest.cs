@@ -116,14 +116,14 @@
 
       [TestMethod]
       public void CollectionProperty() {
-         var property = _rootFactory.MappedCollection(x => x.Projects).Of<ProjectVM>();
+         var property = _rootFactory.MappedCollection(x => x.Projects).Of<ProjectVM>(PersonVM.Descriptor);
          AssertBehaviors(
             property,
             typeof(CollectionPopulatorBehavior<ProjectVM, Project>),
             typeof(MappedPropertyBehavior<PersonVM, IEnumerable<Project>>)
          );
 
-         property = _personFactory.MappedCollection(x => x.Projects).Of<ProjectVM>();
+         property = _personFactory.MappedCollection(x => x.Projects).Of<ProjectVM>(PersonVM.Descriptor);
          AssertBehaviors(
             property,
             typeof(CollectionPopulatorBehavior<ProjectVM, Project>),
@@ -136,14 +136,14 @@
          var property = _rootFactory.MappedVM(x => x.Person.CurrentProject).Of<ProjectVM>();
          AssertBehaviors(
             property,
-            typeof(ViewModelFactoryBehavior<ProjectVM, Project>),
+            typeof(ViewModelPropertyInitializerBehavior<ProjectVM, Project>),
             typeof(MappedPropertyBehavior<PersonVM, Project>)
          );
 
          property = _personFactory.MappedVM(x => x.CurrentProject).Of<ProjectVM>();
          AssertBehaviors(
             property,
-            typeof(ViewModelFactoryBehavior<ProjectVM, Project>),
+            typeof(ViewModelPropertyInitializerBehavior<ProjectVM, Project>),
             typeof(MappedPropertyBehavior<PersonVM, Project>)
          );
       }

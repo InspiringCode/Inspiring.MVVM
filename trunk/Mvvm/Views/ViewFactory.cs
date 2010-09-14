@@ -7,7 +7,9 @@
 
    internal static class ViewFactory {
       public static bool TryInitializeView(object view, object withModel) {
-         Contract.Requires<ArgumentNullException>(view != null);
+         if (view == null) {
+            return false;
+         }
 
          Type[] interfaces = view.GetType().GetInterfaces();
 

@@ -1,7 +1,8 @@
-﻿namespace Inspiring.Mvvm.Views.Binder {
+﻿namespace Inspiring.Mvvm.Views {
    using System.Collections.Generic;
+   using Inspiring.Mvvm.Views.Binder;
 
-   internal sealed class BinderBuildStepRegistry {
+   public sealed class BinderBuildStepRegistry {
       private static List<IBinderBuildStep> _propertySteps = new List<IBinderBuildStep>();
       private static List<IBinderBuildStep> _collectionSteps = new List<IBinderBuildStep>();
 

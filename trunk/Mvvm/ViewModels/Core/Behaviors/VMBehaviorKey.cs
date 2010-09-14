@@ -19,6 +19,7 @@
       CollectionInstanceCache,
       CollectionFactory,
 
+      ViewModelPropertyInitializer,
       ViewModelFactory,
       ViewModelValueCache,
 

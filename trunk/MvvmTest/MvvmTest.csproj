@@ -75,9 +75,11 @@
     <Compile Include="ViewModels\Behaviors\CollectionFactoryTest.cs" />
     <Compile Include="ViewModels\Behaviors\CollectionPopulatorTest.cs" />
     <Compile Include="ViewModels\Behaviors\DisplayValueAccessorBehaviorTest.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\PropagateVMContextBehaviorTest.cs" />
     <Compile Include="ViewModels\Behaviors\VMPropertyTest.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorConfigurationTest.cs" />
     <Compile Include="ViewModels\Core\Builder\VMPropertyFactoryTest.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\ViewModelFactoryBehaviorTest.cs" />
     <Compile Include="ViewModels\PersonVM.cs" />
     <Compile Include="ViewModels\TypeDescriptorTest.cs" />
     <Compile Include="ViewModels\ViewModelsTest.cs" />

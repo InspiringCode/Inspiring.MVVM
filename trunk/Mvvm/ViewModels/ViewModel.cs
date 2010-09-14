@@ -36,6 +36,8 @@
    }
 
    partial class ViewModel : IBehaviorContext {
+      public IVMContext VMContext { get; set; }
+
       FieldValueHolder IBehaviorContext.FieldValues {
          get {
             if (_dynamicFieldValues == null) {

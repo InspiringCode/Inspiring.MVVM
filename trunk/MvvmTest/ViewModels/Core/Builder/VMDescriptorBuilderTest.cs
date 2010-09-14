@@ -87,8 +87,8 @@
                var com = c.GetPropertyFactory(x => x.Company);
 
                return new CompanyVMDescriptor {
-                  Employees = v.MappedCollection(x => x.Company.Employees).Of<PersonVM>(),
-                  Customers = com.MappedCollection(x => x.Customers).Of<PersonVM>()
+                  Employees = v.MappedCollection(x => x.Company.Employees).Of<PersonVM>(PersonVM.Descriptor),
+                  Customers = com.MappedCollection(x => x.Customers).Of<PersonVM>(PersonVM.Descriptor)
                };
             })
             .Build();

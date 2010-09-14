@@ -17,7 +17,7 @@
                   Salary = p.Mapped(x => x.Salary),
                   Name = p.Calculated(x => String.Format("{0} {1}", x.FirstName, x.LastName)),
                   IsSelected = v.Local<bool>(),
-                  Projects = p.MappedCollection(x => x.Projects).Of<ProjectVM>()
+                  Projects = p.MappedCollection(x => x.Projects).Of<ProjectVM>(PersonVM.Descriptor)
                };
             })
             .WithValidations((d, c) => {

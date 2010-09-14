@@ -4,12 +4,12 @@
 
    internal sealed class CollectionPopulatorBehavior<TVM, TSourceItem> :
       Behavior, IAccessPropertyBehavior<VMCollection<TVM>>
-      where TVM : ICanInitializeFrom<TSourceItem> {
+      where TVM : ViewModel, ICanInitializeFrom<TSourceItem> {
 
       public VMCollection<TVM> GetValue(IBehaviorContext vm) {
          VMCollection<TVM> collection = this.GetNextValue(vm);
          IEnumerable<TSourceItem> source = GetSourceCollection(vm);
-         PopulateCollection(collection, source);
+         PopulateCollection(vm, collection, source);
          return collection;
       }
 
@@ -23,11 +23,12 @@
          return GetNextBehavior<IAccessPropertyBehavior<IEnumerable<TSourceItem>>>().GetValue(vm);
       }
 
-      private void PopulateCollection(VMCollection<TVM> collection, IEnumerable<TSourceItem> source) {
+      private void PopulateCollection(IBehaviorContext behaviorContext, VMCollection<TVM> collection, IEnumerable<TSourceItem> source) {
+         var viewModelFactory = GetNextBehavior<IViewModelFactoryBehavior<TVM>>();
          collection.Clear();
 
          foreach (TSourceItem item in source) {
-            TVM vm = ServiceLocator.Current.GetInstance<TVM>();
+            TVM vm = viewModelFactory.CreateInstance(behaviorContext);
             vm.InitializeFrom(item);
             collection.Add(vm);
          }

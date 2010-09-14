@@ -71,6 +71,13 @@
          var config = new BehaviorConfiguration();
 
          config.Add(
+            VMBehaviorKey.DisplayValueAccessor,
+            new DefaultBehaviorFactory(VMBehaviorKey.DisplayValueAccessor),
+            BehaviorOrderModifier.After,
+            VMBehaviorKey.Last
+         );
+
+         config.Add(
             VMBehaviorKey.CollectionValueCache,
             new DefaultBehaviorFactory(VMBehaviorKey.CollectionValueCache),
             BehaviorOrderModifier.After,
@@ -80,6 +87,13 @@
          config.Add(
             VMBehaviorKey.CollectionPopulator,
             new DefaultBehaviorFactory(VMBehaviorKey.CollectionPopulator),
+            BehaviorOrderModifier.After,
+            VMBehaviorKey.Last
+         );
+
+         config.Add(
+            VMBehaviorKey.ViewModelFactory,
+            new DefaultBehaviorFactory(VMBehaviorKey.ViewModelFactory),
             BehaviorOrderModifier.After,
             VMBehaviorKey.Last
          );
@@ -115,6 +129,13 @@
          config.Add(
             VMBehaviorKey.ViewModelValueCache,
             new DefaultBehaviorFactory(VMBehaviorKey.ViewModelValueCache),
+            BehaviorOrderModifier.After,
+            VMBehaviorKey.Last
+         );
+
+         config.Add(
+            VMBehaviorKey.ViewModelPropertyInitializer,
+            new DefaultBehaviorFactory(VMBehaviorKey.ViewModelPropertyInitializer),
             BehaviorOrderModifier.After,
             VMBehaviorKey.Last
          );

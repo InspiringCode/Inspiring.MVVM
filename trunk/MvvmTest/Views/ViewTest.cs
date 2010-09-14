@@ -14,7 +14,8 @@
       public void SetModelOnSingleViewInterface() {
          SimpleScreen screen = new SimpleScreen();
          SimpleScreenView view = new SimpleScreenView();
-         View.SetModel(view, screen);
+         ContentControl cc = new ContentControl { Content = view };
+         View.SetModel(cc, screen);
          Assert.AreEqual(screen, view.Model);
       }
 
@@ -22,7 +23,8 @@
       public void SetModelOnBaseInterfaceView() {
          DerivedScreen screen = new DerivedScreen();
          BaseScreenView view = new BaseScreenView();
-         View.SetModel(view, screen);
+         ContentControl cc = new ContentControl { Content = view };
+         View.SetModel(cc, screen);
          Assert.AreEqual(screen, view.Model);
       }
 
@@ -30,7 +32,8 @@
       public void SetModelOnMultipleViewInterfaces() {
          DerivedScreen screen = new DerivedScreen();
          MultiScreenView view = new MultiScreenView();
-         View.SetModel(view, screen);
+         ContentControl cc = new ContentControl { Content = view };
+         View.SetModel(cc, screen);
          Assert.AreEqual(screen, view.DerivedScreenModel);
          Assert.IsNull(view.SimpleScreenModel);
          Assert.IsNull(view.BaseScreenModel);
@@ -88,9 +91,10 @@
       [TestMethod]
       public void SetModelToNull() {
          SimpleScreenView view = new SimpleScreenView();
-         View.SetModel(view, new SimpleScreen());
+         ContentControl cc = new ContentControl { Content = view };
+         View.SetModel(cc, new SimpleScreen());
          Assert.IsNotNull(view.Model);
-         View.SetModel(view, null);
+         View.SetModel(cc, null);
          Assert.IsNull(view.Model);
       }
 

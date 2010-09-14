@@ -137,13 +137,21 @@
             _configurations = configurations;
          }
 
-         public VMCollectionProperty<TVM> Of<TVM>() where TVM : ICanInitializeFrom<TItem> {
+         // TODO: Make this more type safe?
+         public VMCollectionProperty<TVM> Of<TVM>(VMDescriptor itemDescriptor) where TVM : ViewModel, ICanInitializeFrom<TItem> {
             var property = new VMCollectionProperty<TVM>();
 
             _config.OverridePermanently(
                behavior: VMBehaviorKey.CollectionPopulator,
                withBehavior: new ConstantBehaviorFactory(
                   new CollectionPopulatorBehavior<TVM, TItem>()
+               )
+            );
+
+            _config.OverridePermanently(
+               behavior: VMBehaviorKey.CollectionFactory,
+               withBehavior: new ConstantBehaviorFactory(
+                  new CollectionFactoryBehavior<TVM>(itemDescriptor)
                )
             );
 
@@ -168,9 +176,9 @@
             var property = new VMProperty<TVM>();
 
             _config.OverridePermanently(
-               behavior: VMBehaviorKey.ViewModelFactory,
+               behavior: VMBehaviorKey.ViewModelPropertyInitializer,
                withBehavior: new ConstantBehaviorFactory(
-                  new ViewModelFactoryBehavior<TVM, TVMSource>()
+                  new ViewModelPropertyInitializerBehavior<TVM, TVMSource>()
                )
             );
 

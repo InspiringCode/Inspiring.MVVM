@@ -137,7 +137,7 @@
    }
 
    public interface IVMCollectionPropertyFactoryExpression<TSourceItem> {
-      VMCollectionProperty<TVM> Of<TVM>() where TVM : ICanInitializeFrom<TSourceItem>;
+      VMCollectionProperty<TVM> Of<TVM>(VMDescriptor itemDescriptor) where TVM : ViewModel, ICanInitializeFrom<TSourceItem>;
    }
 
    public interface IVMViewModelPropertyFactoryExpression<TVMSource> {
