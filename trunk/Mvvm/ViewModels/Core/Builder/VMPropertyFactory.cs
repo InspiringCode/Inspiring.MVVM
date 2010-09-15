@@ -2,6 +2,7 @@
    using System;
    using System.Collections.Generic;
    using System.Linq.Expressions;
+   using System.Windows.Input;
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.ViewModels.Core;
 
@@ -125,6 +126,30 @@
          return new VMViewModelPropertyFactoryExpression<TVMSource>(config, _configurations);
       }
 
+      public VMProperty<ICommand> Command(Action<TSource> execute, Func<TSource, bool> canExecute = null) {
+         var config = BehaviorConfigurationFactory.CreateCommandPropertyConfiguration();
+
+         config.OverridePermanently(
+            behavior: VMBehaviorKey.PropertyValueAcessor,
+            withBehavior: new ConstantBehaviorFactory(
+               new DelegateCommandBehavior<TSource>(execute, canExecute)
+            )
+         );
+
+         if (!_sourceObjectPropertyPath.IsEmpty) {
+            config.OverridePermanently(
+               behavior: VMBehaviorKey.SourceValueAccessor,
+               withBehavior: new ConstantBehaviorFactory(
+                  new MappedPropertyBehavior<TVM, TSource>(_sourceObjectPropertyPath)
+               )
+            );
+         }
+
+         var property = new VMProperty<ICommand>();
+         _configurations.Add(property, config);
+         return property;
+      }
+
       private class VMCollectionPropertyFactoryExpression<TItem> : IVMCollectionPropertyFactoryExpression<TItem> {
          private BehaviorConfiguration _config;
          private BehaviorConfigurationDictionary _configurations;
@@ -186,6 +211,5 @@
             return property;
          }
       }
-
    }
 }

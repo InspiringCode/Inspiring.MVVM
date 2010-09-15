@@ -2,6 +2,7 @@
    using System;
    using System.Collections.Generic;
    using System.Linq.Expressions;
+   using System.Windows.Input;
    using Inspiring.Mvvm.Common;
 
    /// <summary>
@@ -69,6 +70,9 @@
       IVMViewModelPropertyFactoryExpression<TVMSource> MappedVM<TVMSource>(
          Expression<Func<TSource, TVMSource>> viewModelSourceSelector
       );
+
+      // TODO: Document me
+      VMProperty<ICommand> Command(Action<TSource> execute, Func<TSource, bool> canExecute = null);
    }
 
    /// <summary>
@@ -134,6 +138,9 @@
       IVMViewModelPropertyFactoryExpression<TVMSource> MappedVM<TVMSource>(
          Expression<Func<TVM, TVMSource>> viewModelSourceSelector
       );
+
+      // TODO: Document me
+      VMProperty<ICommand> Command(Action<TVM> execute, Func<TVM, bool> canExecute = null);
    }
 
    public interface IVMCollectionPropertyFactoryExpression<TSourceItem> {

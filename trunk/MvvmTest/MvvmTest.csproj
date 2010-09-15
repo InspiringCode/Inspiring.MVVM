@@ -75,6 +75,7 @@
     <Compile Include="ViewModels\Behaviors\CollectionFactoryTest.cs" />
     <Compile Include="ViewModels\Behaviors\CollectionPopulatorTest.cs" />
     <Compile Include="ViewModels\Behaviors\DisplayValueAccessorBehaviorTest.cs" />
+    <Compile Include="ViewModels\CommandPropertyTest.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\PropagateVMContextBehaviorTest.cs" />
     <Compile Include="ViewModels\Behaviors\VMPropertyTest.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorConfigurationTest.cs" />

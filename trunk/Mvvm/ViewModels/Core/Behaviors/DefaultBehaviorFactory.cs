@@ -28,6 +28,8 @@
                throw new NotImplementedException("Validation is not implemented yet.");
             case VMBehaviorKey.CollectionInstanceCache:
                return new CacheValueBehavior<TValue>();
+            case VMBehaviorKey.CommandValueCache:
+               return new CacheValueBehavior<TValue>();
             case VMBehaviorKey.ViewModelFactory:
                // Some ugly reflection here because TValue may be 'VMCollection<TVM>' but 
                // the behavior expects only 'TVM'.

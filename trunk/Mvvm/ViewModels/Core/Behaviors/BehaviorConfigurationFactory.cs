@@ -4,6 +4,7 @@
       private static BehaviorConfiguration _propertyDefault;
       private static BehaviorConfiguration _collectionDefault;
       private static BehaviorConfiguration _viewModelPropertyDefault;
+      private static BehaviorConfiguration _commandPropertyDefault;
 
       static BehaviorConfigurationFactory() {
          Reset();
@@ -21,6 +22,10 @@
          return _viewModelPropertyDefault.Clone();
       }
 
+      public static BehaviorConfiguration CreateCommandPropertyConfiguration() {
+         return _commandPropertyDefault.Clone();
+      }
+
       public static void OverrideDefaultConfiguration(BehaviorConfiguration configuration) {
          _propertyDefault = configuration.Clone();
       }
@@ -33,10 +38,15 @@
          _viewModelPropertyDefault = configuration.Clone();
       }
 
+      public static void OverrideCommandPropertyConfiguration(BehaviorConfiguration configuration) {
+         _commandPropertyDefault = configuration.Clone();
+      }
+
       public static void Reset() {
          _propertyDefault = CreatePropertyDefault();
          _collectionDefault = CreateCollectionDefault();
          _viewModelPropertyDefault = CreateViewModelPropertyDefault();
+         _commandPropertyDefault = CreateCommandPropertyDefault();
       }
 
       private static BehaviorConfiguration CreatePropertyDefault() {
@@ -152,6 +162,34 @@
             new DefaultBehaviorFactory(VMBehaviorKey.SourceValueAccessor),
             BehaviorOrderModifier.After,
             VMBehaviorKey.Last
+         );
+
+         return config;
+      }
+
+      private static BehaviorConfiguration CreateCommandPropertyDefault() {
+         var config = new BehaviorConfiguration();
+
+         config.Add(
+            VMBehaviorKey.CommandValueCache,
+            new DefaultBehaviorFactory(VMBehaviorKey.CommandValueCache),
+            BehaviorOrderModifier.After,
+            VMBehaviorKey.Last
+         );
+
+         config.Add(
+            VMBehaviorKey.PropertyValueAcessor,
+            new DefaultBehaviorFactory(VMBehaviorKey.PropertyValueAcessor),
+            BehaviorOrderModifier.After,
+            VMBehaviorKey.Last
+         );
+
+         config.Add(
+            VMBehaviorKey.SourceValueAccessor,
+            new DefaultBehaviorFactory(VMBehaviorKey.SourceValueAccessor),
+            BehaviorOrderModifier.After,
+            VMBehaviorKey.Last,
+            addLazily: true
          );
 
          return config;

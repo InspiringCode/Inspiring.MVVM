@@ -23,6 +23,8 @@
       ViewModelFactory,
       ViewModelValueCache,
 
+      CommandValueCache,
+
       CustomOne,
       CustomTwo,
       CustomThree,
