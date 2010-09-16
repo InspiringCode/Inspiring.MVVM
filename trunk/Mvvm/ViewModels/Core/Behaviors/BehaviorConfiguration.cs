@@ -3,14 +3,14 @@
    using System.Collections.Generic;
    using System.Linq;
 
-   public sealed class BehaviorConfiguration : IBehaviorConfigurationExpression {
+   public sealed class BehaviorConfiguration : IBehaviorConfigurationExpression2 {
       private List<BehaviorEntry> _behaviors = new List<BehaviorEntry>();
 
       /// <inheritdoc/>
-      public IBehaviorConfigurationExpression Add(
+      public IBehaviorConfigurationExpression2 Add(
          VMBehaviorKey key,
          IBehaviorFactory behavior,
-         BehaviorOrderModifier relativeTo,
+         RelativePosition relativeTo,
          VMBehaviorKey position,
          bool addLazily = false
       ) {
@@ -19,7 +19,7 @@
          if (_behaviors.Any()) {
             relatedBehaviorIndex = GetIndex(position);
 
-            if (relativeTo == BehaviorOrderModifier.After) {
+            if (relativeTo == RelativePosition.After) {
                relatedBehaviorIndex++;
             }
          }
@@ -35,7 +35,7 @@
       }
 
       /// <inheritdoc/>
-      public IBehaviorConfigurationExpression Override(
+      public IBehaviorConfigurationExpression2 Override(
          VMBehaviorKey behavior,
          IBehaviorFactory withBehavior,
          bool addLazily = false
@@ -50,7 +50,7 @@
       }
 
       /// <inheritdoc/>
-      public IBehaviorConfigurationExpression OverridePermanently(
+      public IBehaviorConfigurationExpression2 OverridePermanently(
          VMBehaviorKey behavior,
          IBehaviorFactory withBehavior,
          bool addLazily = false
@@ -66,7 +66,7 @@
       }
 
       /// <inheritdoc/>
-      public IBehaviorConfigurationExpression ReplaceBehaviors(BehaviorConfiguration withBehaviors) {
+      public IBehaviorConfigurationExpression2 ReplaceBehaviors(BehaviorConfiguration withBehaviors) {
          BehaviorEntry[] clones = withBehaviors
             ._behaviors
             .Select(e => {
@@ -84,7 +84,7 @@
       }
 
       /// <inheritdoc/>
-      public IBehaviorConfigurationExpression ConfigureBehavior<TBehavior>(
+      public IBehaviorConfigurationExpression2 ConfigureBehavior<TBehavior>(
          VMBehaviorKey behavior,
          Action<TBehavior> configurationAction
       ) {

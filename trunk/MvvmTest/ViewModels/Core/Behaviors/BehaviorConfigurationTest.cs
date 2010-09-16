@@ -46,16 +46,16 @@ namespace Inspiring.MvvmTest.ViewModels.Core.Behaviors {
       public void InsertAfter() {
          BehaviorConfiguration conf = new BehaviorConfiguration();
 
-         conf.Add(VMBehaviorKey.CustomOne, _factory1, BehaviorOrderModifier.After, VMBehaviorKey.Last);
+         conf.Add(VMBehaviorKey.CustomOne, _factory1, RelativePosition.After, VMBehaviorKey.Last);
          AssertChain(conf, _behavior1);
 
-         conf.Add(VMBehaviorKey.CustomTwo, _factory2, BehaviorOrderModifier.After, VMBehaviorKey.Last);
+         conf.Add(VMBehaviorKey.CustomTwo, _factory2, RelativePosition.After, VMBehaviorKey.Last);
          AssertChain(conf, _behavior1, _behavior2);
 
-         conf.Add(VMBehaviorKey.CustomThree, _factory3, BehaviorOrderModifier.After, VMBehaviorKey.CustomTwo);
+         conf.Add(VMBehaviorKey.CustomThree, _factory3, RelativePosition.After, VMBehaviorKey.CustomTwo);
          AssertChain(conf, _behavior1, _behavior2, _behavior3);
 
-         conf.Add(VMBehaviorKey.CustomFour, _factory4, BehaviorOrderModifier.After, VMBehaviorKey.CustomOne);
+         conf.Add(VMBehaviorKey.CustomFour, _factory4, RelativePosition.After, VMBehaviorKey.CustomOne);
          AssertChain(conf, _behavior1, _behavior4, _behavior2, _behavior3);
       }
 
@@ -63,25 +63,25 @@ namespace Inspiring.MvvmTest.ViewModels.Core.Behaviors {
       public void InsertBefore() {
          BehaviorConfiguration conf = new BehaviorConfiguration();
 
-         conf.Add(VMBehaviorKey.CustomOne, _factory1, BehaviorOrderModifier.Before, VMBehaviorKey.First);
+         conf.Add(VMBehaviorKey.CustomOne, _factory1, RelativePosition.Before, VMBehaviorKey.First);
          AssertChain(conf, _behavior1);
 
-         conf.Add(VMBehaviorKey.CustomTwo, _factory2, BehaviorOrderModifier.Before, VMBehaviorKey.First);
+         conf.Add(VMBehaviorKey.CustomTwo, _factory2, RelativePosition.Before, VMBehaviorKey.First);
          AssertChain(conf, _behavior2, _behavior1);
 
-         conf.Add(VMBehaviorKey.CustomThree, _factory3, BehaviorOrderModifier.Before, VMBehaviorKey.CustomTwo);
+         conf.Add(VMBehaviorKey.CustomThree, _factory3, RelativePosition.Before, VMBehaviorKey.CustomTwo);
          AssertChain(conf, _behavior3, _behavior2, _behavior1);
 
-         conf.Add(VMBehaviorKey.CustomFour, _factory4, BehaviorOrderModifier.Before, VMBehaviorKey.CustomOne);
+         conf.Add(VMBehaviorKey.CustomFour, _factory4, RelativePosition.Before, VMBehaviorKey.CustomOne);
          AssertChain(conf, _behavior3, _behavior2, _behavior4, _behavior1);
       }
 
       [TestMethod]
       public void ReplaceBehaviors() {
          BehaviorConfiguration template = new BehaviorConfiguration();
-         template.Add(VMBehaviorKey.CustomOne, _factory1, BehaviorOrderModifier.Before, VMBehaviorKey.First);
-         template.Add(VMBehaviorKey.CustomTwo, _factory2, BehaviorOrderModifier.After, VMBehaviorKey.Last);
-         template.Add(VMBehaviorKey.CustomThree, _factory3, BehaviorOrderModifier.After, VMBehaviorKey.Last);
+         template.Add(VMBehaviorKey.CustomOne, _factory1, RelativePosition.Before, VMBehaviorKey.First);
+         template.Add(VMBehaviorKey.CustomTwo, _factory2, RelativePosition.After, VMBehaviorKey.Last);
+         template.Add(VMBehaviorKey.CustomThree, _factory3, RelativePosition.After, VMBehaviorKey.Last);
 
          var conf = template.Clone();
          AssertChain(conf, _behavior1, _behavior2, _behavior3);
@@ -92,9 +92,9 @@ namespace Inspiring.MvvmTest.ViewModels.Core.Behaviors {
          AssertChain(conf, _behavior4, _behavior5, _behavior6);
 
          var replaceWith = new BehaviorConfiguration();
-         replaceWith.Add(VMBehaviorKey.CustomThree, _factory3, BehaviorOrderModifier.After, VMBehaviorKey.Last);
-         replaceWith.Add(VMBehaviorKey.CustomOne, _factory7, BehaviorOrderModifier.After, VMBehaviorKey.Last);
-         replaceWith.Add(VMBehaviorKey.CustomFour, _factory8, BehaviorOrderModifier.After, VMBehaviorKey.Last);
+         replaceWith.Add(VMBehaviorKey.CustomThree, _factory3, RelativePosition.After, VMBehaviorKey.Last);
+         replaceWith.Add(VMBehaviorKey.CustomOne, _factory7, RelativePosition.After, VMBehaviorKey.Last);
+         replaceWith.Add(VMBehaviorKey.CustomFour, _factory8, RelativePosition.After, VMBehaviorKey.Last);
          AssertChain(replaceWith, _behavior3, _behavior7, _behavior8);
 
          conf.ReplaceBehaviors(replaceWith);

@@ -18,14 +18,14 @@
          defaultConfig.Add(
             VMBehaviorKey.PropertyValueAcessor,
             new DefaultBehaviorFactory(VMBehaviorKey.PropertyValueAcessor),
-            BehaviorOrderModifier.After,
+            RelativePosition.After,
             VMBehaviorKey.Last
          );
 
          defaultConfig.Add(
             VMBehaviorKey.SourceValueAccessor,
             new DefaultBehaviorFactory(VMBehaviorKey.SourceValueAccessor),
-            BehaviorOrderModifier.After,
+            RelativePosition.After,
             VMBehaviorKey.Last,
             addLazily: true
          );
@@ -39,14 +39,14 @@
          defaultConfig.Add(
             VMBehaviorKey.CollectionPopulator,
             new DefaultBehaviorFactory(VMBehaviorKey.CollectionPopulator),
-            BehaviorOrderModifier.After,
+            RelativePosition.After,
             VMBehaviorKey.Last
          );
 
          defaultConfig.Add(
             VMBehaviorKey.SourceValueAccessor,
             new DefaultBehaviorFactory(VMBehaviorKey.SourceValueAccessor),
-            BehaviorOrderModifier.After,
+            RelativePosition.After,
             VMBehaviorKey.Last
          );
 
@@ -59,14 +59,14 @@
          defaultConfig.Add(
             VMBehaviorKey.ViewModelFactory,
             new DefaultBehaviorFactory(VMBehaviorKey.ViewModelFactory),
-            BehaviorOrderModifier.After,
+            RelativePosition.After,
             VMBehaviorKey.Last
          );
 
          defaultConfig.Add(
             VMBehaviorKey.SourceValueAccessor,
             new DefaultBehaviorFactory(VMBehaviorKey.SourceValueAccessor),
-            BehaviorOrderModifier.After,
+            RelativePosition.After,
             VMBehaviorKey.Last
          );
 

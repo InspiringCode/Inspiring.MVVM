@@ -19,6 +19,20 @@ namespace Inspiring.MvvmTest {
       }
 
       [TestMethod]
+      public void MyTestMethod2() {
+         object key1 = TestEnum.Val2;
+         object key2 = TestEnum2.Entry2;
+         object key3 = TestEnum.Val2;
+         Assert.IsFalse(key1.Equals(key2));
+         Assert.IsTrue(key1.Equals(key3));
+         Assert.IsTrue((int)key1 == (int)key2);
+      }
+
+      public enum TestEnum { Val1, Val2 }
+
+      public enum TestEnum2 { Entry1, Entry2, Entry3 };
+
+      [TestMethod]
       public void Tryis() {
          var x = new Handler();
          Assert.IsTrue(x is INeedsInitialization<int>);

@@ -55,21 +55,21 @@
          config.Add(
             VMBehaviorKey.DisplayValueAccessor,
             new DefaultBehaviorFactory(VMBehaviorKey.DisplayValueAccessor),
-            BehaviorOrderModifier.After,
+            RelativePosition.After,
             VMBehaviorKey.Last
          );
 
          config.Add(
             VMBehaviorKey.PropertyValueAcessor,
             new DefaultBehaviorFactory(VMBehaviorKey.PropertyValueAcessor),
-            BehaviorOrderModifier.After,
+            RelativePosition.After,
             VMBehaviorKey.Last
          );
 
          config.Add(
             VMBehaviorKey.SourceValueAccessor,
             new DefaultBehaviorFactory(VMBehaviorKey.SourceValueAccessor),
-            BehaviorOrderModifier.After,
+            RelativePosition.After,
             VMBehaviorKey.Last,
             addLazily: true
          );
@@ -83,49 +83,49 @@
          config.Add(
             VMBehaviorKey.DisplayValueAccessor,
             new DefaultBehaviorFactory(VMBehaviorKey.DisplayValueAccessor),
-            BehaviorOrderModifier.After,
+            RelativePosition.After,
             VMBehaviorKey.Last
          );
 
          config.Add(
             VMBehaviorKey.CollectionValueCache,
             new DefaultBehaviorFactory(VMBehaviorKey.CollectionValueCache),
-            BehaviorOrderModifier.After,
+            RelativePosition.After,
             VMBehaviorKey.Last
          );
 
          config.Add(
             VMBehaviorKey.CollectionPopulator,
             new DefaultBehaviorFactory(VMBehaviorKey.CollectionPopulator),
-            BehaviorOrderModifier.After,
+            RelativePosition.After,
             VMBehaviorKey.Last
          );
 
          config.Add(
             VMBehaviorKey.ViewModelFactory,
             new DefaultBehaviorFactory(VMBehaviorKey.ViewModelFactory),
-            BehaviorOrderModifier.After,
+            RelativePosition.After,
             VMBehaviorKey.Last
          );
 
          config.Add(
             VMBehaviorKey.SourceValueAccessor,
             new DefaultBehaviorFactory(VMBehaviorKey.SourceValueAccessor),
-            BehaviorOrderModifier.After,
+            RelativePosition.After,
             VMBehaviorKey.Last
          );
 
          config.Add(
             VMBehaviorKey.CollectionInstanceCache,
             new DefaultBehaviorFactory(VMBehaviorKey.CollectionInstanceCache),
-            BehaviorOrderModifier.After,
+            RelativePosition.After,
             VMBehaviorKey.Last
          );
 
          config.Add(
             VMBehaviorKey.CollectionFactory,
             new DefaultBehaviorFactory(VMBehaviorKey.CollectionFactory),
-            BehaviorOrderModifier.After,
+            RelativePosition.After,
             VMBehaviorKey.Last
          );
 
@@ -139,28 +139,28 @@
          config.Add(
             VMBehaviorKey.ViewModelValueCache,
             new DefaultBehaviorFactory(VMBehaviorKey.ViewModelValueCache),
-            BehaviorOrderModifier.After,
+            RelativePosition.After,
             VMBehaviorKey.Last
          );
 
          config.Add(
             VMBehaviorKey.ViewModelPropertyInitializer,
             new DefaultBehaviorFactory(VMBehaviorKey.ViewModelPropertyInitializer),
-            BehaviorOrderModifier.After,
+            RelativePosition.After,
             VMBehaviorKey.Last
          );
 
          config.Add(
             VMBehaviorKey.ViewModelFactory,
             new DefaultBehaviorFactory(VMBehaviorKey.ViewModelFactory),
-            BehaviorOrderModifier.After,
+            RelativePosition.After,
             VMBehaviorKey.Last
          );
 
          config.Add(
             VMBehaviorKey.SourceValueAccessor,
             new DefaultBehaviorFactory(VMBehaviorKey.SourceValueAccessor),
-            BehaviorOrderModifier.After,
+            RelativePosition.After,
             VMBehaviorKey.Last
          );
 
@@ -173,21 +173,21 @@
          config.Add(
             VMBehaviorKey.CommandValueCache,
             new DefaultBehaviorFactory(VMBehaviorKey.CommandValueCache),
-            BehaviorOrderModifier.After,
+            RelativePosition.After,
             VMBehaviorKey.Last
          );
 
          config.Add(
             VMBehaviorKey.PropertyValueAcessor,
             new DefaultBehaviorFactory(VMBehaviorKey.PropertyValueAcessor),
-            BehaviorOrderModifier.After,
+            RelativePosition.After,
             VMBehaviorKey.Last
          );
 
          config.Add(
             VMBehaviorKey.SourceValueAccessor,
             new DefaultBehaviorFactory(VMBehaviorKey.SourceValueAccessor),
-            BehaviorOrderModifier.After,
+            RelativePosition.After,
             VMBehaviorKey.Last,
             addLazily: true
          );
