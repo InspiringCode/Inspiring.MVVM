@@ -3,14 +3,14 @@ using System.ComponentModel;
 namespace Inspiring.Mvvm.ViewModels {
 
    public sealed class VMCollection<T> : ObservableCollection<T>, ITypedList {
-      private VMDescriptor _itemDescriptor;
-
       public VMCollection(VMDescriptor itemDescriptor) {
-         _itemDescriptor = itemDescriptor;
+         ItemDescriptor = itemDescriptor;
       }
 
+      public VMDescriptor ItemDescriptor { get; private set; }
+
       public PropertyDescriptorCollection GetItemProperties(PropertyDescriptor[] listAccessors) {
-         return _itemDescriptor.PropertyDescriptors;
+         return ItemDescriptor.PropertyDescriptors;
       }
 
       public string GetListName(PropertyDescriptor[] listAccessors) {

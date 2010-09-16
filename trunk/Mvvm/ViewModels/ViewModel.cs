@@ -10,12 +10,23 @@
       private FieldValueHolder _dynamicFieldValues = null;
       private VMDescriptor _descriptor;
 
+      internal ViewModel() {
+
+      }
+
       internal ViewModel(VMDescriptor descriptor) {
          Contract.Requires<ArgumentNullException>(descriptor != null);
-         _descriptor = descriptor;
+         InitializeWithDescriptor(descriptor);
       }
 
       public event PropertyChangedEventHandler PropertyChanged;
+
+      internal void InitializeWithDescriptor(VMDescriptor descriptor) {
+         if (_descriptor == null) {
+            throw new ArgumentException();
+         }
+         _descriptor = descriptor;
+      }
 
       protected internal void SetValue<T>(VMPropertyBase<T> property, T value) {
          Contract.Requires<ArgumentNullException>(property != null);
@@ -33,6 +44,12 @@
             handler(this, new PropertyChangedEventArgs(property.PropertyName));
          }
       }
+
+      private void RequireDescriptor() {
+         if (_descriptor == null) {
+            throw new InvalidOperationException(); // TODO: Good exception
+         }
+      }
    }
 
    partial class ViewModel : IBehaviorContext {
@@ -40,6 +57,7 @@
 
       FieldValueHolder IBehaviorContext.FieldValues {
          get {
+            RequireDescriptor();
             if (_dynamicFieldValues == null) {
                _dynamicFieldValues = _descriptor.DynamicFields.CreateValueHolder();
             }
@@ -55,10 +73,12 @@
 
    partial class ViewModel : ICustomTypeDescriptor {
       PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties() {
+         RequireDescriptor();
          return _descriptor.PropertyDescriptors;
       }
 
       PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties(Attribute[] attributes) {
+         RequireDescriptor();
          if (attributes != null && attributes.Length > 0) {
             throw new NotSupportedException(ExceptionTexts.GetPropertiesWithAttributesIsNotSupport);
          }
@@ -109,6 +129,9 @@
 
    public abstract partial class ViewModel<TDescriptor> : ViewModel
       where TDescriptor : VMDescriptor {
+
+      public ViewModel() {
+      }
 
       public ViewModel(TDescriptor descriptor)
          : base(descriptor) {

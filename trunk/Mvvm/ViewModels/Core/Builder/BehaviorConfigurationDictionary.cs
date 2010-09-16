@@ -1,7 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System.Collections.Generic;
 
-   internal sealed class BehaviorConfigurationDictionary {
+   public sealed class BehaviorConfigurationDictionary {
       private Dictionary<VMProperty, BehaviorConfiguration> _configurations
          = new Dictionary<VMProperty, BehaviorConfiguration>();
 
@@ -13,7 +13,7 @@
          _configurations.Add(property, configuration);
       }
 
-      public void ApplyToProperties() {
+      internal void ApplyToProperties() {
          foreach (var pair in _configurations) {
             VMProperty property = pair.Key;
             BehaviorConfiguration config = pair.Value;

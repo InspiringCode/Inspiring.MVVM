@@ -23,12 +23,17 @@
          return GetNextBehavior<IAccessPropertyBehavior<IEnumerable<TSourceItem>>>().GetValue(vm);
       }
 
-      private void PopulateCollection(IBehaviorContext behaviorContext, VMCollection<TVM> collection, IEnumerable<TSourceItem> source) {
+      private void PopulateCollection(
+         IBehaviorContext behaviorContext,
+         VMCollection<TVM> collection,
+         IEnumerable<TSourceItem> source
+      ) {
          var viewModelFactory = GetNextBehavior<IViewModelFactoryBehavior<TVM>>();
          collection.Clear();
 
          foreach (TSourceItem item in source) {
             TVM vm = viewModelFactory.CreateInstance(behaviorContext);
+            vm.InitializeWithDescriptor(collection.ItemDescriptor);
             vm.InitializeFrom(item);
             collection.Add(vm);
          }

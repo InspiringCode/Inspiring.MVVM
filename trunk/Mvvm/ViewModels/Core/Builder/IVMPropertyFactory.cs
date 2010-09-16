@@ -5,6 +5,10 @@
    using System.Windows.Input;
    using Inspiring.Mvvm.Common;
 
+   public interface IVMPropertyFactory {
+
+   }
+
    /// <summary>
    ///   A factory that creates <see cref="VMProperty"/> instances configured 
    ///   with a certain value source. You can get an instance of this interface
@@ -18,7 +22,7 @@
    ///   <see cref="IRootPropertyFactory"/> because it does not make sense on 
    ///   factories that are created for a certain model source object.
    /// </remarks>
-   public interface IVMPropertyFactory<TSource> : IHideObjectMembers {
+   public interface IVMPropertyFactory<TSource> : IVMPropertyFactory, IHideObjectMembers {
       /// <summary>
       ///   Creates a property that returns und updates the value of a normal
       ///   property of a model object that is wrapped by the view model.
@@ -83,7 +87,7 @@
    ///      [...]
    ///   })'.
    /// </summary>
-   public interface IRootVMPropertyFactory<TVM> : IHideObjectMembers {
+   public interface IRootVMPropertyFactory<TVM> : IVMPropertyFactory, IHideObjectMembers {
       /// <summary>
       ///   Creates a property that returns und updates the value of a normal
       ///   property of a model object that is wrapped by the view model.

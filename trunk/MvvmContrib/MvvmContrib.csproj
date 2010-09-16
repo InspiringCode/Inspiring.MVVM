@@ -75,6 +75,10 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screens\ApplicationCommandManager.cs" />
+    <Compile Include="ViewModels\ISelectionPropertyBuilder.cs" />
+    <Compile Include="ViewModels\SelectionExtensions.cs" />
+    <Compile Include="ViewModels\SelectionItemVM.cs" />
+    <Compile Include="ViewModels\SingleSelectionVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mvvm\Mvvm.csproj">

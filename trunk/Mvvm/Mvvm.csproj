@@ -95,6 +95,7 @@
     <Compile Include="ViewModels\Core\Behaviors\IBehaviorConfigurationExpression.cs" />
     <Compile Include="ViewModels\Core\Behaviors\IBehaviorFactory.cs" />
     <Compile Include="ViewModels\Core\Behaviors\VMBehaviorKey.cs" />
+    <Compile Include="ViewModels\Core\IBehaviorConfigurationDictionaryProvider.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionPopulatorBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\DelegateCommandBehavior.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="ViewModels\Core\PropertyBehaviors\ViewModelFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\ViewModelFactoryBehavior.old.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\ViewModelPropertyInitializerBehavior.cs" />
+    <Compile Include="ViewModels\Core\ViewModelExtensibility.cs" />
     <Compile Include="ViewModels\IVMContext.cs" />
     <Compile Include="ViewModels\VMCollectionProperty.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Behavior.cs" />
