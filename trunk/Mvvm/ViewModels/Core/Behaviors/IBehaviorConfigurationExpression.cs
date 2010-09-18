@@ -22,36 +22,9 @@
          VMBehaviorKey behaviorKey,
          Action<TBehavior> configurationAction
       );
-   }
 
-   public interface IBehaviorConfigurationExpression2 {
-      IBehaviorConfigurationExpression2 Add(
-         VMBehaviorKey key,
-         IBehaviorFactory behavior,
-         RelativePosition relativeTo,
-         VMBehaviorKey position,
-         bool addLazily = false
-      );
-
-      IBehaviorConfigurationExpression2 Override(
-         VMBehaviorKey behavior,
-         IBehaviorFactory withBehavior,
-         bool addLazily = false
-      );
-
-      IBehaviorConfigurationExpression2 OverridePermanently(
-         VMBehaviorKey behavior,
-         IBehaviorFactory withBehavior,
-         bool addLazily = false
-      );
-
-      IBehaviorConfigurationExpression2 ReplaceBehaviors(
-         BehaviorConfiguration withBehaviors
-      );
-
-      IBehaviorConfigurationExpression2 ConfigureBehavior<TBehavior>(
-         VMBehaviorKey behavior,
-         Action<TBehavior> configurationAction
+      IBehaviorConfigurationExpression MergeFrom(
+         BehaviorConfiguration additionalConfiguration
       );
    }
 

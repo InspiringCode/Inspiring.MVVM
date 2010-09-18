@@ -13,64 +13,27 @@
       private VMPropertyFactory<PersonVM, Person> _personFactory;
 
       private static void OverrideDefaultPropertyConfiguration() {
-         BehaviorConfiguration defaultConfig = new BehaviorConfiguration();
-
-         defaultConfig.Add(
-            VMBehaviorKey.PropertyValueAcessor,
-            new DefaultBehaviorFactory(VMBehaviorKey.PropertyValueAcessor),
-            RelativePosition.After,
-            VMBehaviorKey.Last
+         BehaviorConfigurationFactory.OverrideDefaultConfiguration(
+            new BehaviorConfiguration()
+               .Append(VMBehaviorKey.PropertyValueAcessor)
+               .Append(VMBehaviorKey.SourceValueAccessor, disabled: true)
          );
-
-         defaultConfig.Add(
-            VMBehaviorKey.SourceValueAccessor,
-            new DefaultBehaviorFactory(VMBehaviorKey.SourceValueAccessor),
-            RelativePosition.After,
-            VMBehaviorKey.Last,
-            addLazily: true
-         );
-
-         BehaviorConfigurationFactory.OverrideDefaultConfiguration(defaultConfig);
       }
 
       private static void OverrideDefaultCollectionConfiguration() {
-         BehaviorConfiguration defaultConfig = new BehaviorConfiguration();
-
-         defaultConfig.Add(
-            VMBehaviorKey.CollectionPopulator,
-            new DefaultBehaviorFactory(VMBehaviorKey.CollectionPopulator),
-            RelativePosition.After,
-            VMBehaviorKey.Last
+         BehaviorConfigurationFactory.OverrideDefaultCollectionConfiguration(
+            new BehaviorConfiguration()
+               .Append(VMBehaviorKey.CollectionPopulator)
+               .Append(VMBehaviorKey.SourceValueAccessor)
          );
-
-         defaultConfig.Add(
-            VMBehaviorKey.SourceValueAccessor,
-            new DefaultBehaviorFactory(VMBehaviorKey.SourceValueAccessor),
-            RelativePosition.After,
-            VMBehaviorKey.Last
-         );
-
-         BehaviorConfigurationFactory.OverrideDefaultCollectionConfiguration(defaultConfig);
       }
 
       private static void OverrideDefaultViewModelPropertyConfiguration() {
-         BehaviorConfiguration defaultConfig = new BehaviorConfiguration();
-
-         defaultConfig.Add(
-            VMBehaviorKey.ViewModelFactory,
-            new DefaultBehaviorFactory(VMBehaviorKey.ViewModelFactory),
-            RelativePosition.After,
-            VMBehaviorKey.Last
+         BehaviorConfigurationFactory.OverrideDefaultViewModelPropertyConfiguration(
+            new BehaviorConfiguration()
+               .Append(VMBehaviorKey.ViewModelFactory)
+               .Append(VMBehaviorKey.SourceValueAccessor)
          );
-
-         defaultConfig.Add(
-            VMBehaviorKey.SourceValueAccessor,
-            new DefaultBehaviorFactory(VMBehaviorKey.SourceValueAccessor),
-            RelativePosition.After,
-            VMBehaviorKey.Last
-         );
-
-         BehaviorConfigurationFactory.OverrideDefaultViewModelPropertyConfiguration(defaultConfig);
       }
 
       [TestInitialize]

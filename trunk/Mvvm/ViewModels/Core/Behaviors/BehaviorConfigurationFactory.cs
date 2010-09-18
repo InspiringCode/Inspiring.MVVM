@@ -50,156 +50,37 @@
       }
 
       private static BehaviorConfiguration CreatePropertyDefault() {
-         var config = new BehaviorConfiguration();
-
-         config.Add(
-            VMBehaviorKey.DisplayValueAccessor,
-            new DefaultBehaviorFactory(VMBehaviorKey.DisplayValueAccessor),
-            RelativePosition.After,
-            VMBehaviorKey.Last
-         );
-
-         config.Add(
-            VMBehaviorKey.PropertyChangedTrigger,
-            new DefaultBehaviorFactory(VMBehaviorKey.PropertyChangedTrigger),
-            RelativePosition.After,
-            VMBehaviorKey.Last
-         );
-
-         config.Add(
-            VMBehaviorKey.PropertyValueAcessor,
-            new DefaultBehaviorFactory(VMBehaviorKey.PropertyValueAcessor),
-            RelativePosition.After,
-            VMBehaviorKey.Last
-         );
-
-         config.Add(
-            VMBehaviorKey.SourceValueAccessor,
-            new DefaultBehaviorFactory(VMBehaviorKey.SourceValueAccessor),
-            RelativePosition.After,
-            VMBehaviorKey.Last,
-            addLazily: true
-         );
-
-         return config;
+         return new BehaviorConfiguration()
+            .Append(VMBehaviorKey.DisplayValueAccessor)
+            .Append(VMBehaviorKey.PropertyChangedTrigger)
+            .Append(VMBehaviorKey.PropertyValueAcessor)
+            .Append(VMBehaviorKey.SourceValueAccessor, disabled: true);
       }
 
       private static BehaviorConfiguration CreateCollectionDefault() {
-         var config = new BehaviorConfiguration();
-
-         config.Add(
-            VMBehaviorKey.DisplayValueAccessor,
-            new DefaultBehaviorFactory(VMBehaviorKey.DisplayValueAccessor),
-            RelativePosition.After,
-            VMBehaviorKey.Last
-         );
-
-         config.Add(
-            VMBehaviorKey.CollectionValueCache,
-            new DefaultBehaviorFactory(VMBehaviorKey.CollectionValueCache),
-            RelativePosition.After,
-            VMBehaviorKey.Last
-         );
-
-         config.Add(
-            VMBehaviorKey.CollectionPopulator,
-            new DefaultBehaviorFactory(VMBehaviorKey.CollectionPopulator),
-            RelativePosition.After,
-            VMBehaviorKey.Last
-         );
-
-         config.Add(
-            VMBehaviorKey.ViewModelFactory,
-            new DefaultBehaviorFactory(VMBehaviorKey.ViewModelFactory),
-            RelativePosition.After,
-            VMBehaviorKey.Last
-         );
-
-         config.Add(
-            VMBehaviorKey.SourceValueAccessor,
-            new DefaultBehaviorFactory(VMBehaviorKey.SourceValueAccessor),
-            RelativePosition.After,
-            VMBehaviorKey.Last
-         );
-
-         config.Add(
-            VMBehaviorKey.CollectionInstanceCache,
-            new DefaultBehaviorFactory(VMBehaviorKey.CollectionInstanceCache),
-            RelativePosition.After,
-            VMBehaviorKey.Last
-         );
-
-         config.Add(
-            VMBehaviorKey.CollectionFactory,
-            new DefaultBehaviorFactory(VMBehaviorKey.CollectionFactory),
-            RelativePosition.After,
-            VMBehaviorKey.Last
-         );
-
-
-         return config;
+         return new BehaviorConfiguration()
+            .Append(VMBehaviorKey.DisplayValueAccessor)
+            .Append(VMBehaviorKey.CollectionValueCache)
+            .Append(VMBehaviorKey.CollectionPopulator)
+            .Append(VMBehaviorKey.ViewModelFactory)
+            .Append(VMBehaviorKey.SourceValueAccessor)
+            .Append(VMBehaviorKey.CollectionInstanceCache)
+            .Append(VMBehaviorKey.CollectionFactory);
       }
 
       private static BehaviorConfiguration CreateViewModelPropertyDefault() {
-         var config = new BehaviorConfiguration();
-
-         config.Add(
-            VMBehaviorKey.ViewModelValueCache,
-            new DefaultBehaviorFactory(VMBehaviorKey.ViewModelValueCache),
-            RelativePosition.After,
-            VMBehaviorKey.Last
-         );
-
-         config.Add(
-            VMBehaviorKey.ViewModelPropertyInitializer,
-            new DefaultBehaviorFactory(VMBehaviorKey.ViewModelPropertyInitializer),
-            RelativePosition.After,
-            VMBehaviorKey.Last
-         );
-
-         config.Add(
-            VMBehaviorKey.ViewModelFactory,
-            new DefaultBehaviorFactory(VMBehaviorKey.ViewModelFactory),
-            RelativePosition.After,
-            VMBehaviorKey.Last
-         );
-
-         config.Add(
-            VMBehaviorKey.SourceValueAccessor,
-            new DefaultBehaviorFactory(VMBehaviorKey.SourceValueAccessor),
-            RelativePosition.After,
-            VMBehaviorKey.Last
-         );
-
-         return config;
+         return new BehaviorConfiguration()
+            .Append(VMBehaviorKey.ViewModelValueCache)
+            .Append(VMBehaviorKey.ViewModelPropertyInitializer)
+            .Append(VMBehaviorKey.ViewModelFactory)
+            .Append(VMBehaviorKey.SourceValueAccessor);
       }
 
       private static BehaviorConfiguration CreateCommandPropertyDefault() {
-         var config = new BehaviorConfiguration();
-
-         config.Add(
-            VMBehaviorKey.CommandValueCache,
-            new DefaultBehaviorFactory(VMBehaviorKey.CommandValueCache),
-            RelativePosition.After,
-            VMBehaviorKey.Last
-         );
-
-         config.Add(
-            VMBehaviorKey.PropertyValueAcessor,
-            new DefaultBehaviorFactory(VMBehaviorKey.PropertyValueAcessor),
-            RelativePosition.After,
-            VMBehaviorKey.Last
-         );
-
-         config.Add(
-            VMBehaviorKey.SourceValueAccessor,
-            new DefaultBehaviorFactory(VMBehaviorKey.SourceValueAccessor),
-            RelativePosition.After,
-            VMBehaviorKey.Last,
-            addLazily: true
-         );
-
-         return config;
+         return new BehaviorConfiguration()
+            .Append(VMBehaviorKey.CommandValueCache)
+            .Append(VMBehaviorKey.PropertyValueAcessor)
+            .Append(VMBehaviorKey.SourceValueAccessor, disabled: true);
       }
    }
 }

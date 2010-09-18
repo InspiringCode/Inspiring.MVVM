@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Inspiring.MvvmTest.ViewModels.Core.Behaviors {
    [TestClass]
-   public class BehaviorConfigurationTest {
+   public class BehaviorConfiguration2Test {
       private IBehavior _behavior1;
       private IBehavior _behavior2;
       private IBehavior _behavior3;
@@ -46,16 +46,18 @@ namespace Inspiring.MvvmTest.ViewModels.Core.Behaviors {
       public void InsertAfter() {
          BehaviorConfiguration conf = new BehaviorConfiguration();
 
-         conf.Add(VMBehaviorKey.CustomOne, _factory1, RelativePosition.After, VMBehaviorKey.Last);
+         InsertAndEnable(conf, VMBehaviorKey.CustomOne, _factory1, RelativePosition.After, VMBehaviorKey.Last);
+         conf.OverrideFactory(VMBehaviorKey.CustomOne, _factory1);
+         conf.Enable(VMBehaviorKey.CustomOne);
          AssertChain(conf, _behavior1);
 
-         conf.Add(VMBehaviorKey.CustomTwo, _factory2, RelativePosition.After, VMBehaviorKey.Last);
+         InsertAndEnable(conf, VMBehaviorKey.CustomTwo, _factory2, RelativePosition.After, VMBehaviorKey.Last);
          AssertChain(conf, _behavior1, _behavior2);
 
-         conf.Add(VMBehaviorKey.CustomThree, _factory3, RelativePosition.After, VMBehaviorKey.CustomTwo);
+         InsertAndEnable(conf, VMBehaviorKey.CustomThree, _factory3, RelativePosition.After, VMBehaviorKey.CustomTwo);
          AssertChain(conf, _behavior1, _behavior2, _behavior3);
 
-         conf.Add(VMBehaviorKey.CustomFour, _factory4, RelativePosition.After, VMBehaviorKey.CustomOne);
+         InsertAndEnable(conf, VMBehaviorKey.CustomFour, _factory4, RelativePosition.After, VMBehaviorKey.CustomOne);
          AssertChain(conf, _behavior1, _behavior4, _behavior2, _behavior3);
       }
 
@@ -63,42 +65,43 @@ namespace Inspiring.MvvmTest.ViewModels.Core.Behaviors {
       public void InsertBefore() {
          BehaviorConfiguration conf = new BehaviorConfiguration();
 
-         conf.Add(VMBehaviorKey.CustomOne, _factory1, RelativePosition.Before, VMBehaviorKey.First);
+         InsertAndEnable(conf, VMBehaviorKey.CustomOne, _factory1, RelativePosition.Before, VMBehaviorKey.First);
          AssertChain(conf, _behavior1);
 
-         conf.Add(VMBehaviorKey.CustomTwo, _factory2, RelativePosition.Before, VMBehaviorKey.First);
+         InsertAndEnable(conf, VMBehaviorKey.CustomTwo, _factory2, RelativePosition.Before, VMBehaviorKey.First);
          AssertChain(conf, _behavior2, _behavior1);
 
-         conf.Add(VMBehaviorKey.CustomThree, _factory3, RelativePosition.Before, VMBehaviorKey.CustomTwo);
+         InsertAndEnable(conf, VMBehaviorKey.CustomThree, _factory3, RelativePosition.Before, VMBehaviorKey.CustomTwo);
          AssertChain(conf, _behavior3, _behavior2, _behavior1);
 
-         conf.Add(VMBehaviorKey.CustomFour, _factory4, RelativePosition.Before, VMBehaviorKey.CustomOne);
+         InsertAndEnable(conf, VMBehaviorKey.CustomFour, _factory4, RelativePosition.Before, VMBehaviorKey.CustomOne);
          AssertChain(conf, _behavior3, _behavior2, _behavior4, _behavior1);
       }
 
       [TestMethod]
       public void ReplaceBehaviors() {
          BehaviorConfiguration template = new BehaviorConfiguration();
-         template.Add(VMBehaviorKey.CustomOne, _factory1, RelativePosition.Before, VMBehaviorKey.First);
-         template.Add(VMBehaviorKey.CustomTwo, _factory2, RelativePosition.After, VMBehaviorKey.Last);
-         template.Add(VMBehaviorKey.CustomThree, _factory3, RelativePosition.After, VMBehaviorKey.Last);
+         InsertAndEnable(template, VMBehaviorKey.CustomOne, _factory1, RelativePosition.Before, VMBehaviorKey.First);
+
+         template.Insert(VMBehaviorKey.CustomTwo, RelativePosition.After, VMBehaviorKey.Last);
+         template.OverrideFactory(VMBehaviorKey.CustomTwo, _factory2);
+
+         InsertAndEnable(template, VMBehaviorKey.CustomThree, _factory3, RelativePosition.After, VMBehaviorKey.Last);
 
          var conf = template.Clone();
-         AssertChain(conf, _behavior1, _behavior2, _behavior3);
+         AssertChain(conf, _behavior1, _behavior3);
 
-         conf.Override(VMBehaviorKey.CustomOne, _factory4);
-         conf.OverridePermanently(VMBehaviorKey.CustomTwo, _factory5);
-         conf.OverridePermanently(VMBehaviorKey.CustomThree, _factory6);
-         AssertChain(conf, _behavior4, _behavior5, _behavior6);
+         conf.OverrideFactory(VMBehaviorKey.CustomOne, _factory4);
+         conf.Enable(VMBehaviorKey.CustomTwo);
+         conf.OverrideFactory(VMBehaviorKey.CustomThree, _factory5);
+         AssertChain(conf, _behavior4, _behavior2, _behavior5);
 
-         var replaceWith = new BehaviorConfiguration();
-         replaceWith.Add(VMBehaviorKey.CustomThree, _factory3, RelativePosition.After, VMBehaviorKey.Last);
-         replaceWith.Add(VMBehaviorKey.CustomOne, _factory7, RelativePosition.After, VMBehaviorKey.Last);
-         replaceWith.Add(VMBehaviorKey.CustomFour, _factory8, RelativePosition.After, VMBehaviorKey.Last);
-         AssertChain(replaceWith, _behavior3, _behavior7, _behavior8);
+         var mergeFrom = new BehaviorConfiguration();
+         InsertAndEnable(mergeFrom, VMBehaviorKey.CustomFour, _factory7, RelativePosition.Before, VMBehaviorKey.CustomTwo);
+         mergeFrom.OverrideFactory(VMBehaviorKey.CustomTwo, _factory6);
 
-         conf.ReplaceBehaviors(replaceWith);
-         AssertChain(conf, _behavior6, _behavior7, _behavior8);
+         conf.MergeFrom(mergeFrom);
+         AssertChain(conf, _behavior4, _behavior7, _behavior6, _behavior5);
       }
 
       private void AssertChain(BehaviorConfiguration configuration, params IBehavior[] expected) {
@@ -131,5 +134,18 @@ namespace Inspiring.MvvmTest.ViewModels.Core.Behaviors {
          public void Initialize(BehaviorInitializationContext context) {
          }
       }
+
+      private static void InsertAndEnable(
+         BehaviorConfiguration conf,
+         VMBehaviorKey behaviorKey,
+         IBehaviorFactory factory,
+         RelativePosition relativeTo,
+         VMBehaviorKey position
+      ) {
+         conf.Insert(behaviorKey, relativeTo, position);
+         conf.OverrideFactory(behaviorKey, factory);
+         conf.Enable(behaviorKey);
+      }
+
    }
 }

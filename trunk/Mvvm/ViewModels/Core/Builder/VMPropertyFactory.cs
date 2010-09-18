@@ -32,10 +32,9 @@
             _sourceObjectPropertyPath,
             PropertyPath.Create(sourcePropertySelector)
          );
-
-         config.OverridePermanently(
-            behavior: VMBehaviorKey.PropertyValueAcessor,
-            withBehavior: new ConstantBehaviorFactory(
+         config.OverrideFactory(
+            VMBehaviorKey.PropertyValueAcessor,
+            new ConstantBehaviorFactory(
                new MappedPropertyBehavior<TVM, T>(propertyPath)
             )
          );
@@ -50,17 +49,17 @@
          var config = BehaviorConfigurationFactory.CreateConfiguration();
 
          if (!_sourceObjectPropertyPath.IsEmpty) {
-            config.OverridePermanently(
-               behavior: VMBehaviorKey.SourceValueAccessor,
-               withBehavior: new ConstantBehaviorFactory(
+            config.OverrideFactory(
+               VMBehaviorKey.SourceValueAccessor,
+               new ConstantBehaviorFactory(
                   new MappedPropertyBehavior<TVM, TSource>(_sourceObjectPropertyPath)
                )
-            );
+            ).Enable(VMBehaviorKey.SourceValueAccessor);
          }
 
-         config.OverridePermanently(
-            behavior: VMBehaviorKey.PropertyValueAcessor,
-            withBehavior: new ConstantBehaviorFactory(
+         config.OverrideFactory(
+            VMBehaviorKey.PropertyValueAcessor,
+            new ConstantBehaviorFactory(
                new CalculatedPropertyBehavior<TSource, T>(getter, setter)
             )
          );
@@ -74,9 +73,9 @@
          VMProperty<TValue> property = new VMProperty<TValue>();
          BehaviorConfiguration config = BehaviorConfigurationFactory.CreateConfiguration();
 
-         config.OverridePermanently(
-            behavior: VMBehaviorKey.PropertyValueAcessor,
-            withBehavior: new ConstantBehaviorFactory(
+         config.OverrideFactory(
+            VMBehaviorKey.PropertyValueAcessor,
+            new ConstantBehaviorFactory(
                new InstancePropertyBehavior<TValue>()
             )
          );
@@ -96,9 +95,9 @@
             PropertyPath.Create(sourceCollectionSelector)
          );
 
-         config.OverridePermanently(
-            behavior: VMBehaviorKey.SourceValueAccessor,
-            withBehavior: new ConstantBehaviorFactory(
+         config.OverrideFactory(
+            VMBehaviorKey.SourceValueAccessor,
+            new ConstantBehaviorFactory(
                new MappedPropertyBehavior<TVM, IEnumerable<TItem>>(sourceCollectionPropertyPath)
             )
          );
@@ -116,9 +115,9 @@
             PropertyPath.Create(viewModelSourceSelector)
          );
 
-         config.OverridePermanently(
-            behavior: VMBehaviorKey.SourceValueAccessor,
-            withBehavior: new ConstantBehaviorFactory(
+         config.OverrideFactory(
+            VMBehaviorKey.SourceValueAccessor,
+            new ConstantBehaviorFactory(
                new MappedPropertyBehavior<TVM, TVMSource>(sourcePropertyPath)
             )
          );
@@ -129,20 +128,20 @@
       public VMProperty<ICommand> Command(Action<TSource> execute, Func<TSource, bool> canExecute = null) {
          var config = BehaviorConfigurationFactory.CreateCommandPropertyConfiguration();
 
-         config.OverridePermanently(
-            behavior: VMBehaviorKey.PropertyValueAcessor,
-            withBehavior: new ConstantBehaviorFactory(
+         config.OverrideFactory(
+            VMBehaviorKey.PropertyValueAcessor,
+            new ConstantBehaviorFactory(
                new DelegateCommandBehavior<TSource>(execute, canExecute)
             )
          );
 
          if (!_sourceObjectPropertyPath.IsEmpty) {
-            config.OverridePermanently(
-               behavior: VMBehaviorKey.SourceValueAccessor,
-               withBehavior: new ConstantBehaviorFactory(
+            config.OverrideFactory(
+               VMBehaviorKey.SourceValueAccessor,
+               new ConstantBehaviorFactory(
                   new MappedPropertyBehavior<TVM, TSource>(_sourceObjectPropertyPath)
                )
-            );
+            ).Enable(VMBehaviorKey.SourceValueAccessor);
          }
 
          var property = new VMProperty<ICommand>();
@@ -170,16 +169,16 @@
          public VMCollectionProperty<TVM> Of<TVM>(VMDescriptor itemDescriptor) where TVM : ViewModel, ICanInitializeFrom<TItem> {
             var property = new VMCollectionProperty<TVM>();
 
-            _config.OverridePermanently(
-               behavior: VMBehaviorKey.CollectionPopulator,
-               withBehavior: new ConstantBehaviorFactory(
+            _config.OverrideFactory(
+               VMBehaviorKey.CollectionPopulator,
+               new ConstantBehaviorFactory(
                   new CollectionPopulatorBehavior<TVM, TItem>()
                )
             );
 
-            _config.OverridePermanently(
-               behavior: VMBehaviorKey.CollectionFactory,
-               withBehavior: new ConstantBehaviorFactory(
+            _config.OverrideFactory(
+               VMBehaviorKey.CollectionFactory,
+               new ConstantBehaviorFactory(
                   new CollectionFactoryBehavior<TVM>(itemDescriptor)
                )
             );
@@ -204,9 +203,9 @@
          public VMProperty<TVM> Of<TVM>() where TVM : ViewModel, ICanInitializeFrom<TVMSource> {
             var property = new VMProperty<TVM>();
 
-            _config.OverridePermanently(
-               behavior: VMBehaviorKey.ViewModelPropertyInitializer,
-               withBehavior: new ConstantBehaviorFactory(
+            _config.OverrideFactory(
+               VMBehaviorKey.ViewModelPropertyInitializer,
+               new ConstantBehaviorFactory(
                   new ViewModelPropertyInitializerBehavior<TVM, TVMSource>()
                )
             );

@@ -3,122 +3,124 @@
    using System.Collections.Generic;
    using System.Linq;
 
-   public sealed class BehaviorConfiguration : IBehaviorConfigurationExpression2 {
-      private List<BehaviorEntry> _behaviors = new List<BehaviorEntry>();
+   public sealed class BehaviorConfiguration : IBehaviorConfigurationExpression {
+      private List<Action<List<BehaviorEntry>>> _configurationActions = new List<Action<List<BehaviorEntry>>>();
 
-      /// <inheritdoc/>
-      public IBehaviorConfigurationExpression2 Add(
-         VMBehaviorKey key,
-         IBehaviorFactory behavior,
-         RelativePosition relativeTo,
-         VMBehaviorKey position,
-         bool addLazily = false
-      ) {
-         int relatedBehaviorIndex = 0;
+      public BehaviorConfiguration Append(VMBehaviorKey behaviorKey, bool disabled = false) {
+         Insert(behaviorKey, RelativePosition.After, VMBehaviorKey.Last);
 
-         if (_behaviors.Any()) {
-            relatedBehaviorIndex = GetIndex(position);
-
-            if (relativeTo == RelativePosition.After) {
-               relatedBehaviorIndex++;
-            }
+         if (!disabled) {
+            Enable(behaviorKey);
          }
 
-         BehaviorEntry entry = new BehaviorEntry {
-            Key = key,
-            Factory = behavior,
-            AddLazily = addLazily
-         };
-
-         _behaviors.Insert(relatedBehaviorIndex, entry);
          return this;
       }
 
-      /// <inheritdoc/>
-      public IBehaviorConfigurationExpression2 Override(
-         VMBehaviorKey behavior,
-         IBehaviorFactory withBehavior,
-         bool addLazily = false
+      public IBehaviorConfigurationExpression Insert(
+         VMBehaviorKey behaviorKey,
+         RelativePosition relativeTo,
+         VMBehaviorKey other
       ) {
-         int index = GetIndex(behavior);
-         BehaviorEntry entry = _behaviors[index];
+         _configurationActions.Add(entries => {
+            int otherBehaviorIndex = 0;
 
-         entry.Factory = withBehavior;
-         entry.AddLazily = addLazily;
+            if (entries.Any()) {
+               otherBehaviorIndex = GetIndex(entries, other);
+
+               if (relativeTo == RelativePosition.After) {
+                  otherBehaviorIndex++;
+               }
+            }
+
+            BehaviorEntry entry = new BehaviorEntry {
+               Key = behaviorKey,
+               IsEnabled = false
+            };
+
+            entries.Insert(otherBehaviorIndex, entry);
+         });
 
          return this;
       }
 
-      /// <inheritdoc/>
-      public IBehaviorConfigurationExpression2 OverridePermanently(
-         VMBehaviorKey behavior,
-         IBehaviorFactory withBehavior,
-         bool addLazily = false
+      public IBehaviorConfigurationExpression OverrideFactory(
+         VMBehaviorKey behaviorKey,
+         IBehaviorFactory factory
       ) {
-         int index = GetIndex(behavior);
-         BehaviorEntry entry = _behaviors[index];
-
-         entry.Factory = withBehavior;
-         entry.AddLazily = addLazily;
-         entry.Permanent = true;
+         _configurationActions.Add(entries => {
+            GetEntry(entries, behaviorKey).Factory = factory;
+         });
 
          return this;
       }
 
-      /// <inheritdoc/>
-      public IBehaviorConfigurationExpression2 ReplaceBehaviors(BehaviorConfiguration withBehaviors) {
-         BehaviorEntry[] clones = withBehaviors
-            ._behaviors
-            .Select(e => {
-               BehaviorEntry permanent = _behaviors
-                  .SingleOrDefault(x => x.Permanent && x.Key == e.Key);
-
-               return (permanent ?? e).Clone();
-            })
-            .ToArray();
-
-         _behaviors.Clear();
-         _behaviors.AddRange(clones);
+      public IBehaviorConfigurationExpression Enable(
+         VMBehaviorKey behaviorKey
+      ) {
+         _configurationActions.Add(entries => {
+            GetEntry(entries, behaviorKey).IsEnabled = true;
+         });
 
          return this;
       }
 
-      /// <inheritdoc/>
-      public IBehaviorConfigurationExpression2 ConfigureBehavior<TBehavior>(
-         VMBehaviorKey behavior,
+      public IBehaviorConfigurationExpression Configure<TBehavior>(
+         VMBehaviorKey behaviorKey,
          Action<TBehavior> configurationAction
       ) {
-         List<BehaviorEntry> entries = _behaviors.FindAll(e => e.Key == behavior);
+         _configurationActions.Add(entries => {
+            List<BehaviorEntry> found = entries.FindAll(e => e.Key == behaviorKey);
 
-         if (entries.Count == 0) {
-            throw new ArgumentException(
-               ExceptionTexts.BehaviorNotContainedByConfiguration.FormatWith(behavior)
-            );
-         }
+            if (found.Count == 0) {
+               throw new ArgumentException(
+                  ExceptionTexts.BehaviorNotContainedByConfiguration.FormatWith(behaviorKey)
+               );
+            }
 
-         entries.ForEach(e => {
-            e.ConfigurationAction = b => {
-               TBehavior typed = (TBehavior)b;
-               configurationAction(typed);
-            };
+            found.ForEach(e => {
+               e.ConfigurationAction += b => {
+                  TBehavior typed = (TBehavior)b;
+                  configurationAction(typed);
+               };
+            });
          });
+
+         return this;
+      }
+
+      public IBehaviorConfigurationExpression MergeFrom(
+         BehaviorConfiguration additionalConfiguration
+      ) {
+         _configurationActions.AddRange(
+            additionalConfiguration._configurationActions
+         );
 
          return this;
       }
 
       public BehaviorConfiguration Clone() {
          BehaviorConfiguration clone = new BehaviorConfiguration();
-         clone.ReplaceBehaviors(this);
+         clone.MergeFrom(this);
          return clone;
       }
 
       public Behavior CreateBehaviorChain<TValue>() {
+         List<BehaviorEntry> entries = new List<BehaviorEntry>();
+
+         foreach (var action in _configurationActions) {
+            action(entries);
+         }
+
          Behavior chain = new Behavior();
          IBehavior previous = chain;
 
-         foreach (BehaviorEntry entry in _behaviors) {
-            if (entry.ConfigurationAction != null || !entry.AddLazily) {
-               IBehavior b = entry.Factory.Create<TValue>();
+         foreach (BehaviorEntry entry in entries) {
+            if (entry.IsEnabled) {
+               IBehaviorFactory factory =
+                  entry.Factory ??
+                  new DefaultBehaviorFactory(entry.Key);
+
+               IBehavior b = factory.Create<TValue>();
 
                if (entry.ConfigurationAction != null) {
                   entry.ConfigurationAction(b);
@@ -132,17 +134,21 @@
          return chain;
       }
 
-      private int GetIndex(VMBehaviorKey key) {
-         if (_behaviors.Count > 0) {
+      private static BehaviorEntry GetEntry(List<BehaviorEntry> entries, VMBehaviorKey key) {
+         return entries[GetIndex(entries, key)];
+      }
+
+      private static int GetIndex(List<BehaviorEntry> entries, VMBehaviorKey key) {
+         if (entries.Count > 0) {
             if (key == VMBehaviorKey.First) {
                return 0;
             }
             if (key == VMBehaviorKey.Last) {
-               return _behaviors.Count - 1;
+               return entries.Count - 1;
             }
          }
 
-         int index = _behaviors.FindIndex(e => e.Key == key);
+         int index = entries.FindIndex(e => e.Key == key);
 
          if (index == -1) {
             throw new ArgumentException(
@@ -156,16 +162,14 @@
       private class BehaviorEntry {
          public VMBehaviorKey Key { get; set; }
          public IBehaviorFactory Factory { get; set; }
-         public bool AddLazily { get; set; }
-         public bool Permanent { get; set; }
+         public bool IsEnabled { get; set; }
          public Action<IBehavior> ConfigurationAction { get; set; }
 
          public BehaviorEntry Clone() {
             return new BehaviorEntry {
                Key = Key,
                Factory = Factory,
-               AddLazily = AddLazily,
-               Permanent = Permanent,
+               IsEnabled = IsEnabled,
                ConfigurationAction = ConfigurationAction
             };
          }
