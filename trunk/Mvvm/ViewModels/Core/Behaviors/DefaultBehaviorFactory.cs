@@ -21,7 +21,7 @@
             case VMBehaviorKey.DisconnectedViewModelBehavior:
                return new CacheValueBehavior<TValue>();
             case VMBehaviorKey.PropertyChangedTrigger:
-               throw new NotImplementedException();
+               return new PropertyChangedBehavior<TValue>();
             case VMBehaviorKey.CollectionValueCache:
                return new RefreshableValueCahche<TValue>();
             case VMBehaviorKey.CollectionValidator:

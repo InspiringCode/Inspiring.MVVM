@@ -60,6 +60,13 @@
          );
 
          config.Add(
+            VMBehaviorKey.PropertyChangedTrigger,
+            new DefaultBehaviorFactory(VMBehaviorKey.PropertyChangedTrigger),
+            RelativePosition.After,
+            VMBehaviorKey.Last
+         );
+
+         config.Add(
             VMBehaviorKey.PropertyValueAcessor,
             new DefaultBehaviorFactory(VMBehaviorKey.PropertyValueAcessor),
             RelativePosition.After,

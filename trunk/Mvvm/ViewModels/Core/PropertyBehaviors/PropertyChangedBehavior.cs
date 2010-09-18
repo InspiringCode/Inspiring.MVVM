@@ -1,14 +1,8 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Diagnostics.Contracts;
 
    public sealed class PropertyChangedBehavior<TValue> : Behavior, IAccessPropertyBehavior<TValue> {
-      private VMProperty<TValue> _property;
-
-      public PropertyChangedBehavior(VMProperty<TValue> property) {
-         Contract.Requires(property != null);
-         _property = property;
-      }
+      private VMPropertyBase<TValue> _property;
 
       public TValue GetValue(IBehaviorContext vm) {
          return GetNextBehavior<IAccessPropertyBehavior<TValue>>().GetValue(vm);
@@ -21,6 +15,11 @@
          if (!Object.Equals(value, oldValue)) {
             vm.RaisePropertyChanged(_property);
          }
+      }
+
+      protected override void Initialize(BehaviorInitializationContext context) {
+         base.Initialize(context);
+         _property = (VMPropertyBase<TValue>)context.Property;
       }
    }
 }

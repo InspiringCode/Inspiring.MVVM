@@ -58,6 +58,7 @@ namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
          bool called = false;
          PropertyChangedEventHandler handler = delegate(object sender, PropertyChangedEventArgs args) {
             Assert.IsFalse(called);
+            called = true;
             Assert.AreEqual(property.PropertyName, args.PropertyName);
             Assert.AreEqual(newValue, _vm.GetValue(property));
          };
