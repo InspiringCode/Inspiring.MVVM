@@ -116,6 +116,18 @@
          Assert.IsNull(_person.CurrentStatus);
       }
 
+      [TestMethod]
+      public void CheckForChangedNotification() {
+         var singleSelection = _vm.InvokeGetValue(PersonVM.Descriptor.Status);
+         var secondItemVM = singleSelection.AllItems.ElementAt(1);
+         AssertHelper.AssertPropertyChangedEvent(
+            singleSelection,
+            x => x.SelectedItem,
+            secondItemVM,
+            () => { singleSelection.SelectedItem = secondItemVM; }
+         );
+      }
+
       private VMCollection<SelectionItemVM<PersonStatus>> GetAllItems(
          SingleSelectionProperty<PersonStatus> singleSelectionProperty
       ) {
