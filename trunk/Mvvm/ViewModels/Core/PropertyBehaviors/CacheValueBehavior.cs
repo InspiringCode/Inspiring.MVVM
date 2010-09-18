@@ -1,16 +1,16 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
-   internal sealed class CacheValueBehavior<TValue> : Behavior, ICacheValueBehavior<TValue> {
+   internal class CacheValueBehavior<TValue> : Behavior, IAccessPropertyBehavior<TValue> {
       FieldDefinition<TValue> _localCopyField;
 
-      public void CopyFromSource(IBehaviorContext vm) {
+      protected void CopyFromSource(IBehaviorContext vm) {
          IAccessPropertyBehavior<TValue> accessBehavior = GetNextBehavior<IAccessPropertyBehavior<TValue>>();
          TValue sourceValue = accessBehavior.GetValue(vm);
          vm.FieldValues.SetValue(_localCopyField, sourceValue);
       }
 
-      public void CopyToSource(IBehaviorContext vm) {
+      protected void CopyToSource(IBehaviorContext vm) {
          IAccessPropertyBehavior<TValue> accessBehavior = GetNextBehavior<IAccessPropertyBehavior<TValue>>();
-         TValue localValue = vm.FieldValues.GetValue(_localCopyField);
+         TValue localValue = vm.FieldValues.GetValueOrDefault(_localCopyField);
          accessBehavior.SetValue(vm, localValue);
       }
 
@@ -32,4 +32,23 @@
          );
       }
    }
+
+   internal sealed class RefreshableValueCahche<TValue> : CacheValueBehavior<TValue>, IManuelUpdateBehavior {
+      private VMPropertyBase<TValue> _property;
+
+      public void UpdateFromSource(IBehaviorContext vm) {
+         CopyFromSource(vm);
+         vm.RaisePropertyChanged(_property);
+      }
+
+      public void UpdateSource(IBehaviorContext vm) {
+         CopyToSource(vm);
+      }
+
+      protected override void Initialize(BehaviorInitializationContext context) {
+         base.Initialize(context);
+         _property = (VMPropertyBase<TValue>)context.Property;
+      }
+   }
+
 }

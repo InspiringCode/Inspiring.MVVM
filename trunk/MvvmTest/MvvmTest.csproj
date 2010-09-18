@@ -58,6 +58,8 @@
   <ItemGroup>
     <Compile Include="AssertHelper.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="ViewModels\IntegrationTests\ChangeNotificationTest.cs" />
+    <Compile Include="ViewModels\TestVM.cs" />
     <Compile Include="Common\BehaviorsTest.cs" />
     <Compile Include="Common\ExpressionServiceTest.cs" />
     <Compile Include="Common\PropertyPathTest.cs" />
@@ -81,6 +83,7 @@
     <Compile Include="ViewModels\Core\Behaviors\BehaviorConfigurationTest.cs" />
     <Compile Include="ViewModels\Core\Builder\VMPropertyFactoryTest.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\ViewModelFactoryBehaviorTest.cs" />
+    <Compile Include="ViewModels\IntegrationTests\ManualUpdateTest.cs" />
     <Compile Include="ViewModels\PersonVM.cs" />
     <Compile Include="ViewModels\TypeDescriptorTest.cs" />
     <Compile Include="ViewModels\ViewModelsTest.cs" />

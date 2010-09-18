@@ -43,7 +43,7 @@
       }
 
       private sealed class PersonVMDescriptor : VMDescriptor {
-         public VMProperty<SingleSelectionVM<PersonStatus>> Status { get; set; }
+         public VMProperty<SingleSelectionVM<PersonStatus, SelectionItemVM<PersonStatus>>> Status { get; set; }
       }
 
       private class Person {

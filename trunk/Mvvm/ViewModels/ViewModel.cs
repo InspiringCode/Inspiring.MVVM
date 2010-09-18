@@ -22,8 +22,10 @@
       public event PropertyChangedEventHandler PropertyChanged;
 
       internal void InitializeWithDescriptor(VMDescriptor descriptor) {
-         if (_descriptor == null) {
-            throw new ArgumentException();
+         Contract.Requires(descriptor != null);
+         if (_descriptor != null) {
+            // TODO
+            //throw new InvalidOperationException();
          }
          _descriptor = descriptor;
       }
@@ -43,6 +45,18 @@
          if (handler != null) {
             handler(this, new PropertyChangedEventArgs(property.PropertyName));
          }
+      }
+
+      protected void UpdateFromSource(VMProperty property) {
+         property.Behaviors
+            .GetNextBehavior<IManuelUpdateBehavior>()
+            .UpdateFromSource(this);
+      }
+
+      protected void UpdateSource(VMProperty property) {
+         property.Behaviors
+            .GetNextBehavior<IManuelUpdateBehavior>()
+            .UpdateSource(this);
       }
 
       private void RequireDescriptor() {
@@ -65,7 +79,7 @@
          }
       }
 
-      void IBehaviorContext.RaisePropertyChanged<T>(VMProperty<T> property) {
+      void IBehaviorContext.RaisePropertyChanged<T>(VMPropertyBase<T> property) {
          property.OnPropertyChanged(this);
          OnPropertyChanged(property);
       }

@@ -23,7 +23,7 @@
             case VMBehaviorKey.PropertyChangedTrigger:
                throw new NotImplementedException();
             case VMBehaviorKey.CollectionValueCache:
-               return new CacheValueBehavior<TValue>();
+               return new RefreshableValueCahche<TValue>();
             case VMBehaviorKey.CollectionValidator:
                throw new NotImplementedException("Validation is not implemented yet.");
             case VMBehaviorKey.CollectionInstanceCache:
@@ -40,7 +40,8 @@
                }
                // TODO: Is there a better way?
                return (IBehavior)Activator.CreateInstance(typeof(ViewModelFactoryBehavior<>).MakeGenericType(typeof(TValue)));
-
+            case VMBehaviorKey.ViewModelValueCache:
+               return new RefreshableValueCahche<TValue>();
             // We have to create the behavior in the builder, because we need to know the
             // item descriptor
             //case VMBehaviorKey.CollectionFactory:

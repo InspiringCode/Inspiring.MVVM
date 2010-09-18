@@ -51,7 +51,7 @@
          _conversionErrorField = context.DynamicFields.DefineField<string>(
             DynamicFieldGroups.ConversionErrorGroup
          );
-         _propertyName = context.PropertyName;
+         _propertyName = context.Property.PropertyName;
       }
    }
 }

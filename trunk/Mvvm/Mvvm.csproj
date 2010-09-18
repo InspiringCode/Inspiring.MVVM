@@ -99,6 +99,7 @@
     <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionPopulatorBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\DelegateCommandBehavior.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\IMutabilityCheckerBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\IViewModelFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\PropagateVMContextBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\ViewModelFactoryBehavior.cs" />
@@ -129,12 +130,12 @@
     <Compile Include="ViewModels\ICanInitializeFrom.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\AllowInvalidDisplayValuesBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\DisplayValueValidationBehavior.cs" />
-    <Compile Include="ViewModels\Core\PropertyBehaviors\DisconnectedVMBehavior.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\CacheValueBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\CalculatedPropertyBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\DynamicFieldGroups.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\InstancePropertyBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\IAccessPropertyBehavior.cs" />
-    <Compile Include="ViewModels\Core\PropertyBehaviors\IDisconnectedVMBehavior.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\IManuelUpdateBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\IHandlePropertyChangedBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\IHandlePropertyChangingBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\IValidationBehavior.cs" />

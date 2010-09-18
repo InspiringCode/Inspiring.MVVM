@@ -56,7 +56,7 @@
             changedBehavior.HandlePropertyChanged(vm);
          }
 
-         if (_propertyDescriptor == null) {
+         if (_propertyDescriptor != null) {
             _propertyDescriptor.RaiseValueChanged(vm);
          }
       }

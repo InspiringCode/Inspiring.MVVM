@@ -14,18 +14,18 @@
                   FirstName = p.Mapped(x => x.FirstName),
                   LastName = p.Mapped(x => x.LastName),
                   BirthDate = p.Mapped(x => x.BirthDate),
-                  Salary = p.Mapped(x => x.Salary),
+                  Salary = p.Calculated(x => x.Salary, (x, val) => x.Salary = val),
                   Name = p.Calculated(x => String.Format("{0} {1}", x.FirstName, x.LastName)),
                   IsSelected = v.Local<bool>(),
                   Projects = p.MappedCollection(x => x.Projects).Of<ProjectVM>(PersonVM.Descriptor)
                };
             })
-            .WithValidations((d, c) => {
-            })
-            .WithDependencies((d, c) => {
-            })
-            .WithBehaviors((d, c) => {
-            })
+         //.WithValidations((d, c) => {
+         //})
+         //.WithDependencies((d, c) => {
+         //})
+         //.WithBehaviors((d, c) => {
+         //})
             .Build();
 
       public PersonVM()
@@ -67,12 +67,12 @@
                   Name = v.Mapped(x => x.Project.Name)
                };
             })
-            .WithValidations((d, c) => {
-            })
-            .WithDependencies((d, c) => {
-            })
-            .WithBehaviors((d, c) => {
-            })
+         //.WithValidations((d, c) => {
+         //})
+         //.WithDependencies((d, c) => {
+         //})
+         //.WithBehaviors((d, c) => {
+         //})
             .Build();
 
       public ProjectVM()

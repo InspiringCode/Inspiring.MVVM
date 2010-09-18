@@ -5,6 +5,6 @@
 
       IVMContext VMContext { get; set; }
 
-      void RaisePropertyChanged<T>(VMProperty<T> property);
+      void RaisePropertyChanged<T>(VMPropertyBase<T> property);
    }
 }

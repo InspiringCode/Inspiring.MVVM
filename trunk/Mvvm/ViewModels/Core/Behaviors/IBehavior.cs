@@ -6,21 +6,21 @@
    }
 
    public class BehaviorInitializationContext {
-      internal BehaviorInitializationContext(VMProperty property)
-         : this(property.PropertyName, property.Descriptor.DynamicFields) {
+      internal BehaviorInitializationContext(VMProperty property) {
+         DynamicFields = property.Descriptor.DynamicFields;
+         Property = property;
       }
 
-      internal BehaviorInitializationContext(
-         string propertyName,
-         FieldDefinitionCollection dynamicFields
-      ) {
-         PropertyName = propertyName;
-         DynamicFields = dynamicFields;
-      }
-
-
-      public string PropertyName { get; private set; }
+      //internal BehaviorInitializationContext(
+      //   FieldDefinitionCollection dynamicFields,
+      //   VMProperty property
+      //) {
+      //   PropertyName = propertyName;
+      //   DynamicFields = dynamicFields;
+      //}
 
       public FieldDefinitionCollection DynamicFields { get; private set; }
+
+      public VMProperty Property { get; private set; }
    }
 }
