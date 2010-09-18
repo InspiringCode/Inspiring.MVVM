@@ -17,7 +17,7 @@
                return new DisplayValueAccessorBehavior<TValue>();
             case VMBehaviorKey.Validator:
                return new ValidationBehavior<TValue>();
-            case VMBehaviorKey.DisconnectedViewModelBehavior:
+            case VMBehaviorKey.PropertyValueCache:
                return new CacheValueBehavior<TValue>();
             case VMBehaviorKey.PropertyChangedTrigger:
                return new PropertyChangedBehavior<TValue>();

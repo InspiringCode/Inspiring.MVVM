@@ -48,7 +48,34 @@
 
       /// <inheritdoc/>
       public VMProperty<T> Calculated<T>(Func<TSource, T> getter, Action<TSource, T> setter = null) {
-         var property = new VMProperty<T>();
+         return Calculated<VMProperty<T>, T>(getter, setter);
+         //var property = new VMProperty<T>();
+         //var config = BehaviorConfigurationFactory.CreateConfiguration();
+
+         //if (!_sourceObjectPropertyPath.IsEmpty) {
+         //   config.OverrideFactory(
+         //      VMBehaviorKey.SourceValueAccessor,
+         //      new ConstantBehaviorFactory(
+         //         new MappedPropertyBehavior<TVM, TSource>(_sourceObjectPropertyPath)
+         //      )
+         //   ).Enable(VMBehaviorKey.SourceValueAccessor);
+         //}
+
+         //config.OverrideFactory(
+         //   VMBehaviorKey.PropertyValueAcessor,
+         //   new ConstantBehaviorFactory(
+         //      new CalculatedPropertyBehavior<TSource, T>(getter, setter)
+         //   )
+         //);
+
+         //AddToDictionary(property, config);
+         //return property;
+      }
+
+      public TProperty Calculated<TProperty, T>(Func<TSource, T> getter, Action<TSource, T> setter = null)
+         where TProperty : VMPropertyBase<T>, new() {
+
+         var property = new TProperty();
          var config = BehaviorConfigurationFactory.CreateConfiguration();
 
          if (!_sourceObjectPropertyPath.IsEmpty) {

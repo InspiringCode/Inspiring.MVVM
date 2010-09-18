@@ -126,6 +126,10 @@
       /// </param>
       VMProperty<T> Calculated<T>(Func<TVM, T> getter, Action<TVM, T> setter = null);
 
+      // TODO: Is there a better way? Needed for single selection contrib extension.
+      TProperty Calculated<TProperty, T>(Func<TVM, T> getter, Action<TVM, T> setter = null)
+         where TProperty : VMPropertyBase<T>, new();
+
       /// <summary>
       ///   Creates a simple property that uses the view model to store its 
       ///   value. You can think of it as a normal instance property enhanced

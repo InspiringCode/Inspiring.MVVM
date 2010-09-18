@@ -53,6 +53,7 @@
          return new BehaviorConfiguration()
             .Append(VMBehaviorKey.DisplayValueAccessor)
             .Append(VMBehaviorKey.PropertyChangedTrigger)
+            .Append(VMBehaviorKey.PropertyValueCache, disabled: true)
             .Append(VMBehaviorKey.PropertyValueAcessor)
             .Append(VMBehaviorKey.SourceValueAccessor, disabled: true);
       }

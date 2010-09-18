@@ -14,6 +14,11 @@
          IBehaviorFactory factory
       );
 
+      IBehaviorConfigurationExpression OverrideFactory(
+         VMBehaviorKey behaviorKey,
+         IBehavior behavior
+      );
+
       IBehaviorConfigurationExpression Enable(
          VMBehaviorKey behaviorKey
       );

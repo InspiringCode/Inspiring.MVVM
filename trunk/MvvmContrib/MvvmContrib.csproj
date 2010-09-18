@@ -78,6 +78,9 @@
     <Compile Include="ViewModels\ISelectionPropertyBuilder.cs" />
     <Compile Include="ViewModels\SelectionExtensions.cs" />
     <Compile Include="ViewModels\SelectionItemVM.cs" />
+    <Compile Include="ViewModels\SelectionPropertyConfiguration.cs" />
+    <Compile Include="ViewModels\SingleSelectionProperty.cs" />
+    <Compile Include="ViewModels\SingleSelectionPropertyBuilder.cs" />
     <Compile Include="ViewModels\SingleSelectionVM.cs" />
   </ItemGroup>
   <ItemGroup>

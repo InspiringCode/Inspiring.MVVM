@@ -1,11 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
-   public sealed class SelectionItemVM<TSourceItem> :
+   public class SelectionItemVM<TSourceItem> :
       ViewModel<VMDescriptor>,
       ICanInitializeFrom<TSourceItem> {
-
-      public SelectionItemVM(VMDescriptor descriptor)
-         : base(descriptor) {
-      }
 
       public TSourceItem SourceItem { get; private set; }
 

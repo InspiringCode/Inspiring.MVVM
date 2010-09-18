@@ -54,6 +54,16 @@
          return this;
       }
 
+      public IBehaviorConfigurationExpression OverrideFactory(
+         VMBehaviorKey behaviorKey,
+         IBehavior behavior
+      ) {
+         return OverrideFactory(
+            behaviorKey,
+            new ConstantBehaviorFactory(behavior)
+         );
+      }
+
       public IBehaviorConfigurationExpression Enable(
          VMBehaviorKey behaviorKey
       ) {

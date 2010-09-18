@@ -3,7 +3,7 @@
    using Inspiring.Mvvm.ViewModels;
 
    internal sealed class TestVM : ViewModel<TestVMDescriptor> {
-      public static readonly TestVMDescriptor Descriptor = VMDescriptorBuilder
+      public static readonly new TestVMDescriptor Descriptor = VMDescriptorBuilder
          .For<TestVM>()
          .CreateDescriptor(c => {
             var v = c.GetPropertyFactory();

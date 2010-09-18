@@ -31,7 +31,7 @@
 
       internal void InitializeProperties() {
          GetType()
-            .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .GetProperties(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
             .Where(p => typeof(VMProperty).IsAssignableFrom(p.PropertyType))
             .ForEach(p => {
                VMProperty property = (VMProperty)p.GetValue(this, null);

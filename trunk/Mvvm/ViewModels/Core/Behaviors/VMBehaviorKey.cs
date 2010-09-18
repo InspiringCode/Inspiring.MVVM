@@ -8,7 +8,7 @@
       DisplayValueValidator,
       DisplayValueAccessor,
       Validator,
-      DisconnectedViewModelBehavior,
+      PropertyValueCache,
       PropertyChangedTrigger,
       PropertyValueAcessor,
       SourceValueAccessor,
