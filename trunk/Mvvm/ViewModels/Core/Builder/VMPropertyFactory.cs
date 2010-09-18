@@ -10,6 +10,7 @@
    internal class VMPropertyFactory<TVM, TSource> : IVMPropertyFactory<TSource>, IRootVMPropertyFactory<TSource>, IBehaviorConfigurationDictionaryProvider where TVM : ViewModel {
       private PropertyPath<TVM, TSource> _sourceObjectPropertyPath;
       private BehaviorConfigurationDictionary _configurations;
+      private BehaviorConfiguration _additionalConfiguration;
 
       /// <param name="sourceObjectPath">
       ///   Pass 'PropertyPath.Empty{TVM}' if you want to create a root factory
@@ -17,10 +18,12 @@
       /// </param>
       public VMPropertyFactory(
          PropertyPath<TVM, TSource> sourceObjectPath,
-         BehaviorConfigurationDictionary configurations
+         BehaviorConfigurationDictionary configurations,
+         BehaviorConfiguration additionalConfiguration = null
       ) {
          _sourceObjectPropertyPath = sourceObjectPath;
          _configurations = configurations;
+         _additionalConfiguration = additionalConfiguration;
       }
 
       /// <inheritdoc/>
@@ -39,7 +42,7 @@
             )
          );
 
-         _configurations.Add(property, config);
+         AddToDictionary(property, config);
          return property;
       }
 
@@ -64,7 +67,7 @@
             )
          );
 
-         _configurations.Add(property, config);
+         AddToDictionary(property, config);
          return property;
       }
 
@@ -80,7 +83,7 @@
             )
          );
 
-         _configurations.Add(property, config);
+         AddToDictionary(property, config);
          return property;
       }
 
@@ -102,7 +105,9 @@
             )
          );
 
-         return new VMCollectionPropertyFactoryExpression<TItem>(config, _configurations);
+         return new VMCollectionPropertyFactoryExpression<TItem>(
+            new ConfiguredProperty(_configurations, _additionalConfiguration) { Configuration = config }
+         );
       }
 
       public IVMViewModelPropertyFactoryExpression<TVMSource> MappedVM<TVMSource>(
@@ -122,7 +127,9 @@
             )
          );
 
-         return new VMViewModelPropertyFactoryExpression<TVMSource>(config, _configurations);
+         return new VMViewModelPropertyFactoryExpression<TVMSource>(
+            new ConfiguredProperty(_configurations, _additionalConfiguration) { Configuration = config }
+         );
       }
 
       public VMProperty<ICommand> Command(Action<TSource> execute, Func<TSource, bool> canExecute = null) {
@@ -145,73 +152,124 @@
          }
 
          var property = new VMProperty<ICommand>();
-         _configurations.Add(property, config);
+         AddToDictionary(property, config);
          return property;
+      }
+
+      public VMPropertyFactory<TVM, TSource> WithConfiguration(BehaviorConfiguration additionalConfiguration) {
+         BehaviorConfiguration newConfiguration;
+
+         if (_additionalConfiguration != null) {
+            newConfiguration = _additionalConfiguration.Clone();
+            newConfiguration.MergeFrom(additionalConfiguration);
+         } else {
+            newConfiguration = additionalConfiguration;
+         }
+         return new VMPropertyFactory<TVM, TSource>(
+            _sourceObjectPropertyPath,
+            _configurations,
+            newConfiguration
+         );
       }
 
       BehaviorConfigurationDictionary IBehaviorConfigurationDictionaryProvider.Provide() {
          return _configurations;
       }
 
-      private class VMCollectionPropertyFactoryExpression<TItem> : IVMCollectionPropertyFactoryExpression<TItem> {
-         private BehaviorConfiguration _config;
-         private BehaviorConfigurationDictionary _configurations;
+      private void AddToDictionary(VMProperty property, BehaviorConfiguration config) {
+         new ConfiguredProperty(_configurations, _additionalConfiguration) {
+            Property = property,
+            Configuration = config
+         }.AddToDictionary();
+      }
 
-         public VMCollectionPropertyFactoryExpression(
-            BehaviorConfiguration config,
-            BehaviorConfigurationDictionary configurations
-         ) {
+      private class VMCollectionPropertyFactoryExpression<TItem> : IVMCollectionPropertyFactoryExpression<TItem> {
+         private ConfiguredProperty _config;
+
+         public VMCollectionPropertyFactoryExpression(ConfiguredProperty config) {
             _config = config;
-            _configurations = configurations;
          }
 
          // TODO: Make this more type safe?
          public VMCollectionProperty<TVM> Of<TVM>(VMDescriptor itemDescriptor) where TVM : ViewModel, ICanInitializeFrom<TItem> {
-            var property = new VMCollectionProperty<TVM>();
-
-            _config.OverrideFactory(
+            _config.Configuration.OverrideFactory(
                VMBehaviorKey.CollectionPopulator,
                new ConstantBehaviorFactory(
                   new CollectionPopulatorBehavior<TVM, TItem>()
                )
             );
 
-            _config.OverrideFactory(
+            _config.Configuration.OverrideFactory(
                VMBehaviorKey.CollectionFactory,
                new ConstantBehaviorFactory(
                   new CollectionFactoryBehavior<TVM>(itemDescriptor)
                )
             );
 
-            _configurations.Add(property, _config);
+            _config.Configuration.OverrideFactory(
+               VMBehaviorKey.ViewModelFactory,
+               new ConstantBehaviorFactory(
+                  new ViewModelFactoryBehavior<TVM>()
+               )
+            );
+
+            var property = new VMCollectionProperty<TVM>();
+            _config.Property = property;
+            _config.AddToDictionary();
             return property;
          }
       }
 
       private class VMViewModelPropertyFactoryExpression<TVMSource> : IVMViewModelPropertyFactoryExpression<TVMSource> {
-         private BehaviorConfiguration _config;
-         private BehaviorConfigurationDictionary _configurations;
+         private ConfiguredProperty _config;
 
-         public VMViewModelPropertyFactoryExpression(
-            BehaviorConfiguration config,
-            BehaviorConfigurationDictionary configurations
-         ) {
+         public VMViewModelPropertyFactoryExpression(ConfiguredProperty config) {
             _config = config;
-            _configurations = configurations;
          }
 
          public VMProperty<TVM> Of<TVM>() where TVM : ViewModel, ICanInitializeFrom<TVMSource> {
-            var property = new VMProperty<TVM>();
-
-            _config.OverrideFactory(
+            _config.Configuration.OverrideFactory(
                VMBehaviorKey.ViewModelPropertyInitializer,
                new ConstantBehaviorFactory(
                   new ViewModelPropertyInitializerBehavior<TVM, TVMSource>()
                )
             );
 
-            _configurations.Add(property, _config);
+            _config.Configuration.OverrideFactory(
+               VMBehaviorKey.ViewModelFactory,
+               new ConstantBehaviorFactory(
+                  new ViewModelFactoryBehavior<TVM>()
+               )
+            );
+
+            VMProperty<TVM> property = new VMProperty<TVM>();
+            _config.Property = property;
+            _config.AddToDictionary();
             return property;
+         }
+      }
+
+      private class ConfiguredProperty {
+         private BehaviorConfigurationDictionary _configurations;
+         private BehaviorConfiguration _additionalConfiguration;
+
+         public ConfiguredProperty(
+            BehaviorConfigurationDictionary configurations,
+            BehaviorConfiguration additionalConfiguration
+         ) {
+            _configurations = configurations;
+            _additionalConfiguration = additionalConfiguration;
+         }
+
+         public BehaviorConfiguration Configuration { get; set; }
+
+         public VMProperty Property { get; set; }
+
+         public void AddToDictionary() {
+            if (_additionalConfiguration != null) {
+               Configuration.MergeFrom(_additionalConfiguration);
+            }
+            _configurations.Add(Property, Configuration);
          }
       }
    }
