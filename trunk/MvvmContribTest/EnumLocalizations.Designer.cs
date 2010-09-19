@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Inspiring.Mvvm {
+namespace Inspiring.MvvmContribTest {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Inspiring.Mvvm {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class ExceptionTexts {
+    internal class EnumLocalizations {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ExceptionTexts() {
+        internal EnumLocalizations() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Inspiring.Mvvm {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Inspiring.Mvvm.ExceptionTexts", typeof(ExceptionTexts).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Inspiring.MvvmContribTest.EnumLocalizations", typeof(EnumLocalizations).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,29 +61,38 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No localization was found for the enum value &apos;{0}.{1}&apos;. Add an entry with a key of &apos;{0}_{1}&apos; and the localized display value to a resource file (.resx) and call &apos;EnumLocalized.AddLocalizationResource&apos; passing the &apos;ResourceManager&apos; of the resource file (which you can get using &apos;&lt;resource file name&gt;.ResourceManager&apos;)..
+        ///   Looks up a localized string similar to Active Caption.
         /// </summary>
-        internal static string EnumLocalizationNotFound {
+        internal static string PersonStatus_Active {
             get {
-                return ResourceManager.GetString("EnumLocalizationNotFound", resourceCulture);
+                return ResourceManager.GetString("PersonStatus_Active", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &apos;Execute&apos; cannot be called if no actual command implementation is registered. Make sure you call &apos;Execute&apos; only if &apos;CanExecute&apos; returns true..
+        ///   Looks up a localized string similar to Dismissed Caption.
         /// </summary>
-        internal static string ExecuteCalledWithoutActualCommand {
+        internal static string PersonStatus_Dismissed {
             get {
-                return ResourceManager.GetString("ExecuteCalledWithoutActualCommand", resourceCulture);
+                return ResourceManager.GetString("PersonStatus_Dismissed", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to T must be an enumeration..
+        ///   Looks up a localized string similar to Inactive Caption.
         /// </summary>
-        internal static string TypeNotEnum {
+        internal static string PersonStatus_Inactive {
             get {
-                return ResourceManager.GetString("TypeNotEnum", resourceCulture);
+                return ResourceManager.GetString("PersonStatus_Inactive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None Caption.
+        /// </summary>
+        internal static string PersonStatus_None {
+            get {
+                return ResourceManager.GetString("PersonStatus_None", resourceCulture);
             }
         }
     }

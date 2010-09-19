@@ -117,13 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="EnumLocalizationNotFound" xml:space="preserve">
-    <value>No localization was found for the enum value '{0}.{1}'. Add an entry with a key of '{0}_{1}' and the localized display value to a resource file (.resx) and call 'EnumLocalized.AddLocalizationResource' passing the 'ResourceManager' of the resource file (which you can get using '&lt;resource file name&gt;.ResourceManager').</value>
+  <data name="PersonStatus_Active" xml:space="preserve">
+    <value>Active Caption</value>
   </data>
-  <data name="ExecuteCalledWithoutActualCommand" xml:space="preserve">
-    <value>'Execute' cannot be called if no actual command implementation is registered. Make sure you call 'Execute' only if 'CanExecute' returns true.</value>
+  <data name="PersonStatus_Dismissed" xml:space="preserve">
+    <value>Dismissed Caption</value>
   </data>
-  <data name="TypeNotEnum" xml:space="preserve">
-    <value>T must be an enumeration.</value>
+  <data name="PersonStatus_Inactive" xml:space="preserve">
+    <value>Inactive Caption</value>
+  </data>
+  <data name="PersonStatus_None" xml:space="preserve">
+    <value>None Caption</value>
   </data>
 </root>

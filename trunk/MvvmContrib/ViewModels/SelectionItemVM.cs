@@ -9,4 +9,8 @@
          SourceItem = source;
       }
    }
+
+   public class SelectionItemVMDescriptor : VMDescriptor {
+      public VMProperty<string> Caption { get; set; }
+   }
 }
