@@ -5,7 +5,6 @@
    using Inspiring.Mvvm;
    using Inspiring.Mvvm.Screens;
    using Inspiring.Mvvm.Views;
-   using Inspiring.MvvmTest.Screens;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Moq;
    using Moq.Protected;
@@ -146,6 +145,11 @@
          });
 
          ServiceLocator.SetServiceLocator(mock.Object);
+      }
+
+      [TestCleanup]
+      public void Cleanup() {
+         Bootstrapper.Initialize(null); // HACK
       }
    }
 }

@@ -43,7 +43,7 @@
          MappedPropertyBehavior<PersonVM, DateTime> mappedDateTimeBehavior;
          MappedPropertyBehavior<PersonVM, decimal> mappedDecimalBehavior;
          InstancePropertyBehavior<bool> boolInstanceBehavior;
-         CollectionPopulatorBehavior<PersonVM, Person> collectionPopulator;
+         CollectionPopulatorBehavior<PersonVM, PersonVM, Person> collectionPopulator;
 
          Assert.IsTrue(_descriptor.Name.Behaviors.TryGetBehavior(out calculatedStringBehavior));
          Assert.IsTrue(_descriptor.BirthDate.Behaviors.TryGetBehavior(out mappedDateTimeBehavior));

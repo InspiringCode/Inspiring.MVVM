@@ -38,3 +38,5 @@ using System.Windows.Markup;
 
 [assembly: InternalsVisibleTo("InspiringMvvmTest")]
 [assembly: XmlnsDefinition("http://inspiringcode.com/mvvm", "Inspiring.Mvvm")]
+
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]

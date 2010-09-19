@@ -12,7 +12,7 @@ namespace Inspiring.MvvmTest.ViewModels.Behaviors {
       private Mock<IAccessPropertyBehavior<VMCollection<PersonVM>>> _vmCollectionAccesor;
       private IBehaviorContext _context;
       private VMCollection<PersonVM> _vmCollection;
-      private CollectionPopulatorBehavior<PersonVM, Person> _populator;
+      private CollectionPopulatorBehavior<PersonVM, PersonVM, Person> _populator;
       private int _vmCollectionAccessorCalls;
       private int _sourceAccessorCalls;
       private FieldDefinitionCollection _fieldDefinitions;
@@ -152,7 +152,7 @@ namespace Inspiring.MvvmTest.ViewModels.Behaviors {
       }
 
       private void SetupPopulator() {
-         _populator = new CollectionPopulatorBehavior<PersonVM, Person>();
+         _populator = new CollectionPopulatorBehavior<PersonVM, PersonVM, Person>();
          _populator.Successor = _sourceAccessor.Object;
       }
    }

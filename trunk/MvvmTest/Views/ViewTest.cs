@@ -181,5 +181,10 @@
             }
          }
       }
+
+      [TestCleanup]
+      public void Cleanup() {
+         Bootstrapper.Initialize(null); // HACK
+      }
    }
 }

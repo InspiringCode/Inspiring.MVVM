@@ -68,7 +68,12 @@
    }
 
 
-   internal sealed class ChildVM : ViewModel<ChildVMDescriptor>, ICanInitializeFrom<ChildVMSource> {
+   internal sealed class ChildVM :
+      ViewModel<ChildVMDescriptor>,
+      ICanInitializeFrom<ChildVMSource>,
+      ICreatableItem<TestVM, ChildVMSource>,
+      IHasSourceObject<ChildVMSource> {
+
       public static readonly ChildVMDescriptor Descriptor = VMDescriptorBuilder
          .For<ChildVM>()
          .CreateDescriptor(c => {
@@ -94,6 +99,13 @@
       public string MappeddMutableAccessor {
          get { return GetValue(Descriptor.MappedMutableProperty); }
          set { SetValue(Descriptor.MappedMutableProperty, value); }
+      }
+
+      public void OnNewItem(ItemCreationArguments<ChildVMSource> args, TestVM parent) {
+         if (args.IsStartNewItem) {
+            args.NewSoureObject = new ChildVMSource { Parent = parent.Source };
+            InitializeFrom(args.NewSoureObject);
+         }
       }
    }
 
@@ -127,5 +139,7 @@
 
    internal class ChildVMSource {
       public string MappedMutableValue { get; set; }
+
+      public TestVMSource Parent { get; set; }
    }
 }

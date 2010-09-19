@@ -132,7 +132,7 @@
             )
          );
 
-         return new VMCollectionPropertyFactoryExpression<TItem>(
+         return new VMCollectionPropertyFactoryExpression<TVM, TItem>(
             new ConfiguredProperty(_configurations, _additionalConfiguration) { Configuration = config }
          );
       }
@@ -210,7 +210,10 @@
          }.AddToDictionary();
       }
 
-      private class VMCollectionPropertyFactoryExpression<TItem> : IVMCollectionPropertyFactoryExpression<TItem> {
+      private class VMCollectionPropertyFactoryExpression<TParentVM, TItem> :
+         IVMCollectionPropertyFactoryExpression<TItem>
+         where TParentVM : ViewModel {
+
          private ConfiguredProperty _config;
 
          public VMCollectionPropertyFactoryExpression(ConfiguredProperty config) {
@@ -218,29 +221,29 @@
          }
 
          // TODO: Make this more type safe?
-         public VMCollectionProperty<TVM> Of<TVM>(VMDescriptor itemDescriptor) where TVM : ViewModel, ICanInitializeFrom<TItem> {
+         public VMCollectionProperty<TItemVM> Of<TItemVM>(VMDescriptor itemDescriptor) where TItemVM : ViewModel, ICanInitializeFrom<TItem> {
             _config.Configuration.OverrideFactory(
                VMBehaviorKey.CollectionPopulator,
                new ConstantBehaviorFactory(
-                  new CollectionPopulatorBehavior<TVM, TItem>()
+                  new CollectionPopulatorBehavior<TParentVM, TItemVM, TItem>()
                )
             );
 
             _config.Configuration.OverrideFactory(
                VMBehaviorKey.CollectionFactory,
                new ConstantBehaviorFactory(
-                  new CollectionFactoryBehavior<TVM>(itemDescriptor)
+                  new CollectionFactoryBehavior<TItemVM>(itemDescriptor)
                )
             );
 
             _config.Configuration.OverrideFactory(
                VMBehaviorKey.ViewModelFactory,
                new ConstantBehaviorFactory(
-                  new ViewModelFactoryBehavior<TVM>()
+                  new ViewModelFactoryBehavior<TItemVM>()
                )
             );
 
-            var property = new VMCollectionProperty<TVM>();
+            var property = new VMCollectionProperty<TItemVM>();
             _config.Property = property;
             _config.AddToDictionary();
             return property;

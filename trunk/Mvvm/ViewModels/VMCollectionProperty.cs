@@ -4,6 +4,9 @@
 
    }
 
-   public sealed class VMCollectionProperty<TVM> : VMPropertyBase<VMCollection<TVM>>, IVMCollectionProperty<TVM> {
+   public sealed class VMCollectionProperty<TItemVM> :
+      VMPropertyBase<VMCollection<TItemVM>>,
+      IVMCollectionProperty<TItemVM>
+      where TItemVM : ViewModel {
    }
 }

@@ -204,4 +204,10 @@
   <data name="MoreThanOneLifecycleTypeFound" xml:space="preserve">
     <value>The collection contains more than one 'IScreenLifecycle' of type '{0}'. You can use 'Contains' before you add a 'IScreenLifecycle' to ensure that only one instance of a certain type is added.</value>
   </data>
+  <data name="CollectionSourceDoesNotImplementListInterface" xml:space="preserve">
+    <value>The 'VMCollection&lt;TItemVM&gt;' cannot be modified. To support modifications, the source collection to which the 'VMCollection' is mapped must implement 'IList&lt;T&gt;'.</value>
+  </data>
+  <data name="HasSourceObjectInterfaceNotImplemented" xml:space="preserve">
+    <value>The 'VMCollection&lt;TItemVM&gt;' cannot be modified. To support modifications (add, remove and move items), the type of the conatained 'ViewModel' objects ('TItemVM') must implement 'IHasSourceObject'.</value>
+  </data>
 </root>

@@ -115,6 +115,15 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The &apos;VMCollection&lt;TItemVM&gt;&apos; cannot be modified. To support modifications, the source collection to which the &apos;VMCollection&apos; is mapped must implement &apos;IList&lt;T&gt;&apos;..
+        /// </summary>
+        internal static string CollectionSourceDoesNotImplementListInterface {
+            get {
+                return ResourceManager.GetString("CollectionSourceDoesNotImplementListInterface", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot set the attached property &apos;View.Model&apos; to an instance of type &apos;{0}&apos; because no view implementation is registered that implements &apos;IView&lt;T&gt;&apos; where T is &apos;{0}&apos; or a base type . Make sure you assigned the correct value or use your dependency injection container to register an appropriate view..
         /// </summary>
         internal static string CouldNotResolveView {
@@ -183,6 +192,15 @@ namespace Inspiring.Mvvm {
         internal static string GetPropertiesWithAttributesIsNotSupport {
             get {
                 return ResourceManager.GetString("GetPropertiesWithAttributesIsNotSupport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &apos;VMCollection&lt;TItemVM&gt;&apos; cannot be modified. To support modifications (add, remove and move items), the type of the conatained &apos;ViewModel&apos; objects (&apos;TItemVM&apos;) must implement &apos;IHasSourceObject&apos;..
+        /// </summary>
+        internal static string HasSourceObjectInterfaceNotImplemented {
+            get {
+                return ResourceManager.GetString("HasSourceObjectInterfaceNotImplemented", resourceCulture);
             }
         }
         

@@ -97,7 +97,9 @@
       }
    }
 
-   public sealed class SingleSelectionVMDescriptor<TSourceItem, TItemVM> : VMDescriptor {
+   public sealed class SingleSelectionVMDescriptor<TSourceItem, TItemVM> :
+      VMDescriptor
+      where TItemVM : ViewModel {
       internal VMProperty<IEnumerable<TSourceItem>> UnfilteredSourceItems { get; set; }
 
       internal VMProperty<TSourceItem> SelectedSourceItem { get; set; }
