@@ -3,6 +3,7 @@
    using System.ComponentModel;
    using System.Linq.Expressions;
    using System.Windows;
+   using System.Windows.Data;
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.Screens;
    using Inspiring.Mvvm.ViewModels;
@@ -62,6 +63,11 @@
 
    public interface IOptionsExpression<T> {
       IOptionsExpression<T> On(DependencyProperty property);
+      IOptionsExpression<T> TwoWay();
+      IOptionsExpression<T> OneWay();
+      IOptionsExpression<T> OneWayToSource();
+      IOptionsExpression<T> OneTime();
+      IOptionsExpression<T> PropertyChanged();
    }
 
    public interface IBindCollectionExpression<TDescriptor> {
@@ -123,6 +129,48 @@
       public IOptionsExpression<T> On(DependencyProperty property) {
          BinderExpression.ExposeContext(this, c => {
             c.TargetProperty = property;
+         });
+
+         return this;
+      }
+
+
+      public IOptionsExpression<T> TwoWay() {
+         BinderExpression.ExposeContext(this, c => {
+            c.Binding.Mode = BindingMode.TwoWay;
+         });
+
+         return this;
+      }
+
+      public IOptionsExpression<T> OneWay() {
+         BinderExpression.ExposeContext(this, c => {
+            c.Binding.Mode = BindingMode.OneWay;
+         });
+
+         return this;
+      }
+
+      public IOptionsExpression<T> OneWayToSource() {
+         BinderExpression.ExposeContext(this, c => {
+            c.Binding.Mode = BindingMode.OneWayToSource;
+         });
+
+         return this;
+      }
+
+
+      public IOptionsExpression<T> OneTime() {
+         BinderExpression.ExposeContext(this, c => {
+            c.Binding.Mode = BindingMode.OneTime;
+         });
+
+         return this;
+      }
+
+      public IOptionsExpression<T> PropertyChanged() {
+         BinderExpression.ExposeContext(this, c => {
+            c.Binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
          });
 
          return this;

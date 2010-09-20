@@ -4,12 +4,90 @@
    using System.Windows;
    using System.Windows.Media;
    using Inspiring.Mvvm.Screens;
+   using Microsoft.Win32;
 
-   public class WindowService : IWindowService {
-      public virtual Window CreateWindow<TScreen>(IScreenFactory<TScreen> screen) where TScreen : IScreen {
+   public class WindowService : IWindowService, IDialogService {
+      public virtual Window CreateWindow<TScreen>(
+         IScreenFactory<TScreen> forScreen
+      ) where TScreen : Screen {
          Window window = CreateWindow();
-         ConfigureWindow(window, screen);
+         ConfigureWindow(window, forScreen);
          return window;
+      }
+
+      public void ConfigureWindow<TScreen>(
+         Window window,
+         IScreenFactory<TScreen> forScreen
+      ) where TScreen : Screen {
+         Screen s = forScreen.Create(x => { });
+         ConfigureWindow(window, s, new WindowCloseHandler(s));
+      }
+
+      protected virtual void ConfigureWindow(
+         Window window,
+         Screen forScreen,
+         WindowCloseHandler closeHandler
+      ) {
+         // Save the window for later
+         forScreen.Children.Add(new WindowLifecycle {
+            AssociatedWindow = window
+         });
+
+         IScreen screen = forScreen;
+         screen.Activate();
+
+         // TryInitialize succeeds if the window implements 'IView<TScreen>'.
+         if (!ViewFactory.TryInitializeView(window, screen)) {
+            // Resolve a new view for 'TScreen'.
+            window.Content = ViewFactory.CreateView(screen);
+         }
+
+         closeHandler.AttachTo(window);
+      }
+
+      public DialogScreenResult Open<TScreen>(
+         IScreenFactory<TScreen> screen,
+         IScreen parent,
+         string title = null
+      ) where TScreen : Screen {
+         Window owner = GetAssociatedWindow(parent);
+
+         Window dialogWindow = CreateDialogWindow();
+
+         if (title != null) {
+            dialogWindow.Title = title;
+         }
+
+         Screen s = screen.Create(x => { });
+         s.Children.Add(new DialogLifecycle());
+         ConfigureWindow(dialogWindow, s, new DialogCloseHandler(s));
+
+         dialogWindow.ShowDialog();
+
+         var dl = DialogLifecycle.GetDialogLifecycle(s);
+         return dl.ScreenResult;
+      }
+
+      public bool OpenFile(
+         IScreen parent,
+         out string fileName,
+         string filter = null,
+         string initialDirectory = null
+      ) {
+         Window owner = GetAssociatedWindow(parent);
+         OpenFileDialog ofd = new OpenFileDialog();
+
+         if (filter != null) {
+            ofd.Filter = filter;
+         }
+
+         if (initialDirectory != null) {
+            ofd.InitialDirectory = initialDirectory;
+         }
+
+         var result = ofd.ShowDialog(owner);
+         fileName = ofd.FileName;
+         return result.Value;
       }
 
       protected virtual Window CreateWindow() {
@@ -22,26 +100,120 @@
          return window;
       }
 
-      public virtual void ConfigureWindow<TScreen>(
-         Window window,
-         IScreenFactory<TScreen> forScreen
-      ) where TScreen : IScreen {
-         TScreen s = forScreen.Create(x => { });
-         s.Activate();
+      protected virtual Window CreateDialogWindow() {
+         return CreateWindow();
+      }
 
-         if (!ViewFactory.TryInitializeView(window, s)) {
-            // TODO: Exception text...
-            throw new InvalidOperationException();
-         }
-
+      protected void AttachWindowCloseHandlers(Window window, IScreen screen) {
          window.Closing += delegate(object sender, CancelEventArgs e) {
-            e.Cancel = !s.RequestClose();
+            e.Cancel = !screen.RequestClose();
          };
 
          window.Closed += delegate(object sender, EventArgs e) {
+            screen.Deactivate();
+            screen.Close();
+         };
+      }
+
+      protected void AttachDialogCloseHandlers(Window window, Screen screen) {
+         var dl = DialogLifecycle.GetDialogLifecycle(screen);
+
+         bool userRequestedClose = true;
+
+         dl.CloseWindow += delegate {
+            window.Close();
+            userRequestedClose = false;
+         };
+
+
+         IScreen s = screen;
+
+         window.Closing += delegate(object sender, CancelEventArgs e) {
+            dl.WindowResult = ((Window)sender).DialogResult;
+            if (userRequestedClose) {
+
+            }
+         };
+
+         window.Closed += delegate(object sender, EventArgs e) {
+            dl.WindowResult = ((Window)sender).DialogResult;
             s.Deactivate();
             s.Close();
          };
+      }
+
+
+
+      protected Window GetAssociatedWindow(IScreen ofScreen) {
+         for (IScreenLifecycle s = ofScreen; s != null; s = s.Parent) {
+            ParentScreenLifecycle p = s as ParentScreenLifecycle;
+            if (p != null && p.Children.Contains<WindowLifecycle>()) {
+               return p
+                  .Children
+                  .Expose<WindowLifecycle>()
+                  .AssociatedWindow;
+            }
+         }
+
+         throw new ArgumentException(ExceptionTexts.NoAssociatedWindow);
+      }
+
+      protected class DialogCloseHandler : WindowCloseHandler {
+         private Screen _dialog;
+         private bool _closeIsUserRequested = true;
+
+         public DialogCloseHandler(Screen dialog)
+            : base(dialog) {
+            _dialog = dialog;
+         }
+
+         protected override bool OnClosing(Window window) {
+            DialogLifecycle
+               .GetDialogLifecycle(_dialog)
+               .WindowResult = window.DialogResult;
+
+            return _closeIsUserRequested ?
+               base.OnClosing(window) :
+               true;
+         }
+
+         protected override void OnClosed(Window window) {
+            DialogLifecycle
+               .GetDialogLifecycle(_dialog)
+               .WindowResult = window.DialogResult;
+
+            base.OnClosed(window);
+         }
+      }
+
+      protected class WindowCloseHandler {
+         private IScreen _screen;
+
+         public WindowCloseHandler(IScreen screen) {
+            _screen = screen;
+         }
+         public void AttachTo(Window window) {
+            window.Closing += (sender, e) => {
+               e.Cancel = !OnClosing((Window)sender);
+            };
+
+            window.Closed += (sender, e) => {
+               OnClosed((Window)sender);
+            };
+         }
+
+         protected virtual bool OnClosing(Window window) {
+            return _screen.RequestClose();
+         }
+
+         protected virtual void OnClosed(Window window) {
+            _screen.Deactivate();
+            _screen.Close();
+         }
+      }
+
+      private class WindowLifecycle : ScreenLifecycle {
+         public Window AssociatedWindow { get; set; }
       }
    }
 }

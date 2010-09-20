@@ -210,4 +210,13 @@
   <data name="HasSourceObjectInterfaceNotImplemented" xml:space="preserve">
     <value>The 'VMCollection&lt;TItemVM&gt;' cannot be modified. To support modifications (add, remove and move items), the type of the conatained 'ViewModel' objects ('TItemVM') must implement 'IHasSourceObject'.</value>
   </data>
+  <data name="NoAssociatedWindow" xml:space="preserve">
+    <value>The given 'screen' (or one of its parents) is not associated with a 'Window'. Make sure you only call this operation for screens that are currently shown.</value>
+  </data>
+  <data name="ScreenIsNoDialog" xml:space="preserve">
+    <value>This operation can only be called for screens that were shown using 'IDialogService.Show' method.</value>
+  </data>
+  <data name="WindowDialogResultNotAssigned" xml:space="preserve">
+    <value>The 'Window.DialogResult' property was not assigned yet by the view. Make sure you call this method only in 'OnRequestClose' and 'OnClose'.</value>
+  </data>
 </root>

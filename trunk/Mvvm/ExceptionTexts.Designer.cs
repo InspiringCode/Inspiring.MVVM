@@ -232,6 +232,15 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The given &apos;screen&apos; (or one of its parents) is not associated with a &apos;Window&apos;. Make sure you only call this operation for screens that are currently shown..
+        /// </summary>
+        internal static string NoAssociatedWindow {
+            get {
+                return ResourceManager.GetString("NoAssociatedWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No service locator is configured. Make sure you call &apos;ServiceLocator.SetServiceLocator&apos; and pass in your implementation of the &apos;IServiceLocator&apos; interface..
         /// </summary>
         internal static string NoServiceLocatorConfigured {
@@ -286,6 +295,15 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This operation can only be called for screens that were shown using &apos;IDialogService.Show&apos; method..
+        /// </summary>
+        internal static string ScreenIsNoDialog {
+            get {
+                return ResourceManager.GetString("ScreenIsNoDialog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The given screen is not contained by this conductor..
         /// </summary>
         internal static string ScreenNotContainedByConductor {
@@ -336,6 +354,15 @@ namespace Inspiring.Mvvm {
         internal static string UnsupportedTargetTypeForModelProperty {
             get {
                 return ResourceManager.GetString("UnsupportedTargetTypeForModelProperty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &apos;Window.DialogResult&apos; property was not assigned yet by the view. Make sure you call this method only in &apos;OnRequestClose&apos; and &apos;OnClose&apos;..
+        /// </summary>
+        internal static string WindowDialogResultNotAssigned {
+            get {
+                return ResourceManager.GetString("WindowDialogResultNotAssigned", resourceCulture);
             }
         }
     }

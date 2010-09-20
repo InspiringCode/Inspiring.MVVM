@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm {
    using System.Windows;
+   using Inspiring.Mvvm.Screens;
    using Inspiring.Mvvm.Views;
 
    public abstract class MvvmApplication : Application {
@@ -24,6 +25,7 @@
 
       private void AddDefaultRegistrations() {
          RegisterTypeIfMissing<IWindowService, WindowService>(registerAsSingleton: true);
+         RegisterTypeIfMissing<IDialogService, WindowService>(registerAsSingleton: true);
       }
    }
 }

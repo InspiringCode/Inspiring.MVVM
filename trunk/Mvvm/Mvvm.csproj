@@ -75,12 +75,15 @@
     <Compile Include="Common\NotifyObject.cs" />
     <Compile Include="IServiceLocator.cs" />
     <Compile Include="Screens\DelegateCommand.cs" />
+    <Compile Include="Screens\DialogLifecycle.cs" />
     <Compile Include="Screens\IDialogService.cs" />
     <Compile Include="Screens\INeedsInitialization.cs" />
     <Compile Include="Screens\InvocationOrder.cs" />
     <Compile Include="Screens\IScreen.cs" />
     <Compile Include="Screens\IScreenFactory.cs" />
     <Compile Include="Screens\IScreenLifecycle.cs" />
+    <Compile Include="Screens\ScreenExtensions.cs" />
+    <Compile Include="Screens\ScreenLifecycle.cs" />
     <Compile Include="Screens\ScreenLifecycleCollection.cs" />
     <Compile Include="Screens\LifecycleTreeWalker.cs" />
     <Compile Include="Screens\ParentScreenLifecycle.cs" />

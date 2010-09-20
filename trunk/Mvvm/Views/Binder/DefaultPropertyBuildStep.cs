@@ -1,12 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Controls;
-using Inspiring.Mvvm.ViewModels;
-namespace Inspiring.Mvvm.Views.Binder {
+﻿namespace Inspiring.Mvvm.Views.Binder {
+   using System;
+   using System.Collections.Generic;
+   using System.Windows;
+   using System.Windows.Controls;
+   using System.Windows.Controls.Primitives;
+   using System.Windows.Input;
+   using Inspiring.Mvvm.ViewModels;
 
    public sealed class DefaultPropertyBuildStep : IBinderBuildStep {
       private static Dictionary<Type, DependencyProperty> _defaultProperties =
+         new Dictionary<Type, DependencyProperty>();
+
+      private static Dictionary<Type, DependencyProperty> _commandProperties =
          new Dictionary<Type, DependencyProperty>();
 
       static DefaultPropertyBuildStep() {
@@ -19,10 +24,16 @@ namespace Inspiring.Mvvm.Views.Binder {
          DefineDefaultProperty(typeof(ContentPresenter), ContentPresenter.ContentProperty);
          DefineDefaultProperty(typeof(RadioButton), RadioButton.IsCheckedProperty);
          DefineDefaultProperty(typeof(CheckBox), CheckBox.IsCheckedProperty);
+
+         DefineCommandProperty(typeof(ButtonBase), ButtonBase.CommandProperty);
       }
 
       public static void DefineDefaultProperty(Type controlType, DependencyProperty defaultProperty) {
          _defaultProperties[controlType] = defaultProperty;
+      }
+
+      public static void DefineCommandProperty(Type controlType, DependencyProperty commandProperty) {
+         _commandProperties[controlType] = commandProperty;
       }
 
       public void Execute(BinderContext context) {
@@ -30,21 +41,29 @@ namespace Inspiring.Mvvm.Views.Binder {
             if (typeof(ViewModel).IsAssignableFrom(context.SourcePropertyType)) {
                context.TargetProperty = View.ModelProperty;
             } else {
-               context.TargetProperty = GetDefaultProperty(context.TargetObject);
+               context.TargetProperty = GetDefaultProperty(context);
             }
          }
       }
 
-      private DependencyProperty GetDefaultProperty(DependencyObject forControl) {
+      private DependencyProperty GetDefaultProperty(BinderContext context) {
          DependencyProperty defaultProperty;
 
-         for (Type t = forControl.GetType(); t != null; t = t.BaseType) {
-            if (_defaultProperties.TryGetValue(t, out defaultProperty)) {
+         var lookupDictionary = IsCommand(context.SourcePropertyType) ?
+            _commandProperties :
+            _defaultProperties;
+
+         for (Type t = context.TargetObject.GetType(); t != null; t = t.BaseType) {
+            if (lookupDictionary.TryGetValue(t, out defaultProperty)) {
                return defaultProperty;
             }
          }
 
          return null;
+      }
+
+      private bool IsCommand(Type type) {
+         return typeof(ICommand).IsAssignableFrom(type);
       }
    }
 }
