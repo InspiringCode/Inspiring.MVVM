@@ -75,6 +75,7 @@
     <Compile Include="Common\NotifyObject.cs" />
     <Compile Include="IServiceLocator.cs" />
     <Compile Include="Screens\DelegateCommand.cs" />
+    <Compile Include="Screens\IDialogService.cs" />
     <Compile Include="Screens\INeedsInitialization.cs" />
     <Compile Include="Screens\InvocationOrder.cs" />
     <Compile Include="Screens\IScreen.cs" />

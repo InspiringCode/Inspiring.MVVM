@@ -85,6 +85,7 @@
     <Compile Include="ViewModels\SingleSelectionProperty.cs" />
     <Compile Include="ViewModels\SingleSelectionPropertyBuilder.cs" />
     <Compile Include="ViewModels\SingleSelectionVM.cs" />
+    <Compile Include="Screens\IMessageBoxService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mvvm\Mvvm.csproj">
@@ -100,6 +101,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Finding screens.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -79,6 +79,7 @@
 
       private static BehaviorConfiguration CreateCommandPropertyDefault() {
          return new BehaviorConfiguration()
+            .Append(VMBehaviorKey.DisplayValueAccessor)
             .Append(VMBehaviorKey.CommandValueCache)
             .Append(VMBehaviorKey.PropertyValueAcessor)
             .Append(VMBehaviorKey.SourceValueAccessor, disabled: true);
