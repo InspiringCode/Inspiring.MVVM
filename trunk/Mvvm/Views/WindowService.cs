@@ -45,18 +45,13 @@
          closeHandler.AttachTo(window);
       }
 
+      // TODO: Refactor the whole WindowService/DialogService stuff...
       public DialogScreenResult Open<TScreen>(
+         Window dialogWindow,
          IScreenFactory<TScreen> screen,
-         IScreen parent,
-         string title = null
+         IScreen parent
       ) where TScreen : Screen {
          Window owner = GetAssociatedWindow(parent);
-
-         Window dialogWindow = CreateDialogWindow();
-
-         if (title != null) {
-            dialogWindow.Title = title;
-         }
 
          Screen s = screen.Create(x => { });
          s.Children.Add(new DialogLifecycle());
@@ -66,6 +61,22 @@
 
          var dl = DialogLifecycle.GetDialogLifecycle(s);
          return dl.ScreenResult;
+      }
+
+      public DialogScreenResult Open<TScreen>(
+         IScreenFactory<TScreen> screen,
+         IScreen parent,
+         string title = null
+      ) where TScreen : Screen {
+
+
+         Window dialogWindow = CreateDialogWindow();
+
+         if (title != null) {
+            dialogWindow.Title = title;
+         }
+
+         return Open(dialogWindow, screen, parent);
       }
 
       public bool OpenFile(

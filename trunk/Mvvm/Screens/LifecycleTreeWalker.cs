@@ -23,5 +23,18 @@
             parent.Children.Items :
             Enumerable.Empty<IScreenLifecycle>();
       }
+
+      public static IEnumerable<IScreenLifecycle> GetSelfAndChildren(IScreenLifecycle handler) {
+         ParentScreenLifecycle parent = handler as ParentScreenLifecycle;
+
+         if (parent == null) {
+            return Enumerable.Empty<IScreenLifecycle>();
+         }
+
+         List<IScreenLifecycle> children = new List<IScreenLifecycle>();
+         children.Add(parent);
+         children.AddRange(parent.Children.Items);
+         return children;
+      }
    }
 }

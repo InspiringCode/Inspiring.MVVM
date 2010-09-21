@@ -62,7 +62,7 @@
       }
    }
 
-   public abstract class VMPropertyBase<T> : VMProperty {
+   public abstract class VMPropertyBase<T> : VMProperty, IBindableProperty<T> {
 
       public VMPropertyBase()
          : base(typeof(T)) {

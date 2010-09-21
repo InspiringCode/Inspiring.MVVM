@@ -1,12 +1,9 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
-
-   public interface IVMCollectionProperty<out TVM> {
-
-   }
+   using Inspiring.Mvvm.ViewModels.Core;
 
    public sealed class VMCollectionProperty<TItemVM> :
       VMPropertyBase<VMCollection<TItemVM>>,
-      IVMCollectionProperty<TItemVM>
+      IBindableCollection<TItemVM>
       where TItemVM : ViewModel {
    }
 }

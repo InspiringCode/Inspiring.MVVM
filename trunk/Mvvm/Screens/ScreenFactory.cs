@@ -43,7 +43,7 @@
       ) {
          // TODO: Handling for multiple Initialize methods...
          LifecycleTreeWalker
-            .GetDescendants(handler)
+            .GetSelfAndChildren(handler) // instead of GetDescendants. HACK: Rethink initialization logic!
             .Where(c => InvocationOrderAttribute.GetOrder(c, "Initialize") == order)
             .ForEach(initializer);
       }

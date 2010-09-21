@@ -1,7 +1,8 @@
-﻿namespace Inspiring.Mvvm.ViewModels {
-
+﻿using Inspiring.Mvvm.ViewModels.Core;
+namespace Inspiring.Mvvm.ViewModels {
    public class SingleSelectionProperty<TSourceItem> :
-      VMProperty<SingleSelectionVM<TSourceItem, SelectionItemVM<TSourceItem>>> {
+      VMProperty<SingleSelectionVM<TSourceItem, SelectionItemVM<TSourceItem>>>,
+      IBindableProperty<ViewModel<SingleSelectionVMDescriptor<TSourceItem, SelectionItemVM<TSourceItem>>>> {
    }
 
    public class SingleSelectionProperty<TSourceItem, TItemVM> :

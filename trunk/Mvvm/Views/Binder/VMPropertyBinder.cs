@@ -4,6 +4,7 @@
    using System.Windows;
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.Mvvm.ViewModels.Core;
 
    /// <summary>
    /// Binds a property of a <see cref="VMDescriptor"/>.
@@ -17,7 +18,7 @@
       }
 
       public IBindToExpression<T> Property<T>(
-         Expression<Func<TDescriptor, VMProperty<T>>> sourcePropertySelector
+         Expression<Func<TDescriptor, VMPropertyBase<T>>> sourcePropertySelector
       ) {
          string path = ExpressionService.GetPropertyPathString(sourcePropertySelector);
 
@@ -30,7 +31,7 @@
 
 
       public IBindCollectionExpression<TItemDescriptor> Collection<TItemDescriptor>(
-         Expression<Func<TDescriptor, IVMCollectionProperty<ViewModel<TItemDescriptor>>>> collectionPropertySelector
+         Expression<Func<TDescriptor, IBindableCollection<ViewModel<TItemDescriptor>>>> collectionPropertySelector
       ) where TItemDescriptor : VMDescriptor {
          string path = ExpressionService.GetPropertyPathString(collectionPropertySelector);
 
@@ -38,6 +39,16 @@
          context.ExtendPropertyPath(path);
 
          return new VMCollectionBinder<TItemDescriptor>(context);
+      }
+
+      public void VM<TChildDescriptor>(
+         Expression<Func<TDescriptor, IBindableProperty<ViewModel<TChildDescriptor>>>> viewModelPropertySelector,
+         Action<IVMBinder<TChildDescriptor>> viewModelBinder
+      ) where TChildDescriptor : VMDescriptor {
+         string path = ExpressionService.GetPropertyPathString(viewModelPropertySelector);
+         var binder = new VMPropertyBinder<TChildDescriptor>(pathPrefix: path);
+         viewModelBinder(binder);
+         binder.Execute();
       }
 
       public override BinderContext QueueBuilderExecution() {

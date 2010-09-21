@@ -5,6 +5,7 @@
    using System.Windows.Controls;
    using System.Windows.Controls.Primitives;
    using System.Windows.Input;
+   using Inspiring.Mvvm.Screens;
    using Inspiring.Mvvm.ViewModels;
 
    public sealed class DefaultPropertyBuildStep : IBinderBuildStep {
@@ -38,7 +39,8 @@
 
       public void Execute(BinderContext context) {
          if (context.TargetProperty == null) {
-            if (typeof(ViewModel).IsAssignableFrom(context.SourcePropertyType)) {
+            if (typeof(ViewModel).IsAssignableFrom(context.SourcePropertyType) ||
+                typeof(IScreen).IsAssignableFrom(context.SourcePropertyType)) {
                context.TargetProperty = View.ModelProperty;
             } else {
                context.TargetProperty = GetDefaultProperty(context);

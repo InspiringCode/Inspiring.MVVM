@@ -7,6 +7,7 @@
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.Screens;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.Mvvm.Views.Binder;
 
    public class ViewBinder {
@@ -51,10 +52,16 @@
    }
 
    public interface IVMBinder<TDescriptor> {
-      IBindToExpression<T> Property<T>(Expression<Func<TDescriptor, VMProperty<T>>> sourcePropertySelector);
+      IBindToExpression<T> Property<T>(Expression<Func<TDescriptor, VMPropertyBase<T>>> sourcePropertySelector);
+
       IBindCollectionExpression<TItemDescriptor> Collection<TItemDescriptor>(
-         Expression<Func<TDescriptor, IVMCollectionProperty<ViewModel<TItemDescriptor>>>> collectionPropertySelector
+         Expression<Func<TDescriptor, IBindableCollection<ViewModel<TItemDescriptor>>>> collectionPropertySelector
       ) where TItemDescriptor : VMDescriptor;
+
+      void VM<TChildDescriptor>(
+         Expression<Func<TDescriptor, IBindableProperty<ViewModel<TChildDescriptor>>>> viewModelPropertySelector,
+         Action<IVMBinder<TChildDescriptor>> viewModelBinder
+      ) where TChildDescriptor : VMDescriptor;
    }
 
    public interface IBindToExpression<T> {
@@ -88,16 +95,13 @@
       }
 
       public IBindToExpression<IScreen> BindChildScreen(Expression<Func<TScreen, IScreen>> screenSelector) {
-         PropertyBinderExpression<IScreen> exp = new PropertyBinderExpression<IScreen>(
-            context: QueueBuilderExecution()
+         BinderContext context = QueueBuilderExecution();
+         context.SourcePropertyType = typeof(IScreen); // TODO: Clean up how types are assigned, also check if IBindToExpression has to be generic...
+         context.ExtendPropertyPath(
+            ExpressionService.GetPropertyPathString(screenSelector)
          );
 
-         BinderExpression.ExposeContext(this, c => {
-            string pathPostfix = ExpressionService.GetPropertyPathString(screenSelector);
-            c.ExtendPropertyPath(pathPostfix);
-         });
-
-         return exp;
+         return new PropertyBinderExpression<IScreen>(context);
       }
 
       public IBindToExpression<ViewModel> BindVM(Expression<Func<TScreen, ViewModel>> viewModelSelector) {
