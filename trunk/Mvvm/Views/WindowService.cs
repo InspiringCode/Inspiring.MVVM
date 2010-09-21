@@ -9,7 +9,7 @@
    public class WindowService : IWindowService, IDialogService {
       public virtual Window CreateWindow<TScreen>(
          IScreenFactory<TScreen> forScreen
-      ) where TScreen : Screen {
+      ) where TScreen : ScreenBase {
          Window window = CreateWindow();
          ConfigureWindow(window, forScreen);
          return window;
@@ -18,14 +18,14 @@
       public void ConfigureWindow<TScreen>(
          Window window,
          IScreenFactory<TScreen> forScreen
-      ) where TScreen : Screen {
-         Screen s = forScreen.Create(x => { });
+      ) where TScreen : ScreenBase {
+         ScreenBase s = forScreen.Create(x => { });
          ConfigureWindow(window, s, new WindowCloseHandler(s));
       }
 
       protected virtual void ConfigureWindow(
          Window window,
-         Screen forScreen,
+         ScreenBase forScreen,
          WindowCloseHandler closeHandler
       ) {
          // Save the window for later
@@ -50,10 +50,10 @@
          Window dialogWindow,
          IScreenFactory<TScreen> screen,
          IScreen parent
-      ) where TScreen : Screen {
+      ) where TScreen : ScreenBase {
          Window owner = GetAssociatedWindow(parent);
 
-         Screen s = screen.Create(x => { });
+         ScreenBase s = screen.Create(x => { });
          s.Children.Add(new DialogLifecycle());
          ConfigureWindow(dialogWindow, s, new DialogCloseHandler(s));
 
@@ -67,7 +67,7 @@
          IScreenFactory<TScreen> screen,
          IScreen parent,
          string title = null
-      ) where TScreen : Screen {
+      ) where TScreen : ScreenBase {
 
 
          Window dialogWindow = CreateDialogWindow();
@@ -126,7 +126,7 @@
          };
       }
 
-      protected void AttachDialogCloseHandlers(Window window, Screen screen) {
+      protected void AttachDialogCloseHandlers(Window window, ScreenBase screen) {
          var dl = DialogLifecycle.GetDialogLifecycle(screen);
 
          bool userRequestedClose = true;
@@ -170,12 +170,22 @@
       }
 
       protected class DialogCloseHandler : WindowCloseHandler {
-         private Screen _dialog;
+         private ScreenBase _dialog;
          private bool _closeIsUserRequested = true;
 
-         public DialogCloseHandler(Screen dialog)
+         public DialogCloseHandler(ScreenBase dialog)
             : base(dialog) {
             _dialog = dialog;
+         }
+
+         public override void AttachTo(Window window) {
+            base.AttachTo(window);
+            DialogLifecycle
+               .GetDialogLifecycle(_dialog)
+               .CloseWindow += (sender, e) => {
+                  _closeIsUserRequested = false;
+                  window.Close();
+               };
          }
 
          protected override bool OnClosing(Window window) {
@@ -203,7 +213,7 @@
          public WindowCloseHandler(IScreen screen) {
             _screen = screen;
          }
-         public void AttachTo(Window window) {
+         public virtual void AttachTo(Window window) {
             window.Closing += (sender, e) => {
                e.Cancel = !OnClosing((Window)sender);
             };

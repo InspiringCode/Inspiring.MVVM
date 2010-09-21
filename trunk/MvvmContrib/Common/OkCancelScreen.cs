@@ -2,7 +2,7 @@
    using System;
    using Inspiring.Mvvm.Screens;
 
-   public sealed class OkCancelScreen : Screen, INeedsInitialization<OkCancelScreenSubject> {
+   public sealed class OkCancelScreen : ScreenBase, INeedsInitialization<OkCancelScreenSubject> {
       public IScreen Content { get; internal set; }
 
       public OkCancelVM VM { get; internal set; }

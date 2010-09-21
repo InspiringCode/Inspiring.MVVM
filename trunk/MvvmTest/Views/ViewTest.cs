@@ -122,10 +122,10 @@
          ).Containing("is registered");
       }
 
-      private class SimpleScreen : Screen {
+      private class SimpleScreen : ScreenBase {
       }
 
-      private class BaseScreen : Screen {
+      private class BaseScreen : ScreenBase {
       }
 
       private class DerivedScreen : BaseScreen {

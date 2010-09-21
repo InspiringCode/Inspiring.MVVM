@@ -12,10 +12,15 @@
          IScreenFactory<TScreen> screen,
          IScreen parent,
          string title = null
-      ) where TScreen : Screen;
+      ) where TScreen : ScreenBase;
    }
 
    public class DialogScreenResult {
+      public DialogScreenResult(bool result, object data = null) {
+         Result = result;
+         Data = data;
+      }
+
       public bool Result { get; set; }
       public object Data { get; set; }
    }

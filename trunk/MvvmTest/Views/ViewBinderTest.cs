@@ -85,7 +85,7 @@ namespace Inspiring.MvvmTest.Views {
          }
       }
 
-      private class PersonScreen : Screen {
+      private class PersonScreen : ScreenBase {
          public PersonVM VM { get; private set; }
       }
    }

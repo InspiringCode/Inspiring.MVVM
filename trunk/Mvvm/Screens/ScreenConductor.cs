@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 namespace Inspiring.Mvvm.Screens {
 
-   public class ScreenConductor : Screen {
+   public class ScreenConductor : ScreenBase {
       private IScreen _activeScreen;
       private ScreenLifecycleCollection<IScreen> _screens;
 

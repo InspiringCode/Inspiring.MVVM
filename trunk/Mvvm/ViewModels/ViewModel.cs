@@ -10,14 +10,17 @@
       private FieldValueHolder _dynamicFieldValues = null;
       private VMDescriptor _descriptor;
 
-      internal ViewModel() {
-
+      internal ViewModel(IServiceLocator serviceLocator) {
+         ServiceLocator = serviceLocator;
       }
 
-      internal ViewModel(VMDescriptor descriptor) {
+      internal ViewModel(VMDescriptor descriptor, IServiceLocator serviceLocator)
+         : this(serviceLocator) {
          Contract.Requires<ArgumentNullException>(descriptor != null);
          InitializeWithDescriptor(descriptor);
       }
+
+      public IServiceLocator ServiceLocator { get; private set; }
 
       public event PropertyChangedEventHandler PropertyChanged;
 
@@ -144,11 +147,12 @@
    public abstract partial class ViewModel<TDescriptor> : ViewModel
       where TDescriptor : VMDescriptor {
 
-      public ViewModel() {
+      public ViewModel(IServiceLocator serviceLocator = null)
+         : base(serviceLocator ?? Inspiring.Mvvm.ServiceLocator.Current) {
       }
 
-      public ViewModel(TDescriptor descriptor)
-         : base(descriptor) {
+      public ViewModel(TDescriptor descriptor, IServiceLocator serviceLocator = null)
+         : base(descriptor, serviceLocator ?? Inspiring.Mvvm.ServiceLocator.Current) {
       }
    }
 }

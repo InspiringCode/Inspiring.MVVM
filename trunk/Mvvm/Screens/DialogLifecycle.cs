@@ -9,12 +9,16 @@
 
       public event EventHandler CloseWindow;
 
-      public static DialogLifecycle GetDialogLifecycle(Screen forScreen) {
-         if (!forScreen.Children.Contains<DialogLifecycle>()) {
-            throw new ArgumentException(ExceptionTexts.ScreenIsNoDialog);
+      public static DialogLifecycle GetDialogLifecycle(ScreenBase forScreen) {
+         // TODO: Is this the best semantic?
+         for (IScreenLifecycle s = forScreen; s != null; s = s.Parent) {
+            ScreenBase scr = s as ScreenBase;
+            if (scr != null && scr.Children.Contains<DialogLifecycle>()) {
+               return scr.Children.Expose<DialogLifecycle>();
+            }
          }
 
-         return forScreen.Children.Expose<DialogLifecycle>();
+         throw new ArgumentException(ExceptionTexts.ScreenIsNoDialog);
       }
 
       public void RaiseCloseWindow() {

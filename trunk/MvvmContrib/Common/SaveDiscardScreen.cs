@@ -2,7 +2,7 @@
    using System;
    using Inspiring.Mvvm.Screens;
 
-   public sealed class SaveDiscardScreen : Screen, INeedsInitialization<SaveDiscardScreenSubject> {
+   public sealed class SaveDiscardScreen : ScreenBase, INeedsInitialization<SaveDiscardScreenSubject> {
       public IScreen Content { get; internal set; }
 
       public SaveDiscardVM VM { get; internal set; }
