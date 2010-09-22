@@ -27,7 +27,7 @@
                return;
             }
          } else {
-            if (value is TValue) {
+            if (value is TValue || (value == null && !typeof(TValue).IsValueType)) {
                accessBehavior.SetValue(vm, (TValue)value);
             } else {
                throw new ArgumentException(

@@ -12,12 +12,27 @@
          new PropertyMetadata(HandleModelChanged)
       );
 
+      public static readonly DependencyProperty TitleProperty = DependencyProperty.RegisterAttached(
+         "Title",
+         typeof(string),
+         typeof(View),
+         new PropertyMetadata(String.Empty)
+      );
+
       public static object GetModel(DependencyObject obj) {
          return (object)obj.GetValue(ModelProperty);
       }
 
       public static void SetModel(DependencyObject obj, object value) {
          obj.SetValue(ModelProperty, value);
+      }
+
+      public static string GetTitle(DependencyObject obj) {
+         return (string)obj.GetValue(TitleProperty);
+      }
+
+      public static void SetTitle(DependencyObject obj, string value) {
+         obj.SetValue(TitleProperty, value);
       }
 
       public static void HandleModelChanged(DependencyObject view, DependencyPropertyChangedEventArgs e) {
