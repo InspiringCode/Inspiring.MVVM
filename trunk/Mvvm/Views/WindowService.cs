@@ -60,7 +60,7 @@
          dialogWindow.ShowDialog();
 
          var dl = DialogLifecycle.GetDialogLifecycle(s);
-         return dl.ScreenResult;
+         return dl.ScreenResult ?? new DialogScreenResult(false);
       }
 
       public DialogScreenResult Open<TScreen>(

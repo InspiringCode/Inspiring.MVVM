@@ -71,6 +71,7 @@
 
       private static BehaviorConfiguration CreateViewModelPropertyDefault() {
          return new BehaviorConfiguration()
+            .Append(VMBehaviorKey.DisplayValueAccessor)
             .Append(VMBehaviorKey.ViewModelValueCache)
             .Append(VMBehaviorKey.ViewModelPropertyInitializer)
             .Append(VMBehaviorKey.ViewModelFactory)

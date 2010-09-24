@@ -33,7 +33,7 @@
 
          var propertyPath = PropertyPath.Concat(
             _sourceObjectPropertyPath,
-            PropertyPath.Create(sourcePropertySelector)
+            PropertyPath.CreateWithDefaultValue(sourcePropertySelector)
          );
          config.OverrideFactory(
             VMBehaviorKey.PropertyValueAcessor,
@@ -122,7 +122,7 @@
 
          PropertyPath<TVM, IEnumerable<TItem>> sourceCollectionPropertyPath = PropertyPath.Concat(
             _sourceObjectPropertyPath,
-            PropertyPath.Create(sourceCollectionSelector)
+            PropertyPath.CreateWithDefaultValue(sourceCollectionSelector)
          );
 
          config.OverrideFactory(
@@ -144,7 +144,7 @@
 
          PropertyPath<TVM, TVMSource> sourcePropertyPath = PropertyPath.Concat(
             _sourceObjectPropertyPath,
-            PropertyPath.Create(viewModelSourceSelector)
+            PropertyPath.CreateWithDefaultValue(viewModelSourceSelector)
          );
 
          config.OverrideFactory(

@@ -37,7 +37,7 @@
 
       private TItemSource GetSource(TItemVM vm) {
          IHasSourceObject<TItemSource> withSource = vm as IHasSourceObject<TItemSource>;
-         if (vm == null) {
+         if (withSource == null) {
             throw new InvalidOperationException(
                ExceptionTexts.HasSourceObjectInterfaceNotImplemented
             );

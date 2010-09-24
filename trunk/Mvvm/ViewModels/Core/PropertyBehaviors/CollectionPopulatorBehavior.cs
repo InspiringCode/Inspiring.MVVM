@@ -43,13 +43,18 @@
             (ICollection<TItemSource>)source
          );
 
-         IEnumerable<TItemVM> viewModels = source.Select(item => {
-            TItemVM vm = viewModelFactory.CreateInstance(behaviorContext);
-            vm.InitializeWithDescriptor(collection.ItemDescriptor);
-            vm.InitializeFrom(item);
-            return vm;
-         });
+         IEnumerable<TItemVM> viewModels;
 
+         if (source != null) {
+            viewModels = source.Select(item => {
+               TItemVM vm = viewModelFactory.CreateInstance(behaviorContext);
+               vm.InitializeWithDescriptor(collection.ItemDescriptor);
+               vm.InitializeFrom(item);
+               return vm;
+            });
+         } else {
+            viewModels = Enumerable.Empty<TItemVM>();
+         }
 
          collection.Repopulate(viewModels, itemController, collectionController);
 
