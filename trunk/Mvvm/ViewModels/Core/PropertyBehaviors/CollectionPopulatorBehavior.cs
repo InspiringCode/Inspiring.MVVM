@@ -30,18 +30,23 @@
          VMCollection<TItemVM> collection,
          IEnumerable<TItemSource> source
       ) {
-         // TODO: Handling of collection that are not modifiable...
          var viewModelFactory = GetNextBehavior<IViewModelFactoryBehavior<TItemVM>>();
 
-         var itemController = new ItemCreationController<TParentVM, TItemVM, TItemSource>(
-            (TParentVM)behaviorContext,
-            viewModelFactory,
-            (ICollection<TItemSource>)source
-         );
+         ItemCreationController<TParentVM, TItemVM, TItemSource> itemController = null;
+         CollectionModificationController<TItemVM, TItemSource> collectionController = null;
 
-         var collectionController = new CollectionModificationController<TItemVM, TItemSource>(
-            (ICollection<TItemSource>)source
-         );
+         ICollection<TItemSource> collectionSource = source as ICollection<TItemSource>;
+         if (collectionSource != null) {
+            itemController = new ItemCreationController<TParentVM, TItemVM, TItemSource>(
+               (TParentVM)behaviorContext,
+               viewModelFactory,
+               collectionSource
+            );
+
+            collectionController = new CollectionModificationController<TItemVM, TItemSource>(
+               collectionSource
+            );
+         }
 
          IEnumerable<TItemVM> viewModels;
 
@@ -57,16 +62,6 @@
          }
 
          collection.Repopulate(viewModels, itemController, collectionController);
-
-         //var viewModelFactory = GetNextBehavior<IViewModelFactoryBehavior<TItemVM>>();
-         //collection.Clear();
-
-         //foreach (TItemSource item in source) {
-         //   TItemVM vm = viewModelFactory.CreateInstance(behaviorContext);
-         //   vm.InitializeWithDescriptor(collection.ItemDescriptor);
-         //   vm.InitializeFrom(item);
-         //   collection.Add(vm);
-         //}
       }
    }
 }
