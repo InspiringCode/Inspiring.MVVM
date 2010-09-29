@@ -88,7 +88,7 @@
          IRootVMPropertyFactory<TParentVM> configuredFactory = ViewModelExtensibility
             .ConfigurePropertyFactory(_propertyFactory, config);
 
-         return _propertyFactory.Calculated<
+         return configuredFactory.Calculated<
             SingleSelectionProperty<TSourceItem>,
             SingleSelectionVM<TSourceItem, SelectionItemVM<TSourceItem>>>
          (
