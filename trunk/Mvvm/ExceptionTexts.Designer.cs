@@ -277,6 +277,15 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The &apos;VMDescriptor&apos; does not define a &apos;VMProperty&apos; with the name &apos;{0}&apos;..
+        /// </summary>
+        internal static string PropertyNotFound {
+            get {
+                return ResourceManager.GetString("PropertyNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not get or set the value of the property path &apos;{0}&apos; because &apos;{1}&apos; is null on object &apos;{2}&apos;..
         /// </summary>
         internal static string PropertyStepIsNull {

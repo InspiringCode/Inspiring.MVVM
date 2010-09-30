@@ -4,6 +4,8 @@
    using System.Linq;
    using System.Reflection;
    using Inspiring.Mvvm.ViewModels.Core;
+   using System;
+   using System.Diagnostics.Contracts;
 
    public class VMDescriptor {
       private List<VMProperty> _properties = new List<VMProperty>();
@@ -14,6 +16,25 @@
       }
 
       internal FieldDefinitionCollection DynamicFields { get; private set; }
+
+      internal IEnumerable<VMProperty> Properties {
+         get { return _properties; }
+      }
+
+      internal VMProperty GetProperty(string propertyName) {
+         Contract.Requires(propertyName != null);
+         Contract.Ensures(Contract.Result<VMProperty>() != null);
+
+         VMProperty property = _properties.Find(x => x.PropertyName == propertyName);
+
+         if (property == null) {
+            throw new InvalidOperationException(
+               ExceptionTexts.PropertyNotFound.FormatWith(propertyName)
+            );
+         }
+
+         return property;
+      }
 
       internal PropertyDescriptorCollection PropertyDescriptors {
          get {

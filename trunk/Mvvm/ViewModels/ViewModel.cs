@@ -3,10 +3,10 @@
    using System.ComponentModel;
    using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.ViewModels.Core;
+   using System.Linq;
 
 
-
-   public abstract partial class ViewModel : INotifyPropertyChanged {
+   public abstract partial class ViewModel : INotifyPropertyChanged, IDataErrorInfo, ISupportsValidation {
       private FieldValueHolder _dynamicFieldValues = null;
       private VMDescriptor _descriptor;
 
@@ -23,6 +23,44 @@
       public IServiceLocator ServiceLocator { get; private set; }
 
       public event PropertyChangedEventHandler PropertyChanged;
+
+      public bool IsValid {
+         get {
+            return 
+               Validate().Successful &&
+               _descriptor
+                  .Properties
+                  .All(p => { 
+                     // HACK: We actually want the real value, not the possibly converted
+                     // display value...
+                     ISupportsValidation childVM = p.GetDisplayValue(this) as ISupportsValidation;
+
+                     return childVM != null ?
+                        ValidateProperty(p).Successful && childVM.IsValid :
+                        ValidateProperty(p).Successful;
+                  });
+         }
+      }
+
+      string IDataErrorInfo.Error {
+         get {
+            ValidationResult result = Validate();
+            return result.Successful ?
+               null :
+               result.ErrorMessage;
+         }
+      }
+
+      string IDataErrorInfo.this[string columnName] {
+         get {
+            RequireDescriptor();
+            VMProperty property = _descriptor.GetProperty(columnName);
+            ValidationResult result = ValidateProperty(property);
+            return result.Successful ?
+               null :
+               result.ErrorMessage;
+         }
+      }
 
       internal void InitializeWithDescriptor(VMDescriptor descriptor) {
          Contract.Requires(descriptor != null);
@@ -48,6 +86,18 @@
          if (handler != null) {
             handler(this, new PropertyChangedEventArgs(property.PropertyName));
          }
+      }
+
+      protected virtual ValidationResult Validate() {
+         return ValidationResult.Success();
+      }
+
+      /// <summary>
+      ///   This method is only a temporary solution for validation. It will be
+      ///   replaced with behaviors in the next version.
+      /// </summary>
+      protected virtual ValidationResult ValidateProperty(VMProperty property) {
+         return ValidationResult.Success();
       }
 
       protected void UpdateFromSource(VMProperty property) {

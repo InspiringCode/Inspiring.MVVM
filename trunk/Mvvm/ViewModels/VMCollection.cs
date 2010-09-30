@@ -1,11 +1,14 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System.Collections.Generic;
    using System.ComponentModel;
+   using Inspiring.Mvvm.ViewModels.Core;
+   using System.Linq;
 
    public class VMCollection<TItemVM> :
       BindingList<TItemVM>,
-      ITypedList
-      where TItemVM : class {
+      ITypedList,
+      ISupportsValidation
+      where TItemVM : ViewModel {
 
       private IItemCreationController<TItemVM> _itemController;
       private ICollectionModificationController<TItemVM> _collectionController;
@@ -17,6 +20,10 @@
       }
 
       public VMDescriptor ItemDescriptor { get; private set; }
+
+      public bool IsValid {
+         get { return this.All(x => x.IsValid); }
+      }
 
       public PropertyDescriptorCollection GetItemProperties(PropertyDescriptor[] listAccessors) {
          return ItemDescriptor.PropertyDescriptors;

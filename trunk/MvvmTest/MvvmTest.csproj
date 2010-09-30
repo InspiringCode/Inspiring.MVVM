@@ -60,6 +60,7 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="ViewModels\IntegrationTests\ChangeNotificationTest.cs" />
     <Compile Include="ViewModels\IntegrationTests\CollectionPropertyTest.cs" />
+    <Compile Include="ViewModels\IntegrationTests\ValidationTest.cs" />
     <Compile Include="ViewModels\TestVM.cs" />
     <Compile Include="Common\BehaviorsTest.cs" />
     <Compile Include="Common\ExpressionServiceTest.cs" />

@@ -103,6 +103,7 @@
     <Compile Include="ViewModels\Core\IBehaviorConfigurationDictionaryProvider.cs" />
     <Compile Include="ViewModels\Core\IBindableCollection.cs" />
     <Compile Include="ViewModels\Core\IBindableProperty.cs" />
+    <Compile Include="ViewModels\Core\ISupportsValidation.cs" />
     <Compile Include="ViewModels\Core\ItemCreationController.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionPopulatorBehavior.cs" />

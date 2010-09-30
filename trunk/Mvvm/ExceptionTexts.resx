@@ -219,4 +219,7 @@
   <data name="WindowDialogResultNotAssigned" xml:space="preserve">
     <value>The 'Window.DialogResult' property was not assigned yet by the view. Make sure you call this method only in 'OnRequestClose' and 'OnClose'.</value>
   </data>
+  <data name="PropertyNotFound" xml:space="preserve">
+    <value>The 'VMDescriptor' does not define a 'VMProperty' with the name '{0}'.</value>
+  </data>
 </root>

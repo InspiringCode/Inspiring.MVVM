@@ -14,7 +14,7 @@
                MappedMutableProperty = p.Mapped(x => x.MappedMutableValue),
                LocalProperty = v.Local<decimal>(),
                MappedVMProperty = p.MappedVM(x => x.ChildValue).Of<ChildVM>(),
-               MappedCollectionProperty = p.MappedCollection(x => x.ChildCollection).Of<ChildVM>(PersonVM.Descriptor)
+               MappedCollectionProperty = p.MappedCollection(x => x.ChildCollection).Of<ChildVM>(ChildVM.Descriptor)
             };
          })
          .Build();
@@ -22,6 +22,10 @@
       public TestVM()
          : base(Descriptor) {
       }
+
+      public ValidationResult ViewModelValidationResult { get; set; }
+
+      public ValidationResult LocalPropertyValidationResult { get; set; }
 
       public TestVMSource Source { get; set; }
 
@@ -56,6 +60,14 @@
 
       public void InvokeUpdateSource(VMProperty property) {
          UpdateSource(property);
+      }
+
+      protected override ValidationResult Validate() {
+         return ViewModelValidationResult ?? base.Validate();
+      }
+
+      protected override ValidationResult ValidateProperty(VMProperty property) {
+         return LocalPropertyValidationResult ?? base.ValidateProperty(property);
       }
    }
 
@@ -96,6 +108,11 @@
 
       public ChildVMSource Source { get; private set; }
 
+
+      public ValidationResult ViewModelValidationResult { get; set; }
+
+      public ValidationResult MappedMutablePropertyValidationResult { get; set; }
+
       public string MappeddMutableAccessor {
          get { return GetValue(Descriptor.MappedMutableProperty); }
          set { SetValue(Descriptor.MappedMutableProperty, value); }
@@ -106,6 +123,15 @@
             args.NewSoureObject = new ChildVMSource { Parent = parent.Source };
             InitializeFrom(args.NewSoureObject);
          }
+      }
+
+
+      protected override ValidationResult Validate() {
+         return ViewModelValidationResult ?? base.Validate();
+      }
+
+      protected override ValidationResult ValidateProperty(VMProperty property) {
+         return MappedMutablePropertyValidationResult ?? base.ValidateProperty(property);
       }
    }
 

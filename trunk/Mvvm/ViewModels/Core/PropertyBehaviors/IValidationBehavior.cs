@@ -1,13 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core {
-
-   public interface IValidationBehavior<TValue> {
-
-   }
-
-   public interface IValidationBehavior {
-      ValidationResult GetValidationResult(IBehaviorContext vm);
-   }
-
+﻿namespace Inspiring.Mvvm.ViewModels {
    public sealed class ValidationResult {
       private ValidationResult() {
       }
@@ -23,5 +14,15 @@
       public static ValidationResult Failure(string errorMessage) {
          return new ValidationResult { Successful = false, ErrorMessage = errorMessage };
       }
+   }
+}
+
+namespace Inspiring.Mvvm.ViewModels.Core {
+   public interface IValidationBehavior<TValue> {
+
+   }
+
+   public interface IValidationBehavior {
+      ValidationResult GetValidationResult(IBehaviorContext vm);
    }
 }
