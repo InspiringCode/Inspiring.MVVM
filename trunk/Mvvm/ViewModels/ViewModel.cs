@@ -24,7 +24,8 @@
 
       public event PropertyChangedEventHandler PropertyChanged;
 
-      public bool IsValid {
+      // TODO: Is it possible to make it non-virtual?
+      public virtual bool IsValid {
          get {
             return 
                Validate().Successful &&
@@ -54,11 +55,15 @@
       string IDataErrorInfo.this[string columnName] {
          get {
             RequireDescriptor();
-            VMProperty property = _descriptor.GetProperty(columnName);
-            ValidationResult result = ValidateProperty(property);
-            return result.Successful ?
-               null :
-               result.ErrorMessage;
+            VMProperty property = _descriptor.Properties.SingleOrDefault(x => x.PropertyName == columnName);
+            if (property != null) {
+               ValidationResult result = ValidateProperty(property);
+               return result.Successful ?
+                  null :
+                  result.ErrorMessage;
+            }
+
+            return null;
          }
       }
 

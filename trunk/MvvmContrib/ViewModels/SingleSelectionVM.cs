@@ -25,6 +25,13 @@
 
       public ViewModel Parent { get; set; }
 
+      // HACK to avoid exception
+      public override bool IsValid {
+         get {
+            return true;
+         }
+      }
+
       private IEnumerable<TSourceItem> FilteredItems {
          get {
             TSourceItem currentSelection = SelectedSourceItem;

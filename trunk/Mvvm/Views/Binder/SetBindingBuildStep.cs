@@ -12,7 +12,9 @@
             context.Binding != null &&
             !String.IsNullOrWhiteSpace(context.PropertyPath)
          );
-
+         
+         // TODO: Really necessary for all? Maybe better place for it.
+         context.Binding.ValidatesOnDataErrors = true;
          context.Binding.Path = new PropertyPath(context.PropertyPath);
 
          BindingOperations.SetBinding(

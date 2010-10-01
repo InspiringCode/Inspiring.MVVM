@@ -18,7 +18,7 @@
             case VMBehaviorKey.Validator:
                return new ValidationBehavior<TValue>();
             case VMBehaviorKey.PropertyValueCache:
-               return new CacheValueBehavior<TValue>();
+               return new RefreshableValueCahche<TValue>();
             case VMBehaviorKey.PropertyChangedTrigger:
                return new PropertyChangedBehavior<TValue>();
             case VMBehaviorKey.CollectionValueCache:
