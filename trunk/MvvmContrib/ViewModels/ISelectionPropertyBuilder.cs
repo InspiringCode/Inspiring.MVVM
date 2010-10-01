@@ -21,11 +21,11 @@
       );
 
       SingleSelectionProperty<TSourceItem> Of(
-         Func<IVMPropertyFactory<TSourceItem>, VMDescriptor> descriptorFactory
+         Func<IVMPropertyFactory<SelectionItemVM<TSourceItem>, TSourceItem>, VMDescriptor> descriptorFactory
       );
 
       SingleSelectionProperty<TSourceItem, TItemVM> Of<TItemVM>(
-         Func<IVMPropertyFactory<TSourceItem>, VMDescriptor> descriptorFactory
+         Func<IVMPropertyFactory<SelectionItemVM<TSourceItem>, TSourceItem>, VMDescriptor> descriptorFactory
       ) where TItemVM : SelectionItemVM<TSourceItem>;
    }
 }

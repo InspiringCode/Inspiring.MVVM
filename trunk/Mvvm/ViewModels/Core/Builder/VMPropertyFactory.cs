@@ -7,7 +7,7 @@
    using Inspiring.Mvvm.ViewModels.Core;
 
    /// <inheritdoc/>
-   internal class VMPropertyFactory<TVM, TSource> : IVMPropertyFactory<TSource>, IRootVMPropertyFactory<TSource>, IBehaviorConfigurationDictionaryProvider where TVM : ViewModel {
+   internal class VMPropertyFactory<TVM, TSource> : IVMPropertyFactory<TVM, TSource>, IRootVMPropertyFactory<TSource>, IBehaviorConfigurationDictionaryProvider where TVM : ViewModel {
       private PropertyPath<TVM, TSource> _sourceObjectPropertyPath;
       private BehaviorConfigurationDictionary _configurations;
       private BehaviorConfiguration _additionalConfiguration;
@@ -115,7 +115,7 @@
       }
 
       /// <inheritdoc/>
-      public IVMCollectionPropertyFactoryExpression<TItem> MappedCollection<TItem>(
+      public IVMCollectionPropertyFactoryExpression<TVM, TItem> MappedCollection<TItem>(
          Expression<Func<TSource, IEnumerable<TItem>>> sourceCollectionSelector
       ) {
          var config = BehaviorConfigurationFactory.CreateCollectionConfiguration();
@@ -135,6 +135,10 @@
          return new VMCollectionPropertyFactoryExpression<TVM, TItem>(
             new ConfiguredProperty(_configurations, _additionalConfiguration) { Configuration = config }
          );
+      }
+
+      IVMCollectionPropertyFactoryExpression<TSource, TItem> IRootVMPropertyFactory<TSource>.MappedCollection<TItem>(Expression<Func<TSource, IEnumerable<TItem>>> sourceCollectionSelector) {
+         return (IVMCollectionPropertyFactoryExpression<TSource, TItem>)MappedCollection(sourceCollectionSelector);
       }
 
       public IVMViewModelPropertyFactoryExpression<TVMSource> MappedVM<TVMSource>(
@@ -211,7 +215,7 @@
       }
 
       private class VMCollectionPropertyFactoryExpression<TParentVM, TItem> :
-         IVMCollectionPropertyFactoryExpression<TItem>
+         IVMCollectionPropertyFactoryExpression<TParentVM, TItem>
          where TParentVM : ViewModel {
 
          private ConfiguredProperty _config;
@@ -222,6 +226,35 @@
 
          // TODO: Make this more type safe?
          public VMCollectionProperty<TItemVM> Of<TItemVM>(VMDescriptor itemDescriptor) where TItemVM : ViewModel, ICanInitializeFrom<TItem> {
+            _config.Configuration.OverrideFactory(
+               VMBehaviorKey.CollectionPopulator,
+               new ConstantBehaviorFactory(
+                  new CollectionPopulatorBehavior<TParentVM, TItemVM, TItem>()
+               )
+            );
+
+            _config.Configuration.OverrideFactory(
+               VMBehaviorKey.CollectionFactory,
+               new ConstantBehaviorFactory(
+                  new CollectionFactoryBehavior<TItemVM>(itemDescriptor)
+               )
+            );
+
+            _config.Configuration.OverrideFactory(
+               VMBehaviorKey.ViewModelFactory,
+               new ConstantBehaviorFactory(
+                  new ViewModelFactoryBehavior<TItemVM>()
+               )
+            );
+
+            var property = new VMCollectionProperty<TItemVM>();
+            _config.Property = property;
+            _config.AddToDictionary();
+            return property;
+         }
+
+
+         public VMCollectionProperty<TItemVM> OfParentAware<TItemVM>(VMDescriptor itemDescriptor) where TItemVM : ViewModel, ICanInitializeFrom<SourceWithParent<TParentVM, TItem>> {
             _config.Configuration.OverrideFactory(
                VMBehaviorKey.CollectionPopulator,
                new ConstantBehaviorFactory(

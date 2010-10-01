@@ -22,7 +22,7 @@
    ///   <see cref="IRootPropertyFactory"/> because it does not make sense on 
    ///   factories that are created for a certain model source object.
    /// </remarks>
-   public interface IVMPropertyFactory<TSource> : IVMPropertyFactory, IHideObjectMembers {
+   public interface IVMPropertyFactory<TParentVM, TSource> : IVMPropertyFactory, IHideObjectMembers {
       /// <summary>
       ///   Creates a property that returns und updates the value of a normal
       ///   property of a model object that is wrapped by the view model.
@@ -66,7 +66,7 @@
       VMProperty<T> Calculated<T>(Func<TSource, T> getter, Action<TSource, T> setter = null);
 
       // TODO: Document me
-      IVMCollectionPropertyFactoryExpression<TItem> MappedCollection<TItem>(
+      IVMCollectionPropertyFactoryExpression<TParentVM, TItem> MappedCollection<TItem>(
          Expression<Func<TSource, IEnumerable<TItem>>> sourceCollectionSelector
       );
 
@@ -138,7 +138,7 @@
       VMProperty<TValue> Local<TValue>();
 
       // TODO: Document me
-      IVMCollectionPropertyFactoryExpression<TItem> MappedCollection<TItem>(
+      IVMCollectionPropertyFactoryExpression<TVM, TItem> MappedCollection<TItem>(
          Expression<Func<TVM, IEnumerable<TItem>>> sourceCollectionSelector
       );
 
@@ -151,11 +151,24 @@
       VMProperty<ICommand> Command(Action<TVM> execute, Func<TVM, bool> canExecute = null);
    }
 
-   public interface IVMCollectionPropertyFactoryExpression<TSourceItem> {
+   public interface IVMCollectionPropertyFactoryExpression<TParentVM, TSourceItem> {
       VMCollectionProperty<TVM> Of<TVM>(VMDescriptor itemDescriptor) where TVM : ViewModel, ICanInitializeFrom<TSourceItem>;
+
+      VMCollectionProperty<TVM> OfParentAware<TVM>(VMDescriptor itemDescriptor) 
+         where TVM : ViewModel, ICanInitializeFrom<SourceWithParent<TParentVM, TSourceItem>>;
    }
 
    public interface IVMViewModelPropertyFactoryExpression<TVMSource> {
       VMProperty<TVM> Of<TVM>() where TVM : ViewModel, ICanInitializeFrom<TVMSource>;
+   }
+
+   public class SourceWithParent<TParent, TSource> {
+      public SourceWithParent(TParent parent, TSource source) {
+         Parent = parent;
+         Source = source;
+      }
+
+      public TParent Parent { get; private set; }
+      public TSource Source { get; private set; }
    }
 }

@@ -14,7 +14,8 @@
                MappedMutableProperty = p.Mapped(x => x.MappedMutableValue),
                LocalProperty = v.Local<decimal>(),
                MappedVMProperty = p.MappedVM(x => x.ChildValue).Of<ChildVM>(),
-               MappedCollectionProperty = p.MappedCollection(x => x.ChildCollection).Of<ChildVM>(ChildVM.Descriptor)
+               MappedCollectionProperty = p.MappedCollection(x => x.ChildCollection).Of<ChildVM>(ChildVM.Descriptor),
+               MappedParentedCollectionProperty = p.MappedCollection(x => x.ChildCollection).OfParentAware<ParentedChildVM>(ParentedChildVM.Descriptor)
             };
          })
          .Build();
@@ -54,6 +55,11 @@
          set { SetValue(Descriptor.MappedCollectionProperty, value); }
       }
 
+      public VMCollection<ParentedChildVM> MappedParentedCollectionAccessor {
+         get { return GetValue(Descriptor.MappedParentedCollectionProperty); }
+         set { SetValue(Descriptor.MappedParentedCollectionProperty, value); }
+      }
+
       public void InvokeUpdateFromSource(VMProperty property) {
          UpdateFromSource(property);
       }
@@ -77,6 +83,7 @@
       public VMProperty<decimal> LocalProperty { get; set; }
       public VMProperty<ChildVM> MappedVMProperty { get; set; }
       public VMCollectionProperty<ChildVM> MappedCollectionProperty { get; set; }
+      public VMCollectionProperty<ParentedChildVM> MappedParentedCollectionProperty { get; set; }
    }
 
 
@@ -136,6 +143,68 @@
    }
 
    internal sealed class ChildVMDescriptor : VMDescriptor {
+      public VMProperty<string> MappedMutableProperty { get; set; }
+   }
+
+   internal sealed class ParentedChildVM :
+      ViewModel<ParentedChildVMDescriptor>,
+      ICanInitializeFrom<SourceWithParent<TestVM, ChildVMSource>>,
+      ICreatableItem<TestVM, ChildVMSource>,
+      IHasSourceObject<ChildVMSource> {
+
+      public static readonly ParentedChildVMDescriptor Descriptor = VMDescriptorBuilder
+         .For<ParentedChildVM>()
+         .CreateDescriptor(c => {
+            var v = c.GetPropertyFactory();
+            var p = c.GetPropertyFactory(x => x.Source);
+
+            return new ParentedChildVMDescriptor {
+               MappedMutableProperty = p.Mapped(x => x.Source.MappedMutableValue)
+            };
+         })
+         .Build();
+
+      public ParentedChildVM()
+         : base(Descriptor) {
+      }
+
+      public void InitializeFrom(SourceWithParent<TestVM, ChildVMSource> source) {
+         Source = source;
+      }
+
+      public SourceWithParent<TestVM, ChildVMSource> Source { get; private set; }
+
+      public ValidationResult ViewModelValidationResult { get; set; }
+
+      public ValidationResult MappedMutablePropertyValidationResult { get; set; }
+
+      public string MappeddMutableAccessor {
+         get { return GetValue(Descriptor.MappedMutableProperty); }
+         set { SetValue(Descriptor.MappedMutableProperty, value); }
+      }
+
+      public void OnNewItem(ItemCreationArguments<ChildVMSource> args, TestVM parent) {
+         if (args.IsStartNewItem) {
+            args.NewSoureObject = new ChildVMSource { Parent = parent.Source };
+            InitializeFrom(new SourceWithParent<TestVM, ChildVMSource>(parent, args.NewSoureObject));
+         }
+      }
+
+
+      protected override ValidationResult Validate() {
+         return ViewModelValidationResult ?? base.Validate();
+      }
+
+      protected override ValidationResult ValidateProperty(VMProperty property) {
+         return MappedMutablePropertyValidationResult ?? base.ValidateProperty(property);
+      }
+
+      ChildVMSource IHasSourceObject<ChildVMSource>.Source {
+         get { return Source.Source; }
+      }
+   }
+
+   internal sealed class ParentedChildVMDescriptor : VMDescriptor {
       public VMProperty<string> MappedMutableProperty { get; set; }
    }
 

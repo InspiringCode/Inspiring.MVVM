@@ -5,7 +5,7 @@
 
    internal sealed class CollectionPopulatorBehavior<TParentVM, TItemVM, TItemSource> :
       Behavior, IAccessPropertyBehavior<VMCollection<TItemVM>>
-      where TItemVM : ViewModel, ICanInitializeFrom<TItemSource>
+      where TItemVM : ViewModel
       where TParentVM : ViewModel {
 
       public VMCollection<TItemVM> GetValue(IBehaviorContext vm) {
@@ -54,7 +54,21 @@
             viewModels = source.Select(item => {
                TItemVM vm = viewModelFactory.CreateInstance(behaviorContext);
                vm.InitializeWithDescriptor(collection.ItemDescriptor);
-               vm.InitializeFrom(item);
+
+               var parentAware = vm as ICanInitializeFrom<SourceWithParent<TParentVM, TItemSource>>;
+               if (parentAware != null) {
+                  parentAware.InitializeFrom(
+                     new SourceWithParent<TParentVM, TItemSource>((TParentVM)behaviorContext, item)
+                  );
+               } else {
+                  var initializeFromSource = vm as ICanInitializeFrom<TItemSource>;
+                  if (initializeFromSource != null) {
+                     initializeFromSource.InitializeFrom(item);
+                  } else {
+                     throw new NotSupportedException();
+                  }
+               }
+
                return vm;
             });
          } else {

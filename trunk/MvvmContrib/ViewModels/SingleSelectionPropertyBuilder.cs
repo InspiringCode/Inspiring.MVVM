@@ -65,12 +65,13 @@
       }
 
       public SingleSelectionProperty<TSourceItem> Of(
-         Func<IVMPropertyFactory<TSourceItem>, VMDescriptor> descriptorFactory
+         Func<IVMPropertyFactory<SelectionItemVM<TSourceItem>, TSourceItem>, VMDescriptor> descriptorFactory
       ) {
          VMDescriptor itemDescriptor = VMDescriptorBuilder
             .For<SelectionItemVM<TSourceItem>>()
             .CreateDescriptor(c => {
                var factory = c.GetPropertyFactory(x => x.SourceItem);
+
                return descriptorFactory(factory);
             })
             .Build();
@@ -102,7 +103,7 @@
       }
 
       public SingleSelectionProperty<TSourceItem, TItemVM> Of<TItemVM>(
-         Func<IVMPropertyFactory<TSourceItem>, VMDescriptor> descriptorFactory
+         Func<IVMPropertyFactory<SelectionItemVM<TSourceItem>, TSourceItem>, VMDescriptor> descriptorFactory
       ) where TItemVM : SelectionItemVM<TSourceItem> {
          throw new NotImplementedException("Not implemented yet: please tell me if you need it...");
       }
