@@ -14,6 +14,7 @@
       public bool IsStartNewItem { get; internal set; }
       public bool IsEndNewItem { get; internal set; }
       public bool IsCancelNewItem { get; internal set; }
+      public bool IsEndedNewItem { get; internal set; }
    }
 
    public enum AddItemTime {

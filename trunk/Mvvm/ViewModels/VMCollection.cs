@@ -21,8 +21,10 @@
 
       public VMDescriptor ItemDescriptor { get; private set; }
 
-      public bool IsValid {
-         get { return this.All(x => x.IsValid); }
+      public virtual bool IsValid(bool validateChildren) {
+         return validateChildren ? 
+            this.All(x => x.IsValid(validateChildren)) :
+            true;
       }
 
       public PropertyDescriptorCollection GetItemProperties(PropertyDescriptor[] listAccessors) {

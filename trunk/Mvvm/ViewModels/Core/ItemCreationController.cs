@@ -41,6 +41,7 @@
          _lastArguments.IsCancelNewItem = false;
          _lastArguments.IsStartNewItem = false;
          _lastArguments.IsEndNewItem = true;
+         _lastArguments.IsEndedNewItem = false;
 
          // TODO: Get rid of cast
          ((ICreatableItem<TParentVM, TItemSource>)transientItem).OnNewItem(_lastArguments, _parent);
@@ -49,6 +50,14 @@
             _sourceCollection.Add(_lastArguments.NewSoureObject);
          }
 
+         _lastArguments.IsCancelNewItem = false;
+         _lastArguments.IsStartNewItem = false;
+         _lastArguments.IsEndNewItem = false;
+         _lastArguments.IsEndedNewItem = true;
+
+         // TODO: Get rid of cast
+         ((ICreatableItem<TParentVM, TItemSource>)transientItem).OnNewItem(_lastArguments, _parent);
+
          _lastArguments = null;
       }
 
@@ -56,6 +65,7 @@
          _lastArguments.IsCancelNewItem = true;
          _lastArguments.IsStartNewItem = false;
          _lastArguments.IsEndNewItem = false;
+         _lastArguments.IsEndedNewItem = false;
 
          // TODO: Get rid of cast
          ((ICreatableItem<TParentVM, TItemSource>)transientItem).OnNewItem(_lastArguments, _parent);

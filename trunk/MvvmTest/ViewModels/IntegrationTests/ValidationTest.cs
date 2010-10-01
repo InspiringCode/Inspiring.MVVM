@@ -24,25 +24,31 @@
       }
       [TestMethod]
       public void TestDefault() {
-         Assert.IsTrue(_vm.IsValid);
+         Assert.IsTrue(_vm.IsValid(true));
       }
 
       [TestMethod]
       public void TestParentError() {
          _vm.ViewModelValidationResult = ValidationResult.Failure("Test");
-         Assert.IsFalse(_vm.IsValid);
+         Assert.IsFalse(_vm.IsValid(true));
       }
 
       [TestMethod]
       public void TestParentPropertyError() {
          _vm.LocalPropertyValidationResult = ValidationResult.Failure("Test");
-         Assert.IsFalse(_vm.IsValid);
+         Assert.IsFalse(_vm.IsValid(true));
       }
 
       [TestMethod]
       public void TestChildError() {
          _vm.MappedCollectionAccessor[0].MappedMutablePropertyValidationResult = ValidationResult.Failure("Test");
-         Assert.IsFalse(_vm.IsValid);
+         Assert.IsFalse(_vm.IsValid(true));
+      }
+
+      [TestMethod]
+      public void TestValidateParentOnly() {
+         _vm.MappedCollectionAccessor[0].MappedMutablePropertyValidationResult = ValidationResult.Failure("Test");
+         Assert.IsTrue(_vm.IsValid(false));
       }
    }
 }

@@ -24,25 +24,6 @@
 
       public event PropertyChangedEventHandler PropertyChanged;
 
-      // TODO: Is it possible to make it non-virtual?
-      public virtual bool IsValid {
-         get {
-            return 
-               Validate().Successful &&
-               _descriptor
-                  .Properties
-                  .All(p => { 
-                     // HACK: We actually want the real value, not the possibly converted
-                     // display value...
-                     ISupportsValidation childVM = p.GetDisplayValue(this) as ISupportsValidation;
-
-                     return childVM != null ?
-                        ValidateProperty(p).Successful && childVM.IsValid :
-                        ValidateProperty(p).Successful;
-                  });
-         }
-      }
-
       string IDataErrorInfo.Error {
          get {
             ValidationResult result = Validate();
@@ -65,6 +46,35 @@
 
             return null;
          }
+      }
+
+      // TODO: Is it possible to make it non-virtual?
+      public virtual bool IsValid(bool validateChildren) {
+         if (validateChildren) {
+            return 
+               Validate().Successful &&
+               _descriptor
+                  .Properties
+                  .All(p => {
+                     // HACK: We actually want the real value, not the possibly converted
+                     // display value...
+                     ISupportsValidation childVM = p.GetDisplayValue(this) as ISupportsValidation;
+
+                     return validateChildren && childVM != null ?
+                        ValidateProperty(p).Successful && childVM.IsValid(true) :
+                        ValidateProperty(p).Successful;
+                  });
+         } else {
+            // Make sure the value of the properties not accessed in this case because
+            // it may trigger lazy loading.
+            return 
+               Validate().Successful &&
+               _descriptor
+                  .Properties
+                  .All(p => ValidateProperty(p).Successful);
+         }
+
+
       }
 
       internal void InitializeWithDescriptor(VMDescriptor descriptor) {

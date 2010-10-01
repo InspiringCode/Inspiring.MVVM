@@ -26,10 +26,8 @@
       public ViewModel Parent { get; set; }
 
       // HACK to avoid exception
-      public override bool IsValid {
-         get {
-            return true;
-         }
+      public override bool IsValid(bool validateChildren) {
+         return true;
       }
 
       private IEnumerable<TSourceItem> FilteredItems {

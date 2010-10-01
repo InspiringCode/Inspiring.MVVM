@@ -4,6 +4,6 @@
    using System.Linq;
 
    internal interface ISupportsValidation {
-      bool IsValid { get; }
+      bool IsValid(bool validateChildren);
    }
 }
