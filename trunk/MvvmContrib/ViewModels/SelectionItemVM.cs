@@ -8,6 +8,14 @@
       public void InitializeFrom(TSourceItem source) {
          SourceItem = source;
       }
+
+      public override string ToString() {
+         var desc = _descriptor as SelectionItemVMDescriptor;
+         
+         return desc != null ?
+            GetValue(desc.Caption) :
+            base.ToString();
+      }
    }
 
    public class SelectionItemVMDescriptor : VMDescriptor {

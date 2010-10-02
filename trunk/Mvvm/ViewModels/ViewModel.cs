@@ -8,7 +8,8 @@
 
    public abstract partial class ViewModel : INotifyPropertyChanged, IDataErrorInfo, ISupportsValidation {
       private FieldValueHolder _dynamicFieldValues = null;
-      private VMDescriptor _descriptor;
+      // TODO, HACK: Make private!
+      protected VMDescriptor _descriptor;
 
       internal ViewModel(IServiceLocator serviceLocator) {
          ServiceLocator = serviceLocator;
