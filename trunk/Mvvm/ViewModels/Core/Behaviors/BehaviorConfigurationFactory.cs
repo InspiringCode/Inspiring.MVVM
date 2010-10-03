@@ -52,6 +52,8 @@
       private static BehaviorConfiguration CreatePropertyDefault() {
          return new BehaviorConfiguration()
             .Append(VMBehaviorKey.DisplayValueAccessor)
+            .Append(VMBehaviorKey.InvalidDisplayValueCache, disabled: true)
+            .Append(VMBehaviorKey.Validator, disabled: true)
             .Append(VMBehaviorKey.PropertyChangedTrigger)
             .Append(VMBehaviorKey.PropertyValueCache, disabled: true)
             .Append(VMBehaviorKey.PropertyValueAcessor)

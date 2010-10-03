@@ -91,7 +91,7 @@
 
       private void CheckAddNew(Action commitAction) {
          var itemControllerMock = new Mock<IItemCreationController<ChildVM>>(MockBehavior.Strict);
-         _coll = new VMCollection<ChildVM>(ChildVM.Descriptor);
+         _coll = new VMCollection<ChildVM>(null, ChildVM.Descriptor);
 
          _coll.Repopulate(
             new ChildVM[] { _firstElement, _secondElement },
@@ -123,7 +123,7 @@
          Action<Mock<ICollectionModificationController<ChildVM>>> verifyExpectation
      ) {
          var collectionControllerMock = new Mock<ICollectionModificationController<ChildVM>>(MockBehavior.Strict);
-         _coll = new VMCollection<ChildVM>(ChildVM.Descriptor);
+         _coll = new VMCollection<ChildVM>(null, ChildVM.Descriptor);
 
          _coll.Repopulate(
             new ChildVM[] { _firstElement, _secondElement },

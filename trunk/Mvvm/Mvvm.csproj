@@ -99,12 +99,14 @@
     <Compile Include="ViewModels\Core\Behaviors\IBehaviorConfigurationExpression.cs" />
     <Compile Include="ViewModels\Core\Behaviors\IBehaviorFactory.cs" />
     <Compile Include="ViewModels\Core\Behaviors\VMBehaviorKey.cs" />
+    <Compile Include="ViewModels\Core\Builder\ValidationBuilder.cs" />
     <Compile Include="ViewModels\Core\CollectionModificationController.cs" />
     <Compile Include="ViewModels\Core\IBehaviorConfigurationDictionaryProvider.cs" />
     <Compile Include="ViewModels\Core\IBindableCollection.cs" />
     <Compile Include="ViewModels\Core\IBindableProperty.cs" />
     <Compile Include="ViewModels\Core\ISupportsValidation.cs" />
     <Compile Include="ViewModels\Core\ItemCreationController.cs" />
+    <Compile Include="ViewModels\Core\IValidationBuilder.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionPopulatorBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\DelegateCommandBehavior.cs" />
@@ -117,6 +119,7 @@
     <Compile Include="ViewModels\ICreatableItem.cs" />
     <Compile Include="ViewModels\IHasSourceObject.cs" />
     <Compile Include="ViewModels\IVMContext.cs" />
+    <Compile Include="ViewModels\StandardValidations.cs" />
     <Compile Include="ViewModels\VMCollectionProperty.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Behavior.cs" />
     <Compile Include="ViewModels\Core\Behaviors\IBehavior.cs" />
@@ -161,7 +164,6 @@
     <Compile Include="ViewModels\Core\Builder\IVMPropertyFactoryProvider.cs" />
     <Compile Include="ViewModels\Core\Builder\IVMDependencyConfigurator.cs" />
     <Compile Include="ViewModels\Core\Builder\IVMPropertyFactory.cs" />
-    <Compile Include="ViewModels\Core\Builder\IVMValidationConfigurator.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
     <Compile Include="ViewModels\VMCollection.cs" />
     <Compile Include="ViewModels\VMDescriptor.cs" />

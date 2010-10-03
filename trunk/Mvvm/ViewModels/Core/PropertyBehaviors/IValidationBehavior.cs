@@ -18,9 +18,9 @@
 }
 
 namespace Inspiring.Mvvm.ViewModels.Core {
-   public interface IValidationBehavior<TValue> {
+   //public interface IValidationBehavior<TValue> {
 
-   }
+   //}
 
    public interface IValidationBehavior {
       ValidationResult GetValidationResult(IBehaviorContext vm);

@@ -41,8 +41,12 @@
       }
 
       public ValidationResult GetValidationResult(IBehaviorContext vm) {
-         return vm.FieldValues.HasValue(_conversionErrorField) ?
-            ValidationResult.Failure(vm.FieldValues.GetValue(_conversionErrorField)) :
+         if (vm.FieldValues.HasValue(_conversionErrorField)) {
+            return ValidationResult.Failure(vm.FieldValues.GetValue(_conversionErrorField));
+         }
+         IValidationBehavior next;
+         return TryGetBehavior(out next) ?
+            next.GetValidationResult(vm) :
             ValidationResult.Success();
       }
 

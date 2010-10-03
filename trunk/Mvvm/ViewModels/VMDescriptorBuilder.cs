@@ -55,6 +55,7 @@
       }
 
       private class BuilderExpression<TVM, TDescriptor> : IVMDescriptorBuilder<TVM, TDescriptor>
+         where TVM : ViewModel
          where TDescriptor : VMDescriptor {
 
          private TDescriptor _descriptor;
@@ -66,8 +67,13 @@
          }
 
          public IVMDescriptorBuilder<TVM, TDescriptor> WithValidations(
-            Action<TDescriptor, IVMValidationConfigurator> validationConfigurator
+            Action<TDescriptor, IValidationBuilder<TVM>> validationConfigurator
          ) {
+            validationConfigurator(
+               _descriptor,
+               new ValidationBuilder<TVM>(_configurations)
+            );
+
             return this;
          }
 

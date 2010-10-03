@@ -5,7 +5,7 @@
    /// <summary>
    /// Part of the fluent interface syntax.
    /// </summary>
-   public interface IVMDescriptorBuilder<TVM> : IHideObjectMembers {
+   public interface IVMDescriptorBuilder<TVM> : IHideObjectMembers where TVM : ViewModel {
       /// <summary>
       ///   The first step is to create a new instance of a 'VMDescriptor' 
       ///   subclass and assign its 'VMProperty' properties.
@@ -40,6 +40,7 @@
    /// Part of the fluent interface syntax.
    /// </summary>
    public interface IVMDescriptorBuilder<TVM, TDescriptor>
+      where TVM : ViewModel
       where TDescriptor : VMDescriptor {
 
       /// <summary>
@@ -54,7 +55,7 @@
       ///   })</code>.
       /// </param>
       IVMDescriptorBuilder<TVM, TDescriptor> WithValidations(
-         Action<TDescriptor, IVMValidationConfigurator> validationConfigurator
+         Action<TDescriptor, IValidationBuilder<TVM>> validationConfigurator
       );
 
       /// <summary>

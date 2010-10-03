@@ -1,8 +1,8 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System.Collections.Generic;
    using System.ComponentModel;
-   using Inspiring.Mvvm.ViewModels.Core;
    using System.Linq;
+   using Inspiring.Mvvm.ViewModels.Core;
 
    public class VMCollection<TItemVM> :
       BindingList<TItemVM>,
@@ -14,15 +14,17 @@
       private ICollectionModificationController<TItemVM> _collectionController;
       private TItemVM _transientItem = null;
       private bool _addingItem = false;
+      private ViewModel _parent;
 
-      internal VMCollection(VMDescriptor itemDescriptor) {
+      internal VMCollection(ViewModel parent, VMDescriptor itemDescriptor) {
+         _parent = parent;
          ItemDescriptor = itemDescriptor;
       }
 
       public VMDescriptor ItemDescriptor { get; private set; }
 
       public virtual bool IsValid(bool validateChildren) {
-         return validateChildren ? 
+         return validateChildren ?
             this.All(x => x.IsValid(validateChildren)) :
             true;
       }
@@ -91,6 +93,7 @@
 
       protected override void InsertItem(int index, TItemVM item) {
          base.InsertItem(index, item);
+         item.Parent = _parent;
          if (_collectionController != null && item != _transientItem) {
             _collectionController.Insert(item, index);
          }
@@ -113,6 +116,7 @@
 
       protected override void SetItem(int index, TItemVM item) {
          base.SetItem(index, item);
+         item.Parent = _parent;
          if (_collectionController != null) {
             _collectionController.SetItem(item, index);
          }

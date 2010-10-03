@@ -2,8 +2,8 @@
    using System;
    using System.ComponentModel;
    using System.Diagnostics.Contracts;
-   using Inspiring.Mvvm.ViewModels.Core;
    using System.Linq;
+   using Inspiring.Mvvm.ViewModels.Core;
 
 
    public abstract partial class ViewModel : INotifyPropertyChanged, IDataErrorInfo, ISupportsValidation {
@@ -22,6 +22,8 @@
       }
 
       public IServiceLocator ServiceLocator { get; private set; }
+
+      internal ViewModel Parent { get; set; }
 
       public event PropertyChangedEventHandler PropertyChanged;
 
@@ -52,7 +54,7 @@
       // TODO: Is it possible to make it non-virtual?
       public virtual bool IsValid(bool validateChildren) {
          if (validateChildren) {
-            return 
+            return
                Validate().Successful &&
                _descriptor
                   .Properties
@@ -68,7 +70,7 @@
          } else {
             // Make sure the value of the properties not accessed in this case because
             // it may trigger lazy loading.
-            return 
+            return
                Validate().Successful &&
                _descriptor
                   .Properties
@@ -113,6 +115,11 @@
       ///   replaced with behaviors in the next version.
       /// </summary>
       protected virtual ValidationResult ValidateProperty(VMProperty property) {
+         IValidationBehavior validationBehavior;
+         if (property.Behaviors.TryGetBehavior(out validationBehavior)) {
+            return validationBehavior.GetValidationResult(this);
+         }
+
          return ValidationResult.Success();
       }
 
@@ -146,6 +153,10 @@
             }
             return _dynamicFieldValues;
          }
+      }
+
+      ViewModel IBehaviorContext.VM {
+         get { return this; }
       }
 
       void IBehaviorContext.RaisePropertyChanged<T>(VMPropertyBase<T> property) {
