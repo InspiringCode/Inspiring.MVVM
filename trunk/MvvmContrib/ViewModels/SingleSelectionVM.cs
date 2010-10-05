@@ -25,9 +25,9 @@
 
       public ViewModel Parent { get; set; }
 
-      // HACK to avoid exception
+      // HACK to avoid exception (what was the problem?)
       public override bool IsValid(bool validateChildren) {
-         return true;
+         return base.IsValid(false);
       }
 
       private IEnumerable<TSourceItem> FilteredItems {
@@ -64,9 +64,13 @@
       internal static SingleSelectionVMDescriptor<TSourceItem, TItemVM> CreateDescriptor(
          VMProperty<IEnumerable<TSourceItem>> allSourceItemsProperty,
          VMProperty<TSourceItem> selectedSourceItemProperty,
-         VMDescriptor itemDescriptor
+         VMDescriptor itemDescriptor,
+         Action<
+            SingleSelectionVMDescriptor<TSourceItem, TItemVM>,
+            IValidationBuilder<SingleSelectionVM<TSourceItem, TItemVM>>
+         > validationConfigurator
       ) {
-         return VMDescriptorBuilder
+         var builder = VMDescriptorBuilder
             .For<SingleSelectionVM<TSourceItem, TItemVM>>()
             .CreateDescriptor(c => {
                var v = c.GetPropertyFactory();
@@ -84,8 +88,11 @@
                      (x, value) => x.UpdateSelectedSourceItem(value)
                   )
                };
-            })
-            .Build();
+            });
+
+         return validationConfigurator != null ?
+            builder.WithValidations(validationConfigurator).Build() :
+            builder.Build();
       }
 
       private TItemVM FindSelectedItem() {

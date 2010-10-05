@@ -20,6 +20,18 @@
          });
       }
 
+      public static void Length<TVM>(
+         this IValidationBuilder<TVM, string> builder,
+         int maximumLength,
+         string errorMessage
+      ) where TVM : ViewModel {
+         builder.Custom((TVM vm, string value) => {
+            return value != null && value.Length > maximumLength ?
+               ValidationResult.Failure(errorMessage.FormatWith(maximumLength)) :
+               ValidationResult.Success();
+         });
+      }
+
       public static void IsUnique<TParentVM, TVM, TValue>(
          this IValidationBuilder<TParentVM, TVM, TValue> builder,
          Func<TParentVM, IEnumerable<TVM>> allItemSelector,

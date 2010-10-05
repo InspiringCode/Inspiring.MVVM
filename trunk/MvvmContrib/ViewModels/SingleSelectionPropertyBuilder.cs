@@ -65,7 +65,11 @@
       }
 
       public SingleSelectionProperty<TSourceItem> Of(
-         Func<IVMPropertyFactory<SelectionItemVM<TSourceItem>, TSourceItem>, VMDescriptor> descriptorFactory
+         Func<IVMPropertyFactory<SelectionItemVM<TSourceItem>, TSourceItem>, VMDescriptor> descriptorFactory,
+         Action<
+            SingleSelectionVMDescriptor<TSourceItem, SelectionItemVM<TSourceItem>>,
+            IValidationBuilder<SingleSelectionVM<TSourceItem, SelectionItemVM<TSourceItem>>>
+         > validationConfigurator = null
       ) {
          VMDescriptor itemDescriptor = VMDescriptorBuilder
             .For<SelectionItemVM<TSourceItem>>()
@@ -80,7 +84,8 @@
                SingleSelectionVM<TSourceItem, SelectionItemVM<TSourceItem>>.CreateDescriptor(
                   _unfilteredSourceItemsProperty,
                   _selectedSourceItemProperty,
-                  itemDescriptor
+                  itemDescriptor,
+                  validationConfigurator
                );
 
          BehaviorConfiguration config = new BehaviorConfiguration();

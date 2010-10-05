@@ -66,6 +66,18 @@ namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
          Assert.AreEqual("No value", errorInfo["StringProperty"]);
       }
 
+      [TestMethod]
+      public void CheckInvalidValue() {
+         ChildVM vm = new ChildVM();
+         
+         ChildVM.Descriptor.StringProperty.SetDisplayValue(vm, "Value");
+         ChildVM.Descriptor.StringProperty.SetDisplayValue(vm, String.Empty);
+         
+         Assert.IsFalse(vm.IsValid(false));
+         Assert.AreEqual("Value", vm.StringProperty);
+         Assert.AreEqual(String.Empty, ChildVM.Descriptor.StringProperty.GetDisplayValue(vm));
+      }
+
       private class ParentVM : ViewModel<ParentVMDescriptor> {
          public static readonly ParentVMDescriptor Descriptor = VMDescriptorBuilder
             .For<ParentVM>()

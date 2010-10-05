@@ -1,4 +1,5 @@
-﻿namespace Inspiring.Mvvm.ViewModels {
+﻿using Inspiring.Mvvm.ViewModels.Core;
+namespace Inspiring.Mvvm.ViewModels {
 
    public static class SelectionExtensions {
       public static ISingleSelectionPropertyBuilder<TParentVM> SingleSelection<TParentVM>(

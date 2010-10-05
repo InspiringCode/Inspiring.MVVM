@@ -2,6 +2,7 @@
    using System;
    using System.Collections.Generic;
    using System.Linq.Expressions;
+   using Inspiring.Mvvm.ViewModels.Core;
 
    public interface ISingleSelectionPropertyBuilder<TParentVM> where TParentVM : ViewModel {
       ISingleSelectionPropertyBuilder<TParentVM, TSourceItem> WithItems<TSourceItem>(
@@ -21,7 +22,11 @@
       );
 
       SingleSelectionProperty<TSourceItem> Of(
-         Func<IVMPropertyFactory<SelectionItemVM<TSourceItem>, TSourceItem>, VMDescriptor> descriptorFactory
+         Func<IVMPropertyFactory<SelectionItemVM<TSourceItem>, TSourceItem>, VMDescriptor> descriptorFactory,
+         Action<
+            SingleSelectionVMDescriptor<TSourceItem, SelectionItemVM<TSourceItem>>,
+            IValidationBuilder<SingleSelectionVM<TSourceItem, SelectionItemVM<TSourceItem>>>
+         > validationConfigurator = null
       );
 
       SingleSelectionProperty<TSourceItem, TItemVM> Of<TItemVM>(

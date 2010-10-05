@@ -4,7 +4,12 @@
    using System.Diagnostics.Contracts;
    using System.Linq;
 
-   internal sealed class ValidationBehavior<TValue> : Behavior, IAccessPropertyBehavior<TValue>, IValidationBehavior {
+   internal sealed class ValidationBehavior<TValue> : 
+      Behavior,
+      IAccessPropertyBehavior<TValue>,
+      IValidationBehavior,
+      IHandlePropertyChangingBehavior {
+
       private FieldDefinition<string> _errorMessageField;
       private List<Func<ValidationParameter<TValue>, ValidationResult>> _validators =
          new List<Func<ValidationParameter<TValue>, ValidationResult>>();
@@ -34,9 +39,38 @@
       }
 
       public ValidationResult GetValidationResult(IBehaviorContext vm) {
+         // HACK to make sure that validation is always current (search for more efficient ways).
+         TValue value = GetNextBehavior<IAccessPropertyBehavior<TValue>>().GetValue(vm);
+         
+         var parameter = new ValidationParameter<TValue>(value, vm.VM);
+
+         ValidationResult result = _validators
+            .Select(v => v(parameter))
+            .FirstOrDefault(res => !res.Successful);
+
+         if (result != null) {
+            vm.FieldValues.SetValue(_errorMessageField, result.ErrorMessage);
+         }
+
          return vm.FieldValues.HasValue(_errorMessageField) ?
             ValidationResult.Failure(vm.FieldValues.GetValue(_errorMessageField)) :
             ValidationResult.Success();
+      }
+
+      public void HandlePropertyChanging(IBehaviorContext vm) {
+         TValue value = GetNextBehavior<IAccessPropertyBehavior<TValue>>().GetValue(vm);
+         
+         var parameter = new ValidationParameter<TValue>(value, vm.VM);
+
+         ValidationResult result = _validators
+            .Select(v => v(parameter))
+            .FirstOrDefault(res => !res.Successful);
+
+         if (result != null) {
+            vm.FieldValues.SetValue(_errorMessageField, result.ErrorMessage);
+         } else {
+            vm.FieldValues.ClearField(_errorMessageField);
+         }
       }
 
       protected override void Initialize(BehaviorInitializationContext context) {

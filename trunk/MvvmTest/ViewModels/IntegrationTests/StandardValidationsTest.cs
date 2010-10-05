@@ -11,17 +11,17 @@ namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
          ParentVM vm = new ParentVM();
 
          // TODO: Validation works only after vm were added to parent!
-         ChildVM child1 = new ChildVM() { StringProperty = "Value 1" };
-         ChildVM child2 = new ChildVM() { StringProperty = "Value 2" };
-         ChildVM child3 = new ChildVM() { StringProperty = "Value 3" };
+         ChildVM child1 = new ChildVM() { StringProperty = "Val1" };
+         ChildVM child2 = new ChildVM() { StringProperty = "Val2" };
+         ChildVM child3 = new ChildVM() { StringProperty = "Val3" };
 
          vm.Children.Add(child1);
          vm.Children.Add(child2);
          vm.Children.Add(child3);
 
-         child1.StringProperty = "Value 1";
-         child2.StringProperty = "Value 2";
-         child3.StringProperty = "Value 2";
+         child1.StringProperty = "Val1";
+         child2.StringProperty = "Val2";
+         child3.StringProperty = "Val2";
 
          IDataErrorInfo errorInfo1 = child1;
          IDataErrorInfo errorInfo2 = child2;
@@ -44,6 +44,21 @@ namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
          IDataErrorInfo errorInfo = vm;
          Assert.IsNull(errorInfo.Error);
          Assert.AreEqual("No value", errorInfo["StringProperty"]);
+      }
+
+      [TestMethod]
+      public void CheckLength() {
+         ChildVM vm = new ChildVM();
+         vm.StringProperty = "Wert";
+
+         IDataErrorInfo errorInfo = vm;
+         Assert.IsNull(errorInfo.Error);
+         Assert.IsNull(errorInfo["StringProperty"]);
+
+         vm.StringProperty = "Wert!";
+
+         Assert.IsNull(errorInfo.Error);
+         Assert.AreEqual("Max length 4", errorInfo["StringProperty"]);
       }
 
 
@@ -82,6 +97,7 @@ namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
             })
             .WithValidations((d, c) => {
                c.Check(d.StringProperty).HasValue("No value");
+               c.Check(d.StringProperty).Length(4, "Max length {0}");
                c.Check(d.StringProperty).WithParent<ParentVM>().IsUnique(x => x.Children, x => x.StringProperty, "Duplicate value");
             })
             .Build();

@@ -100,9 +100,13 @@
       }
 
       protected virtual void OnPropertyChanged<T>(VMPropertyBase<T> property) {
+         OnPropertyChanged(property.PropertyName);
+      }
+
+      protected virtual void OnPropertyChanged(string propertyName) {
          PropertyChangedEventHandler handler = PropertyChanged;
          if (handler != null) {
-            handler(this, new PropertyChangedEventArgs(property.PropertyName));
+            handler(this, new PropertyChangedEventArgs(propertyName));
          }
       }
 

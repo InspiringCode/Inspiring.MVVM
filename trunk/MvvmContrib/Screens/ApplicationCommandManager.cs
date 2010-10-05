@@ -52,6 +52,7 @@
 
       private class CommandProxy : ICommand {
          private ICommand _actual;
+         EventHandler _strongReferenceToHandlerDelegate;
 
          public event EventHandler CanExecuteChanged;
 

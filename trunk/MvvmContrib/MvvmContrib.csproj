@@ -60,6 +60,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -93,6 +94,9 @@
     <Compile Include="ViewModels\SingleSelectionVM.cs" />
     <Compile Include="Screens\IMessageBoxService.cs" />
     <Compile Include="Views\SelectionBinderExtensions.cs" />
+    <Compile Include="Views\UnrestrictedKeyBinding.cs" />
+    <Compile Include="Views\UnrestrictedKeyBindingConverter.cs" />
+    <Compile Include="Views\UnrestrictedKeyGestureValueSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mvvm\Mvvm.csproj">

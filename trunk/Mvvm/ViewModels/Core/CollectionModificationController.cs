@@ -16,8 +16,14 @@
 
       public void Insert(TItemVM item, int index) {
          TItemSource sourceItem = GetSource(item);
-         IList<TItemSource> list = GetSourceList();
-         list.Insert(index, sourceItem);
+         IList<TItemSource> sourceList = _sourceCollection as IList<TItemSource>;
+         if (sourceList != null) {
+            sourceList.Insert(index, sourceItem);
+         } else {
+            // We simply add the item if the underlying collection does not
+            // support Inserts (e.g. if it is a Set).
+            _sourceCollection.Add(sourceItem);
+         }
       }
 
       public void Remove(TItemVM item) {
@@ -27,7 +33,14 @@
 
       public void SetItem(TItemVM item, int index) {
          TItemSource sourceItem = GetSource(item);
-         IList<TItemSource> list = GetSourceList();
+         
+         IList<TItemSource> list = _sourceCollection as IList<TItemSource>;
+         if (list == null) {
+            throw new InvalidOperationException(
+               ExceptionTexts.CollectionSourceDoesNotImplementListInterface
+            );
+         }
+
          list[index] = sourceItem;
       }
 
@@ -43,16 +56,6 @@
             );
          }
          return withSource.Source;
-      }
-
-      private IList<TItemSource> GetSourceList() {
-         IList<TItemSource> list = _sourceCollection as IList<TItemSource>;
-         if (list == null) {
-            throw new InvalidOperationException(
-               ExceptionTexts.CollectionSourceDoesNotImplementListInterface
-            );
-         }
-         return list;
       }
    }
 }
