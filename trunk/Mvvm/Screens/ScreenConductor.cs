@@ -14,17 +14,19 @@ namespace Inspiring.Mvvm.Screens {
       public IScreen ActiveScreen {
          get { return _activeScreen; }
          set {
-            if (_activeScreen != null) {
-               _activeScreen.Deactivate();
+            if (value != _activeScreen) {
+               if (_activeScreen != null) {
+                  _activeScreen.Deactivate();
+               }
+
+               _activeScreen = value;
+
+               if (_activeScreen != null) {
+                  _activeScreen.Activate();
+               }
+
+               OnPropertyChanged(() => ActiveScreen);
             }
-
-            _activeScreen = value;
-
-            if (_activeScreen != null) {
-               _activeScreen.Activate();
-            }
-
-            OnPropertyChanged(() => ActiveScreen);
          }
       }
 

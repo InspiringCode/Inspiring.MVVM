@@ -54,15 +54,19 @@
          private ICommand _actual;
          EventHandler _strongReferenceToHandlerDelegate;
 
+         public CommandProxy() {
+            _strongReferenceToHandlerDelegate = new EventHandler(OnCanExecuteChanged);
+         }
+
          public event EventHandler CanExecuteChanged;
 
          public void SetActualCommand(ICommand actual) {
             if (_actual != null) {
-               _actual.CanExecuteChanged -= OnCanExecuteChanged;
+               _actual.CanExecuteChanged -= _strongReferenceToHandlerDelegate;
             }
 
             if (actual != null) {
-               actual.CanExecuteChanged += OnCanExecuteChanged;
+               actual.CanExecuteChanged += _strongReferenceToHandlerDelegate;
             }
 
             _actual = actual;
