@@ -65,7 +65,7 @@
 
 
       //[TestMethod]
-      //public void TestMethod1() {
+      //public void MultipleInstances() {
       //   PersonScreen s = new PersonScreen();
 
       //   bool propertyChanged = false;

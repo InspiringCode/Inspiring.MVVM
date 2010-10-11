@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="AssertHelper.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Screens\ScreenCreationBehaviorTest.cs" />
     <Compile Include="ViewModels\IntegrationTests\ChangeNotificationTest.cs" />
     <Compile Include="ViewModels\IntegrationTests\CollectionPropertyTest.cs" />
     <Compile Include="ViewModels\IntegrationTests\StandardValidationsTest.cs" />

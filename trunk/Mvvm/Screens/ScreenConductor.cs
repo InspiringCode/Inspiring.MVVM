@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-namespace Inspiring.Mvvm.Screens {
+﻿namespace Inspiring.Mvvm.Screens {
+   using System;
+   using System.Collections.Generic;
+   using System.Diagnostics.Contracts;
+   using System.Linq;
 
    public class ScreenConductor : ScreenBase {
       private IScreen _activeScreen;
@@ -34,8 +35,23 @@ namespace Inspiring.Mvvm.Screens {
          get { return _screens.Items; }
       }
 
-      public void OpenScreen<TScreen>(IScreenFactory<TScreen> screen) where TScreen : IScreen {
-         ActiveScreen = _screens.AddNew(screen);
+      public void OpenScreen<TScreen>(IScreenFactory<TScreen> screen)
+         where TScreen : class, IScreen {
+
+         var creationBehavior = GetCreationBehavior(typeof(TScreen));
+
+         switch (creationBehavior) {
+            case ScreenCreationBehavior.MultipleInstances:
+               ActiveScreen = _screens.AddNew(screen);
+               break;
+            case ScreenCreationBehavior.SingleInstance:
+               var alreadyOpenScreen = _screens.Items
+                  .OfType<TScreen>()
+                  .SingleOrDefault();
+
+               ActiveScreen = alreadyOpenScreen ?? _screens.AddNew(screen);
+               break;
+         }
       }
 
       public void CloseScreen(IScreen screen) {
@@ -68,6 +84,17 @@ namespace Inspiring.Mvvm.Screens {
 
       protected override void OnClose() {
          _screens.CloseAll();
+      }
+
+      private ScreenCreationBehavior GetCreationBehavior(Type screenType) {
+         var attr = (ScreenCreationBehaviorAttribute)Attribute.GetCustomAttribute(
+            screenType,
+            typeof(ScreenCreationBehaviorAttribute)
+         );
+
+         return attr != null ?
+            attr.CreationBehavior :
+            ScreenCreationBehavior.MultipleInstances;
       }
    }
 }
