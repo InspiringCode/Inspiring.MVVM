@@ -94,7 +94,7 @@
 
       [TestMethod]
       public void OnValidating_OnValidated() {
-         var mock = new Mock<VMCollection<ChildVM>>(null, ChildVM.Descriptor);
+         var mock = new Mock<VMCollection<ChildVM>>(null, ChildVM.Descriptor, null);
          mock.CallBase = true;
 
          var coll = mock.Object;
@@ -108,6 +108,33 @@
          coll.First().MappeddMutableAccessor = "Test";
          mock.Protected().Verify("OnItemValidating", Times.Once(), ItExpr.IsAny<object>(), ItExpr.IsAny<ValidationEventArgs>());
          mock.Protected().Verify("OnItemValidated", Times.Once(), ItExpr.IsAny<object>(), ItExpr.IsAny<ValidationEventArgs>());
+      }
+
+      [TestMethod]
+      public void CollectionValidationBehaviorIsInvoked() {
+         int invocationCount = 0;
+
+         ValidationEventArgs args = new ValidationEventArgs(
+            new VMProperty<decimal>(),
+            42m,
+            new TestVM { LocalAccessor = 42m }
+         );
+
+         var behavior = new CollectionValidationBehavior<TestVM>();
+
+         var coll = new VMCollection<TestVM>(null, TestVM.Descriptor, behavior);
+
+         behavior.Add((item, items, a) => {
+            invocationCount++;
+            Assert.AreSame(args, a);
+            Assert.AreSame(item, a.VM);
+            Assert.AreSame(items, coll);
+         });
+
+
+         coll.Invoke("OnItemValidating", coll, args);
+
+         Assert.AreEqual(1, invocationCount);
       }
 
       private void CheckAddNew(Action commitAction) {

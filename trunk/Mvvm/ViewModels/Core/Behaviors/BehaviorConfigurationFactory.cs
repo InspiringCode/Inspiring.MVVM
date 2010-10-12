@@ -68,7 +68,8 @@
             .Append(VMBehaviorKey.ViewModelFactory)
             .Append(VMBehaviorKey.SourceValueAccessor)
             .Append(VMBehaviorKey.CollectionInstanceCache)
-            .Append(VMBehaviorKey.CollectionFactory);
+            .Append(VMBehaviorKey.CollectionFactory)
+            .Append(VMBehaviorKey.CollectionValidator, disabled: true);
       }
 
       private static BehaviorConfiguration CreateViewModelPropertyDefault() {

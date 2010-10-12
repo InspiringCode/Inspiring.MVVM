@@ -15,10 +15,12 @@
       private TItemVM _transientItem = null;
       private bool _addingItem = false;
       private ViewModel _parent;
+      private CollectionValidationBehavior<TItemVM> _validationBehavior;
 
-      internal VMCollection(ViewModel parent, VMDescriptor itemDescriptor) {
+      internal VMCollection(ViewModel parent, VMDescriptor itemDescriptor, CollectionValidationBehavior<TItemVM> validationBehavior = null) {
          _parent = parent;
          ItemDescriptor = itemDescriptor;
+         _validationBehavior = validationBehavior;
       }
 
       public VMDescriptor ItemDescriptor { get; private set; }
@@ -126,7 +128,9 @@
       }
 
       protected virtual void OnItemValidating(object sender, ValidationEventArgs args) {
-
+         if (_validationBehavior != null) {
+            _validationBehavior.Validate(this, args);
+         }
       }
 
       protected virtual void OnItemValidated(object sender, ValidationEventArgs args) {

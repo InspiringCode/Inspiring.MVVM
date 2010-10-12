@@ -60,6 +60,7 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="PropertyChangedCounter.cs" />
     <Compile Include="Screens\ScreenCreationBehaviorTest.cs" />
+    <Compile Include="TestExtensions.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionValidationBehaviorTest.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\ValidationBehaviorTest.cs" />
     <Compile Include="ViewModels\IntegrationTests\ChangeNotificationTest.cs" />

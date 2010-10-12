@@ -16,7 +16,7 @@
       }
 
       public ICollectionValidationBuilder<TItemVM> CheckCollection<TItemVM>(IVMProperty<VMCollection<TItemVM>> property) where TItemVM : ViewModel {
-         throw new NotImplementedException();
+         return new CollectionValidationBuilder<TItemVM>(_configs, property);
       }
    }
 

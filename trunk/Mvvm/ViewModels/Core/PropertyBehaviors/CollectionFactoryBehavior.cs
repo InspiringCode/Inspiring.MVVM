@@ -12,7 +12,10 @@
       }
 
       public VMCollection<TItemVM> GetValue(IBehaviorContext vm) {
-         return new VMCollection<TItemVM>(vm.VM, _itemDescriptor);
+         CollectionValidationBehavior<TItemVM> validationBehavior;
+         return TryGetBehavior(out validationBehavior) ?
+            new VMCollection<TItemVM>(vm.VM, _itemDescriptor, validationBehavior) :
+            new VMCollection<TItemVM>(vm.VM, _itemDescriptor);
       }
 
       public void SetValue(IBehaviorContext vm, VMCollection<TItemVM> value) {

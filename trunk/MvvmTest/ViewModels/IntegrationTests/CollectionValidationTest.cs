@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
+   using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -79,18 +80,11 @@
                var v = c.GetPropertyFactory();
 
                return new EmployeeVMDescriptor {
-                  Projects = v.Local<VMCollection<ProjectVM>>()
+                  Projects = v.MappedCollection(x => x.ProjectsSource).Of<ProjectVM>(ProjectVM.Descriptor)
                };
             })
             .WithValidations((d, c) => {
                c.CheckCollection(d.Projects).Custom((project, projects, args) => {
-                  if (projects.Any(x => x != project && x.Name == project.Name)) {
-                     args.AddError("Duplicate");
-                  }
-
-                  args.AffectsOtherItems = true;
-               });
-               c.CheckCollection(d.test).Custom((project, projects, args) => {
                   if (projects.Any(x => x != project && x.Name == project.Name)) {
                      args.AddError("Duplicate");
                   }
@@ -102,16 +96,18 @@
 
          public EmployeeVM()
             : base(Descriptor) {
-            Projects = new VMCollection<ProjectVM>(this, ProjectVM.Descriptor);
+            ProjectsSource = new List<string>();
          }
 
          public VMCollection<ProjectVM> Projects {
             get { return GetValue(Descriptor.Projects); }
             set { SetValue(Descriptor.Projects, value); }
          }
+
+         private List<string> ProjectsSource { get; set; }
       }
 
-      private class ProjectVM : ViewModel<ProjectVMDescriptor> {
+      private class ProjectVM : ViewModel<ProjectVMDescriptor>, ICanInitializeFrom<string>, IHasSourceObject<string> {
          public static readonly ProjectVMDescriptor Descriptor = VMDescriptorBuilder
             .For<ProjectVM>()
             .CreateDescriptor(c => {
@@ -136,11 +132,18 @@
             get { return Descriptor.Name.GetDisplayValue(this); }
             set { Descriptor.Name.SetDisplayValue(this, value); }
          }
+
+         public void InitializeFrom(string source) {
+            Name = source;
+         }
+
+         public string Source {
+            get { return Name; }
+         }
       }
 
       private class EmployeeVMDescriptor : VMDescriptor {
-         public VMProperty<VMCollection<ProjectVM>> Projects { get; set; }
-         public VMCollectionProperty<ProjectVM> test { get; set; }
+         public VMCollectionProperty<ProjectVM> Projects { get; set; }
       }
 
       private class ProjectVMDescriptor : VMDescriptor {
