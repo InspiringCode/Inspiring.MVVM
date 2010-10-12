@@ -5,5 +5,8 @@
 
       bool CanDiscard();
       void Discard();
+
+      bool HasChanges { get; }
+      bool IsValid { get; }
    }
 }
