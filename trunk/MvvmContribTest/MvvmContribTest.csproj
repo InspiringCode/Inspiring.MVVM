@@ -54,8 +54,12 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\MvvmTest\PropertyChangedCounter.cs">
+      <Link>PropertyChangedCounter.cs</Link>
+    </Compile>
     <Compile Include="AssertHelper.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Common\SaveDiscardVMTest.cs" />
     <Compile Include="EnumLocalizations.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

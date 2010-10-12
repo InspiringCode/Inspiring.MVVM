@@ -58,9 +58,13 @@
   <ItemGroup>
     <Compile Include="AssertHelper.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="PropertyChangedCounter.cs" />
     <Compile Include="Screens\ScreenCreationBehaviorTest.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionValidationBehaviorTest.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\ValidationBehaviorTest.cs" />
     <Compile Include="ViewModels\IntegrationTests\ChangeNotificationTest.cs" />
     <Compile Include="ViewModels\IntegrationTests\CollectionPropertyTest.cs" />
+    <Compile Include="ViewModels\IntegrationTests\CollectionValidationTest.cs" />
     <Compile Include="ViewModels\IntegrationTests\StandardValidationsTest.cs" />
     <Compile Include="ViewModels\IntegrationTests\ValidationTest2.cs" />
     <Compile Include="ViewModels\IntegrationTests\ValidationTest.cs" />
@@ -93,6 +97,7 @@
     <Compile Include="ViewModels\PersonVM.cs" />
     <Compile Include="ViewModels\TypeDescriptorTest.cs" />
     <Compile Include="ViewModels\ViewModelsTest.cs" />
+    <Compile Include="ViewModels\ViewModelTest.cs" />
     <Compile Include="ViewModels\VMCollectionPropertyTest.cs" />
     <Compile Include="ViewModels\Core\Builder\VMDescriptorBuilderTest.cs" />
     <Compile Include="ViewModels\VMCollectionTest.cs" />

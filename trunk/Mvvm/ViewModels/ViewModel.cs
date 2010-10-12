@@ -149,6 +149,10 @@
    partial class ViewModel : IBehaviorContext {
       public IVMContext VMContext { get; set; }
 
+      public event EventHandler<ValidationEventArgs> Validating;
+
+      public event EventHandler<ValidationEventArgs> Validated;
+
       FieldValueHolder IBehaviorContext.FieldValues {
          get {
             RequireDescriptor();
@@ -166,6 +170,24 @@
       void IBehaviorContext.RaisePropertyChanged<T>(VMPropertyBase<T> property) {
          property.OnPropertyChanged(this);
          OnPropertyChanged(property);
+      }
+
+      void IBehaviorContext.ValidationStateChanged<T>(VMPropertyBase<T> property) {
+         OnPropertyChanged("Item[]");
+      }
+
+      void IBehaviorContext.OnValidating(ValidationEventArgs args) {
+         var handler = Validating;
+         if (handler != null) {
+            handler(this, args);
+         }
+      }
+
+      void IBehaviorContext.OnValidated(ValidationEventArgs args) {
+         var handler = Validated;
+         if (handler != null) {
+            handler(this, args);
+         }
       }
    }
 

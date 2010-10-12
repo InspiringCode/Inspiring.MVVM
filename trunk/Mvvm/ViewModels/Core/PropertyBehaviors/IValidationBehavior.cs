@@ -14,6 +14,18 @@
       public static ValidationResult Failure(string errorMessage) {
          return new ValidationResult { Successful = false, ErrorMessage = errorMessage };
       }
+
+      public override int GetHashCode() {
+         return Successful.GetHashCode() ^ ErrorMessage.GetHashCode();
+      }
+
+      public override bool Equals(object obj) {
+         ValidationResult other = obj as ValidationResult;
+         return
+            other != null &&
+            other.Successful == Successful &&
+            other.ErrorMessage == ErrorMessage;
+      }
    }
 }
 

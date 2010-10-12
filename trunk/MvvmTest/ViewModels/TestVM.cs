@@ -103,6 +103,9 @@
                MappedMutableProperty = p.Mapped(x => x.MappedMutableValue)
             };
          })
+         .WithValidations((d, c) => {
+            c.Check(d.MappedMutableProperty).Custom((_, __) => ValidationResult.Success());
+         })
          .Build();
 
       public ChildVM()

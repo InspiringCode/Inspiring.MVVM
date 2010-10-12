@@ -4,17 +4,18 @@
    using System.Diagnostics.Contracts;
    using System.Linq;
 
-   internal sealed class ValidationBehavior<TValue> : 
+   internal sealed class ValidationBehavior<TValue> :
       Behavior,
       IAccessPropertyBehavior<TValue>,
       IValidationBehavior,
       IHandlePropertyChangingBehavior {
 
       private FieldDefinition<string> _errorMessageField;
-      private List<Func<ValidationParameter<TValue>, ValidationResult>> _validators =
-         new List<Func<ValidationParameter<TValue>, ValidationResult>>();
+      private VMPropertyBase<TValue> _property;
+      private List<Action<ValidationEventArgs>> _validators
+         = new List<Action<ValidationEventArgs>>();
 
-      public void Add(Func<ValidationParameter<TValue>, ValidationResult> validator) {
+      public void Add(Action<ValidationEventArgs> validator) {
          Contract.Requires(validator != null);
          _validators.Add(validator);
       }
@@ -24,33 +25,48 @@
       }
 
       public void SetValue(IBehaviorContext vm, TValue value) {
-         var parameter = new ValidationParameter<TValue>(value, vm.VM);
+         var oldResult = GetValidationResult(vm);
 
-         ValidationResult result = _validators
-            .Select(v => v(parameter))
-            .FirstOrDefault(res => !res.Successful);
+         var args = new ValidationEventArgs(_property, value, vm.VM);
+         OnValidating(args);
+         vm.OnValidating(args);
+         vm.OnValidated(args);
 
-         if (result != null) {
-            vm.FieldValues.SetValue(_errorMessageField, result.ErrorMessage);
+         if (args.Errors.Count > 0) {
+            vm.FieldValues.SetValue(_errorMessageField, args.Errors.First());
          } else {
-            GetNextBehavior<IAccessPropertyBehavior<TValue>>().SetValue(vm, value);
+            this.SetNextValue(vm, value);
             vm.FieldValues.ClearField(_errorMessageField);
+         }
+
+         var newResult = GetValidationResult(vm);
+
+         if (!newResult.Equals(oldResult)) {
+            vm.ValidationStateChanged(_property);
          }
       }
 
       public ValidationResult GetValidationResult(IBehaviorContext vm) {
-         // HACK to make sure that validation is always current (search for more efficient ways).
-         TValue value = GetNextBehavior<IAccessPropertyBehavior<TValue>>().GetValue(vm);
-         
-         var parameter = new ValidationParameter<TValue>(value, vm.VM);
+         //bool hasErrorsBefore = vm.FieldValues.HasValue(_errorMessageField);
 
-         ValidationResult result = _validators
-            .Select(v => v(parameter))
-            .FirstOrDefault(res => !res.Successful);
+         //// HACK to make sure that validation is always current (search for more efficient ways).
+         //TValue value = GetNextBehavior<IAccessPropertyBehavior<TValue>>().GetValue(vm);
 
-         if (result != null) {
-            vm.FieldValues.SetValue(_errorMessageField, result.ErrorMessage);
-         }
+         //var parameter = new ValidationParameter<TValue>(value, vm.VM);
+
+         //ValidationResult result = _validators
+         //   .Select(v => v(parameter))
+         //   .FirstOrDefault(res => !res.Successful);
+
+         //if (result != null) {
+         //   vm.FieldValues.SetValue(_errorMessageField, result.ErrorMessage);
+         //}
+
+         //bool hasErrors = vm.FieldValues.HasValue(_errorMessageField);
+
+         //if (hasErrors != hasErrorsBefore) {
+         //   vm.ValidationStateChanged(_property);
+         //}
 
          return vm.FieldValues.HasValue(_errorMessageField) ?
             ValidationResult.Failure(vm.FieldValues.GetValue(_errorMessageField)) :
@@ -58,19 +74,19 @@
       }
 
       public void HandlePropertyChanging(IBehaviorContext vm) {
-         TValue value = GetNextBehavior<IAccessPropertyBehavior<TValue>>().GetValue(vm);
-         
-         var parameter = new ValidationParameter<TValue>(value, vm.VM);
+         //TValue value = GetNextBehavior<IAccessPropertyBehavior<TValue>>().GetValue(vm);
 
-         ValidationResult result = _validators
-            .Select(v => v(parameter))
-            .FirstOrDefault(res => !res.Successful);
+         //var parameter = new ValidationParameter<TValue>(value, vm.VM);
 
-         if (result != null) {
-            vm.FieldValues.SetValue(_errorMessageField, result.ErrorMessage);
-         } else {
-            vm.FieldValues.ClearField(_errorMessageField);
-         }
+         //ValidationResult result = _validators
+         //   .Select(v => v(parameter))
+         //   .FirstOrDefault(res => !res.Successful);
+
+         //if (result != null) {
+         //   vm.FieldValues.SetValue(_errorMessageField, result.ErrorMessage);
+         //} else {
+         //   vm.FieldValues.ClearField(_errorMessageField);
+         //}
       }
 
       protected override void Initialize(BehaviorInitializationContext context) {
@@ -78,18 +94,11 @@
          _errorMessageField = context.DynamicFields.DefineField<string>(
             DynamicFieldGroups.ValidationErrorGroup
          );
-      }
-   }
-
-   internal class ValidationParameter<TValue> {
-      public ValidationParameter(TValue value, ViewModel vm) {
-         Contract.Requires(vm != null);
-
-         Value = value;
-         VM = vm;
+         _property = (VMPropertyBase<TValue>)context.Property;
       }
 
-      public TValue Value { get; private set; }
-      public ViewModel VM { get; private set; }
+      private void OnValidating(ValidationEventArgs args) {
+         _validators.ForEach(v => v(args));
+      }
    }
 }

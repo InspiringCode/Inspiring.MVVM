@@ -10,5 +10,11 @@
       IServiceLocator ServiceLocator { get; }
 
       void RaisePropertyChanged<T>(VMPropertyBase<T> property);
+
+      void ValidationStateChanged<T>(VMPropertyBase<T> property);
+
+      void OnValidating(ValidationEventArgs args);
+
+      void OnValidated(ValidationEventArgs args);
    }
 }

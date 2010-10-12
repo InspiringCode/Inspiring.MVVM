@@ -93,7 +93,7 @@
 
       protected override void InsertItem(int index, TItemVM item) {
          base.InsertItem(index, item);
-         item.Parent = _parent;
+         ItemAdded(item);
          if (_collectionController != null && item != _transientItem) {
             _collectionController.Insert(item, index);
          }
@@ -101,6 +101,7 @@
 
       protected override void RemoveItem(int index) {
          TItemVM removedItem = this[index];
+         ItemRemoved(removedItem);
          base.RemoveItem(index);
          if (_collectionController != null) {
             _collectionController.Remove(removedItem);
@@ -108,6 +109,7 @@
       }
 
       protected override void ClearItems() {
+         this.ForEach(ItemRemoved);
          base.ClearItems();
          if (_collectionController != null) {
             _collectionController.Clear();
@@ -115,11 +117,32 @@
       }
 
       protected override void SetItem(int index, TItemVM item) {
+         ItemRemoved(this[index]);
          base.SetItem(index, item);
-         item.Parent = _parent;
+         ItemAdded(item);
          if (_collectionController != null) {
             _collectionController.SetItem(item, index);
          }
+      }
+
+      protected virtual void OnItemValidating(object sender, ValidationEventArgs args) {
+
+      }
+
+      protected virtual void OnItemValidated(object sender, ValidationEventArgs args) {
+
+      }
+
+      // TODO: Only connect to events if required.
+      private void ItemAdded(TItemVM item) {
+         item.Parent = _parent;
+         item.Validating += OnItemValidating;
+         item.Validated += OnItemValidated;
+      }
+
+      private void ItemRemoved(TItemVM item) {
+         item.Validating -= OnItemValidating;
+         item.Validated -= OnItemValidated;
       }
    }
 

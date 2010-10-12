@@ -1,8 +1,11 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels {
    using System;
+   using System.Linq;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Moq;
+   using Moq.Protected;
 
    [TestClass]
    public class VMCollectionTest {
@@ -87,6 +90,24 @@
             m => m.Setup(x => x.Clear()),
             m => m.Verify(x => x.Clear(), Times.Once())
          );
+      }
+
+      [TestMethod]
+      public void OnValidating_OnValidated() {
+         var mock = new Mock<VMCollection<ChildVM>>(null, ChildVM.Descriptor);
+         mock.CallBase = true;
+
+         var coll = mock.Object;
+
+         _firstElement.InitializeFrom(new ChildVMSource());
+         _secondElement.InitializeFrom(new ChildVMSource());
+
+         coll.Add(_firstElement);
+         coll.Add(_secondElement);
+
+         coll.First().MappeddMutableAccessor = "Test";
+         mock.Protected().Verify("OnItemValidating", Times.Once(), ItExpr.IsAny<object>(), ItExpr.IsAny<ValidationEventArgs>());
+         mock.Protected().Verify("OnItemValidated", Times.Once(), ItExpr.IsAny<object>(), ItExpr.IsAny<ValidationEventArgs>());
       }
 
       private void CheckAddNew(Action commitAction) {

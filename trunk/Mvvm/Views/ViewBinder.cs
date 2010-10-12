@@ -59,7 +59,7 @@
       ) where TItemDescriptor : VMDescriptor;
 
       void VM<TChildDescriptor>(
-         Expression<Func<TDescriptor, IBindableProperty<ViewModel<TChildDescriptor>>>> viewModelPropertySelector,
+         Expression<Func<TDescriptor, IVMProperty<ViewModel<TChildDescriptor>>>> viewModelPropertySelector,
          Action<IVMBinder<TChildDescriptor>> viewModelBinder
       ) where TChildDescriptor : VMDescriptor;
    }

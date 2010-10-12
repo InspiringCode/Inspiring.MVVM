@@ -64,18 +64,47 @@ namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
          IDataErrorInfo errorInfo = vm;
          Assert.IsNull(errorInfo.Error);
          Assert.AreEqual("No value", errorInfo["StringProperty"]);
+
+         vm.StringProperty = "Test";
+
+         Assert.IsNull(errorInfo.Error);
+         Assert.IsNull(errorInfo["StringProperty"]);
       }
 
       [TestMethod]
       public void CheckInvalidValue() {
          ChildVM vm = new ChildVM();
-         
+
          ChildVM.Descriptor.StringProperty.SetDisplayValue(vm, "Value");
          ChildVM.Descriptor.StringProperty.SetDisplayValue(vm, String.Empty);
-         
+
          Assert.IsFalse(vm.IsValid(false));
          Assert.AreEqual("Value", vm.StringProperty);
          Assert.AreEqual(String.Empty, ChildVM.Descriptor.StringProperty.GetDisplayValue(vm));
+      }
+
+      [TestMethod]
+      public void CheckNotification() {
+         int changedCount = 0;
+
+         ChildVM vm = new ChildVM();
+
+         vm.PropertyChanged += (sender, e) => {
+            if (e.PropertyName == "Item[]") {
+               changedCount++;
+            }
+         };
+
+         Assert.AreEqual(0, changedCount);
+
+         vm.StringProperty = "Test";
+         Assert.AreEqual(0, changedCount);
+
+         vm.StringProperty = String.Empty;
+         Assert.AreEqual(1, changedCount);
+
+         vm.StringProperty = "Test";
+         Assert.AreEqual(2, changedCount);
       }
 
       private class ParentVM : ViewModel<ParentVMDescriptor> {

@@ -11,13 +11,13 @@
          Property = property;
       }
 
-      //internal BehaviorInitializationContext(
-      //   FieldDefinitionCollection dynamicFields,
-      //   VMProperty property
-      //) {
-      //   PropertyName = propertyName;
-      //   DynamicFields = dynamicFields;
-      //}
+      internal BehaviorInitializationContext(
+         FieldDefinitionCollection dynamicFields,
+         VMProperty property
+      ) {
+         Property = property;
+         DynamicFields = dynamicFields;
+      }
 
       public FieldDefinitionCollection DynamicFields { get; private set; }
 

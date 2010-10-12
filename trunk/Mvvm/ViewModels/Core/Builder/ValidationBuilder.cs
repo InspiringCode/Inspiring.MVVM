@@ -14,6 +14,10 @@
          BehaviorConfiguration config = _configs.GetConfiguration(property);
          return new ValidationBuilder<TVM, TValue>(config);
       }
+
+      public ICollectionValidationBuilder<TItemVM> CheckCollection<TItemVM>(IVMProperty<VMCollection<TItemVM>> property) where TItemVM : ViewModel {
+         throw new NotImplementedException();
+      }
    }
 
    internal sealed class ValidationBuilder<TVM, TValue> : IValidationBuilder<TVM, TValue> where TVM : ViewModel {
@@ -29,8 +33,11 @@
          _config.Enable(VMBehaviorKey.InvalidDisplayValueCache);
 
          _config.Configure(VMBehaviorKey.Validator, (ValidationBehavior<TValue> behavior) => {
-            behavior.Add((ValidationParameter<TValue> p) => {
-               return validation((TVM)p.VM, p.Value);
+            behavior.Add(args => {
+               var result = validation((TVM)args.VM, (TValue)args.PropertyValue);
+               if (!result.Successful) {
+                  args.AddError(result.ErrorMessage);
+               }
             });
          });
       }
@@ -55,11 +62,14 @@
          _config.Enable(VMBehaviorKey.InvalidDisplayValueCache);
 
          _config.Configure(VMBehaviorKey.Validator, (ValidationBehavior<TValue> behavior) => {
-            behavior.Add((ValidationParameter<TValue> p) => {
-               TParentVM parent = p.VM.Parent as TParentVM;
-               return parent != null ?
-                  validation(parent, (TVM)p.VM, p.Value) :
-                  ValidationResult.Success();
+            behavior.Add(args => {
+               TParentVM parent = args.VM.Parent as TParentVM;
+               if (parent != null) {
+                  var result = validation(parent, (TVM)args.VM, (TValue)args.PropertyValue);
+                  if (!result.Successful) {
+                     args.AddError(result.ErrorMessage);
+                  }
+               }
             });
          });
       }
