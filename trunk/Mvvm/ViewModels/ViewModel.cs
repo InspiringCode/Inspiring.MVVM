@@ -119,12 +119,18 @@
       ///   replaced with behaviors in the next version.
       /// </summary>
       protected virtual ValidationResult ValidateProperty(VMProperty property) {
-         IValidationBehavior validationBehavior;
-         if (property.Behaviors.TryGetBehavior(out validationBehavior)) {
-            return validationBehavior.GetValidationResult(this);
-         }
+         return property.GetValidationResult(this);
+      }
 
-         return ValidationResult.Success();
+      internal protected void Revalidate() {
+         RequireDescriptor();
+         foreach (VMProperty property in _descriptor.Properties) {
+            Revalidate(property);
+         }
+      }
+
+      protected void Revalidate(VMProperty property) {
+         property.Revalidate(this);
       }
 
       protected void UpdateFromSource(VMProperty property) {

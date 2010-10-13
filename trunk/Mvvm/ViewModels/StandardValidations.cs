@@ -49,5 +49,18 @@
                ValidationResult.Success();
          });
       }
+
+      public static void IsUnique<TItemVM, TItemValue>(
+         this ICollectionValidationBuilder<TItemVM, TItemValue> builder,
+         string errorMessage
+      ) where TItemVM : ViewModel {
+         builder.Custom(args => {
+            if (args.AllItems.Any(i => i.VM != args.Item.VM && Object.Equals(i.Value, args.Item.Value))) {
+               args.AddError(errorMessage);
+            }
+
+            args.AffectsOtherItems = true;
+         });
+      }
    }
 }

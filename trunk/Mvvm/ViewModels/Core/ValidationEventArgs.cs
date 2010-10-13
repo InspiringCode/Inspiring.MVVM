@@ -34,6 +34,10 @@
 
       internal List<string> Errors { get; private set; }
 
+      internal void ClearAffectsOtherItems() {
+         _affectsOtherItems = false;
+      }
+
       public void AddError(string errorMessage) {
          Contract.Requires<ArgumentNullException>(errorMessage != null);
          Errors.Add(errorMessage);

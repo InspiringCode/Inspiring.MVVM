@@ -4,7 +4,9 @@
    using System.Linq;
 
    internal sealed class CollectionPopulatorBehavior<TParentVM, TItemVM, TItemSource> :
-      Behavior, IAccessPropertyBehavior<VMCollection<TItemVM>>
+      Behavior,
+      IAccessPropertyBehavior<VMCollection<TItemVM>>,
+      IMutabilityCheckerBehavior
       where TItemVM : ViewModel
       where TParentVM : ViewModel {
 
@@ -19,6 +21,10 @@
          throw new NotSupportedException(
             ExceptionTexts.CannotSetVMCollectionProperties
          );
+      }
+
+      public bool IsMutable(IBehaviorContext vm) {
+         return false;
       }
 
       private IEnumerable<TItemSource> GetSourceCollection(IBehaviorContext vm) {

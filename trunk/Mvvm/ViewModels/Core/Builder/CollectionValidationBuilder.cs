@@ -1,4 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
+   using System;
+   using System.Linq;
 
    internal sealed class CollectionValidationBuilder<TItemVM> :
       ICollectionValidationBuilder<TItemVM>
@@ -18,6 +20,46 @@
          conf.OverrideFactory(VMBehaviorKey.CollectionValidator, new CollectionValidationBehavior<TItemVM>());
          conf.Configure<CollectionValidationBehavior<TItemVM>>(VMBehaviorKey.CollectionValidator, c => {
             c.Add(validation);
+         });
+      }
+
+      public ICollectionValidationBuilder<TItemVM, TValue> Check<TValue>(
+         VMProperty<TValue> itemProperty
+      ) {
+         return new CollectionValidationBuilder<TItemVM, TValue>(this, itemProperty);
+      }
+   }
+
+   internal sealed class CollectionValidationBuilder<TItemVM, TItemValue> :
+      ICollectionValidationBuilder<TItemVM, TItemValue>
+      where TItemVM : ViewModel {
+
+      private CollectionValidationBuilder<TItemVM> _parent;
+      private VMProperty<TItemValue> _itemProperty;
+
+      public CollectionValidationBuilder(
+         CollectionValidationBuilder<TItemVM> parent,
+         VMProperty<TItemValue> itemProperty
+      ) {
+         _parent = parent;
+         _itemProperty = itemProperty;
+      }
+
+      public void Custom(Action<ValidationEventArgs<TItemVM, TItemValue>> validator) {
+         _parent.Custom((item, items, args) => {
+            if (args.Property == _itemProperty) {
+               var validationItems = items.Select(vm =>
+               new ValidationValue<TItemVM, TItemValue>(
+                  vm,
+                  _itemProperty.GetValue(vm)
+               )
+            );
+               var a = new ValidationEventArgs<TItemVM, TItemValue>(
+                  validationItems, args
+               );
+
+               validator(a);
+            }
          });
       }
    }

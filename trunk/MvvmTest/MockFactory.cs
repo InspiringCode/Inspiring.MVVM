@@ -1,5 +1,7 @@
 ﻿namespace Inspiring.MvvmTest {
+   using Inspiring.Mvvm;
    using Inspiring.Mvvm.Screens;
+   using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.Mvvm.Views;
    using Moq;
@@ -45,6 +47,23 @@
          var mock = new Mock<IBehaviorFactory>();
          mock.Setup(x => x.Create<TValue>()).Returns(behavior);
          return mock;
+      }
+
+      public static Mock<IBehaviorContext> MockBehaviorContext(
+         VMDescriptor descriptor
+      ) {
+         ViewModel vm = new Mock<ViewModel>(ServiceLocator.Current).Object;
+         var behaviorContext = new Mock<IBehaviorContext>();
+         behaviorContext.Setup(x => x.FieldValues).Returns(descriptor.DynamicFields.CreateValueHolder());
+         behaviorContext.Setup(x => x.VM).Returns(vm);
+         return behaviorContext;
+      }
+
+      public static VMProperty<T> MockProperty<T>(BehaviorConfiguration config, VMDescriptor descriptor) {
+         VMProperty<T> property = new VMProperty<T>();
+         property.Initialize("Test", descriptor);
+         property.ConfigureBehaviors(config);
+         return property;
       }
    }
 }

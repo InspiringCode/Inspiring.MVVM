@@ -6,7 +6,11 @@
    ///   A <see cref="IAccessPropertyBehavior"/> that uses the specified delegates
    ///   to implement get/set operation of a <see cref="VMProperty"/>.
    /// </summary>
-   public sealed class CalculatedPropertyBehavior<TSource, TValue> : Behavior, IAccessPropertyBehavior<TValue> {
+   public sealed class CalculatedPropertyBehavior<TSource, TValue> : Behavior, IAccessPropertyBehavior<TValue>, IMutabilityCheckerBehavior {
+      private static readonly Action<TSource, TValue> _throwingSetter = delegate {
+         throw new InvalidOperationException(ExceptionTexts.NoSetterDelegate);
+      };
+
       private Func<TSource, TValue> _getter;
       private Action<TSource, TValue> _setter;
 
@@ -17,9 +21,7 @@
          Contract.Requires<ArgumentNullException>(getter != null);
 
          _getter = getter;
-         _setter = setter ?? delegate {
-            throw new InvalidOperationException(ExceptionTexts.NoSetterDelegate);
-         };
+         _setter = setter ?? _throwingSetter;
       }
 
       public TValue GetValue(IBehaviorContext vm) {
@@ -37,6 +39,10 @@
          return TryGetBehavior(out innerAccessor) ?
             innerAccessor.GetValue(vm) :
             (TSource)vm;
+      }
+
+      public bool IsMutable(IBehaviorContext vm) {
+         return _setter != _throwingSetter;
       }
    }
 }

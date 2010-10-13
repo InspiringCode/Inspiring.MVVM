@@ -39,11 +39,20 @@
          return GetType().Name;
       }
 
+      internal void Revalidate() {
+         foreach (TItemVM item in this) {
+            item.Revalidate();
+         }
+      }
+
       internal void Repopulate(
          IEnumerable<TItemVM> items,
          IItemCreationController<TItemVM> itemController = null,
          ICollectionModificationController<TItemVM> collectionController = null
       ) {
+         var validationBehavior = _validationBehavior;
+         _validationBehavior = null;
+
          // Disable the controllers while populating
          _itemController = null;
          _collectionController = null;
@@ -58,6 +67,9 @@
 
          _itemController = itemController;
          _collectionController = collectionController;
+
+         _validationBehavior = validationBehavior;
+         //Revalidate();
       }
 
       protected override void OnAddingNew(AddingNewEventArgs e) {
@@ -134,7 +146,9 @@
       }
 
       protected virtual void OnItemValidated(object sender, ValidationEventArgs args) {
-
+         if (args.AffectsOtherItems) {
+            Revalidate(); // TODO: Not always necessary!
+         }
       }
 
       // TODO: Only connect to events if required.
@@ -142,11 +156,19 @@
          item.Parent = _parent;
          item.Validating += OnItemValidating;
          item.Validated += OnItemValidated;
+
+         if (_validationBehavior != null) {
+            Revalidate(); // TODO: Not always necessary!
+         }
       }
 
       private void ItemRemoved(TItemVM item) {
          item.Validating -= OnItemValidating;
          item.Validated -= OnItemValidated;
+
+         if (_validationBehavior != null) {
+            Revalidate(); // TODO: Not always necessary!
+         }
       }
    }
 

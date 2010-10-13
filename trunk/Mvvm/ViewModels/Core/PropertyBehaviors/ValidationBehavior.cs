@@ -26,11 +26,11 @@
 
       public void SetValue(IBehaviorContext vm, TValue value) {
          var oldResult = GetValidationResult(vm);
+         TValue oldValue = GetValue(vm);
 
          var args = new ValidationEventArgs(_property, value, vm.VM);
          OnValidating(args);
          vm.OnValidating(args);
-         vm.OnValidated(args);
 
          if (args.Errors.Count > 0) {
             vm.FieldValues.SetValue(_errorMessageField, args.Errors.First());
@@ -39,9 +39,19 @@
             vm.FieldValues.ClearField(_errorMessageField);
          }
 
+         bool validationStateChanged;
          var newResult = GetValidationResult(vm);
+         validationStateChanged = !newResult.Equals(oldResult);
 
-         if (!newResult.Equals(oldResult)) {
+         TValue newValue = GetValue(vm);
+
+         if (!validationStateChanged && Object.Equals(newValue, oldValue)) {
+            args.ClearAffectsOtherItems();
+         }
+
+         vm.OnValidated(args);
+
+         if (validationStateChanged) {
             vm.ValidationStateChanged(_property);
          }
       }

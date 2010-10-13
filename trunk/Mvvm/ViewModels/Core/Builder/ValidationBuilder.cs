@@ -12,6 +12,12 @@
 
       public IValidationBuilder<TVM, TValue> Check<TValue>(VMProperty<TValue> property) {
          BehaviorConfiguration config = _configs.GetConfiguration(property);
+
+         // Enable here, to allow enabling validation without defining a validation
+         // (needed for collection validations).
+         config.Enable(VMBehaviorKey.Validator);
+         config.Enable(VMBehaviorKey.InvalidDisplayValueCache);
+
          return new ValidationBuilder<TVM, TValue>(config);
       }
 
@@ -29,9 +35,6 @@
       }
 
       public void Custom(Func<TVM, TValue, ValidationResult> validation) {
-         _config.Enable(VMBehaviorKey.Validator);
-         _config.Enable(VMBehaviorKey.InvalidDisplayValueCache);
-
          _config.Configure(VMBehaviorKey.Validator, (ValidationBehavior<TValue> behavior) => {
             behavior.Add(args => {
                var result = validation((TVM)args.VM, (TValue)args.PropertyValue);

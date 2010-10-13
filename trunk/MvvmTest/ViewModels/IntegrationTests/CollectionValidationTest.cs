@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
    using System.Collections.Generic;
+   using System.ComponentModel;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -73,6 +74,38 @@
          secondProjectCounter.AssertNoRaise();
       }
 
+      [TestMethod]
+      public void CheckCustomWithProperty() {
+         EmployeeVM vm = new EmployeeVM();
+
+         // TODO: Validation works only after vm were added to parent!
+         ProjectVM child1 = new ProjectVM() { Name = "Value 1" };
+         ProjectVM child2 = new ProjectVM() { Name = "Value 2" };
+         ProjectVM child3 = new ProjectVM() { Name = "Value 3" };
+
+         vm.SpareTimeProjects.Add(child1);
+         vm.SpareTimeProjects.Add(child2);
+         vm.SpareTimeProjects.Add(child3);
+
+         IDataErrorInfo errorInfo1 = child1;
+         IDataErrorInfo errorInfo2 = child2;
+         IDataErrorInfo errorInfo3 = child3;
+
+         Assert.IsNull(errorInfo1["Name"]);
+         Assert.IsNull(errorInfo2["Name"]);
+         Assert.IsNull(errorInfo3["Name"]);
+
+         child3.NameDisplayValue = "Value 2";
+
+         Assert.IsNull(errorInfo1.Error);
+         Assert.IsNull(errorInfo2.Error);
+         Assert.IsNull(errorInfo3.Error);
+
+         Assert.IsNull(errorInfo1["Name"]);
+         Assert.IsNull(errorInfo2["Name"]);
+         Assert.AreEqual("Duplicate", errorInfo3["Name"]);
+      }
+
       private class EmployeeVM : ViewModel<EmployeeVMDescriptor> {
          public static readonly EmployeeVMDescriptor Descriptor = VMDescriptorBuilder
             .For<EmployeeVM>()
@@ -80,12 +113,20 @@
                var v = c.GetPropertyFactory();
 
                return new EmployeeVMDescriptor {
-                  Projects = v.MappedCollection(x => x.ProjectsSource).Of<ProjectVM>(ProjectVM.Descriptor)
+                  Projects = v.MappedCollection(x => x.ProjectsSource).Of<ProjectVM>(ProjectVM.Descriptor),
+                  SpareTimeProjects = v.MappedCollection(x => x.SpareTimeProjectsSource).Of<ProjectVM>(ProjectVM.Descriptor)
                };
             })
             .WithValidations((d, c) => {
                c.CheckCollection(d.Projects).Custom((project, projects, args) => {
-                  if (projects.Any(x => x != project && x.Name == project.Name)) {
+                  if (projects.Any(x => x != project && x.Name == (string)args.PropertyValue)) {
+                     args.AddError("Duplicate");
+                  }
+
+                  args.AffectsOtherItems = true;
+               });
+               c.CheckCollection(d.SpareTimeProjects).Check<string>(ProjectVM.Descriptor.Name).Custom(args => {
+                  if (args.AllItems.Any(i => i.VM != args.Item.VM && i.Value == args.Item.Value)) {
                      args.AddError("Duplicate");
                   }
 
@@ -101,10 +142,15 @@
 
          public VMCollection<ProjectVM> Projects {
             get { return GetValue(Descriptor.Projects); }
-            set { SetValue(Descriptor.Projects, value); }
+         }
+
+         public VMCollection<ProjectVM> SpareTimeProjects {
+            get { return GetValue(Descriptor.SpareTimeProjects); }
          }
 
          private List<string> ProjectsSource { get; set; }
+
+         private List<string> SpareTimeProjectsSource { get; set; }
       }
 
       private class ProjectVM : ViewModel<ProjectVMDescriptor>, ICanInitializeFrom<string>, IHasSourceObject<string> {
@@ -116,6 +162,9 @@
                return new ProjectVMDescriptor {
                   Name = v.Local<string>()
                };
+            })
+            .WithValidations((d, c) => {
+               c.Check(d.Name); // HACK: Enable validation
             })
             .Build();
 
@@ -144,6 +193,7 @@
 
       private class EmployeeVMDescriptor : VMDescriptor {
          public VMCollectionProperty<ProjectVM> Projects { get; set; }
+         public VMCollectionProperty<ProjectVM> SpareTimeProjects { get; set; }
       }
 
       private class ProjectVMDescriptor : VMDescriptor {

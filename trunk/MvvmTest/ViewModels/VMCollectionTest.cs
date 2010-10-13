@@ -106,8 +106,8 @@
          coll.Add(_secondElement);
 
          coll.First().MappeddMutableAccessor = "Test";
-         mock.Protected().Verify("OnItemValidating", Times.Once(), ItExpr.IsAny<object>(), ItExpr.IsAny<ValidationEventArgs>());
-         mock.Protected().Verify("OnItemValidated", Times.Once(), ItExpr.IsAny<object>(), ItExpr.IsAny<ValidationEventArgs>());
+         mock.Protected().Verify("OnItemValidating", Times.Exactly(4), ItExpr.IsAny<object>(), ItExpr.IsAny<ValidationEventArgs>());
+         mock.Protected().Verify("OnItemValidated", Times.Exactly(4), ItExpr.IsAny<object>(), ItExpr.IsAny<ValidationEventArgs>());
       }
 
       [TestMethod]

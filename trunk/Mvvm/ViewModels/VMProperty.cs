@@ -60,6 +60,25 @@
             _propertyDescriptor.RaiseValueChanged(vm);
          }
       }
+
+      internal abstract void Revalidate(IBehaviorContext context);
+
+      internal ValidationResult GetValidationResult(IBehaviorContext context) {
+         IValidationBehavior validationBehavior;
+         if (Behaviors.TryGetBehavior(out validationBehavior)) {
+            return validationBehavior.GetValidationResult(context);
+         }
+
+         return ValidationResult.Success();
+      }
+
+      internal bool IsMutable(IBehaviorContext context) {
+         IMutabilityCheckerBehavior checker;
+         if (Behaviors.TryGetBehavior(out checker)) {
+            return checker.IsMutable(context);
+         }
+         return true;
+      }
    }
 
    public abstract class VMPropertyBase<T> : VMProperty, IVMProperty<T> {
@@ -81,6 +100,22 @@
       internal void SetValue(IBehaviorContext vm, T value) {
          Contract.Requires(vm != null);
          Behaviors.GetNextBehavior<IAccessPropertyBehavior<T>>().SetValue(vm, value);
+      }
+
+      internal override void Revalidate(IBehaviorContext context) {
+         if (IsMutable(context)) {
+            IAccessPropertyBehavior displayValueAccessor;
+            if (Behaviors.TryGetBehavior(out displayValueAccessor)) {
+               object value = displayValueAccessor.GetValue(context);
+               displayValueAccessor.SetValue(context, value);
+            } else {
+               var typedAccessor = Behaviors.GetNextBehavior<IAccessPropertyBehavior<T>>();
+               T value = typedAccessor.GetValue(context);
+               typedAccessor.SetValue(context, value);
+            }
+         } else {
+            // TODO: Implement validation for readonly properties!
+         }
       }
    }
 
