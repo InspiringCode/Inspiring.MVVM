@@ -97,6 +97,29 @@
          //} else {
          //   vm.FieldValues.ClearField(_errorMessageField);
          //}
+
+         var oldResult = GetValidationResult(vm);
+         TValue value = GetValue(vm);
+
+         var args = new ValidationEventArgs(_property, value, vm.VM);
+         OnValidating(args);
+         vm.OnValidating(args);
+
+         if (args.Errors.Count > 0) {
+            vm.FieldValues.SetValue(_errorMessageField, args.Errors.First());
+         } else {
+            vm.FieldValues.ClearField(_errorMessageField);
+         }
+
+         bool validationStateChanged;
+         var newResult = GetValidationResult(vm);
+         validationStateChanged = !newResult.Equals(oldResult);
+
+         vm.OnValidated(args);
+
+         if (validationStateChanged) {
+            vm.ValidationStateChanged(_property);
+         }
       }
 
       protected override void Initialize(BehaviorInitializationContext context) {

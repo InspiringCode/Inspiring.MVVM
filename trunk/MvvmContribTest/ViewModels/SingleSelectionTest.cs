@@ -2,6 +2,7 @@
    using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.MvvmTest;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
@@ -126,6 +127,47 @@
             secondItemVM,
             () => { singleSelection.SelectedItem = secondItemVM; }
          );
+      }
+
+      [TestMethod]
+      public void Refresh() {
+         var singleSelection = _vm.InvokeGetValue(PersonVM.Descriptor.Status);
+
+         Assert.AreSame(
+            _selectableStatus1,
+            GetSelectedItem(PersonVM.Descriptor.Status).SourceItem
+         );
+
+         _person.CurrentStatus = _selectableStatus2;
+         _allStatus.Remove(_selectableStatus1);
+
+         var selectedItemCounter = new PropertyChangedCounter(singleSelection, "SelectedItem");
+         var allItemsCounter = new PropertyChangedCounter(singleSelection, "AllItems");
+         bool listChangedWasInvoked = false;
+         singleSelection.AllItems.ListChanged += (_, __) => {
+            listChangedWasInvoked = true;
+         };
+
+         singleSelection.Refresh();
+
+         allItemsCounter.AssertNoRaise(); // BindingList has list changed notification
+         selectedItemCounter.AssertOneRaise();
+         Assert.IsTrue(listChangedWasInvoked);
+
+         Assert.AreSame(
+            _selectableStatus2,
+            GetSelectedItem(PersonVM.Descriptor.Status).SourceItem
+         );
+
+         var actualSourceItems = GetAllItems(PersonVM.Descriptor.Status)
+          .Select(x => x.SourceItem)
+          .ToArray();
+
+         var expected = new PersonStatus[] { _selectableStatus2 };
+
+         CollectionAssert.AreEquivalent(expected, actualSourceItems);
+
+         Assert.IsTrue(singleSelection.IsValid(false));
       }
 
       private VMCollection<SelectionItemVM<PersonStatus>> GetAllItems(

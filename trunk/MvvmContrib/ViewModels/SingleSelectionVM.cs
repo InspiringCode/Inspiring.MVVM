@@ -61,6 +61,12 @@
          set { SetValue(Descriptor.SelectedItem, value); }
       }
 
+      public void Refresh() {
+         UpdateFromSource(Descriptor.AllItems);
+         UpdateFromSource(Descriptor.SelectedItem);
+         Revalidate(Descriptor.SelectedItem);
+      }
+
       internal static SingleSelectionVMDescriptor<TSourceItem, TItemVM> CreateDescriptor(
          VMProperty<IEnumerable<TSourceItem>> allSourceItemsProperty,
          VMProperty<TSourceItem> selectedSourceItemProperty,

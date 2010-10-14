@@ -40,6 +40,11 @@
          // The value was set successfully on the source object: discard invalid
          // value and return the actual value next time!
          vm.FieldValues.ClearField(_invalidValueField);
+
+         IHandlePropertyChangingBehavior next;
+         if (TryGetBehavior(out next)) {
+            next.HandlePropertyChanging(vm);
+         }
       }
 
       protected override void Initialize(BehaviorInitializationContext context) {

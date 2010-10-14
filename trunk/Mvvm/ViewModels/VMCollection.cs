@@ -50,6 +50,8 @@
          IItemCreationController<TItemVM> itemController = null,
          ICollectionModificationController<TItemVM> collectionController = null
       ) {
+         RaiseListChangedEvents = false;
+
          var validationBehavior = _validationBehavior;
          _validationBehavior = null;
 
@@ -70,6 +72,9 @@
 
          _validationBehavior = validationBehavior;
          //Revalidate();
+
+         RaiseListChangedEvents = true;
+         OnListChanged(new ListChangedEventArgs(ListChangedType.Reset, -1));
       }
 
       protected override void OnAddingNew(AddingNewEventArgs e) {

@@ -1,4 +1,5 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core {
+﻿using System;
+namespace Inspiring.Mvvm.ViewModels.Core {
    internal class CacheValueBehavior<TValue> : Behavior, IAccessPropertyBehavior<TValue> {
       FieldDefinition<TValue> _localCopyField;
 
@@ -37,8 +38,13 @@
       private VMPropertyBase<TValue> _property;
 
       public void UpdateFromSource(IBehaviorContext vm) {
+         TValue oldValue = GetValue(vm);
          CopyFromSource(vm);
-         vm.RaisePropertyChanged(_property);
+         TValue newValue = GetValue(vm);
+
+         if (!Object.Equals(oldValue, newValue)) {
+            vm.RaisePropertyChanged(_property);
+         }
       }
 
       public void UpdateSource(IBehaviorContext vm) {
