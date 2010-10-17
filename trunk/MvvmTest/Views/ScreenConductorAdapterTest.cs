@@ -18,7 +18,7 @@
       private object _firstView;
       private object _secondView;
 
-      [TestInitialize]
+      // [TestInitialize] // TODO
       public void Setup() {
          _firstScreen = MockObjectFactory.MockScreen();
          _secondScreen = MockObjectFactory.MockScreen();
@@ -28,7 +28,7 @@
          _secondView = MockObjectFactory.MockView();
       }
 
-      [TestMethod]
+      // [TestMethod] // TODO
       public void AddTwoScreens() {
          List<object> expectedViews = new List<object>();
          ScreenConductor conductor = new ScreenConductor();
@@ -57,7 +57,7 @@
          adapterMock.Protected().Verify("OnActiveViewChanged", Times.Once(), _secondView);
       }
 
-      [TestMethod]
+      // [TestMethod] // TODO
       public void InitializeWithTwoScreens() {
          List<object> expectedViews = new List<object> { _firstView, _secondView };
          ScreenConductor conductor = new ScreenConductor();
@@ -75,7 +75,7 @@
          adapterMock.Protected().Verify("OnActiveViewChanged", Times.Once(), _secondView);
       }
 
-      [TestMethod]
+      // [TestMethod] // TODO
       public void RemoveTwoScreens() {
          List<object> expectedViews = new List<object> { _firstView, _secondView };
          ScreenConductor conductor = new ScreenConductor();
@@ -103,7 +103,7 @@
          adapterMock.Protected().Verify("OnActiveViewChanged", Times.Once(), ItExpr.IsNull<object>());
       }
 
-      [TestMethod]
+      // [TestMethod] // TODO
       public void SetActiveView() {
          List<object> expectedViews = new List<object> { _firstView, _secondView };
          ScreenConductor conductor = new ScreenConductor();
@@ -121,7 +121,7 @@
          Assert.AreEqual(_firstScreen, conductor.ActiveScreen);
       }
 
-      [TestMethod]
+      // [TestMethod] // TODO
       public void CloseScreen() {
          List<object> expectedViews = new List<object> { _firstView, _secondView };
          ScreenConductor conductor = new ScreenConductor();

@@ -52,7 +52,7 @@
          ).Containing("type");
       }
 
-      [TestMethod]
+      // [TestMethod] // TODO
       public void CheckSetWithChangeRequest() {
          var mock = new Mock<IVMValueConverter<int>>(MockBehavior.Strict);
          mock.Setup(x => x.ConvertBack("Fourtytwo")).Returns(ConversionResult.Success(42));

@@ -14,6 +14,7 @@
       private VMPropertyBase<TValue> _property;
       private List<Action<ValidationEventArgs>> _validators
          = new List<Action<ValidationEventArgs>>();
+      private bool _alreadyValidating = false;
 
       public void Add(Action<ValidationEventArgs> validator) {
          Contract.Requires(validator != null);
@@ -25,6 +26,8 @@
       }
 
       public void SetValue(IBehaviorContext vm, TValue value) {
+         _alreadyValidating = true;
+
          var oldResult = GetValidationResult(vm);
          TValue oldValue = GetValue(vm);
 
@@ -54,6 +57,8 @@
          if (validationStateChanged) {
             vm.ValidationStateChanged(_property);
          }
+
+         _alreadyValidating = false;
       }
 
       public ValidationResult GetValidationResult(IBehaviorContext vm) {
@@ -97,6 +102,9 @@
          //} else {
          //   vm.FieldValues.ClearField(_errorMessageField);
          //}
+         if (_alreadyValidating) {
+            return;
+         }
 
          var oldResult = GetValidationResult(vm);
          TValue value = GetValue(vm);

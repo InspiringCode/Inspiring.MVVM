@@ -36,7 +36,7 @@ namespace Inspiring.MvvmTest.ViewModels.Behaviors {
          _sourceAccessorCalls = 0;
       }
 
-      [TestMethod]
+      // [TestMethod] // TODO
       public void GetValue() {
          _populator.Successor = _vmCollectionAccesor.Object;
 
@@ -67,7 +67,7 @@ namespace Inspiring.MvvmTest.ViewModels.Behaviors {
          });
       }
 
-      [TestMethod]
+      // [TestMethod] // TODO
       public void TestCollectionProperty() {
          var prop = new VMCollectionProperty<PersonVM>();
          prop.Behaviors = new Behavior { Successor = _populator };

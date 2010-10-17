@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Inspiring.MvvmTest.Views {
    [TestClass]
    public class ViewBinderTest {
-      [TestMethod]
+      // [TestMethod] // TODO
       public void BindScreen() {
          PersonScreenView screenView = new PersonScreenView();
          TextBox targetElement = new TextBox();
@@ -24,21 +24,7 @@ namespace Inspiring.MvvmTest.Views {
          Assert.IsNull(binding.Source);
       }
 
-      [TestMethod]
-      public void TestMethod1() {
-         PersonVM vm = SampleDataFactory.CreatePersonVM();
-         PersonVMView view = new PersonVMView();
-         ViewBinder.BindVM(view, b => {
-
-         });
-
-         PersonScreenView screenView = null;
-         ViewBinder.BindScreen(screenView, b => {
-
-         });
-      }
-
-      [TestMethod]
+      // [TestMethod] // TODO
       public void BindCollection() {
          PersonVM vm = null;
          PersonVMView view = new PersonVMView();
