@@ -17,7 +17,21 @@
       private ViewModel _parent;
       private CollectionValidationBehavior<TItemVM> _validationBehavior;
 
-      internal VMCollection(ViewModel parent, VMDescriptor itemDescriptor, CollectionValidationBehavior<TItemVM> validationBehavior = null) {
+      // TODO: Is public right?
+      public VMCollection(
+         ViewModel parent,
+         VMDescriptor itemDescriptor,
+         IEnumerable<TItemVM> items = null
+      ) {
+         _parent = parent;
+         ItemDescriptor = itemDescriptor;
+
+         if (items != null) {
+            Popuplate(items);
+         }
+      }
+
+      internal VMCollection(ViewModel parent, VMDescriptor itemDescriptor, CollectionValidationBehavior<TItemVM> validationBehavior) {
          _parent = parent;
          ItemDescriptor = itemDescriptor;
          _validationBehavior = validationBehavior;
@@ -43,6 +57,13 @@
          foreach (TItemVM item in this) {
             item.Revalidate();
          }
+      }
+
+      public void Popuplate(
+         IEnumerable<TItemVM> items,
+         ICollectionModificationController<TItemVM> collectionController = null
+      ) {
+         Repopulate(items, null, collectionController);
       }
 
       internal void Repopulate(
@@ -183,7 +204,7 @@
       void CancelNew(TItemVM transientItem);
    }
 
-   internal interface ICollectionModificationController<TItemVM> {
+   public interface ICollectionModificationController<TItemVM> {
       void Insert(TItemVM item, int index);
       void Remove(TItemVM item);
       void SetItem(TItemVM item, int index);
