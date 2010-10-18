@@ -75,7 +75,7 @@
       IOptionsExpression<T> OneWayToSource();
       IOptionsExpression<T> OneTime();
       IOptionsExpression<T> PropertyChanged();
-      IOptionsExpression<T> With(IValueConverter converter);
+      IOptionsExpression<T> With(IValueConverter converter, object parameter = null);
    }
 
    public interface IBindCollectionExpression<TDescriptor> {
@@ -181,9 +181,10 @@
          return this;
       }
 
-      public IOptionsExpression<T> With(IValueConverter converter) {
+      public IOptionsExpression<T> With(IValueConverter converter, object parameter = null) {
          BinderExpression.ExposeContext(this, c => {
             c.Binding.Converter = converter;
+            c.Binding.ConverterParameter = parameter;
          });
 
          return this;
