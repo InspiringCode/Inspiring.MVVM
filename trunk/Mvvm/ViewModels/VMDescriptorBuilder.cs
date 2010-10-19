@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
+   using System.Diagnostics.Contracts;
    using System.Linq.Expressions;
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.ViewModels.Core;
@@ -86,6 +87,9 @@
          public IVMDescriptorBuilder<TVM, TDescriptor> WithBehaviors(
             Action<TDescriptor, IVMBehaviorConfigurator> behaviorConfigurator
          ) {
+            Contract.Requires<ArgumentNullException>(behaviorConfigurator != null);
+            var builder = new BehaviorConfigurationBuilder(_configurations);
+            behaviorConfigurator(_descriptor, builder);
             return this;
          }
 

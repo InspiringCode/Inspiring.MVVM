@@ -93,6 +93,7 @@
     <Compile Include="Screens\ScreenConductor.cs" />
     <Compile Include="Screens\ScreenFactory.cs" />
     <Compile Include="ServiceLocator.cs" />
+    <Compile Include="ViewModels\Core\Builder\BehaviorConfigurationBuilder.cs" />
     <Compile Include="ViewModels\Core\Builder\BehaviorConfigurationDictionary.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorConfiguration.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorConfigurationFactory.cs" />
@@ -124,6 +125,7 @@
     <Compile Include="ViewModels\ICreatableItem.cs" />
     <Compile Include="ViewModels\IHasSourceObject.cs" />
     <Compile Include="ViewModels\IVMContext.cs" />
+    <Compile Include="ViewModels\StandardBehaviors.cs" />
     <Compile Include="ViewModels\StandardValidations.cs" />
     <Compile Include="ViewModels\VMCollectionProperty.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Behavior.cs" />
