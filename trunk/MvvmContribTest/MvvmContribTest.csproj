@@ -68,8 +68,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screens\ApplicationCommandManagerTest.cs" />
     <Compile Include="Screens\FindScreenTest.cs" />
+    <Compile Include="ViewModels\VMs\DocumentVM.cs" />
+    <Compile Include="ViewModels\VMs\KeywordSelectionVM.cs" />
+    <Compile Include="ViewModels\VMs\KeywordVM.cs" />
+    <Compile Include="ViewModels\VMs\Document.cs" />
     <Compile Include="ViewModels\EnumLocalizerTest.cs" />
     <Compile Include="ViewModels\EnumSelectionTest.cs" />
+    <Compile Include="ViewModels\VMs\Keyword.cs" />
+    <Compile Include="ViewModels\MultiSelectionTest.cs" />
     <Compile Include="ViewModels\PersonStatus.cs" />
     <Compile Include="ViewModels\SingleSelectionTest.cs" />
   </ItemGroup>
@@ -89,6 +95,7 @@
       <LastGenOutput>EnumLocalizations.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
