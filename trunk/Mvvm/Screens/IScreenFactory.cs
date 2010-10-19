@@ -2,6 +2,6 @@
    using System;
 
    public interface IScreenFactory<TScreen> where TScreen : IScreen {
-      TScreen Create(Action<TScreen> initializationCallback);
+      TScreen Create(Action<TScreen> initializationCallback = null);
    }
 }

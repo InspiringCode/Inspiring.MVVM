@@ -3,8 +3,8 @@
    using System.Linq;
 
    public static partial class ScreenFactory {
-      public static IScreenFactory<TScreen> For<TScreen>() where TScreen : IScreen {
-         return new Factory<TScreen>();
+      public static IScreenFactory<TScreen> For<TScreen>(IServiceLocator resolveWith = null) where TScreen : IScreen {
+         return new Factory<TScreen>(resolveWith);
       }
 
       public static SubjectExpression<TSubject> WithSubject<TSubject>(TSubject subject) {
@@ -18,8 +18,8 @@
             _subject = subject;
          }
 
-         public IScreenFactory<TScreen> For<TScreen>() where TScreen : IScreen {
-            return new Factory<TScreen, TSubject>(_subject);
+         public IScreenFactory<TScreen> For<TScreen>(IServiceLocator resolveWith = null) where TScreen : IScreen {
+            return new Factory<TScreen, TSubject>(_subject, resolveWith);
          }
       }
    }
@@ -49,9 +49,19 @@
       }
 
       private class Factory<TScreen> : IScreenFactory<TScreen> where TScreen : IScreen {
-         public TScreen Create(Action<TScreen> initializationCallback) {
-            TScreen screen = ServiceLocator.Current.GetInstance<TScreen>();
-            initializationCallback(screen);
+         private IServiceLocator _resolveWith;
+
+         public Factory(IServiceLocator resolveWith) {
+            _resolveWith = resolveWith ?? ServiceLocator.Current;
+         }
+
+         public TScreen Create(Action<TScreen> initializationCallback = null) {
+            TScreen screen = _resolveWith.GetInstance<TScreen>();
+
+            if (initializationCallback != null) {
+               initializationCallback(screen);
+            }
+
 
             Initialize(screen, s => {
                INeedsInitialization needsInitialization = s as INeedsInitialization;
@@ -66,14 +76,19 @@
 
       private class Factory<TScreen, TSubject> : IScreenFactory<TScreen> where TScreen : IScreen {
          private TSubject _subject;
+         private IServiceLocator _resolveWith;
 
-         public Factory(TSubject subject) {
+         public Factory(TSubject subject, IServiceLocator resolveWith) {
             _subject = subject;
+            _resolveWith = resolveWith ?? ServiceLocator.Current;
          }
 
-         public TScreen Create(Action<TScreen> initializationCallback) {
-            TScreen screen = ServiceLocator.Current.GetInstance<TScreen>();
-            initializationCallback(screen);
+         public TScreen Create(Action<TScreen> initializationCallback = null) {
+            TScreen screen = _resolveWith.GetInstance<TScreen>();
+
+            if (initializationCallback != null) {
+               initializationCallback(screen);
+            }
 
             Initialize(screen, s => {
                INeedsInitialization<TSubject> needsTypedInitialization = s as INeedsInitialization<TSubject>;

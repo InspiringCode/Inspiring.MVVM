@@ -1,10 +1,35 @@
 ﻿namespace Inspiring.MvvmTest.Screens {
    using System;
+   using Inspiring.Mvvm;
    using Inspiring.Mvvm.Screens;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
+   using Moq;
 
    [TestClass]
    public class ScreenFactoryTest {
+      [TestMethod]
+      public void TestServiceLocatorIsUsed() {
+         var locatorMock = new Mock<IServiceLocator>();
+         locatorMock
+            .Setup(x => x.GetInstance<TestScreen>())
+            .Returns(new TestScreen("Test"));
+
+         TestScreen screen = ScreenFactory
+            .For<TestScreen>(locatorMock.Object)
+            .Create();
+
+         Assert.AreEqual("Test", screen.Dependency);
+      }
+
+      [TestMethod]
+      public void TestCreateWithDefaultServiceLocator() {
+         TestScreen screen = ScreenFactory
+            .For<TestScreen>()
+            .Create();
+
+         Assert.IsNotNull(screen);
+      }
+
       [TestMethod]
       public void ScreenIsCreatedAndInitialized() {
          //var mock = new Mock<IScreenInitializer>();
@@ -26,6 +51,17 @@
          //Assert.IsNotNull(s);
          //mock.Verify(x => x.Initialize(s), Times.Never());
          //mock.Verify(x => x.Initialize<string>(s, "Test"), Times.Once());
+      }
+
+      private class TestScreen : ScreenBase {
+         public TestScreen() {
+         }
+
+         public TestScreen(string dependency) {
+            Dependency = dependency;
+         }
+
+         public string Dependency { get; private set; }
       }
 
       private class SimpleScreen : IScreen {

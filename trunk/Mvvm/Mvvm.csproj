@@ -189,6 +189,7 @@
     <Compile Include="Views\IView.cs" />
     <Compile Include="Views\IWindowService.cs" />
     <Compile Include="Views\ScreenConductorAdapter.cs" />
+    <Compile Include="Views\TestDialogService.cs" />
     <Compile Include="Views\View.cs" />
     <Compile Include="Views\ViewBinder.cs" />
     <Compile Include="Views\ViewFactory.cs" />
@@ -203,7 +204,9 @@
       <LastGenOutput>ExceptionTexts.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\TestDoubles\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Views\- Diagrams -\ViewBinder.cd" />
   </ItemGroup>
