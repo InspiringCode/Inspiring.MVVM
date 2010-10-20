@@ -68,8 +68,12 @@
          UpdateSource(property);
       }
 
-      protected override ValidationResult Validate() {
-         return ViewModelValidationResult ?? base.Validate();
+      protected override void OnValidate(ViewModelValidationArgs args) {
+         base.OnValidate(args);
+
+         if (ViewModelValidationResult != null && !ViewModelValidationResult.Successful) {
+            args.AddError(ViewModelValidationResult.ErrorMessage);
+         }
       }
 
       protected override ValidationResult ValidateProperty(VMProperty property) {
@@ -135,9 +139,12 @@
          }
       }
 
+      protected override void OnValidate(ViewModelValidationArgs args) {
+         base.OnValidate(args);
 
-      protected override ValidationResult Validate() {
-         return ViewModelValidationResult ?? base.Validate();
+         if (ViewModelValidationResult != null && !ViewModelValidationResult.Successful) {
+            args.AddError(ViewModelValidationResult.ErrorMessage);
+         }
       }
 
       protected override ValidationResult ValidateProperty(VMProperty property) {
@@ -193,9 +200,12 @@
          }
       }
 
+      protected override void OnValidate(ViewModelValidationArgs args) {
+         base.OnValidate(args);
 
-      protected override ValidationResult Validate() {
-         return ViewModelValidationResult ?? base.Validate();
+         if (ViewModelValidationResult != null && !ViewModelValidationResult.Successful) {
+            args.AddError(ViewModelValidationResult.ErrorMessage);
+         }
       }
 
       protected override ValidationResult ValidateProperty(VMProperty property) {

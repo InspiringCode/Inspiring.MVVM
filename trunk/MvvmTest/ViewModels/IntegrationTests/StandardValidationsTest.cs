@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Inspiring.Mvvm.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -37,6 +38,26 @@ namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
       }
 
       [TestMethod]
+      public void ChildValidation_OneChildInvalid_ParentHasError() {
+         ParentVM vm = new ParentVM();
+         IDataErrorInfo info = vm;
+
+         ChildVM child1 = new ChildVM() { StringProperty = "Val1" };
+         ChildVM child2 = new ChildVM() { StringProperty = "Val2" };
+
+         vm.Children.Add(child1);
+         vm.Children.Add(child2);
+
+         Assert.IsTrue(vm.IsValid(true));
+         Assert.IsNull(info.Error);
+
+         child2.StringProperty = "";
+
+         Assert.AreEqual("Child invalid", info["Children"]);
+         Assert.AreEqual("Child invalid", info.Error);
+      }
+
+      [TestMethod]
       public void CheckHasValue() {
          ChildVM vm = new ChildVM();
          vm.StringProperty = String.Empty;
@@ -69,23 +90,29 @@ namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
                var v = c.GetPropertyFactory();
 
                return new ParentVMDescriptor {
-                  Children = v.Local<VMCollection<ChildVM>>()
+                  Children = v.MappedCollection(x => x.Source).Of<ChildVM>(ChildVM.Descriptor)
                };
+            })
+            .WithValidations((d, c) => {
+               c.CheckCollection(d.Children).PropagateChildErrors("Child invalid");
             })
             .Build();
 
          public ParentVM()
             : base(Descriptor) {
             Children = new VMCollection<ChildVM>(this, ChildVM.Descriptor);
+            Source = new List<string>();
          }
 
          public VMCollection<ChildVM> Children {
             get { return GetValue(Descriptor.Children); }
             set { SetValue(Descriptor.Children, value); }
          }
+
+         private List<string> Source { get; set; }
       }
 
-      private class ChildVM : ViewModel<ChildVMDescriptor> {
+      private class ChildVM : ViewModel<ChildVMDescriptor>, ICanInitializeFrom<string> {
          public static readonly ChildVMDescriptor Descriptor = VMDescriptorBuilder
             .For<ChildVM>()
             .CreateDescriptor(c => {
@@ -110,10 +137,14 @@ namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
             get { return GetValue(Descriptor.StringProperty); }
             set { SetValue(Descriptor.StringProperty, value); }
          }
+
+         public void InitializeFrom(string source) {
+            StringProperty = source;
+         }
       }
 
       private class ParentVMDescriptor : VMDescriptor {
-         public VMProperty<VMCollection<ChildVM>> Children { get; set; }
+         public VMCollectionProperty<ChildVM> Children { get; set; }
       }
 
       private class ChildVMDescriptor : VMDescriptor {

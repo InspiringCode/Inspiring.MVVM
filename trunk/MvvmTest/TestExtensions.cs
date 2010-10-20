@@ -27,10 +27,14 @@
       ///   Calls the given method with the given arguments.
       /// </summary>
       public static void Invoke(this object obj, string methodName, params object[] args) {
-         MethodInfo meth = obj.GetType().GetMethod(
-            methodName,
-            BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
-         );
+         MethodInfo meth = null;
+
+         for (Type t = obj.GetType(); t != null && meth == null; t = t.BaseType) {
+            meth = t.GetMethod(
+               methodName,
+               BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
+            );
+         }
 
          if (meth == null) {
             throw new InvalidOperationException(String.Format(

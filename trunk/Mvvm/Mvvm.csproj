@@ -127,6 +127,7 @@
     <Compile Include="ViewModels\IVMContext.cs" />
     <Compile Include="ViewModels\StandardBehaviors.cs" />
     <Compile Include="ViewModels\StandardValidations.cs" />
+    <Compile Include="ViewModels\ViewModelValidationArgs.cs" />
     <Compile Include="ViewModels\VMCollectionProperty.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Behavior.cs" />
     <Compile Include="ViewModels\Core\Behaviors\IBehavior.cs" />
@@ -186,6 +187,7 @@
     <Compile Include="Views\Binder\SetBindingBuildStep.cs" />
     <Compile Include="Views\Binder\DefaultPropertyBuildStep.cs" />
     <Compile Include="Views\Binder\VMPropertyBinder.cs" />
+    <Compile Include="Views\CommonBehaviors.cs" />
     <Compile Include="Views\IView.cs" />
     <Compile Include="Views\IWindowService.cs" />
     <Compile Include="Views\ScreenConductorAdapter.cs" />

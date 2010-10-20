@@ -1,11 +1,11 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
+   using System;
    using System.Collections.Generic;
    using System.ComponentModel;
+   using System.Diagnostics.Contracts;
    using System.Linq;
    using System.Reflection;
    using Inspiring.Mvvm.ViewModels.Core;
-   using System;
-   using System.Diagnostics.Contracts;
 
    public class VMDescriptor {
       private List<VMProperty> _properties = new List<VMProperty>();
@@ -13,6 +13,7 @@
 
       public VMDescriptor() {
          DynamicFields = new FieldDefinitionCollection();
+         Validators = new List<Action<ViewModelValidationArgs>>();
       }
 
       internal FieldDefinitionCollection DynamicFields { get; private set; }
@@ -20,6 +21,8 @@
       internal IEnumerable<VMProperty> Properties {
          get { return _properties; }
       }
+
+      internal List<Action<ViewModelValidationArgs>> Validators { get; private set; }
 
       internal VMProperty GetProperty(string propertyName) {
          Contract.Requires(propertyName != null);

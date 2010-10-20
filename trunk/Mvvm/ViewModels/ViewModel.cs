@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
+   using System.Collections.Generic;
    using System.ComponentModel;
    using System.Diagnostics.Contracts;
    using System.Linq;
@@ -10,6 +11,7 @@
       private FieldValueHolder _dynamicFieldValues = null;
       // TODO, HACK: Make private!
       protected VMDescriptor _descriptor;
+      private List<string> _viewModelErrors = new List<string>();
 
       internal ViewModel(IServiceLocator serviceLocator) {
          ServiceLocator = serviceLocator;
@@ -29,10 +31,7 @@
 
       string IDataErrorInfo.Error {
          get {
-            ValidationResult result = Validate();
-            return result.Successful ?
-               null :
-               result.ErrorMessage;
+            return _viewModelErrors.FirstOrDefault();
          }
       }
 
@@ -55,7 +54,7 @@
       public virtual bool IsValid(bool validateChildren) {
          if (validateChildren) {
             return
-               Validate().Successful &&
+               _viewModelErrors.Count == 0 &&
                _descriptor
                   .Properties
                   .All(p => {
@@ -71,7 +70,7 @@
             // Make sure the value of the properties not accessed in this case because
             // it may trigger lazy loading.
             return
-               Validate().Successful &&
+               _viewModelErrors.Count == 0 &&
                _descriptor
                   .Properties
                   .All(p => ValidateProperty(p).Successful);
@@ -110,9 +109,35 @@
          }
       }
 
-      protected virtual ValidationResult Validate() {
-         return ValidationResult.Success();
+      protected virtual void OnValidate(ViewModelValidationArgs args) {
       }
+
+      private void InvokeValidate(ViewModel changedVM, VMProperty changedProperty) {
+         string oldError = _viewModelErrors.FirstOrDefault();
+
+         var args = new ViewModelValidationArgs(
+            this,
+            changedVM,
+            changedProperty
+         );
+
+         _descriptor.Validators.ForEach(v => v(args));
+         OnValidate(args);
+
+         _viewModelErrors = args.Errors;
+
+         string newError = _viewModelErrors.FirstOrDefault();
+
+         if (newError != oldError) {
+            OnPropertyChanged("Error");
+         }
+      }
+
+      //protected virtual ValidationResult Validate() {
+
+
+
+      //}
 
       /// <summary>
       ///   This method is only a temporary solution for validation. It will be
