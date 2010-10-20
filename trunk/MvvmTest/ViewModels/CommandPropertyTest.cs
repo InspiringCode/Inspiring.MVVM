@@ -13,40 +13,62 @@ namespace Inspiring.MvvmTest.ViewModels {
       }
 
       [TestMethod]
-      public void GetValue() {
-         ICommand command = _vm.GetValue(CommandVM.Descriptor.ViewModelCommand);
-         Assert.IsNotNull(command);
+      public void GetValue_FirstAccess_CommandIsCreated() {
+         ICommand vmCommand = _vm.GetValue(CommandVM.Descriptor.ViewModelCommand);
+         ICommand modelCommand = _vm.GetValue(CommandVM.Descriptor.ModelCommand);
 
-         command = _vm.GetValue(CommandVM.Descriptor.ModelCommand);
-         Assert.IsNotNull(command);
+         Assert.IsNotNull(vmCommand);
+         Assert.IsNotNull(modelCommand);
+         Assert.AreEqual(0, _vm.ViewModelCanActionInvocationCount);
+         Assert.AreEqual(0, _vm.Model.ModelActionInvocationCount);
+         Assert.AreEqual(0, _vm.ViewModelActionInvocationCount);
+         Assert.AreEqual(0, _vm.Model.ModelActionInvocationCount);
+      }
+
+
+      [TestMethod]
+      public void ExecuteCommand_ViewModelMethodInvoked() {
+         // Arrange
+         ICommand command = _vm.GetValue(CommandVM.Descriptor.ViewModelCommand);
+
+         // Act
+         command.Execute(null);
+
+         // Assert
+         Assert.AreEqual(1, _vm.ViewModelActionInvocationCount);
       }
 
       [TestMethod]
-      public void Execute() {
-         ICommand command = _vm.GetValue(CommandVM.Descriptor.ViewModelCommand);
-         Assert.AreEqual(0, _vm.ViewModelActionInvocationCount);
-         command.Execute(null);
-         Assert.AreEqual(1, _vm.ViewModelActionInvocationCount);
+      public void ExecuteCommand_ModelMethodInvoked() {
+         ICommand command = _vm.GetValue(CommandVM.Descriptor.ModelCommand);
 
-         command = _vm.GetValue(CommandVM.Descriptor.ModelCommand);
-         Assert.AreEqual(0, _vm.Model.ModelActionInvocationCount);
          command.Execute(null);
+
          Assert.AreEqual(1, _vm.Model.ModelActionInvocationCount);
       }
 
-      [TestMethod]
-      public void CanExecute() {
-         ICommand command = _vm.GetValue(CommandVM.Descriptor.ViewModelCommand);
-         Assert.AreEqual(0, _vm.ViewModelCanActionInvocationCount);
-         Assert.IsTrue(command.CanExecute(null));
-         Assert.AreEqual(1, _vm.ViewModelCanActionInvocationCount);
 
-         command = _vm.GetValue(CommandVM.Descriptor.ModelCommand);
-         Assert.AreEqual(0, _vm.Model.ModelActionInvocationCount);
-         Assert.IsTrue(command.CanExecute(null));
-         Assert.AreEqual(0, _vm.Model.ModelActionInvocationCount);
+      [TestMethod]
+      public void CanExecuteCommand_ViewModelMethodInvoked() {
+         // Arrange
+         ICommand command = _vm.GetValue(CommandVM.Descriptor.ViewModelCommand);
+
+         // Act
+         bool result = command.CanExecute(null);
+
+         // Assert
+         Assert.IsTrue(result);
       }
 
+      [TestMethod]
+      public void CanExecuteCommand_ModelMethodInvoked() {
+         ICommand command = _vm.GetValue(CommandVM.Descriptor.ModelCommand);
+
+         bool result = command.CanExecute(null);
+
+         Assert.IsTrue(result);
+         Assert.AreEqual(0, _vm.Model.ModelActionInvocationCount);
+      }
 
 
       private class CommandVM : ViewModel<CommandVMDescriptor> {
