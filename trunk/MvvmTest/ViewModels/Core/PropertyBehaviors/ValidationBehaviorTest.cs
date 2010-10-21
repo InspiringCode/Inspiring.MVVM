@@ -88,21 +88,21 @@
          _behavior.SetValue(_contextMock.Object, "Vaild 1");
          _behavior.SetValue(_contextMock.Object, "Valid 2");
          _contextMock.Verify(
-            x => x.ValidationStateChanged(_property),
+            x => x.RaiseValidationStateChanged(_property),
             Times.Never()
          );
 
          _behavior.SetValue(_contextMock.Object, "Invalid 1");
          _behavior.SetValue(_contextMock.Object, "Invalid 2");
          _contextMock.Verify(
-            x => x.ValidationStateChanged(_property),
+            x => x.RaiseValidationStateChanged(_property),
             Times.Once()
          );
 
          _behavior.SetValue(_contextMock.Object, "Valid 3");
          _behavior.SetValue(_contextMock.Object, "Valid 4");
          _contextMock.Verify(
-            x => x.ValidationStateChanged(_property),
+            x => x.RaiseValidationStateChanged(_property),
             Times.Exactly(2)
          );
       }

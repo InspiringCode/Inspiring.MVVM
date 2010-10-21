@@ -4,10 +4,14 @@
 
    internal sealed class ValidationBuilder<TVM> : IValidationBuilder<TVM> where TVM : ViewModel {
       private BehaviorConfigurationDictionary _configs;
+      private VMDescriptor _descriptor;
 
-      public ValidationBuilder(BehaviorConfigurationDictionary configs) {
+      public ValidationBuilder(BehaviorConfigurationDictionary configs, VMDescriptor descriptor) {
          Contract.Requires(configs != null);
+         Contract.Requires(descriptor != null);
+
          _configs = configs;
+         _descriptor = descriptor;
       }
 
       public IValidationBuilder<TVM, TValue> Check<TValue>(VMProperty<TValue> property) {
@@ -23,6 +27,11 @@
 
       public ICollectionValidationBuilder<TItemVM> CheckCollection<TItemVM>(IVMProperty<VMCollection<TItemVM>> property) where TItemVM : ViewModel {
          return new CollectionValidationBuilder<TItemVM>(_configs, property);
+      }
+
+      public void ViewModelValidator(Action<ViewModelValidationArgs> validator) {
+         Contract.Requires<ArgumentNullException>(validator != null);
+         _descriptor.Validators.Add(validator);
       }
    }
 

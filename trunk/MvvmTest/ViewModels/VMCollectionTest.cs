@@ -94,7 +94,7 @@
 
       // [TestMethod] // TODO
       public void OnValidating_OnValidated() {
-         var mock = new Mock<VMCollection<ChildVM>>(null, ChildVM.Descriptor, null);
+         var mock = new Mock<VMCollection<ChildVM>>(new TestVM(), ChildVM.Descriptor, null);
          mock.CallBase = true;
 
          var coll = mock.Object;
@@ -122,7 +122,7 @@
 
          var behavior = new CollectionValidationBehavior<TestVM>();
 
-         var coll = new VMCollection<TestVM>(null, TestVM.Descriptor, behavior);
+         var coll = new VMCollection<TestVM>(new TestVM(), TestVM.Descriptor, behavior);
 
          behavior.Add((item, items, a) => {
             invocationCount++;
@@ -139,7 +139,7 @@
 
       private void CheckAddNew(Action commitAction) {
          var itemControllerMock = new Mock<IItemCreationController<ChildVM>>(MockBehavior.Strict);
-         _coll = new VMCollection<ChildVM>(null, ChildVM.Descriptor);
+         _coll = new VMCollection<ChildVM>(new TestVM(), ChildVM.Descriptor);
 
          _coll.Repopulate(
             new ChildVM[] { _firstElement, _secondElement },
@@ -171,7 +171,7 @@
          Action<Mock<ICollectionModificationController<ChildVM>>> verifyExpectation
      ) {
          var collectionControllerMock = new Mock<ICollectionModificationController<ChildVM>>(MockBehavior.Strict);
-         _coll = new VMCollection<ChildVM>(null, ChildVM.Descriptor);
+         _coll = new VMCollection<ChildVM>(new TestVM(), ChildVM.Descriptor);
 
          _coll.Repopulate(
             new ChildVM[] { _firstElement, _secondElement },

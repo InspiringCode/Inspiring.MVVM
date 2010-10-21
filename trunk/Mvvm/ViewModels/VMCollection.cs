@@ -4,10 +4,15 @@
    using System.Linq;
    using Inspiring.Mvvm.ViewModels.Core;
 
+   internal interface ICanValidateChildrenHack {
+      bool AreItemsValid(bool validateItemChildren);
+   }
+
    public class VMCollection<TItemVM> :
       BindingList<TItemVM>,
       ITypedList,
-      ISupportsValidation
+      ISupportsValidation,
+      ICanValidateChildrenHack
       where TItemVM : ViewModel {
 
       private IItemCreationController<TItemVM> _itemController;
@@ -16,6 +21,7 @@
       private bool _addingItem = false;
       private ViewModel _parent;
       private CollectionValidationBehavior<TItemVM> _validationBehavior;
+      private bool _suppressParentValidation = false;
 
       // TODO: Is public right?
       public VMCollection(
@@ -43,6 +49,11 @@
          return validateChildren ?
             this.All(x => x.IsValid(validateChildren)) :
             true;
+      }
+
+      //HACK
+      bool ICanValidateChildrenHack.AreItemsValid(bool validateItemChildren) {
+         return this.All(x => x.IsValid(validateItemChildren));
       }
 
       public PropertyDescriptorCollection GetItemProperties(PropertyDescriptor[] listAccessors) {
@@ -149,11 +160,15 @@
       }
 
       protected override void ClearItems() {
+         _suppressParentValidation = true; // HACK: To avoid Stackoverflow: Clear invokes remove, removes validates, validate gets value, validate populates, populates clears...
+
          this.ForEach(ItemRemoved);
          base.ClearItems();
          if (_collectionController != null) {
             _collectionController.Clear();
          }
+
+         _suppressParentValidation = false;
       }
 
       protected override void SetItem(int index, TItemVM item) {
@@ -186,6 +201,8 @@
          if (_validationBehavior != null) {
             Revalidate(); // TODO: Not always necessary!
          }
+
+         _parent.InvokeValidate(item, null);
       }
 
       private void ItemRemoved(TItemVM item) {
@@ -194,6 +211,10 @@
 
          if (_validationBehavior != null) {
             Revalidate(); // TODO: Not always necessary!
+         }
+
+         if (!_suppressParentValidation) {
+            _parent.InvokeValidate(item, null);
          }
       }
    }

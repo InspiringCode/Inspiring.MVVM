@@ -63,13 +63,12 @@
          });
       }
 
-      public static void PropagateChildErrors<TItemVM>(
-         this ICollectionValidationBuilder<TItemVM> builder,
+      public static void PropagateChildErrors<TVM>(
+         this IValidationBuilder<TVM> builder,
          string errorMessage
-      ) where TItemVM : ViewModel {
-         builder.Custom((item, items, args) => {
-            // HACK: Count > 0 is a hack, when and with what values should this validation be run?
-            if (items.Any(x => !x.IsValid(true)) || args.Errors.Count > 0) {
+      ) where TVM : ViewModel {
+         builder.ViewModelValidator(args => {
+            if (!args.ValidationTarget.AreChildrenValid(validateGrandchildren: false)) {
                args.AddError(errorMessage);
             }
          });

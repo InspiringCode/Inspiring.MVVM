@@ -79,6 +79,26 @@
 
       }
 
+      internal bool AreChildrenValid(bool validateGrandchildren) {
+         return _descriptor
+            .Properties
+            .All(p => {
+               // HACK: We actually want the real value, not the possibly converted
+               // display value...
+               ISupportsValidation childVM = p.GetDisplayValue(this) as ISupportsValidation;
+
+               ICanValidateChildrenHack hack = childVM as ICanValidateChildrenHack;
+
+               if (hack != null) {
+                  return hack.AreItemsValid(validateItemChildren: false);
+               }
+
+               return childVM != null ?
+                  childVM.IsValid(validateGrandchildren) :
+                  true;
+            });
+      }
+
       internal void InitializeWithDescriptor(VMDescriptor descriptor) {
          Contract.Requires(descriptor != null);
          if (_descriptor != null) {
@@ -100,6 +120,11 @@
 
       protected virtual void OnPropertyChanged<T>(VMPropertyBase<T> property) {
          OnPropertyChanged(property.PropertyName);
+         InvokeValidate(this, property);
+      }
+
+      protected virtual void OnValidationStateChanged<T>(VMPropertyBase<T> property) {
+         InvokeValidate(this, property);
       }
 
       protected virtual void OnPropertyChanged(string propertyName) {
@@ -109,10 +134,32 @@
          }
       }
 
+      protected virtual void OnChildChanged<T>(
+         ViewModel changedChild,
+         VMPropertyBase<T> changedProperty
+      ) {
+         InvokeValidate(changedChild, changedProperty);
+         if (Parent != null) {
+            Parent.OnChildChanged(changedChild, changedProperty);
+         }
+      }
+
+      protected virtual void OnChildValidationStateChanged<T>(
+         ViewModel changedChild,
+         VMPropertyBase<T> changedProperty
+      ) {
+         InvokeValidate(changedChild, changedProperty);
+         if (Parent != null) {
+            Parent.OnChildValidationStateChanged(changedChild, changedProperty);
+         }
+      }
+
       protected virtual void OnValidate(ViewModelValidationArgs args) {
       }
 
-      private void InvokeValidate(ViewModel changedVM, VMProperty changedProperty) {
+
+      // TODO: Does this have to be internal? Isn't there a better way?
+      internal void InvokeValidate(ViewModel changedVM, VMProperty changedProperty) {
          string oldError = _viewModelErrors.FirstOrDefault();
 
          var args = new ViewModelValidationArgs(
@@ -152,6 +199,7 @@
          foreach (VMProperty property in _descriptor.Properties) {
             Revalidate(property);
          }
+         InvokeValidate(this, null);
       }
 
       protected void Revalidate(VMProperty property) {
@@ -201,10 +249,16 @@
       void IBehaviorContext.RaisePropertyChanged<T>(VMPropertyBase<T> property) {
          property.OnPropertyChanged(this);
          OnPropertyChanged(property);
+         if (Parent != null) {
+            Parent.OnChildChanged(this, property);
+         }
       }
 
-      void IBehaviorContext.ValidationStateChanged<T>(VMPropertyBase<T> property) {
+      void IBehaviorContext.RaiseValidationStateChanged<T>(VMPropertyBase<T> property) {
          OnPropertyChanged("Item[]");
+         if (Parent != null) {
+            Parent.OnChildValidationStateChanged(this, property);
+         }
       }
 
       void IBehaviorContext.OnValidating(ValidationEventArgs args) {

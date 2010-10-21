@@ -30,6 +30,7 @@
       [TestMethod]
       public void TestParentError() {
          _vm.ViewModelValidationResult = ValidationResult.Failure("Test");
+         _vm.Revalidate();
          Assert.IsFalse(_vm.IsValid(true));
       }
 
@@ -76,7 +77,7 @@
 
          int invocationCount = 0;
          contextMock
-            .Setup(x => x.ValidationStateChanged(It.IsAny<VMPropertyBase<string>>()))
+            .Setup(x => x.RaiseValidationStateChanged(It.IsAny<VMPropertyBase<string>>()))
             .Callback(() => invocationCount++);
 
          var context = contextMock.Object;

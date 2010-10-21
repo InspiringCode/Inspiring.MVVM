@@ -11,7 +11,7 @@
 
       void RaisePropertyChanged<T>(VMPropertyBase<T> property);
 
-      void ValidationStateChanged<T>(VMPropertyBase<T> property);
+      void RaiseValidationStateChanged<T>(VMPropertyBase<T> property);
 
       void OnValidating(ValidationEventArgs args);
 

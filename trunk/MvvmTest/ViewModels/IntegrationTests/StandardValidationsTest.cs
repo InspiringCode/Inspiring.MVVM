@@ -52,8 +52,6 @@ namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
          Assert.IsNull(info.Error);
 
          child2.StringProperty = "";
-
-         Assert.AreEqual("Child invalid", info["Children"]);
          Assert.AreEqual("Child invalid", info.Error);
       }
 
@@ -94,7 +92,7 @@ namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
                };
             })
             .WithValidations((d, c) => {
-               c.CheckCollection(d.Children).PropagateChildErrors("Child invalid");
+               c.PropagateChildErrors("Child invalid");
             })
             .Build();
 

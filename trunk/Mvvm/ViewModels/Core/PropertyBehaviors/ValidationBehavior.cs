@@ -55,7 +55,7 @@
          vm.OnValidated(args);
 
          if (validationStateChanged) {
-            vm.ValidationStateChanged(_property);
+            vm.RaiseValidationStateChanged(_property);
          }
 
          _alreadyValidating = false;
@@ -126,7 +126,7 @@
          vm.OnValidated(args);
 
          if (validationStateChanged) {
-            vm.ValidationStateChanged(_property);
+            vm.RaiseValidationStateChanged(_property);
          }
       }
 

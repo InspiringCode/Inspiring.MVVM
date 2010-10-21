@@ -100,6 +100,7 @@
     <Compile Include="ViewModels\TypeDescriptorTest.cs" />
     <Compile Include="ViewModels\ViewModelsTest.cs" />
     <Compile Include="ViewModels\ViewModelTest.cs" />
+    <Compile Include="ViewModels\ViewModel_ParentChild.cs" />
     <Compile Include="ViewModels\VMCollectionPropertyTest.cs" />
     <Compile Include="ViewModels\Core\Builder\VMDescriptorBuilderTest.cs" />
     <Compile Include="ViewModels\VMCollectionTest.cs" />

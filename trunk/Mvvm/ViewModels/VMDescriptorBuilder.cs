@@ -72,7 +72,7 @@
          ) {
             validationConfigurator(
                _descriptor,
-               new ValidationBuilder<TVM>(_configurations)
+               new ValidationBuilder<TVM>(_configurations, _descriptor)
             );
 
             return this;
