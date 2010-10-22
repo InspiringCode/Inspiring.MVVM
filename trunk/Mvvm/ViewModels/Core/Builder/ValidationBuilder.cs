@@ -29,9 +29,11 @@
          return new CollectionValidationBuilder<TItemVM>(_configs, property);
       }
 
-      public void ViewModelValidator(Action<ViewModelValidationArgs> validator) {
+      public void ViewModelValidator(Action<TVM, ViewModelValidationArgs> validator) {
          Contract.Requires<ArgumentNullException>(validator != null);
-         _descriptor.Validators.Add(validator);
+         _descriptor.Validators.Add(args => {
+            validator((TVM)args.ValidationTarget, args);
+         });
       }
    }
 

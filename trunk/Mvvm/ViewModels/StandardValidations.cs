@@ -67,8 +67,8 @@
          this IValidationBuilder<TVM> builder,
          string errorMessage
       ) where TVM : ViewModel {
-         builder.ViewModelValidator(args => {
-            if (!args.ValidationTarget.AreChildrenValid(validateGrandchildren: false)) {
+         builder.ViewModelValidator((vm, args) => {
+            if (!vm.AreChildrenValid(validateGrandchildren: false)) {
                args.AddError(errorMessage);
             }
          });

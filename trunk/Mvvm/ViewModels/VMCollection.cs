@@ -83,6 +83,7 @@
          ICollectionModificationController<TItemVM> collectionController = null
       ) {
          RaiseListChangedEvents = false;
+         _suppressParentValidation = true; // HACK: To avoid Stackoverflow: Clear invokes remove, removes validates, validate gets value, validate populates, populates clears...
 
          var validationBehavior = _validationBehavior;
          _validationBehavior = null;
@@ -104,6 +105,8 @@
 
          _validationBehavior = validationBehavior;
          //Revalidate();
+
+         _suppressParentValidation = false;
 
          RaiseListChangedEvents = true;
          OnListChanged(new ListChangedEventArgs(ListChangedType.Reset, -1));
@@ -160,15 +163,11 @@
       }
 
       protected override void ClearItems() {
-         _suppressParentValidation = true; // HACK: To avoid Stackoverflow: Clear invokes remove, removes validates, validate gets value, validate populates, populates clears...
-
          this.ForEach(ItemRemoved);
          base.ClearItems();
          if (_collectionController != null) {
             _collectionController.Clear();
          }
-
-         _suppressParentValidation = false;
       }
 
       protected override void SetItem(int index, TItemVM item) {
@@ -192,6 +191,11 @@
          }
       }
 
+      protected override void OnListChanged(ListChangedEventArgs e) {
+         base.OnListChanged(e);
+         // TODO: Is it necessary to revalidate here? Is there any case that supports this?
+      }
+
       // TODO: Only connect to events if required.
       private void ItemAdded(TItemVM item) {
          item.Parent = _parent;
@@ -202,7 +206,9 @@
             Revalidate(); // TODO: Not always necessary!
          }
 
-         _parent.InvokeValidate(item, null);
+         if (!_suppressParentValidation) {
+            _parent.InvokeValidate(item, null);
+         }
       }
 
       private void ItemRemoved(TItemVM item) {
