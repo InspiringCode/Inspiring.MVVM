@@ -214,6 +214,15 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The &apos;CommonBehaviors&apos; behavior &apos;{0}&apos; cannot be enabled on the given object..
+        /// </summary>
+        internal static string InvalidTargetObjectForCommonBehavior {
+            get {
+                return ResourceManager.GetString("InvalidTargetObjectForCommonBehavior", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The collection contains no &apos;IScreenLifecycle&apos; of type &apos;{0}&apos;. Use &apos;Contains&apos; to check if an &apos;IScreenLifecycle&apos; is contained in a collection..
         /// </summary>
         internal static string LifecycleTypeNotFound {

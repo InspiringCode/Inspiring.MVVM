@@ -222,4 +222,7 @@
   <data name="PropertyNotFound" xml:space="preserve">
     <value>The 'VMDescriptor' does not define a 'VMProperty' with the name '{0}'.</value>
   </data>
+  <data name="InvalidTargetObjectForCommonBehavior" xml:space="preserve">
+    <value>The 'CommonBehaviors' behavior '{0}' cannot be enabled on the given object.</value>
+  </data>
 </root>

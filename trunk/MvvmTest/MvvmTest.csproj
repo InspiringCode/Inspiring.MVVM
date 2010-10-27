@@ -105,6 +105,7 @@
     <Compile Include="ViewModels\VMCollectionPropertyTest.cs" />
     <Compile Include="ViewModels\Core\Builder\VMDescriptorBuilderTest.cs" />
     <Compile Include="ViewModels\VMCollectionTest.cs" />
+    <Compile Include="Views\CommonBehaviors_DisableNullCommandTest.cs" />
     <Compile Include="Views\CustomPropertyDescriptorTest.cs" />
     <Compile Include="Views\PersonView.xaml.cs">
       <DependentUpon>PersonView.xaml</DependentUpon>
