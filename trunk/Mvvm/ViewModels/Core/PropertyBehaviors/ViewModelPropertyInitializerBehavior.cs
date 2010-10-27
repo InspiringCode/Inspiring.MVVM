@@ -9,6 +9,9 @@
          TVM instance = GetNextBehavior<IViewModelFactoryBehavior<TVM>>().CreateInstance(vm);
          TSource source = GetSourceObject(vm);
          instance.InitializeFrom(source);
+
+         instance.Parent = vm.VM;
+
          return instance;
       }
 

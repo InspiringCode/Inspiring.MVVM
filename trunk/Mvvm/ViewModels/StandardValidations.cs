@@ -73,5 +73,17 @@
             }
          });
       }
+
+      // TODO: Test me.
+      public static void ValidateProperties<TVM>(
+         this IValidationBuilder<TVM> builder,
+         string errorMessage
+      ) where TVM : ViewModel {
+         builder.ViewModelValidator((vm, args) => {
+            if (!vm.ArePropertiesValid(validateChildren: false)) {
+               args.AddError(errorMessage);
+            }
+         });
+      }
    }
 }

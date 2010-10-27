@@ -4,6 +4,8 @@
       First,
       Last,
 
+      ManualUpdateBehavior,
+
       InvalidDisplayValueCache,
       DisplayValueValidator,
       DisplayValueAccessor,

@@ -41,7 +41,7 @@ namespace Inspiring.MvvmTest.ViewModels {
          );
       }
 
-      // [TestMethod] // TODO
+      //[TestMethod] // TODO
       public void UpdateFromSourceForCalculatedMutableProperty() {
          Assert.Inconclusive("Disconnected properties are not supported yet.");
 
@@ -51,7 +51,7 @@ namespace Inspiring.MvvmTest.ViewModels {
          );
       }
 
-      // [TestMethod] // TODO
+      //[TestMethod] // TODO
       public void UpdateFromSourceForLocalProperty() {
          Assert.Inconclusive("Disconnected properties are not supported yet.");
 
@@ -76,10 +76,8 @@ namespace Inspiring.MvvmTest.ViewModels {
          );
       }
 
-      // [TestMethod] // TODO
+      [TestMethod]
       public void UpdateSourceForMappedMutableProperty() {
-         Assert.Inconclusive("Disconnected properties are not supported yet.");
-
          CheckUpdateSource(
             TestVM.Descriptor.MappedMutableProperty,
             "New value",
@@ -87,10 +85,8 @@ namespace Inspiring.MvvmTest.ViewModels {
          );
       }
 
-      // [TestMethod] // TODO
+      [TestMethod]
       public void UpdateSourceForCalculatedMutableProperty() {
-         Assert.Inconclusive("Disconnected properties are not supported yet.");
-
          CheckUpdateSource(
             TestVM.Descriptor.CalculatedMutableProperty,
             43,
@@ -98,10 +94,8 @@ namespace Inspiring.MvvmTest.ViewModels {
          );
       }
 
-      // [TestMethod] // TODO
+      //[TestMethod] // TODO
       public void UpdateSourceForLocalProperty() {
-         Assert.Inconclusive("Disconnected properties are not supported yet.");
-
          AssertHelper.Throws<ArgumentException>(() =>
              _vm.InvokeUpdateSource(TestVM.Descriptor.LocalProperty)
          );

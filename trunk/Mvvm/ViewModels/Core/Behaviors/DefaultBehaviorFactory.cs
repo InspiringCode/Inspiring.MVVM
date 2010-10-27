@@ -31,6 +31,8 @@
                return new CacheValueBehavior<TValue>();
             case VMBehaviorKey.ViewModelValueCache:
                return new RefreshableValueCahche<TValue>();
+            case VMBehaviorKey.ManualUpdateBehavior:
+               return new DefaultManualUpdateBehavior<TValue>();
             default:
                throw new NotSupportedException();
          }

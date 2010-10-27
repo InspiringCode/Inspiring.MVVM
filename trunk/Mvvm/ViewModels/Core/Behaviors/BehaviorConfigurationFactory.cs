@@ -57,6 +57,7 @@
             .Append(VMBehaviorKey.PropertyChangedTrigger)
             .Append(VMBehaviorKey.PropertyValueCache, disabled: true)
             .Append(VMBehaviorKey.PropertyValueAcessor)
+            .Append(VMBehaviorKey.ManualUpdateBehavior)
             .Append(VMBehaviorKey.SourceValueAccessor, disabled: true);
       }
 

@@ -52,31 +52,31 @@
 
       // TODO: Is it possible to make it non-virtual?
       public virtual bool IsValid(bool validateChildren) {
-         if (validateChildren) {
-            return
-               _viewModelErrors.Count == 0 &&
-               _descriptor
-                  .Properties
-                  .All(p => {
-                     // HACK: We actually want the real value, not the possibly converted
-                     // display value...
-                     ISupportsValidation childVM = p.GetDisplayValue(this) as ISupportsValidation;
+         return
+            _viewModelErrors.Count == 0 &&
+            ArePropertiesValid(validateChildren);
+      }
 
-                     return validateChildren && childVM != null ?
-                        ValidateProperty(p).Successful && childVM.IsValid(true) :
-                        ValidateProperty(p).Successful;
-                  });
+      internal bool ArePropertiesValid(bool validateChildren) {
+         if (validateChildren) {
+            return _descriptor
+               .Properties
+               .All(p => {
+                  // HACK: We actually want the real value, not the possibly converted
+                  // display value...
+                  ISupportsValidation childVM = p.GetDisplayValue(this) as ISupportsValidation;
+
+                  return validateChildren && childVM != null ?
+                     ValidateProperty(p).Successful && childVM.IsValid(true) :
+                     ValidateProperty(p).Successful;
+               });
          } else {
             // Make sure the value of the properties not accessed in this case because
             // it may trigger lazy loading.
-            return
-               _viewModelErrors.Count == 0 &&
-               _descriptor
-                  .Properties
-                  .All(p => ValidateProperty(p).Successful);
+            return _descriptor
+               .Properties
+               .All(p => ValidateProperty(p).Successful);
          }
-
-
       }
 
       internal bool AreChildrenValid(bool validateGrandchildren) {
@@ -204,6 +204,26 @@
 
       protected void Revalidate(VMProperty property) {
          property.Revalidate(this);
+      }
+
+      // TODO: Test and refactor me.
+      protected void UpdateFromSource() {
+         RequireDescriptor();
+         IManuelUpdateBehavior behavior;
+         _descriptor
+            .Properties
+            .Where(x => x.Behaviors.TryGetBehavior(out behavior))
+            .ForEach(UpdateFromSource);
+      }
+
+      // TODO: Test and refactor me.
+      protected void UpdateSource() {
+         RequireDescriptor();
+         IManuelUpdateBehavior behavior;
+         _descriptor
+            .Properties
+            .Where(x => x.Behaviors.TryGetBehavior(out behavior))
+            .ForEach(UpdateFromSource);
       }
 
       protected void UpdateFromSource(VMProperty property) {

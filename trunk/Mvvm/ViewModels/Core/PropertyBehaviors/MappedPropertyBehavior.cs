@@ -11,8 +11,7 @@
    /// </summary>
    internal sealed class MappedPropertyBehavior<TVM, TValue> :
       Behavior,
-      IAccessPropertyBehavior<TValue>,
-      IManuelUpdateBehavior
+      IAccessPropertyBehavior<TValue>
       where TVM : IBehaviorContext {
 
       private VMPropertyBase<TValue> _property;
@@ -29,19 +28,6 @@
 
       public void SetValue(IBehaviorContext vm, TValue value) {
          _path.SetValue((TVM)vm, value);
-      }
-
-      public void UpdateFromSource(IBehaviorContext vm) {
-         //vm.RaisePropertyChanged(_property);
-      }
-
-      public void UpdateSource(IBehaviorContext vm) {
-         // Nothing to do
-      }
-
-      protected override void Initialize(BehaviorInitializationContext context) {
-         base.Initialize(context);
-         //_property = (VMPropertyBase<TValue>)context.Property;
       }
    }
 }

@@ -114,6 +114,7 @@
     <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionPopulatorBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionValidationBehavior.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\DefaultManualUpdateBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\DelegateCommandBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\IMutabilityCheckerBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\IViewModelFactoryBehavior.cs" />
