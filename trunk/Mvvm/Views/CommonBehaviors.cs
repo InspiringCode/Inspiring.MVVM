@@ -22,9 +22,8 @@
 
       private static void HandleDisableIfCommandIsNullChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
          ICommandSource commandSource = sender as ICommandSource;
-         UIElement element = sender as UIElement;
 
-         if (commandSource == null || sender == null) {
+         if (commandSource == null || !(sender is UIElement || sender is ContentElement)) {
             throw new ArgumentException(
                ExceptionTexts.InvalidTargetObjectForCommonBehavior.FormatWith("DisableIfCommandIsNull")
             );
@@ -41,21 +40,35 @@
             descriptor.AddValueChanged(sender, HandleCommandChanged);
          }
 
-         UpdateIsEnabled(element);
+         UpdateIsEnabled(sender);
       }
 
       private static void HandleCommandChanged(object sender, EventArgs e) {
-         UpdateIsEnabled((UIElement)sender);
+         UpdateIsEnabled(sender);
       }
 
-      private static void UpdateIsEnabled(UIElement element) {
+      private static void UpdateIsEnabled(object element) {
          ICommandSource commandSource = (ICommandSource)element;
 
-         if (commandSource.Command == null) {
-            element.IsEnabled = false;
+         UIElement uiElement = element as UIElement;
+         ContentElement contentElement = element as ContentElement;
+
+         if (uiElement != null) {
+            if (commandSource.Command == null) {
+               uiElement.IsEnabled = false;
+            } else {
+               uiElement.ClearValue(UIElement.IsEnabledProperty);
+               uiElement.CoerceValue(UIElement.IsEnabledProperty);
+            }
+         } else if (contentElement != null) {
+            if (commandSource.Command == null) {
+               contentElement.IsEnabled = false;
+            } else {
+               contentElement.CoerceValue(ContentElement.IsEnabledProperty);
+               contentElement.CoerceValue(ContentElement.IsEnabledProperty);
+            }
          } else {
-            element.ClearValue(UIElement.IsEnabledProperty);
-            element.CoerceValue(UIElement.IsEnabledProperty);
+            throw new ArgumentException();
          }
       }
    }
