@@ -64,6 +64,10 @@
       public void Refresh() {
          UpdateFromSource(Descriptor.AllItems);
          UpdateFromSource(Descriptor.SelectedItem);
+         Revalidate();
+      }
+
+      public new void Revalidate() {
          Revalidate(Descriptor.SelectedItem);
       }
 

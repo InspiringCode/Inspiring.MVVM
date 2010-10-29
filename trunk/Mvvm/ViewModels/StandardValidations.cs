@@ -2,6 +2,7 @@
    using System;
    using System.Collections.Generic;
    using System.Linq;
+   using System.Text.RegularExpressions;
    using Inspiring.Mvvm.ViewModels.Core;
 
    public static class StandardValidations {
@@ -83,6 +84,20 @@
             if (!vm.ArePropertiesValid(validateChildren: false)) {
                args.AddError(errorMessage);
             }
+         });
+      }
+
+      // TODO: Test me.
+      public static void RegexValidation<TVM>(
+         this IValidationBuilder<TVM, string> builder,
+         string regexPattern,
+         string errorMessage
+      ) where TVM : ViewModel {
+         Regex regex = new Regex(regexPattern);
+         builder.Custom((vm, value) => {
+            return String.IsNullOrEmpty(value) || regex.IsMatch(value) ?
+               ValidationResult.Success() :
+               ValidationResult.Failure(errorMessage);
          });
       }
    }

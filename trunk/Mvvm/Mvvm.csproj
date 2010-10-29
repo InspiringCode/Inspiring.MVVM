@@ -71,6 +71,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\TypeService.cs" />
     <Compile Include="MvvmApplication.cs" />
     <Compile Include="Common\NotifyObject.cs" />
     <Compile Include="IServiceLocator.cs" />

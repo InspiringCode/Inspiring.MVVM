@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
+   using Inspiring.Mvvm.Common;
 
    internal sealed class DisplayValueAccessorBehavior<TValue> : Behavior, IAccessPropertyBehavior, IValidationBehavior {
       private FieldDefinition<string> _conversionErrorField;
@@ -27,7 +28,8 @@
                return;
             }
          } else {
-            if (value is TValue || (value == null && !typeof(TValue).IsValueType)) {
+            // TODO: Tidy up this if...
+            if (value is TValue || (value == null && TypeService.CanAssignNull(typeof(TValue)))) {
                accessBehavior.SetValue(vm, (TValue)value);
             } else {
                throw new ArgumentException(

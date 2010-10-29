@@ -176,6 +176,11 @@
          string newError = _viewModelErrors.FirstOrDefault();
 
          if (newError != oldError) {
+            if (Parent != null) {
+               // HACK!
+               Parent.OnChildValidationStateChanged(this, (VMPropertyBase<object>)null);
+            }
+
             OnPropertyChanged("Error");
          }
       }
@@ -276,6 +281,12 @@
 
       void IBehaviorContext.RaiseValidationStateChanged<T>(VMPropertyBase<T> property) {
          OnPropertyChanged("Item[]");
+
+         // TODO: Investigate if there are better ways. This was added because a ComboBox did
+         // not udpate its validation state, if the state changed was triggered by the change
+         // of another property (not one that is bound to the ComboBox).
+         OnPropertyChanged(property);
+
          if (Parent != null) {
             Parent.OnChildValidationStateChanged(this, property);
          }
