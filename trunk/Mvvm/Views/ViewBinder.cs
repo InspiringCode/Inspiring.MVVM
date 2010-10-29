@@ -76,6 +76,7 @@
       IOptionsExpression<T> OneTime();
       IOptionsExpression<T> PropertyChanged();
       IOptionsExpression<T> With(IValueConverter converter, object parameter = null);
+      IOptionsExpression<T> FallbackValue(object value);
    }
 
    public interface IBindCollectionExpression<TDescriptor> {
@@ -185,6 +186,15 @@
          BinderExpression.ExposeContext(this, c => {
             c.Binding.Converter = converter;
             c.Binding.ConverterParameter = parameter;
+         });
+
+         return this;
+      }
+
+
+      public IOptionsExpression<T> FallbackValue(object value) {
+         BinderExpression.ExposeContext(this, c => {
+            c.Binding.FallbackValue = value;
          });
 
          return this;

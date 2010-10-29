@@ -4,6 +4,11 @@
    using System.Windows.Input;
 
    public static class DelegateCommand {
+      public static readonly ICommand AlwaysDisabled = DelegateCommand.For(
+         execute: () => { },
+         canExecute: () => false
+      );
+
       public static ICommand For(
          Action execute,
          Func<bool> canExecute = null
