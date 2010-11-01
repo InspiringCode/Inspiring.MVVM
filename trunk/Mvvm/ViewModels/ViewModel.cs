@@ -38,7 +38,7 @@
       string IDataErrorInfo.this[string columnName] {
          get {
             RequireDescriptor();
-            VMProperty property = _descriptor.Properties.SingleOrDefault(x => x.PropertyName == columnName);
+            VMPropertyBase property = _descriptor.Properties.SingleOrDefault(x => x.PropertyName == columnName);
             if (property != null) {
                ValidationResult result = ValidateProperty(property);
                return result.Successful ?
@@ -159,7 +159,7 @@
 
 
       // TODO: Does this have to be internal? Isn't there a better way?
-      internal void InvokeValidate(ViewModel changedVM, VMProperty changedProperty) {
+      internal void InvokeValidate(ViewModel changedVM, VMPropertyBase changedProperty) {
          string oldError = _viewModelErrors.FirstOrDefault();
 
          var args = new ViewModelValidationArgs(
@@ -195,19 +195,19 @@
       ///   This method is only a temporary solution for validation. It will be
       ///   replaced with behaviors in the next version.
       /// </summary>
-      protected virtual ValidationResult ValidateProperty(VMProperty property) {
+      protected virtual ValidationResult ValidateProperty(VMPropertyBase property) {
          return property.GetValidationResult(this);
       }
 
       internal protected void Revalidate() {
          RequireDescriptor();
-         foreach (VMProperty property in _descriptor.Properties) {
+         foreach (VMPropertyBase property in _descriptor.Properties) {
             Revalidate(property);
          }
          InvokeValidate(this, null);
       }
 
-      protected void Revalidate(VMProperty property) {
+      protected void Revalidate(VMPropertyBase property) {
          property.Revalidate(this);
       }
 
@@ -231,13 +231,13 @@
             .ForEach(UpdateFromSource);
       }
 
-      protected void UpdateFromSource(VMProperty property) {
+      protected void UpdateFromSource(VMPropertyBase property) {
          property.Behaviors
             .GetNextBehavior<IManuelUpdateBehavior>()
             .UpdateFromSource(this);
       }
 
-      protected void UpdateSource(VMProperty property) {
+      protected void UpdateSource(VMPropertyBase property) {
          property.Behaviors
             .GetNextBehavior<IManuelUpdateBehavior>()
             .UpdateSource(this);

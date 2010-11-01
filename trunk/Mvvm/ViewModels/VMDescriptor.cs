@@ -8,7 +8,7 @@
    using Inspiring.Mvvm.ViewModels.Core;
 
    public class VMDescriptor {
-      private List<VMProperty> _properties = new List<VMProperty>();
+      private List<VMPropertyBase> _properties = new List<VMPropertyBase>();
       private PropertyDescriptorCollection _propertyDescriptors;
 
       public VMDescriptor() {
@@ -18,17 +18,17 @@
 
       internal FieldDefinitionCollection DynamicFields { get; private set; }
 
-      internal IEnumerable<VMProperty> Properties {
+      internal IEnumerable<VMPropertyBase> Properties {
          get { return _properties; }
       }
 
       internal List<Action<ViewModelValidationArgs>> Validators { get; private set; }
 
-      internal VMProperty GetProperty(string propertyName) {
+      internal VMPropertyBase GetProperty(string propertyName) {
          Contract.Requires(propertyName != null);
-         Contract.Ensures(Contract.Result<VMProperty>() != null);
+         Contract.Ensures(Contract.Result<VMPropertyBase>() != null);
 
-         VMProperty property = _properties.Find(x => x.PropertyName == propertyName);
+         VMPropertyBase property = _properties.Find(x => x.PropertyName == propertyName);
 
          if (property == null) {
             throw new InvalidOperationException(
@@ -56,9 +56,9 @@
       internal void InitializeProperties() {
          GetType()
             .GetProperties(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
-            .Where(p => typeof(VMProperty).IsAssignableFrom(p.PropertyType))
+            .Where(p => typeof(VMPropertyBase).IsAssignableFrom(p.PropertyType))
             .ForEach(p => {
-               VMProperty property = (VMProperty)p.GetValue(this, null);
+               VMPropertyBase property = (VMPropertyBase)p.GetValue(this, null);
                if (property != null) {
                   _properties.Add(property);
                   property.Initialize(p.Name, this);

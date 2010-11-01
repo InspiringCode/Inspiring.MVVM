@@ -207,7 +207,7 @@
          return _configurations;
       }
 
-      private void AddToDictionary(VMProperty property, BehaviorConfiguration config) {
+      private void AddToDictionary(VMPropertyBase property, BehaviorConfiguration config) {
          new ConfiguredProperty(_configurations, _additionalConfiguration) {
             Property = property,
             Configuration = config
@@ -326,7 +326,7 @@
 
          public BehaviorConfiguration Configuration { get; set; }
 
-         public VMProperty Property { get; set; }
+         public VMPropertyBase Property { get; set; }
 
          public void AddToDictionary() {
             if (_additionalConfiguration != null) {

@@ -7,7 +7,7 @@
       private bool _affectsOtherItems = false;
 
       public ValidationEventArgs(
-         VMProperty property,
+         VMPropertyBase property,
          object propertyValue,
          ViewModel viewModel
       ) {
@@ -17,7 +17,7 @@
          Errors = new List<string>();
       }
 
-      public VMProperty Property { get; private set; }
+      public VMPropertyBase Property { get; private set; }
 
       public object PropertyValue { get; private set; }
 

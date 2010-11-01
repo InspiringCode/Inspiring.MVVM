@@ -225,4 +225,13 @@
   <data name="InvalidTargetObjectForCommonBehavior" xml:space="preserve">
     <value>The 'CommonBehaviors' behavior '{0}' cannot be enabled on the given object.</value>
   </data>
+  <data name="ObjectIsSealed" xml:space="preserve">
+    <value>Operations that modify state cannot be invoked on sealed objects. </value>
+  </data>
+  <data name="ServiceAlreadyRegistered" xml:space="preserve">
+    <value>A serivce of type '{0}' is already registered. A registration cannot be overriden.</value>
+  </data>
+  <data name="ServiceNotRegistered" xml:space="preserve">
+    <value>No instance was registered for the requested service type '{0}'. Call 'RegisterService' to register an instance.</value>
+  </data>
 </root>

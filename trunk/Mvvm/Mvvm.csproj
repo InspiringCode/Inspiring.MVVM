@@ -71,6 +71,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\ServiceRegistry.cs" />
     <Compile Include="Common\TypeService.cs" />
     <Compile Include="MvvmApplication.cs" />
     <Compile Include="Common\NotifyObject.cs" />
@@ -122,10 +123,15 @@
     <Compile Include="ViewModels\Core\PropertyBehaviors\PropagateVMContextBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\ViewModelFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\ViewModelPropertyInitializerBehavior.cs" />
+    <Compile Include="ViewModels\Core\TypeDescriptor\SimplePropertyDescriptor.cs" />
+    <Compile Include="ViewModels\Core\TypeDescriptor\TypeDescriptorService.cs" />
     <Compile Include="ViewModels\Core\ValidationEventArgs.cs" />
     <Compile Include="ViewModels\Core\ViewModelExtensibility.cs" />
+    <Compile Include="ViewModels\Future\VMDescriptorBase.cs" />
+    <Compile Include="ViewModels\Future\VMPropertyCollection.cs" />
     <Compile Include="ViewModels\ICreatableItem.cs" />
     <Compile Include="ViewModels\IHasSourceObject.cs" />
+    <Compile Include="ViewModels\IViewModel.cs" />
     <Compile Include="ViewModels\IVMContext.cs" />
     <Compile Include="ViewModels\StandardBehaviors.cs" />
     <Compile Include="ViewModels\StandardValidations.cs" />
@@ -166,7 +172,7 @@
     <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyChangedBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\DisplayValueAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\ValidationBehavior.cs" />
-    <Compile Include="ViewModels\Core\VMPropertyDescriptor.cs" />
+    <Compile Include="ViewModels\Core\TypeDescriptor\VMPropertyDescriptor.cs" />
     <Compile Include="ViewModels\Core\ChangeValueRequest.cs" />
     <Compile Include="ViewModels\IVMValueConverter.cs" />
     <Compile Include="ViewModels\Core\Builder\IVMBehaviorConfigurator.cs" />

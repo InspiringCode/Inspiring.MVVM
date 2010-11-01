@@ -10,7 +10,7 @@
    }
 
    /// <summary>
-   ///   A factory that creates <see cref="VMProperty"/> instances configured 
+   ///   A factory that creates <see cref="VMPropertyBase"/> instances configured 
    ///   with a certain value source. You can get an instance of this interface
    ///   by calling 'VMDescriptorBuilder.For&lt;PersonVM&gt;().CreateDescriptor(c => {
    ///      var p = c.GetPropertyFactory(x => x.Person);
@@ -80,7 +80,7 @@
    }
 
    /// <summary>
-   ///   A factory that creates <see cref="VMProperty"/> instances configured 
+   ///   A factory that creates <see cref="VMPropertyBase"/> instances configured 
    ///   with a certain value source. You can get an instance of this interface
    ///   by calling 'VMDescriptorBuilder.For&lt;PersonVM&gt;().CreateDescriptor(c => {
    ///      var v = c.GetPropertyFactory();

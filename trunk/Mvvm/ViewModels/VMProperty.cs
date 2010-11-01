@@ -3,10 +3,18 @@
    using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.ViewModels.Core;
 
-   public abstract class VMProperty {
-      private CustomPropertyDescriptor _propertyDescriptor;
+   public abstract class VMPropertyBase {
+      private VMPropertyDescriptor _propertyDescriptor;
 
-      internal VMProperty(Type type) {
+      public VMPropertyBase() {
+      }
+
+      public VMPropertyBase(string propertyName, Type propertyType) {
+         Initialize(propertyName, propertyType);
+      }
+
+      [Obsolete]
+      internal VMPropertyBase(Type type) {
          Contract.Requires(type != null);
          PropertyType = type;
       }
@@ -19,13 +27,21 @@
 
       internal VMDescriptor Descriptor { get; private set; }
 
-      internal CustomPropertyDescriptor PropertyDescriptor {
+      internal VMPropertyDescriptor PropertyDescriptor {
          get {
             if (_propertyDescriptor == null) {
-               _propertyDescriptor = new CustomPropertyDescriptor(this);
+               _propertyDescriptor = new VMPropertyDescriptor(this);
             }
             return _propertyDescriptor;
          }
+      }
+
+      public void Initialize(string propertyName, Type propertyType) {
+         Contract.Requires<ArgumentNullException>(propertyType != null);
+         Contract.Requires<ArgumentNullException>(propertyName != null);
+
+         PropertyName = propertyName;
+         PropertyType = propertyType;
       }
 
       internal void Initialize(string propertyName, VMDescriptor descriptor) {
@@ -81,7 +97,7 @@
       }
    }
 
-   public abstract class VMPropertyBase<T> : VMProperty, IVMProperty<T> {
+   public abstract class VMPropertyBase<T> : VMPropertyBase, IVMProperty<T> {
 
       public VMPropertyBase()
          : base(typeof(T)) {

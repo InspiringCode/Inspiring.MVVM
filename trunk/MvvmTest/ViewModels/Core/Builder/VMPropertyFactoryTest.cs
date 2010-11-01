@@ -128,7 +128,7 @@
 
 
 
-      private void AssertBehaviors(VMProperty property, params Type[] expectedBehaviorTypes) {
+      private void AssertBehaviors(VMPropertyBase property, params Type[] expectedBehaviorTypes) {
          IBehavior head = _configs
             .GetConfiguration(property)
             .CreateBehaviorChain<string>();
@@ -205,7 +205,7 @@
          );
       }
 
-      private void CheckForAdditionalBehavior(VMProperty property) {
+      private void CheckForAdditionalBehavior(VMPropertyBase property) {
          var chain = _configs.GetConfiguration(property).CreateBehaviorChain<string>();
          Assert.AreSame(_additionalBehavior, chain.Successor);
       }

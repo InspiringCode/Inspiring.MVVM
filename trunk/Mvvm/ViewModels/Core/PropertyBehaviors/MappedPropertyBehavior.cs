@@ -6,7 +6,7 @@
 
    /// <summary>
    ///   A <see cref="IAccessPropertyBehavior"/> that implements the get/set 
-   ///   operation of a <see cref="VMProperty"/> by using the target of a CLR
+   ///   operation of a <see cref="VMPropertyBase"/> by using the target of a CLR
    ///   property defined on a target object of the view model.
    /// </summary>
    internal sealed class MappedPropertyBehavior<TVM, TValue> :

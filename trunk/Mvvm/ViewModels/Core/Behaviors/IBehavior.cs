@@ -6,14 +6,14 @@
    }
 
    public class BehaviorInitializationContext {
-      internal BehaviorInitializationContext(VMProperty property) {
+      internal BehaviorInitializationContext(VMPropertyBase property) {
          DynamicFields = property.Descriptor.DynamicFields;
          Property = property;
       }
 
       internal BehaviorInitializationContext(
          FieldDefinitionCollection dynamicFields,
-         VMProperty property
+         VMPropertyBase property
       ) {
          Property = property;
          DynamicFields = dynamicFields;
@@ -21,6 +21,6 @@
 
       public FieldDefinitionCollection DynamicFields { get; private set; }
 
-      public VMProperty Property { get; private set; }
+      public VMPropertyBase Property { get; private set; }
    }
 }

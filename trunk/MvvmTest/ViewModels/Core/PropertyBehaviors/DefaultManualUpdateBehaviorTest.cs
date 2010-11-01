@@ -9,7 +9,7 @@
       [TestMethod]
       public void UpdateFromSource_OnPropertyChangedGetsCalled() {
          // Arrange
-         VMProperty<string> property = new VMProperty<string>();
+         VMPropertyBase<string> property = new VMProperty<string>();
 
          BehaviorInitializationContext initContext = new BehaviorInitializationContext(
             new FieldDefinitionCollection(),

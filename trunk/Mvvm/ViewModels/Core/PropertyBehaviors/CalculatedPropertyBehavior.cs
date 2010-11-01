@@ -4,7 +4,7 @@
 
    /// <summary>
    ///   A <see cref="IAccessPropertyBehavior"/> that uses the specified delegates
-   ///   to implement get/set operation of a <see cref="VMProperty"/>.
+   ///   to implement get/set operation of a <see cref="VMPropertyBase"/>.
    /// </summary>
    public sealed class CalculatedPropertyBehavior<TSource, TValue> :
       Behavior,

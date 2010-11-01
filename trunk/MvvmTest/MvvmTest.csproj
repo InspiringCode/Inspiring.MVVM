@@ -58,14 +58,20 @@
   <ItemGroup>
     <Compile Include="AssertHelper.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Common\ServiceRegistryTests.cs" />
     <Compile Include="Common\TypeServiceTest.cs" />
     <Compile Include="PropertyChangedCounter.cs" />
     <Compile Include="Screens\ScreenCreationBehaviorTest.cs" />
+    <Compile Include="Stubs\VMDescriptorStub.cs" />
+    <Compile Include="Stubs\VMPropertyBaseStub.cs" />
     <Compile Include="TestExtensions.cs" />
     <Compile Include="ViewModels\Core\Builder\BehaviorsTest.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionValidationBehaviorTest.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\DefaultManualUpdateBehaviorTest.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\ValidationBehaviorTest.cs" />
+    <Compile Include="ViewModels\Core\TypeDescriptor\TypeDescriptorServiceTests.cs" />
+    <Compile Include="ViewModels\Core\TypeDescriptor\VMPropertyDescriptorTests.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBaseTests.cs" />
     <Compile Include="ViewModels\IntegrationTests\ChangeNotificationTest.cs" />
     <Compile Include="ViewModels\IntegrationTests\CollectionPropertyTest.cs" />
     <Compile Include="ViewModels\IntegrationTests\CollectionValidationTest.cs" />

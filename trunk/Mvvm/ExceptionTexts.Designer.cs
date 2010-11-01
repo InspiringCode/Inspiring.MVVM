@@ -268,6 +268,15 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Operations that modify state cannot be invoked on sealed objects. .
+        /// </summary>
+        internal static string ObjectIsSealed {
+            get {
+                return ResourceManager.GetString("ObjectIsSealed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Parameter &apos;binderExpression&apos; must be a &apos;BinderExpression&apos; (or subtype)..
         /// </summary>
         internal static string ParameterMustBeABinderExpression {
@@ -327,6 +336,24 @@ namespace Inspiring.Mvvm {
         internal static string ScreenNotContainedByConductor {
             get {
                 return ResourceManager.GetString("ScreenNotContainedByConductor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A serivce of type &apos;{0}&apos; is already registered. A registration cannot be overriden..
+        /// </summary>
+        internal static string ServiceAlreadyRegistered {
+            get {
+                return ResourceManager.GetString("ServiceAlreadyRegistered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No instance was registered for the requested service type &apos;{0}&apos;. Call &apos;RegisterService&apos; to register an instance..
+        /// </summary>
+        internal static string ServiceNotRegistered {
+            get {
+                return ResourceManager.GetString("ServiceNotRegistered", resourceCulture);
             }
         }
         

@@ -60,11 +60,11 @@
          set { SetValue(Descriptor.MappedParentedCollectionProperty, value); }
       }
 
-      public void InvokeUpdateFromSource(VMProperty property) {
+      public void InvokeUpdateFromSource(VMPropertyBase property) {
          UpdateFromSource(property);
       }
 
-      public void InvokeUpdateSource(VMProperty property) {
+      public void InvokeUpdateSource(VMPropertyBase property) {
          UpdateSource(property);
       }
 
@@ -76,7 +76,7 @@
          }
       }
 
-      protected override ValidationResult ValidateProperty(VMProperty property) {
+      protected override ValidationResult ValidateProperty(VMPropertyBase property) {
          return LocalPropertyValidationResult ?? base.ValidateProperty(property);
       }
    }
@@ -147,7 +147,7 @@
          }
       }
 
-      protected override ValidationResult ValidateProperty(VMProperty property) {
+      protected override ValidationResult ValidateProperty(VMPropertyBase property) {
          return MappedMutablePropertyValidationResult ?? base.ValidateProperty(property);
       }
    }
@@ -208,7 +208,7 @@
          }
       }
 
-      protected override ValidationResult ValidateProperty(VMProperty property) {
+      protected override ValidationResult ValidateProperty(VMPropertyBase property) {
          return MappedMutablePropertyValidationResult ?? base.ValidateProperty(property);
       }
 
