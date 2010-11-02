@@ -16,7 +16,7 @@
       }
 
       public void AddProperty(string name, Type type) {
-         _properties.Add(new VMPropertyBaseStub(name, type));
+         _properties.Add(new VMPropertyBaseStub(type, name));
       }
 
       protected override VMPropertyCollection DiscoverProperties() {

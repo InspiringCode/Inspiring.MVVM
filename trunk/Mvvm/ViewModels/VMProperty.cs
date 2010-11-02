@@ -6,17 +6,17 @@
    public abstract class VMPropertyBase {
       private VMPropertyDescriptor _propertyDescriptor;
 
-      public VMPropertyBase() {
+      internal VMPropertyBase(Type propertyType) {
+         Contract.Requires(propertyType != null);
+
+         PropertyType = propertyType;
       }
 
-      public VMPropertyBase(string propertyName, Type propertyType) {
-         Initialize(propertyName, propertyType);
-      }
+      internal VMPropertyBase(Type propertyType, string propertyName)
+         : this(propertyType) {
+         Contract.Requires(propertyName != null);
 
-      [Obsolete]
-      internal VMPropertyBase(Type type) {
-         Contract.Requires(type != null);
-         PropertyType = type;
+         Initialize(propertyName);
       }
 
       public Behavior Behaviors { get; internal set; }
@@ -36,14 +36,13 @@
          }
       }
 
-      public void Initialize(string propertyName, Type propertyType) {
-         Contract.Requires<ArgumentNullException>(propertyType != null);
+      public void Initialize(string propertyName) {
          Contract.Requires<ArgumentNullException>(propertyName != null);
 
          PropertyName = propertyName;
-         PropertyType = propertyType;
       }
 
+      [Obsolete]
       internal void Initialize(string propertyName, VMDescriptor descriptor) {
          PropertyName = propertyName;
          Descriptor = descriptor;

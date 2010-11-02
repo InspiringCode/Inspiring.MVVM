@@ -1,10 +1,10 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Future {
    using System;
+   using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.Common;
 
    public abstract class VMDescriptorBase : ServiceRegistry {
       private VMPropertyCollection _properties;
-      private bool _isSealed;
 
       public VMPropertyCollection Properties {
          get {
@@ -16,14 +16,17 @@
          }
       }
 
+      public bool IsSealed { get; private set; }
+
       public void Modify() {
-         if (_isSealed) {
-            throw new InvalidOperationException(ExceptionTexts.ObjectIsSealed);
-         }
+         Contract.Requires<InvalidOperationException>(
+            !IsSealed,
+            ExceptionTexts.ObjectIsSealed
+         );
       }
 
       public void Seal() {
-         _isSealed = true;
+         IsSealed = true;
       }
 
       protected abstract VMPropertyCollection DiscoverProperties();

@@ -5,9 +5,8 @@
    using Inspiring.Mvvm.ViewModels.Future;
 
    /// <summary>
-   ///   A service registered with a <see cref="VMDescriptorBase"/> that caches
-   ///   all <see cref="VMPropertyDescriptor"/> instances of a VMDescriptorBase
-   ///   instance.
+   ///   A service registered with a <see cref="VMDescriptor"/> that caches all
+   ///   <see cref="VMPropertyDescriptor"/> instances of a VMDescriptor instance.
    /// </summary>
    public sealed class TypeDescriptorService {
       private PropertyDescriptorCollection _propertyDescriptors;

@@ -39,9 +39,7 @@ namespace Inspiring.MvvmTest.ViewModels.Core {
          TestVMDescriptor descriptor = new TestVMDescriptor();
          var properties = descriptor.Properties;
 
-         AssertHelper.Throws<InvalidOperationException>(
-            () => descriptor.Modify()
-         );
+         Assert.IsTrue(descriptor.IsSealed);
       }
 
       private class TestVMDescriptor : VMDescriptorBase {

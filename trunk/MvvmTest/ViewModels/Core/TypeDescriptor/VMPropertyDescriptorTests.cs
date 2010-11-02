@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using Inspiring.Mvvm.ViewModels;
 using Inspiring.Mvvm.ViewModels.Core;
+using Inspiring.MvvmTest.Stubs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -14,8 +15,7 @@ namespace Inspiring.MvvmTest.ViewModels.Core.TypeDescriptor {
 
       [TestInitialize]
       public void Setup() {
-         _property = new Mock<VMPropertyBase> { CallBase = true }.Object;
-         _property.Initialize("Test", typeof(string));
+         _property = new VMPropertyBaseStub(typeof(object), "Test");
 
          _descriptor = new VMPropertyDescriptor(_property);
          _vm = new Mock<IBehaviorContext>().Object;

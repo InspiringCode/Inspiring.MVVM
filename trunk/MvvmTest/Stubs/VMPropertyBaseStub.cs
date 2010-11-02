@@ -4,11 +4,11 @@
    using Inspiring.Mvvm.ViewModels.Core;
 
    internal sealed class VMPropertyBaseStub : VMPropertyBase {
-      public VMPropertyBaseStub() {
-      }
+      //public VMPropertyBaseStub() {
+      //}
 
-      public VMPropertyBaseStub(string propertyName, Type propertyType)
-         : base(propertyName, propertyType) {
+      public VMPropertyBaseStub(Type propertyType, string propertyName)
+         : base(propertyType, propertyName) {
       }
 
       internal override void ConfigureBehaviors(BehaviorConfiguration configuration) {

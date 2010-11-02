@@ -126,6 +126,7 @@
     <Compile Include="ViewModels\Core\TypeDescriptor\SimplePropertyDescriptor.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\TypeDescriptorService.cs" />
     <Compile Include="ViewModels\Core\ValidationEventArgs.cs" />
+    <Compile Include="ViewModels\Core\Validation\ViewModelValidatorHolder.cs" />
     <Compile Include="ViewModels\Core\ViewModelExtensibility.cs" />
     <Compile Include="ViewModels\Future\VMDescriptorBase.cs" />
     <Compile Include="ViewModels\Future\VMPropertyCollection.cs" />
