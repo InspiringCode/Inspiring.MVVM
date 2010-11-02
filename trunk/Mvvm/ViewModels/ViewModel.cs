@@ -168,7 +168,11 @@
             changedProperty
          );
 
-         _descriptor.Validators.ForEach(v => v(args));
+         IEnumerable<Action<ViewModelValidationArgs>> validators = _descriptor
+            .GetService<ViewModelValidatorHolder>()
+            .GetValidators();
+
+         validators.ForEach(v => v(args));
          OnValidate(args);
 
          _viewModelErrors = args.Errors;
@@ -261,7 +265,9 @@
          get {
             RequireDescriptor();
             if (_dynamicFieldValues == null) {
-               _dynamicFieldValues = _descriptor.DynamicFields.CreateValueHolder();
+               var fields = _descriptor.GetService<FieldDefinitionCollection>();
+
+               _dynamicFieldValues = fields.CreateValueHolder();
             }
             return _dynamicFieldValues;
          }
@@ -310,7 +316,9 @@
    partial class ViewModel : ICustomTypeDescriptor {
       PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties() {
          RequireDescriptor();
-         return _descriptor.PropertyDescriptors;
+
+         var svc = _descriptor.GetService<TypeDescriptorService>();
+         return svc.PropertyDescriptors;
       }
 
       PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties(Attribute[] attributes) {
@@ -319,7 +327,8 @@
             throw new NotSupportedException(ExceptionTexts.GetPropertiesWithAttributesIsNotSupport);
          }
 
-         return _descriptor.PropertyDescriptors;
+         var svc = _descriptor.GetService<TypeDescriptorService>();
+         return svc.PropertyDescriptors;
       }
 
       object ICustomTypeDescriptor.GetPropertyOwner(PropertyDescriptor pd) {

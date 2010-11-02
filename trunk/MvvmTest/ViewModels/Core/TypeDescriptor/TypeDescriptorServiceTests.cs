@@ -26,5 +26,22 @@
          // Assert
          Assert.AreEqual(propertyName, returnedDescriptor.Name);
       }
+
+      [TestMethod]
+      public void PropertyDescriptors_GetTwice_ReturnsSameCollection() {
+         // Arrange
+         string propertyName = "Test";
+
+         VMDescriptorStub descriptor = new VMDescriptorStub();
+         descriptor.AddProperty(propertyName, typeof(string));
+
+         TypeDescriptorService svc = new TypeDescriptorService(descriptor);
+
+         // Act
+         var first = svc.PropertyDescriptors;
+         var second = svc.PropertyDescriptors;
+
+         Assert.AreSame(first, second);
+      }
    }
 }

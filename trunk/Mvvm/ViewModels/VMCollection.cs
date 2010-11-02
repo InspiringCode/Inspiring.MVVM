@@ -57,7 +57,7 @@
       }
 
       public PropertyDescriptorCollection GetItemProperties(PropertyDescriptor[] listAccessors) {
-         return ItemDescriptor.PropertyDescriptors;
+         return ItemDescriptor.GetService<TypeDescriptorService>().PropertyDescriptors;
       }
 
       public string GetListName(PropertyDescriptor[] listAccessors) {

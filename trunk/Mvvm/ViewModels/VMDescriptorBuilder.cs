@@ -34,7 +34,7 @@
             Func<IVMPropertyFactoryProvider<TVM>, TDescriptor> descriptorFactory
          ) where TDescriptor : VMDescriptor {
             TDescriptor descriptor = descriptorFactory(this);
-            descriptor.InitializeProperties();
+            descriptor.InitializePropertyNames();
             return new BuilderExpression<TVM, TDescriptor>(descriptor, _configurations);
          }
 
@@ -94,7 +94,7 @@
          }
 
          public TDescriptor Build() {
-            _configurations.ApplyToProperties();
+            _configurations.ApplyToProperties(_descriptor);
             return _descriptor;
          }
       }

@@ -68,10 +68,10 @@
       }
 
 
-      private class EmptyDescriptor : Inspiring.Mvvm.ViewModels.Future.VMDescriptor {
+      private class EmptyDescriptor : VMDescriptor {
       }
 
-      private class TestDescriptor : Inspiring.Mvvm.ViewModels.Future.VMDescriptor {
+      private class TestDescriptor : VMDescriptor {
          public VMProperty<string> SimpleProperty { get; set; }
       }
    }

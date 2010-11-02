@@ -11,7 +11,7 @@
          : base(propertyType, propertyName) {
       }
 
-      internal override void ConfigureBehaviors(BehaviorConfiguration configuration) {
+      internal override void ConfigureBehaviors(BehaviorConfiguration configuration, FieldDefinitionCollection fieldDefinitions) {
          throw new NotImplementedException("TODO");
       }
 

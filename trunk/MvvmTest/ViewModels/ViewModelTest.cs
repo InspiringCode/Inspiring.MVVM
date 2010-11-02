@@ -16,7 +16,7 @@
       [TestMethod]
       public void RowValidation_WithPositiveValidation_IsValid() {
          var descriptor = new EmptyVMDescriptor();
-         descriptor.Validators.Add(args => { });
+         descriptor.GetService<ViewModelValidatorHolder>().AddValidator(args => { });
          var vm = new EmptyVM(descriptor);
 
          ValidationResult result = vm.InvokeValidateMethod();
@@ -27,7 +27,7 @@
       [TestMethod]
       public void RowValidation_WithNegativeValidation_IsNotValid() {
          var descriptor = new EmptyVMDescriptor();
-         descriptor.Validators.Add(args => {
+         descriptor.GetService<ViewModelValidatorHolder>().AddValidator(args => {
             args.AddError("Error");
          });
          var vm = new EmptyVM(descriptor);
@@ -44,7 +44,7 @@
          bool returnError = false;
          var descriptor = new EmptyVMDescriptor();
 
-         descriptor.Validators.Add(args => {
+         descriptor.GetService<ViewModelValidatorHolder>().AddValidator(args => {
             if (returnError) {
                args.AddError("Error");
             }

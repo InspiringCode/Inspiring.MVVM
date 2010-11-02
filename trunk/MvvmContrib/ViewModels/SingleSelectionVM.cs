@@ -25,9 +25,11 @@
 
       public ViewModel Parent { get; set; }
 
-      // HACK to avoid exception (what was the problem?)
       public override bool IsValid(bool validateChildren) {
-         return base.IsValid(false);
+         // HACK
+         // base.IsValid fails because there is a foreign VMProperty for which the dynamic field
+         // cannot be accessed.
+         return ValidateProperty(Descriptor.SelectedItem).Successful;
       }
 
       private IEnumerable<TSourceItem> FilteredItems {

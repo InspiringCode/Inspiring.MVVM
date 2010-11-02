@@ -13,11 +13,13 @@
          _configurations.Add(property, configuration);
       }
 
-      internal void ApplyToProperties() {
+      internal void ApplyToProperties(VMDescriptor descriptor) {
          foreach (var pair in _configurations) {
             VMPropertyBase property = pair.Key;
             BehaviorConfiguration config = pair.Value;
-            property.ConfigureBehaviors(config);
+
+            var fieldDefinitions = descriptor.GetService<FieldDefinitionCollection>();
+            property.ConfigureBehaviors(config, fieldDefinitions);
          }
       }
    }

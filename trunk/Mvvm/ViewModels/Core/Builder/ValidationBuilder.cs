@@ -31,7 +31,11 @@
 
       public void ViewModelValidator(Action<TVM, ViewModelValidationArgs> validator) {
          Contract.Requires<ArgumentNullException>(validator != null);
-         _descriptor.Validators.Add(args => {
+
+         var validatorHolder = _descriptor
+            .GetService<ViewModelValidatorHolder>();
+
+         validatorHolder.AddValidator(args => {
             validator((TVM)args.ValidationTarget, args);
          });
       }

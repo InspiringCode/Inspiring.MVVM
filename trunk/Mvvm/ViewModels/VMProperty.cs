@@ -4,8 +4,6 @@
    using Inspiring.Mvvm.ViewModels.Core;
 
    public abstract class VMPropertyBase {
-      private VMPropertyDescriptor _propertyDescriptor;
-
       internal VMPropertyBase(Type propertyType) {
          Contract.Requires(propertyType != null);
 
@@ -27,14 +25,7 @@
 
       internal VMDescriptor Descriptor { get; private set; }
 
-      internal VMPropertyDescriptor PropertyDescriptor {
-         get {
-            if (_propertyDescriptor == null) {
-               _propertyDescriptor = new VMPropertyDescriptor(this);
-            }
-            return _propertyDescriptor;
-         }
-      }
+      internal VMPropertyDescriptor PropertyDescriptor { get; set; }
 
       public void Initialize(string propertyName) {
          Contract.Requires<ArgumentNullException>(propertyName != null);
@@ -48,7 +39,7 @@
          Descriptor = descriptor;
       }
 
-      internal abstract void ConfigureBehaviors(BehaviorConfiguration configuration);
+      internal abstract void ConfigureBehaviors(BehaviorConfiguration configuration, FieldDefinitionCollection fieldDefinitions);
 
       internal object GetDisplayValue(IBehaviorContext vm) {
          Contract.Requires(vm != null);
@@ -71,8 +62,9 @@
             changedBehavior.HandlePropertyChanged(vm);
          }
 
-         if (_propertyDescriptor != null) {
-            _propertyDescriptor.RaiseValueChanged(vm);
+         // HACK: Is there a neater way to seperate the Descriptor stuff?
+         if (PropertyDescriptor != null) {
+            PropertyDescriptor.RaiseValueChanged(vm);
          }
       }
 
@@ -102,9 +94,9 @@
          : base(typeof(T)) {
       }
 
-      internal override void ConfigureBehaviors(BehaviorConfiguration configuration) {
+      internal override void ConfigureBehaviors(BehaviorConfiguration configuration, FieldDefinitionCollection fieldDefinitions) {
          Behaviors = configuration.CreateBehaviorChain<T>();
-         ((IBehavior)Behaviors).Initialize(new BehaviorInitializationContext(this));
+         ((IBehavior)Behaviors).Initialize(new BehaviorInitializationContext(fieldDefinitions, this));
       }
 
       internal T GetValue(IBehaviorContext vm) {

@@ -54,7 +54,7 @@
       ) {
          ViewModel vm = new Mock<ViewModel>(ServiceLocator.Current).Object;
          var behaviorContext = new Mock<IBehaviorContext>();
-         behaviorContext.Setup(x => x.FieldValues).Returns(descriptor.DynamicFields.CreateValueHolder());
+         behaviorContext.Setup(x => x.FieldValues).Returns(descriptor.GetService<FieldDefinitionCollection>().CreateValueHolder());
          behaviorContext.Setup(x => x.VM).Returns(vm);
          return behaviorContext;
       }
@@ -62,7 +62,7 @@
       public static VMProperty<T> MockProperty<T>(BehaviorConfiguration config, VMDescriptor descriptor) {
          VMProperty<T> property = new VMProperty<T>();
          property.Initialize("Test", descriptor);
-         property.ConfigureBehaviors(config);
+         property.ConfigureBehaviors(config, descriptor.GetService<FieldDefinitionCollection>());
          return property;
       }
    }

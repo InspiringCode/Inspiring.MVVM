@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
+   using System.Diagnostics.Contracts;
 
    /// <summary>
    ///   A <see cref="System.ComponentModel.PropertyDescriptor"/> that allows
@@ -15,8 +16,13 @@
             property.PropertyType,
             componentType: typeof(IViewModel)
          ) {
+         Contract.Requires(property != null);
 
          _property = property;
+
+         // HACK
+         Contract.Assert(_property.PropertyDescriptor == null);
+         _property.PropertyDescriptor = this;
       }
 
       public override object GetValue(object component) {

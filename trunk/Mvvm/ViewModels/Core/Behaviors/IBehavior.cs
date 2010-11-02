@@ -6,11 +6,6 @@
    }
 
    public class BehaviorInitializationContext {
-      internal BehaviorInitializationContext(VMPropertyBase property) {
-         DynamicFields = property.Descriptor.DynamicFields;
-         Property = property;
-      }
-
       internal BehaviorInitializationContext(
          FieldDefinitionCollection dynamicFields,
          VMPropertyBase property
