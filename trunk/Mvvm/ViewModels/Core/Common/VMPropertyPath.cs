@@ -1,0 +1,29 @@
+﻿namespace Inspiring.Mvvm.ViewModels.Core.Common {
+   using System;
+   using System.Diagnostics.Contracts;
+   using System.Linq;
+
+   /// <summary>
+   ///   A class that describes a list of VM proprerties that need to be get in
+   ///   the order specified by the VMPropertyPath to get from one VM to an 
+   ///   descendant VM in a VM hierarchy.
+   /// </summary>
+   public sealed class VMPropertyPath {
+      public VMPropertyPath(params VMPropertyBase[] properties) {
+         Contract.Requires<ArgumentNullException>(properties != null);
+         Contract.Requires(Contract.ForAll(properties, x => x != null));
+
+         Properties = properties;
+      }
+
+      /// <summary>
+      ///   Gets the properties of the path in sequence. Example [Address, Street].
+      /// </summary>
+      public VMPropertyBase[] Properties { get; private set; }
+
+      /// <inheritdoc />
+      public override string ToString() {
+         return String.Join(".", Properties.Select(x => x.PropertyName));
+      }
+   }
+}

@@ -64,6 +64,20 @@
          });
       }
 
+      public static void IsUnique<TItemVM>(
+         this ICollectionValidationBuilder<TItemVM, string> builder,
+         StringComparison comparisonType,
+         string errorMessage
+      ) where TItemVM : ViewModel {
+         builder.Custom(args => {
+            if (args.AllItems.Any(i => i.VM != args.Item.VM && String.Equals(i.Value, args.Item.Value, comparisonType))) {
+               args.AddError(errorMessage);
+            }
+
+            args.AffectsOtherItems = true;
+         });
+      }
+
       public static void PropagateChildErrors<TVM>(
          this IValidationBuilder<TVM> builder,
          string errorMessage

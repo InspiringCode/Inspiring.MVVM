@@ -118,6 +118,16 @@
          return property.GetValue(this);
       }
 
+      protected internal void SetDisplayValue(VMPropertyBase property, object value) {
+         Contract.Requires<ArgumentNullException>(property != null);
+         property.SetDisplayValue(this, value);
+      }
+
+      protected internal object GetDisplayValue(VMPropertyBase property) {
+         Contract.Requires<ArgumentNullException>(property != null);
+         return property.GetDisplayValue(this);
+      }
+
       protected virtual void OnPropertyChanged<T>(VMPropertyBase<T> property) {
          OnPropertyChanged(property.PropertyName);
          InvokeValidate(this, property);

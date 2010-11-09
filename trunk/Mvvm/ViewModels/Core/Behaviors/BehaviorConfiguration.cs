@@ -3,6 +3,42 @@
    using System.Collections.Generic;
    using System.Linq;
 
+   namespace Future {
+      public sealed class BehaviorConfiguration {
+         public BehaviorConfiguration(params object[] behaviorKeys) {
+
+         }
+
+         public BehaviorConfiguration(BehaviorConfiguration templateConfiguration) {
+
+         }
+
+         public void Enable(object behaviorKey) {
+
+         }
+
+         public void Configure<TBehavior>(object behaviorKey, Action<TBehavior> configurationAction) {
+
+         }
+
+         public void SetBehavior(object behaviorKey, Behavior behavior) {
+
+         }
+
+         public BehaviorConfiguration MergeWith(BehaviorConfiguration second) {
+            return null;
+         }
+
+         public Behavior CreateBehaviorChain(IBehaviorFactory behaviorFactory) {
+            return null;
+         }
+      }
+
+      public interface IBehaviorFactory {
+         Behavior Create(object behaviorKey);
+      }
+   }
+
    public sealed class BehaviorConfiguration : IBehaviorConfigurationExpression {
       private List<Action<List<BehaviorEntry>>> _configurationActions = new List<Action<List<BehaviorEntry>>>();
 

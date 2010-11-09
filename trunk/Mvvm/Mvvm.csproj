@@ -107,12 +107,19 @@
     <Compile Include="ViewModels\Core\Builder\ValidationBuilder.cs" />
     <Compile Include="ViewModels\Core\CollectionModificationController.cs" />
     <Compile Include="ViewModels\Core\Builder\CollectionValidationBuilder.cs" />
+    <Compile Include="ViewModels\Core\Common\ChangeArgs.cs" />
+    <Compile Include="ViewModels\Core\Common\InstancePath.cs" />
+    <Compile Include="ViewModels\Core\Common\ValidationContext.cs" />
+    <Compile Include="ViewModels\Core\Validation\ValidationError.cs" />
+    <Compile Include="ViewModels\Core\Common\VMPropertyPath.cs" />
     <Compile Include="ViewModels\Core\IBehaviorConfigurationDictionaryProvider.cs" />
     <Compile Include="ViewModels\Core\IBindableCollection.cs" />
     <Compile Include="ViewModels\Core\IVMProperty.cs" />
     <Compile Include="ViewModels\Core\ISupportsValidation.cs" />
     <Compile Include="ViewModels\Core\ItemCreationController.cs" />
     <Compile Include="ViewModels\Core\IValidationBuilder.cs" />
+    <Compile Include="ViewModels\Core\Kernel\IPropertyBehaviorContext.cs" />
+    <Compile Include="ViewModels\Core\Kernel\VMKernel.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionPopulatorBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionValidationBehavior.cs" />
@@ -127,8 +134,15 @@
     <Compile Include="ViewModels\Core\TypeDescriptor\TypeDescriptorPropertyBehavior.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\TypeDescriptorService.cs" />
     <Compile Include="ViewModels\Core\ValidationEventArgs.cs" />
-    <Compile Include="ViewModels\Core\Validation\ViewModelValidatorHolder.cs" />
+    <Compile Include="ViewModels\Core\Validation\ValidationArgs.cs" />
+    <Compile Include="ViewModels\Core\Validation\ViewModelBehaviors\ViewModelValidationBehavior.cs" />
+    <Compile Include="ViewModels\Core\Validation\ViewModelValidator.cs" />
+    <Compile Include="ViewModels\Core\Validation\ViewModelValidationArgs.cs" />
+    <Compile Include="ViewModels\Core\- Legacy -\ViewModelValidatorHolder.cs" />
+    <Compile Include="ViewModels\Core\ViewModelBehaviors\IViewModelBehaviorContext.cs" />
+    <Compile Include="ViewModels\Core\ViewModelBehaviors\ViewModelBehavior.cs" />
     <Compile Include="ViewModels\Core\ViewModelExtensibility.cs" />
+    <Compile Include="ViewModels\ExtensionMethods.cs" />
     <Compile Include="ViewModels\Future\VMDescriptorBase.cs" />
     <Compile Include="ViewModels\Future\VMPropertyCollection.cs" />
     <Compile Include="ViewModels\ICreatableItem.cs" />
@@ -217,6 +231,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ViewModels\- No Namespace -\Validation\" />
+    <Folder Include="ViewModels\Core\Validation\PropertyBehaviors\" />
     <Folder Include="Views\TestDoubles\" />
   </ItemGroup>
   <ItemGroup>

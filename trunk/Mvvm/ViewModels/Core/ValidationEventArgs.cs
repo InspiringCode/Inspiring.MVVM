@@ -3,6 +3,7 @@
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
 
+   [Obsolete("Replaced by 'ValidationArgs'.")]
    public sealed class ValidationEventArgs : EventArgs {
       private bool _affectsOtherItems = false;
 
