@@ -1,13 +1,14 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core.Validation {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System.Diagnostics.Contracts;
-   using Inspiring.Mvvm.ViewModels.Core.Common;
 
    public sealed class ViewModelValidationArgs : ValidationArgs {
       public ViewModelValidationArgs(
+         IViewModel validationOwner,
          IViewModel validationTarget,
-         InstancePath changedVM,
+         IViewModel changedVM,
          VMPropertyBase changedProperty = null
       ) {
+         Contract.Requires(validationOwner != null);
          Contract.Requires(validationTarget != null);
          Contract.Requires(changedVM != null);
 
@@ -17,14 +18,20 @@
       }
 
       public ViewModelValidationArgs(IViewModel validationTarget)
-         : this(validationTarget, new InstancePath(validationTarget)) {
+         : this(
+            validationOwner: validationTarget,
+            validationTarget: validationTarget,
+            changedVM: validationTarget
+         ) {
 
          Contract.Requires(validationTarget != null);
       }
 
+      public IViewModel ValidationOwner { get; private set; }
+
       public IViewModel ValidationTarget { get; private set; }
 
-      public InstancePath ChangedVM { get; private set; }
+      public IViewModel ChangedVM { get; private set; }
 
       public VMPropertyBase ChangedProperty { get; private set; }
 

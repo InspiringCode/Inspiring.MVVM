@@ -68,7 +68,7 @@
          UpdateSource(property);
       }
 
-      protected override void OnValidate(ViewModelValidationArgs args) {
+      protected override void OnValidate(_ViewModelValidationArgs args) {
          base.OnValidate(args);
 
          if (ViewModelValidationResult != null && !ViewModelValidationResult.Successful) {
@@ -139,7 +139,7 @@
          }
       }
 
-      protected override void OnValidate(ViewModelValidationArgs args) {
+      protected override void OnValidate(_ViewModelValidationArgs args) {
          base.OnValidate(args);
 
          if (ViewModelValidationResult != null && !ViewModelValidationResult.Successful) {
@@ -200,7 +200,7 @@
          }
       }
 
-      protected override void OnValidate(ViewModelValidationArgs args) {
+      protected override void OnValidate(_ViewModelValidationArgs args) {
          base.OnValidate(args);
 
          if (ViewModelValidationResult != null && !ViewModelValidationResult.Successful) {

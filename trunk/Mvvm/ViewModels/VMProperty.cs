@@ -3,7 +3,7 @@
    using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.ViewModels.Core;
 
-   public abstract class VMPropertyBase {
+   public abstract class VMPropertyBase : IVMProperty {
       internal VMPropertyBase(Type propertyType) {
          Contract.Requires(propertyType != null);
 

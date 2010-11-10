@@ -62,6 +62,7 @@
     <Compile Include="Common\TypeServiceTest.cs" />
     <Compile Include="PropertyChangedCounter.cs" />
     <Compile Include="Screens\ScreenCreationBehaviorTest.cs" />
+    <Compile Include="Stubs\ViewModelBehaviorContextStub.cs" />
     <Compile Include="Stubs\VMDescriptorStub.cs" />
     <Compile Include="Stubs\VMPropertyBaseStub.cs" />
     <Compile Include="TestExtensions.cs" />
@@ -72,8 +73,9 @@
     <Compile Include="ViewModels\Core\TypeDescriptor\TypeDescriptorServiceTests.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\VMPropertyDescriptorTests.cs" />
     <Compile Include="ViewModels\- Legacy -\ViewModelValidatorHolderTests.cs" />
+    <Compile Include="ViewModels\Core\Validation\ViewModelValidationBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBaseTests.cs" />
-    <Compile Include="ViewModels\Core\Validation\InstancePathTests.cs" />
+    <Compile Include="ViewModels\Core\Common\InstancePathTests.cs" />
     <Compile Include="ViewModels\IntegrationTests\ChangeNotificationTest.cs" />
     <Compile Include="ViewModels\IntegrationTests\CollectionPropertyTest.cs" />
     <Compile Include="ViewModels\IntegrationTests\CollectionValidationTest.cs" />

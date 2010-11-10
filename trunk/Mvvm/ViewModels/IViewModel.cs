@@ -3,5 +3,6 @@
 
    public interface IViewModel {
       VMKernel Kernel { get; }
+      object GetValue(IVMProperty property);
    }
 }

@@ -29,7 +29,7 @@
          return new CollectionValidationBuilder<TItemVM>(_configs, property);
       }
 
-      public void ViewModelValidator(Action<TVM, ViewModelValidationArgs> validator) {
+      public void ViewModelValidator(Action<TVM, _ViewModelValidationArgs> validator) {
          Contract.Requires<ArgumentNullException>(validator != null);
 
          var validatorHolder = _descriptor

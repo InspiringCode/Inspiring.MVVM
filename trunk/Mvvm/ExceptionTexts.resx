@@ -234,4 +234,7 @@
   <data name="ServiceNotRegistered" xml:space="preserve">
     <value>No instance was registered for the requested service type '{0}'. Call 'RegisterService' to register an instance.</value>
   </data>
+  <data name="CannotPrependCollectionToEmptyInstancePath" xml:space="preserve">
+    <value>'PrependCollection' is only valid for 'InstancePath's with at least one step because the collection is always associated with the last prepended VM. Make sure you have called 'PrependVM' at least once before calling 'PrependCollection'.</value>
+  </data>
 </root>

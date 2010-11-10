@@ -1,9 +1,11 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
+   using System;
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
 
-   public sealed class ViewModelValidationArgs {
-      internal ViewModelValidationArgs(
+   [Obsolete]
+   public sealed class _ViewModelValidationArgs {
+      internal _ViewModelValidationArgs(
          ViewModel validationTarget,
          ViewModel changedVM,
          VMPropertyBase changedProperty

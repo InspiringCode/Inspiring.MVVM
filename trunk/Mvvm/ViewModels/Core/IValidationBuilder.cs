@@ -8,7 +8,7 @@
       ICollectionValidationBuilder<TItemVM> CheckCollection<TItemVM>(
          IVMProperty<VMCollection<TItemVM>> property
       ) where TItemVM : ViewModel;
-      void ViewModelValidator(Action<TVM, ViewModelValidationArgs> validator);
+      void ViewModelValidator(Action<TVM, _ViewModelValidationArgs> validator);
    }
 
    public interface IValidationBuilder<TVM, TValue> : IHideObjectMembers

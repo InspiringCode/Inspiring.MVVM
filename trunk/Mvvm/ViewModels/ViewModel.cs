@@ -164,7 +164,7 @@
          }
       }
 
-      protected virtual void OnValidate(ViewModelValidationArgs args) {
+      protected virtual void OnValidate(_ViewModelValidationArgs args) {
       }
 
 
@@ -172,13 +172,13 @@
       internal void InvokeValidate(ViewModel changedVM, VMPropertyBase changedProperty) {
          string oldError = _viewModelErrors.FirstOrDefault();
 
-         var args = new ViewModelValidationArgs(
+         var args = new _ViewModelValidationArgs(
             this,
             changedVM,
             changedProperty
          );
 
-         IEnumerable<Action<ViewModelValidationArgs>> validators = _descriptor
+         IEnumerable<Action<_ViewModelValidationArgs>> validators = _descriptor
             .GetService<ViewModelValidatorHolder>()
             .GetValidators();
 

@@ -97,6 +97,15 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;PrependCollection&apos; is only valid for &apos;InstancePath&apos;s with at least one step because the collection is always associated with the last prepended VM. Make sure you have called &apos;PrependVM&apos; at least once before calling &apos;PrependCollection&apos;..
+        /// </summary>
+        internal static string CannotPrependCollectionToEmptyInstancePath {
+            get {
+                return ResourceManager.GetString("CannotPrependCollectionToEmptyInstancePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The value of an empty property path cannot be set. Make sure the path contains at least one property access like &apos;x =&gt; x.Address&apos;..
         /// </summary>
         internal static string CannotSetValueOfEmptyPropertyPath {

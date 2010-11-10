@@ -8,12 +8,12 @@
    ///   view model level validators.
    /// </summary>
    public sealed class ViewModelValidatorHolder {
-      private List<Action<ViewModelValidationArgs>> _validators =
-         new List<Action<ViewModelValidationArgs>>();
+      private List<Action<_ViewModelValidationArgs>> _validators =
+         new List<Action<_ViewModelValidationArgs>>();
 
       public bool IsSealed { get; private set; }
 
-      public void AddValidator(Action<ViewModelValidationArgs> validator) {
+      public void AddValidator(Action<_ViewModelValidationArgs> validator) {
          Contract.Requires<ArgumentNullException>(validator != null);
          Contract.Requires<InvalidOperationException>(
             !IsSealed,
@@ -24,7 +24,7 @@
          _validators.Add(validator);
       }
 
-      internal IEnumerable<Action<ViewModelValidationArgs>> GetValidators() {
+      internal IEnumerable<Action<_ViewModelValidationArgs>> GetValidators() {
          IsSealed = true;
          return _validators;
       }
