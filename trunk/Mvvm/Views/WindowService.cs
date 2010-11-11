@@ -57,6 +57,8 @@
          s.Children.Add(new DialogLifecycle());
          ConfigureWindow(dialogWindow, s, new DialogCloseHandler(s));
 
+         dialogWindow.Owner = owner;
+         dialogWindow.ShowInTaskbar = false;
          dialogWindow.ShowDialog();
 
          var dl = DialogLifecycle.GetDialogLifecycle(s);
