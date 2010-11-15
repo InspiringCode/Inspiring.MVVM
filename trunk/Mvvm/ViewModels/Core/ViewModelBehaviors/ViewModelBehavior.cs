@@ -1,10 +1,9 @@
-﻿using Inspiring.Mvvm.ViewModels.Core.Common;
-namespace Inspiring.Mvvm.ViewModels.Core {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
 
    public abstract class ViewModelBehavior : Behavior {
       protected internal virtual void OnPropertyValidating(
          IViewModelBehaviorContext context,
-         ValidationContext validationContext,
+         Common.ValidationContext validationContext,
          InstancePath targetVMPath
       ) {
          this.CallNext(x => x.OnPropertyValidating(context, validationContext, targetVMPath));

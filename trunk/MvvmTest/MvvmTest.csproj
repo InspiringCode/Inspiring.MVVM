@@ -73,9 +73,13 @@
     <Compile Include="ViewModels\Core\TypeDescriptor\TypeDescriptorServiceTests.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\VMPropertyDescriptorTests.cs" />
     <Compile Include="ViewModels\- Legacy -\ViewModelValidatorHolderTests.cs" />
+    <Compile Include="ViewModels\Core\Validation\ValidationErrorCollectionTests.cs" />
+    <Compile Include="ViewModels\Core\Validation\ValidationPropertyBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\Validation\ValidationStateTests.cs" />
     <Compile Include="ViewModels\Core\Validation\ViewModelValidationBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBaseTests.cs" />
     <Compile Include="ViewModels\Core\Common\InstancePathTests.cs" />
+    <Compile Include="ViewModels\Core\VMKernel_ParentRelationshipTests.cs" />
     <Compile Include="ViewModels\IntegrationTests\ChangeNotificationTest.cs" />
     <Compile Include="ViewModels\IntegrationTests\CollectionPropertyTest.cs" />
     <Compile Include="ViewModels\IntegrationTests\CollectionValidationTest.cs" />
@@ -83,6 +87,7 @@
     <Compile Include="ViewModels\IntegrationTests\ValidationTest2.cs" />
     <Compile Include="ViewModels\IntegrationTests\ValidationTest.cs" />
     <Compile Include="ViewModels\TempTests\CollectionPropertyTest.cs" />
+    <Compile Include="ViewModels\TestBase.cs" />
     <Compile Include="ViewModels\TestVM.cs" />
     <Compile Include="Common\BehaviorsTest.cs" />
     <Compile Include="Common\ExpressionServiceTest.cs" />
