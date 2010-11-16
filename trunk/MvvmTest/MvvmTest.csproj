@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="AssertHelper.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Common\HashCodeServiceTests.cs" />
     <Compile Include="Common\ServiceRegistryTests.cs" />
     <Compile Include="Common\TypeServiceTest.cs" />
     <Compile Include="PropertyChangedCounter.cs" />

@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Diagnostics.Contracts;
+   using Inspiring.Mvvm.Common;
 
    /// <summary>
    ///   The validation state is the result of a validation. It holds all validation
@@ -42,6 +43,20 @@
          get {
             return Errors.Count == 0;
          }
+      }
+
+      /// <summary>
+      ///   Two <see cref="ValidationState"/>s are equal, if there <see 
+      ///   cref="ValidationErrorCollection"/>s are equal.
+      /// </summary>
+      public override bool Equals(object obj) {
+         var other = obj as ValidationState;
+         return other != null && other.Errors.Equals(Errors);
+      }
+
+      /// <inheritdoc />
+      public override int GetHashCode() {
+         return HashCodeService.CalculateHashCode(this, Errors);
       }
 
       public override string ToString() {

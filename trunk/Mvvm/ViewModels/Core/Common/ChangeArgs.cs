@@ -22,7 +22,7 @@
       internal ChangeArgs(
          ChangeType changeType,
          IViewModel changedVM,
-         VMPropertyBase changedProperty
+         IVMProperty changedProperty
       ) {
          Contract.Requires(changeType == ChangeType.PropertyChanged);
          Contract.Requires(changedVM != null);
@@ -37,7 +37,20 @@
 
       public IViewModel ChangedVM { get; private set; }
 
-      public VMPropertyBase ChangedProperty { get; private set; }
+      public IVMProperty ChangedProperty { get; private set; }
+
+      //public override bool Equals(object obj) {
+
+      //}
+
+      //public override int GetHashCode() {
+      //   return HashCodeService.CalculateHashCode(
+      //      this,
+      //      ChangeType,
+      //      ChangedVM,
+      //      ChangedProperty
+      //   );
+      //}
 
       [ContractInvariantMethod]
       private void ObjectInvariant() {

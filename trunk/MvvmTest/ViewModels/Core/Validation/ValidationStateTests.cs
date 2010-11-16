@@ -24,5 +24,48 @@
          state.Errors.Add(new ValidationError("Test"));
          Assert.IsFalse(state.IsValid);
       }
+
+      [TestMethod]
+      public void Equals_BothEmpty_ReturnsTrue() {
+         var s1 = new ValidationState();
+         var s2 = new ValidationState();
+
+         Assert.IsTrue(s1.Equals(s2));
+      }
+
+      [TestMethod]
+      public void Equals_SameErrorMessages_ReturnsTrue() {
+         var s1 = new ValidationState();
+         var s2 = new ValidationState();
+
+         s1.Errors.Add(new ValidationError("Error 1"));
+         s2.Errors.Add(new ValidationError("Error 1"));
+
+         s1.Errors.Add(new ValidationError("Error 2"));
+         s2.Errors.Add(new ValidationError("Error 2"));
+
+         Assert.IsTrue(s1.Equals(s2));
+      }
+
+      [TestMethod]
+      public void Equals_DifferentErrorMessages_ReturnsFalse() {
+         var s1 = new ValidationState();
+         var s2 = new ValidationState();
+
+         s1.Errors.Add(new ValidationError("Error 1"));
+         s2.Errors.Add(new ValidationError("Error 2"));
+
+         Assert.IsFalse(s1.Equals(s2));
+      }
+
+      [TestMethod]
+      public void Equals_DifferentNumberOfElements_ReturnsFalse() {
+         var s1 = new ValidationState();
+         var s2 = new ValidationState();
+
+         s1.Errors.Add(new ValidationError("Error 1"));
+
+         Assert.IsFalse(s1.Equals(s2));
+      }
    }
 }

@@ -6,7 +6,7 @@
          IViewModel validationOwner,
          IViewModel validationTarget,
          IViewModel changedVM,
-         VMPropertyBase changedProperty = null
+         IVMProperty changedProperty = null
       ) {
          Contract.Requires(validationOwner != null);
          Contract.Requires(validationTarget != null);
@@ -33,7 +33,7 @@
 
       public IViewModel ChangedVM { get; private set; }
 
-      public VMPropertyBase ChangedProperty { get; private set; }
+      public IVMProperty ChangedProperty { get; private set; }
 
       [ContractInvariantMethod]
       private void ObjectInvariant() {

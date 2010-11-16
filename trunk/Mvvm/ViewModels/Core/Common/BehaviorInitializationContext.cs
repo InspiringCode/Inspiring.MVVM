@@ -1,10 +1,11 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System.Diagnostics.Contracts;
 
-   public sealed class PropertyBehaviorInitializationContext {
-      public PropertyBehaviorInitializationContext(
+   // TODO: Rename to BehaviorInitializationContext
+   public sealed class InitializationContext {
+      public InitializationContext(
          FieldDefinitionCollection fields,
-         IVMProperty property
+         IVMProperty property = null
       ) {
          Fields = fields;
          Property = property;
@@ -16,7 +17,6 @@
 
       [ContractInvariantMethod]
       private void ObjectInvariant() {
-         Contract.Invariant(Property != null);
          Contract.Invariant(Fields != null);
       }
    }

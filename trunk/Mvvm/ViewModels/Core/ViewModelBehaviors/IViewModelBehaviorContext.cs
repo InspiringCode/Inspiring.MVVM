@@ -8,6 +8,12 @@
    [ContractClass(typeof(IViewModelBehaviorContextContract))]
    public interface IViewModelBehaviorContext {
       IViewModel VM { get; }
+
+      FieldValueHolder FieldValues { get; }
+
+      void NotifyViewModelValidating(ValidationState validationState);
+
+      void NotifyChange(ChangeArgs args);
    }
 
    namespace Contracts {
@@ -17,6 +23,22 @@
             get {
                Contract.Ensures(Contract.Result<IViewModel>() != null);
                return default(IViewModel);
+            }
+         }
+
+         public void NotifyViewModelValidating(ValidationState validationState) {
+            Contract.Requires(validationState != null);
+         }
+
+         public void NotifyChange(ChangeArgs args) {
+            Contract.Requires(args != null);
+         }
+
+
+         public FieldValueHolder FieldValues {
+            get {
+               Contract.Ensures(Contract.Result<FieldValueHolder>() != null);
+               return default(FieldValueHolder);
             }
          }
       }

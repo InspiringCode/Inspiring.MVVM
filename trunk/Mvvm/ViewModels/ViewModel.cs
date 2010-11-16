@@ -8,6 +8,8 @@
 
 
    public abstract partial class ViewModel : INotifyPropertyChanged, IDataErrorInfo, ISupportsValidation {
+      public static readonly FieldDefinitionGroup GeneralFieldGroup = new FieldDefinitionGroup();
+
       private FieldValueHolder _dynamicFieldValues = null;
       // TODO, HACK: Make private!
       protected VMDescriptor _descriptor;

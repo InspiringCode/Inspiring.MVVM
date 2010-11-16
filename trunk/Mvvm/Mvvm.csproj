@@ -71,6 +71,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\HashCodeService.cs" />
     <Compile Include="Common\ServiceRegistry.cs" />
     <Compile Include="Common\TypeService.cs" />
     <Compile Include="MvvmApplication.cs" />
@@ -110,9 +111,9 @@
     <Compile Include="ViewModels\Core\Common\ChangeArgs.cs" />
     <Compile Include="ViewModels\Core\Common\InstancePath.cs" />
     <Compile Include="ViewModels\Core\Common\ValidationContext.cs" />
-    <Compile Include="ViewModels\Core\PropertyBehaviors\IInitializationPropertyBehavior.cs" />
+    <Compile Include="ViewModels\Core\Common\IInitializationPropertyBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehavior.cs" />
-    <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviorInitializationContext.cs" />
+    <Compile Include="ViewModels\Core\Common\BehaviorInitializationContext.cs" />
     <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\IValidationStatePropertyBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\PropertyValidationBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationContext.cs" />

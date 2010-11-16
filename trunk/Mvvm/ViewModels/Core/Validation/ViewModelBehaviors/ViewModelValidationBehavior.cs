@@ -3,7 +3,12 @@
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
 
-   internal sealed class ViewModelValidationBehavior : ViewModelBehavior {
+   internal sealed class ViewModelValidationBehavior :
+      ViewModelBehavior,
+      IBehaviorInitializationBehavior {
+
+      private FieldDefinition<ValidationState> _validationStateField;
+
       private List<ValidationInvoker> _validators = new List<ValidationInvoker>();
 
       public void AddValidation(VMPropertyPath validatorPath, ViewModelValidator validator) {
@@ -14,6 +19,8 @@
             new ValidationInvoker(validatorPath, validator)
          );
       }
+
+      //public void ViewModelValidating(
 
       protected internal override void OnChanged(
          IViewModelBehaviorContext context,
@@ -99,6 +106,49 @@
                //Validator.Validate(args, match.RemainingPath);
             }
          }
+      }
+
+      public ValidationState GetValidationState(IViewModelBehaviorContext context) {
+         ValidationState state;
+
+         if (context.FieldValues.TryGetValue(_validationStateField, out state)) {
+            return state;
+         } else {
+            return ValidationState.Valid;
+         }
+      }
+
+      internal void Validate(IViewModelBehaviorContext context) {
+         ValidationContext validationContext = new ValidationContext();
+         Validate(context, validationContext);
+      }
+
+      internal void Validate(IViewModelBehaviorContext context, ValidationContext validationContext) {
+         ValidationState newState = new ValidationState();
+         context.NotifyViewModelValidating(newState);
+
+         var oldState = GetValidationState(context);
+
+         if (!newState.Equals(oldState)) {
+            if (newState.IsValid) {
+               context.FieldValues.ClearField(_validationStateField);
+            } else {
+               context.FieldValues.SetValue(_validationStateField, newState);
+            }
+
+            var args = new ChangeArgs(
+               ChangeType.ValidationStateChanged,
+               changedVM: context.VM
+            );
+
+            context.NotifyChange(args);
+         }
+      }
+
+      public void Initialize(InitializationContext initializationContext) {
+         _validationStateField = initializationContext
+            .Fields
+            .DefineField<ValidationState>(ViewModel.GeneralFieldGroup);
       }
    }
 }
