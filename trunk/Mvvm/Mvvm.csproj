@@ -96,6 +96,7 @@
     <Compile Include="Screens\ScreenConductor.cs" />
     <Compile Include="Screens\ScreenFactory.cs" />
     <Compile Include="ServiceLocator.cs" />
+    <Compile Include="ViewModels\- No Namespace -\ViewModel.cs" />
     <Compile Include="ViewModels\Core\Builder\BehaviorConfigurationBuilder.cs" />
     <Compile Include="ViewModels\Core\Builder\BehaviorConfigurationDictionary.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorConfiguration.cs" />
