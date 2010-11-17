@@ -5,6 +5,13 @@
    public class Behavior : IBehavior {
       public IBehavior Successor { get; set; }
 
+      public void Call<TBehavior>(Action<TBehavior> callAction) {
+         TBehavior b;
+         if (TryGetBehavior(out b)) {
+            callAction(b);
+         }
+      }
+
       /// <summary>
       ///   Gets the next behavior in the stack and throws an 'ArgumentException'
       ///   if no behavior that implements 'TBehavior' can be found.

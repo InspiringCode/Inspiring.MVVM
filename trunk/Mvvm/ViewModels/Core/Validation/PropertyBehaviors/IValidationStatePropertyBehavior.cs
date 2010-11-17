@@ -1,6 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
 
    public interface IValidationStatePropertyBehavior : IBehavior {
-      ValidationState GetValidationState(IPropertyBehaviorContext context);
+      ValidationState GetValidationState(IBehaviorContext_ context);
    }
 }

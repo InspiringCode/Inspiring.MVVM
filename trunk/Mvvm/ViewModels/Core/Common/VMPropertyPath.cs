@@ -23,6 +23,10 @@
       /// </summary>
       public IVMProperty[] Properties { get; private set; }
 
+      public int Length {
+         get { return Properties.Length; }
+      }
+
       /// <inheritdoc />
       public override string ToString() {
          return String.Join(".", Properties.Select(x => x.PropertyName));

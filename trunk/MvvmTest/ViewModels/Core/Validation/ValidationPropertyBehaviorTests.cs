@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Validation {
    using System.Linq;
-   using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Moq;
@@ -111,8 +110,8 @@
       private void SetupValidPropertyValidationCallback() {
          _ctx
            .ContextMock
-           .Setup(x => x.NotifyPropertyValidating(It.IsAny<IVMProperty>(), It.IsAny<ValidationState>()))
-           .Callback<IVMProperty, ValidationState>((_, state) => { });
+           .Setup(x => x.NotifyValidating(It.IsAny<_ValidationArgs>()))
+           .Callback<_ValidationArgs>(args => { });
       }
 
       private void SetupInvalidPropertyValidationCallback(ValidationError expectedError = null) {
@@ -120,15 +119,15 @@
 
          _ctx
            .ContextMock
-           .Setup(x => x.NotifyPropertyValidating(It.IsAny<IVMProperty>(), It.IsAny<ValidationState>()))
-           .Callback<IVMProperty, ValidationState>((_, state) => state.Errors.Add(expectedError));
+           .Setup(x => x.NotifyValidating(It.IsAny<_ValidationArgs>()))
+           .Callback<_ValidationArgs>(args => args.Errors.Add(expectedError));
       }
 
       private void AssertNotifyPropertyValidatingWasCalledOnContext() {
          _ctx
             .ContextMock
             .Verify(
-               x => x.NotifyPropertyValidating(_ctx.Property, It.IsAny<ValidationState>()),
+               x => x.NotifyValidating(It.IsAny<_ValidationArgs>()),
                Times.Once()
             );
       }

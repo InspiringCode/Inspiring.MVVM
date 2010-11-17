@@ -19,17 +19,17 @@ namespace Inspiring.Mvvm.ViewModels.Core {
             .DefineField<ValidationState>(ValidationErrorGroup);
       }
 
-      public TValue GetValue(IPropertyBehaviorContext vm) {
+      public TValue GetValue(IBehaviorContext_ vm) {
          return this.CallNext(x => x.GetValue(vm));
       }
 
-      public void SetValue(IPropertyBehaviorContext vm, TValue value) {
+      public void SetValue(IBehaviorContext_ vm, TValue value) {
          if (Validate(vm).IsValid) {
             this.CallNext(x => x.SetValue(vm, value));
          }
       }
 
-      public ValidationState GetValidationState(IPropertyBehaviorContext context) {
+      public ValidationState GetValidationState(IBehaviorContext_ context) {
          ValidationState state;
 
          if (context.FieldValues.TryGetValue(_validationStateField, out state)) {
@@ -39,11 +39,19 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          }
       }
 
-      internal ValidationState Validate(IPropertyBehaviorContext context, ValidationContext validationContext) {
+      internal ValidationState Validate(IBehaviorContext_ context, ValidationContext validationContext) {
          Contract.Assert(_property != null, "Behavior was not properly initialized.");
 
          var newState = new ValidationState();
-         context.NotifyPropertyValidating(_property, newState);
+
+         var validationArgs = new _ValidationArgs(
+            validationState: newState,
+            changedPath: new InstancePath(context.VM),
+            changedProperty: _property,
+            targetProperty: _property
+         );
+
+         context.NotifyValidating(validationArgs);
 
          var oldState = GetValidationState(context);
 
@@ -66,7 +74,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          return newState;
       }
 
-      internal ValidationState Validate(IPropertyBehaviorContext context) {
+      internal ValidationState Validate(IBehaviorContext_ context) {
          Contract.Ensures(Contract.Result<ValidationState>() != null);
 
          ValidationContext validationContext = new ValidationContext();

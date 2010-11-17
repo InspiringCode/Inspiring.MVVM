@@ -1,31 +1,39 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
 
    public abstract class ViewModelBehavior : Behavior {
-      protected internal virtual void OnPropertyValidating(
-         IViewModelBehaviorContext context,
-         Common.ValidationContext validationContext,
-         InstancePath targetVMPath
+      protected internal virtual void OnValidating(
+         IBehaviorContext_ context,
+         _ValidationArgs args
       ) {
-         this.CallNext(x => x.OnPropertyValidating(context, validationContext, targetVMPath));
+         this.CallNext(x => x.OnValidating(context, args));
       }
 
       protected internal virtual void OnSelfChanged(
-         IViewModelBehaviorContext context,
+         IBehaviorContext_ context,
          ChangeArgs args
       ) {
          this.CallNext(x => x.OnSelfChanged(context, args));
       }
 
       protected internal virtual void OnChildChanged(
-         IViewModelBehaviorContext context,
+         IBehaviorContext_ context,
          ChangeArgs args,
          InstancePath changedChildPath
       ) {
          this.CallNext(x => x.OnChildChanged(context, args, changedChildPath));
       }
 
+      /// <summary>
+      /// 
+      /// </summary>
+      /// <param name="context"></param>
+      /// <param name="args"></param>
+      /// <param name="changedPath">
+      ///   A path containing all VMs between the <paramref name="context"/> VM
+      ///   and the changed VM (including both).
+      /// </param>
       protected internal virtual void OnChanged(
-         IViewModelBehaviorContext context,
+         IBehaviorContext_ context,
          ChangeArgs args,
          InstancePath changedPath
       ) {

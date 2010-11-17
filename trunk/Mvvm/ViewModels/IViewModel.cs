@@ -1,5 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
-   using Inspiring.Mvvm.ViewModels.Core.Kernel;
+   using Inspiring.Mvvm.ViewModels.Core;
 
    public interface IViewModel {
       VMKernel Kernel { get; }

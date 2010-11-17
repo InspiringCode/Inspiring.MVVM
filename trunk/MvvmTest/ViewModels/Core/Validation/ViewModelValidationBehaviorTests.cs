@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Validation {
+   using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Moq;
@@ -15,261 +16,289 @@
          _behavior.Initialize(_ctx.InitializationContext);
       }
 
-      #region Validate tests
+      [TestClass]
+      public class ViewModelBehavior_ValidateTests {
+         private ViewModelBehaviorContextHelper _ctx;
+         private ViewModelValidationBehavior _behavior;
 
-      [TestMethod]
-      public void Validate_CallsViewModelValidating() {
-         _behavior.Validate(_ctx.Context);
-         Expect_ViewModelValidating_WasCalledOnContext();
+         [TestInitialize]
+         public void Setup() {
+            _ctx = new ViewModelBehaviorContextHelper();
+            _behavior = new ViewModelValidationBehavior();
+            _behavior.Initialize(_ctx.InitializationContext);
+         }
+
+         [TestMethod]
+         public void Validate_CallsViewModelValidating() {
+            _behavior.Validate(_ctx.Context);
+            Expect_NotifyValidating_WasCalledOnContext();
+         }
+
+         [TestMethod]
+         public void Validate_ValidationStateChangesToInvalid_NotifyChangeIsCalled() {
+            var watcher = new NotifyChangeWatcher(_ctx);
+            SetupInvalidPropertyValidationCallback();
+
+            watcher.StartWatching();
+            _behavior.Validate(_ctx.Context);
+            watcher.ExpectOneValidationStateChangedInvocation();
+         }
+
+         [TestMethod]
+         public void Validate_ValidationStateChangesToValid_NotifyChangeIsCalled() {
+            var watcher = new NotifyChangeWatcher(_ctx);
+            SetupInvalidPropertyValidationCallback();
+            _behavior.Validate(_ctx.Context);
+            SetupValidPropertyValidationCallback();
+
+            watcher.StartWatching();
+            _behavior.Validate(_ctx.Context);
+            watcher.ExpectOneValidationStateChangedInvocation();
+         }
+
+         [TestMethod]
+         public void Validate_ValidationStateStaysValid_NotifyChangeIsNotCalled() {
+            SetupValidPropertyValidationCallback();
+            _behavior.Validate(_ctx.Context);
+
+            var watcher = new NotifyChangeWatcher(_ctx);
+            watcher.StartWatching();
+            _behavior.Validate(_ctx.Context);
+            watcher.ExepctNoInvocation();
+         }
+
+         private void Expect_NotifyValidating_WasCalledOnContext() {
+            _ctx
+               .ContextMock
+               .Verify(
+                  x => x.NotifyValidating(It.IsAny<_ValidationArgs>()),
+                  Times.Once()
+               );
+         }
+
+         private void SetupValidPropertyValidationCallback() {
+            _ctx
+              .ContextMock
+              .Setup(x => x.NotifyValidating(It.IsAny<_ValidationArgs>()))
+              .Callback<_ValidationArgs>(args => { });
+         }
+
+         private void SetupInvalidPropertyValidationCallback(ValidationError expectedError = null) {
+            expectedError = expectedError ?? new ValidationError("Test");
+
+            _ctx
+              .ContextMock
+              .Setup(x => x.NotifyValidating(It.IsAny<_ValidationArgs>()))
+              .Callback<_ValidationArgs>(args => args.Errors.Add(expectedError));
+         }
+
+         private class NotifyChangeWatcher {
+            private ViewModelBehaviorContextHelper _ctx;
+
+            public NotifyChangeWatcher(ViewModelBehaviorContextHelper ctx) {
+               _ctx = ctx;
+            }
+
+            public int InvocationCount { get; set; }
+
+            public ChangeArgs Args { get; set; }
+
+            public NotifyChangeWatcher StartWatching() {
+               _ctx
+                  .ContextMock
+                  .Setup(x => x.NotifyChange(It.IsAny<ChangeArgs>()))
+                  .Callback<ChangeArgs>(args => {
+                     InvocationCount++;
+                     Args = args;
+                  });
+
+               return this;
+            }
+
+            public void ExpectOneValidationStateChangedInvocation() {
+               Assert.AreEqual(1, InvocationCount);
+               Assert.AreEqual(ChangeType.ValidationStateChanged, Args.ChangeType);
+               Assert.AreEqual(_ctx.VM, Args.ChangedVM);
+               Assert.IsNull(Args.ChangedProperty);
+            }
+
+            public void ExepctNoInvocation() {
+               Assert.AreEqual(0, InvocationCount);
+            }
+         }
+      }
+
+      [TestClass]
+      public class ViewModelBehavior_OnValidatingTests : TestBase {
+         private ValidatorSpy _validator;
+
+         private IViewModel _employeeVM;
+         private IViewModel _addressVM;
+         private IVMProperty _addressProperty;
+
+         private ViewModelValidationBehavior _behavior;
+
+         [TestInitialize]
+         public void Setup() {
+            _validator = new ValidatorSpy();
+            _behavior = new ViewModelValidationBehavior();
+
+            _addressProperty = Mock<IVMProperty>();
+            _addressVM = Mock<IViewModel>();
+
+            var mock = new Mock<IViewModel>();
+            mock
+               .Setup(x => x.GetValue(_addressProperty))
+               .Returns(_addressVM);
+
+            _employeeVM = mock.Object;
+
+            var behavior = new ViewModelValidationBehavior();
+         }
+
+         [TestMethod]
+         public void OnValidating_ViewModelArgs_ArgsArePassedToValidator() {
+            var args = CreateViewModelValidationArgs();
+            AddViewModelValidatorSpy();
+            InvokeOnValidating(withArgs: args);
+            Assert.AreSame(args, _validator.Args);
+         }
+
+         [TestMethod]
+         public void OnValidating_ViewModelArgs_RootViewModelValidatorIsInvoked() {
+            AddViewModelValidatorSpy();
+            InvokeOnValidating(withArgs: CreateViewModelValidationArgs());
+            Assert.AreEqual(1, _validator.InvocationCount);
+         }
+
+         [TestMethod]
+         public void OnValidating_ViewModelArgs_RootPropertyValidatorIsNotInvoked() {
+            AddPropertyValidatorSpy(Mock<IVMProperty>());
+            InvokeOnValidating(withArgs: CreateViewModelValidationArgs());
+            Assert.AreEqual(0, _validator.InvocationCount);
+         }
+
+         [TestMethod]
+         public void OnValidating_PropertyArgs_RootPropertyValidatorIsInvoked() {
+            var targetProperty = Mock<IVMProperty>();
+            AddPropertyValidatorSpy(forProperty: targetProperty);
+            InvokeOnValidating(withArgs: CreatePropertyValidationArgs(targetProperty));
+            Assert.AreEqual(1, _validator.InvocationCount);
+         }
+
+         [TestMethod]
+         public void OnValidating_PropertyArgs_RootViewModelValidatorIsNotInvoked() {
+            AddViewModelValidatorSpy();
+            InvokeOnValidating(withArgs: CreatePropertyValidationArgs(Mock<IVMProperty>()));
+            Assert.AreEqual(0, _validator.InvocationCount);
+         }
+
+
+         [TestMethod]
+         public void OnValidating_ChildValidator_GetsCalled() {
+            AddViewModelValidatorSpy(new VMPropertyPath(_addressProperty));
+
+            InvokeOnValidating(
+               withArgs: CreateViewModelValidationArgs(
+                  changedVM: _addressVM
+               )
+               .PrependTargetPath(_employeeVM)
+            );
+
+            Assert.AreEqual(1, _validator.InvocationCount);
+         }
+
+         [TestMethod]
+         public void OnValidating_ChildValidator_GetsNotCalled() {
+            AddViewModelValidatorSpy(new VMPropertyPath(_addressProperty));
+
+            var anotherVM = Mock<IViewModel>();
+
+            InvokeOnValidating(
+               withArgs: CreateViewModelValidationArgs(
+                  changedVM: anotherVM
+               )
+               .PrependTargetPath(_employeeVM)
+            );
+
+            Assert.AreEqual(0, _validator.InvocationCount);
+         }
+
+         private static _ValidationArgs CreateViewModelValidationArgs(IViewModel changedVM = null) {
+            return new _ValidationArgs(
+               validationState: new ValidationState(),
+               changedPath: new InstancePath(changedVM ?? Mock<IViewModel>())
+            );
+         }
+
+         private static _ValidationArgs CreatePropertyValidationArgs(IVMProperty targetProperty, IViewModel changedVM = null) {
+            return new _ValidationArgs(
+               validationState: new ValidationState(),
+               changedPath: new InstancePath(changedVM ?? Mock<IViewModel>()),
+               changedProperty: targetProperty,
+               targetProperty: targetProperty
+            );
+         }
+
+         private void AddViewModelValidatorSpy(VMPropertyPath path = null) {
+            _behavior.AddValidator(path ?? VMPropertyPath.Empty, null, _validator);
+         }
+
+         private void AddPropertyValidatorSpy(IVMProperty forProperty, VMPropertyPath path = null) {
+            _behavior.AddValidator(path ?? VMPropertyPath.Empty, forProperty, _validator);
+         }
+
+         private void InvokeOnValidating(_ValidationArgs withArgs) {
+            _behavior.OnValidating(Mock<IBehaviorContext_>(), withArgs);
+         }
+
+
+         private class ValidatorSpy : Validator {
+            public int InvocationCount { get; private set; }
+            public _ValidationArgs Args { get; private set; }
+
+            public override void Validate(_ValidationArgs args) {
+               InvocationCount++;
+               Args = args;
+            }
+         }
       }
 
       [TestMethod]
-      public void Validate_WithStateParameter_CallsViewModelValidating() {
-         _behavior.Validate(_ctx.Context, new ValidationContext());
-         Expect_ViewModelValidating_WasCalledOnContext();
-      }
+      public void OnChanged_InvokesNotifyValidatingOnContext() {
+         var ctx = new ViewModelBehaviorContextHelper();
 
+         var targetVM = Mock<IViewModel>();
+         var changedVM = Mock<IViewModel>();
+         var changedProperty = Mock<IVMProperty>();
 
-      [TestMethod]
-      public void Validate_ValidationStateChangesToInvalid_NotifyChangeIsCalled() {
-         var watcher = new NotifyChangeWatcher(_ctx);
-         SetupInvalidPropertyValidationCallback();
+         var behavior = new ViewModelValidationBehavior();
+         behavior.Initialize(ctx.InitializationContext);
 
-         watcher.StartWatching();
-         _behavior.Validate(_ctx.Context);
-         watcher.ExpectOneValidationStateChangedInvocation();
-      }
+         var changeArgs = new ChangeArgs(
+            ChangeType.PropertyChanged,
+            changedVM,
+            changedProperty
+         );
 
-      [TestMethod]
-      public void Validate_ValidationStateChangesToValid_NotifyChangeIsCalled() {
-         var watcher = new NotifyChangeWatcher(_ctx);
-         SetupInvalidPropertyValidationCallback();
-         _behavior.Validate(_ctx.Context);
-         SetupValidPropertyValidationCallback();
+         var changedPath = new InstancePath(targetVM, changedVM);
 
-         watcher.StartWatching();
-         _behavior.Validate(_ctx.Context);
-         watcher.ExpectOneValidationStateChangedInvocation();
-      }
+         behavior.OnChanged(ctx.Context, changeArgs, changedPath);
 
-      [TestMethod]
-      public void Validate_ValidationStateStaysValid_NotifyChangeIsNotCalled() {
-         SetupValidPropertyValidationCallback();
-         _behavior.Validate(_ctx.Context);
-
-         var watcher = new NotifyChangeWatcher(_ctx);
-         watcher.StartWatching();
-         _behavior.Validate(_ctx.Context);
-         watcher.ExepctNoInvocation();
-      }
-
-      #endregion
-
-      #region ViewModelValidating tests
-
-
-
-      #endregion
-
-      private void Expect_ViewModelValidating_WasCalledOnContext() {
-         _ctx
+         ctx
             .ContextMock
-            .Verify(
-               x => x.NotifyViewModelValidating(It.IsAny<ValidationState>()),
+            .Verify(x =>
+               x.NotifyValidating(
+                  It.Is<_ValidationArgs>(args =>
+                     args.ChangedPath.RootVM == changedPath.RootVM &&
+                     args.ChangedPath.LeafVM == changedPath.LeafVM &&
+                     args.ChangedProperty == changedProperty &&
+                     args.TargetVM == targetVM &&
+                     args.TargetProperty == null
+                  )
+               ),
                Times.Once()
             );
       }
-
-      private void SetupValidPropertyValidationCallback() {
-         _ctx
-           .ContextMock
-           .Setup(x => x.NotifyViewModelValidating(It.IsAny<ValidationState>()))
-           .Callback<ValidationState>(state => { });
-      }
-
-      private void SetupInvalidPropertyValidationCallback(ValidationError expectedError = null) {
-         expectedError = expectedError ?? new ValidationError("Test");
-
-         _ctx
-           .ContextMock
-           .Setup(x => x.NotifyViewModelValidating(It.IsAny<ValidationState>()))
-           .Callback<ValidationState>(state => state.Errors.Add(expectedError));
-      }
-
-      private class NotifyChangeWatcher {
-         private ViewModelBehaviorContextHelper _ctx;
-
-         public NotifyChangeWatcher(ViewModelBehaviorContextHelper ctx) {
-            _ctx = ctx;
-         }
-
-         public int InvocationCount { get; set; }
-
-         public ChangeArgs Args { get; set; }
-
-         public NotifyChangeWatcher StartWatching() {
-            _ctx
-               .ContextMock
-               .Setup(x => x.NotifyChange(It.IsAny<ChangeArgs>()))
-               .Callback<ChangeArgs>(args => {
-                  InvocationCount++;
-                  Args = args;
-               });
-
-            return this;
-         }
-
-         public void ExpectOneValidationStateChangedInvocation() {
-            Assert.AreEqual(1, InvocationCount);
-            Assert.AreEqual(ChangeType.ValidationStateChanged, Args.ChangeType);
-            Assert.AreEqual(_ctx.VM, Args.ChangedVM);
-            Assert.IsNull(Args.ChangedProperty);
-         }
-
-         public void ExepctNoInvocation() {
-            Assert.AreEqual(0, InvocationCount);
-         }
-      }
-
-      //private class ViewModelValidatingWatcher {
-      //   private ViewModelBehaviorContextHelper _ctx;
-
-      //   private ViewModelValidatingWatcher(ViewModelBehaviorContextHelper ctx) {
-      //      _ctx = ctx;
-      //   }
-
-      //   public int InvocationCount { get; set; }
-
-      //   public object Args { get; set; }
-
-      //   public static ViewModelValidatingWatcher StartWatching(ViewModelBehaviorContextHelper ctx) {
-      //      var watcher = new ViewModelValidatingWatcher { _ctx = ctx };
-
-      //   }
-
-      //   private void StartWatching() {
-      //      _ctx.ContextMock.Setup(x => x.NotifyViewModelValidating())
-      //         .Callback<object>();
-      //   }
-      //}
-
-      //[TestMethod]
-      //public void OnChanged_RootValidator_GetsCalled() {
-      //   var behavior = new ViewModelValidationBehavior();
-      //   var validator = new ValidatorMock();
-      //   var employeeVM = new Mock<IViewModel>().Object;
-
-      //   behavior.AddValidation(VMPropertyPath.Empty, validator);
-
-      //   behavior.OnChanged(
-      //      new ViewModelBehaviorContextStub(employeeVM),
-      //      new ChangeArgs(ChangeType.PropertyChanged, employeeVM),
-      //      new InstancePath(employeeVM)
-      //   );
-
-      //   Assert.AreEqual(1, validator.InvocationCount);
-      //   Assert.AreSame(employeeVM, validator.Args.ChangedVM);
-      //   Assert.AreSame(employeeVM, validator.Args.ValidationTarget);
-      //   Assert.IsTrue(validator.ChangedVMPath.IsEmpty);
-      //}
-
-      //[TestMethod]
-      //public void OnChanged_ChildValidator_GetsNotCalled() {
-      //   var behavior = new ViewModelValidationBehavior();
-      //   var validator = new ValidatorMock();
-      //   var employeeVM = new Mock<IViewModel>();
-      //   var addressProperty = new Mock<IVMProperty>().Object;
-
-      //   behavior.AddValidation(new VMPropertyPath(addressProperty), validator);
-
-      //   behavior.OnChanged(
-      //      new ViewModelBehaviorContextStub(employeeVM.Object),
-      //      new ChangeArgs(ChangeType.PropertyChanged, employeeVM.Object),
-      //      new InstancePath(employeeVM.Object)
-      //   );
-
-      //   Assert.AreEqual(0, validator.InvocationCount);
-      //}
-
-      //[TestMethod]
-      //public void OnChildChanged_RootValidator_GetsCalled() {
-      //   var behavior = new ViewModelValidationBehavior();
-      //   var validator = new ValidatorMock();
-      //   var employeeVM = new Mock<IViewModel>().Object;
-      //   var addressVM = new Mock<IViewModel>().Object;
-
-      //   behavior.AddValidation(VMPropertyPath.Empty, validator);
-
-      //   behavior.OnChanged(
-      //      new ViewModelBehaviorContextStub(employeeVM),
-      //      new ChangeArgs(ChangeType.PropertyChanged, addressVM),
-      //      new InstancePath(employeeVM, addressVM)
-      //   );
-
-      //   Assert.AreEqual(1, validator.InvocationCount);
-      //   Assert.AreSame(addressVM, validator.Args.ChangedVM);
-      //   Assert.AreSame(employeeVM, validator.Args.ValidationTarget);
-
-      //   AssertHelper.AreEqual(CreateSteps(addressVM), validator.ChangedVMPath.Steps, StepsAreEqual);
-      //}
-
-      //[TestMethod]
-      //public void OnChildChanged_ChildValidatorWithMatchingPath_GetsCalled() {
-      //   var behavior = new ViewModelValidationBehavior();
-      //   var validator = new ValidatorMock();
-      //   var employeeVM = new Mock<IViewModel>();
-      //   var addressVM = new Mock<IViewModel>();
-      //   var addressProperty = new Mock<IVMProperty>().Object;
-
-      //   employeeVM.Setup(x => x.GetValue(addressProperty)).Returns(addressVM.Object);
-
-      //   behavior.AddValidation(new VMPropertyPath(addressProperty), validator);
-
-      //   behavior.OnChanged(
-      //      new ViewModelBehaviorContextStub(employeeVM.Object),
-      //      new ChangeArgs(ChangeType.PropertyChanged, addressVM.Object),
-      //      new InstancePath(employeeVM.Object, addressVM.Object)
-      //   );
-
-      //   Assert.AreEqual(1, validator.InvocationCount);
-      //   Assert.AreSame(addressVM.Object, validator.Args.ChangedVM);
-      //   Assert.AreSame(addressVM.Object, validator.Args.ValidationTarget);
-      //   Assert.IsTrue(validator.ChangedVMPath.IsEmpty);
-      //}
-
-      //[TestMethod]
-      //public void OnChildChanged_ChildValidatorWithNonMatchingPath_GetsNotCalled() {
-
-      //}
-
-      //private static InstancePathStep[] CreateSteps(params IViewModel[] steps) {
-      //   return steps.Select(x => new InstancePathStep(x)).ToArray();
-      //}
-
-      //private static bool StepsAreEqual(InstancePathStep x, InstancePathStep y) {
-      //   if (Object.ReferenceEquals(x, y)) {
-      //      return true;
-      //   }
-
-      //   return
-      //      x != null &&
-      //      y != null &&
-      //      Object.ReferenceEquals(x.VM, y.VM) &&
-      //      Object.ReferenceEquals(x.ParentCollection, y.ParentCollection);
-      //}
-
-      //private class ValidatorMock : ViewModelValidator {
-      //   public int InvocationCount { get; private set; }
-      //   public ViewModelValidationArgs Args { get; private set; }
-      //   public InstancePath ChangedVMPath { get; private set; }
-
-
-      //   public override void Validate(ViewModelValidationArgs args) {
-      //      throw new NotImplementedException();
-      //   }
-      //   //public override void Validate(ViewModelValidationArgs args) {
-      //   //   throw new NotImplementedException();
-      //   //}
-      //}
    }
 }

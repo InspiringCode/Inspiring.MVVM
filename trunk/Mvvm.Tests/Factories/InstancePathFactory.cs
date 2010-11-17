@@ -1,7 +1,6 @@
 // <copyright file="InstancePathFactory.cs" company="Microsoft">Copyright © Microsoft 2010</copyright>
 
 using System;
-using Inspiring.Mvvm.ViewModels.Core.Kernel;
 using Microsoft.Pex.Framework;
 
 namespace Inspiring.Mvvm.ViewModels.Core {

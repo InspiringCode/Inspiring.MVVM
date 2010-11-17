@@ -7,7 +7,7 @@
 
    /// <summary>
    ///   Holds a list of <see cref="ValidationError"/>s that were caused either
-   ///   by a <see cref="ViewModelValidator"/> or a <see cref="PropertyValidator"/>.
+   ///   by a <see cref="Validator"/> or a <see cref="PropertyValidator"/>.
    /// </summary>
    public sealed class ValidationErrorCollection : IEnumerable<ValidationError> {
       /// <summary>

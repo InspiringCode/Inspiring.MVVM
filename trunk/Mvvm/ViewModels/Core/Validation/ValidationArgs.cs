@@ -18,15 +18,14 @@
       public _ValidationArgs(
          ValidationState validationState,
          InstancePath changedPath
-      ) {
-
-         Contract.Requires(validationState != null);
-         Contract.Requires(changedPath != null);
-         Contract.Requires(!changedPath.IsEmpty);
-
-         _validationState = validationState;
-         _changedPath = changedPath;
-         _targetPath = new InstancePath(_changedPath.RootVM);
+      )
+         : this(
+            validationState,
+            changedPath,
+            changedProperty: null,
+            targetProperty: null,
+            targetPath: new InstancePath(changedPath.RootVM)
+         ) {
       }
 
       /// <summary>
@@ -39,14 +38,16 @@
          InstancePath changedPath,
          IVMProperty changedProperty
       )
-         : this(validationState, changedPath) {
+         : this(
+            validationState,
+            changedPath,
+            changedProperty,
+            targetProperty: null,
+            targetPath: new InstancePath(changedPath.RootVM)
+         ) {
 
-         Contract.Requires(validationState != null);
-         Contract.Requires(changedPath != null);
          Contract.Requires(changedProperty != null);
          Contract.Requires(!changedPath.IsEmpty);
-
-         _changedProperty = changedProperty;
       }
 
       /// <summary>
@@ -63,16 +64,37 @@
          IVMProperty changedProperty,
          IVMProperty targetProperty
       )
-         : this(validationState, changedPath, changedProperty) {
+         : this(
+            validationState,
+            changedPath,
+            changedProperty,
+            targetProperty,
+            targetPath: new InstancePath(changedPath.RootVM)
+         ) {
 
-         Contract.Requires(validationState != null);
-         Contract.Requires(changedPath != null);
          Contract.Requires(changedProperty != null);
          Contract.Requires(targetProperty != null);
          Contract.Requires(changedProperty == targetProperty);
          Contract.Requires(!changedPath.IsEmpty);
+      }
 
+      private _ValidationArgs(
+         ValidationState validationState,
+         InstancePath changedPath,
+         IVMProperty changedProperty,
+         IVMProperty targetProperty,
+         InstancePath targetPath
+      ) {
+         Contract.Requires(validationState != null);
+         Contract.Requires(targetPath != null);
+         Contract.Requires(changedPath != null);
+         Contract.Requires(!changedPath.IsEmpty);
+
+         _targetPath = targetPath;
          _targetProperty = targetProperty;
+         _changedPath = changedPath;
+         _changedProperty = changedProperty;
+         _validationState = validationState;
       }
 
       /// <summary>
@@ -153,6 +175,23 @@
             Contract.Ensures(Contract.Result<ValidationErrorCollection>() != null);
             return _validationState.Errors;
          }
+      }
+
+      /// <summary>
+      ///   Returns a new <see cref="_ValidationArgs"/> object whose <see 
+      ///   cref="TargetPath"/> is prepended with the passed in <paramref 
+      ///   name="with"/>.
+      /// </summary>
+      public _ValidationArgs PrependTargetPath(IViewModel with) {
+         InstancePath extendedTargetPath = TargetPath.PrependVM(with);
+
+         return new _ValidationArgs(
+            validationState: _validationState,
+            changedPath: ChangedPath,
+            changedProperty: ChangedProperty,
+            targetProperty: TargetProperty,
+            targetPath: TargetPath.PrependVM(with)
+         );
       }
 
       [ContractInvariantMethod]

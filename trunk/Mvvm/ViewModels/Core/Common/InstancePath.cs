@@ -9,6 +9,8 @@
    ///   to get from one VM to an descendant VM in a VM hierarchy.
    /// </summary>
    public sealed class InstancePath {
+      public static readonly InstancePath Empty = new InstancePath();
+
       private readonly InstancePathStep[] _steps;
 
       internal InstancePath() {
@@ -80,27 +82,21 @@
       public InstancePathMatch MatchStart(VMPropertyPath properties) {
          Contract.Requires<ArgumentNullException>(properties != null);
 
-         IVMProperty[] props = properties.Properties;
-
-         if (props.Length > Steps.Length - 1) {
-            return InstancePathMatch.Failed;
+         if (MatchStartCore(properties)) {
+            return new InstancePathMatch(this, properties.Length + 1);
          }
 
-         for (int i = 0; i < props.Length; i++) {
-            IVMProperty prop = props[i];
-            IViewModel vm = Steps[i].VM;
-            IViewModel expectedValue = Steps[i + 1].VM;
-            IEnumerable expectedCollection = Steps[i + 1].ParentCollection;
+         return InstancePathMatch.Failed;
+      }
 
-            object actualValue = vm.GetValue(prop);
+      public bool Matches(VMPropertyPath properties) {
+         Contract.Requires<ArgumentNullException>(properties != null);
 
-            if (!Object.ReferenceEquals(expectedValue, actualValue) &&
-                !Object.ReferenceEquals(expectedCollection, actualValue)) {
-               return InstancePathMatch.Failed;
-            }
+         if (properties.Length != Length - 1) {
+            return false;
          }
 
-         return new InstancePathMatch(this, props.Length + 1);
+         return MatchStartCore(properties);
       }
 
       internal InstancePath Subpath(int start) {
@@ -127,6 +123,32 @@
          }
 
          return stepsArr;
+      }
+
+      public bool MatchStartCore(VMPropertyPath properties) {
+         Contract.Requires<ArgumentNullException>(properties != null);
+
+         IVMProperty[] props = properties.Properties;
+
+         if (props.Length > Steps.Length - 1) {
+            return false;
+         }
+
+         for (int i = 0; i < props.Length; i++) {
+            IVMProperty prop = props[i];
+            IViewModel vm = Steps[i].VM;
+            IViewModel expectedValue = Steps[i + 1].VM;
+            IEnumerable expectedCollection = Steps[i + 1].ParentCollection;
+
+            object actualValue = vm.GetValue(prop);
+
+            if (!Object.ReferenceEquals(expectedValue, actualValue) &&
+                !Object.ReferenceEquals(expectedCollection, actualValue)) {
+               return false;
+            }
+         }
+
+         return true;
       }
    }
 
