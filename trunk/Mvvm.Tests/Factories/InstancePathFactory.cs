@@ -26,6 +26,15 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          public object GetValue(IVMProperty property) {
             throw new System.NotImplementedException();
          }
+
+
+         public object GetValue(IVMProperty property, ValueStage stage = ValueStage.PreValidation) {
+            throw new NotImplementedException();
+         }
+
+         public void SetValue(IVMProperty property, object value) {
+            throw new NotImplementedException();
+         }
       }
    }
 }

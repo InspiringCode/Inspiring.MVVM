@@ -148,8 +148,8 @@
          var customerVM = new Mock<IViewModel>();
          var addressVM = new Mock<IViewModel>();
 
-         employeeVM.Setup(x => x.GetValue(currentProjectProperty)).Returns(projectVM.Object);
-         projectVM.Setup(x => x.GetValue(customerProperty)).Returns(customerVM.Object);
+         employeeVM.Setup(x => x.GetValue(currentProjectProperty, ValueStage.PreValidation)).Returns(projectVM.Object);
+         projectVM.Setup(x => x.GetValue(customerProperty, ValueStage.PreValidation)).Returns(customerVM.Object);
 
          var path = new InstancePath(addressVM.Object);
          path = path.PrependVM(customerVM.Object);
@@ -183,8 +183,8 @@
          var projectVM = new Mock<IViewModel>();
          var customerVM = new Mock<IViewModel>();
 
-         employeeVM.Setup(x => x.GetValue(currentProjectProperty)).Returns(projectVM.Object);
-         projectVM.Setup(x => x.GetValue(customerProperty)).Returns(new Object());
+         employeeVM.Setup(x => x.GetValue(currentProjectProperty, ValueStage.PreValidation)).Returns(projectVM.Object);
+         projectVM.Setup(x => x.GetValue(customerProperty, ValueStage.PreValidation)).Returns(new Object());
 
          var path = new InstancePath(customerVM.Object);
          path = path.PrependVM(projectVM.Object);
@@ -207,8 +207,8 @@
 
          var projectsCollection = new Mock<IEnumerable>().Object;
 
-         employeeVM.Setup(x => x.GetValue(projectsProperty)).Returns(projectsCollection);
-         projectVM.Setup(x => x.GetValue(customerProperty)).Returns(customerVM.Object);
+         employeeVM.Setup(x => x.GetValue(projectsProperty, ValueStage.PreValidation)).Returns(projectsCollection);
+         projectVM.Setup(x => x.GetValue(customerProperty, ValueStage.PreValidation)).Returns(customerVM.Object);
 
          var path = new InstancePath(customerVM.Object);
 

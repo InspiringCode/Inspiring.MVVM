@@ -3,7 +3,7 @@
    using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.ViewModels.Core;
 
-   public abstract class VMPropertyBase : IVMProperty {
+   public abstract class VMPropertyBase {
       internal VMPropertyBase(Type propertyType) {
          Contract.Requires(propertyType != null);
 
@@ -99,14 +99,36 @@
          ((IBehavior)Behaviors).Initialize(new BehaviorInitializationContext(fieldDefinitions, this));
       }
 
+      [Obsolete]
       internal T GetValue(IBehaviorContext vm) {
          Contract.Requires(vm != null);
          return Behaviors.GetNextBehavior<IAccessPropertyBehavior<T>>().GetValue(vm);
       }
 
+      [Obsolete]
       internal void SetValue(IBehaviorContext vm, T value) {
          Contract.Requires(vm != null);
          Behaviors.GetNextBehavior<IAccessPropertyBehavior<T>>().SetValue(vm, value);
+      }
+
+      internal T GetValue(IBehaviorContext_ context) {
+         Contract.Requires(context != null);
+         throw new NotImplementedException();
+      }
+
+      internal void SetValue(IBehaviorContext_ context, T value) {
+         Contract.Requires(context != null);
+         throw new NotImplementedException();
+      }
+
+      internal object GetDisplayValue(IBehaviorContext_ context) {
+         Contract.Requires(context != null);
+         throw new NotImplementedException();
+      }
+
+      internal void SetDisplayValue(IBehaviorContext context, object value) {
+         Contract.Requires(context != null);
+         Behaviors.GetNextBehavior<IAccessPropertyBehavior>().SetValue(context, value);
       }
 
       internal override void Revalidate(IBehaviorContext context) {

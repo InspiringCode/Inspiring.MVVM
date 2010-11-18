@@ -237,4 +237,7 @@
   <data name="CannotPrependCollectionToEmptyInstancePath" xml:space="preserve">
     <value>'PrependCollection' is only valid for 'InstancePath's with at least one step because the collection is always associated with the last prepended VM. Make sure you have called 'PrependVM' at least once before calling 'PrependCollection'.</value>
   </data>
+  <data name="DescriptorNotSet" xml:space="preserve">
+    <value>The operation is not valid because no 'VMDescriptor' is set on the VM. Make sure that the 'DescriptorBase' property is set before calling any operation by either passing the 'VMDescriptor' to the 'ViewModel' constructur or by adding the VM to a 'VMCollection'.</value>
+  </data>
 </root>

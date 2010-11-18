@@ -50,14 +50,15 @@
       }
 
       public void Custom(Func<TVM, TValue, ValidationResult> validation) {
-         _config.Configure(VMBehaviorKey.Validator, (ValidationBehavior<TValue> behavior) => {
-            behavior.Add(args => {
-               var result = validation((TVM)args.VM, (TValue)args.PropertyValue);
-               if (!result.Successful) {
-                  args.AddError(result.ErrorMessage);
-               }
-            });
-         });
+         throw new NotImplementedException("TODO2");
+         //_config.Configure(VMBehaviorKey.Validator, (ValidationBehavior<TValue> behavior) => {
+         //   behavior.Add(args => {
+         //      var result = validation((TVM)args.VM, (TValue)args.PropertyValue);
+         //      if (!result.Successful) {
+         //         args.AddError(result.ErrorMessage);
+         //      }
+         //   });
+         //});
       }
 
       public IValidationBuilder<TParentVM, TVM, TValue> WithParent<TParentVM>() where TParentVM : ViewModel {
@@ -79,17 +80,19 @@
          _config.Enable(VMBehaviorKey.Validator);
          _config.Enable(VMBehaviorKey.InvalidDisplayValueCache);
 
-         _config.Configure(VMBehaviorKey.Validator, (ValidationBehavior<TValue> behavior) => {
-            behavior.Add(args => {
-               TParentVM parent = args.VM.Parent as TParentVM;
-               if (parent != null) {
-                  var result = validation(parent, (TVM)args.VM, (TValue)args.PropertyValue);
-                  if (!result.Successful) {
-                     args.AddError(result.ErrorMessage);
-                  }
-               }
-            });
-         });
+         throw new NotImplementedException("TODO2");
+
+         //_config.Configure(VMBehaviorKey.Validator, (ValidationBehavior<TValue> behavior) => {
+         //   behavior.Add(args => {
+         //      TParentVM parent = args.VM.Parent as TParentVM;
+         //      if (parent != null) {
+         //         var result = validation(parent, (TVM)args.VM, (TValue)args.PropertyValue);
+         //         if (!result.Successful) {
+         //            args.AddError(result.ErrorMessage);
+         //         }
+         //      }
+         //   });
+         //});
       }
    }
 }

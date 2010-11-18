@@ -17,14 +17,25 @@
 
       public IViewModel Parent { get; set; }
 
-
-
       IViewModel IBehaviorContext_.VM {
          get { return _vm; }
       }
 
       FieldValueHolder IBehaviorContext_.FieldValues {
          get { throw new NotImplementedException(); }
+      }
+
+      void IBehaviorContext_.NotifyChange(ChangeArgs args) {
+         NotifyChange(args, InstancePath.Empty);
+      }
+
+
+      void IBehaviorContext_.NotifyValidating(_ValidationArgs args) {
+         HandleNotifyValidating(args);
+
+         if (Parent != null) {
+            Parent.Kernel.NotifyValidating(args);
+         }
       }
 
       private void NotifyChange(ChangeArgs args, InstancePath changedPath) {
@@ -56,19 +67,6 @@
 
       private void NotifyValidating(_ValidationArgs args) {
          args = args.PrependTargetPath(with: _vm);
-         HandleNotifyValidating(args);
-
-         if (Parent != null) {
-            Parent.Kernel.NotifyValidating(args);
-         }
-      }
-
-      void IBehaviorContext_.NotifyChange(ChangeArgs args) {
-         NotifyChange(args, InstancePath.Empty);
-      }
-
-
-      void IBehaviorContext_.NotifyValidating(_ValidationArgs args) {
          HandleNotifyValidating(args);
 
          if (Parent != null) {

@@ -3,6 +3,7 @@
 
    public interface IViewModel {
       VMKernel Kernel { get; }
-      object GetValue(IVMProperty property);
+      object GetValue(IVMProperty property, ValueStage stage = ValueStage.PreValidation);
+      void SetValue(IVMProperty property, object value);
    }
 }

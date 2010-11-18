@@ -142,6 +142,15 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The operation is not valid because no &apos;VMDescriptor&apos; is set on the VM. Make sure that the &apos;DescriptorBase&apos; property is set before calling any operation by either passing the &apos;VMDescriptor&apos; to the &apos;ViewModel&apos; constructur or by adding the VM to a &apos;VMCollection&apos;..
+        /// </summary>
+        internal static string DescriptorNotSet {
+            get {
+                return ResourceManager.GetString("DescriptorNotSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not set the display value of the &apos;VMProperty&apos; &apos;{0}&apos; because the value has the wrong type. Make sure that you only set it to values that are compatible with &apos;{1}&apos; our use an &apos;IVMValueConverter&apos; with the property that does the conversion. The orignal value was: &apos;{2}&apos;..
         /// </summary>
         internal static string DisplayValueHasWrongType {
