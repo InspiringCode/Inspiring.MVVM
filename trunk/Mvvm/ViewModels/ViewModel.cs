@@ -171,12 +171,12 @@
 
 
       // TODO: Does this have to be internal? Isn't there a better way?
-      internal void InvokeValidate(ViewModel changedVM, VMPropertyBase changedProperty) {
+      public void InvokeValidate(IViewModel changedVM, VMPropertyBase changedProperty) {
          string oldError = _viewModelErrors.FirstOrDefault();
 
          var args = new _ViewModelValidationArgs(
             this,
-            changedVM,
+            (ViewModel)(object)changedVM,
             changedProperty
          );
 
@@ -215,7 +215,7 @@
          return property.GetValidationResult(this);
       }
 
-      internal protected void Revalidate() {
+      public void Revalidate() {
          RequireDescriptor();
          foreach (VMPropertyBase property in _descriptor.Properties) {
             Revalidate(property);
@@ -266,14 +266,12 @@
       }
    }
 
-   partial class ViewModel : IBehaviorContext {
-      public IVMContext VMContext { get; set; }
-
+   partial class ViewModel : IBehaviorContext, IViewModel {
       public event EventHandler<ValidationEventArgs> Validating;
 
       public event EventHandler<ValidationEventArgs> Validated;
 
-      FieldValueHolder IBehaviorContext.FieldValues {
+      FieldValueHolder IBehaviorContext_.FieldValues {
          get {
             RequireDescriptor();
             if (_dynamicFieldValues == null) {
@@ -285,42 +283,98 @@
          }
       }
 
-      ViewModel IBehaviorContext.VM {
-         get { return this; }
+      //ViewModel IBehaviorContext.VM {
+      //   get { return this; }
+      //}
+
+      //void IBehaviorContext.RaisePropertyChanged<T>(VMPropertyBase<T> property) {
+      //   property.OnPropertyChanged(this);
+      //   OnPropertyChanged(property);
+      //   if (Parent != null) {
+      //      Parent.OnChildChanged(this, property);
+      //   }
+      //}
+
+      //void IBehaviorContext.RaiseValidationStateChanged<T>(VMPropertyBase<T> property) {
+      //   OnPropertyChanged("Item[]");
+
+      //   // TODO: Investigate if there are better ways. This was added because a ComboBox did
+      //   // not udpate its validation state, if the state changed was triggered by the change
+      //   // of another property (not one that is bound to the ComboBox).
+      //   OnPropertyChanged(property);
+
+      //   if (Parent != null) {
+      //      Parent.OnChildValidationStateChanged(this, property);
+      //   }
+      //}
+
+      //void IBehaviorContext.OnValidating(ValidationEventArgs args) {
+      //   var handler = Validating;
+      //   if (handler != null) {
+      //      handler(this, args);
+      //   }
+      //}
+
+      //void IBehaviorContext.OnValidated(ValidationEventArgs args) {
+      //   var handler = Validated;
+      //   if (handler != null) {
+      //      handler(this, args);
+      //   }
+      //}
+
+      public IViewModel VM {
+         get { throw new NotImplementedException(); }
       }
 
-      void IBehaviorContext.RaisePropertyChanged<T>(VMPropertyBase<T> property) {
-         property.OnPropertyChanged(this);
-         OnPropertyChanged(property);
-         if (Parent != null) {
-            Parent.OnChildChanged(this, property);
+      public void NotifyValidating(_ValidationArgs args) {
+         throw new NotImplementedException();
+      }
+
+      public void NotifyChange(ChangeArgs args) {
+         throw new NotImplementedException();
+      }
+
+      VMKernel IViewModel.Kernel {
+         get { throw new NotImplementedException(); }
+      }
+
+      object IViewModel.GetValue(IVMProperty property, ValueStage stage) {
+         throw new NotImplementedException();
+      }
+
+      void IViewModel.SetValue(IVMProperty property, object value) {
+         throw new NotImplementedException();
+      }
+
+
+      bool IViewModel.IsValid(bool validateChildren) {
+         throw new NotImplementedException();
+      }
+
+      void IViewModel.Revalidate() {
+         throw new NotImplementedException();
+      }
+
+      event EventHandler<ValidationEventArgs> IViewModel.Validating {
+         add { throw new NotImplementedException(); }
+         remove { throw new NotImplementedException(); }
+      }
+
+      event EventHandler<ValidationEventArgs> IViewModel.Validated {
+         add { throw new NotImplementedException(); }
+         remove { throw new NotImplementedException(); }
+      }
+
+      void IViewModel.InvokeValidate(IViewModel changedVM, VMPropertyBase changedProperty) {
+         throw new NotImplementedException();
+      }
+
+      IViewModel IViewModel.Parent {
+         get {
+            throw new NotImplementedException();
          }
-      }
-
-      void IBehaviorContext.RaiseValidationStateChanged<T>(VMPropertyBase<T> property) {
-         OnPropertyChanged("Item[]");
-
-         // TODO: Investigate if there are better ways. This was added because a ComboBox did
-         // not udpate its validation state, if the state changed was triggered by the change
-         // of another property (not one that is bound to the ComboBox).
-         OnPropertyChanged(property);
-
-         if (Parent != null) {
-            Parent.OnChildValidationStateChanged(this, property);
-         }
-      }
-
-      void IBehaviorContext.OnValidating(ValidationEventArgs args) {
-         var handler = Validating;
-         if (handler != null) {
-            handler(this, args);
-         }
-      }
-
-      void IBehaviorContext.OnValidated(ValidationEventArgs args) {
-         var handler = Validated;
-         if (handler != null) {
-            handler(this, args);
+         set {
+            throw new NotImplementedException();
          }
       }
    }

@@ -1,10 +1,12 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core {
+﻿using System;
+namespace Inspiring.Mvvm.ViewModels.Core {
 
    internal sealed class DefaultManualUpdateBehavior<TValue> : Behavior, IManuelUpdateBehavior {
       private VMPropertyBase<TValue> _property;
 
       public void UpdateFromSource(IBehaviorContext vm) {
-         vm.RaisePropertyChanged(_property);
+         throw new NotImplementedException("TODO2");
+         //vm.RaisePropertyChanged(_property);
       }
 
       public void UpdateSource(IBehaviorContext vm) {

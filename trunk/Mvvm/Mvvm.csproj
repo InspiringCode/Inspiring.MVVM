@@ -111,6 +111,11 @@
     <Compile Include="ViewModels\Core\Builder\ValidationBuilder.cs" />
     <Compile Include="ViewModels\Core\CollectionModificationController.cs" />
     <Compile Include="ViewModels\Core\Builder\CollectionValidationBuilder.cs" />
+    <Compile Include="ViewModels\Core\Collections\CollectionDescriptor.cs" />
+    <Compile Include="ViewModels\Core\Collections\CollectionDescriptorBehavior.cs" />
+    <Compile Include="ViewModels\Core\Collections\CollectionPopulatorBehavior.cs" />
+    <Compile Include="ViewModels\Core\Collections\VMCollection.cs" />
+    <Compile Include="ViewModels\Core\Validation\CollectionBehaviors\CollectionValidatorBehavior.cs" />
     <Compile Include="ViewModels\Core\Common\ChangeArgs.cs" />
     <Compile Include="ViewModels\Core\Common\InstancePath.cs" />
     <Compile Include="ViewModels\Core\Common\ValidationContext.cs" />

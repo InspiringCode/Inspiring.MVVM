@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
+   using System;
    using System.Collections.Generic;
    using System.ComponentModel;
    using System.Linq;
@@ -13,13 +14,13 @@
       ITypedList,
       ISupportsValidation,
       ICanValidateChildrenHack
-      where TItemVM : ViewModel {
+      where TItemVM : IViewModel {
 
       private IItemCreationController<TItemVM> _itemController;
       private ICollectionModificationController<TItemVM> _collectionController;
-      private TItemVM _transientItem = null;
+      private TItemVM _transientItem = default(TItemVM);
       private bool _addingItem = false;
-      private ViewModel _parent;
+      private IViewModel _parent;
       private CollectionValidationBehavior<TItemVM> _validationBehavior;
       private bool _suppressParentValidation = false;
 
@@ -115,8 +116,8 @@
       protected override void OnAddingNew(AddingNewEventArgs e) {
          base.OnAddingNew(e);
 
-         // We this here and not in 'AddNewCore' because the 'AddNewCore' handles
-         // the addition of new item correctly if we do it this way.
+         // We do this here and not in 'AddNewCore' because the 'AddNewCore' handles
+         // the addition of new items correctly if we do it this way.
          if (_itemController != null && e.NewObject == null) {
             // We set _transientItem here and _addingItem in the AddNewCore method
             // to prevent that ICollectionModificationController.Insert is called
@@ -140,7 +141,7 @@
              IndexOf(_transientItem) == itemIndex
          ) {
             _itemController.EndNew(_transientItem);
-            _transientItem = null;
+            _transientItem = default(TItemVM);
             _addingItem = false;
          }
       }
@@ -148,7 +149,7 @@
       protected override void InsertItem(int index, TItemVM item) {
          base.InsertItem(index, item);
          ItemAdded(item);
-         if (_collectionController != null && item != _transientItem) {
+         if (_collectionController != null && !Object.Equals(item, _transientItem)) {
             _collectionController.Insert(item, index);
          }
       }

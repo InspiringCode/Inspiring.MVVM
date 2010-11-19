@@ -37,13 +37,14 @@ namespace Inspiring.Mvvm.ViewModels.Core {
    internal sealed class RefreshableValueCahche<TValue> : CacheValueBehavior<TValue>, IManuelUpdateBehavior {
       private VMPropertyBase<TValue> _property;
 
-      public void UpdateFromSource(IBehaviorContext vm) {
-         TValue oldValue = GetValue(vm);
-         CopyFromSource(vm);
-         TValue newValue = GetValue(vm);
+      public void UpdateFromSource(IBehaviorContext context) {
+         TValue oldValue = GetValue(context);
+         CopyFromSource(context);
+         TValue newValue = GetValue(context);
 
          if (!Object.Equals(oldValue, newValue)) {
-            vm.RaisePropertyChanged(_property);
+            var args = new ChangeArgs(ChangeType.PropertyChanged, context.VM);
+            context.NotifyChange(args);
          }
       }
 

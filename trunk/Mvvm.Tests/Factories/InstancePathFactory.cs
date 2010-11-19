@@ -35,6 +35,49 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          public void SetValue(IVMProperty property, object value) {
             throw new NotImplementedException();
          }
+
+         VMKernel IViewModel.Kernel {
+            get { throw new NotImplementedException(); }
+         }
+
+         object IViewModel.GetValue(IVMProperty property, ValueStage stage) {
+            throw new NotImplementedException();
+         }
+
+         void IViewModel.SetValue(IVMProperty property, object value) {
+            throw new NotImplementedException();
+         }
+
+         bool IViewModel.IsValid(bool validateChildren) {
+            throw new NotImplementedException();
+         }
+
+         void IViewModel.Revalidate() {
+            throw new NotImplementedException();
+         }
+
+         event EventHandler<ValidationEventArgs> IViewModel.Validating {
+            add { throw new NotImplementedException(); }
+            remove { throw new NotImplementedException(); }
+         }
+
+         event EventHandler<ValidationEventArgs> IViewModel.Validated {
+            add { throw new NotImplementedException(); }
+            remove { throw new NotImplementedException(); }
+         }
+
+         void IViewModel.InvokeValidate(IViewModel changedVM, VMPropertyBase changedProperty) {
+            throw new NotImplementedException();
+         }
+
+         IViewModel IViewModel.Parent {
+            get {
+               throw new NotImplementedException();
+            }
+            set {
+               throw new NotImplementedException();
+            }
+         }
       }
    }
 }

@@ -11,9 +11,15 @@
 
       FieldValueHolder FieldValues { get; }
 
+      IServiceLocator ServiceLocator { get; }
+
       void NotifyValidating(_ValidationArgs args);
 
       void NotifyChange(ChangeArgs args);
+   }
+
+   public interface IBehaviorContext : IBehaviorContext_ {
+
    }
 
    namespace Contracts {
@@ -39,6 +45,14 @@
 
          public void NotifyValidating(_ValidationArgs args) {
             Contract.Requires(args != null);
+         }
+
+
+         public IServiceLocator ServiceLocator {
+            get {
+               Contract.Ensures(Contract.Result<IServiceLocator>() != null);
+               return default(IServiceLocator);
+            }
          }
       }
    }

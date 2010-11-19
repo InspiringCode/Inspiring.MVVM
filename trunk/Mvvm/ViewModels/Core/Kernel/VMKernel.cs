@@ -73,5 +73,10 @@
             Parent.Kernel.NotifyValidating(args);
          }
       }
+
+
+      public IServiceLocator ServiceLocator {
+         get { throw new NotImplementedException(); }
+      }
    }
 }

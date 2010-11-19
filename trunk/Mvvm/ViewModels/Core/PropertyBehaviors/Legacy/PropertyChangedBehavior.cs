@@ -8,12 +8,13 @@
          return GetNextBehavior<IAccessPropertyBehavior<TValue>>().GetValue(vm);
       }
 
-      public void SetValue(IBehaviorContext vm, TValue value) {
-         TValue oldValue = GetValue(vm);
-         GetNextBehavior<IAccessPropertyBehavior<TValue>>().SetValue(vm, value);
+      public void SetValue(IBehaviorContext context, TValue value) {
+         TValue oldValue = GetValue(context);
+         GetNextBehavior<IAccessPropertyBehavior<TValue>>().SetValue(context, value);
 
          if (!Object.Equals(value, oldValue)) {
-            vm.RaisePropertyChanged(_property);
+            var args = new ChangeArgs(ChangeType.PropertyChanged, context.VM);
+            context.NotifyChange(args);
          }
       }
 

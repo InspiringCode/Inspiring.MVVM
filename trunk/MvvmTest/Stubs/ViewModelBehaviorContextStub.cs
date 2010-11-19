@@ -20,5 +20,25 @@
       public void NotifyValidating(_ValidationArgs args) {
          throw new System.NotImplementedException();
       }
+
+      IViewModel IBehaviorContext_.VM {
+         get { throw new System.NotImplementedException(); }
+      }
+
+      FieldValueHolder IBehaviorContext_.FieldValues {
+         get { throw new System.NotImplementedException(); }
+      }
+
+      Mvvm.IServiceLocator IBehaviorContext_.ServiceLocator {
+         get { throw new System.NotImplementedException(); }
+      }
+
+      void IBehaviorContext_.NotifyValidating(_ValidationArgs args) {
+         throw new System.NotImplementedException();
+      }
+
+      void IBehaviorContext_.NotifyChange(ChangeArgs args) {
+         throw new System.NotImplementedException();
+      }
    }
 }

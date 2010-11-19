@@ -52,7 +52,8 @@
       }
 
       public void UpdateFromSource(IBehaviorContext vm) {
-         vm.RaisePropertyChanged(_property);
+         throw new NotImplementedException("TODO2");
+         //vm.RaisePropertyChanged(_property);
 
          // TODO: Call next...
       }
