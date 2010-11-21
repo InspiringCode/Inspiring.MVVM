@@ -99,5 +99,10 @@
       void IViewModel.InvokeValidate(IViewModel changedVM, VMPropertyBase changedProperty) {
          throw new NotImplementedException();
       }
+
+
+      public IBehaviorContext GetContext() {
+         throw new NotImplementedException();
+      }
    }
 }

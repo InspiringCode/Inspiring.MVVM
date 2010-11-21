@@ -240,4 +240,7 @@
   <data name="DescriptorNotSet" xml:space="preserve">
     <value>The operation is not valid because no 'VMDescriptor' is set on the VM. Make sure that the 'DescriptorBase' property is set before calling any operation by either passing the 'VMDescriptor' to the 'ViewModel' constructur or by adding the VM to a 'VMCollection'.</value>
   </data>
+  <data name="VMCollectionOutOfSync" xml:space="preserve">
+    <value>The VM collection is not in sync with its source collection anymore. Call 'Kernel.UpdateFromSource(Descriptor.&lt;the collection property&gt;)' to repopulate the collection from its source.</value>
+  </data>
 </root>

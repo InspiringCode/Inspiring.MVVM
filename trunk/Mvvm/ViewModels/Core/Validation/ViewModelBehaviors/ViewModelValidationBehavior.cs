@@ -26,7 +26,7 @@
             .DefineField<ValidationState>(ViewModel.GeneralFieldGroup);
       }
 
-      public ValidationState GetValidationState(IBehaviorContext_ context) {
+      public ValidationState GetValidationState(IBehaviorContext context) {
          ValidationState state;
 
          if (context.FieldValues.TryGetValue(_validationStateField, out state)) {
@@ -36,7 +36,7 @@
          }
       }
 
-      internal void Validate(IBehaviorContext_ context) {
+      internal void Validate(IBehaviorContext context) {
          Validate(
             context,
             new ValidationContext(),
@@ -46,7 +46,7 @@
       }
 
       private void Validate(
-         IBehaviorContext_ context,
+         IBehaviorContext context,
          ValidationContext validationContext,
          InstancePath changedPath,
          IVMProperty changedProperty = null
@@ -80,7 +80,7 @@
       }
 
       protected internal override void OnChanged(
-         IBehaviorContext_ context,
+         IBehaviorContext context,
          ChangeArgs args,
          InstancePath changedPath
       ) {
@@ -94,7 +94,7 @@
          base.OnChanged(context, args, changedPath);
       }
 
-      protected internal override void OnValidating(IBehaviorContext_ context, _ValidationArgs args) {
+      protected internal override void OnValidating(IBehaviorContext context, _ValidationArgs args) {
          base.OnValidating(context, args);
          _validators.ForEach(val => val.Validate(args));
       }

@@ -2,21 +2,21 @@
 
    public abstract class ViewModelBehavior : Behavior {
       protected internal virtual void OnValidating(
-         IBehaviorContext_ context,
+         IBehaviorContext context,
          _ValidationArgs args
       ) {
          this.CallNext(x => x.OnValidating(context, args));
       }
 
       protected internal virtual void OnSelfChanged(
-         IBehaviorContext_ context,
+         IBehaviorContext context,
          ChangeArgs args
       ) {
          this.CallNext(x => x.OnSelfChanged(context, args));
       }
 
       protected internal virtual void OnChildChanged(
-         IBehaviorContext_ context,
+         IBehaviorContext context,
          ChangeArgs args,
          InstancePath changedChildPath
       ) {
@@ -33,7 +33,7 @@
       ///   and the changed VM (including both).
       /// </param>
       protected internal virtual void OnChanged(
-         IBehaviorContext_ context,
+         IBehaviorContext context,
          ChangeArgs args,
          InstancePath changedPath
       ) {

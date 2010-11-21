@@ -19,12 +19,12 @@
       ///   Gets the value that this property has on the given view model
       ///   (specified by the <paramref name="context"/> parameter).
       /// </summary>
-      object GetValue(IBehaviorContext_ context, ValueStage stage);
+      object GetValue(IBehaviorContext context, ValueStage stage);
 
       /// <summary>
       ///   Sets the value of this property on the given view model (specified
       ///   by the <paramref name="context"/> parameter).
       /// </summary>
-      void SetValue(IBehaviorContext_ context, object value);
+      void SetValue(IBehaviorContext context, object value);
    }
 }

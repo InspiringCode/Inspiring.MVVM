@@ -78,6 +78,11 @@ namespace Inspiring.Mvvm.ViewModels.Core {
                throw new NotImplementedException();
             }
          }
+
+
+         public IBehaviorContext GetContext() {
+            throw new NotImplementedException();
+         }
       }
    }
 }

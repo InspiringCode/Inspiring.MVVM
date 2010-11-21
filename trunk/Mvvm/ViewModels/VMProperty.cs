@@ -99,29 +99,29 @@
          ((IBehavior)Behaviors).Initialize(new BehaviorInitializationContext(fieldDefinitions, this));
       }
 
-      [Obsolete]
-      internal T GetValue(IBehaviorContext vm) {
-         Contract.Requires(vm != null);
-         return Behaviors.GetNextBehavior<IAccessPropertyBehavior<T>>().GetValue(vm);
-      }
+      //[Obsolete]
+      //internal T GetValue(IBehaviorContext vm) {
+      //   Contract.Requires(vm != null);
+      //   return Behaviors.GetNextBehavior<IAccessPropertyBehavior<T>>().GetValue(vm);
+      //}
 
-      [Obsolete]
-      internal void SetValue(IBehaviorContext vm, T value) {
-         Contract.Requires(vm != null);
-         Behaviors.GetNextBehavior<IAccessPropertyBehavior<T>>().SetValue(vm, value);
-      }
+      //[Obsolete]
+      //internal void SetValue(IBehaviorContext vm, T value) {
+      //   Contract.Requires(vm != null);
+      //   Behaviors.GetNextBehavior<IAccessPropertyBehavior<T>>().SetValue(vm, value);
+      //}
 
-      internal T GetValue(IBehaviorContext_ context) {
+      internal T GetValue(IBehaviorContext context) {
          Contract.Requires(context != null);
          throw new NotImplementedException();
       }
 
-      internal void SetValue(IBehaviorContext_ context, T value) {
+      internal void SetValue(IBehaviorContext context, T value) {
          Contract.Requires(context != null);
          throw new NotImplementedException();
       }
 
-      internal object GetDisplayValue(IBehaviorContext_ context) {
+      internal object GetDisplayValue(IBehaviorContext context) {
          Contract.Requires(context != null);
          throw new NotImplementedException();
       }

@@ -19,17 +19,17 @@ namespace Inspiring.Mvvm.ViewModels.Core {
             .DefineField<ValidationState>(ValidationErrorGroup);
       }
 
-      public TValue GetValue(IBehaviorContext_ vm) {
+      public TValue GetValue(IBehaviorContext vm) {
          return this.CallNext(x => x.GetValue(vm));
       }
 
-      public void SetValue(IBehaviorContext_ vm, TValue value) {
+      public void SetValue(IBehaviorContext vm, TValue value) {
          if (Validate(vm).IsValid) {
             this.CallNext(x => x.SetValue(vm, value));
          }
       }
 
-      public ValidationState GetValidationState(IBehaviorContext_ context) {
+      public ValidationState GetValidationState(IBehaviorContext context) {
          ValidationState state;
 
          if (context.FieldValues.TryGetValue(_validationStateField, out state)) {
@@ -39,7 +39,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          }
       }
 
-      internal ValidationState Validate(IBehaviorContext_ context, ValidationContext validationContext) {
+      internal ValidationState Validate(IBehaviorContext context, ValidationContext validationContext) {
          Contract.Assert(_property != null, "Behavior was not properly initialized.");
 
          var newState = new ValidationState();
@@ -74,7 +74,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          return newState;
       }
 
-      internal ValidationState Validate(IBehaviorContext_ context) {
+      internal ValidationState Validate(IBehaviorContext context) {
          Contract.Ensures(Contract.Result<ValidationState>() != null);
 
          ValidationContext validationContext = new ValidationContext();

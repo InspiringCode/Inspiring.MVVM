@@ -3,7 +3,7 @@
    using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.ViewModels.Future;
 
-   public sealed class VMKernel : IBehaviorContext_ {
+   public sealed class VMKernel : IBehaviorContext {
       private readonly IViewModel _vm;
       private readonly VMDescriptorBase _descriptor;
 
@@ -17,20 +17,20 @@
 
       public IViewModel Parent { get; set; }
 
-      IViewModel IBehaviorContext_.VM {
+      IViewModel IBehaviorContext.VM {
          get { return _vm; }
       }
 
-      FieldValueHolder IBehaviorContext_.FieldValues {
+      FieldValueHolder IBehaviorContext.FieldValues {
          get { throw new NotImplementedException(); }
       }
 
-      void IBehaviorContext_.NotifyChange(ChangeArgs args) {
+      void IBehaviorContext.NotifyChange(ChangeArgs args) {
          NotifyChange(args, InstancePath.Empty);
       }
 
 
-      void IBehaviorContext_.NotifyValidating(_ValidationArgs args) {
+      void IBehaviorContext.NotifyValidating(_ValidationArgs args) {
          HandleNotifyValidating(args);
 
          if (Parent != null) {
@@ -60,7 +60,7 @@
       }
 
       private void HandleNotifyValidating(_ValidationArgs args) {
-         _descriptor.Behaviors.Call<ViewModelBehavior>(b =>
+         _descriptor.Behaviors.TryCall<ViewModelBehavior>(b =>
             b.OnValidating(this, args)
          );
       }

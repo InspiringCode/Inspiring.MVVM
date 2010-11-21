@@ -421,6 +421,15 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The VM collection is not in sync with its source collection anymore. Call &apos;Kernel.UpdateFromSource(Descriptor.&lt;the collection property&gt;)&apos; to repopulate the collection from its source..
+        /// </summary>
+        internal static string VMCollectionOutOfSync {
+            get {
+                return ResourceManager.GetString("VMCollectionOutOfSync", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The &apos;Window.DialogResult&apos; property was not assigned yet by the view. Make sure you call this method only in &apos;OnRequestClose&apos; and &apos;OnClose&apos;..
         /// </summary>
         internal static string WindowDialogResultNotAssigned {

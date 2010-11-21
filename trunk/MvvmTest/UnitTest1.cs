@@ -1,18 +1,40 @@
 ﻿using System;
+using Inspiring.Mvvm.ViewModels;
 using Inspiring.Mvvm.ViewModels.Core;
+using Inspiring.MvvmTest.Stubs;
+using Inspiring.MvvmTest.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Moq.Sequences;
 
 namespace Inspiring.MvvmTest {
    [TestClass]
-   public class UnitTest1 {
+   public class UnitTest1 : TestBase {
 
       [TestMethod]
       public void MyTestMethod() {
+         var kernel = new VMKernel(Mock<IViewModel>(), new VMDescriptorStub());
+
+         var itemMock = new Mock<IViewModel>();
+         itemMock.Setup(x => x.Kernel).Returns(kernel);
+
+         var parent = Mock<IViewModel>();
+
+         itemMock.Object.Kernel.Parent = parent;
+
+         Assert.AreSame(parent, itemMock.Object.Kernel.Parent);
+
          DisplayValueAccessorBehavior<int> b = null;
          //b.CallNext(x => x.SetValue(null, null));
          //b.CallNext(x => x.GetValue(null));
 
+         var mock = new Mock<IFoo>();
+
+         mock.Setup(x => x.N(27)).Verifiable();
+
+         mock.Object.N(27);
+
+         mock.Verify();
 
          Action<int> action = x => x++;
          Console.WriteLine(action);
@@ -30,6 +52,33 @@ namespace Inspiring.MvvmTest {
 
       private static void Action2(int x) {
 
+      }
+
+      [TestMethod]
+      public void ThisShouldWork2() {
+         var a = new Mock<IFoo>(MockBehavior.Strict);
+
+         using (Sequence.Create()) {
+            a.Setup(x => x.M(100)).InSequence().Returns(101);
+            a.Setup(x => x.M(200)).InSequence().Returns(201);
+
+            a.Object.M(100);
+            a.Object.M(200);
+         }
+      }
+
+      [TestMethod]
+      [ExpectedException(typeof(SequenceException))]
+      public void ThisShouldNotWork2() {
+         var a = new Mock<IFoo>(MockBehavior.Strict);
+
+         using (Sequence.Create()) {
+            a.Setup(x => x.M(100)).InSequence().Returns(101);
+            a.Setup(x => x.N(100)).InSequence().Returns(201);
+
+            a.Object.N(100);
+            a.Object.M(100);
+         }
       }
 
       // [TestMethod]

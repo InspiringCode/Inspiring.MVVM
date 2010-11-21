@@ -5,7 +5,7 @@
    public class Behavior : IBehavior {
       public IBehavior Successor { get; set; }
 
-      public void Call<TBehavior>(Action<TBehavior> callAction) {
+      public void TryCall<TBehavior>(Action<TBehavior> callAction) {
          TBehavior b;
          if (TryGetBehavior(out b)) {
             callAction(b);

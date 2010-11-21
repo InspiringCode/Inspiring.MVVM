@@ -13,15 +13,15 @@
          get { return typeof(TValue); }
       }
 
-      object IVMProperty.GetValue(IBehaviorContext_ context, ValueStage stage) {
+      object IVMProperty.GetValue(IBehaviorContext context, ValueStage stage) {
          throw new NotImplementedException();
       }
 
-      void IVMProperty.SetValue(IBehaviorContext_ context, object value) {
+      void IVMProperty.SetValue(IBehaviorContext context, object value) {
          throw new NotImplementedException();
       }
 
-      internal TValue GetValue(IBehaviorContext_ context, ValueStage stage = ValueStage.PreValidation) {
+      internal TValue GetValue(IBehaviorContext context, ValueStage stage = ValueStage.PreValidation) {
          Contract.Requires(context != null);
 
          if (stage == ValueStage.PreConversion) {
@@ -32,14 +32,14 @@
          throw new NotImplementedException();
       }
 
-      internal void SetValue(IBehaviorContext_ context, TValue value) {
+      internal void SetValue(IBehaviorContext context, TValue value) {
          Contract.Requires(context != null);
 
          // Use IValueAccessor
          throw new NotImplementedException();
       }
 
-      internal object GetDisplayValue(IBehaviorContext_ context) {
+      internal object GetDisplayValue(IBehaviorContext context) {
          Contract.Requires(context != null);
          // Use IDisplayValueAccessor
          throw new NotImplementedException();

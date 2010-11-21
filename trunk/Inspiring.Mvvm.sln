@@ -35,6 +35,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvmContribTest", "MvvmCont
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvvm.Tests", "Mvvm.Tests\Mvvm.Tests.csproj", "{1AD4633A-DF3C-496A-BF65-3A5157F52B4E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Moq.Sequences", "Moq.Sequences", "{D017964E-FAFC-4E90-8B58-9364B52FDC87}"
+	ProjectSection(SolutionItems) = preProject
+		Libs\Moq.Sequences\Moq.Sequences.dll = Libs\Moq.Sequences\Moq.Sequences.dll
+		Libs\Moq.Sequences\Moq.Sequences.pdb = Libs\Moq.Sequences\Moq.Sequences.pdb
+		Libs\Moq.Sequences\Moq.Sequences.zip = Libs\Moq.Sequences\Moq.Sequences.zip
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 7
@@ -139,5 +146,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{EDCA79D9-7E38-4FC6-A4C5-FEFB63813B28} = {F364223A-965E-4EEA-9828-AB7E2A2192A1}
 		{13484309-5416-4ED5-BEF0-DA8BFBA37E3B} = {F364223A-965E-4EEA-9828-AB7E2A2192A1}
+		{D017964E-FAFC-4E90-8B58-9364B52FDC87} = {F364223A-965E-4EEA-9828-AB7E2A2192A1}
 	EndGlobalSection
 EndGlobal

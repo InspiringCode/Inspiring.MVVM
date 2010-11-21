@@ -14,7 +14,7 @@
       public void NotifyChange_InvokesBehavior() {
          var behaviorSpy = new OnChangedSpy();
 
-         var kernel = (IBehaviorContext_)CreateKernel(withBehavior: behaviorSpy);
+         var kernel = (IBehaviorContext)CreateKernel(withBehavior: behaviorSpy);
 
          var changeArgs = new ChangeArgs(ChangeType.ValidationStateChanged, kernel.VM);
          kernel.NotifyChange(changeArgs);
@@ -28,7 +28,7 @@
       public void NotifyValidating_InvokesBehavior() {
          var behaviorSpy = new OnValidatingSpy();
 
-         var kernel = (IBehaviorContext_)CreateKernel(withBehavior: behaviorSpy);
+         var kernel = (IBehaviorContext)CreateKernel(withBehavior: behaviorSpy);
 
          var args = new _ValidationArgs(new ValidationState(), new InstancePath(kernel.VM));
          kernel.NotifyValidating(args);
@@ -46,9 +46,9 @@
          var parentKernel = CreateKernel(withBehavior: parentSpy);
          var grandParentKernel = CreateKernel(withBehavior: grandParentSpy);
 
-         var kernelContext = (IBehaviorContext_)kernel;
-         var parentContext = (IBehaviorContext_)parentKernel;
-         var grandParentContext = (IBehaviorContext_)grandParentKernel;
+         var kernelContext = (IBehaviorContext)kernel;
+         var parentContext = (IBehaviorContext)parentKernel;
+         var grandParentContext = (IBehaviorContext)grandParentKernel;
 
          kernel.Parent = parentContext.VM;
          parentKernel.Parent = grandParentContext.VM;
@@ -74,10 +74,10 @@
          var parentKernel = CreateKernel(withBehavior: parentSpy);
          var grandParentKernel = CreateKernel(withBehavior: grandParentSpy);
 
-         var kernelContext = (IBehaviorContext_)kernel;
-         var vm = ((IBehaviorContext_)kernel).VM;
-         var parentVM = ((IBehaviorContext_)parentKernel).VM;
-         var grandParentVM = ((IBehaviorContext_)grandParentKernel).VM;
+         var kernelContext = (IBehaviorContext)kernel;
+         var vm = ((IBehaviorContext)kernel).VM;
+         var parentVM = ((IBehaviorContext)parentKernel).VM;
+         var grandParentVM = ((IBehaviorContext)grandParentKernel).VM;
 
          kernel.Parent = parentVM;
          parentKernel.Parent = grandParentVM;
@@ -113,7 +113,7 @@
       }
 
       private class OnChangedSpy : ViewModelBehavior {
-         protected internal override void OnChanged(IBehaviorContext_ context, ChangeArgs args, InstancePath changedPath) {
+         protected internal override void OnChanged(IBehaviorContext context, ChangeArgs args, InstancePath changedPath) {
             base.OnChanged(context, args, changedPath);
             IncovationCount++;
             Args = args;
@@ -128,7 +128,7 @@
       }
 
       private class OnValidatingSpy : ViewModelBehavior {
-         protected internal override void OnValidating(IBehaviorContext_ context, _ValidationArgs args) {
+         protected internal override void OnValidating(IBehaviorContext context, _ValidationArgs args) {
             IncovationCount++;
             Args = args;
          }

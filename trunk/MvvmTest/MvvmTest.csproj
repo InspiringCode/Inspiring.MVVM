@@ -41,6 +41,9 @@
     <Reference Include="Moq">
       <HintPath>..\Libs\Moq\Moq.dll</HintPath>
     </Reference>
+    <Reference Include="Moq.Sequences">
+      <HintPath>..\Libs\Moq.Sequences\Moq.Sequences.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -64,10 +67,20 @@
     <Compile Include="PropertyChangedCounter.cs" />
     <Compile Include="Screens\ScreenCreationBehaviorTest.cs" />
     <Compile Include="Stubs\ViewModelBehaviorContextStub.cs" />
+    <Compile Include="Stubs\ViewModelStub.cs" />
     <Compile Include="Stubs\VMDescriptorStub.cs" />
     <Compile Include="Stubs\VMPropertyBaseStub.cs" />
     <Compile Include="TestExtensions.cs" />
+    <Compile Include="ViewModels\- No Namespace -\VMCollectionTests.cs" />
+    <Compile Include="ViewModels\Core\BehaviorTestBase.cs" />
     <Compile Include="ViewModels\Core\Builder\BehaviorsTest.cs" />
+    <Compile Include="ViewModels\Core\Collections\AddNewHelperTests.cs" />
+    <Compile Include="ViewModels\Core\Collections\Behaviors\CollectionChangeNotificationBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\Collections\Behaviors\CollectionModificationBehaviorTestBase.cs" />
+    <Compile Include="ViewModels\Core\Collections\Behaviors\CollectionPopulatorBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\Collections\Behaviors\CollectionSynchronizerBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\Collections\Behaviors\CollectionParentSetterBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\Collections\VMCollectionTestBase.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionValidationBehaviorTest.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\DefaultManualUpdateBehaviorTest.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\ValidationBehaviorTest.cs" />

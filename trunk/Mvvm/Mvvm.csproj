@@ -99,6 +99,8 @@
     <Compile Include="ViewModels\- No Namespace -\ValueStage.cs" />
     <Compile Include="ViewModels\- No Namespace -\ViewModel.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMPropertyBase.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\ICollectionPopulatorBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\ICollectionModificationBehavior.cs" />
     <Compile Include="ViewModels\Core\Builder\BehaviorConfigurationBuilder.cs" />
     <Compile Include="ViewModels\Core\Builder\BehaviorConfigurationDictionary.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorConfiguration.cs" />
@@ -111,9 +113,13 @@
     <Compile Include="ViewModels\Core\Builder\ValidationBuilder.cs" />
     <Compile Include="ViewModels\Core\CollectionModificationController.cs" />
     <Compile Include="ViewModels\Core\Builder\CollectionValidationBuilder.cs" />
-    <Compile Include="ViewModels\Core\Collections\CollectionDescriptor.cs" />
+    <Compile Include="ViewModels\Core\Collections\CollectionChangeNotificationBehavior.cs" />
+    <Compile Include="ViewModels\Core\Collections\CollectionParentSetterBehavior.cs" />
+    <Compile Include="ViewModels\Core\Collections\CollectionSynchronizerBehavior.cs" />
+    <Compile Include="ViewModels\Core\Collections\VMCollectionDescriptor.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionDescriptorBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionPopulatorBehavior.cs" />
+    <Compile Include="ViewModels\Core\Collections\IVMCollection.cs" />
     <Compile Include="ViewModels\Core\Collections\VMCollection.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionBehaviors\CollectionValidatorBehavior.cs" />
     <Compile Include="ViewModels\Core\Common\ChangeArgs.cs" />

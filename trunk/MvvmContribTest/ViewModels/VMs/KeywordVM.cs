@@ -1,7 +1,7 @@
 ﻿namespace Inspiring.MvvmContribTest.ViewModels {
    using Inspiring.Mvvm.ViewModels;
 
-   internal sealed class KeywordVM : ViewModel<KeywordVMDescriptor>, ICanInitializeFrom<Keyword>, IHasSourceObject<Keyword> {
+   internal sealed class KeywordVM : ViewModel<KeywordVMDescriptor>, ICanInitializeFrom<Keyword>, IVMCollectionItem<Keyword> {
       public static readonly KeywordVMDescriptor Descriptor = VMDescriptorBuilder
          .For<KeywordVM>()
          .CreateDescriptor(c => {
@@ -24,7 +24,7 @@
          Keyword = source;
       }
 
-      Keyword IHasSourceObject<Keyword>.Source {
+      Keyword IVMCollectionItem<Keyword>.Source {
          get { return Keyword; }
       }
    }

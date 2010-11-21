@@ -21,7 +21,7 @@
                fields.CreateValueHolder()
             );
 
-            ContextMock = new Mock<IBehaviorContext_>();
+            ContextMock = new Mock<IBehaviorContext>();
             ContextMock
                .Setup(x => x.FieldValues)
                .Returns(() => fieldValues.Value);
@@ -32,9 +32,9 @@
 
          public IViewModel VM { get; private set; }
 
-         public Mock<IBehaviorContext_> ContextMock { get; private set; }
+         public Mock<IBehaviorContext> ContextMock { get; private set; }
 
-         public IBehaviorContext_ Context { get; private set; }
+         public IBehaviorContext Context { get; private set; }
 
          public InitializationContext InitializationContext { get; private set; }
       }
@@ -56,7 +56,7 @@
                fields.CreateValueHolder()
             );
 
-            ContextMock = new Mock<IBehaviorContext_>();
+            ContextMock = new Mock<IBehaviorContext>();
             ContextMock
                .Setup(x => x.FieldValues)
                .Returns(() => fieldValues.Value);
@@ -72,9 +72,9 @@
 
          public IVMProperty Property { get; private set; }
 
-         public Mock<IBehaviorContext_> ContextMock { get; private set; }
+         public Mock<IBehaviorContext> ContextMock { get; private set; }
 
-         public IBehaviorContext_ Context { get; private set; }
+         public IBehaviorContext Context { get; private set; }
 
          public InitializationContext InitializationContext { get; private set; }
       }

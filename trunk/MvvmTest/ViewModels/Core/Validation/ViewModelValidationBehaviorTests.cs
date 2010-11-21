@@ -249,7 +249,7 @@
          }
 
          private void InvokeOnValidating(_ValidationArgs withArgs) {
-            _behavior.OnValidating(Mock<IBehaviorContext_>(), withArgs);
+            _behavior.OnValidating(Mock<IBehaviorContext>(), withArgs);
          }
 
 

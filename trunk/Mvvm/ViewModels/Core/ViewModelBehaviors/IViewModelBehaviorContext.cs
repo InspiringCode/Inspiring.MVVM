@@ -6,7 +6,7 @@
    ///   Holds that state needed by operations of a <see cref="ViewModelBehavior"/>.
    /// </summary>
    [ContractClass(typeof(IBehaviorContextContract))]
-   public interface IBehaviorContext_ {
+   public interface IBehaviorContext {
       IViewModel VM { get; }
 
       FieldValueHolder FieldValues { get; }
@@ -18,13 +18,9 @@
       void NotifyChange(ChangeArgs args);
    }
 
-   public interface IBehaviorContext : IBehaviorContext_ {
-
-   }
-
    namespace Contracts {
-      [ContractClassFor(typeof(IBehaviorContext_))]
-      internal class IBehaviorContextContract : IBehaviorContext_ {
+      [ContractClassFor(typeof(IBehaviorContext))]
+      internal class IBehaviorContextContract : IBehaviorContext {
          public IViewModel VM {
             get {
                Contract.Ensures(Contract.Result<IViewModel>() != null);

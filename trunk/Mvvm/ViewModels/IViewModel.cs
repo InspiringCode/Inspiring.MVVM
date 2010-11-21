@@ -6,6 +6,7 @@
       VMKernel Kernel { get; }
       object GetValue(IVMProperty property, ValueStage stage = ValueStage.PreValidation);
       void SetValue(IVMProperty property, object value);
+      IBehaviorContext GetContext();
 
       [Obsolete]
       bool IsValid(bool validateChildren);

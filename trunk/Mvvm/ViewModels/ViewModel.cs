@@ -271,7 +271,7 @@
 
       public event EventHandler<ValidationEventArgs> Validated;
 
-      FieldValueHolder IBehaviorContext_.FieldValues {
+      FieldValueHolder IBehaviorContext.FieldValues {
          get {
             RequireDescriptor();
             if (_dynamicFieldValues == null) {
@@ -370,12 +370,13 @@
       }
 
       IViewModel IViewModel.Parent {
-         get {
-            throw new NotImplementedException();
-         }
-         set {
-            throw new NotImplementedException();
-         }
+         get;
+         set;
+      }
+
+
+      public IBehaviorContext GetContext() {
+         throw new NotImplementedException();
       }
    }
 

@@ -95,7 +95,7 @@
       ViewModel<ChildVMDescriptor>,
       ICanInitializeFrom<ChildVMSource>,
       ICreatableItem<TestVM, ChildVMSource>,
-      IHasSourceObject<ChildVMSource> {
+      IVMCollectionItem<ChildVMSource> {
 
       public static readonly ChildVMDescriptor Descriptor = VMDescriptorBuilder
          .For<ChildVM>()
@@ -108,7 +108,7 @@
             };
          })
          .WithValidations((d, c) => {
-            c.Check(d.MappedMutableProperty).Custom((_, __) => ValidationResult.Success());
+            //c.Check(d.MappedMutableProperty).Custom((_, __) => ValidationResult.Success());
          })
          .Build();
 
@@ -160,7 +160,7 @@
       ViewModel<ParentedChildVMDescriptor>,
       ICanInitializeFrom<SourceWithParent<TestVM, ChildVMSource>>,
       ICreatableItem<TestVM, ChildVMSource>,
-      IHasSourceObject<ChildVMSource> {
+      IVMCollectionItem<ChildVMSource> {
 
       public static readonly ParentedChildVMDescriptor Descriptor = VMDescriptorBuilder
          .For<ParentedChildVM>()
@@ -212,8 +212,12 @@
          return MappedMutablePropertyValidationResult ?? base.ValidateProperty(property);
       }
 
-      ChildVMSource IHasSourceObject<ChildVMSource>.Source {
+      ChildVMSource IVMCollectionItem<ChildVMSource>.Source {
          get { return Source.Source; }
+      }
+
+      public void InitializeFrom(ChildVMSource source) {
+         throw new System.NotImplementedException();
       }
    }
 

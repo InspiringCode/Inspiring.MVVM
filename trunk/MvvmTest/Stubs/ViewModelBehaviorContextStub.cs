@@ -2,7 +2,7 @@
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
 
-   public class ViewModelBehaviorContextStub : IBehaviorContext_ {
+   public class ViewModelBehaviorContextStub : IBehaviorContext {
       public ViewModelBehaviorContextStub(IViewModel vm) {
          VM = vm;
       }
@@ -21,23 +21,23 @@
          throw new System.NotImplementedException();
       }
 
-      IViewModel IBehaviorContext_.VM {
+      IViewModel IBehaviorContext.VM {
          get { throw new System.NotImplementedException(); }
       }
 
-      FieldValueHolder IBehaviorContext_.FieldValues {
+      FieldValueHolder IBehaviorContext.FieldValues {
          get { throw new System.NotImplementedException(); }
       }
 
-      Mvvm.IServiceLocator IBehaviorContext_.ServiceLocator {
+      Mvvm.IServiceLocator IBehaviorContext.ServiceLocator {
          get { throw new System.NotImplementedException(); }
       }
 
-      void IBehaviorContext_.NotifyValidating(_ValidationArgs args) {
+      void IBehaviorContext.NotifyValidating(_ValidationArgs args) {
          throw new System.NotImplementedException();
       }
 
-      void IBehaviorContext_.NotifyChange(ChangeArgs args) {
+      void IBehaviorContext.NotifyChange(ChangeArgs args) {
          throw new System.NotImplementedException();
       }
    }

@@ -1,9 +1,12 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System.Diagnostics.Contracts;
+   using Inspiring.Mvvm.Common;
 
    public enum ChangeType {
       PropertyChanged,
-      ValidationStateChanged
+      ValidationStateChanged,
+      AddedToCollection,
+      RemovedFromCollection
    }
 
    /// <summary>
@@ -12,7 +15,7 @@
    /// </summary>
    public sealed class ChangeArgs {
       internal ChangeArgs(ChangeType changeType, IViewModel changedVM) {
-         Contract.Requires(changeType == ChangeType.ValidationStateChanged);
+         Contract.Requires(changeType != ChangeType.PropertyChanged);
          Contract.Requires(changedVM != null);
 
          ChangeType = changeType;
@@ -39,25 +42,30 @@
 
       public IVMProperty ChangedProperty { get; private set; }
 
-      //public override bool Equals(object obj) {
+      public override bool Equals(object obj) {
+         ChangeArgs other = obj as ChangeArgs;
+         return
+            other != null &&
+            other.ChangeType == ChangeType &&
+            other.ChangedVM == ChangedVM &&
+            other.ChangedProperty == ChangedProperty;
+      }
 
-      //}
-
-      //public override int GetHashCode() {
-      //   return HashCodeService.CalculateHashCode(
-      //      this,
-      //      ChangeType,
-      //      ChangedVM,
-      //      ChangedProperty
-      //   );
-      //}
+      public override int GetHashCode() {
+         return HashCodeService.CalculateHashCode(
+            this,
+            ChangeType,
+            ChangedVM,
+            ChangedProperty
+         );
+      }
 
       [ContractInvariantMethod]
       private void ObjectInvariant() {
          Contract.Invariant(ChangedVM != null);
          Contract.Invariant(
             (ChangeType == ChangeType.PropertyChanged && ChangedProperty != null) ||
-            (ChangeType == ChangeType.ValidationStateChanged && ChangedProperty == null)
+            (ChangeType != ChangeType.PropertyChanged && ChangedProperty == null)
          );
       }
    }

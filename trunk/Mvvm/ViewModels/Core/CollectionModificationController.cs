@@ -33,7 +33,7 @@
 
       public void SetItem(TItemVM item, int index) {
          TItemSource sourceItem = GetSource(item);
-         
+
          IList<TItemSource> list = _sourceCollection as IList<TItemSource>;
          if (list == null) {
             throw new InvalidOperationException(
@@ -49,7 +49,7 @@
       }
 
       private TItemSource GetSource(TItemVM vm) {
-         IHasSourceObject<TItemSource> withSource = vm as IHasSourceObject<TItemSource>;
+         IVMCollectionItem<TItemSource> withSource = vm as IVMCollectionItem<TItemSource>;
          if (withSource == null) {
             throw new InvalidOperationException(
                ExceptionTexts.HasSourceObjectInterfaceNotImplemented
