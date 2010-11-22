@@ -223,7 +223,7 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parameter &apos;component&apos; is not a valid &apos;ViewModel&apos;. Make sure you pass an object that is derived from &apos;ViewModel&apos; to &apos;TypeDescriptor.GetValue&apos; and &apos;TypeDescriptor.SetValue&apos;. The value of &apos;component&apos; was: &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Parameter &apos;component&apos; is not a valid &apos;IViewModel&apos;. Make sure you pass an object that implements &apos;IViewModel&apos; to &apos;TypeDescriptor.GetValue&apos; and &apos;TypeDescriptor.SetValue&apos;. The value of &apos;component&apos; was: &apos;{0}&apos;..
         /// </summary>
         internal static string InvalidComponentInstance {
             get {

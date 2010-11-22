@@ -54,7 +54,7 @@
 
       protected override void Initialize(BehaviorInitializationContext context) {
          base.Initialize(context);
-         _conversionErrorField = context.DynamicFields.DefineField<string>(
+         _conversionErrorField = context.Fields.DefineField<string>(
             DynamicFieldGroups.ConversionErrorGroup
          );
          _propertyName = context.Property.PropertyName;

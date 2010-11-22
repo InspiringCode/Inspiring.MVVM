@@ -12,7 +12,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
       private IVMProperty _property;
       private FieldDefinition<ValidationState> _validationStateField;
 
-      public void Initialize(InitializationContext context) {
+      public void Initialize(BehaviorInitializationContext context) {
          _property = context.Property;
          _validationStateField = context
             .Fields

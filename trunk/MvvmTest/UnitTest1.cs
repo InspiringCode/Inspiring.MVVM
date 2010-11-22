@@ -10,7 +10,6 @@ using Moq.Sequences;
 namespace Inspiring.MvvmTest {
    [TestClass]
    public class UnitTest1 : TestBase {
-
       [TestMethod]
       public void MyTestMethod() {
          var kernel = new VMKernel(Mock<IViewModel>(), new VMDescriptorStub());

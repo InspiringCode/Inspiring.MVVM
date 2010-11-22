@@ -44,8 +44,8 @@
          Action<IVMBinder<TDescriptor>> bindingConfigurator
       ) where TDescriptor : VMDescriptor;
 
-      IBindToExpression<ViewModel> BindVM(
-         Expression<Func<TScreen, ViewModel>> viewModelSelector
+      IBindToExpression<IViewModel> BindVM(
+         Expression<Func<TScreen, IViewModel>> viewModelSelector
       );
 
       IBindToExpression<IScreen> BindChildScreen(Expression<Func<TScreen, IScreen>> screenSelector);
@@ -106,14 +106,14 @@
          return new PropertyBinderExpression<IScreen>(context);
       }
 
-      public IBindToExpression<ViewModel> BindVM(Expression<Func<TScreen, ViewModel>> viewModelSelector) {
+      public IBindToExpression<IViewModel> BindVM(Expression<Func<TScreen, IViewModel>> viewModelSelector) {
          BinderContext context = QueueBuilderExecution();
-         context.SourcePropertyType = typeof(ViewModel); // TODO: Clean up how types are assigned, also check if IBindToExpression has to be generic...
+         context.SourcePropertyType = typeof(IViewModel); // TODO: Clean up how types are assigned, also check if IBindToExpression has to be generic...
          context.ExtendPropertyPath(
             ExpressionService.GetPropertyPathString(viewModelSelector)
          );
 
-         return new PropertyBinderExpression<ViewModel>(context);
+         return new PropertyBinderExpression<IViewModel>(context);
       }
    }
 

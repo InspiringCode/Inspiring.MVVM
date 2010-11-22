@@ -89,7 +89,7 @@
             .Build();
 
          public PersonVM()
-            : base(Descriptor) {
+            : base() {
          }
 
          public Person Person { get; private set; }

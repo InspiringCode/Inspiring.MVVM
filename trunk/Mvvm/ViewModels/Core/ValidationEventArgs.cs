@@ -10,7 +10,7 @@
       public ValidationEventArgs(
          VMPropertyBase property,
          object propertyValue,
-         ViewModel viewModel
+         IViewModel viewModel
       ) {
          Property = property;
          PropertyValue = propertyValue;
@@ -22,7 +22,7 @@
 
       public object PropertyValue { get; private set; }
 
-      public ViewModel VM { get; private set; }
+      public IViewModel VM { get; private set; }
 
       public bool AffectsOtherItems {
          get { return _affectsOtherItems; }

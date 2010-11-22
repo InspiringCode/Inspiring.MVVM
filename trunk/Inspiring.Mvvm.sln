@@ -42,6 +42,36 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Moq.Sequences", "Moq.Sequen
 		Libs\Moq.Sequences\Moq.Sequences.zip = Libs\Moq.Sequences\Moq.Sequences.zip
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{5F3ED3E2-CAEF-45C1-8064-1BF250FFDE9E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Snippets", "Snippets", "{A136481C-CC6D-4F70-A195-024CD3CEC949}"
+	ProjectSection(SolutionItems) = preProject
+		Tools\Snippets\install.bat = Tools\Snippets\install.bat
+		Tools\Snippets\vm.snippet = Tools\Snippets\vm.snippet
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Internal", "Internal", "{F6AF69A7-9F05-4269-A801-6BD42FA8F595}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Snippets", "Snippets", "{37E06DAA-79F2-42B4-883E-D9F804F6A0D1}"
+	ProjectSection(SolutionItems) = preProject
+		Tools\Internal\Snippets\contractrequiresalwaysnotnull.snippet = Tools\Internal\Snippets\contractrequiresalwaysnotnull.snippet
+		Tools\Internal\Snippets\curlybraces.snippet = Tools\Internal\Snippets\curlybraces.snippet
+		Tools\Internal\Snippets\exception.snippet = Tools\Internal\Snippets\exception.snippet
+		Tools\Internal\Snippets\install.bat = Tools\Internal\Snippets\install.bat
+		Tools\Internal\Snippets\propa.snippet = Tools\Internal\Snippets\propa.snippet
+		Tools\Internal\Snippets\propdp.snippet = Tools\Internal\Snippets\propdp.snippet
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{28477057-2303-4D56-BA83-EF81D5713574}"
+	ProjectSection(SolutionItems) = preProject
+		Tools\Internal\Templates\BasicUnitTest.zip = Tools\Internal\Templates\BasicUnitTest.zip
+		Tools\Internal\Templates\Class.zip = Tools\Internal\Templates\Class.zip
+		Tools\Internal\Templates\Install.bat = Tools\Internal\Templates\Install.bat
+		Tools\Internal\Templates\Interface.zip = Tools\Internal\Templates\Interface.zip
+		Tools\Internal\Templates\WPFUserControl.zip = Tools\Internal\Templates\WPFUserControl.zip
+		Tools\Internal\Templates\WPFWindow.zip = Tools\Internal\Templates\WPFWindow.zip
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 7
@@ -147,5 +177,9 @@ Global
 		{EDCA79D9-7E38-4FC6-A4C5-FEFB63813B28} = {F364223A-965E-4EEA-9828-AB7E2A2192A1}
 		{13484309-5416-4ED5-BEF0-DA8BFBA37E3B} = {F364223A-965E-4EEA-9828-AB7E2A2192A1}
 		{D017964E-FAFC-4E90-8B58-9364B52FDC87} = {F364223A-965E-4EEA-9828-AB7E2A2192A1}
+		{A136481C-CC6D-4F70-A195-024CD3CEC949} = {5F3ED3E2-CAEF-45C1-8064-1BF250FFDE9E}
+		{F6AF69A7-9F05-4269-A801-6BD42FA8F595} = {5F3ED3E2-CAEF-45C1-8064-1BF250FFDE9E}
+		{37E06DAA-79F2-42B4-883E-D9F804F6A0D1} = {F6AF69A7-9F05-4269-A801-6BD42FA8F595}
+		{28477057-2303-4D56-BA83-EF81D5713574} = {F6AF69A7-9F05-4269-A801-6BD42FA8F595}
 	EndGlobalSection
 EndGlobal

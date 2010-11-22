@@ -12,10 +12,10 @@
 
       public SingleSelectionVM(
          SingleSelectionVMDescriptor<TSourceItem, TItemVM> descriptor,
-         ViewModel parent,
+         IViewModel parent,
          Func<TSourceItem, bool> selectableItemFilter
       )
-         : base(descriptor) {
+         : base() {
          _selectableItemFilter = selectableItemFilter;
          Descriptor = descriptor;
          Parent = parent;
@@ -23,14 +23,15 @@
 
       public SingleSelectionVMDescriptor<TSourceItem, TItemVM> Descriptor { get; private set; }
 
-      public ViewModel Parent { get; set; }
+      public IViewModel Parent { get; set; }
 
-      public override bool IsValid(bool validateChildren) {
-         // HACK
-         // base.IsValid fails because there is a foreign VMProperty for which the dynamic field
-         // cannot be accessed.
-         return ValidateProperty(Descriptor.SelectedItem).Successful;
-      }
+      //public override bool IsValid(bool validateChildren) {
+      //   // HACK
+      //   // base.IsValid fails because there is a foreign VMProperty for which the dynamic field
+      //   // cannot be accessed.
+      //   //return ValidateProperty(Descriptor.SelectedItem).Successful;
+      //   throw new NotImplementedException();
+      //}
 
       private IEnumerable<TSourceItem> FilteredItems {
          get {
@@ -46,12 +47,12 @@
       }
 
       private IEnumerable<TSourceItem> UnfilteredSourceItems {
-         get { return ViewModelExtensibility.GetForeignProerty(Parent, Descriptor.UnfilteredSourceItems); }
+         get { /*return ViewModelExtensibility.GetForeignProerty(Parent, Descriptor.UnfilteredSourceItems);*/ throw new NotImplementedException(); }
       }
 
       private TSourceItem SelectedSourceItem {
-         get { return ViewModelExtensibility.GetForeignProerty(Parent, Descriptor.SelectedSourceItem); }
-         set { ViewModelExtensibility.SetForeignProperty(Parent, Descriptor.SelectedSourceItem, value); }
+         get { /*return ViewModelExtensibility.GetForeignProerty(Parent, Descriptor.SelectedSourceItem); */ throw new NotImplementedException(); }
+         set { /*ViewModelExtensibility.SetForeignProperty(Parent, Descriptor.SelectedSourceItem, value);*/ throw new NotImplementedException(); }
       }
 
       public VMCollection<TItemVM> AllItems {
@@ -64,13 +65,14 @@
       }
 
       public void Refresh() {
-         UpdateFromSource(Descriptor.AllItems);
-         UpdateFromSource(Descriptor.SelectedItem);
+         throw new NotImplementedException();
+         //UpdateFromSource(Descriptor.AllItems);
+         //UpdateFromSource(Descriptor.SelectedItem);
          Revalidate();
       }
 
       public new void Revalidate() {
-         Revalidate(Descriptor.SelectedItem);
+         //Revalidate(Descriptor.SelectedItem);
       }
 
       internal static SingleSelectionVMDescriptor<TSourceItem, TItemVM> CreateDescriptor(

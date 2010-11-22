@@ -157,7 +157,7 @@
     <value>'GetProperties' with an 'attributes' parameter to filter the returned properties is not supported.</value>
   </data>
   <data name="InvalidComponentInstance" xml:space="preserve">
-    <value>Parameter 'component' is not a valid 'ViewModel'. Make sure you pass an object that is derived from 'ViewModel' to 'TypeDescriptor.GetValue' and 'TypeDescriptor.SetValue'. The value of 'component' was: '{0}'.</value>
+    <value>Parameter 'component' is not a valid 'IViewModel'. Make sure you pass an object that implements 'IViewModel' to 'TypeDescriptor.GetValue' and 'TypeDescriptor.SetValue'. The value of 'component' was: '{0}'.</value>
   </data>
   <data name="NoServiceLocatorConfigured" xml:space="preserve">
     <value>No service locator is configured. Make sure you call 'ServiceLocator.SetServiceLocator' and pass in your implementation of the 'IServiceLocator' interface.</value>

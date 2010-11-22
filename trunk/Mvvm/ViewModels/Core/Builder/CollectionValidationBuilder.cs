@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Linq;
 
    internal sealed class CollectionValidationBuilder<TItemVM> :
       ICollectionValidationBuilder<TItemVM>
@@ -46,21 +45,22 @@
       }
 
       public void Custom(Action<ValidationEventArgs<TItemVM, TItemValue>> validator) {
-         _parent.Custom((item, items, args) => {
-            if (args.Property == _itemProperty) {
-               var validationItems = items.Select(vm =>
-               new ValidationValue<TItemVM, TItemValue>(
-                  vm,
-                  _itemProperty.GetValue(vm)
-               )
-            );
-               var a = new ValidationEventArgs<TItemVM, TItemValue>(
-                  validationItems, args
-               );
+         throw new NotImplementedException();
+         //_parent.Custom((item, items, args) => {
+         //   if (args.Property == _itemProperty) {
+         //      var validationItems = items.Select(vm =>
+         //      new ValidationValue<TItemVM, TItemValue>(
+         //         vm,
+         //         _itemProperty.GetValue(vm)
+         //      )
+         //   );
+         //      var a = new ValidationEventArgs<TItemVM, TItemValue>(
+         //         validationItems, args
+         //      );
 
-               validator(a);
-            }
-         });
+         //      validator(a);
+         //   }
+         //});
       }
    }
 }

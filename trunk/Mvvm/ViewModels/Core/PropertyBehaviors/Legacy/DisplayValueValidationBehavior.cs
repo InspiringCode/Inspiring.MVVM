@@ -38,7 +38,7 @@
 
       protected override void Initialize(BehaviorInitializationContext context) {
          base.Initialize(context);
-         _validationErrorField = context.DynamicFields.DefineField<string>(
+         _validationErrorField = context.Fields.DefineField<string>(
             DynamicFieldGroups.DisplayValueValidationErrorGroup
          );
       }

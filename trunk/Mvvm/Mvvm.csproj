@@ -158,7 +158,7 @@
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\ViewModelPropertyInitializerBehavior.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\SimplePropertyDescriptor.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\TypeDescriptorPropertyBehavior.cs" />
-    <Compile Include="ViewModels\Core\TypeDescriptor\TypeDescriptorService.cs" />
+    <Compile Include="ViewModels\Core\TypeDescriptor\TypeDescriptorViewModelBehavior.cs" />
     <Compile Include="ViewModels\Core\ValidationEventArgs.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationArgs.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationErrorCollection.cs" />
@@ -174,8 +174,8 @@
     <Compile Include="ViewModels\Core\VMDescriptorBaseExtensionMethods.cs" />
     <Compile Include="ViewModels\Core\VMPropertyExtensionMethods.cs" />
     <Compile Include="ViewModels\ExtensionMethods.cs" />
-    <Compile Include="ViewModels\Future\VMDescriptorBase.cs" />
-    <Compile Include="ViewModels\Future\VMPropertyCollection.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptor\VMDescriptorBase.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptor\VMPropertyCollection.cs" />
     <Compile Include="ViewModels\Core\- Todo -\ICreatableItem.cs" />
     <Compile Include="ViewModels\IHasSourceObject.cs" />
     <Compile Include="ViewModels\IViewModel.cs" />
@@ -230,7 +230,7 @@
     <Compile Include="ViewModels\Core\Builder\IVMPropertyFactory.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
     <Compile Include="ViewModels\VMCollection.cs" />
-    <Compile Include="ViewModels\VMDescriptor.cs" />
+    <Compile Include="ViewModels\- No Namespace -\VMDescriptor.cs" />
     <Compile Include="ViewModels\VMDescriptorBuilder.cs" />
     <Compile Include="ViewModels\VMProperty.cs" />
     <Compile Include="ViewModels\Core\Builder\VMPropertyFactory.cs" />
@@ -263,6 +263,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ViewModels\Future\" />
     <Folder Include="Views\TestDoubles\" />
   </ItemGroup>
   <ItemGroup>

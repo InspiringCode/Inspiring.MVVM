@@ -28,7 +28,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
 
       protected override void Initialize(BehaviorInitializationContext context) {
          base.Initialize(context);
-         _localCopyField = context.DynamicFields.DefineField<TValue>(
+         _localCopyField = context.Fields.DefineField<TValue>(
             DynamicFieldGroups.LocalCopyGroup
          );
       }

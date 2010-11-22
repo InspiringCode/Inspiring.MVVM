@@ -11,7 +11,7 @@ namespace Inspiring.Mvvm.ViewModels.Core.Validation.PropertyBehaviors {
       private static readonly FieldDefinitionGroup ValueCacheGroup = new FieldDefinitionGroup();
       private FieldDefinition<TValue> _valueCacheField;
 
-      public void Initialize(InitializationContext context) {
+      public void Initialize(BehaviorInitializationContext context) {
          _valueCacheField = context.Fields.DefineField<TValue>(ValueCacheGroup);
       }
 

@@ -1,21 +1,23 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Future {
+﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
    using System.Collections;
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
 
-   public sealed class VMPropertyCollection : IEnumerable<VMPropertyBase> {
-      private VMPropertyBase[] _properties;
+   public sealed class VMPropertyCollection :
+      IEnumerable<IVMProperty> {
 
-      public VMPropertyCollection(VMPropertyBase[] properties) {
+      private IVMProperty[] _properties;
+
+      public VMPropertyCollection(IVMProperty[] properties) {
          Contract.Requires<ArgumentNullException>(properties != null);
 
          _properties = properties;
       }
 
-      public VMPropertyBase this[string propertyName] {
+      public IVMProperty this[string propertyName] {
          get {
-            VMPropertyBase property;
+            IVMProperty property;
             bool found = TryGetProperty(propertyName, out property);
 
             if (!found) {
@@ -28,15 +30,15 @@
          }
       }
 
-      public bool TryGetProperty(string propertyName, out VMPropertyBase property) {
+      public bool TryGetProperty(string propertyName, out IVMProperty property) {
          Contract.Requires<ArgumentNullException>(propertyName != null);
 
          property = Array.Find(_properties, p => p.PropertyName == propertyName);
          return property != null;
       }
 
-      public IEnumerator<VMPropertyBase> GetEnumerator() {
-         IEnumerable<VMPropertyBase> typed = _properties;
+      public IEnumerator<IVMProperty> GetEnumerator() {
+         IEnumerable<IVMProperty> typed = _properties;
          return typed.GetEnumerator();
       }
 

@@ -59,6 +59,9 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiTests\ViewModels\Domain\Area.cs" />
+    <Compile Include="ApiTests\ViewModels\Domain\AreaRepository.cs" />
+    <Compile Include="ApiTests\ViewModels\VMs\AreaVM.cs" />
     <Compile Include="AssertHelper.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Common\HashCodeServiceTests.cs" />

@@ -30,7 +30,7 @@
             .Build();
 
       public PersonVM()
-         : base(Descriptor) {
+         : base() {
       }
 
       public PersonVM(Person person)
@@ -58,7 +58,7 @@
       public VMCollectionProperty<ProjectVM> Projects { get; set; }
    }
 
-   public class ProjecTVM : IViewModel<ProjectVMDescriptor>, ICanInitializeFrom<Project> {
+   public class ProjectVM : ViewModel<ProjectVMDescriptor>, ICanInitializeFrom<Project> {
       public static readonly ProjectVMDescriptor Descriptor = VMDescriptorBuilder
             .For<ProjectVM>()
             .CreateDescriptor(c => {
@@ -77,7 +77,7 @@
             .Build();
 
       public ProjectVM()
-         : base(Descriptor) {
+         : base() {
       }
 
       public ProjectVM(Project project)

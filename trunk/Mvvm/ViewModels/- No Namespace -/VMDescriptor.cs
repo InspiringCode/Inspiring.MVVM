@@ -3,7 +3,6 @@
    using System.Linq;
    using System.Reflection;
    using Inspiring.Mvvm.ViewModels.Core;
-   using Inspiring.Mvvm.ViewModels.Future;
 
    public class VMDescriptor : VMDescriptorBase {
       public VMDescriptor() {

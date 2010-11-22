@@ -2,7 +2,6 @@
    using System;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
-   using Inspiring.Mvvm.ViewModels.Future;
 
    public class ViewModelStub : IViewModel {
       public ViewModelStub() {

@@ -7,6 +7,6 @@
       /// <summary>
       ///   Initializes the property behavior.
       /// </summary>
-      void Initialize(InitializationContext context);
+      void Initialize(BehaviorInitializationContext context);
    }
 }

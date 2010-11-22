@@ -2,7 +2,6 @@
    using System;
    using System.Collections.Generic;
    using Inspiring.Mvvm.ViewModels;
-   using Inspiring.Mvvm.ViewModels.Future;
 
    internal sealed class VMDescriptorStub : VMDescriptorBase {
       List<VMPropertyBase> _properties;

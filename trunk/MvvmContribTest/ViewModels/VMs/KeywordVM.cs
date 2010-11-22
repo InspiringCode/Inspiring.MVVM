@@ -15,7 +15,7 @@
          .Build();
 
       public KeywordVM()
-         : base(Descriptor) {
+         : base() {
       }
 
       public Keyword Keyword { get; private set; }

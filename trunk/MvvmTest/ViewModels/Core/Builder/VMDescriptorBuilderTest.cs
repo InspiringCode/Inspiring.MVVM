@@ -94,7 +94,7 @@
             .Build();
 
          public CompanyVM(Company company)
-            : base(Descriptor) {
+            : base() {
             Company = company;
          }
 
@@ -130,7 +130,7 @@
             })
             .Build();
          public PersonVM()
-            : base(Descriptor) {
+            : base() {
 
          }
          public Person Person { get; set; }

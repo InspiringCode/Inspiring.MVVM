@@ -18,7 +18,7 @@
 
       protected override void Initialize(BehaviorInitializationContext context) {
          base.Initialize(context);
-         _backingField = context.DynamicFields.DefineField<TValue>(
+         _backingField = context.Fields.DefineField<TValue>(
             DynamicFieldGroups.BackingFieldGroup
          );
       }

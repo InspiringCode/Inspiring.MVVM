@@ -3,7 +3,7 @@
    using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.ViewModels.Core;
 
-   public abstract class VMPropertyBase {
+   public abstract class VMPropertyBase : IVMProperty {
       internal VMPropertyBase(Type propertyType) {
          Contract.Requires(propertyType != null);
 
@@ -39,7 +39,7 @@
          Descriptor = descriptor;
       }
 
-      internal abstract void ConfigureBehaviors(BehaviorConfiguration configuration, FieldDefinitionCollection fieldDefinitions);
+      internal abstract void ConfigureBehaviors(BehaviorConfiguration configuration, VMDescriptorBase descriptor);
 
       internal object GetDisplayValue(IBehaviorContext vm) {
          Contract.Requires(vm != null);
@@ -86,6 +86,15 @@
          }
          return true;
       }
+
+
+      public object GetValue(IBehaviorContext context, ValueStage stage) {
+         throw new NotImplementedException();
+      }
+
+      public void SetValue(IBehaviorContext context, object value) {
+         throw new NotImplementedException();
+      }
    }
 
    public abstract class VMPropertyBase<T> : VMPropertyBase, IVMProperty<T> {
@@ -94,9 +103,10 @@
          : base(typeof(T)) {
       }
 
-      internal override void ConfigureBehaviors(BehaviorConfiguration configuration, FieldDefinitionCollection fieldDefinitions) {
+      internal override void ConfigureBehaviors(BehaviorConfiguration configuration, VMDescriptorBase descriptor) {
          Behaviors = configuration.CreateBehaviorChain<T>();
-         ((IBehavior)Behaviors).Initialize(new BehaviorInitializationContext(fieldDefinitions, this));
+         var fields = descriptor.GetService<FieldDefinitionCollection>();
+         ((IBehavior)Behaviors).Initialize(new BehaviorInitializationContext(fields, descriptor, this));
       }
 
       //[Obsolete]

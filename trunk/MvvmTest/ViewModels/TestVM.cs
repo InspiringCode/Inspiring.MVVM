@@ -2,7 +2,7 @@
    using System.Collections.Generic;
    using Inspiring.Mvvm.ViewModels;
 
-   internal sealed class TesTVM : IViewModel<TestVMDescriptor> {
+   internal sealed class TestVM : ViewModel<TestVMDescriptor> {
       public static readonly new TestVMDescriptor Descriptor = VMDescriptorBuilder
          .For<TestVM>()
          .CreateDescriptor(c => {
@@ -21,7 +21,7 @@
          .Build();
 
       public TestVM()
-         : base(Descriptor) {
+         : base() {
       }
 
       public ValidationResult ViewModelValidationResult { get; set; }
@@ -61,24 +61,24 @@
       }
 
       public void InvokeUpdateFromSource(VMPropertyBase property) {
-         UpdateFromSource(property);
+         //UpdateFromSource(property);
       }
 
       public void InvokeUpdateSource(VMPropertyBase property) {
-         UpdateSource(property);
+         //UpdateSource(property);
       }
 
-      protected override void OnValidate(_ViewModelValidationArgs args) {
-         base.OnValidate(args);
+      //protected override void OnValidate(_ViewModelValidationArgs args) {
+      //   base.OnValidate(args);
 
-         if (ViewModelValidationResult != null && !ViewModelValidationResult.Successful) {
-            args.AddError(ViewModelValidationResult.ErrorMessage);
-         }
-      }
+      //   if (ViewModelValidationResult != null && !ViewModelValidationResult.Successful) {
+      //      args.AddError(ViewModelValidationResult.ErrorMessage);
+      //   }
+      //}
 
-      protected override ValidationResult ValidateProperty(VMPropertyBase property) {
-         return LocalPropertyValidationResult ?? base.ValidateProperty(property);
-      }
+      //protected override ValidationResult ValidateProperty(VMPropertyBase property) {
+      //   return LocalPropertyValidationResult ?? base.ValidateProperty(property);
+      //}
    }
 
    internal sealed class TestVMDescriptor : VMDescriptor {
@@ -94,7 +94,6 @@
    internal sealed class ChildVM :
       ViewModel<ChildVMDescriptor>,
       ICanInitializeFrom<ChildVMSource>,
-      ICreatableItem<TestVM, ChildVMSource>,
       IVMCollectionItem<ChildVMSource> {
 
       public static readonly ChildVMDescriptor Descriptor = VMDescriptorBuilder
@@ -113,7 +112,7 @@
          .Build();
 
       public ChildVM()
-         : base(Descriptor) {
+         : base() {
       }
 
       public void InitializeFrom(ChildVMSource source) {
@@ -132,24 +131,24 @@
          set { SetValue(Descriptor.MappedMutableProperty, value); }
       }
 
-      public void OnNewItem(ItemCreationArguments<ChildVMSource> args, TestVM parent) {
-         if (args.IsStartNewItem) {
-            args.NewSoureObject = new ChildVMSource { Parent = parent.Source };
-            InitializeFrom(args.NewSoureObject);
-         }
-      }
+      //public void OnNewItem(ItemCreationArguments<ChildVMSource> args, TestVM parent) {
+      //   if (args.IsStartNewItem) {
+      //      args.NewSoureObject = new ChildVMSource { Parent = parent.Source };
+      //      InitializeFrom(args.NewSoureObject);
+      //   }
+      //}
 
-      protected override void OnValidate(_ViewModelValidationArgs args) {
-         base.OnValidate(args);
+      //protected override void OnValidate(_ViewModelValidationArgs args) {
+      //   base.OnValidate(args);
 
-         if (ViewModelValidationResult != null && !ViewModelValidationResult.Successful) {
-            args.AddError(ViewModelValidationResult.ErrorMessage);
-         }
-      }
+      //   if (ViewModelValidationResult != null && !ViewModelValidationResult.Successful) {
+      //      args.AddError(ViewModelValidationResult.ErrorMessage);
+      //   }
+      //}
 
-      protected override ValidationResult ValidateProperty(VMPropertyBase property) {
-         return MappedMutablePropertyValidationResult ?? base.ValidateProperty(property);
-      }
+      //protected override ValidationResult ValidateProperty(VMPropertyBase property) {
+      //   return MappedMutablePropertyValidationResult ?? base.ValidateProperty(property);
+      //}
    }
 
    internal sealed class ChildVMDescriptor : VMDescriptor {
@@ -159,7 +158,6 @@
    internal sealed class ParentedChildVM :
       ViewModel<ParentedChildVMDescriptor>,
       ICanInitializeFrom<SourceWithParent<TestVM, ChildVMSource>>,
-      ICreatableItem<TestVM, ChildVMSource>,
       IVMCollectionItem<ChildVMSource> {
 
       public static readonly ParentedChildVMDescriptor Descriptor = VMDescriptorBuilder
@@ -175,7 +173,7 @@
          .Build();
 
       public ParentedChildVM()
-         : base(Descriptor) {
+         : base() {
       }
 
       public void InitializeFrom(SourceWithParent<TestVM, ChildVMSource> source) {
@@ -193,24 +191,24 @@
          set { SetValue(Descriptor.MappedMutableProperty, value); }
       }
 
-      public void OnNewItem(ItemCreationArguments<ChildVMSource> args, TestVM parent) {
-         if (args.IsStartNewItem) {
-            args.NewSoureObject = new ChildVMSource { Parent = parent.Source };
-            InitializeFrom(new SourceWithParent<TestVM, ChildVMSource>(parent, args.NewSoureObject));
-         }
-      }
+      //public void OnNewItem(ItemCreationArguments<ChildVMSource> args, TestVM parent) {
+      //   if (args.IsStartNewItem) {
+      //      args.NewSoureObject = new ChildVMSource { Parent = parent.Source };
+      //      InitializeFrom(new SourceWithParent<TestVM, ChildVMSource>(parent, args.NewSoureObject));
+      //   }
+      //}
 
-      protected override void OnValidate(_ViewModelValidationArgs args) {
-         base.OnValidate(args);
+      //protected override void OnValidate(_ViewModelValidationArgs args) {
+      //   base.OnValidate(args);
 
-         if (ViewModelValidationResult != null && !ViewModelValidationResult.Successful) {
-            args.AddError(ViewModelValidationResult.ErrorMessage);
-         }
-      }
+      //   if (ViewModelValidationResult != null && !ViewModelValidationResult.Successful) {
+      //      args.AddError(ViewModelValidationResult.ErrorMessage);
+      //   }
+      //}
 
-      protected override ValidationResult ValidateProperty(VMPropertyBase property) {
-         return MappedMutablePropertyValidationResult ?? base.ValidateProperty(property);
-      }
+      //protected override ValidationResult ValidateProperty(VMPropertyBase property) {
+      //   return MappedMutablePropertyValidationResult ?? base.ValidateProperty(property);
+      //}
 
       ChildVMSource IVMCollectionItem<ChildVMSource>.Source {
          get { return Source.Source; }

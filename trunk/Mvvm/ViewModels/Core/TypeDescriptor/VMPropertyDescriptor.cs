@@ -4,13 +4,13 @@
 
    /// <summary>
    ///   A <see cref="System.ComponentModel.PropertyDescriptor"/> that allows
-   ///   the WPF binding infrastructure to bind to VMProperties even if no CLR
+   ///   the WPF binding infrastructure to bind to VM properties even if no CLR
    ///   wrapper is defined on the ViewModel class.
    /// </summary>
    internal class VMPropertyDescriptor : SimplePropertyDescriptor {
-      private VMPropertyBase _property;
+      private IVMProperty _property;
 
-      public VMPropertyDescriptor(VMPropertyBase property)
+      public VMPropertyDescriptor(IVMProperty property)
          : base(
             property.PropertyName,
             property.PropertyType,
@@ -19,28 +19,26 @@
          Contract.Requires(property != null);
 
          _property = property;
-
-         // HACK
-         Contract.Assert(_property.PropertyDescriptor == null);
-         _property.PropertyDescriptor = this;
       }
 
       public override object GetValue(object component) {
-         IBehaviorContext vm = CastComponent(component);
-         return _property.GetDisplayValue(vm);
+         IViewModel vm = CastComponent(component);
+         return _property.GetValue(vm.GetContext(), ValueStage.PreConversion);
       }
 
       public override void SetValue(object component, object value) {
-         IBehaviorContext vm = CastComponent(component);
-         _property.SetDisplayValue(vm, value);
+         IViewModel vm = CastComponent(component);
+         _property.SetValue(vm.GetContext(), value);
       }
 
       public void RaiseValueChanged(IBehaviorContext vm) {
          OnValueChanged(vm, EventArgs.Empty);
       }
 
-      private IBehaviorContext CastComponent(object component) {
-         IBehaviorContext vm = component as IBehaviorContext;
+      private IViewModel CastComponent(object component) {
+         Contract.Ensures(Contract.Result<IViewModel>() != null);
+
+         var vm = component as IViewModel;
 
          if (vm == null) {
             throw new ArgumentException(

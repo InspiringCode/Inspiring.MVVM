@@ -11,8 +11,7 @@
    /// </summary>
    internal sealed class MappedPropertyBehavior<TVM, TValue> :
       Behavior,
-      IPropertyAccessorBehavior<TValue>
-      where TVM : IBehaviorContext {
+      IPropertyAccessorBehavior<TValue> {
 
       private VMPropertyBase<TValue> _property;
       private PropertyPath<TVM, TValue> _path;

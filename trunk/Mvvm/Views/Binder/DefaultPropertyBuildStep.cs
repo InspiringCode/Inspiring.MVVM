@@ -39,7 +39,7 @@
 
       public void Execute(BinderContext context) {
          if (context.TargetProperty == null) {
-            if (typeof(ViewModel).IsAssignableFrom(context.SourcePropertyType) ||
+            if (typeof(IViewModel).IsAssignableFrom(context.SourcePropertyType) ||
                 typeof(IScreen).IsAssignableFrom(context.SourcePropertyType)) {
                context.TargetProperty = View.ModelProperty;
             } else {

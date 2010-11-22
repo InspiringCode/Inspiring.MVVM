@@ -2,7 +2,6 @@
    using System.ComponentModel;
    using System.Diagnostics.Contracts;
    using System.Linq;
-   using Inspiring.Mvvm.ViewModels.Future;
 
    /// <summary>
    ///   A service registered with a <see cref="VMDescriptor"/> that caches all

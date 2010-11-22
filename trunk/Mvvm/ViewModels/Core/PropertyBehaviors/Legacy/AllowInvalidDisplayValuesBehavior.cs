@@ -49,7 +49,7 @@
 
       protected override void Initialize(BehaviorInitializationContext context) {
          base.Initialize(context);
-         _invalidValueField = context.DynamicFields.DefineField<object>(
+         _invalidValueField = context.Fields.DefineField<object>(
             DynamicFieldGroups.InvalidValueGroup
          );
       }

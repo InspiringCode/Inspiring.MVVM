@@ -216,7 +216,7 @@
 
       private class VMCollectionPropertyFactoryExpression<TParentVM, TItem> :
          IVMCollectionPropertyFactoryExpression<TParentVM, TItem>
-         where TParenTVM : IViewModel {
+         where TParentVM : IViewModel {
 
          private ConfiguredProperty _config;
 

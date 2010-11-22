@@ -4,9 +4,13 @@
    using System.Diagnostics.Contracts;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels.Core;
-   using Inspiring.Mvvm.ViewModels.Future;
 
-   internal abstract class ViewModel<TDescriptor> :
+   // TODO: Rename/Refactor me!
+   public class ViewModel {
+      public static readonly FieldDefinitionGroup GeneralFieldGroup = new FieldDefinitionGroup();
+   }
+
+   public abstract class ViewModel<TDescriptor> :
       CustomTypeDescriptor,
       IViewModel,
       INotifyPropertyChanged,

@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.MvvmContribTest.ViewModels {
+   using System;
    using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
@@ -167,7 +168,8 @@
 
          CollectionAssert.AreEquivalent(expected, actualSourceItems);
 
-         Assert.IsTrue(singleSelection.IsValid(false));
+         throw new NotImplementedException();
+         //Assert.IsTrue(singleSelection.IsValid(false));
       }
 
       private VMCollection<SelectionItemVM<PersonStatus>> GetAllItems(
@@ -209,7 +211,7 @@
             .Build();
 
          public PersonVM(IEnumerable<PersonStatus> allStatus)
-            : base(Descriptor) {
+            : base() {
             AllStatus = allStatus;
          }
 

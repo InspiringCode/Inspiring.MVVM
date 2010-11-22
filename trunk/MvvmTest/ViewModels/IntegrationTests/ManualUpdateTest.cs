@@ -141,7 +141,7 @@ namespace Inspiring.MvvmTest.ViewModels {
          _vm.PropertyChanged -= handler;
       }
 
-      private void CheckUpdateFromSource<T>(VMCollectionProperty<T> property, Action sourceMutator) where T : ViewModel {
+      private void CheckUpdateFromSource<T>(VMCollectionProperty<T> property, Action sourceMutator) where T : IViewModel {
          var before = _vm.GetValue(property);
          sourceMutator();
          _vm.InvokeUpdateFromSource(property);

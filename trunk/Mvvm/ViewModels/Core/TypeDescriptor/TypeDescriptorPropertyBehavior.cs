@@ -1,17 +1,23 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core.TypeDescriptor {
-   using System;
    using System.Diagnostics.Contracts;
 
-   [Obsolete]
-   internal sealed class TypeDescriptorPropertyBehavior : Behavior, IHandlePropertyChangedBehavior {
+   internal sealed class TypeDescriptorPropertyBehavior :
+      Behavior,
+      IBehaviorInitializationBehavior,
+      IHandlePropertyChangedBehavior {
+
       private VMPropertyDescriptor _propertyDescriptor;
 
-      public TypeDescriptorPropertyBehavior(VMPropertyDescriptor propertyDescriptor) {
-         Contract.Requires(propertyDescriptor != null);
-         _propertyDescriptor = propertyDescriptor;
+      public void Initialize(BehaviorInitializationContext context) {
+         _propertyDescriptor = new VMPropertyDescriptor(context.Property);
       }
 
       public void HandlePropertyChanged(IBehaviorContext vm) {
+         Contract.Assert(
+            _propertyDescriptor != null,
+            "Behavior not initialized."
+         );
+
          _propertyDescriptor.RaiseValueChanged(vm);
 
          IHandlePropertyChangedBehavior next;

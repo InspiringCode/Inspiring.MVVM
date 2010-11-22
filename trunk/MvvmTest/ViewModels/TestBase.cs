@@ -2,6 +2,7 @@
    using System;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
+   using Inspiring.MvvmTest.Stubs;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Moq;
 
@@ -15,7 +16,7 @@
          public ViewModelBehaviorContextHelper() {
             var fields = new FieldDefinitionCollection();
 
-            InitializationContext = new InitializationContext(fields);
+            InitializationContext = new BehaviorInitializationContext(fields, new VMDescriptorStub()); // Is this correct?
 
             var fieldValues = new Lazy<FieldValueHolder>(() =>
                fields.CreateValueHolder()
@@ -36,7 +37,7 @@
 
          public IBehaviorContext Context { get; private set; }
 
-         public InitializationContext InitializationContext { get; private set; }
+         public BehaviorInitializationContext InitializationContext { get; private set; }
       }
 
       protected class PropertyBehaviorContextTestHelper {
@@ -47,8 +48,9 @@
 
             var fields = new FieldDefinitionCollection();
 
-            InitializationContext = new InitializationContext(
+            InitializationContext = new BehaviorInitializationContext(
                fields,
+               new VMDescriptorStub(), // TODO: Is this correct? Fields and so?
                property
             );
 
@@ -76,7 +78,7 @@
 
          public IBehaviorContext Context { get; private set; }
 
-         public InitializationContext InitializationContext { get; private set; }
+         public BehaviorInitializationContext InitializationContext { get; private set; }
       }
    }
 }

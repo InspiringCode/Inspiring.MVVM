@@ -25,7 +25,7 @@
       private IEnumerable<Keyword> _allSourceItems;
 
       public KeywordSelectionVM()
-         : base(Descriptor) {
+         : base() {
       }
 
       public Document Document { get; private set; }
@@ -37,7 +37,7 @@
       public IEnumerable<Keyword> AllSourceItems {
          private get {
             if (_allSourceItems == null) {
-               object injected = ServiceLocator.TryGetInstance(typeof(IEnumerable<Keyword>));
+               object injected = Kernel.ServiceLocator.TryGetInstance(typeof(IEnumerable<Keyword>));
                _allSourceItems = injected as IEnumerable<Keyword>;
             }
             return _allSourceItems;

@@ -11,11 +11,11 @@
          : base(propertyType, propertyName) {
       }
 
-      internal override void ConfigureBehaviors(BehaviorConfiguration configuration, FieldDefinitionCollection fieldDefinitions) {
+      internal override void Revalidate(IBehaviorContext context) {
          throw new NotImplementedException("TODO");
       }
 
-      internal override void Revalidate(IBehaviorContext context) {
+      internal override void ConfigureBehaviors(BehaviorConfiguration configuration, VMDescriptorBase descriptor) {
          throw new NotImplementedException("TODO");
       }
    }

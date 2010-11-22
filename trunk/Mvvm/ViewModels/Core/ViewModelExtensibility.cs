@@ -1,4 +1,5 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core {
+﻿using System;
+namespace Inspiring.Mvvm.ViewModels.Core {
 
    public static class ViewModelExtensibility {
       public static BehaviorConfigurationDictionary ExposeBehaviorConfigurations(
@@ -9,18 +10,20 @@
       }
 
       public static T GetForeignProerty<T>(
-         ViewModel foreignViewModel,
+         IViewModel foreignViewModel,
          VMPropertyBase<T> property
       ) {
-         return property.GetValue(foreignViewModel);
+         throw new NotImplementedException();
+         //return property.GetValue(foreignViewModel);
       }
 
       public static void SetForeignProperty<T>(
-         ViewModel foreignViewModel,
+         IViewModel foreignViewModel,
          VMPropertyBase<T> property,
          T value
       ) {
-         property.SetValue(foreignViewModel, value);
+         throw new NotImplementedException();
+         //property.SetValue(foreignViewModel, value);
       }
 
       public static IRootVMPropertyFactory<TVM> ConfigurePropertyFactory<TVM>(

@@ -1,6 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core.Collections {
    using System.Diagnostics.Contracts;
-   using Inspiring.Mvvm.ViewModels.Future;
+   using Inspiring.Mvvm.ViewModels;
 
    public sealed class VMCollectionDescriptor {
       public VMCollectionDescriptor(VMDescriptorBase itemDescriptor) {

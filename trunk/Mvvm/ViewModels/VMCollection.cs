@@ -26,7 +26,7 @@
 
       // TODO: Is public right?
       public VMCollection(
-         ViewModel parent,
+         IViewModel parent,
          VMDescriptor itemDescriptor,
          IEnumerable<TItemVM> items = null
       ) {
@@ -38,7 +38,7 @@
          }
       }
 
-      internal VMCollection(ViewModel parent, VMDescriptor itemDescriptor, CollectionValidationBehavior<TItemVM> validationBehavior) {
+      internal VMCollection(IViewModel parent, VMDescriptor itemDescriptor, CollectionValidationBehavior<TItemVM> validationBehavior) {
          _parent = parent;
          ItemDescriptor = itemDescriptor;
          _validationBehavior = validationBehavior;

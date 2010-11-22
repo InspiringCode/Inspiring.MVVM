@@ -32,7 +32,7 @@
       private EventHandler _requerySuggestedHandler;
 
       public SaveDiscardVM()
-         : base(Descriptor) {
+         : base() {
       }
 
       public DataState State {
@@ -47,7 +47,8 @@
          // RequerySuggested is a weak event. We have to hold a strong 
          // reference to the handler to avoid garbage collection!
          _requerySuggestedHandler = new EventHandler((sender, e) => {
-            OnPropertyChanged(Descriptor.State);
+            throw new NotImplementedException();
+            //OnPropertyChanged(Descriptor.State);
          });
 
          CommandManager.RequerySuggested += _requerySuggestedHandler;

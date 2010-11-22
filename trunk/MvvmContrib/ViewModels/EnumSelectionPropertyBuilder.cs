@@ -4,7 +4,7 @@
    using System.Linq.Expressions;
    using Inspiring.Mvvm.ViewModels.Core;
 
-   public interface IEnumSelectionPropertyBuilder<TParentVM> where TParenTVM : IViewModel {
+   public interface IEnumSelectionPropertyBuilder<TParentVM> where TParentVM : IViewModel {
       SingleSelectionProperty<TEnum> Mapped<TEnum>(
          Expression<Func<TParentVM, TEnum>> selectedItemSelector,
          Action<
@@ -16,7 +16,7 @@
 
    internal sealed class EnumSelectionPropertyBuilder<TParentVM> :
       IEnumSelectionPropertyBuilder<TParentVM>
-      where TParenTVM : IViewModel {
+      where TParentVM : IViewModel {
 
       private IRootVMPropertyFactory<TParentVM> _propertyFactory;
 

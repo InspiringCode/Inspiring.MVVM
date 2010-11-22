@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 namespace Inspiring.Mvvm.ViewModels {
    public class SelectionItemVM<TSourceItem> :
       ViewModel<VMDescriptor>,
@@ -25,11 +23,12 @@ namespace Inspiring.Mvvm.ViewModels {
       }
 
       private string GetCaption() {
-         var desc = _descriptor as SelectionItemVMDescriptor;
+         throw new NotImplementedException();
+         //var desc = _descriptor as SelectionItemVMDescriptor;
 
-         return desc != null ?
-            GetValue(desc.Caption) :
-            null;
+         //return desc != null ?
+         //   GetValue(desc.Caption) :
+         //   null;
       }
    }
 

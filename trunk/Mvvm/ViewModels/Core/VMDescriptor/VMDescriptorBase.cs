@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Future {
+﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
    using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.Common;

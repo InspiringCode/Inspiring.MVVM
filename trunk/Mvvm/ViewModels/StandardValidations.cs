@@ -39,7 +39,7 @@
          Func<TVM, TValue> valueSelector,
          string errorMessage
       )
-         where TParenTVM : IViewModel
+         where TParentVM : IViewModel
          where TVM : IViewModel {
 
          builder.Custom((TParentVM parent, TVM vm, TValue value) => {
@@ -56,7 +56,7 @@
          string errorMessage
       ) where TItemVM : IViewModel {
          builder.Custom(args => {
-            if (args.AllItems.Any(i => i.VM != args.Item.VM && Object.Equals(i.Value, args.Item.Value))) {
+            if (args.AllItems.Any(i => !Object.Equals(i.VM, args.Item.VM) && Object.Equals(i.Value, args.Item.Value))) {
                args.AddError(errorMessage);
             }
 
@@ -70,7 +70,7 @@
          string errorMessage
       ) where TItemVM : IViewModel {
          builder.Custom(args => {
-            if (args.AllItems.Any(i => i.VM != args.Item.VM && String.Equals(i.Value, args.Item.Value, comparisonType))) {
+            if (args.AllItems.Any(i => !Object.Equals(i.VM, args.Item.VM) && String.Equals(i.Value, args.Item.Value, comparisonType))) {
                args.AddError(errorMessage);
             }
 
@@ -82,11 +82,12 @@
          this IValidationBuilder<TVM> builder,
          string errorMessage
       ) where TVM : IViewModel {
-         builder.ViewModelValidator((vm, args) => {
-            if (!vm.AreChildrenValid(validateGrandchildren: false)) {
-               args.AddError(errorMessage);
-            }
-         });
+         throw new NotImplementedException();
+         //builder.ViewModelValidator((vm, args) => {
+         //   if (!vm.AreChildrenValid(validateGrandchildren: false)) {
+         //      args.AddError(errorMessage);
+         //   }
+         //});
       }
 
       // TODO: Test me.
@@ -94,11 +95,12 @@
          this IValidationBuilder<TVM> builder,
          string errorMessage
       ) where TVM : IViewModel {
-         builder.ViewModelValidator((vm, args) => {
-            if (!vm.ArePropertiesValid(validateChildren: false)) {
-               args.AddError(errorMessage);
-            }
-         });
+         throw new NotImplementedException();
+         //builder.ViewModelValidator((vm, args) => {
+         //   if (!vm.ArePropertiesValid(validateChildren: false)) {
+         //      args.AddError(errorMessage);
+         //   }
+         //});
       }
 
       // TODO: Test me.

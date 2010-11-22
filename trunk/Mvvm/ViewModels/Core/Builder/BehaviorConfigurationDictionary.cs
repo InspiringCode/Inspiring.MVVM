@@ -18,8 +18,7 @@
             VMPropertyBase property = pair.Key;
             BehaviorConfiguration config = pair.Value;
 
-            var fieldDefinitions = descriptor.GetService<FieldDefinitionCollection>();
-            property.ConfigureBehaviors(config, fieldDefinitions);
+            property.ConfigureBehaviors(config, descriptor);
          }
       }
    }

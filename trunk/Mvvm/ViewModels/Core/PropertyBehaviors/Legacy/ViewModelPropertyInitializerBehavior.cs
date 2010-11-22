@@ -10,7 +10,7 @@
          TSource source = GetSourceObject(vm);
          instance.InitializeFrom(source);
 
-         instance.Parent = (ViewModel)vm.VM;
+         instance.Parent = (IViewModel)vm.VM;
 
          return instance;
       }

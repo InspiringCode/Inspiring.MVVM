@@ -1,5 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
-   using Inspiring.Mvvm.ViewModels.Future;
+   using Inspiring.Mvvm.ViewModels;
 
    public static class VMDescriptorBaseExtensionMethods {
       public static ValidationState GetValidationState(

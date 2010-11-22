@@ -1,6 +1,5 @@
 ﻿using System;
 using Inspiring.Mvvm.ViewModels;
-using Inspiring.Mvvm.ViewModels.Future;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Inspiring.MvvmTest.ViewModels.Core {

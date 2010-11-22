@@ -16,7 +16,7 @@
          .Build();
 
       public OkCancelVM()
-         : base(Descriptor) {
+         : base() {
       }
 
       private IOkCancelHandler DialogActionHandler { get; set; }

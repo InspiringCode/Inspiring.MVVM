@@ -1,7 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Diagnostics.Contracts;
-   using Inspiring.Mvvm.ViewModels.Future;
+   using Inspiring.Mvvm.ViewModels;
 
    public sealed class VMKernel : IBehaviorContext {
       private readonly IViewModel _vm;

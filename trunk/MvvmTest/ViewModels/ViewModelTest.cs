@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels {
+   using System;
    using System.ComponentModel;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
@@ -9,8 +10,9 @@
       [TestMethod]
       public void RowValidation_WithoutValidations_IsValid() {
          var vm = new EmptyVM(new EmptyVMDescriptor());
-         bool isValid = vm.IsValid(true);
-         Assert.IsTrue(isValid);
+         throw new NotImplementedException();
+         //bool isValid = vm.IsValid(true);
+         //Assert.IsTrue(isValid);
       }
 
       [TestMethod]
@@ -123,7 +125,7 @@
 
       private class EmptyVM : ViewModel<EmptyVMDescriptor> {
          public EmptyVM(EmptyVMDescriptor descriptor)
-            : base(descriptor) {
+            : base() {
          }
 
          public ValidationResult InvokeValidateMethod() {

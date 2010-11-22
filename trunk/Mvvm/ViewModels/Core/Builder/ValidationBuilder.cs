@@ -61,14 +61,14 @@
          //});
       }
 
-      public IValidationBuilder<TParentVM, TVM, TValue> WithParent<TParentVM>() where TParenTVM : IViewModel {
+      public IValidationBuilder<TParentVM, TVM, TValue> WithParent<TParentVM>() where TParentVM : IViewModel {
          return new ValidationBuilder<TParentVM, TVM, TValue>(_config);
       }
    }
 
    internal sealed class ValidationBuilder<TParentVM, TVM, TValue> : IValidationBuilder<TParentVM, TVM, TValue>
       where TVM : IViewModel
-      where TParenTVM : IViewModel {
+      where TParentVM : IViewModel {
       private BehaviorConfiguration _config;
 
       public ValidationBuilder(BehaviorConfiguration config) {

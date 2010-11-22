@@ -43,7 +43,7 @@ namespace Inspiring.MvvmTest.ViewModels {
             .Build();
 
          public PersonVM(Person person)
-            : base(Descriptor) {
+            : base() {
             Person = person;
          }
 
