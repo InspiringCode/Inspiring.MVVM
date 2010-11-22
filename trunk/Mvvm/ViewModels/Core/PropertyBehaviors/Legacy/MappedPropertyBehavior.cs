@@ -5,13 +5,13 @@
    // TODO (important): Implement IManuelUpdateBehavior correctly!!!!!!!
 
    /// <summary>
-   ///   A <see cref="IAccessPropertyBehavior"/> that implements the get/set 
+   ///   A <see cref="IDisplayValueAccessorBehavior"/> that implements the get/set 
    ///   operation of a <see cref="VMPropertyBase"/> by using the target of a CLR
    ///   property defined on a target object of the view model.
    /// </summary>
    internal sealed class MappedPropertyBehavior<TVM, TValue> :
       Behavior,
-      IAccessPropertyBehavior<TValue>
+      IPropertyAccessorBehavior<TValue>
       where TVM : IBehaviorContext {
 
       private VMPropertyBase<TValue> _property;
@@ -22,7 +22,7 @@
          _path = path;
       }
 
-      public TValue GetValue(IBehaviorContext vm) {
+      public TValue GetValue(IBehaviorContext vm, ValueStage stage) {
          return _path.GetValue((TVM)vm);
       }
 

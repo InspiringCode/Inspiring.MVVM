@@ -116,9 +116,9 @@
       }
 
       private IEnumerable<TItemSource> GetSource(IBehaviorContext context) {
-         var sourceAccessorBehavior = GetNextBehavior<IAccessPropertyBehavior<IEnumerable<TItemSource>>>();
+         var sourceAccessorBehavior = GetNextBehavior<IPropertyAccessorBehavior<IEnumerable<TItemSource>>>();
 
-         IEnumerable<TItemSource> collectionSource = sourceAccessorBehavior.GetValue(context);
+         IEnumerable<TItemSource> collectionSource = sourceAccessorBehavior.GetValue(context, ValueStage.PostValidation);
          Contract.Assert(collectionSource != null);
 
          return collectionSource;

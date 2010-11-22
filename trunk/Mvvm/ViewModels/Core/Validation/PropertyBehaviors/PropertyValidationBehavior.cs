@@ -4,7 +4,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
    internal sealed class PropertyValidationBehavior<TValue> :
       Behavior,
       IBehaviorInitializationBehavior,
-      //IAccessPropertyBehavior<TValue>, // TODO: Add back interface after refactoring.
+      //IPropertyAccessorBehavior<TValue>, // TODO: Add back interface after refactoring.
       IValidationStatePropertyBehavior {
 
       private static readonly FieldDefinitionGroup ValidationErrorGroup = new FieldDefinitionGroup();

@@ -1,12 +1,17 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core.Collections {
    using System.Diagnostics.Contracts;
+   using Inspiring.Mvvm.ViewModels.Future;
 
    public sealed class VMCollectionDescriptor {
-      public VMCollectionDescriptor() {
+      public VMCollectionDescriptor(VMDescriptorBase itemDescriptor) {
+         Contract.Requires(itemDescriptor != null);
+         ItemDescriptor = itemDescriptor;
          Behaviors = new Behavior();
       }
 
       public Behavior Behaviors { get; private set; }
+
+      public VMDescriptorBase ItemDescriptor { get; private set; }
 
       [ContractInvariantMethod]
       private void ObjectInvariant() {

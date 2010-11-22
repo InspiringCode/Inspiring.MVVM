@@ -3,12 +3,12 @@
    using System.Diagnostics.Contracts;
 
    /// <summary>
-   ///   A <see cref="IAccessPropertyBehavior"/> that uses the specified delegates
+   ///   A <see cref="IDisplayValueAccessorBehavior"/> that uses the specified delegates
    ///   to implement get/set operation of a <see cref="VMPropertyBase"/>.
    /// </summary>
    public sealed class CalculatedPropertyBehavior<TSource, TValue> :
       Behavior,
-      IAccessPropertyBehavior<TValue>,
+      IPropertyAccessorBehavior<TValue>,
       IMutabilityCheckerBehavior,
       IManuelUpdateBehavior {
 
@@ -30,7 +30,7 @@
          _setter = setter ?? _throwingSetter;
       }
 
-      public TValue GetValue(IBehaviorContext vm) {
+      public TValue GetValue(IBehaviorContext vm, ValueStage stage) {
          return _getter(GetSourceValue(vm));
       }
 
@@ -40,10 +40,10 @@
       }
 
       private TSource GetSourceValue(IBehaviorContext vm) {
-         IAccessPropertyBehavior<TSource> innerAccessor;
+         IPropertyAccessorBehavior<TSource> innerAccessor;
 
          return TryGetBehavior(out innerAccessor) ?
-            innerAccessor.GetValue(vm) :
+            innerAccessor.GetValue(vm, ValueStage.PostValidation) :
             (TSource)vm;
       }
 

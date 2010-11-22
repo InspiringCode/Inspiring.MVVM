@@ -313,7 +313,7 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The &apos;VMDescriptor&apos; does not define a &apos;VMProperty&apos; with the name &apos;{0}&apos;..
+        ///   Looks up a localized string similar to The VM descriptor does not define a VM Property with the name &apos;{0}&apos;..
         /// </summary>
         internal static string PropertyNotFound {
             get {

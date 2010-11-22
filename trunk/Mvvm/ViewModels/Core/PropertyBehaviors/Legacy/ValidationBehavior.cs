@@ -2,7 +2,7 @@
 
    internal sealed class ValidationBehavior<TValue> :
       Behavior
-      //IAccessPropertyBehavior<TValue>,
+      //IPropertyAccessorBehavior<TValue>,
       //IValidationBehavior,
       //IHandlePropertyChangingBehavior 
    {
@@ -19,7 +19,7 @@
       //}
 
       //public TValue GetValue(IBehaviorContext vm) {
-      //   return GetNextBehavior<IAccessPropertyBehavior<TValue>>().GetValue(vm);
+      //   return GetNextBehavior<IPropertyAccessorBehavior<TValue>>().GetValue(vm);
       //}
 
       //public void SetValue(IBehaviorContext vm, TValue value) {
@@ -62,7 +62,7 @@
       //   //bool hasErrorsBefore = vm.FieldValues.HasValue(_errorMessageField);
 
       //   //// HACK to make sure that validation is always current (search for more efficient ways).
-      //   //TValue value = GetNextBehavior<IAccessPropertyBehavior<TValue>>().GetValue(vm);
+      //   //TValue value = GetNextBehavior<IPropertyAccessorBehavior<TValue>>().GetValue(vm);
 
       //   //var parameter = new ValidationParameter<TValue>(value, vm.VM);
 
@@ -86,7 +86,7 @@
       //}
 
       //public void HandlePropertyChanging(IBehaviorContext vm) {
-      //   //TValue value = GetNextBehavior<IAccessPropertyBehavior<TValue>>().GetValue(vm);
+      //   //TValue value = GetNextBehavior<IPropertyAccessorBehavior<TValue>>().GetValue(vm);
 
       //   //var parameter = new ValidationParameter<TValue>(value, vm.VM);
 

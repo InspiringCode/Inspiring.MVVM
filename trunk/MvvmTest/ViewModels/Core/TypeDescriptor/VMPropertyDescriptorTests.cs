@@ -26,9 +26,9 @@ namespace Inspiring.MvvmTest.ViewModels.Core.TypeDescriptor {
          // Arrange
          object expectedReturnValue = "Test";
 
-         var mock = new Mock<IAccessPropertyBehavior>(MockBehavior.Strict);
+         var mock = new Mock<IDisplayValueAccessorBehavior>(MockBehavior.Strict);
          mock
-            .Setup(x => x.GetValue(It.IsAny<IBehaviorContext>()))
+            .Setup(x => x.GetDisplayValue(It.IsAny<IBehaviorContext>()))
             .Returns(expectedReturnValue);
 
          _property.Behaviors = new Behavior { Successor = mock.Object };
@@ -45,8 +45,8 @@ namespace Inspiring.MvvmTest.ViewModels.Core.TypeDescriptor {
          // Arrange
          object expectedValue = "Test";
 
-         var mock = new Mock<IAccessPropertyBehavior>(MockBehavior.Strict);
-         mock.Setup(x => x.SetValue(It.IsAny<IBehaviorContext>(), expectedValue));
+         var mock = new Mock<IDisplayValueAccessorBehavior>(MockBehavior.Strict);
+         mock.Setup(x => x.SetDisplayValue(It.IsAny<IBehaviorContext>(), expectedValue));
 
          _property.Behaviors = new Behavior { Successor = mock.Object };
 
@@ -55,7 +55,7 @@ namespace Inspiring.MvvmTest.ViewModels.Core.TypeDescriptor {
 
          // Assert
          mock.Verify(
-            x => x.SetValue(It.IsAny<IBehaviorContext>(), expectedValue),
+            x => x.SetDisplayValue(It.IsAny<IBehaviorContext>(), expectedValue),
             Times.Once()
          );
       }

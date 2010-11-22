@@ -8,8 +8,8 @@ using Moq;
 namespace Inspiring.MvvmTest.ViewModels.Behaviors {
    [TestClass]
    public class VMCollectionPropertyTest {
-      private Mock<IAccessPropertyBehavior<IEnumerable<Person>>> _sourceAccessor;
-      private Mock<IAccessPropertyBehavior<VMCollection<PersonVM>>> _vmCollectionAccesor;
+      private Mock<IPropertyAccessorBehavior<IEnumerable<Person>>> _sourceAccessor;
+      private Mock<IPropertyAccessorBehavior<VMCollection<PersonVM>>> _vmCollectionAccesor;
       private IBehaviorContext _context;
       private VMCollection<PersonVM> _vmCollection;
       private CollectionPopulatorBehavior<PersonVM, PersonVM, Person> _populator;
@@ -43,7 +43,7 @@ namespace Inspiring.MvvmTest.ViewModels.Behaviors {
          VerifySourceAccessorNotCalled();
          VerifyVMCollectionAccessorNotCalled();
 
-         VMCollection<PersonVM> coll = _populator.GetValue(_context);
+         VMCollection<PersonVM> coll = _populator.GetValue(_context, ValueStage.PostValidation);
          Assert.AreEqual(_vmCollection, coll);
          Assert.AreEqual(2, coll.Count);
          Assert.AreEqual(_sourceCollection[0], coll[0].Person);
@@ -52,7 +52,7 @@ namespace Inspiring.MvvmTest.ViewModels.Behaviors {
          VerifySourceAccessorCalled();
          VerifyVMCollectionAccessorCalled();
 
-         coll = _populator.GetValue(_context);
+         coll = _populator.GetValue(_context, ValueStage.PostValidation);
          Assert.AreEqual(_vmCollection, coll);
          Assert.AreEqual(2, coll.Count);
 
@@ -96,7 +96,7 @@ namespace Inspiring.MvvmTest.ViewModels.Behaviors {
       private void VerifySourceAccessorCalled() {
          _sourceAccessorCalls++;
          _sourceAccessor.Verify(
-            x => x.GetValue(It.IsAny<IBehaviorContext>()),
+            x => x.GetValue(It.IsAny<IBehaviorContext>(), It.IsAny<ValueStage>()),
             Times.Exactly(_sourceAccessorCalls)
          );
       }
@@ -104,21 +104,21 @@ namespace Inspiring.MvvmTest.ViewModels.Behaviors {
       private void VerifyVMCollectionAccessorCalled() {
          _vmCollectionAccessorCalls++;
          _vmCollectionAccesor.Verify(
-            x => x.GetValue(It.IsAny<IBehaviorContext>()),
+            x => x.GetValue(It.IsAny<IBehaviorContext>(), It.IsAny<ValueStage>()),
             Times.Exactly(_vmCollectionAccessorCalls)
          );
       }
 
       private void VerifySourceAccessorNotCalled() {
          _sourceAccessor.Verify(
-            x => x.GetValue(It.IsAny<IBehaviorContext>()),
+            x => x.GetValue(It.IsAny<IBehaviorContext>(), It.IsAny<ValueStage>()),
             Times.Exactly(_sourceAccessorCalls)
          );
       }
 
       private void VerifyVMCollectionAccessorNotCalled() {
          _vmCollectionAccesor.Verify(
-            x => x.GetValue(It.IsAny<IBehaviorContext>()),
+            x => x.GetValue(It.IsAny<IBehaviorContext>(), It.IsAny<ValueStage>()),
             Times.Exactly(_vmCollectionAccessorCalls)
          );
       }
@@ -127,9 +127,9 @@ namespace Inspiring.MvvmTest.ViewModels.Behaviors {
 
       private void SetupSourceAccesor(IEnumerable<Person> sourceCollection = null) {
          sourceCollection = sourceCollection ?? _sourceCollection;
-         _sourceAccessor = new Mock<IAccessPropertyBehavior<IEnumerable<Person>>>(MockBehavior.Strict);
+         _sourceAccessor = new Mock<IPropertyAccessorBehavior<IEnumerable<Person>>>(MockBehavior.Strict);
          _sourceAccessor
-            .Setup(x => x.GetValue(It.IsAny<IBehaviorContext>()))
+            .Setup(x => x.GetValue(It.IsAny<IBehaviorContext>(), It.IsAny<ValueStage>()))
             .Returns(sourceCollection);
 
          _sourceAccessor
@@ -144,8 +144,8 @@ namespace Inspiring.MvvmTest.ViewModels.Behaviors {
       }
 
       private void SetupVMCollectionAccessor() {
-         _vmCollectionAccesor = new Mock<IAccessPropertyBehavior<VMCollection<PersonVM>>>(MockBehavior.Strict);
-         _vmCollectionAccesor.Setup(x => x.GetValue(It.IsAny<IBehaviorContext>())).Returns(_vmCollection);
+         _vmCollectionAccesor = new Mock<IPropertyAccessorBehavior<VMCollection<PersonVM>>>(MockBehavior.Strict);
+         _vmCollectionAccesor.Setup(x => x.GetValue(It.IsAny<IBehaviorContext>(), It.IsAny<ValueStage>())).Returns(_vmCollection);
          _vmCollectionAccesor
             .Setup(x => x.Successor)
             .Returns(_sourceAccessor.Object);

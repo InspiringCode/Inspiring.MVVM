@@ -83,6 +83,15 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          public IBehaviorContext GetContext() {
             throw new NotImplementedException();
          }
+
+
+         IBehaviorContext IViewModel.GetContext() {
+            throw new NotImplementedException();
+         }
+
+         void IViewModel.RaisePropertyChanged(string propertyName) {
+            throw new NotImplementedException();
+         }
       }
    }
 }

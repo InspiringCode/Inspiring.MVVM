@@ -7,6 +7,7 @@
       object GetValue(IVMProperty property, ValueStage stage = ValueStage.PreValidation);
       void SetValue(IVMProperty property, object value);
       IBehaviorContext GetContext();
+      void RaisePropertyChanged(string propertyName);
 
       [Obsolete]
       bool IsValid(bool validateChildren);

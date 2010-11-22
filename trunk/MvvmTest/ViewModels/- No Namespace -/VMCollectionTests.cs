@@ -3,6 +3,7 @@ using Inspiring.Mvvm.ViewModels;
 using Inspiring.Mvvm.ViewModels.Core;
 using Inspiring.Mvvm.ViewModels.Core.BehaviorInterfaces;
 using Inspiring.Mvvm.ViewModels.Core.Collections;
+using Inspiring.MvvmTest.Stubs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -27,7 +28,7 @@ namespace Inspiring.MvvmTest.ViewModels.__No_Namespace__ {
 
             _behaviorMock = new Mock<ICollectionModificationBehavior<IViewModel>>();
 
-            var descriptor = new VMCollectionDescriptor();
+            var descriptor = new VMCollectionDescriptor(new VMDescriptorStub());
             descriptor.Behaviors.Successor = _behaviorMock.Object;
 
             _collection = new Mvvm.ViewModels.Core.Collections.VMCollection<IViewModel>(descriptor, _owner);
@@ -113,7 +114,7 @@ namespace Inspiring.MvvmTest.ViewModels.__No_Namespace__ {
          var item0 = Mock<IViewModel>();
          var item1 = Mock<IViewModel>();
 
-         var collection = new Inspiring.Mvvm.ViewModels.Core.Collections.VMCollection<IViewModel>(new VMCollectionDescriptor(), Mock<IViewModel>());
+         var collection = new Inspiring.Mvvm.ViewModels.Core.Collections.VMCollection<IViewModel>(new VMCollectionDescriptor(new VMDescriptorStub()), Mock<IViewModel>());
          collection.Add(item0);
          collection.Add(item1);
 
@@ -127,7 +128,7 @@ namespace Inspiring.MvvmTest.ViewModels.__No_Namespace__ {
          var item0 = Mock<IViewModel>();
          var item1 = Mock<IViewModel>();
 
-         var collection = new Inspiring.Mvvm.ViewModels.Core.Collections.VMCollection<IViewModel>(new VMCollectionDescriptor(), Mock<IViewModel>());
+         var collection = new Inspiring.Mvvm.ViewModels.Core.Collections.VMCollection<IViewModel>(new VMCollectionDescriptor(new VMDescriptorStub()), Mock<IViewModel>());
          collection.Add(item0);
          collection.Add(item1);
 

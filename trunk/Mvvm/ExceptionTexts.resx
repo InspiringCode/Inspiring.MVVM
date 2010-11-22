@@ -220,7 +220,7 @@
     <value>The 'Window.DialogResult' property was not assigned yet by the view. Make sure you call this method only in 'OnRequestClose' and 'OnClose'.</value>
   </data>
   <data name="PropertyNotFound" xml:space="preserve">
-    <value>The 'VMDescriptor' does not define a 'VMProperty' with the name '{0}'.</value>
+    <value>The VM descriptor does not define a VM Property with the name '{0}'.</value>
   </data>
   <data name="InvalidTargetObjectForCommonBehavior" xml:space="preserve">
     <value>The 'CommonBehaviors' behavior '{0}' cannot be enabled on the given object.</value>

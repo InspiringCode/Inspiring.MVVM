@@ -1,14 +1,14 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
 
    /// <summary>
-   ///   An <see cref="IAccessPropertyBehavior"/> that implements the get/set 
+   ///   An <see cref="IDisplayValueAccessorBehavior"/> that implements the get/set 
    ///   operation of a <see cref="VMPropertyBase"/> by using a dynamic field (see 
    ///   <see cref="FieldDefinition"/>) as a backing store for the property target.
    /// </summary>
-   public sealed class InstancePropertyBehavior<TValue> : Behavior, IAccessPropertyBehavior<TValue> {
+   public sealed class InstancePropertyBehavior<TValue> : Behavior, IPropertyAccessorBehavior<TValue> {
       private FieldDefinition<TValue> _backingField;
 
-      public TValue GetValue(IBehaviorContext vm) {
+      public TValue GetValue(IBehaviorContext vm, ValueStage stage) {
          return vm.FieldValues.GetValueOrDefault(_backingField);
       }
 

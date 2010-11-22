@@ -3,7 +3,7 @@
    using System.Windows.Input;
    using Inspiring.Mvvm.Screens;
 
-   internal sealed class DelegateCommandBehavior<TSource> : Behavior, IAccessPropertyBehavior<ICommand> {
+   internal sealed class DelegateCommandBehavior<TSource> : Behavior, IPropertyAccessorBehavior<ICommand> {
       private Action<TSource> _execute;
       private Func<TSource, bool> _canExecute;
 
@@ -15,7 +15,7 @@
          _canExecute = canExecute;
       }
 
-      public ICommand GetValue(IBehaviorContext vm) {
+      public ICommand GetValue(IBehaviorContext vm, ValueStage stage) {
          // TODO: Is there a better way that has less overhead?
          TSource source = GetSourceObject(vm);
 
@@ -32,9 +32,9 @@
       }
 
       private TSource GetSourceObject(IBehaviorContext vm) {
-         IAccessPropertyBehavior<TSource> sourceAccessor;
+         IPropertyAccessorBehavior<TSource> sourceAccessor;
          return TryGetBehavior(out sourceAccessor) ?
-            sourceAccessor.GetValue(vm) :
+            sourceAccessor.GetValue(vm, ValueStage.PostValidation) :
             (TSource)vm;
       }
    }

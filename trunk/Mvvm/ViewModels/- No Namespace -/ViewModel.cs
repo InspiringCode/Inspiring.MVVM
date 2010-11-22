@@ -2,12 +2,15 @@
    using System;
    using System.ComponentModel;
    using System.Diagnostics.Contracts;
+   using System.Linq;
    using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.Mvvm.ViewModels.Future;
 
    internal abstract class ViewModelNew<TDescriptor> :
       CustomTypeDescriptor,
-      IViewModel
+      IViewModel,
+      INotifyPropertyChanged,
+      IDataErrorInfo
       where TDescriptor : VMDescriptorBase {
 
       private VMKernel _kernel;
@@ -42,6 +45,8 @@
             return _kernel;
          }
       }
+
+      public event PropertyChangedEventHandler PropertyChanged;
 
       public T GetValue<T>(VMPropertyBase<T> property, ValueStage state = ValueStage.PreValidation) {
          throw new NotImplementedException("Refactor VMProperty");
@@ -103,6 +108,36 @@
 
       public IBehaviorContext GetContext() {
          throw new NotImplementedException();
+      }
+
+      void IViewModel.RaisePropertyChanged(string propertyName) {
+         OnPropertyChanged(propertyName);
+      }
+
+      protected virtual void OnPropertyChanged(string propertyName) {
+         var handler = PropertyChanged;
+         if (handler != null) {
+            handler(this, new PropertyChangedEventArgs(propertyName));
+         }
+      }
+
+      string IDataErrorInfo.Error {
+         get {
+            ValidationState state = Kernel.GetValidationState();
+            return state.IsValid ?
+               null :
+               state.Errors.First().Message;
+         }
+      }
+
+      string IDataErrorInfo.this[string columnName] {
+         get {
+            IVMProperty property = Kernel.GetProperty(propertyName: columnName);
+            ValidationState state = Kernel.GetValidationState(property);
+            return state.IsValid ?
+               null :
+               state.Errors.First().Message;
+         }
       }
    }
 }

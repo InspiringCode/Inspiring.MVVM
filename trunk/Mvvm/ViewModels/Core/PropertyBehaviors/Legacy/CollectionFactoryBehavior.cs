@@ -3,7 +3,7 @@
 
    internal sealed class CollectionFactoryBehavior<TItemVM> :
       Behavior,
-      IAccessPropertyBehavior<VMCollection<TItemVM>>
+      IPropertyAccessorBehavior<VMCollection<TItemVM>>
       where TItemVM : IViewModel {
       private VMDescriptor _itemDescriptor;
 
@@ -11,7 +11,7 @@
          _itemDescriptor = itemDescriptor;
       }
 
-      public VMCollection<TItemVM> GetValue(IBehaviorContext vm) {
+      public VMCollection<TItemVM> GetValue(IBehaviorContext vm, ValueStage stage) {
          CollectionValidationBehavior<TItemVM> validationBehavior;
          return TryGetBehavior(out validationBehavior) ?
             new VMCollection<TItemVM>((ViewModel)vm.VM, _itemDescriptor, validationBehavior) :

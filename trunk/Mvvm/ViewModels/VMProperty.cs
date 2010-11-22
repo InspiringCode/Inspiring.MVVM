@@ -43,12 +43,12 @@
 
       internal object GetDisplayValue(IBehaviorContext vm) {
          Contract.Requires(vm != null);
-         return Behaviors.GetNextBehavior<IAccessPropertyBehavior>().GetValue(vm);
+         return Behaviors.GetNextBehavior<IDisplayValueAccessorBehavior>().GetDisplayValue(vm);
       }
 
       internal void SetDisplayValue(IBehaviorContext vm, object value) {
          Contract.Requires(vm != null);
-         Behaviors.GetNextBehavior<IAccessPropertyBehavior>().SetValue(vm, value);
+         Behaviors.GetNextBehavior<IDisplayValueAccessorBehavior>().SetDisplayValue(vm, value);
       }
 
       internal void OnPropertyChanged(IBehaviorContext vm) {
@@ -102,13 +102,13 @@
       //[Obsolete]
       //internal T GetValue(IBehaviorContext vm) {
       //   Contract.Requires(vm != null);
-      //   return Behaviors.GetNextBehavior<IAccessPropertyBehavior<T>>().GetValue(vm);
+      //   return Behaviors.GetNextBehavior<IPropertyAccessorBehavior<T>>().GetValue(vm);
       //}
 
       //[Obsolete]
       //internal void SetValue(IBehaviorContext vm, T value) {
       //   Contract.Requires(vm != null);
-      //   Behaviors.GetNextBehavior<IAccessPropertyBehavior<T>>().SetValue(vm, value);
+      //   Behaviors.GetNextBehavior<IPropertyAccessorBehavior<T>>().SetValue(vm, value);
       //}
 
       internal T GetValue(IBehaviorContext context) {
@@ -128,18 +128,18 @@
 
       internal void SetDisplayValue(IBehaviorContext context, object value) {
          Contract.Requires(context != null);
-         Behaviors.GetNextBehavior<IAccessPropertyBehavior>().SetValue(context, value);
+         Behaviors.GetNextBehavior<IDisplayValueAccessorBehavior>().SetDisplayValue(context, value);
       }
 
       internal override void Revalidate(IBehaviorContext context) {
          if (IsMutable(context)) {
-            IAccessPropertyBehavior displayValueAccessor;
+            IDisplayValueAccessorBehavior displayValueAccessor;
             if (Behaviors.TryGetBehavior(out displayValueAccessor)) {
-               object value = displayValueAccessor.GetValue(context);
-               displayValueAccessor.SetValue(context, value);
+               object value = displayValueAccessor.GetDisplayValue(context);
+               displayValueAccessor.SetDisplayValue(context, value);
             } else {
-               var typedAccessor = Behaviors.GetNextBehavior<IAccessPropertyBehavior<T>>();
-               T value = typedAccessor.GetValue(context);
+               var typedAccessor = Behaviors.GetNextBehavior<IPropertyAccessorBehavior<T>>();
+               T value = typedAccessor.GetValue(context, ValueStage.PostValidation);
                typedAccessor.SetValue(context, value);
             }
          } else {

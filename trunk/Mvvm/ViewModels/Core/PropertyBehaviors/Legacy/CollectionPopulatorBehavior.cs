@@ -5,13 +5,13 @@
 
    internal sealed class CollectionPopulatorBehavior<TParentVM, TItemVM, TItemSource> :
       Behavior,
-      IAccessPropertyBehavior<VMCollection<TItemVM>>,
+      IPropertyAccessorBehavior<VMCollection<TItemVM>>,
       IMutabilityCheckerBehavior
       where TItemVM : ViewModel
       where TParentVM : ViewModel {
 
-      public VMCollection<TItemVM> GetValue(IBehaviorContext vm) {
-         VMCollection<TItemVM> collection = this.GetNextValue(vm);
+      public VMCollection<TItemVM> GetValue(IBehaviorContext vm, ValueStage stage) {
+         VMCollection<TItemVM> collection = GetNextBehavior<IPropertyAccessorBehavior<VMCollection<TItemVM>>>().GetValue(vm, stage);
          IEnumerable<TItemSource> source = GetSourceCollection(vm);
          PopulateCollection(vm, collection, source);
          return collection;
@@ -28,7 +28,7 @@
       }
 
       private IEnumerable<TItemSource> GetSourceCollection(IBehaviorContext vm) {
-         return GetNextBehavior<IAccessPropertyBehavior<IEnumerable<TItemSource>>>().GetValue(vm);
+         return GetNextBehavior<IPropertyAccessorBehavior<IEnumerable<TItemSource>>>().GetValue(vm, ValueStage.PostValidation);
       }
 
       private void PopulateCollection(

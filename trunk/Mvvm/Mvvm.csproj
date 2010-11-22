@@ -96,11 +96,16 @@
     <Compile Include="Screens\ScreenConductor.cs" />
     <Compile Include="Screens\ScreenFactory.cs" />
     <Compile Include="ServiceLocator.cs" />
+    <Compile Include="ViewModels\- No Namespace -\Validation\ValidationMode.cs" />
+    <Compile Include="ViewModels\- No Namespace -\Validation\ValidationScope.cs" />
     <Compile Include="ViewModels\- No Namespace -\ValueStage.cs" />
     <Compile Include="ViewModels\- No Namespace -\ViewModel.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMPropertyBase.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\ICollectionPopulatorBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\ICollectionModificationBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\IPropertyAccessorBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\IRevalidationBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\IValidationStateProviderBehavior.cs" />
     <Compile Include="ViewModels\Core\Builder\BehaviorConfigurationBuilder.cs" />
     <Compile Include="ViewModels\Core\Builder\BehaviorConfigurationDictionary.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorConfiguration.cs" />
@@ -128,7 +133,9 @@
     <Compile Include="ViewModels\Core\Common\IInitializationPropertyBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehavior.cs" />
     <Compile Include="ViewModels\Core\Common\BehaviorInitializationContext.cs" />
+    <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\DiscardingRevalidationBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\IValidationStatePropertyBehavior.cs" />
+    <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\PreValidationValueCacheBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\PropertyValidationBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationContext.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationError.cs" />
@@ -157,6 +164,7 @@
     <Compile Include="ViewModels\Core\ValidationEventArgs.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationArgs.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationErrorCollection.cs" />
+    <Compile Include="ViewModels\Core\Validation\ValidationStage.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationState.cs" />
     <Compile Include="ViewModels\Core\Validation\ViewModelBehaviors\ViewModelValidationBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\ViewModelValidator.cs" />
@@ -165,6 +173,8 @@
     <Compile Include="ViewModels\Core\ViewModelBehaviors\IViewModelBehaviorContext.cs" />
     <Compile Include="ViewModels\Core\ViewModelBehaviors\ViewModelBehavior.cs" />
     <Compile Include="ViewModels\Core\ViewModelExtensibility.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBaseExtensionMethods.cs" />
+    <Compile Include="ViewModels\Core\VMPropertyExtensionMethods.cs" />
     <Compile Include="ViewModels\ExtensionMethods.cs" />
     <Compile Include="ViewModels\Future\VMDescriptorBase.cs" />
     <Compile Include="ViewModels\Future\VMPropertyCollection.cs" />
@@ -203,7 +213,7 @@
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\CalculatedPropertyBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\DynamicFieldGroups.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\InstancePropertyBehavior.cs" />
-    <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\IAccessPropertyBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\IDisplayValueAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\IManuelUpdateBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\IHandlePropertyChangedBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\IHandlePropertyChangingBehavior.cs" />
@@ -255,7 +265,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ViewModels\- No Namespace -\Validation\" />
     <Folder Include="Views\TestDoubles\" />
   </ItemGroup>
   <ItemGroup>

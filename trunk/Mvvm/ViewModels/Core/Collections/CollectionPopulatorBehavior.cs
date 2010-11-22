@@ -7,10 +7,10 @@
       where TItemVM : IViewModel, ICanInitializeFrom<TItemSource> {
 
       public void Repopulate(IBehaviorContext context, IVMCollection<TItemVM> collection) {
-         var sourceAccessor = GetNextBehavior<IAccessPropertyBehavior<IEnumerable<TItemSource>>>();
+         var sourceAccessor = GetNextBehavior<IPropertyAccessorBehavior<IEnumerable<TItemSource>>>();
          var vmFactory = GetNextBehavior<IViewModelFactoryBehavior<TItemVM>>();
 
-         IEnumerable<TItemSource> sourceItems = sourceAccessor.GetValue(context);
+         IEnumerable<TItemSource> sourceItems = sourceAccessor.GetValue(context, ValueStage.PostValidation);
 
          try {
             collection.IsPopulating = true;

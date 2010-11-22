@@ -17,23 +17,23 @@
    /// </remarks>
    public sealed class AllowInvalidDisplayValuesBehavior :
       Behavior,
-      IAccessPropertyBehavior,
+      IDisplayValueAccessorBehavior,
       IHandlePropertyChangingBehavior {
 
       private FieldDefinition<object> _invalidValueField;
 
-      public object GetValue(IBehaviorContext vm) {
+      public object GetDisplayValue(IBehaviorContext vm) {
          object invalidValue;
          if (vm.FieldValues.TryGetValue(_invalidValueField, out invalidValue)) {
             return invalidValue;
          }
 
-         return GetNextBehavior<IAccessPropertyBehavior>().GetValue(vm);
+         return GetNextBehavior<IDisplayValueAccessorBehavior>().GetDisplayValue(vm);
       }
 
-      public void SetValue(IBehaviorContext vm, object value) {
+      public void SetDisplayValue(IBehaviorContext vm, object value) {
          vm.FieldValues.SetValue(_invalidValueField, value);
-         GetNextBehavior<IAccessPropertyBehavior>().SetValue(vm, value);
+         GetNextBehavior<IDisplayValueAccessorBehavior>().SetDisplayValue(vm, value);
       }
 
       public void HandlePropertyChanging(IBehaviorContext vm) {

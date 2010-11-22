@@ -2,20 +2,20 @@
    using System;
    using Inspiring.Mvvm.Common;
 
-   internal sealed class DisplayValueAccessorBehavior<TValue> : Behavior, IAccessPropertyBehavior, IValidationBehavior {
+   internal sealed class DisplayValueAccessorBehavior<TValue> : Behavior, IDisplayValueAccessorBehavior, IValidationBehavior {
       private FieldDefinition<string> _conversionErrorField;
       private string _propertyName;
 
-      public object GetValue(IBehaviorContext vm) {
-         IAccessPropertyBehavior<TValue> accessBehavior =
-            GetNextBehavior<IAccessPropertyBehavior<TValue>>();
+      public object GetDisplayValue(IBehaviorContext vm) {
+         IPropertyAccessorBehavior<TValue> accessBehavior =
+            GetNextBehavior<IPropertyAccessorBehavior<TValue>>();
 
-         return accessBehavior.GetValue(vm);
+         return accessBehavior.GetValue(vm, ValueStage.PostValidation);
       }
 
-      public void SetValue(IBehaviorContext vm, object value) {
-         IAccessPropertyBehavior<TValue> accessBehavior =
-            GetNextBehavior<IAccessPropertyBehavior<TValue>>();
+      public void SetDisplayValue(IBehaviorContext vm, object value) {
+         IPropertyAccessorBehavior<TValue> accessBehavior =
+            GetNextBehavior<IPropertyAccessorBehavior<TValue>>();
 
          ChangeValueRequest<TValue> request = value as ChangeValueRequest<TValue>;
          if (request != null) {

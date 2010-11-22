@@ -17,6 +17,10 @@
 
       public IViewModel Parent { get; set; }
 
+      public IServiceLocator ServiceLocator {
+         get { throw new NotImplementedException(); }
+      }
+
       IViewModel IBehaviorContext.VM {
          get { return _vm; }
       }
@@ -38,6 +42,53 @@
          }
       }
 
+      public ValidationState GetValidationState(IVMProperty forProperty) {
+         return forProperty.GetValidationState(this);
+      }
+
+      public ValidationState GetValidationState() {
+         return _descriptor.GetValidationState(this);
+      }
+
+      public IVMProperty GetProperty(string propertyName) {
+         throw new NotImplementedException();
+         //return _descriptor.Properties[propertyName];
+      }
+
+      public void UpdateFromSource() {
+         throw new NotImplementedException();
+         //IManuelUpdateBehavior behavior;
+         //_descriptor
+         //   .Properties
+         //   .Where(x => x.Behaviors.TryGetBehavior(out behavior))
+         //   .ForEach(UpdateFromSource);
+      }
+
+      public void UpdateFromSource(VMPropertyBase property) {
+         throw new NotImplementedException();
+         //property.Behaviors
+         //   .GetNextBehavior<IManuelUpdateBehavior>()
+         //   .UpdateFromSource(this);
+      }
+
+      // TODO: Test and refactor me.
+      protected void UpdateSource() {
+         throw new NotImplementedException();
+         //RequireDescriptor();
+         //IManuelUpdateBehavior behavior;
+         //_descriptor
+         //   .Properties
+         //   .Where(x => x.Behaviors.TryGetBehavior(out behavior))
+         //   .ForEach(UpdateFromSource);
+      }
+
+      protected void UpdateSource(VMPropertyBase property) {
+         throw new NotImplementedException();
+         //property.Behaviors
+         //   .GetNextBehavior<IManuelUpdateBehavior>()
+         //   .UpdateSource(this);
+      }
+
       private void NotifyChange(ChangeArgs args, InstancePath changedPath) {
          bool selfChanged = changedPath.IsEmpty;
 
@@ -57,6 +108,10 @@
          if (Parent != null) {
             Parent.Kernel.NotifyChange(args, changedPath);
          }
+
+         if (args.ChangeType == ChangeType.PropertyChanged) {
+            _vm.RaisePropertyChanged(args.ChangedProperty.PropertyName);
+         }
       }
 
       private void HandleNotifyValidating(_ValidationArgs args) {
@@ -74,9 +129,5 @@
          }
       }
 
-
-      public IServiceLocator ServiceLocator {
-         get { throw new NotImplementedException(); }
-      }
    }
 }

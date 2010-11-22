@@ -16,8 +16,8 @@ namespace Inspiring.MvvmTest.ViewModels.Behaviors {
       [TestMethod]
       public void GetValue() {
          var fac = new CollectionFactoryBehavior<PersonVM>(PersonVM.Descriptor);
-         VMCollection<PersonVM> first = fac.GetValue(_context);
-         VMCollection<PersonVM> second = fac.GetValue(_context);
+         VMCollection<PersonVM> first = fac.GetValue(_context, ValueStage.PostValidation);
+         VMCollection<PersonVM> second = fac.GetValue(_context, ValueStage.PostValidation);
          Assert.IsNotNull(first);
          Assert.IsNotNull(second);
          Assert.AreNotEqual(first, second);

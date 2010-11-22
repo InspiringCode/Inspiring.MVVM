@@ -28,7 +28,7 @@
 
    //      _behavior.Add(args => { });
 
-   //      _behavior.Successor = new Mock<IAccessPropertyBehavior<string>>().Object;
+   //      _behavior.Successor = new Mock<IPropertyAccessorBehavior<string>>().Object;
 
    //      _property = new Mock<VMProperty<string>>().Object;
 

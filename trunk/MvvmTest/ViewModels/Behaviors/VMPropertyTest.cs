@@ -1,4 +1,5 @@
-﻿using Inspiring.Mvvm.ViewModels.Core;
+﻿using Inspiring.Mvvm.ViewModels;
+using Inspiring.Mvvm.ViewModels.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Inspiring.MvvmTest.ViewModels.Behaviors {
@@ -17,10 +18,10 @@ namespace Inspiring.MvvmTest.ViewModels.Behaviors {
          //Assert.AreEqual("Value 2", source.Value);
       }
 
-      private class AccessPropertyBehaviorFake<T> : Behavior, IAccessPropertyBehavior<T> {
+      private class AccessPropertyBehaviorFake<T> : Behavior, IPropertyAccessorBehavior<T> {
          public T Value { get; set; }
 
-         public T GetValue(IBehaviorContext vm) {
+         public T GetValue(IBehaviorContext vm, ValueStage stage) {
             return Value;
          }
 

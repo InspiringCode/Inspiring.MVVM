@@ -3,15 +3,15 @@
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
 
-   public sealed class DisplayValueValidationBehavior : Behavior, IAccessPropertyBehavior, IValidationBehavior {
+   public sealed class DisplayValueValidationBehavior : Behavior, IDisplayValueAccessorBehavior, IValidationBehavior {
       private FieldDefinition<string> _validationErrorField;
       private List<Func<object, ValidationResult>> _validations = new List<Func<object, ValidationResult>>();
 
-      object IAccessPropertyBehavior.GetValue(IBehaviorContext vm) {
-         return GetNextBehavior<IAccessPropertyBehavior>().GetValue(vm);
+      object IDisplayValueAccessorBehavior.GetDisplayValue(IBehaviorContext vm) {
+         return GetNextBehavior<IDisplayValueAccessorBehavior>().GetDisplayValue(vm);
       }
 
-      void IAccessPropertyBehavior.SetValue(IBehaviorContext vm, object value) {
+      void IDisplayValueAccessorBehavior.SetDisplayValue(IBehaviorContext vm, object value) {
          foreach (Func<object, ValidationResult> validation in _validations) {
             ValidationResult result = validation(value);
             if (!result.Successful) {
@@ -21,7 +21,7 @@
          }
 
          vm.FieldValues.ClearField(_validationErrorField);
-         GetNextBehavior<IAccessPropertyBehavior>().SetValue(vm, value);
+         GetNextBehavior<IDisplayValueAccessorBehavior>().SetDisplayValue(vm, value);
       }
 
       ValidationResult IValidationBehavior.GetValidationResult(IBehaviorContext vm) {

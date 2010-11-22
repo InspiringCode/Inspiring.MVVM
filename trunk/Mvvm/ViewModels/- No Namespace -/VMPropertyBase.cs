@@ -50,5 +50,17 @@
          // Use IDisplayValueAccessor
          throw new NotImplementedException();
       }
+
+      string IVMProperty.PropertyName {
+         get { throw new NotImplementedException(); }
+      }
+
+      Type IVMProperty.PropertyType {
+         get { throw new NotImplementedException(); }
+      }
+
+      Behavior IVMProperty.Behaviors {
+         get { throw new NotImplementedException(); }
+      }
    }
 }

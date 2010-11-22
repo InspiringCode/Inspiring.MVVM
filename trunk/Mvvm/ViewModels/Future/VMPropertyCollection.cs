@@ -13,6 +13,21 @@
          _properties = properties;
       }
 
+      public VMPropertyBase this[string propertyName] {
+         get {
+            VMPropertyBase property;
+            bool found = TryGetProperty(propertyName, out property);
+
+            if (!found) {
+               throw new ArgumentException(
+                  ExceptionTexts.PropertyNotFound.FormatWith(propertyName)
+               );
+            }
+
+            return property;
+         }
+      }
+
       public bool TryGetProperty(string propertyName, out VMPropertyBase property) {
          Contract.Requires<ArgumentNullException>(propertyName != null);
 

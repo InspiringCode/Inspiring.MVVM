@@ -26,5 +26,10 @@
       ///   by the <paramref name="context"/> parameter).
       /// </summary>
       void SetValue(IBehaviorContext context, object value);
+
+      /// <summary>
+      ///   Gets the head of the chain of property behaviors.
+      /// </summary>
+      Behavior Behaviors { get; }
    }
 }

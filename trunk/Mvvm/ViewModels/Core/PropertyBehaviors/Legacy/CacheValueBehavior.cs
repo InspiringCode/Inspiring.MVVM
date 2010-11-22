@@ -1,21 +1,21 @@
 ﻿using System;
 namespace Inspiring.Mvvm.ViewModels.Core {
-   internal class CacheValueBehavior<TValue> : Behavior, IAccessPropertyBehavior<TValue> {
+   internal class CacheValueBehavior<TValue> : Behavior, IPropertyAccessorBehavior<TValue> {
       FieldDefinition<TValue> _localCopyField;
 
       protected void CopyFromSource(IBehaviorContext vm) {
-         IAccessPropertyBehavior<TValue> accessBehavior = GetNextBehavior<IAccessPropertyBehavior<TValue>>();
-         TValue sourceValue = accessBehavior.GetValue(vm);
+         IPropertyAccessorBehavior<TValue> accessBehavior = GetNextBehavior<IPropertyAccessorBehavior<TValue>>();
+         TValue sourceValue = accessBehavior.GetValue(vm, ValueStage.PostValidation);
          vm.FieldValues.SetValue(_localCopyField, sourceValue);
       }
 
       protected void CopyToSource(IBehaviorContext vm) {
-         IAccessPropertyBehavior<TValue> accessBehavior = GetNextBehavior<IAccessPropertyBehavior<TValue>>();
+         IPropertyAccessorBehavior<TValue> accessBehavior = GetNextBehavior<IPropertyAccessorBehavior<TValue>>();
          TValue localValue = vm.FieldValues.GetValueOrDefault(_localCopyField);
          accessBehavior.SetValue(vm, localValue);
       }
 
-      public TValue GetValue(IBehaviorContext vm) {
+      public TValue GetValue(IBehaviorContext vm, ValueStage stage) {
          if (!vm.FieldValues.HasValue(_localCopyField)) {
             CopyFromSource(vm);
          }
@@ -38,9 +38,9 @@ namespace Inspiring.Mvvm.ViewModels.Core {
       private VMPropertyBase<TValue> _property;
 
       public void UpdateFromSource(IBehaviorContext context) {
-         TValue oldValue = GetValue(context);
+         TValue oldValue = GetValue(context, ValueStage.PostValidation);
          CopyFromSource(context);
-         TValue newValue = GetValue(context);
+         TValue newValue = GetValue(context, ValueStage.PostValidation);
 
          if (!Object.Equals(oldValue, newValue)) {
             var args = new ChangeArgs(ChangeType.PropertyChanged, context.VM);

@@ -45,5 +45,10 @@
       public IBehaviorContext GetContext() {
          throw new NotImplementedException();
       }
+
+
+      public void RaisePropertyChanged(string propertyName) {
+         throw new NotImplementedException();
+      }
    }
 }
