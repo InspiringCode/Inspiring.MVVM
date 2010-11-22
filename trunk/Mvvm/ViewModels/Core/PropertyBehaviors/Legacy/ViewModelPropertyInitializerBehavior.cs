@@ -3,7 +3,7 @@
 
    internal sealed class ViewModelPropertyInitializerBehavior<TVM, TSource> :
       Behavior, IPropertyAccessorBehavior<TVM>
-      where TVM : ViewModel, ICanInitializeFrom<TSource> {
+      where TVM : IViewModel, ICanInitializeFrom<TSource> {
 
       public TVM GetValue(IBehaviorContext vm, ValueStage stage) {
          TVM instance = GetNextBehavior<IViewModelFactoryBehavior<TVM>>().CreateInstance(vm);

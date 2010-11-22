@@ -1,7 +1,7 @@
 ﻿namespace Inspiring.MvvmContribTest.ViewModels {
    using Inspiring.Mvvm.ViewModels;
 
-   internal sealed class DocumentVM : ViewModel<DocumentVMDescriptor>, ICanInitializeFrom<Document> {
+   internal sealed class DocumenTVM : IViewModel<DocumentVMDescriptor>, ICanInitializeFrom<Document> {
       public static readonly DocumentVMDescriptor Descriptor = VMDescriptorBuilder
          .For<DocumentVM>()
          .CreateDescriptor(c => {

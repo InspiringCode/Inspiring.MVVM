@@ -4,7 +4,7 @@
 
    internal sealed class CollectionModificationController<TItemVM, TItemSource> :
       ICollectionModificationController<TItemVM>
-      where TItemVM : ViewModel {
+      where TItemVM : IViewModel {
 
       private ICollection<TItemSource> _sourceCollection;
 

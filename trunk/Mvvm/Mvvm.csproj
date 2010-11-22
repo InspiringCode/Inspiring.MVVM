@@ -131,7 +131,6 @@
     <Compile Include="ViewModels\Core\Common\InstancePath.cs" />
     <Compile Include="ViewModels\Core\Common\ValidationContext.cs" />
     <Compile Include="ViewModels\Core\Common\IInitializationPropertyBehavior.cs" />
-    <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehavior.cs" />
     <Compile Include="ViewModels\Core\Common\BehaviorInitializationContext.cs" />
     <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\DiscardingRevalidationBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\IValidationStatePropertyBehavior.cs" />
@@ -144,9 +143,8 @@
     <Compile Include="ViewModels\Core\IBindableCollection.cs" />
     <Compile Include="ViewModels\Core\IVMProperty.cs" />
     <Compile Include="ViewModels\Core\ISupportsValidation.cs" />
-    <Compile Include="ViewModels\Core\ItemCreationController.cs" />
+    <Compile Include="ViewModels\Core\- Todo -\ItemCreationController.cs" />
     <Compile Include="ViewModels\Core\IValidationBuilder.cs" />
-    <Compile Include="ViewModels\Core\PropertyBehaviors\IPropertyBehaviorContext.cs" />
     <Compile Include="ViewModels\Core\Kernel\VMKernel.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\CollectionFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\CollectionPopulatorBehavior.cs" />
@@ -156,7 +154,7 @@
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\IMutabilityCheckerBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\IViewModelFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\PropagateVMContextBehavior.cs" />
-    <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\ViewModelFactoryBehavior.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\ViewModelFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\ViewModelPropertyInitializerBehavior.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\SimplePropertyDescriptor.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\TypeDescriptorPropertyBehavior.cs" />
@@ -178,7 +176,7 @@
     <Compile Include="ViewModels\ExtensionMethods.cs" />
     <Compile Include="ViewModels\Future\VMDescriptorBase.cs" />
     <Compile Include="ViewModels\Future\VMPropertyCollection.cs" />
-    <Compile Include="ViewModels\ICreatableItem.cs" />
+    <Compile Include="ViewModels\Core\- Todo -\ICreatableItem.cs" />
     <Compile Include="ViewModels\IHasSourceObject.cs" />
     <Compile Include="ViewModels\IViewModel.cs" />
     <Compile Include="ViewModels\IVMContext.cs" />

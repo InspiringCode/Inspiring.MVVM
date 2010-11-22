@@ -152,14 +152,14 @@
    }
 
    public interface IVMCollectionPropertyFactoryExpression<TParentVM, TSourceItem> {
-      VMCollectionProperty<TVM> Of<TVM>(VMDescriptor itemDescriptor) where TVM : ViewModel, ICanInitializeFrom<TSourceItem>;
+      VMCollectionProperty<TVM> Of<TVM>(VMDescriptor itemDescriptor) where TVM : IViewModel, ICanInitializeFrom<TSourceItem>;
 
       VMCollectionProperty<TVM> OfParentAware<TVM>(VMDescriptor itemDescriptor) 
-         where TVM : ViewModel, ICanInitializeFrom<SourceWithParent<TParentVM, TSourceItem>>;
+         where TVM : IViewModel, ICanInitializeFrom<SourceWithParent<TParentVM, TSourceItem>>;
    }
 
    public interface IVMViewModelPropertyFactoryExpression<TVMSource> {
-      VMProperty<TVM> Of<TVM>() where TVM : ViewModel, ICanInitializeFrom<TVMSource>;
+      VMProperty<TVM> Of<TVM>() where TVM : IViewModel, ICanInitializeFrom<TVMSource>;
    }
 
    public class SourceWithParent<TParent, TSource> {

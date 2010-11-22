@@ -107,7 +107,7 @@ namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
          Assert.AreEqual(2, changedCount);
       }
 
-      private class ParentVM : ViewModel<ParentVMDescriptor> {
+      private class ParenTVM : IViewModel<ParentVMDescriptor> {
          public static readonly ParentVMDescriptor Descriptor = VMDescriptorBuilder
             .For<ParentVM>()
             .CreateDescriptor(c => {

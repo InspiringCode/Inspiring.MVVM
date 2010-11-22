@@ -2,7 +2,7 @@
    using System.Collections.Generic;
    using Inspiring.Mvvm.ViewModels;
 
-   internal sealed class TestVM : ViewModel<TestVMDescriptor> {
+   internal sealed class TesTVM : IViewModel<TestVMDescriptor> {
       public static readonly new TestVMDescriptor Descriptor = VMDescriptorBuilder
          .For<TestVM>()
          .CreateDescriptor(c => {

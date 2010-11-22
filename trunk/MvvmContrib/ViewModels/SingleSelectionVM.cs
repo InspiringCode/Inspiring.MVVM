@@ -123,7 +123,7 @@
 
    public sealed class SingleSelectionVMDescriptor<TSourceItem, TItemVM> :
       VMDescriptor
-      where TItemVM : ViewModel {
+      where TItemVM : IViewModel {
       internal VMProperty<IEnumerable<TSourceItem>> UnfilteredSourceItems { get; set; }
 
       internal VMProperty<TSourceItem> SelectedSourceItem { get; set; }

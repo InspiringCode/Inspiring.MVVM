@@ -4,6 +4,6 @@
    public sealed class VMCollectionProperty<TItemVM> :
       VMPropertyBase<VMCollection<TItemVM>>,
       IBindableCollection<TItemVM>
-      where TItemVM : ViewModel {
+      where TItemVM : IViewModel {
    }
 }

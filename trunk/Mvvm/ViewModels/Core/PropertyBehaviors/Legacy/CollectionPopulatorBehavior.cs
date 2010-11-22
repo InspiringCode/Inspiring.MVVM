@@ -7,8 +7,8 @@
       Behavior,
       IPropertyAccessorBehavior<VMCollection<TItemVM>>,
       IMutabilityCheckerBehavior
-      where TItemVM : ViewModel
-      where TParentVM : ViewModel {
+      where TItemVM : IViewModel
+      where TParentVM : IViewModel {
 
       public VMCollection<TItemVM> GetValue(IBehaviorContext vm, ValueStage stage) {
          VMCollection<TItemVM> collection = GetNextBehavior<IPropertyAccessorBehavior<VMCollection<TItemVM>>>().GetValue(vm, stage);

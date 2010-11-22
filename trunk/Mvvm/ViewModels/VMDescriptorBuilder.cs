@@ -22,12 +22,12 @@
       /// <typeparam name="TVM">
       ///   The 'ViewModel' class for which a descriptor should be created.
       /// </typeparam>
-      public static IVMDescriptorBuilder<TVM> For<TVM>() where TVM : ViewModel {
+      public static IVMDescriptorBuilder<TVM> For<TVM>() where TVM : IViewModel {
          return new BuilderExpression<TVM>();
       }
 
       private class BuilderExpression<TVM> : IVMDescriptorBuilder<TVM>, IVMPropertyFactoryProvider<TVM>
-         where TVM : ViewModel {
+         where TVM : IViewModel {
          private BehaviorConfigurationDictionary _configurations = new BehaviorConfigurationDictionary();
 
          public IVMDescriptorBuilder<TVM, TDescriptor> CreateDescriptor<TDescriptor>(
@@ -56,7 +56,7 @@
       }
 
       private class BuilderExpression<TVM, TDescriptor> : IVMDescriptorBuilder<TVM, TDescriptor>
-         where TVM : ViewModel
+         where TVM : IViewModel
          where TDescriptor : VMDescriptor {
 
          private TDescriptor _descriptor;

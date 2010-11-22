@@ -153,7 +153,7 @@
          private List<string> SpareTimeProjectsSource { get; set; }
       }
 
-      private class ProjectVM : ViewModel<ProjectVMDescriptor>, ICanInitializeFrom<string>, IVMCollectionItem<string> {
+      private class ProjecTVM : IViewModel<ProjectVMDescriptor>, ICanInitializeFrom<string>, IVMCollectionItem<string> {
          public static readonly ProjectVMDescriptor Descriptor = VMDescriptorBuilder
             .For<ProjectVM>()
             .CreateDescriptor(c => {

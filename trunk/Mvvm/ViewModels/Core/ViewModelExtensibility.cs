@@ -26,11 +26,11 @@
       public static IRootVMPropertyFactory<TVM> ConfigurePropertyFactory<TVM>(
          IRootVMPropertyFactory<TVM> factory,
          BehaviorConfiguration additionalConfiguration
-      ) where TVM : ViewModel {
+      ) where TVM : IViewModel {
          return ((VMPropertyFactory<TVM, TVM>)factory).WithConfiguration(additionalConfiguration);
       }
 
-      //public static IRootVMPropertyFactory<TVM> CreatePropertyFactory<TVM>() where TVM : ViewModel {
+      //public static IRootVMPropertyFactory<TVM> CreatePropertyFactory<TVM>() where TVM : IViewModel {
       //   return new VMPropertyFactory<TVM, TVM>(PropertyPath.Empty<TVM>, 
       //}
    }

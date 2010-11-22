@@ -6,7 +6,7 @@
 
    internal sealed class SingleSelectionPropertyBuilder<TParentVM> :
       ISingleSelectionPropertyBuilder<TParentVM>
-      where TParentVM : ViewModel {
+      where TParenTVM : IViewModel {
 
       private IRootVMPropertyFactory<TParentVM> _propertyFactory;
 
@@ -28,7 +28,7 @@
 
    internal sealed class SingleSelectionPropertyBuilder<TParentVM, TSourceItem> :
       ISingleSelectionPropertyBuilder<TParentVM, TSourceItem>
-      where TParentVM : ViewModel {
+      where TParenTVM : IViewModel {
 
       private IRootVMPropertyFactory<TParentVM> _propertyFactory;
       private Func<TSourceItem, bool> _selectableItemFilter;

@@ -43,7 +43,7 @@
          Assert.IsTrue(descriptor.Property.Behaviors.TryGetBehavior(out b));
       }
 
-      private class TestVM : ViewModel<TestVMDescriptor> { }
+      private class TesTVM : IViewModel<TestVMDescriptor> { }
 
       private class TestVMDescriptor : VMDescriptor {
          public VMProperty<string> Property { get; set; }

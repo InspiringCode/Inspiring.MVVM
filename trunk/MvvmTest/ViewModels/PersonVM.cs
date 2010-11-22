@@ -58,7 +58,7 @@
       public VMCollectionProperty<ProjectVM> Projects { get; set; }
    }
 
-   public class ProjectVM : ViewModel<ProjectVMDescriptor>, ICanInitializeFrom<Project> {
+   public class ProjecTVM : IViewModel<ProjectVMDescriptor>, ICanInitializeFrom<Project> {
       public static readonly ProjectVMDescriptor Descriptor = VMDescriptorBuilder
             .For<ProjectVM>()
             .CreateDescriptor(c => {

@@ -7,7 +7,7 @@
    using Inspiring.Mvvm.ViewModels.Core;
 
    /// <inheritdoc/>
-   internal class VMPropertyFactory<TVM, TSource> : IVMPropertyFactory<TVM, TSource>, IRootVMPropertyFactory<TSource>, IBehaviorConfigurationDictionaryProvider where TVM : ViewModel {
+   internal class VMPropertyFactory<TVM, TSource> : IVMPropertyFactory<TVM, TSource>, IRootVMPropertyFactory<TSource>, IBehaviorConfigurationDictionaryProvider where TVM : IViewModel {
       private PropertyPath<TVM, TSource> _sourceObjectPropertyPath;
       private BehaviorConfigurationDictionary _configurations;
       private BehaviorConfiguration _additionalConfiguration;
@@ -216,7 +216,7 @@
 
       private class VMCollectionPropertyFactoryExpression<TParentVM, TItem> :
          IVMCollectionPropertyFactoryExpression<TParentVM, TItem>
-         where TParentVM : ViewModel {
+         where TParenTVM : IViewModel {
 
          private ConfiguredProperty _config;
 
@@ -225,7 +225,7 @@
          }
 
          // TODO: Make this more type safe?
-         public VMCollectionProperty<TItemVM> Of<TItemVM>(VMDescriptor itemDescriptor) where TItemVM : ViewModel, ICanInitializeFrom<TItem> {
+         public VMCollectionProperty<TItemVM> Of<TItemVM>(VMDescriptor itemDescriptor) where TItemVM : IViewModel, ICanInitializeFrom<TItem> {
             _config.Configuration.OverrideFactory(
                VMBehaviorKey.CollectionPopulator,
                new ConstantBehaviorFactory(
@@ -254,7 +254,7 @@
          }
 
 
-         public VMCollectionProperty<TItemVM> OfParentAware<TItemVM>(VMDescriptor itemDescriptor) where TItemVM : ViewModel, ICanInitializeFrom<SourceWithParent<TParentVM, TItem>> {
+         public VMCollectionProperty<TItemVM> OfParentAware<TItemVM>(VMDescriptor itemDescriptor) where TItemVM : IViewModel, ICanInitializeFrom<SourceWithParent<TParentVM, TItem>> {
             _config.Configuration.OverrideFactory(
                VMBehaviorKey.CollectionPopulator,
                new ConstantBehaviorFactory(
@@ -290,7 +290,7 @@
             _config = config;
          }
 
-         public VMProperty<TVM> Of<TVM>() where TVM : ViewModel, ICanInitializeFrom<TVMSource> {
+         public VMProperty<TVM> Of<TVM>() where TVM : IViewModel, ICanInitializeFrom<TVMSource> {
             _config.Configuration.OverrideFactory(
                VMBehaviorKey.ViewModelPropertyInitializer,
                new ConstantBehaviorFactory(

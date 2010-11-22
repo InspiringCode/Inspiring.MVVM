@@ -4,7 +4,7 @@
 
    internal sealed class CollectionValidationBuilder<TItemVM> :
       ICollectionValidationBuilder<TItemVM>
-      where TItemVM : ViewModel {
+      where TItemVM : IViewModel {
 
       private BehaviorConfigurationDictionary _configs;
       private IVMProperty<VMCollection<TItemVM>> _property;
@@ -32,7 +32,7 @@
 
    internal sealed class CollectionValidationBuilder<TItemVM, TItemValue> :
       ICollectionValidationBuilder<TItemVM, TItemValue>
-      where TItemVM : ViewModel {
+      where TItemVM : IViewModel {
 
       private CollectionValidationBuilder<TItemVM> _parent;
       private VMProperty<TItemValue> _itemProperty;

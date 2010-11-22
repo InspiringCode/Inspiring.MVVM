@@ -6,7 +6,7 @@
    using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.Mvvm.ViewModels.Future;
 
-   internal abstract class ViewModelNew<TDescriptor> :
+   internal abstract class ViewModel<TDescriptor> :
       CustomTypeDescriptor,
       IViewModel,
       INotifyPropertyChanged,

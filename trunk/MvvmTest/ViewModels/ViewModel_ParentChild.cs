@@ -88,7 +88,7 @@
    //      );
    //   }
 
-   //   public class ParentParentVM : ViewModel<ParentParentVMDescriptor> {
+   //   public class ParentParenTVM : IViewModel<ParentParentVMDescriptor> {
    //      public static readonly ParentParentVMDescriptor Descriptor = VMDescriptorBuilder
    //         .For<ParentParentVM>()
    //         .CreateDescriptor(c => {
@@ -126,7 +126,7 @@
    //      }
    //   }
 
-   //   public class ParentVM : ViewModel<ParentVMDescriptor> {
+   //   public class ParenTVM : IViewModel<ParentVMDescriptor> {
    //      public static readonly ParentVMDescriptor Descriptor = VMDescriptorBuilder
    //         .For<ParentVM>()
    //         .CreateDescriptor(c => {

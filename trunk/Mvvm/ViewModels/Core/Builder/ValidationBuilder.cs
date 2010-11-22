@@ -2,7 +2,7 @@
    using System;
    using System.Diagnostics.Contracts;
 
-   internal sealed class ValidationBuilder<TVM> : IValidationBuilder<TVM> where TVM : ViewModel {
+   internal sealed class ValidationBuilder<TVM> : IValidationBuilder<TVM> where TVM : IViewModel {
       private BehaviorConfigurationDictionary _configs;
       private VMDescriptor _descriptor;
 
@@ -25,7 +25,7 @@
          return new ValidationBuilder<TVM, TValue>(config);
       }
 
-      public ICollectionValidationBuilder<TItemVM> CheckCollection<TItemVM>(IVMProperty<VMCollection<TItemVM>> property) where TItemVM : ViewModel {
+      public ICollectionValidationBuilder<TItemVM> CheckCollection<TItemVM>(IVMProperty<VMCollection<TItemVM>> property) where TItemVM : IViewModel {
          return new CollectionValidationBuilder<TItemVM>(_configs, property);
       }
 
@@ -41,7 +41,7 @@
       }
    }
 
-   internal sealed class ValidationBuilder<TVM, TValue> : IValidationBuilder<TVM, TValue> where TVM : ViewModel {
+   internal sealed class ValidationBuilder<TVM, TValue> : IValidationBuilder<TVM, TValue> where TVM : IViewModel {
       private BehaviorConfiguration _config;
 
       public ValidationBuilder(BehaviorConfiguration config) {
@@ -61,14 +61,14 @@
          //});
       }
 
-      public IValidationBuilder<TParentVM, TVM, TValue> WithParent<TParentVM>() where TParentVM : ViewModel {
+      public IValidationBuilder<TParentVM, TVM, TValue> WithParent<TParentVM>() where TParenTVM : IViewModel {
          return new ValidationBuilder<TParentVM, TVM, TValue>(_config);
       }
    }
 
    internal sealed class ValidationBuilder<TParentVM, TVM, TValue> : IValidationBuilder<TParentVM, TVM, TValue>
-      where TVM : ViewModel
-      where TParentVM : ViewModel {
+      where TVM : IViewModel
+      where TParenTVM : IViewModel {
       private BehaviorConfiguration _config;
 
       public ValidationBuilder(BehaviorConfiguration config) {

@@ -9,7 +9,7 @@
       public static void HasValue<TVM, TValue>(
          this IValidationBuilder<TVM, TValue> builder,
          string errorMessage
-      ) where TVM : ViewModel {
+      ) where TVM : IViewModel {
          builder.Custom((TVM vm, TValue value) => {
             bool empty =
                (value is string && String.IsNullOrWhiteSpace(value as string)) ||
@@ -25,7 +25,7 @@
          this IValidationBuilder<TVM, string> builder,
          int maximumLength,
          string errorMessage
-      ) where TVM : ViewModel {
+      ) where TVM : IViewModel {
          builder.Custom((TVM vm, string value) => {
             return value != null && value.Length > maximumLength ?
                ValidationResult.Failure(errorMessage.FormatWith(maximumLength)) :
@@ -39,8 +39,8 @@
          Func<TVM, TValue> valueSelector,
          string errorMessage
       )
-         where TParentVM : ViewModel
-         where TVM : ViewModel {
+         where TParenTVM : IViewModel
+         where TVM : IViewModel {
 
          builder.Custom((TParentVM parent, TVM vm, TValue value) => {
             IEnumerable<TVM> allItems = allItemSelector(parent);
@@ -54,7 +54,7 @@
       public static void IsUnique<TItemVM, TItemValue>(
          this ICollectionValidationBuilder<TItemVM, TItemValue> builder,
          string errorMessage
-      ) where TItemVM : ViewModel {
+      ) where TItemVM : IViewModel {
          builder.Custom(args => {
             if (args.AllItems.Any(i => i.VM != args.Item.VM && Object.Equals(i.Value, args.Item.Value))) {
                args.AddError(errorMessage);
@@ -68,7 +68,7 @@
          this ICollectionValidationBuilder<TItemVM, string> builder,
          StringComparison comparisonType,
          string errorMessage
-      ) where TItemVM : ViewModel {
+      ) where TItemVM : IViewModel {
          builder.Custom(args => {
             if (args.AllItems.Any(i => i.VM != args.Item.VM && String.Equals(i.Value, args.Item.Value, comparisonType))) {
                args.AddError(errorMessage);
@@ -81,7 +81,7 @@
       public static void PropagateChildErrors<TVM>(
          this IValidationBuilder<TVM> builder,
          string errorMessage
-      ) where TVM : ViewModel {
+      ) where TVM : IViewModel {
          builder.ViewModelValidator((vm, args) => {
             if (!vm.AreChildrenValid(validateGrandchildren: false)) {
                args.AddError(errorMessage);
@@ -93,7 +93,7 @@
       public static void ValidateProperties<TVM>(
          this IValidationBuilder<TVM> builder,
          string errorMessage
-      ) where TVM : ViewModel {
+      ) where TVM : IViewModel {
          builder.ViewModelValidator((vm, args) => {
             if (!vm.ArePropertiesValid(validateChildren: false)) {
                args.AddError(errorMessage);
@@ -106,7 +106,7 @@
          this IValidationBuilder<TVM, string> builder,
          string regexPattern,
          string errorMessage
-      ) where TVM : ViewModel {
+      ) where TVM : IViewModel {
          Regex regex = new Regex(regexPattern);
          builder.Custom((vm, value) => {
             return String.IsNullOrEmpty(value) || regex.IsMatch(value) ?
