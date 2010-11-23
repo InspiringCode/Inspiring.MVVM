@@ -61,7 +61,7 @@
 
       public static VMProperty<T> MockProperty<T>(BehaviorConfiguration config, VMDescriptor descriptor) {
          VMProperty<T> property = new VMProperty<T>();
-         property.Initialize("Test", descriptor);
+         property.Initialize("Test");
          property.ConfigureBehaviors(config, descriptor);
          return property;
       }

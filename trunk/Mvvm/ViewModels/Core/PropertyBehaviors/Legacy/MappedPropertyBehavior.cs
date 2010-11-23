@@ -11,7 +11,8 @@
    /// </summary>
    internal sealed class MappedPropertyBehavior<TVM, TValue> :
       Behavior,
-      IPropertyAccessorBehavior<TValue> {
+      IPropertyAccessorBehavior<TValue>
+      where TVM : IViewModel {
 
       private VMPropertyBase<TValue> _property;
       private PropertyPath<TVM, TValue> _path;
@@ -22,11 +23,11 @@
       }
 
       public TValue GetValue(IBehaviorContext vm, ValueStage stage) {
-         return _path.GetValue((TVM)vm);
+         return _path.GetValue((TVM)vm.VM);
       }
 
       public void SetValue(IBehaviorContext vm, TValue value) {
-         _path.SetValue((TVM)vm, value);
+         _path.SetValue((TVM)vm.VM, value);
       }
    }
 }

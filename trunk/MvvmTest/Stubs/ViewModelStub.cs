@@ -1,12 +1,13 @@
 ﻿namespace Inspiring.MvvmTest.Stubs {
    using System;
+   using Inspiring.Mvvm;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
 
    public class ViewModelStub : IViewModel {
       public ViewModelStub() {
          VMDescriptorBase descriptor = new VMDescriptorStub();
-         Kernel = new VMKernel(this, descriptor);
+         Kernel = new VMKernel(this, descriptor, ServiceLocator.Current);
       }
 
       public VMKernel Kernel {

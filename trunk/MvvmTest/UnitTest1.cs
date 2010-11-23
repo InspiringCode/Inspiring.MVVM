@@ -1,4 +1,5 @@
 ﻿using System;
+using Inspiring.Mvvm;
 using Inspiring.Mvvm.ViewModels;
 using Inspiring.Mvvm.ViewModels.Core;
 using Inspiring.MvvmTest.Stubs;
@@ -12,7 +13,7 @@ namespace Inspiring.MvvmTest {
    public class UnitTest1 : TestBase {
       [TestMethod]
       public void MyTestMethod() {
-         var kernel = new VMKernel(Mock<IViewModel>(), new VMDescriptorStub());
+         var kernel = new VMKernel(Mock<IViewModel>(), new VMDescriptorStub(), ServiceLocator.Current);
 
          var itemMock = new Mock<IViewModel>();
          itemMock.Setup(x => x.Kernel).Returns(kernel);

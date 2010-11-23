@@ -59,6 +59,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiTests\ViewModels\BasicTests\AccessPropertyTests.cs" />
     <Compile Include="ApiTests\ViewModels\Domain\Area.cs" />
     <Compile Include="ApiTests\ViewModels\Domain\AreaRepository.cs" />
     <Compile Include="ApiTests\ViewModels\VMs\AreaVM.cs" />

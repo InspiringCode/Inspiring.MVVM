@@ -48,42 +48,9 @@ namespace Inspiring.Mvvm.ViewModels.Core {
             throw new NotImplementedException();
          }
 
-         bool IViewModel.IsValid(bool validateChildren) {
-            throw new NotImplementedException();
-         }
-
-         void IViewModel.Revalidate() {
-            throw new NotImplementedException();
-         }
-
-         event EventHandler<ValidationEventArgs> IViewModel.Validating {
-            add { throw new NotImplementedException(); }
-            remove { throw new NotImplementedException(); }
-         }
-
-         event EventHandler<ValidationEventArgs> IViewModel.Validated {
-            add { throw new NotImplementedException(); }
-            remove { throw new NotImplementedException(); }
-         }
-
-         void IViewModel.InvokeValidate(IViewModel changedVM, VMPropertyBase changedProperty) {
-            throw new NotImplementedException();
-         }
-
-         IViewModel IViewModel.Parent {
-            get {
-               throw new NotImplementedException();
-            }
-            set {
-               throw new NotImplementedException();
-            }
-         }
-
-
          public IBehaviorContext GetContext() {
             throw new NotImplementedException();
          }
-
 
          IBehaviorContext IViewModel.GetContext() {
             throw new NotImplementedException();

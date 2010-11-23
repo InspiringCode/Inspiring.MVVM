@@ -7,18 +7,21 @@
       private readonly IViewModel _vm;
       private readonly VMDescriptorBase _descriptor;
 
-      public VMKernel(IViewModel vm, VMDescriptorBase descriptor) {
+      public VMKernel(IViewModel vm, VMDescriptorBase descriptor, IServiceLocator serviceLocator) {
          Contract.Requires<ArgumentNullException>(vm != null);
          Contract.Requires<ArgumentNullException>(descriptor != null);
+         Contract.Requires<ArgumentNullException>(serviceLocator != null);
 
          _vm = vm;
          _descriptor = descriptor;
+         ServiceLocator = serviceLocator;
       }
 
       public IViewModel Parent { get; set; }
 
       public IServiceLocator ServiceLocator {
-         get { throw new NotImplementedException(); }
+         get;
+         private set;
       }
 
       IViewModel IBehaviorContext.VM {

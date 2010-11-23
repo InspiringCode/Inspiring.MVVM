@@ -75,41 +75,42 @@
       }
 
       private VMCollection<KeywordVM> CreateSelectedItemsCollection() {
-         var coll = new VMCollection<KeywordVM>(this, KeywordVM.Descriptor);
+         throw new NotImplementedException();
+         //var coll = new VMCollection<KeywordVM>(this, KeywordVM.Descriptor);
 
          IEnumerable<KeywordVM> selectedItemVMs = SelectedSourceItems
             .Select(i => AllItems.Single(x => x.Keyword == i));
 
-         coll.Popuplate(
-            selectedItemVMs,
-            new SelectedItemsSynchronizer(SelectedSourceItems)
-         );
+         //coll.Popuplate(
+         //   selectedItemVMs,
+         //   new SelectedItemsSynchronizer(SelectedSourceItems)
+         //);
 
-         return coll;
+         //return coll;
       }
 
-      private class SelectedItemsSynchronizer : ICollectionModificationController<KeywordVM> {
-         private ICollection<Keyword> _selectedSourceItems;
+      //private class SelectedItemsSynchronizer : ICollectionModificationController<KeywordVM> {
+      //   private ICollection<Keyword> _selectedSourceItems;
 
-         public SelectedItemsSynchronizer(ICollection<Keyword> selectedSourceItems) {
-            _selectedSourceItems = selectedSourceItems;
-         }
-         public void Insert(KeywordVM item, int index) {
-            _selectedSourceItems.Add(item.Keyword);
-         }
+      //   public SelectedItemsSynchronizer(ICollection<Keyword> selectedSourceItems) {
+      //      _selectedSourceItems = selectedSourceItems;
+      //   }
+      //   public void Insert(KeywordVM item, int index) {
+      //      _selectedSourceItems.Add(item.Keyword);
+      //   }
 
-         public void Remove(KeywordVM item) {
-            _selectedSourceItems.Remove(item.Keyword);
-         }
+      //   public void Remove(KeywordVM item) {
+      //      _selectedSourceItems.Remove(item.Keyword);
+      //   }
 
-         public void SetItem(KeywordVM item, int index) {
-            throw new NotSupportedException();
-         }
+      //   public void SetItem(KeywordVM item, int index) {
+      //      throw new NotSupportedException();
+      //   }
 
-         public void Clear() {
-            _selectedSourceItems.Clear();
-         }
-      }
+      //   public void Clear() {
+      //      _selectedSourceItems.Clear();
+      //   }
+      //}
    }
 
    internal sealed class KeywordSelectionVMDescriptor : VMDescriptor {

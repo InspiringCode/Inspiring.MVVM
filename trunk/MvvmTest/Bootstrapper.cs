@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.MvvmTest {
    using System;
-   using System.Diagnostics.Contracts;
    using Inspiring.Mvvm;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -8,10 +7,11 @@
    public sealed class Bootstrapper {
       [AssemblyInitialize()]
       public static void Initialize(TestContext context) {
-         Contract.ContractFailed += (sender, e) => {
-            e.SetHandled();
-            //Assert.Fail(e.Message);
-         };
+         //Contract.ContractFailed += (sender, e) => {
+         //   e.SetHandled();
+         //   e.SetUnwind();
+         //   Assert.Fail(e.Message);
+         //};
 
          ServiceLocator.SetServiceLocator(new ReflectionServiceLocator());
       }

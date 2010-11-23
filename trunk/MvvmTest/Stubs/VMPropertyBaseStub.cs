@@ -18,5 +18,12 @@
       internal override void ConfigureBehaviors(BehaviorConfiguration configuration, VMDescriptorBase descriptor) {
          throw new NotImplementedException("TODO");
       }
+      protected override object GetValueCore(IBehaviorContext context, ValueStage stage) {
+         throw new NotImplementedException();
+      }
+
+      protected override void SetValueCore(IBehaviorContext context, object value) {
+         throw new NotImplementedException();
+      }
    }
 }

@@ -23,34 +23,16 @@
 
       public Type PropertyType { get; private set; }
 
-      internal VMDescriptor Descriptor { get; private set; }
-
-      internal VMPropertyDescriptor PropertyDescriptor { get; set; }
-
       public void Initialize(string propertyName) {
          Contract.Requires<ArgumentNullException>(propertyName != null);
 
          PropertyName = propertyName;
       }
 
-      [Obsolete]
-      internal void Initialize(string propertyName, VMDescriptor descriptor) {
-         PropertyName = propertyName;
-         Descriptor = descriptor;
-      }
-
       internal abstract void ConfigureBehaviors(BehaviorConfiguration configuration, VMDescriptorBase descriptor);
 
-      internal object GetDisplayValue(IBehaviorContext vm) {
-         Contract.Requires(vm != null);
-         return Behaviors.GetNextBehavior<IDisplayValueAccessorBehavior>().GetDisplayValue(vm);
-      }
 
-      internal void SetDisplayValue(IBehaviorContext vm, object value) {
-         Contract.Requires(vm != null);
-         Behaviors.GetNextBehavior<IDisplayValueAccessorBehavior>().SetDisplayValue(vm, value);
-      }
-
+      [Obsolete]
       internal void OnPropertyChanged(IBehaviorContext vm) {
          IHandlePropertyChangingBehavior changingBehavior;
          if (Behaviors.TryGetBehavior(out changingBehavior)) {
@@ -61,40 +43,55 @@
          if (Behaviors.TryGetBehavior(out changedBehavior)) {
             changedBehavior.HandlePropertyChanged(vm);
          }
-
-         // HACK: Is there a neater way to seperate the Descriptor stuff?
-         if (PropertyDescriptor != null) {
-            PropertyDescriptor.RaiseValueChanged(vm);
-         }
       }
 
       internal abstract void Revalidate(IBehaviorContext context);
 
-      internal ValidationResult GetValidationResult(IBehaviorContext context) {
-         IValidationBehavior validationBehavior;
-         if (Behaviors.TryGetBehavior(out validationBehavior)) {
-            return validationBehavior.GetValidationResult(context);
-         }
+      //internal ValidationResult GetValidationResult(IBehaviorContext context) {
+      //   IValidationBehavior validationBehavior;
+      //   if (Behaviors.TryGetBehavior(out validationBehavior)) {
+      //      return validationBehavior.GetValidationResult(context);
+      //   }
 
-         return ValidationResult.Success();
+      //   return ValidationResult.Success();
+      //}
+
+      //internal bool IsMutable(IBehaviorContext context) {
+      //   IMutabilityCheckerBehavior checker;
+      //   if (Behaviors.TryGetBehavior(out checker)) {
+      //      return checker.IsMutable(context);
+      //   }
+      //   return true;
+      //}
+
+
+      object IVMProperty.GetValue(IBehaviorContext context, ValueStage stage) {
+         return GetValueCore(context, stage);
       }
 
-      internal bool IsMutable(IBehaviorContext context) {
-         IMutabilityCheckerBehavior checker;
-         if (Behaviors.TryGetBehavior(out checker)) {
-            return checker.IsMutable(context);
-         }
-         return true;
+      void IVMProperty.SetValue(IBehaviorContext context, object value) {
+         SetValueCore(context, value);
       }
 
+      internal object GetDisplayValue(IBehaviorContext context) {
+         Contract.Requires(context != null);
 
-      public object GetValue(IBehaviorContext context, ValueStage stage) {
-         throw new NotImplementedException();
+         return Behaviors
+            .GetNextBehavior<IDisplayValueAccessorBehavior>()
+            .GetDisplayValue(context);
       }
 
-      public void SetValue(IBehaviorContext context, object value) {
-         throw new NotImplementedException();
+      internal void SetDisplayValue(IBehaviorContext context, object value) {
+         Contract.Requires(context != null);
+
+         Behaviors
+            .GetNextBehavior<IDisplayValueAccessorBehavior>()
+            .SetDisplayValue(context, value);
       }
+
+      protected abstract object GetValueCore(IBehaviorContext context, ValueStage stage);
+
+      protected abstract void SetValueCore(IBehaviorContext context, object value);
    }
 
    public abstract class VMPropertyBase<T> : VMPropertyBase, IVMProperty<T> {
@@ -109,40 +106,35 @@
          ((IBehavior)Behaviors).Initialize(new BehaviorInitializationContext(fields, descriptor, this));
       }
 
-      //[Obsolete]
-      //internal T GetValue(IBehaviorContext vm) {
-      //   Contract.Requires(vm != null);
-      //   return Behaviors.GetNextBehavior<IPropertyAccessorBehavior<T>>().GetValue(vm);
-      //}
-
-      //[Obsolete]
-      //internal void SetValue(IBehaviorContext vm, T value) {
-      //   Contract.Requires(vm != null);
-      //   Behaviors.GetNextBehavior<IPropertyAccessorBehavior<T>>().SetValue(vm, value);
-      //}
-
-      internal T GetValue(IBehaviorContext context) {
+      internal T GetValue(IBehaviorContext context, ValueStage stage) {
          Contract.Requires(context != null);
-         throw new NotImplementedException();
+
+         return Behaviors
+            .GetNextBehavior<IPropertyAccessorBehavior<T>>()
+            .GetValue(context, stage);
       }
 
       internal void SetValue(IBehaviorContext context, T value) {
          Contract.Requires(context != null);
-         throw new NotImplementedException();
+
+         Behaviors
+            .GetNextBehavior<IPropertyAccessorBehavior<T>>()
+            .SetValue(context, value);
       }
 
-      internal object GetDisplayValue(IBehaviorContext context) {
-         Contract.Requires(context != null);
-         throw new NotImplementedException();
+      protected override object GetValueCore(IBehaviorContext context, ValueStage stage) {
+         return stage == ValueStage.PreConversion ?
+            GetDisplayValue(context) :
+            GetValue(context, stage);
       }
 
-      internal void SetDisplayValue(IBehaviorContext context, object value) {
-         Contract.Requires(context != null);
-         Behaviors.GetNextBehavior<IDisplayValueAccessorBehavior>().SetDisplayValue(context, value);
+      protected override void SetValueCore(IBehaviorContext context, object value) {
+         SetDisplayValue(context, value);
       }
 
+      [Obsolete]
       internal override void Revalidate(IBehaviorContext context) {
-         if (IsMutable(context)) {
+         if (this.IsMutable(context)) {
             IDisplayValueAccessorBehavior displayValueAccessor;
             if (Behaviors.TryGetBehavior(out displayValueAccessor)) {
                object value = displayValueAccessor.GetDisplayValue(context);

@@ -17,7 +17,7 @@
          .Build();
 
       public AreaVM(IServiceLocator serviceLocator)
-         : base() {
+         : base(Descriptor) {
       }
 
       public Area Area { get; private set; }

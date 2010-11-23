@@ -3,6 +3,7 @@
    using System.ComponentModel;
    using System.Diagnostics.Contracts;
    using System.Linq;
+   using Inspiring.Mvvm;
    using Inspiring.Mvvm.ViewModels.Core;
 
    // TODO: Rename/Refactor me!
@@ -16,6 +17,15 @@
       INotifyPropertyChanged,
       IDataErrorInfo
       where TDescriptor : VMDescriptorBase {
+
+      public ViewModel() {
+
+      }
+
+      public ViewModel(TDescriptor descriptor, IServiceLocator serviceLocator = null) {
+         DescriptorBase = descriptor;
+         ServiceLocator = serviceLocator ?? Mvvm.ServiceLocator.Current;
+      }
 
       private VMKernel _kernel;
 
@@ -33,6 +43,11 @@
          set;
       }
 
+      protected IServiceLocator ServiceLocator {
+         get;
+         private set;
+      }
+
       protected VMKernel Kernel {
          get {
             Contract.Requires<InvalidOperationException>(
@@ -43,85 +58,10 @@
             Contract.Ensures(Contract.Result<VMKernel>() != null);
 
             if (_kernel == null) {
-               _kernel = new VMKernel(this, DescriptorBase);
+               _kernel = new VMKernel(this, DescriptorBase, ServiceLocator);
             }
 
             return _kernel;
-         }
-      }
-
-      public event PropertyChangedEventHandler PropertyChanged;
-
-      public T GetValue<T>(VMPropertyBase<T> property, ValueStage state = ValueStage.PreValidation) {
-         throw new NotImplementedException("Refactor VMProperty");
-      }
-
-      public void SetValue<T>(VMPropertyBase<T> property, T value) {
-         throw new NotImplementedException("Refactor VMProperty");
-      }
-
-      public object GetDisplayValue(IVMProperty property) {
-         throw new NotImplementedException("Refactor VMProperty");
-      }
-
-      public void SetDisplayValue(IVMProperty property, object value) {
-         throw new NotImplementedException("Refactor VMProperty");
-      }
-
-
-      public object GetValue(IVMProperty property, ValueStage stage) {
-         throw new NotImplementedException();
-      }
-
-      public void SetValue(IVMProperty property, object value) {
-         throw new NotImplementedException();
-      }
-
-
-      object IViewModel.GetValue(IVMProperty property, ValueStage stage) {
-         throw new NotImplementedException();
-      }
-
-      void IViewModel.SetValue(IVMProperty property, object value) {
-         throw new NotImplementedException();
-      }
-
-      bool IViewModel.IsValid(bool validateChildren) {
-         throw new NotImplementedException();
-      }
-
-      void IViewModel.Revalidate() {
-         throw new NotImplementedException();
-      }
-
-      event EventHandler<ValidationEventArgs> IViewModel.Validating {
-         add { throw new NotImplementedException(); }
-         remove { throw new NotImplementedException(); }
-      }
-
-      event EventHandler<ValidationEventArgs> IViewModel.Validated {
-         add { throw new NotImplementedException(); }
-         remove { throw new NotImplementedException(); }
-      }
-
-
-      void IViewModel.InvokeValidate(IViewModel changedVM, VMPropertyBase changedProperty) {
-         throw new NotImplementedException();
-      }
-
-
-      public IBehaviorContext GetContext() {
-         throw new NotImplementedException();
-      }
-
-      void IViewModel.RaisePropertyChanged(string propertyName) {
-         OnPropertyChanged(propertyName);
-      }
-
-      protected virtual void OnPropertyChanged(string propertyName) {
-         var handler = PropertyChanged;
-         if (handler != null) {
-            handler(this, new PropertyChangedEventArgs(propertyName));
          }
       }
 
@@ -141,6 +81,51 @@
             return state.IsValid ?
                null :
                state.Errors.First().Message;
+         }
+      }
+
+      public event PropertyChangedEventHandler PropertyChanged;
+
+      protected internal T GetValue<T>(VMPropertyBase<T> property, ValueStage stage = ValueStage.PreValidation) {
+         Contract.Requires<ArgumentNullException>(property != null);
+         return property.GetValue(Kernel, stage);
+      }
+
+      protected internal void SetValue<T>(VMPropertyBase<T> property, T value) {
+         Contract.Requires<ArgumentNullException>(property != null);
+         property.SetValue(Kernel, value);
+      }
+
+      protected internal object GetDisplayValue(VMPropertyBase property) {
+         Contract.Requires<ArgumentNullException>(property != null);
+         return property.GetDisplayValue(Kernel);
+      }
+
+      protected internal void SetDisplayValue(VMPropertyBase property, object value) {
+         Contract.Requires<ArgumentNullException>(property != null);
+         property.SetDisplayValue(Kernel, value);
+      }
+
+      object IViewModel.GetValue(IVMProperty property, ValueStage stage) {
+         return property.GetValue(Kernel, stage);
+      }
+
+      void IViewModel.SetValue(IVMProperty property, object value) {
+         property.SetValue(Kernel, value);
+      }
+
+      public IBehaviorContext GetContext() {
+         return Kernel;
+      }
+
+      void IViewModel.RaisePropertyChanged(string propertyName) {
+         OnPropertyChanged(propertyName);
+      }
+
+      protected virtual void OnPropertyChanged(string propertyName) {
+         var handler = PropertyChanged;
+         if (handler != null) {
+            handler(this, new PropertyChangedEventArgs(propertyName));
          }
       }
    }

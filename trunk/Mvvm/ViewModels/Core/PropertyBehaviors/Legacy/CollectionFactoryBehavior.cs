@@ -12,10 +12,11 @@
       }
 
       public VMCollection<TItemVM> GetValue(IBehaviorContext vm, ValueStage stage) {
-         CollectionValidationBehavior<TItemVM> validationBehavior;
-         return TryGetBehavior(out validationBehavior) ?
-            new VMCollection<TItemVM>((IViewModel)vm.VM, _itemDescriptor, validationBehavior) :
-            new VMCollection<TItemVM>((IViewModel)vm.VM, _itemDescriptor);
+         throw new NotImplementedException();
+         //CollectionValidationBehavior<TItemVM> validationBehavior;
+         //return TryGetBehavior(out validationBehavior) ?
+         //   new VMCollection<TItemVM>((IViewModel)vm.VM, _itemDescriptor, validationBehavior) :
+         //   new VMCollection<TItemVM>((IViewModel)vm.VM, _itemDescriptor);
       }
 
       public void SetValue(IBehaviorContext vm, VMCollection<TItemVM> value) {

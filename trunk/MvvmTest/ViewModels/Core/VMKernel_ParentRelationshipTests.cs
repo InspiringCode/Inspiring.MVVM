@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core {
    using System;
+   using Inspiring.Mvvm;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.MvvmTest.Stubs;
@@ -106,7 +107,7 @@
          var descriptor = new VMDescriptorStub();
          descriptor.Behaviors.Successor = withBehavior;
 
-         var kernel = new VMKernel(vmMock.Object, descriptor);
+         var kernel = new VMKernel(vmMock.Object, descriptor, ServiceLocator.Current);
          vmMock.Setup(x => x.Kernel).Returns(kernel);
 
          return kernel;

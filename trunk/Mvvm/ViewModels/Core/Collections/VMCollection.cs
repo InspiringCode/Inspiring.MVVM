@@ -1,14 +1,16 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core.Collections {
+﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
    using System.ComponentModel;
    using System.Diagnostics.Contracts;
    using System.Linq;
+   using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.Mvvm.ViewModels.Core.BehaviorInterfaces;
+   using Inspiring.Mvvm.ViewModels.Core.Collections;
 
    /// <summary>
    ///   
    /// </summary>
-   internal class VMCollection<TItemVM> :
+   public class VMCollection<TItemVM> :
       BindingList<TItemVM>,
       IVMCollection<TItemVM>
       where TItemVM : IViewModel {
