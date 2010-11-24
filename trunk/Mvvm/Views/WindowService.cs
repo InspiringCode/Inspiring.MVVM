@@ -49,15 +49,17 @@
       public DialogScreenResult Open<TScreen>(
          Window dialogWindow,
          IScreenFactory<TScreen> screen,
-         IScreen parent
+         IScreen parent = null
       ) where TScreen : ScreenBase {
-         Window owner = GetAssociatedWindow(parent);
-
          ScreenBase s = screen.Create(x => { });
          s.Children.Add(new DialogLifecycle());
          ConfigureWindow(dialogWindow, s, new DialogCloseHandler(s));
 
-         dialogWindow.Owner = owner;
+         if (parent != null) {
+            Window owner = GetAssociatedWindow(parent);
+            dialogWindow.Owner = owner;
+         }
+
          dialogWindow.ShowInTaskbar = false;
          dialogWindow.ShowDialog();
 
@@ -67,7 +69,7 @@
 
       public DialogScreenResult Open<TScreen>(
          IScreenFactory<TScreen> screen,
-         IScreen parent,
+         IScreen parent = null,
          string title = null
       ) where TScreen : ScreenBase {
 

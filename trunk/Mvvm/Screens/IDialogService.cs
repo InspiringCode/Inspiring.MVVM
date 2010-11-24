@@ -10,7 +10,7 @@
 
       DialogScreenResult Open<TScreen>(
          IScreenFactory<TScreen> screen,
-         IScreen parent,
+         IScreen parent = null,
          string title = null
       ) where TScreen : ScreenBase;
    }
