@@ -35,6 +35,12 @@
          return windowService.CreateWindow(ScreenFactory.For<ShellScreen>());
       }
 
+      protected override bool Login(IWindowService windowService) {
+         // TODO: Create a more correct example (with screen and so)!
+         new Window().ShowDialog();
+         return false;
+      }
+
       private class StructureMapServiceLocator : IServiceLocator {
          public TService GetInstance<TService>() {
             return ObjectFactory.GetInstance<TService>();
