@@ -59,7 +59,8 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApiTests\ViewModels\BasicTests\AccessPropertyTests.cs" />
+    <Compile Include="ApiTests\TypeDescriptorTests.cs" />
+    <Compile Include="ApiTests\ViewModels\AccessPropertyTests.cs" />
     <Compile Include="ApiTests\ViewModels\Domain\Area.cs" />
     <Compile Include="ApiTests\ViewModels\Domain\AreaRepository.cs" />
     <Compile Include="ApiTests\ViewModels\VMs\AreaVM.cs" />
@@ -75,6 +76,8 @@
     <Compile Include="Stubs\VMDescriptorStub.cs" />
     <Compile Include="Stubs\VMPropertyBaseStub.cs" />
     <Compile Include="TestExtensions.cs" />
+    <Compile Include="TestUtils\ComparisonObject.cs" />
+    <Compile Include="TestUtils\ComparisonObjectTests.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMCollectionTests.cs" />
     <Compile Include="ViewModels\Core\BehaviorTestBase.cs" />
     <Compile Include="ViewModels\Core\Builder\BehaviorsTest.cs" />
@@ -157,6 +160,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ApiTests\ViewModels\BasicTests\" />
     <Folder Include="API\" />
     <Folder Include="Shell\" />
   </ItemGroup>
