@@ -6,9 +6,11 @@
 
    public class VMDescriptor : VMDescriptorBase {
       public VMDescriptor() {
-         RegisterService(new TypeDescriptorService(this));
+         var b = new TypeDescriptorViewModelBehavior();
+         b.Initialize(new BehaviorInitializationContext(this));
+         Behaviors.Successor = b;
+         
          RegisterService(new ViewModelValidatorHolder());
-         RegisterService(new FieldDefinitionCollection());
       }
 
       internal void InitializePropertyNames() {

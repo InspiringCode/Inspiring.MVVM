@@ -6,6 +6,7 @@
    public sealed class VMKernel : IBehaviorContext {
       private readonly IViewModel _vm;
       private readonly VMDescriptorBase _descriptor;
+      private FieldValueHolder _fieldValues;
 
       public VMKernel(IViewModel vm, VMDescriptorBase descriptor, IServiceLocator serviceLocator) {
          Contract.Requires<ArgumentNullException>(vm != null);
@@ -29,7 +30,13 @@
       }
 
       FieldValueHolder IBehaviorContext.FieldValues {
-         get { throw new NotImplementedException(); }
+         get {
+            if (_fieldValues == null) {
+               _fieldValues = _descriptor.Fields.CreateValueHolder();
+            }
+
+            return _fieldValues;
+         }
       }
 
       void IBehaviorContext.NotifyChange(ChangeArgs args) {

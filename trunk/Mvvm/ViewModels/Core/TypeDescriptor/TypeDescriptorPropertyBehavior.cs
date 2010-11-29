@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core.TypeDescriptor {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System.Diagnostics.Contracts;
 
    internal sealed class TypeDescriptorPropertyBehavior :

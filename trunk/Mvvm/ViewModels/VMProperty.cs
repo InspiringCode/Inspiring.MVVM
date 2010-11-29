@@ -102,8 +102,7 @@
 
       internal override void ConfigureBehaviors(BehaviorConfiguration configuration, VMDescriptorBase descriptor) {
          Behaviors = configuration.CreateBehaviorChain<T>();
-         var fields = descriptor.GetService<FieldDefinitionCollection>();
-         ((IBehavior)Behaviors).Initialize(new BehaviorInitializationContext(fields, descriptor, this));
+         ((IBehavior)Behaviors).Initialize(new BehaviorInitializationContext(descriptor, this));
       }
 
       internal T GetValue(IBehaviorContext context, ValueStage stage) {

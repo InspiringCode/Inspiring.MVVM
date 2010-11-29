@@ -16,7 +16,7 @@
          public ViewModelBehaviorContextHelper() {
             var fields = new FieldDefinitionCollection();
 
-            InitializationContext = new BehaviorInitializationContext(fields, new VMDescriptorStub()); // Is this correct?
+            InitializationContext = new BehaviorInitializationContext( new VMDescriptorStub()); // Is this correct?
 
             var fieldValues = new Lazy<FieldValueHolder>(() =>
                fields.CreateValueHolder()
@@ -49,7 +49,6 @@
             var fields = new FieldDefinitionCollection();
 
             InitializationContext = new BehaviorInitializationContext(
-               fields,
                new VMDescriptorStub(), // TODO: Is this correct? Fields and so?
                property
             );

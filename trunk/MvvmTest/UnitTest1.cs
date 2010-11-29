@@ -7,10 +7,24 @@ using Inspiring.MvvmTest.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Sequences;
+using System.ComponentModel;
 
 namespace Inspiring.MvvmTest {
    [TestClass]
    public class UnitTest1 : TestBase {
+      [TestMethod]
+      public void MyTestMethod2() {
+         ICustomTypeDescriptor d =  new Test();
+         Console.WriteLine(d.GetDefaultEvent());
+      }
+
+      private class Test : ViewModelTypeDescriptor {
+
+         protected override PropertyDescriptorCollection GetPropertyDescriptors() {
+            throw new NotImplementedException();
+         }
+      }
+
       [TestMethod]
       public void MyTestMethod() {
          var kernel = new VMKernel(Mock<IViewModel>(), new VMDescriptorStub(), ServiceLocator.Current);

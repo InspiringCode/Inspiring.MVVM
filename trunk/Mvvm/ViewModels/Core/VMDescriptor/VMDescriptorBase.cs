@@ -6,9 +6,18 @@
 
    public abstract class VMDescriptorBase : ServiceRegistry {
       private VMPropertyCollection _properties;
+      private readonly FieldDefinitionCollection _fields;
 
       public VMDescriptorBase() {
+         _fields = new FieldDefinitionCollection();
          Behaviors = new Behavior();
+      }
+
+      public FieldDefinitionCollection Fields {
+         get {
+            Contract.Ensures(Contract.Result<FieldDefinitionCollection>() != null);
+            return _fields;
+         }
       }
 
       public VMPropertyCollection Properties {

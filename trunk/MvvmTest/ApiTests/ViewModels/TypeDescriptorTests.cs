@@ -1,4 +1,4 @@
-﻿namespace Inspiring.MvvmTest.ApiTests {
+﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels {
    using System;
    using System.ComponentModel;
    using System.Linq;

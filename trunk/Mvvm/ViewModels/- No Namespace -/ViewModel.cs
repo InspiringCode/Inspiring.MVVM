@@ -12,7 +12,7 @@
    }
 
    public abstract class ViewModel<TDescriptor> :
-      CustomTypeDescriptor,
+      ViewModelTypeDescriptor,
       IViewModel,
       INotifyPropertyChanged,
       IDataErrorInfo
@@ -127,6 +127,18 @@
          if (handler != null) {
             handler(this, new PropertyChangedEventArgs(propertyName));
          }
+      }
+
+      protected override PropertyDescriptorCollection GetPropertyDescriptors() {
+         Contract.Requires<InvalidOperationException>(
+            DescriptorBase != null,
+            ExceptionTexts.DescriptorNotSet
+         );
+
+         return DescriptorBase
+            .Behaviors
+            .GetNextBehavior<TypeDescriptorViewModelBehavior>()
+            .PropertyDescriptors;
       }
    }
 }

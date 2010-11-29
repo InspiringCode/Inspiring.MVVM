@@ -4,23 +4,19 @@
    public sealed class BehaviorInitializationContext {
       // TODO: Maybe refactor this to take only the descriptor?
       public BehaviorInitializationContext(
-         FieldDefinitionCollection fields,
          VMDescriptorBase descriptor
       ) {
-         Contract.Requires(fields != null);
          Contract.Requires(descriptor != null);
 
-         Fields = fields;
+         Fields = descriptor.Fields;
          Descriptor = descriptor;
       }
 
       public BehaviorInitializationContext(
-         FieldDefinitionCollection fields,
          VMDescriptorBase descriptor,
          IVMProperty property
       )
-         : this(fields, descriptor) {
-         Contract.Requires(fields != null);
+         : this(descriptor) {
          Contract.Requires(descriptor != null);
          Contract.Requires(property != null);
 

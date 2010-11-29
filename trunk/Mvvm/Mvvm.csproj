@@ -127,6 +127,7 @@
     <Compile Include="ViewModels\Core\Collections\CollectionPopulatorBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\IVMCollection.cs" />
     <Compile Include="ViewModels\Core\Collections\VMCollection.cs" />
+    <Compile Include="ViewModels\Core\TypeDescriptor\ViewModelTypeDescriptor.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionBehaviors\CollectionValidatorBehavior.cs" />
     <Compile Include="ViewModels\Core\Common\ChangeArgs.cs" />
     <Compile Include="ViewModels\Core\Common\InstancePath.cs" />
