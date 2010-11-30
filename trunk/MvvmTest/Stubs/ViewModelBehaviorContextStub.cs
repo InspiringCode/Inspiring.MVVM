@@ -17,7 +17,7 @@
          get { throw new System.NotImplementedException(); }
       }
 
-      public void NotifyValidating(_ValidationArgs args) {
+      public void NotifyValidating(ValidationArgs args) {
          throw new System.NotImplementedException();
       }
 
@@ -33,7 +33,7 @@
          get { throw new System.NotImplementedException(); }
       }
 
-      void IBehaviorContext.NotifyValidating(_ValidationArgs args) {
+      void IBehaviorContext.NotifyValidating(ValidationArgs args) {
          throw new System.NotImplementedException();
       }
 

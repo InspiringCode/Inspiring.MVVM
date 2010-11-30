@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="ApiTests\ViewModels\Domain\RichText.cs" />
     <Compile Include="ApiTests\ViewModels\Domain\Task.cs" />
+    <Compile Include="ApiTests\ViewModels\SimpleValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\TypeDescriptorTests.cs" />
     <Compile Include="ApiTests\ViewModels\AccessPropertyTests.cs" />
     <Compile Include="ApiTests\ViewModels\Domain\Area.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="ApiTests\ViewModels\VMs\TaskVM.cs" />
     <Compile Include="AssertHelper.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Common\DelegateUtilsTests.cs" />
     <Compile Include="Common\HashCodeServiceTests.cs" />
     <Compile Include="Common\ServiceRegistryTests.cs" />
     <Compile Include="Common\TypeServiceTest.cs" />

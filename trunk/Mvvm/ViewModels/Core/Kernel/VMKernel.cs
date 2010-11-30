@@ -44,7 +44,7 @@
       }
 
 
-      void IBehaviorContext.NotifyValidating(_ValidationArgs args) {
+      void IBehaviorContext.NotifyValidating(ValidationArgs args) {
          HandleNotifyValidating(args);
 
          if (Parent != null) {
@@ -79,6 +79,10 @@
          //property.Behaviors
          //   .GetNextBehavior<IManuelUpdateBehavior>()
          //   .UpdateFromSource(this);
+      }
+
+      public void Revalidate(ValidationScope scope, ValidationMode mode) {
+
       }
 
       // TODO: Test and refactor me.
@@ -132,13 +136,13 @@
          }
       }
 
-      private void HandleNotifyValidating(_ValidationArgs args) {
+      private void HandleNotifyValidating(ValidationArgs args) {
          _descriptor.Behaviors.TryCall<ViewModelBehavior>(b =>
             b.OnValidating(this, args)
          );
       }
 
-      private void NotifyValidating(_ValidationArgs args) {
+      private void NotifyValidating(ValidationArgs args) {
          args = args.PrependTargetPath(with: _vm);
          HandleNotifyValidating(args);
 

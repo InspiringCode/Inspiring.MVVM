@@ -110,8 +110,8 @@
       private void SetupValidPropertyValidationCallback() {
          _ctx
            .ContextMock
-           .Setup(x => x.NotifyValidating(It.IsAny<_ValidationArgs>()))
-           .Callback<_ValidationArgs>(args => { });
+           .Setup(x => x.NotifyValidating(It.IsAny<ValidationArgs>()))
+           .Callback<ValidationArgs>(args => { });
       }
 
       private void SetupInvalidPropertyValidationCallback(ValidationError expectedError = null) {
@@ -119,15 +119,15 @@
 
          _ctx
            .ContextMock
-           .Setup(x => x.NotifyValidating(It.IsAny<_ValidationArgs>()))
-           .Callback<_ValidationArgs>(args => args.Errors.Add(expectedError));
+           .Setup(x => x.NotifyValidating(It.IsAny<ValidationArgs>()))
+           .Callback<ValidationArgs>(args => args.Errors.Add(expectedError));
       }
 
       private void AssertNotifyPropertyValidatingWasCalledOnContext() {
          _ctx
             .ContextMock
             .Verify(
-               x => x.NotifyValidating(It.IsAny<_ValidationArgs>()),
+               x => x.NotifyValidating(It.IsAny<ValidationArgs>()),
                Times.Once()
             );
       }

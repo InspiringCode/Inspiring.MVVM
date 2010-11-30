@@ -3,7 +3,7 @@
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
 
-   public class _ValidationArgs {
+   public class ValidationArgs {
       private readonly InstancePath _targetPath;
       private readonly IVMProperty _targetProperty;
       private readonly InstancePath _changedPath;
@@ -15,7 +15,7 @@
       ///   and the <see cref="TargetVM"/> are set to the first VM of the <paramref 
       ///   name="changedPath"/>.
       /// </summary>
-      public _ValidationArgs(
+      public ValidationArgs(
          ValidationState validationState,
          InstancePath changedPath
       )
@@ -33,7 +33,7 @@
       ///   and the <see cref="TargetVM"/> are set to the first VM of the <paramref 
       ///   name="changedPath"/>.
       /// </summary>
-      public _ValidationArgs(
+      public ValidationArgs(
          ValidationState validationState,
          InstancePath changedPath,
          IVMProperty changedProperty
@@ -58,7 +58,7 @@
       ///      and the <paramref name="targetProperty"/> because a property validation
       ///      can only be triggered by a property and for that property.</para>
       /// </summary>
-      public _ValidationArgs(
+      public ValidationArgs(
          ValidationState validationState,
          InstancePath changedPath,
          IVMProperty changedProperty,
@@ -78,7 +78,7 @@
          Contract.Requires(!changedPath.IsEmpty);
       }
 
-      private _ValidationArgs(
+      private ValidationArgs(
          ValidationState validationState,
          InstancePath changedPath,
          IVMProperty changedProperty,
@@ -178,14 +178,14 @@
       }
 
       /// <summary>
-      ///   Returns a new <see cref="_ValidationArgs"/> object whose <see 
+      ///   Returns a new <see cref="ValidationArgs"/> object whose <see 
       ///   cref="TargetPath"/> is prepended with the passed in <paramref 
       ///   name="with"/>.
       /// </summary>
-      public _ValidationArgs PrependTargetPath(IViewModel with) {
+      public ValidationArgs PrependTargetPath(IViewModel with) {
          InstancePath extendedTargetPath = TargetPath.PrependVM(with);
 
-         return new _ValidationArgs(
+         return new ValidationArgs(
             validationState: _validationState,
             changedPath: ChangedPath,
             changedProperty: ChangedProperty,
@@ -203,23 +203,22 @@
       }
    }
 
+   //public abstract class ValidationArgs {
+   //   private readonly List<ValidationError> _errors = new List<ValidationError>();
 
-   public abstract class ValidationArgs {
-      private readonly List<ValidationError> _errors = new List<ValidationError>();
+   //   public void AddError(ValidationError error) {
+   //      Contract.Requires<ArgumentNullException>(error != null);
+   //      _errors.Add(error);
+   //   }
 
-      public void AddError(ValidationError error) {
-         Contract.Requires<ArgumentNullException>(error != null);
-         _errors.Add(error);
-      }
+   //   internal IList<ValidationError> GetErrors() {
+   //      Contract.Ensures(Contract.Result<IList<ValidationError>>() != null);
+   //      return _errors;
+   //   }
 
-      internal IList<ValidationError> GetErrors() {
-         Contract.Ensures(Contract.Result<IList<ValidationError>>() != null);
-         return _errors;
-      }
-
-      [ContractInvariantMethod]
-      private void ObjectInvariant() {
-         Contract.Invariant(GetErrors() != null);
-      }
-   }
+   //   [ContractInvariantMethod]
+   //   private void ObjectInvariant() {
+   //      Contract.Invariant(GetErrors() != null);
+   //   }
+   //}
 }

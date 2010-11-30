@@ -11,6 +11,23 @@
 
       private List<ValidatorDefinition> _validators = new List<ValidatorDefinition>();
 
+      /// <summary>
+      ///   Adds a new <see cref="Validator"/> to the view model behavior.
+      /// </summary>
+      /// <param name="targetPath">
+      ///   The path to the descendant VM that should be validated. Pass <see 
+      ///   cref="VMPropertyPath.Empty"/> if the current VM (or a property of it)
+      ///   should be validated.
+      /// </param>
+      /// <param name="targetProperty">
+      ///   The property that should be validated. Pass null if you want to add
+      ///   a view model validation.
+      /// </param>
+      /// <param name="validator">
+      ///   The <see cref="Validator"/> that is executed when the <paramref 
+      ///   name="targetProperty"/> defined on the VM specified by <paramref 
+      ///   name="targetPath"/> changes.
+      /// </param>
       public void AddValidator(VMPropertyPath targetPath, IVMProperty targetProperty, Validator validator) {
          Contract.Requires<ArgumentNullException>(targetPath != null);
          Contract.Requires<ArgumentNullException>(validator != null);
@@ -53,7 +70,7 @@
       ) {
          ValidationState newState = new ValidationState();
 
-         var validationArgs = new _ValidationArgs(
+         var validationArgs = new ValidationArgs(
             validationState: newState,
             changedPath: changedPath,
             changedProperty: changedProperty
@@ -94,7 +111,7 @@
          base.OnChanged(context, args, changedPath);
       }
 
-      protected internal override void OnValidating(IBehaviorContext context, _ValidationArgs args) {
+      protected internal override void OnValidating(IBehaviorContext context, ValidationArgs args) {
          base.OnValidating(context, args);
          _validators.ForEach(val => val.Validate(args));
       }
@@ -109,7 +126,7 @@
          public Validator Validator { get; private set; }
          public IVMProperty TargetProperty { get; private set; }
 
-         public void Validate(_ValidationArgs args) {
+         public void Validate(ValidationArgs args) {
             bool isSameValidatorType = args.TargetProperty == TargetProperty;
             bool validatorPathMatches = args.TargetPath.Matches(TargetPath);
 

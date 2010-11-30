@@ -14,16 +14,7 @@
    public interface IValidationBuilder<TVM, TValue> : IHideObjectMembers
       where TVM : IViewModel {
 
-      void Custom(Func<TVM, TValue, ValidationResult> validation);
-
-      IValidationBuilder<TParentVM, TVM, TValue> WithParent<TParentVM>() where TParentVM : IViewModel;
-   }
-
-   public interface IValidationBuilder<TParentVM, TVM, TValue> : IHideObjectMembers
-      where TVM : IViewModel
-      where TParentVM : IViewModel {
-
-      void Custom(Func<TParentVM, TVM, TValue, ValidationResult> validation);
+      void Custom(Action<TVM, TValue, ValidationArgs> validation);
    }
 
    public interface ICollectionValidationBuilder<TItemVM> where TItemVM : IViewModel {

@@ -10,14 +10,14 @@
          this IValidationBuilder<TVM, TValue> builder,
          string errorMessage
       ) where TVM : IViewModel {
-         builder.Custom((TVM vm, TValue value) => {
+         builder.Custom((TVM vm, TValue value, ValidationArgs args) => {
             bool empty =
                (value is string && String.IsNullOrWhiteSpace(value as string)) ||
                Object.Equals(value, null);
 
-            return empty ?
-               ValidationResult.Failure(errorMessage) :
-               ValidationResult.Success();
+            if (empty) {
+               args.Errors.Add(new ValidationError(errorMessage));
+            }
          });
       }
 
@@ -26,30 +26,30 @@
          int maximumLength,
          string errorMessage
       ) where TVM : IViewModel {
-         builder.Custom((TVM vm, string value) => {
-            return value != null && value.Length > maximumLength ?
-               ValidationResult.Failure(errorMessage.FormatWith(maximumLength)) :
-               ValidationResult.Success();
+         builder.Custom((TVM vm, string value, ValidationArgs args) => {
+            if (value != null && value.Length > maximumLength) {
+               args.Errors.Add(new ValidationError(errorMessage.FormatWith(maximumLength)));
+            }
          });
       }
 
-      public static void IsUnique<TParentVM, TVM, TValue>(
-         this IValidationBuilder<TParentVM, TVM, TValue> builder,
-         Func<TParentVM, IEnumerable<TVM>> allItemSelector,
-         Func<TVM, TValue> valueSelector,
-         string errorMessage
-      )
-         where TParentVM : IViewModel
-         where TVM : IViewModel {
+      //public static void IsUnique<TParentVM, TVM, TValue>(
+      //   this IValidationBuilder<TParentVM, TVM, TValue> builder,
+      //   Func<TParentVM, IEnumerable<TVM>> allItemSelector,
+      //   Func<TVM, TValue> valueSelector,
+      //   string errorMessage
+      //)
+      //   where TParentVM : IViewModel
+      //   where TVM : IViewModel {
 
-         builder.Custom((TParentVM parent, TVM vm, TValue value) => {
-            IEnumerable<TVM> allItems = allItemSelector(parent);
+      //   builder.Custom((TParentVM parent, TVM vm, TValue value) => {
+      //      IEnumerable<TVM> allItems = allItemSelector(parent);
 
-            return allItems.Any(i => !Object.ReferenceEquals(i, vm) && Object.Equals(valueSelector(i), value)) ?
-               ValidationResult.Failure(errorMessage) :
-               ValidationResult.Success();
-         });
-      }
+      //      return allItems.Any(i => !Object.ReferenceEquals(i, vm) && Object.Equals(valueSelector(i), value)) ?
+      //         ValidationResult.Failure(errorMessage) :
+      //         ValidationResult.Success();
+      //   });
+      //}
 
       public static void IsUnique<TItemVM, TItemValue>(
          this ICollectionValidationBuilder<TItemVM, TItemValue> builder,
@@ -110,10 +110,10 @@
          string errorMessage
       ) where TVM : IViewModel {
          Regex regex = new Regex(regexPattern);
-         builder.Custom((vm, value) => {
-            return String.IsNullOrEmpty(value) || regex.IsMatch(value) ?
-               ValidationResult.Success() :
-               ValidationResult.Failure(errorMessage);
+         builder.Custom((vm, value, args) => {
+            if (!(String.IsNullOrEmpty(value) || regex.IsMatch(value))) {
+               args.Errors.Add(new ValidationError(errorMessage));
+            }
          });
       }
    }

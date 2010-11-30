@@ -71,7 +71,7 @@
             _ctx
                .ContextMock
                .Verify(
-                  x => x.NotifyValidating(It.IsAny<_ValidationArgs>()),
+                  x => x.NotifyValidating(It.IsAny<ValidationArgs>()),
                   Times.Once()
                );
          }
@@ -79,8 +79,8 @@
          private void SetupValidPropertyValidationCallback() {
             _ctx
               .ContextMock
-              .Setup(x => x.NotifyValidating(It.IsAny<_ValidationArgs>()))
-              .Callback<_ValidationArgs>(args => { });
+              .Setup(x => x.NotifyValidating(It.IsAny<ValidationArgs>()))
+              .Callback<ValidationArgs>(args => { });
          }
 
          private void SetupInvalidPropertyValidationCallback(ValidationError expectedError = null) {
@@ -88,8 +88,8 @@
 
             _ctx
               .ContextMock
-              .Setup(x => x.NotifyValidating(It.IsAny<_ValidationArgs>()))
-              .Callback<_ValidationArgs>(args => args.Errors.Add(expectedError));
+              .Setup(x => x.NotifyValidating(It.IsAny<ValidationArgs>()))
+              .Callback<ValidationArgs>(args => args.Errors.Add(expectedError));
          }
 
          private class NotifyChangeWatcher {
@@ -224,15 +224,15 @@
             Assert.AreEqual(0, _validator.InvocationCount);
          }
 
-         private static _ValidationArgs CreateViewModelValidationArgs(IViewModel changedVM = null) {
-            return new _ValidationArgs(
+         private static ValidationArgs CreateViewModelValidationArgs(IViewModel changedVM = null) {
+            return new ValidationArgs(
                validationState: new ValidationState(),
                changedPath: new InstancePath(changedVM ?? Mock<IViewModel>())
             );
          }
 
-         private static _ValidationArgs CreatePropertyValidationArgs(IVMProperty targetProperty, IViewModel changedVM = null) {
-            return new _ValidationArgs(
+         private static ValidationArgs CreatePropertyValidationArgs(IVMProperty targetProperty, IViewModel changedVM = null) {
+            return new ValidationArgs(
                validationState: new ValidationState(),
                changedPath: new InstancePath(changedVM ?? Mock<IViewModel>()),
                changedProperty: targetProperty,
@@ -248,16 +248,16 @@
             _behavior.AddValidator(path ?? VMPropertyPath.Empty, forProperty, _validator);
          }
 
-         private void InvokeOnValidating(_ValidationArgs withArgs) {
+         private void InvokeOnValidating(ValidationArgs withArgs) {
             _behavior.OnValidating(Mock<IBehaviorContext>(), withArgs);
          }
 
 
          private class ValidatorSpy : Validator {
             public int InvocationCount { get; private set; }
-            public _ValidationArgs Args { get; private set; }
+            public ValidationArgs Args { get; private set; }
 
-            public override void Validate(_ValidationArgs args) {
+            public override void Validate(ValidationArgs args) {
                InvocationCount++;
                Args = args;
             }
@@ -289,7 +289,7 @@
             .ContextMock
             .Verify(x =>
                x.NotifyValidating(
-                  It.Is<_ValidationArgs>(args =>
+                  It.Is<ValidationArgs>(args =>
                      args.ChangedPath.RootVM == changedPath.RootVM &&
                      args.ChangedPath.LeafVM == changedPath.LeafVM &&
                      args.ChangedProperty == changedProperty &&

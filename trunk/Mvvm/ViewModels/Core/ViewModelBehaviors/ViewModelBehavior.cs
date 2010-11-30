@@ -3,7 +3,7 @@
    public abstract class ViewModelBehavior : Behavior {
       protected internal virtual void OnValidating(
          IBehaviorContext context,
-         _ValidationArgs args
+         ValidationArgs args
       ) {
          this.CallNext(x => x.OnValidating(context, args));
       }

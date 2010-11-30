@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Diagnostics.Contracts;
+   using Inspiring.Mvvm.Common;
 
    internal sealed class ValidationBuilder<TVM> : IValidationBuilder<TVM> where TVM : IViewModel {
       private BehaviorConfigurationDictionary _configs;
@@ -43,13 +44,29 @@
 
    internal sealed class ValidationBuilder<TVM, TValue> : IValidationBuilder<TVM, TValue> where TVM : IViewModel {
       private BehaviorConfiguration _config;
+      private IVMProperty _property;
 
-      public ValidationBuilder(BehaviorConfiguration config) {
+      public ValidationBuilder(BehaviorConfiguration config, IVMProperty property) {
          Contract.Requires(config != null);
+         Contract.Requires(property != null);
+
          _config = config;
+         _property = property;
       }
 
-      public void Custom(Func<TVM, TValue, ValidationResult> validation) {
+      public void Custom(Action<TVM, TValue, ValidationArgs> validatorCallback) {
+         var validator = new DelegateValidator<TVM, TValue>(validatorCallback);
+         
+         ViewModelValidationBehavior behavior = null;
+
+         behavior.AddValidator(VMPropertyPath.Empty, _property, validator);
+
+         //_config.Configure<PropertyValidationBehavior<TValue>>(VMBehaviorKey.Validator, behavior => {
+            
+         //});
+
+         
+
          throw new NotImplementedException("TODO2");
          //_config.Configure(VMBehaviorKey.Validator, (ValidationBehavior<TValue> behavior) => {
          //   behavior.Add(args => {
@@ -61,38 +78,26 @@
          //});
       }
 
-      public IValidationBuilder<TParentVM, TVM, TValue> WithParent<TParentVM>() where TParentVM : IViewModel {
-         return new ValidationBuilder<TParentVM, TVM, TValue>(_config);
-      }
-   }
+      private sealed class DelegateValidator<TVM, TValue> : Validator {
+         private Action<TVM, TValue, ValidationArgs> _validatorCallback;
 
-   internal sealed class ValidationBuilder<TParentVM, TVM, TValue> : IValidationBuilder<TParentVM, TVM, TValue>
-      where TVM : IViewModel
-      where TParentVM : IViewModel {
-      private BehaviorConfiguration _config;
+         public DelegateValidator(Action<TVM, TValue, ValidationArgs> validatorCallback) {
+            Contract.Requires(validatorCallback != null);
+            _validatorCallback = validatorCallback;
+         }
 
-      public ValidationBuilder(BehaviorConfiguration config) {
-         Contract.Requires(config != null);
-         _config = config;
-      }
+         public override void Validate(ValidationArgs args) {
+            TVM vm = (TVM)args.TargetVM;
+            TValue value = (TValue)args.TargetVM.GetValue(args.TargetProperty, ValueStage.PreValidation);
+            _validatorCallback(vm, value, args);
+         }
 
-      public void Custom(Func<TParentVM, TVM, TValue, ValidationResult> validation) {
-         _config.Enable(VMBehaviorKey.Validator);
-         _config.Enable(VMBehaviorKey.InvalidDisplayValueCache);
-
-         throw new NotImplementedException("TODO2");
-
-         //_config.Configure(VMBehaviorKey.Validator, (ValidationBehavior<TValue> behavior) => {
-         //   behavior.Add(args => {
-         //      TParentVM parent = args.VM.Parent as TParentVM;
-         //      if (parent != null) {
-         //         var result = validation(parent, (TVM)args.VM, (TValue)args.PropertyValue);
-         //         if (!result.Successful) {
-         //            args.AddError(result.ErrorMessage);
-         //         }
-         //      }
-         //   });
-         //});
+         public override string ToString() {
+            return String.Format(
+               "{{DelegateValidator: {0}}}",
+               DelegateUtils.GetFriendlyName(_validatorCallback)
+            );
+         }
       }
    }
 }

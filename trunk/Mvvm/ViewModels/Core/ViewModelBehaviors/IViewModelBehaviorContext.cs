@@ -13,7 +13,7 @@
 
       IServiceLocator ServiceLocator { get; }
 
-      void NotifyValidating(_ValidationArgs args);
+      void NotifyValidating(ValidationArgs args);
 
       void NotifyChange(ChangeArgs args);
    }
@@ -39,7 +39,7 @@
             Contract.Requires(args != null);
          }
 
-         public void NotifyValidating(_ValidationArgs args) {
+         public void NotifyValidating(ValidationArgs args) {
             Contract.Requires(args != null);
          }
 

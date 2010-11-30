@@ -31,7 +31,7 @@
 
          var kernel = (IBehaviorContext)CreateKernel(withBehavior: behaviorSpy);
 
-         var args = new _ValidationArgs(new ValidationState(), new InstancePath(kernel.VM));
+         var args = new ValidationArgs(new ValidationState(), new InstancePath(kernel.VM));
          kernel.NotifyValidating(args);
 
          Assert.AreEqual(1, behaviorSpy.IncovationCount, "Behavior was not called.");
@@ -83,7 +83,7 @@
          kernel.Parent = parentVM;
          parentKernel.Parent = grandParentVM;
 
-         var args = new _ValidationArgs(new ValidationState(), new InstancePath(kernelContext.VM));
+         var args = new ValidationArgs(new ValidationState(), new InstancePath(kernelContext.VM));
          kernelContext.NotifyValidating(args);
 
          Assert.AreEqual(1, parentSpy.IncovationCount, "Behavior of parent was not invoked.");
@@ -129,14 +129,14 @@
       }
 
       private class OnValidatingSpy : ViewModelBehavior {
-         protected internal override void OnValidating(IBehaviorContext context, _ValidationArgs args) {
+         protected internal override void OnValidating(IBehaviorContext context, ValidationArgs args) {
             IncovationCount++;
             Args = args;
          }
 
          public int IncovationCount { get; private set; }
 
-         public _ValidationArgs Args { get; private set; }
+         public ValidationArgs Args { get; private set; }
       }
 
       private static void AssertPathsAreEquals(InstancePath expected, InstancePath actual) {

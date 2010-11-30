@@ -2,12 +2,11 @@
    using System;
    using System.Collections.Generic;
    using System.Linq;
-
    using Inspiring.Mvvm;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
 
-   public sealed class TaskVM : ViewModel<TaskVMDescriptor>, ICanInitializeFrom<Task> {
+   public class TaskVM : ViewModel<TaskVMDescriptor>, ICanInitializeFrom<Task> {
       public static readonly TaskVMDescriptor Descriptor = VMDescriptorBuilder
          .For<TaskVM>()
          .CreateDescriptor(c => {
@@ -27,6 +26,10 @@
 
       public TaskVM(IServiceLocator serviceLocator = null)
          : base(Descriptor, serviceLocator) {
+      }
+
+      public TaskVM(TaskVMDescriptor descriptor)
+         : base(descriptor) {
       }
 
       public Task Task { get; private set; }

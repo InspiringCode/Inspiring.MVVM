@@ -44,7 +44,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
 
          var newState = new ValidationState();
 
-         var validationArgs = new _ValidationArgs(
+         var validationArgs = new ValidationArgs(
             validationState: newState,
             changedPath: new InstancePath(context.VM),
             changedProperty: _property,

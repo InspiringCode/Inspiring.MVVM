@@ -106,6 +106,10 @@
          property.SetDisplayValue(Kernel, value);
       }
 
+      protected void Revalidate(ValidationScope scope, ValidationMode mode) {
+         Kernel.Revalidate(scope, mode);
+      }
+
       object IViewModel.GetValue(IVMProperty property, ValueStage stage) {
          return property.GetValue(Kernel, stage);
       }

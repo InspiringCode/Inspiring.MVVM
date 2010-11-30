@@ -8,6 +8,8 @@
 
    [TestClass]
    public class TestBase {
+      public const string ArbitraryString = "Arbitrary string!";
+
       protected static T Mock<T>() where T : class {
          return new Mock<T>().Object;
       }
