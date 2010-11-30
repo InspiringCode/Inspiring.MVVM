@@ -7,7 +7,7 @@
    ///   A view model behavior that caches all <see cref="VMPropertyDescriptor"/> 
    ///   objects of a <see cref="VMDescriptorBase"/> object.
    /// </summary>
-   public sealed class TypeDescriptorViewModelBehavior : 
+   public sealed class TypeDescriptorBehavior : 
       Behavior,
       IBehaviorInitializationBehavior {
 
@@ -22,7 +22,7 @@
                _propertyDescriptors = new PropertyDescriptorCollection(
                   _vmDescriptor
                      .Properties
-                     .Select(p => new VMPropertyDescriptor(p))
+                     .Select(GetDescriptor)
                      .ToArray()
                );
             }
@@ -37,6 +37,13 @@
 
       private void AssertInitialized() {
          Contract.Assert(_vmDescriptor != null, "Behavior is not initalized.");
+      }
+
+      private static VMPropertyDescriptor GetDescriptor(IVMProperty property) {
+         return property
+            .Behaviors
+            .GetNextBehavior<PropertyDescriptorBehavior>()
+            .PropertyDescriptor;
       }
    }
 }

@@ -6,7 +6,7 @@ namespace Inspiring.Mvvm.ViewModels.Core.Validation.PropertyBehaviors {
       IBehaviorInitializationBehavior,
       IPropertyAccessorBehavior<TValue>,
       IRevalidationBehavior,
-      IHandlePropertyChangingBehavior {
+      IHandlePropertyChangedBehavior {
 
       private static readonly FieldDefinitionGroup ValueCacheGroup = new FieldDefinitionGroup();
       private FieldDefinition<TValue> _valueCacheField;
@@ -43,7 +43,7 @@ namespace Inspiring.Mvvm.ViewModels.Core.Validation.PropertyBehaviors {
          }
       }
 
-      public void HandlePropertyChanging(IBehaviorContext context) {
+      public void HandlePropertyChanged(IBehaviorContext context) {
          RequireInitialized();
          ClearCache(context);
       }

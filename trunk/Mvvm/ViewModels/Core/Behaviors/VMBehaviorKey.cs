@@ -30,6 +30,8 @@
       CustomOne,
       CustomTwo,
       CustomThree,
-      CustomFour
+      CustomFour,
+      
+      PropertyDescriptorBehavior
    }
 }

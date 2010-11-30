@@ -5,12 +5,26 @@
 
    [TestClass]
    public class AccessPropertyTests {
+      private const string ArbitraryString = "Test";
+
+      public TaskVM VM { get; set; }
+      
+      [TestInitialize]
+      public void Setup() {
+         VM = new TaskVM();
+         VM.InitializeFrom(new Task());
+      }
+
       [TestMethod]
-      public void TestMethod1() {
-         AreaVM vm = new AreaVM(ServiceLocator.Current);
-         vm.InitializeFrom(new Area("Test"));
-         string value = vm.GetValue(AreaVM.Descriptor.Caption);
-         Assert.AreEqual("Test", value);
+      public void GetValue_LocalProperty_Success() {
+         VM.ScreenTitle = ArbitraryString;
+         Assert.AreEqual(ArbitraryString, VM.ScreenTitle);
+      }
+
+      [TestMethod]
+      public void SetValue_LocalProperty_Success() {
+         VM.ScreenTitle = ArbitraryString;
+         Assert.AreEqual(ArbitraryString, VM.ScreenTitle);
       }
    }
 }

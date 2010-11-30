@@ -137,7 +137,7 @@
 
          return DescriptorBase
             .Behaviors
-            .GetNextBehavior<TypeDescriptorViewModelBehavior>()
+            .GetNextBehavior<TypeDescriptorBehavior>()
             .PropertyDescriptors;
       }
    }

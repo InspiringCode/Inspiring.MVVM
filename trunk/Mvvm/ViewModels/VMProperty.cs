@@ -34,10 +34,10 @@
 
       [Obsolete]
       internal void OnPropertyChanged(IBehaviorContext vm) {
-         IHandlePropertyChangingBehavior changingBehavior;
-         if (Behaviors.TryGetBehavior(out changingBehavior)) {
-            changingBehavior.HandlePropertyChanging(vm);
-         }
+         //IHandlePropertyChangingBehavior changingBehavior;
+         //if (Behaviors.TryGetBehavior(out changingBehavior)) {
+         //   changingBehavior.HandlePropertyChanging(vm);
+         //}
 
          IHandlePropertyChangedBehavior changedBehavior;
          if (Behaviors.TryGetBehavior(out changedBehavior)) {

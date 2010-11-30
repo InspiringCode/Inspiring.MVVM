@@ -18,7 +18,7 @@
    public sealed class AllowInvalidDisplayValuesBehavior :
       Behavior,
       IDisplayValueAccessorBehavior,
-      IHandlePropertyChangingBehavior {
+      IHandlePropertyChangedBehavior {
 
       private FieldDefinition<object> _invalidValueField;
 
@@ -36,14 +36,14 @@
          GetNextBehavior<IDisplayValueAccessorBehavior>().SetDisplayValue(vm, value);
       }
 
-      public void HandlePropertyChanging(IBehaviorContext vm) {
+      public void HandlePropertyChanged(IBehaviorContext vm) {
          // The value was set successfully on the source object: discard invalid
          // value and return the actual value next time!
          vm.FieldValues.ClearField(_invalidValueField);
 
-         IHandlePropertyChangingBehavior next;
+         IHandlePropertyChangedBehavior next;
          if (TryGetBehavior(out next)) {
-            next.HandlePropertyChanging(vm);
+            next.HandlePropertyChanged(vm);
          }
       }
 

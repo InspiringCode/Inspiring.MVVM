@@ -101,8 +101,16 @@
 
       private void NotifyChange(ChangeArgs args, InstancePath changedPath) {
          bool selfChanged = changedPath.IsEmpty;
-
          changedPath = changedPath.PrependVM(_vm);
+
+         if (selfChanged && args.ChangeType == ChangeType.PropertyChanged) {
+            args
+               .ChangedProperty
+               .Behaviors
+               .TryCall<IHandlePropertyChangedBehavior>(b => 
+                  b.HandlePropertyChanged(this)
+               );
+         }
 
          ViewModelBehavior behavior;
          if (_descriptor.Behaviors.TryGetBehavior(out behavior)) {

@@ -13,7 +13,7 @@
          GetNextBehavior<IPropertyAccessorBehavior<TValue>>().SetValue(context, value);
 
          if (!Object.Equals(value, oldValue)) {
-            var args = new ChangeArgs(ChangeType.PropertyChanged, context.VM);
+            var args = new ChangeArgs(ChangeType.PropertyChanged, context.VM, _property);
             context.NotifyChange(args);
          }
       }

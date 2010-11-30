@@ -29,8 +29,8 @@
       [TestMethod]
       public void GetService_TypeDescriptorService_ReturnsSameInstanceTwice() {
          var descriptor = new EmptyDescriptor();
-         var first = descriptor.GetService<TypeDescriptorViewModelBehavior>();
-         var second = descriptor.GetService<TypeDescriptorViewModelBehavior>();
+         var first = descriptor.GetService<TypeDescriptorBehavior>();
+         var second = descriptor.GetService<TypeDescriptorBehavior>();
 
          Assert.IsNotNull(first);
          Assert.AreSame(first, second);

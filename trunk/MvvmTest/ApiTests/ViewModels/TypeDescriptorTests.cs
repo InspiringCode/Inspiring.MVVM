@@ -41,7 +41,7 @@
          _viewModel.RatingTestAccessor = ArbitraryRatingValue;
 
          PropertyDescriptor pd = GetPropertyDescriptor("Rating");
-         var propertyValue = (int)pd.GetValue(_viewModel);
+         object propertyValue = pd.GetValue(_viewModel);
 
          Assert.AreEqual(ArbitraryRatingValue, propertyValue);
       }
@@ -51,9 +51,9 @@
          _viewModel.CommentTestAccessor = ArbitraryCommentValue;
 
          PropertyDescriptor pd = GetPropertyDescriptor("Comment");
-         var propertyValue = (string)pd.GetValue(_viewModel);
+         object propertyValue = pd.GetValue(_viewModel);
 
-         Assert.AreEqual(ArbitraryRatingValue, propertyValue);
+         Assert.AreEqual(ArbitraryCommentValue, propertyValue);
       }
 
       [TestMethod]
@@ -82,8 +82,8 @@
          var newPropertyValue = ArbitraryCommentValue;
          _viewModel.CommentTestAccessor = newPropertyValue;
 
-         Assert.AreNotEqual(0, callbackInvocationCount, "The callback was not called.");
-         Assert.AreNotEqual(1, callbackInvocationCount, "The callback should not be called more than once.");
+         Assert.AreNotEqual(0, callbackInvocationCount, "The callback was not invoked.");
+         Assert.AreEqual(1, callbackInvocationCount, "The callback should not be invoked more than once.");
          Assert.AreSame(_viewModel, actualSender, "The sender of the event handler should be the view model.");
          Assert.AreEqual(newPropertyValue, actualValueInCallback, "GetValue should already return the new property value in the callback.");
       }

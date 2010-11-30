@@ -159,8 +159,8 @@
     <Compile Include="ViewModels\Core\PropertyBehaviors\ViewModelFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\ViewModelPropertyInitializerBehavior.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\SimplePropertyDescriptor.cs" />
-    <Compile Include="ViewModels\Core\TypeDescriptor\TypeDescriptorPropertyBehavior.cs" />
-    <Compile Include="ViewModels\Core\TypeDescriptor\TypeDescriptorViewModelBehavior.cs" />
+    <Compile Include="ViewModels\Core\TypeDescriptor\PropertyDescriptorBehavior.cs" />
+    <Compile Include="ViewModels\Core\TypeDescriptor\TypeDescriptorBehavior.cs" />
     <Compile Include="ViewModels\Core\ValidationEventArgs.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationArgs.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationErrorCollection.cs" />

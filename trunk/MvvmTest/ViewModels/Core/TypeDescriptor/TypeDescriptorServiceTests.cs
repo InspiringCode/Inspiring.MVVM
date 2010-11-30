@@ -16,7 +16,7 @@
          descriptor.AddProperty(propertyName, typeof(string));
 
          // Act
-         TypeDescriptorViewModelBehavior svc = new TypeDescriptorViewModelBehavior();
+         TypeDescriptorBehavior svc = new TypeDescriptorBehavior();
 
          PropertyDescriptor returnedDescriptor = svc
             .PropertyDescriptors
@@ -35,7 +35,7 @@
          VMDescriptorStub descriptor = new VMDescriptorStub();
          descriptor.AddProperty(propertyName, typeof(string));
 
-         TypeDescriptorViewModelBehavior svc = new TypeDescriptorViewModelBehavior();
+         TypeDescriptorBehavior svc = new TypeDescriptorBehavior();
 
          // Act
          var first = svc.PropertyDescriptors;

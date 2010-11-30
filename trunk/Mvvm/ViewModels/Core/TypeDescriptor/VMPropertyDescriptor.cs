@@ -31,7 +31,7 @@
          _property.SetValue(vm.GetContext(), value);
       }
 
-      public void RaiseValueChanged(IBehaviorContext vm) {
+      public void RaiseValueChanged(IViewModel vm) {
          OnValueChanged(vm, EventArgs.Empty);
       }
 

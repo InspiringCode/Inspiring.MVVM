@@ -33,6 +33,8 @@
                return new RefreshableValueCahche<TValue>();
             case VMBehaviorKey.ManualUpdateBehavior:
                return new DefaultManualUpdateBehavior<TValue>();
+            case VMBehaviorKey.PropertyDescriptorBehavior:
+               return new PropertyDescriptorBehavior();
             default:
                throw new NotSupportedException();
          }

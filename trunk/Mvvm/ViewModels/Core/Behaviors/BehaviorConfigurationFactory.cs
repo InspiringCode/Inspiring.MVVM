@@ -58,7 +58,8 @@
             .Append(VMBehaviorKey.PropertyValueCache, disabled: true)
             .Append(VMBehaviorKey.PropertyValueAcessor)
             .Append(VMBehaviorKey.ManualUpdateBehavior)
-            .Append(VMBehaviorKey.SourceValueAccessor, disabled: true);
+            .Append(VMBehaviorKey.SourceValueAccessor, disabled: true)
+            .Append(VMBehaviorKey.PropertyDescriptorBehavior);
       }
 
       private static BehaviorConfiguration CreateCollectionDefault() {
@@ -70,7 +71,8 @@
             .Append(VMBehaviorKey.SourceValueAccessor)
             .Append(VMBehaviorKey.CollectionInstanceCache)
             .Append(VMBehaviorKey.CollectionFactory)
-            .Append(VMBehaviorKey.CollectionValidator, disabled: true);
+            .Append(VMBehaviorKey.CollectionValidator, disabled: true)
+            .Append(VMBehaviorKey.PropertyDescriptorBehavior);
       }
 
       private static BehaviorConfiguration CreateViewModelPropertyDefault() {
@@ -79,7 +81,8 @@
             .Append(VMBehaviorKey.ViewModelValueCache)
             .Append(VMBehaviorKey.ViewModelPropertyInitializer)
             .Append(VMBehaviorKey.ViewModelFactory)
-            .Append(VMBehaviorKey.SourceValueAccessor);
+            .Append(VMBehaviorKey.SourceValueAccessor)
+            .Append(VMBehaviorKey.PropertyDescriptorBehavior);
       }
 
       private static BehaviorConfiguration CreateCommandPropertyDefault() {
@@ -87,7 +90,8 @@
             .Append(VMBehaviorKey.DisplayValueAccessor)
             .Append(VMBehaviorKey.CommandValueCache)
             .Append(VMBehaviorKey.PropertyValueAcessor)
-            .Append(VMBehaviorKey.SourceValueAccessor, disabled: true);
+            .Append(VMBehaviorKey.SourceValueAccessor, disabled: true)
+            .Append(VMBehaviorKey.PropertyDescriptorBehavior);
       }
    }
 }
