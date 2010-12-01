@@ -246,4 +246,7 @@
   <data name="BehaviorKeyNotInConfiguration" xml:space="preserve">
     <value>The 'BehaviorChainConfiguration' does not contain a behavior with the key '{0}'. Make sure that the 'BehaviorChainTemplate' from which the configuration was created contains a behavior with the given key.</value>
   </data>
+  <data name="CannotEnableBehavior" xml:space="preserve">
+    <value>Cannot enable behavior with key '{0}' because no behavior instance was specified. Either specify a 'IBehaviorFactory' in the 'BehaviorChainTemplate' or pass in an 'IBehavior' instance.</value>
+  </data>
 </root>

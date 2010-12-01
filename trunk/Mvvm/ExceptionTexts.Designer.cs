@@ -97,6 +97,15 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot enable behavior with key &apos;{0}&apos; because no behavior instance was specified. Either specify a &apos;IBehaviorFactory&apos; in the &apos;BehaviorChainTemplate&apos; or pass in an &apos;IBehavior&apos; instance..
+        /// </summary>
+        internal static string CannotEnableBehavior {
+            get {
+                return ResourceManager.GetString("CannotEnableBehavior", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot register or search for a closed generic type. Pass &apos;typeof(ExampleBehavior&lt;,&gt;)&apos; instead of &apos;typeof(ExampleBehavior&lt;A, B&gt;)&apos;..
         /// </summary>
         internal static string CannotPassClosedTypeBehavior {
