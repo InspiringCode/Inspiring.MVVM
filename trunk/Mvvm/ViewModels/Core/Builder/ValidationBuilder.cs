@@ -23,7 +23,7 @@
          config.Enable(VMBehaviorKey.Validator);
          config.Enable(VMBehaviorKey.InvalidDisplayValueCache);
 
-         return new ValidationBuilder<TVM, TValue>(config);
+         return new ValidationBuilder<TVM, TValue>(config, property);
       }
 
       public ICollectionValidationBuilder<TItemVM> CheckCollection<TItemVM>(IVMProperty<VMCollection<TItemVM>> property) where TItemVM : IViewModel {

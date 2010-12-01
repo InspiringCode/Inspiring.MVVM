@@ -61,6 +61,15 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The &apos;BehaviorChainConfiguration&apos; does not contain a behavior with the key &apos;{0}&apos;. Make sure that the &apos;BehaviorChainTemplate&apos; from which the configuration was created contains a behavior with the given key..
+        /// </summary>
+        internal static string BehaviorKeyNotInConfiguration {
+            get {
+                return ResourceManager.GetString("BehaviorKeyNotInConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This configuration does not contain the specified behavior &apos;{0}&apos;..
         /// </summary>
         internal static string BehaviorNotContainedByConfiguration {

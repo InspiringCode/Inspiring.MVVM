@@ -108,15 +108,25 @@
     <Compile Include="ViewModels\Core\BehaviorInterfaces\IPropertyAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\IRevalidationBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\IValidationStateProviderBehavior.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\BehaviorChain.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\BehaviorChainConfiguration.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\BehaviorChainConfigurationCollection.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\BehaviorChainTemplate.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\BehaviorChainTemplateKey.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\BehaviorChainTemplateKeys.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\BehaviorChainTemplateRegistry.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\IBehaviorFactory.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\BehaviorKey.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\VMDescriptorConfiguration.cs" />
     <Compile Include="ViewModels\Core\Builder\BehaviorConfigurationBuilder.cs" />
     <Compile Include="ViewModels\Core\Builder\BehaviorConfigurationDictionary.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\BehaviorConfiguration.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\BehaviorConfigurationFactory.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\ConstantBehaviorFactory.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\DefaultBehaviorFactory.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\IBehaviorConfigurationExpression.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\IBehaviorFactory.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\VMBehaviorKey.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\- Legacy -\BehaviorConfiguration.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\- Legacy -\BehaviorConfigurationFactory.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\- Legacy -\ConstantBehaviorFactory.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\- Legacy -\DefaultBehaviorFactory.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\- Legacy -\IBehaviorConfigurationExpression.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\- Legacy -\IBehaviorFactory.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\- Legacy -\VMBehaviorKey.cs" />
     <Compile Include="ViewModels\Core\Builder\ValidationBuilder.cs" />
     <Compile Include="ViewModels\Core\CollectionModificationController.cs" />
     <Compile Include="ViewModels\Core\Builder\CollectionValidationBuilder.cs" />
@@ -188,8 +198,8 @@
     <Compile Include="ViewModels\StandardValidations.cs" />
     <Compile Include="ViewModels\ViewModelValidationArgs.cs" />
     <Compile Include="ViewModels\VMCollectionProperty.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\Behavior.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\IBehavior.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\- Legacy -\Behavior.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\- Legacy -\IBehavior.cs" />
     <Compile Include="ViewModels\Core\DynamicFields\FieldDefinition.cs" />
     <Compile Include="ViewModels\Core\DynamicFields\FieldDefinitionCollection.cs" />
     <Compile Include="ViewModels\Core\DynamicFields\FieldDefinitionGroup.cs" />
@@ -206,7 +216,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\IBehaviorContext.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\- Legacy -\IBehaviorContext.cs" />
     <Compile Include="ViewModels\ICanInitializeFrom.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\AllowInvalidDisplayValuesBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\DisplayValueValidationBehavior.cs" />
@@ -270,6 +280,7 @@
     <Folder Include="Views\TestDoubles\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ViewModels\Core\Behaviors\- Diagram -.cd" />
     <None Include="Views\- Diagrams -\ViewBinder.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -243,4 +243,7 @@
   <data name="VMCollectionOutOfSync" xml:space="preserve">
     <value>The VM collection is not in sync with its source collection anymore. Call 'Kernel.UpdateFromSource(Descriptor.&lt;the collection property&gt;)' to repopulate the collection from its source.</value>
   </data>
+  <data name="BehaviorKeyNotInConfiguration" xml:space="preserve">
+    <value>The 'BehaviorChainConfiguration' does not contain a behavior with the key '{0}'. Make sure that the 'BehaviorChainTemplate' from which the configuration was created contains a behavior with the given key.</value>
+  </data>
 </root>
