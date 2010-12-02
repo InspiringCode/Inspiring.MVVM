@@ -191,6 +191,9 @@
     <Compile Include="ViewModels\Core\VMDescriptor\VMDescriptorBase.cs" />
     <Compile Include="ViewModels\Core\VMDescriptor\VMPropertyCollection.cs" />
     <Compile Include="ViewModels\Core\- Todo -\ICreatableItem.cs" />
+    <Compile Include="ViewModels\Fluent\IVMCollectionPropertyFactoryWithSource.cs" />
+    <Compile Include="ViewModels\Fluent\IVMPropertyFactory.cs" />
+    <Compile Include="ViewModels\Fluent\IVMPropertyFactoryWithSource.cs" />
     <Compile Include="ViewModels\IHasSourceObject.cs" />
     <Compile Include="ViewModels\IViewModel.cs" />
     <Compile Include="ViewModels\IVMContext.cs" />
@@ -277,7 +280,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ViewModels\Future\" />
     <Folder Include="Views\TestDoubles\" />
   </ItemGroup>
   <ItemGroup>

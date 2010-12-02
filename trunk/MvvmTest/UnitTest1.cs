@@ -1,20 +1,22 @@
 ﻿using System;
+using System.ComponentModel;
 using Inspiring.Mvvm;
 using Inspiring.Mvvm.ViewModels;
 using Inspiring.Mvvm.ViewModels.Core;
+//using Inspiring.Mvvm.ViewModels;
+//using Inspiring.Mvvm.ViewModels.Core;
 using Inspiring.MvvmTest.Stubs;
 using Inspiring.MvvmTest.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Sequences;
-using System.ComponentModel;
 
 namespace Inspiring.MvvmTest {
    [TestClass]
    public class UnitTest1 : TestBase {
       [TestMethod]
       public void MyTestMethod2() {
-         ICustomTypeDescriptor d =  new Test();
+         ICustomTypeDescriptor d = new Test();
          Console.WriteLine(d.GetDefaultEvent());
       }
 

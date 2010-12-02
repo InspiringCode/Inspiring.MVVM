@@ -4,29 +4,37 @@
    using Inspiring.Mvvm.Common;
 
    /// <summary>
-   ///   Creates 'VMProperty' factories.
+   ///   A provider that creates <see cref="IVMPropertyFactory"/> objects. Different
+   ///   property factories can be created for different source objects.
    /// </summary>
    public interface IVMPropertyFactoryProvider<TVM> : IHideObjectMembers {
       /// <summary>
-      ///   Returns a factory that creates 'VMProperty' instances. Assign them
-      ///   to a 'VMProperty' property of a 'VMDescriptor'.
+      ///   <para>Returns a <see cref="IVMPropertyFactory"/> which creates <see
+      ///      cref="VMProperty"/> objects.</para>
+      ///   <para>Mapped properties created with the returned factory have to 
+      ///      specify the property path relative to the VM. For calculated 
+      ///      properties the VM instance is passed to their getter/setter 
+      ///      delegates.</para>
       /// </summary>
       IRootVMPropertyFactory<TVM> GetPropertyFactory();
 
       /// <summary>
-      ///   Returns a factory that creates 'VMProperty' instances. Assign them
-      ///   to a 'VMProperty' property of a 'VMDescriptor'.
+      ///   Returns a <see cref="IVMPropertyFactory"/> which creates <see
+      ///   cref="VMProperty"/> objects.
       /// </summary>
       /// <param name="sourceObjectSelector">
-      ///   <para>An expression of the form 'x => x.Person' that specifies the 
-      ///      property that serves as the path root for mapped properties and 
-      ///      whose value is passed to the getter/setter delegate of a 
-      ///      calculated property.</para>
-      ///   <para>This shortens the property path for mapped properties (instead
-      ///      of 'Mapped(x => x.Person.Age)' you can use 'Mapped(x => x.Age)' 
-      ///      and instead of 'Calculated(x => x.Person.CalculateReward(...))' 
-      ///      you can use 'Calculated(x => x.CalculateReward(...))'.</para>
+      ///   An expression of the form 'x => x.Person' that returns an object
+      ///   referenced by the VM. Mapped properties created with the returned 
+      ///   factory have to specify the property path relative to the selected
+      ///   objects. For calculated properties the selected object is passed to
+      ///   their getter/setter delegates.
       /// </param>
+      /// <remarks>
+      ///   This shortens the property path for mapped properties (instead
+      ///   of 'Mapped(x => x.Person.Age)' you can use 'Mapped(x => x.Age)' 
+      ///   and instead of 'Calculated(x => x.Person.CalculateReward(...))' 
+      ///   you can use 'Calculated(x => x.CalculateReward(...))'.
+      /// </remarks>
       IVMPropertyFactory<TVM, TSource> GetPropertyFactory<TSource>(Expression<Func<TVM, TSource>> sourceObjectSelector);
    }
 }
