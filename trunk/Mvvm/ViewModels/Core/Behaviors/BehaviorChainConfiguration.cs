@@ -1,8 +1,21 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core.Behaviors {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
 
+   /// <summary>
+   ///   Holds the transient configuration of the <see cref="IBehavior"/> objects
+   ///   the will finally consitute a <see cref="BehaviorChain"/> and provides
+   ///   methods to manipulate the behavior objects.
+   /// </summary>
+   /// <remarks>
+   ///   In contrast to a <see cref="BehaviorChainTemplate"/> which is the same
+   ///   for all <see cref="BehaviorChain"/> instances of certain type, a 
+   ///   <see cref="BehaviorChainConfiguration"/> is always bound to a single
+   ///   <see cref="BehaviorChain"/> instance. Once the <see cref="BehaviorChain"/>
+   ///   is created the <see cref="BehaviorChainConfiguration"/> is not needed
+   ///   anymore and should be discarded.
+   /// </remarks>
    internal sealed class BehaviorChainConfiguration {
       private List<BehaviorChainItemConfiguration> _items = new List<BehaviorChainItemConfiguration>();
 
@@ -95,7 +108,6 @@
       ///   Creates a <see cref="BehaviorChain"/> with <see cref="IBehavior"/>s
       ///   as configured by this object.
       /// </summary>
-      /// <returns></returns>
       internal BehaviorChain CreateChain() {
          Contract.Ensures(Contract.Result<BehaviorChain>() != null);
 

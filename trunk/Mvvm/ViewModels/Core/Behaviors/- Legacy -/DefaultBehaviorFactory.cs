@@ -4,6 +4,11 @@
    internal sealed class DefaultBehaviorFactory : IBehaviorFactory {
       private VMBehaviorKey _behavior;
 
+      public DefaultBehaviorFactory(BehaviorKey behaviorToCreate) {
+         throw new NotImplementedException();
+      }
+
+      [Obsolete]
       public DefaultBehaviorFactory(VMBehaviorKey behaviorToCreate) {
          _behavior = behaviorToCreate;
       }

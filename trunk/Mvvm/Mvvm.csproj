@@ -116,6 +116,7 @@
     <Compile Include="ViewModels\Core\Behaviors\BehaviorChainTemplateKey.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorChainTemplateKeys.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorChainTemplateRegistry.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\BehaviorKeys.cs" />
     <Compile Include="ViewModels\Core\Behaviors\IBehaviorFactory.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorKey.cs" />
     <Compile Include="ViewModels\Core\Behaviors\VMDescriptorConfiguration.cs" />
@@ -126,7 +127,6 @@
     <Compile Include="ViewModels\Core\Behaviors\- Legacy -\ConstantBehaviorFactory.cs" />
     <Compile Include="ViewModels\Core\Behaviors\- Legacy -\DefaultBehaviorFactory.cs" />
     <Compile Include="ViewModels\Core\Behaviors\- Legacy -\IBehaviorConfigurationExpression.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\- Legacy -\IBehaviorFactory.cs" />
     <Compile Include="ViewModels\Core\Behaviors\- Legacy -\VMBehaviorKey.cs" />
     <Compile Include="ViewModels\Core\Builder\ValidationBuilder.cs" />
     <Compile Include="ViewModels\Core\CollectionModificationController.cs" />

@@ -1,7 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core.Behaviors {
-   using System;
-   using System.Collections.Generic;
-   using System.Linq;
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
 
    /// <summary>
    ///   A factory that creates instances of a certain behavior class with a

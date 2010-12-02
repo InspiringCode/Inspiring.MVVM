@@ -1,15 +1,45 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core.Behaviors {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
+   using System.Collections.Generic;
+   using System.Diagnostics.Contracts;
 
+   /// <summary>
+   ///   Holds the <see cref="BehaviorChainConfiguration"/> for all VM properties
+   ///   of a VM descriptor.
+   /// </summary>
    internal sealed class BehaviorChainConfigurationCollection {
+      private readonly Dictionary<VMPropertyBase, BehaviorChainConfiguration> _propertyConfigurations
+         = new Dictionary<VMPropertyBase, BehaviorChainConfiguration>();
+
+      /// <summary>
+      ///   Gets the <see cref="BehaviorChainConfiguration"/> for the given 
+      ///   <paramref name="forProperty"/>.
+      /// </summary>
+      /// <exception cref="KeyNotFoundException">
+      ///   The collection does not contain a configuration for the given property.
+      ///   Make sure <see cref="RegisterProperty"/> was called.
+      /// </exception>
       public BehaviorChainConfiguration this[VMPropertyBase forProperty] {
          get {
-            throw new NotImplementedException();
+            Contract.Requires<ArgumentNullException>(forProperty != null);
+            Contract.Ensures(Contract.Result<BehaviorChainConfiguration>() != null);
+
+            return _propertyConfigurations[forProperty];
          }
       }
 
-      public void RegisterProperty<TValue>(VMPropertyBase<TValue> property, BehaviorChainTemplateKey behavior) {
+      /// <summary>
+      ///   Registers a <see cref="BehaviorChainConfiguration"/> for a certain
+      ///   <paramref name="property"/>.
+      /// </summary>
+      public void RegisterProperty<TValue>(
+         VMPropertyBase<TValue> property,
+         BehaviorChainConfiguration configuration
+      ) {
+         Contract.Requires<ArgumentNullException>(property != null);
+         Contract.Requires<ArgumentNullException>(configuration != null);
 
+         _propertyConfigurations.Add(property, configuration);
       }
 
       /// <summary>
@@ -21,7 +51,12 @@
          BehaviorKey key,
          Action<T> configurationAction
       ) where T : IBehavior {
-         throw new NotImplementedException();
+         Contract.Requires<ArgumentNullException>(key != null);
+         Contract.Requires<ArgumentNullException>(configurationAction != null);
+
+         foreach (BehaviorChainConfiguration config in _propertyConfigurations.Values) {
+            config.ConfigureBehavior(key, configurationAction);
+         }
       }
 
       /// <summary>
@@ -30,7 +65,11 @@
       ///   specified '<paramref name="key"/>'.
       /// </summary>
       public void Enable(BehaviorKey key) {
-         throw new NotImplementedException();
+         Contract.Requires<ArgumentNullException>(key != null);
+
+         foreach (BehaviorChainConfiguration config in _propertyConfigurations.Values) {
+            config.Enable(key);
+         }
       }
    }
 }
