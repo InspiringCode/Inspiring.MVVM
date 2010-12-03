@@ -2,6 +2,7 @@
    using System;
    using System.Collections.Generic;
    using System.Linq.Expressions;
+   using System.Windows.Input;
 
    /// <summary>
    ///   Creates <see cref="VMProperty"/> objects with different underlying
@@ -44,7 +45,7 @@
       IVMPropertyFactoryWithSource<TVM, T> Mapped<T>(Expression<Func<TSource, T>> sourcePropertySelector);
 
       /// <summary>
-      ///   Creats a <see cref="VMProperty"/> that calls a delegate when VM 
+      ///   Creats a <see cref="VMProperty"/> that calls a delegate when the VM 
       ///   property is read or set.
       /// </summary>
       /// <param name="getter">
@@ -79,14 +80,45 @@
       /// <typeparam name="T">
       ///   The type of the property (e.g. <see cref="System.String"/>).
       /// </typeparam>
-      IVMPropertyFactoryWithSource<TVM, T> Local<T>();
+      ILocalVMPropertyFactory<TVM> Local();
 
-      IVMCollectionPropertyFactoryWithSource<TVM, TItemSource> MappedCollection<TItemSource>(
-         Expression<Func<TSource, IEnumerable<TItemSource>>> sourceCollectionSelector
+      /// <summary>
+      ///   Creates a local <see cref="VMProperty"/> of type <see cref="IVMCollection"/>
+      ///   that stores its value in the VM. A collection property ensures that its 
+      ///   item VMs are properly initialized (for example its Parent is set).
+      /// </summary>
+      IVMCollectionPropertyFactory<TVM> Collection();
+
+      /// <summary>
+      ///   Creates a <see cref="VMProperty"/> of type <see cref="IVMCollection"/>
+      ///   whos items are synchronized with a source collection returned by the 
+      ///   passed <paramref name="sourceCollectionSelector"/>. A collection property 
+      ///   ensures that its item VMs are properly initialized (for example its 
+      ///   Parent is set).
+      /// </summary>
+      /// <param name="sourceCollectionSelector">
+      ///   <para>A function that should return the source collection with which 
+      ///      the <see cref="IVMCollection"/> is synchronized. This may be the
+      ///      value of a source object collection or you may create and return
+      ///      a new collection instance.</para> 
+      ///   <para>The <see cref="IViewModel"/> or some object referenced by it (as 
+      ///      defined by the <see cref="IVMPropertyFactoryProvider.GetFactory"/>
+      ///      method) is passed to the delegate.</para>  
+      /// </param>
+      IVMCollectionPropertyFactoryWithSource<TVM, TItemSource> Collection<TItemSource>(
+         Func<TSource, IEnumerable<TItemSource>> sourceCollectionSelector
       );
 
-      IVMCollectionPropertyFactoryWithSource<TVM, TItemSource> CalculatedCollection<TItemSource>(
-
-      );
+      /// <summary>
+      ///   Creates a <see cref="VMProperty"/> of type <see cref="ICommand"/>.
+      /// </summary>
+      /// <param name="execute">
+      ///   A delegate that is called when the command is executed.
+      /// </param>
+      /// <param name="canExecute">
+      ///   A delegate taht is called to check whether the command can currently
+      ///   be executed.
+      /// </param>
+      VMProperty<ICommand> Command(Action<TSource> execute, Func<TSource, bool> canExecute = null);
    }
 }

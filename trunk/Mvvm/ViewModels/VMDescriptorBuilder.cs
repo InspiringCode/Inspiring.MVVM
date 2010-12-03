@@ -45,7 +45,7 @@
             );
          }
 
-         public IVMPropertyFactory<TVM, TSource> GetPropertyFactory<TSource>(
+         public _IVMPropertyFactory<TVM, TSource> GetPropertyFactory<TSource>(
             Expression<Func<TVM, TSource>> sourceObjectSelector
          ) {
             return new VMPropertyFactory<TVM, TSource>(

@@ -35,6 +35,6 @@
       ///   and instead of 'Calculated(x => x.Person.CalculateReward(...))' 
       ///   you can use 'Calculated(x => x.CalculateReward(...))'.
       /// </remarks>
-      IVMPropertyFactory<TVM, TSource> GetPropertyFactory<TSource>(Expression<Func<TVM, TSource>> sourceObjectSelector);
+      _IVMPropertyFactory<TVM, TSource> GetPropertyFactory<TSource>(Expression<Func<TVM, TSource>> sourceObjectSelector);
    }
 }

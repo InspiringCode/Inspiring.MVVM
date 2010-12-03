@@ -3,8 +3,6 @@ using System.ComponentModel;
 using Inspiring.Mvvm;
 using Inspiring.Mvvm.ViewModels;
 using Inspiring.Mvvm.ViewModels.Core;
-//using Inspiring.Mvvm.ViewModels;
-//using Inspiring.Mvvm.ViewModels.Core;
 using Inspiring.MvvmTest.Stubs;
 using Inspiring.MvvmTest.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -18,6 +16,7 @@ namespace Inspiring.MvvmTest {
       public void MyTestMethod2() {
          ICustomTypeDescriptor d = new Test();
          Console.WriteLine(d.GetDefaultEvent());
+
       }
 
       private class Test : ViewModelTypeDescriptor {

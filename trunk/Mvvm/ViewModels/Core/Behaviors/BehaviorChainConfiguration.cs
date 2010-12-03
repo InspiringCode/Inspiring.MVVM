@@ -53,7 +53,7 @@
          }
 
          item.Instance = behaviorInstance;
-         item.IsEnabled = true;
+         item.IsDisabled = true;
       }
 
       /// <summary>
@@ -93,13 +93,13 @@
       /// <summary>
       ///   Adds a behavior configuration to the end of the chain.
       /// </summary>
-      internal void Append(BehaviorKey key, IBehavior instance, bool isEnabled = true) {
+      internal void Append(BehaviorKey key, IBehavior instance, bool isDisabled = false) {
          Contract.Requires(key != null);
          Contract.Requires(instance != null);
 
          var item = new BehaviorChainItemConfiguration(key);
          item.Instance = instance;
-         item.IsEnabled = isEnabled;
+         item.IsDisabled = isDisabled;
 
          _items.Add(item);
       }
@@ -114,9 +114,11 @@
          var chain = new BehaviorChain();
          IBehavior currentBehavior = chain;
 
-         foreach (IBehavior instance in _items) {
-            currentBehavior.Successor = instance;
-            currentBehavior = instance;
+         foreach (BehaviorChainItemConfiguration itemConfiguration in _items) {
+            if (!itemConfiguration.IsDisabled && itemConfiguration.Instance != null) {
+               currentBehavior.Successor = itemConfiguration.Instance;
+               currentBehavior = itemConfiguration.Instance;
+            }
          }
 
          return chain;
@@ -140,12 +142,12 @@
          }
 
          public BehaviorKey Key { get; private set; }
-         public bool IsEnabled { get; set; }
+         public bool IsDisabled { get; set; }
          public IBehavior Instance { get; set; }
 
          [ContractInvariantMethod]
          void ObjectInvariant() {
-            Contract.Invariant(IsEnabled ? Instance != null : true);
+            Contract.Invariant(IsDisabled ? Instance != null : true);
          }
       }
    }

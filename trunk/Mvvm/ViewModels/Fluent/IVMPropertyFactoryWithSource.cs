@@ -1,8 +1,44 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Fluent {
 
-   public interface IVMPropertyFactoryWithSource<TVM, TSourceValue> where TVM : IViewModel {
-      VMProperty<TSourceValue> Property();
+   /// <summary>
+   ///   Creates various <see cref="VMProperty"/> objects that are either mapped
+   ///   or calculated.
+   /// </summary>
+   /// <typeparam name="TVM">
+   ///   The type of the VM for which properties are created.
+   /// </typeparam>
+   /// <typeparam name="TSourceObject">
+   ///   The type of the source object as selected by the <see 
+   ///   cref="IVMPropertyFactory.Mapped"/> or <see 
+   ///   cref="IVMPropertyFactory.Calculated"/> method.
+   /// </typeparam>
+   /// <remarks>
+   ///   Create an extension method on this interface if you want to support
+   ///   mapped/calcualted properties for you own property type.
+   /// </remarks>
+   public interface IVMPropertyFactoryWithSource<TVM, TSourceObject> where TVM : IViewModel {
+      /// <summary>
+      ///   Creates a simple <see cref="VMProperty"/>.
+      /// </summary>
+      VMProperty<TSourceObject> Property();
 
-      //VMProperty<ICommand> Command(Action<TSourceValue> execute, Func<TVM, bool> canExecute = null);
+      /// <summary>
+      ///   <para>Creates a <see cref="VMProperty"/> that holds a child view model.
+      ///      The child VM is resolved via the service locator of the parent VM 
+      ///      and is initialized properly (for example its Parent is set).</para>
+      ///   <para><typeparamref name="TChildVM"/> specifies the type of the child
+      ///      VM (for example PersonVM). A new instance of <typeparamref name="TChildVM"/>
+      ///      is created using the service locator of the parent VM and  <see 
+      ///      cref="ICanInitializeFrom.InitializeFrom"/> is called with the source 
+      ///      object returned by the mapped or calculated source.</para>
+      /// </summary>
+      /// <typeparam name="TChildVM">
+      ///   The type of the child VM (for example PersonVM). A new instance of 
+      ///   <typeparamref name="TChildVM"/> is created using the service locator 
+      ///   of the parent VM and  <see cref="ICanInitializeFrom.InitializeFrom"/> 
+      ///   is called with the source object returned by the mapped or calculated 
+      ///   source.
+      /// </typeparam>
+      VMProperty<TChildVM> VM<TChildVM>() where TChildVM : IViewModel, ICanInitializeFrom<TSourceObject>;
    }
 }

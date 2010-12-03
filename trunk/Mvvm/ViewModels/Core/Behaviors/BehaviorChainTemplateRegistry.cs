@@ -7,16 +7,9 @@
    ///   A registry that holds all available <see cref="BehaviorChainTemplate"/> 
    ///   objects.
    /// </summary>
-   public static class BehaviorChainTemplateRegistry {
+   public static partial class BehaviorChainTemplateRegistry {
       private static Dictionary<BehaviorChainTemplateKey, BehaviorChainTemplate> _templates
          = new Dictionary<BehaviorChainTemplateKey, BehaviorChainTemplate>();
-
-      static BehaviorChainTemplateRegistry() {
-         var viewModel = new BehaviorChainTemplate();
-         AppendWithDefaultFactory(viewModel, BehaviorKeys.TypeDescriptor);
-
-         RegisterTemplate(BehaviorChainTemplateKeys.ViewModel, viewModel);
-      }
 
       /// <summary>
       ///   Registers or overrides the given <see cref="BehaviorChainTemplateKey"/>
@@ -39,14 +32,6 @@
          Contract.Requires<ArgumentNullException>(key != null);
 
          return _templates[key];
-      }
-
-      private static void AppendWithDefaultFactory(
-         BehaviorChainTemplate template,
-         BehaviorKey key,
-         bool isEnabledByDefault = true
-      ) {
-         template.Append(key, new DefaultBehaviorFactory(key), isEnabledByDefault);
       }
    }
 }

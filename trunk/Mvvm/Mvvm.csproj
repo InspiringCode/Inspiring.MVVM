@@ -116,7 +116,9 @@
     <Compile Include="ViewModels\Core\Behaviors\BehaviorChainTemplateKey.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorChainTemplateKeys.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorChainTemplateRegistry.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\BehaviorChainTemplateRegistry.DefaultTemplates.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorKeys.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\DefaultPropertyBehaviorFactory.cs" />
     <Compile Include="ViewModels\Core\Behaviors\IBehaviorFactory.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorKey.cs" />
     <Compile Include="ViewModels\Core\Behaviors\VMDescriptorConfiguration.cs" />
@@ -128,6 +130,11 @@
     <Compile Include="ViewModels\Core\Behaviors\- Legacy -\DefaultBehaviorFactory.cs" />
     <Compile Include="ViewModels\Core\Behaviors\- Legacy -\IBehaviorConfigurationExpression.cs" />
     <Compile Include="ViewModels\Core\Behaviors\- Legacy -\VMBehaviorKey.cs" />
+    <Compile Include="ViewModels\Core\Builder\Properties\LocalVMPropertyFactory.cs" />
+    <Compile Include="ViewModels\Core\Builder\Properties\VMCollectionPropertyFactory.cs" />
+    <Compile Include="ViewModels\Core\Builder\Properties\VMCollectionPropertyFactoryWithSource.cs" />
+    <Compile Include="ViewModels\Core\Builder\Properties\VMPropertyFactory.cs" />
+    <Compile Include="ViewModels\Core\Builder\Properties\VMPropertyFactoryWithSource.cs" />
     <Compile Include="ViewModels\Core\Builder\ValidationBuilder.cs" />
     <Compile Include="ViewModels\Core\CollectionModificationController.cs" />
     <Compile Include="ViewModels\Core\Builder\CollectionValidationBuilder.cs" />
@@ -191,6 +198,8 @@
     <Compile Include="ViewModels\Core\VMDescriptor\VMDescriptorBase.cs" />
     <Compile Include="ViewModels\Core\VMDescriptor\VMPropertyCollection.cs" />
     <Compile Include="ViewModels\Core\- Todo -\ICreatableItem.cs" />
+    <Compile Include="ViewModels\Fluent\ILocalVMPropertyFactory.cs" />
+    <Compile Include="ViewModels\Fluent\IVMCollectionPropertyFactory.cs" />
     <Compile Include="ViewModels\Fluent\IVMCollectionPropertyFactoryWithSource.cs" />
     <Compile Include="ViewModels\Fluent\IVMPropertyFactory.cs" />
     <Compile Include="ViewModels\Fluent\IVMPropertyFactoryWithSource.cs" />
@@ -280,6 +289,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ViewModels\Core\Builder\- Legacy -\" />
     <Folder Include="Views\TestDoubles\" />
   </ItemGroup>
   <ItemGroup>

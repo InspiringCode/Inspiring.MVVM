@@ -65,7 +65,7 @@
       }
 
       public SingleSelectionProperty<TSourceItem> Of(
-         Func<IVMPropertyFactory<SelectionItemVM<TSourceItem>, TSourceItem>, VMDescriptor> descriptorFactory,
+         Func<_IVMPropertyFactory<SelectionItemVM<TSourceItem>, TSourceItem>, VMDescriptor> descriptorFactory,
          Action<
             SingleSelectionVMDescriptor<TSourceItem, SelectionItemVM<TSourceItem>>,
             IValidationBuilder<SingleSelectionVM<TSourceItem, SelectionItemVM<TSourceItem>>>
@@ -108,7 +108,7 @@
       }
 
       public SingleSelectionProperty<TSourceItem, TItemVM> Of<TItemVM>(
-         Func<IVMPropertyFactory<SelectionItemVM<TSourceItem>, TSourceItem>, VMDescriptor> descriptorFactory
+         Func<_IVMPropertyFactory<SelectionItemVM<TSourceItem>, TSourceItem>, VMDescriptor> descriptorFactory
       ) where TItemVM : SelectionItemVM<TSourceItem> {
          throw new NotImplementedException("Not implemented yet: please tell me if you need it...");
       }

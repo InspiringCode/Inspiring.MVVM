@@ -22,7 +22,7 @@
    ///   <see cref="IRootPropertyFactory"/> because it does not make sense on 
    ///   factories that are created for a certain model source object.
    /// </remarks>
-   public interface IVMPropertyFactory<TParentVM, TSource> : IVMPropertyFactory, IHideObjectMembers {
+   public interface _IVMPropertyFactory<TParentVM, TSource> : IVMPropertyFactory, IHideObjectMembers {
       /// <summary>
       ///   Creates a property that returns und updates the value of a normal
       ///   property of a model object that is wrapped by the view model.
@@ -154,7 +154,7 @@
    public interface IVMCollectionPropertyFactoryExpression<TParentVM, TSourceItem> {
       VMCollectionProperty<TVM> Of<TVM>(VMDescriptor itemDescriptor) where TVM : IViewModel, ICanInitializeFrom<TSourceItem>;
 
-      VMCollectionProperty<TVM> OfParentAware<TVM>(VMDescriptor itemDescriptor) 
+      VMCollectionProperty<TVM> OfParentAware<TVM>(VMDescriptor itemDescriptor)
          where TVM : IViewModel, ICanInitializeFrom<SourceWithParent<TParentVM, TSourceItem>>;
    }
 
