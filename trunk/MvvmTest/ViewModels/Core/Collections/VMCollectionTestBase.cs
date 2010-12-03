@@ -9,10 +9,10 @@
    [TestClass]
    public abstract class VMCollectionTestBase : BehaviorTestBase {
 
-      protected static IPropertyAccessorBehavior<IEnumerable<ItemSource>> CreateCollectionSourceBehavior(
+      protected static IValueAccessorBehavior<IEnumerable<ItemSource>> CreateCollectionSourceBehavior(
          IEnumerable<ItemSource> sourceItems
       ) {
-         var stub = new Mock<IPropertyAccessorBehavior<IEnumerable<ItemSource>>>(MockBehavior.Strict);
+         var stub = new Mock<IValueAccessorBehavior<IEnumerable<ItemSource>>>(MockBehavior.Strict);
 
          stub
             .Setup(x => x.GetValue(It.IsAny<IBehaviorContext>(), It.IsAny<ValueStage>()))

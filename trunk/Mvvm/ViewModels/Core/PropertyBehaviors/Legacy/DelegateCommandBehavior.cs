@@ -3,7 +3,7 @@
    using System.Windows.Input;
    using Inspiring.Mvvm.Screens;
 
-   internal sealed class DelegateCommandBehavior<TSource> : Behavior, IPropertyAccessorBehavior<ICommand> {
+   internal sealed class DelegateCommandBehavior<TSource> : Behavior, IValueAccessorBehavior<ICommand> {
       private Action<TSource> _execute;
       private Func<TSource, bool> _canExecute;
 
@@ -32,7 +32,7 @@
       }
 
       private TSource GetSourceObject(IBehaviorContext vm) {
-         IPropertyAccessorBehavior<TSource> sourceAccessor;
+         IValueAccessorBehavior<TSource> sourceAccessor;
          return TryGetBehavior(out sourceAccessor) ?
             sourceAccessor.GetValue(vm, ValueStage.PostValidation) :
             (TSource)vm;

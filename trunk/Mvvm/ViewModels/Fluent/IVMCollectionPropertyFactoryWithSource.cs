@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Fluent {
+   using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.ViewModels.Core;
 
    /// <summary>
@@ -16,7 +17,11 @@
    ///   Create an extension method on this interface if you want to support
    ///   synchronized properties for you own collection property type.
    /// </remarks>
-   public interface IVMCollectionPropertyFactoryWithSource<TVM, TItemSource> where TVM : IViewModel {
+   public interface IVMCollectionPropertyFactoryWithSource<TVM, TItemSource> :
+      IHideObjectMembers,
+      IConfigurationProvider
+      where TVM : IViewModel {
+
       /// <summary>
       ///   Creates a the property.
       /// </summary>

@@ -1,4 +1,6 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core {
+﻿using System.Diagnostics.Contracts;
+using Inspiring.Mvvm.ViewModels.Core.Behaviors;
+namespace Inspiring.Mvvm.ViewModels.Core {
    public static partial class BehaviorChainTemplateRegistry {
       static BehaviorChainTemplateRegistry() {
          RegisterDefaultTemplates();
@@ -12,7 +14,7 @@
       private static void RegisterViewModelTemplate() {
          var t = new BehaviorChainTemplate();
 
-         AppendWithDefaultFactory(t, BehaviorKeys.TypeDescriptor);
+         AppendViewModel(t, BehaviorKeys.TypeDescriptor);
 
          RegisterTemplate(BehaviorChainTemplateKeys.ViewModel, t);
       }
@@ -20,25 +22,45 @@
       private static void RegisterPropertyTemplate() {
          var t = new BehaviorChainTemplate();
 
-         t.Append(BehaviorKeys.InvalidDisplayValueCache, disabled: true);
-         t.Append(BehaviorKeys.DisplayValueAccessor);
-         t.Append(BehaviorKeys.Validator, disabled: true);
-         t.Append(BehaviorKeys.PropertyChangedTrigger);
-         t.Append(BehaviorKeys.PropertyValueCache, disabled: true);
-         t.Append(BehaviorKeys.PropertyValueAcessor);
-         t.Append(BehaviorKeys.ManualUpdateBehavior);
-         t.Append(BehaviorKeys.SourceValueAccessor, disabled: true);
-         t.Append(BehaviorKeys.TypeDescriptor);
+         Append(t, BehaviorKeys.InvalidDisplayValueCache, disabled: true);
+         Append(t, BehaviorKeys.DisplayValueAccessor);
+         Append(t, BehaviorKeys.Validator, disabled: true);
+         Append(t, BehaviorKeys.PropertyChangedTrigger);
+         Append(t, BehaviorKeys.PropertyValueCache, disabled: true);
+         //Append(t, BehaviorKeys.ManualUpdateBehavior); // TODO: Is this correct?
+         Append(t, BehaviorKeys.SourceValueAccessor, disabled: true, withoutFactory: true);
+         Append(t, BehaviorKeys.TypeDescriptor);
 
-         RegisterTemplate(BehaviorChainTemplateKeys.ViewModel, t);
+         RegisterTemplate(BehaviorChainTemplateKeys.Property, t);
       }
 
-      private static void AppendWithDefaultFactory(
+      /// <summary>
+      ///   Appends the behavior key with the <see cref="DefaultPropertyBehaviorFactory"/>.
+      /// </summary>
+      private static void Append(
          BehaviorChainTemplate template,
          BehaviorKey key,
-         bool isEnabledByDefault = true
+         bool disabled = false,
+         bool withoutFactory = false
       ) {
-         template.Append(key, new DefaultBehaviorFactory(key), isEnabledByDefault);
+         Contract.Requires(withoutFactory ? disabled : true);
+
+         if (withoutFactory) {
+            template.Append(key);
+         } else {
+            template.Append(key, new DefaultPropertyBehaviorFactory(key), disabled);
+         }
+      }
+
+      /// <summary>
+      ///   Appends the behavior key with the <see cref="DefaultViewModelBehaviorFactory"/>.
+      /// </summary>
+      private static void AppendViewModel(
+         BehaviorChainTemplate template,
+         BehaviorKey key,
+         bool disabled = false
+      ) {
+         template.Append(key, new DefaultViewModelBehaviorFactory(key), disabled);
       }
    }
 }

@@ -2,7 +2,7 @@
    using System;
 
    internal sealed class ViewModelPropertyInitializerBehavior<TVM, TSource> :
-      Behavior, IPropertyAccessorBehavior<TVM>
+      Behavior, IValueAccessorBehavior<TVM>
       where TVM : IViewModel, ICanInitializeFrom<TSource> {
 
       public TVM GetValue(IBehaviorContext vm, ValueStage stage) {
@@ -20,7 +20,7 @@
       }
 
       private TSource GetSourceObject(IBehaviorContext vm) {
-         return GetNextBehavior<IPropertyAccessorBehavior<TSource>>().GetValue(vm, ValueStage.PostValidation);
+         return GetNextBehavior<IValueAccessorBehavior<TSource>>().GetValue(vm, ValueStage.PostValidation);
       }
    }
 }

@@ -3,6 +3,7 @@
    using System.Collections.Generic;
    using System.Linq.Expressions;
    using System.Windows.Input;
+   using Inspiring.Mvvm.Common;
 
    /// <summary>
    ///   Creates <see cref="VMProperty"/> objects with different underlying
@@ -18,7 +19,11 @@
    ///   calculated properties is different than <typeparamref name="TVM"/> 
    ///   (see <see cref="IVMPropertyFactoryProvider.GetFactory"/>).
    /// </typeparam>
-   public interface IVMPropertyFactory<TVM, TSource> where TVM : IViewModel {
+   public interface IVMPropertyFactory<TVM, TSource> :
+      IHideObjectMembers,
+      IConfigurationProvider
+      where TVM : IViewModel {
+
       /// <summary>
       ///   Creates a <see cref="VMProperty"/> that reads and sets the value of
       ///   standard property declared on the the source object.

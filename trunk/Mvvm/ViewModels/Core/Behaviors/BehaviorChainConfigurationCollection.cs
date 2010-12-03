@@ -7,7 +7,7 @@
    ///   Holds the <see cref="BehaviorChainConfiguration"/> for all VM properties
    ///   of a VM descriptor.
    /// </summary>
-   internal sealed class BehaviorChainConfigurationCollection {
+   public sealed class BehaviorChainConfigurationCollection {
       private readonly Dictionary<VMPropertyBase, BehaviorChainConfiguration> _propertyConfigurations
          = new Dictionary<VMPropertyBase, BehaviorChainConfiguration>();
 

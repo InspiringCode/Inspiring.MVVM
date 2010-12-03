@@ -1,4 +1,5 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Fluent {
+﻿using Inspiring.Mvvm.Common;
+namespace Inspiring.Mvvm.ViewModels.Fluent {
    /// <summary>
    ///   Creates <see cref="VMProperty"/> objects that store their value in the
    ///   VM.
@@ -10,7 +11,11 @@
    ///   Create an extension method on this interface if you want to support
    ///   local properties for you own property type.
    /// </remarks>
-   public interface ILocalVMPropertyFactory<TVM> where TVM : IViewModel {
+   public interface ILocalVMPropertyFactory<TVM> :
+      IHideObjectMembers,
+      IConfigurationProvider
+      where TVM : IViewModel {
+
       /// <summary>
       ///   Creates a simple <see cref="VMProperty"/>.
       /// </summary>

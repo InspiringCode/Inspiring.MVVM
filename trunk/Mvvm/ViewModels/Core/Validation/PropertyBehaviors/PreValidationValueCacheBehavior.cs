@@ -4,7 +4,7 @@ namespace Inspiring.Mvvm.ViewModels.Core.Validation.PropertyBehaviors {
    internal sealed class PreValidationValueCacheBehavior<TValue> :
       Behavior,
       IBehaviorInitializationBehavior,
-      IPropertyAccessorBehavior<TValue>,
+      IValueAccessorBehavior<TValue>,
       IRevalidationBehavior,
       IHandlePropertyChangedBehavior {
 

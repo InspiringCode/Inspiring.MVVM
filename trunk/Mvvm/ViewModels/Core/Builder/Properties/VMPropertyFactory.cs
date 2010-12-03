@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
 using System.Windows.Input;
+using Inspiring.Mvvm.Common;
 using Inspiring.Mvvm.ViewModels.Fluent;
 namespace Inspiring.Mvvm.ViewModels.Core.Builder.Properties {
 
@@ -10,24 +11,42 @@ namespace Inspiring.Mvvm.ViewModels.Core.Builder.Properties {
       IVMPropertyFactory<TVM, TSource>
       where TVM : IViewModel {
 
+      private readonly PropertyPath<TVM, TSource> _sourceObjectPath;
       private readonly VMDescriptorConfiguration _configuration;
 
-      public VMPropertyFactory(VMDescriptorConfiguration configuration) {
+      public VMPropertyFactory(
+         PropertyPath<TVM, TSource> sourceObjectPath,
+         VMDescriptorConfiguration configuration
+      ) {
+         Contract.Requires(sourceObjectPath != null);
          Contract.Requires(configuration != null);
 
+         _sourceObjectPath = sourceObjectPath;
          _configuration = configuration;
       }
 
+      /// <inheritdoc />
       public IVMPropertyFactoryWithSource<TVM, T> Mapped<T>(
          Expression<Func<TSource, T>> sourcePropertySelector
       ) {
-         throw new NotImplementedException();
+         var path = PropertyPath.Concat(
+            _sourceObjectPath,
+            PropertyPath.CreateWithDefaultValue(sourcePropertySelector)
+         );
+
+         var sourceValueAccessor = new MappedPropertyAccessor<TVM, T>(path);
+
+         return new VMPropertyFactoryWithSource<TVM, T>(
+            _configuration,
+            sourceValueAccessor
+         );
       }
 
       public IVMPropertyFactoryWithSource<TVM, T> Calculated<T>(
          Func<TSource, T> getter,
          Action<TSource, T> setter = null
       ) {
+         //new CalculatedPropertyBehavior<,
          throw new NotImplementedException();
       }
 
@@ -49,6 +68,10 @@ namespace Inspiring.Mvvm.ViewModels.Core.Builder.Properties {
          Action<TSource> execute,
          Func<TSource, bool> canExecute = null
       ) {
+         throw new NotImplementedException();
+      }
+
+      public VMDescriptorConfiguration GetConfiguration() {
          throw new NotImplementedException();
       }
    }

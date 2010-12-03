@@ -7,7 +7,7 @@
    using Inspiring.Mvvm.ViewModels.Core;
 
    /// <inheritdoc/>
-   internal class VMPropertyFactory<TVM, TSource> : _IVMPropertyFactory<TVM, TSource>, IRootVMPropertyFactory<TSource>, IBehaviorConfigurationDictionaryProvider where TVM : IViewModel {
+   internal class _VMPropertyFactory<TVM, TSource> : _IVMPropertyFactory<TVM, TSource>, IRootVMPropertyFactory<TSource>, IBehaviorConfigurationDictionaryProvider where TVM : IViewModel {
       private PropertyPath<TVM, TSource> _sourceObjectPropertyPath;
       private BehaviorConfigurationDictionary _configurations;
       private BehaviorConfiguration _additionalConfiguration;
@@ -16,7 +16,7 @@
       ///   Pass 'PropertyPath.Empty{TVM}' if you want to create a root factory
       ///   for the VM.
       /// </param>
-      public VMPropertyFactory(
+      public _VMPropertyFactory(
          PropertyPath<TVM, TSource> sourceObjectPath,
          BehaviorConfigurationDictionary configurations,
          BehaviorConfiguration additionalConfiguration = null
@@ -38,7 +38,7 @@
          config.OverrideFactory(
             VMBehaviorKey.PropertyValueAcessor,
             new ConstantBehaviorFactory(
-               new MappedPropertyBehavior<TVM, T>(propertyPath)
+               new MappedPropertyAccessor<TVM, T>(propertyPath)
             )
          );
 
@@ -82,7 +82,7 @@
             config.OverrideFactory(
                VMBehaviorKey.SourceValueAccessor,
                new ConstantBehaviorFactory(
-                  new MappedPropertyBehavior<TVM, TSource>(_sourceObjectPropertyPath)
+                  new MappedPropertyAccessor<TVM, TSource>(_sourceObjectPropertyPath)
                )
             ).Enable(VMBehaviorKey.SourceValueAccessor);
          }
@@ -90,7 +90,7 @@
          config.OverrideFactory(
             VMBehaviorKey.PropertyValueAcessor,
             new ConstantBehaviorFactory(
-               new CalculatedPropertyBehavior<TSource, T>(getter, setter)
+               new CalculatedPropertyAccessor<TVM, TSource, T>(null, getter, setter)
             )
          );
 
@@ -128,7 +128,7 @@
          config.OverrideFactory(
             VMBehaviorKey.SourceValueAccessor,
             new ConstantBehaviorFactory(
-               new MappedPropertyBehavior<TVM, IEnumerable<TItem>>(sourceCollectionPropertyPath)
+               new MappedPropertyAccessor<TVM, IEnumerable<TItem>>(sourceCollectionPropertyPath)
             )
          );
 
@@ -154,7 +154,7 @@
          config.OverrideFactory(
             VMBehaviorKey.SourceValueAccessor,
             new ConstantBehaviorFactory(
-               new MappedPropertyBehavior<TVM, TVMSource>(sourcePropertyPath)
+               new MappedPropertyAccessor<TVM, TVMSource>(sourcePropertyPath)
             )
          );
 
@@ -177,7 +177,7 @@
             config.OverrideFactory(
                VMBehaviorKey.SourceValueAccessor,
                new ConstantBehaviorFactory(
-                  new MappedPropertyBehavior<TVM, TSource>(_sourceObjectPropertyPath)
+                  new MappedPropertyAccessor<TVM, TSource>(_sourceObjectPropertyPath)
                )
             ).Enable(VMBehaviorKey.SourceValueAccessor);
          }
@@ -187,7 +187,7 @@
          return property;
       }
 
-      public VMPropertyFactory<TVM, TSource> WithConfiguration(BehaviorConfiguration additionalConfiguration) {
+      public _VMPropertyFactory<TVM, TSource> WithConfiguration(BehaviorConfiguration additionalConfiguration) {
          BehaviorConfiguration newConfiguration;
 
          if (_additionalConfiguration != null) {
@@ -196,7 +196,7 @@
          } else {
             newConfiguration = additionalConfiguration;
          }
-         return new VMPropertyFactory<TVM, TSource>(
+         return new _VMPropertyFactory<TVM, TSource>(
             _sourceObjectPropertyPath,
             _configurations,
             newConfiguration

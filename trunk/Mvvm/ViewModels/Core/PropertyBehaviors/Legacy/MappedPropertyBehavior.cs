@@ -6,18 +6,18 @@
 
    /// <summary>
    ///   A <see cref="IDisplayValueAccessorBehavior"/> that implements the get/set 
-   ///   operation of a <see cref="VMPropertyBase"/> by using the target of a CLR
-   ///   property defined on a target object of the view model.
+   ///   operation of a <see cref="VMPropertyBase"/> by using a CLR property defined 
+   ///   on a the view model or an object referenced by it.
    /// </summary>
-   internal sealed class MappedPropertyBehavior<TVM, TValue> :
+   internal sealed class MappedPropertyAccessor<TVM, TValue> :
       Behavior,
-      IPropertyAccessorBehavior<TValue>
+      IValueAccessorBehavior<TValue>
       where TVM : IViewModel {
 
       private VMPropertyBase<TValue> _property;
       private PropertyPath<TVM, TValue> _path;
 
-      public MappedPropertyBehavior(PropertyPath<TVM, TValue> path) {
+      public MappedPropertyAccessor(PropertyPath<TVM, TValue> path) {
          Contract.Requires(path != null);
          _path = path;
       }

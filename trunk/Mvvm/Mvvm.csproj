@@ -106,7 +106,7 @@
     <Compile Include="ViewModels\- No Namespace -\VMPropertyBase.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\ICollectionPopulatorBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\ICollectionModificationBehavior.cs" />
-    <Compile Include="ViewModels\Core\BehaviorInterfaces\IPropertyAccessorBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\IValueAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\IRevalidationBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\IValidationStateProviderBehavior.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorChain.cs" />
@@ -119,6 +119,7 @@
     <Compile Include="ViewModels\Core\Behaviors\BehaviorChainTemplateRegistry.DefaultTemplates.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorKeys.cs" />
     <Compile Include="ViewModels\Core\Behaviors\DefaultPropertyBehaviorFactory.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\DefaultViewModelBehaviorFactory.cs" />
     <Compile Include="ViewModels\Core\Behaviors\IBehaviorFactory.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorKey.cs" />
     <Compile Include="ViewModels\Core\Behaviors\VMDescriptorConfiguration.cs" />
@@ -198,6 +199,7 @@
     <Compile Include="ViewModels\Core\VMDescriptor\VMDescriptorBase.cs" />
     <Compile Include="ViewModels\Core\VMDescriptor\VMPropertyCollection.cs" />
     <Compile Include="ViewModels\Core\- Todo -\ICreatableItem.cs" />
+    <Compile Include="ViewModels\Fluent\IConfigurationProvider.cs" />
     <Compile Include="ViewModels\Fluent\ILocalVMPropertyFactory.cs" />
     <Compile Include="ViewModels\Fluent\IVMCollectionPropertyFactory.cs" />
     <Compile Include="ViewModels\Fluent\IVMCollectionPropertyFactoryWithSource.cs" />

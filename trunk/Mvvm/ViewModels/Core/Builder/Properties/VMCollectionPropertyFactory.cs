@@ -9,5 +9,9 @@
       public VMProperty<IVMCollection<TItemVM>> Of<TItemVM>() where TItemVM : IViewModel {
          throw new NotImplementedException();
       }
+
+      public VMDescriptorConfiguration GetConfiguration() {
+         throw new NotImplementedException();
+      }
    }
 }

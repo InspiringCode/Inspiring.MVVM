@@ -1,16 +1,16 @@
 ﻿using System;
 namespace Inspiring.Mvvm.ViewModels.Core {
-   internal class CacheValueBehavior<TValue> : Behavior, IPropertyAccessorBehavior<TValue> {
+   internal class CacheValueBehavior<TValue> : Behavior, IValueAccessorBehavior<TValue> {
       FieldDefinition<TValue> _localCopyField;
 
       protected void CopyFromSource(IBehaviorContext vm) {
-         IPropertyAccessorBehavior<TValue> accessBehavior = GetNextBehavior<IPropertyAccessorBehavior<TValue>>();
+         IValueAccessorBehavior<TValue> accessBehavior = GetNextBehavior<IValueAccessorBehavior<TValue>>();
          TValue sourceValue = accessBehavior.GetValue(vm, ValueStage.PostValidation);
          vm.FieldValues.SetValue(_localCopyField, sourceValue);
       }
 
       protected void CopyToSource(IBehaviorContext vm) {
-         IPropertyAccessorBehavior<TValue> accessBehavior = GetNextBehavior<IPropertyAccessorBehavior<TValue>>();
+         IValueAccessorBehavior<TValue> accessBehavior = GetNextBehavior<IValueAccessorBehavior<TValue>>();
          TValue localValue = vm.FieldValues.GetValueOrDefault(_localCopyField);
          accessBehavior.SetValue(vm, localValue);
       }

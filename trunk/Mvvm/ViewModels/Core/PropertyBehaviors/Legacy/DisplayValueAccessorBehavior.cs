@@ -7,15 +7,15 @@
       private string _propertyName;
 
       public object GetDisplayValue(IBehaviorContext vm) {
-         IPropertyAccessorBehavior<TValue> accessBehavior =
-            GetNextBehavior<IPropertyAccessorBehavior<TValue>>();
+         IValueAccessorBehavior<TValue> accessBehavior =
+            GetNextBehavior<IValueAccessorBehavior<TValue>>();
 
          return accessBehavior.GetValue(vm, ValueStage.PostValidation);
       }
 
       public void SetDisplayValue(IBehaviorContext vm, object value) {
-         IPropertyAccessorBehavior<TValue> accessBehavior =
-            GetNextBehavior<IPropertyAccessorBehavior<TValue>>();
+         IValueAccessorBehavior<TValue> accessBehavior =
+            GetNextBehavior<IValueAccessorBehavior<TValue>>();
 
          ChangeValueRequest<TValue> request = value as ChangeValueRequest<TValue>;
          if (request != null) {

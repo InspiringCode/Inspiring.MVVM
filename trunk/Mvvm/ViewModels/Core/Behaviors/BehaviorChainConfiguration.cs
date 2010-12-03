@@ -16,7 +16,7 @@
    ///   is created the <see cref="BehaviorChainConfiguration"/> is not needed
    ///   anymore and should be discarded.
    /// </remarks>
-   internal sealed class BehaviorChainConfiguration {
+   public sealed class BehaviorChainConfiguration {
       private List<BehaviorChainItemConfiguration> _items = new List<BehaviorChainItemConfiguration>();
 
       [Pure]
@@ -127,7 +127,7 @@
       private BehaviorChainItemConfiguration GetItem(BehaviorKey key) {
          var item = _items.Find(x => x.Key == key);
 
-         if (item != null) {
+         if (item == null) {
             throw new ArgumentException(
                ExceptionTexts.BehaviorKeyNotInConfiguration.FormatWith(key)
             );
@@ -148,6 +148,10 @@
          [ContractInvariantMethod]
          void ObjectInvariant() {
             Contract.Invariant(IsDisabled ? Instance != null : true);
+         }
+
+         public override string ToString() {
+            return Key.ToString();
          }
       }
    }

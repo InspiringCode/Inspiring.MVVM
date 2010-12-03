@@ -1,16 +1,16 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
 
-   public sealed class PropertyChangedBehavior<TValue> : Behavior, IPropertyAccessorBehavior<TValue> {
+   public sealed class PropertyChangedBehavior<TValue> : Behavior, IValueAccessorBehavior<TValue> {
       private VMPropertyBase<TValue> _property;
 
       public TValue GetValue(IBehaviorContext vm, ValueStage stage) {
-         return GetNextBehavior<IPropertyAccessorBehavior<TValue>>().GetValue(vm, stage);
+         return GetNextBehavior<IValueAccessorBehavior<TValue>>().GetValue(vm, stage);
       }
 
       public void SetValue(IBehaviorContext context, TValue value) {
          TValue oldValue = GetValue(context, ValueStage.PostValidation);
-         GetNextBehavior<IPropertyAccessorBehavior<TValue>>().SetValue(context, value);
+         GetNextBehavior<IValueAccessorBehavior<TValue>>().SetValue(context, value);
 
          if (!Object.Equals(value, oldValue)) {
             var args = new ChangeArgs(ChangeType.PropertyChanged, context.VM, _property);

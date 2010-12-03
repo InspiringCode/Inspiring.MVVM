@@ -145,7 +145,6 @@
          Contract.Requires<ArgumentNullException>(source != null);
 
          if (IsEmpty) {
-            Contract.Assert(typeof(TSource) == typeof(TValue));
             return (TValue)(object)source;
          }
 

@@ -3,7 +3,7 @@
 
    internal sealed class CollectionFactoryBehavior<TItemVM> :
       Behavior,
-      IPropertyAccessorBehavior<VMCollection<TItemVM>>
+      IValueAccessorBehavior<VMCollection<TItemVM>>
       where TItemVM : IViewModel {
       private VMDescriptor _itemDescriptor;
 

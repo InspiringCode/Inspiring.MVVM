@@ -39,7 +39,7 @@
          }
 
          public IRootVMPropertyFactory<TVM> GetPropertyFactory() {
-            return new VMPropertyFactory<TVM, TVM>(
+            return new _VMPropertyFactory<TVM, TVM>(
                PropertyPath.Empty<TVM>(),
                _configurations
             );
@@ -48,7 +48,7 @@
          public _IVMPropertyFactory<TVM, TSource> GetPropertyFactory<TSource>(
             Expression<Func<TVM, TSource>> sourceObjectSelector
          ) {
-            return new VMPropertyFactory<TVM, TSource>(
+            return new _VMPropertyFactory<TVM, TSource>(
                PropertyPath.Create(sourceObjectSelector),
                _configurations
             );

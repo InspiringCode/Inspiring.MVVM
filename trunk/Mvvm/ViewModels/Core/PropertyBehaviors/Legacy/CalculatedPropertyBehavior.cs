@@ -1,70 +1,73 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Diagnostics.Contracts;
+   using Inspiring.Mvvm.Common;
 
    /// <summary>
    ///   A <see cref="IDisplayValueAccessorBehavior"/> that uses the specified delegates
    ///   to implement get/set operation of a <see cref="VMPropertyBase"/>.
    /// </summary>
-   public sealed class CalculatedPropertyBehavior<TSource, TValue> :
+   internal sealed class CalculatedPropertyAccessor<TVM, TSource, TValue> :
       Behavior,
-      IPropertyAccessorBehavior<TValue>,
+      IBehaviorInitializationBehavior,
+      IValueAccessorBehavior<TValue>,
       IMutabilityCheckerBehavior,
       IManuelUpdateBehavior {
 
-      private static readonly Action<TSource, TValue> _throwingSetter = delegate {
+      private static readonly Action<TSource, TValue> ThrowingSetter = delegate {
          throw new InvalidOperationException(ExceptionTexts.NoSetterDelegate);
       };
 
-      private VMPropertyBase<TValue> _property;
+      private PropertyPath<TVM, TSource> _sourceObjectPath;
       private Func<TSource, TValue> _getter;
       private Action<TSource, TValue> _setter;
+      private IVMProperty _property;
 
-      public CalculatedPropertyBehavior(
+      public CalculatedPropertyAccessor(
+         PropertyPath<TVM, TSource> sourceObjectPath,
          Func<TSource, TValue> getter,
          Action<TSource, TValue> setter = null
       ) {
-         Contract.Requires<ArgumentNullException>(getter != null);
+         Contract.Requires(sourceObjectPath != null);
+         Contract.Requires(getter != null);
 
          _getter = getter;
-         _setter = setter ?? _throwingSetter;
+         _setter = setter ?? ThrowingSetter;
       }
 
-      public TValue GetValue(IBehaviorContext vm, ValueStage stage) {
-         return _getter(GetSourceValue(vm));
+      public void Initialize(BehaviorInitializationContext context) {
+         _property = context.Property;
+         this.CallNext(x => x.Initialize(context));
       }
 
-      public void SetValue(IBehaviorContext vm, TValue value) {
-         TSource sourceValue = GetSourceValue(vm);
-         _setter(sourceValue, value);
+      public TValue GetValue(IBehaviorContext context, ValueStage stage) {
+         var sourceObject = _sourceObjectPath.GetValue((TVM)context.VM);
+         return _getter(sourceObject);
       }
 
-      private TSource GetSourceValue(IBehaviorContext vm) {
-         IPropertyAccessorBehavior<TSource> innerAccessor;
-
-         return TryGetBehavior(out innerAccessor) ?
-            innerAccessor.GetValue(vm, ValueStage.PostValidation) :
-            (TSource)vm;
+      public void SetValue(IBehaviorContext context, TValue value) {
+         var sourceObject = _sourceObjectPath.GetValue((TVM)context.VM);
+         _setter(sourceObject, value);
       }
 
-      public bool IsMutable(IBehaviorContext vm) {
-         return _setter != _throwingSetter;
+      public bool IsMutable(IBehaviorContext context) {
+         return _setter != ThrowingSetter;
       }
 
-      public void UpdateFromSource(IBehaviorContext vm) {
-         throw new NotImplementedException("TODO2");
-         //vm.RaisePropertyChanged(_property);
+      public void UpdateFromSource(IBehaviorContext context) {
+         var args = new ChangeArgs(
+            ChangeType.PropertyChanged,
+            changedVM: context.VM,
+            changedProperty: _property
+         );
 
-         // TODO: Call next...
+         context.NotifyChange(args);
+
+         this.CallNext(x => x.UpdateFromSource(context));
       }
 
       public void UpdateSource(IBehaviorContext vm) {
          // Nothing to do
-      }
-
-      protected override void Initialize(BehaviorInitializationContext context) {
-         base.Initialize(context);
-         _property = (VMPropertyBase<TValue>)context.Property;
       }
    }
 }

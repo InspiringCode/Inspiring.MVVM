@@ -13,5 +13,9 @@
       public VMProperty<TChildVM> VM<TChildVM>() where TChildVM : IViewModel {
          throw new NotImplementedException();
       }
+
+      public VMDescriptorConfiguration GetConfiguration() {
+         throw new NotImplementedException();
+      }
    }
 }

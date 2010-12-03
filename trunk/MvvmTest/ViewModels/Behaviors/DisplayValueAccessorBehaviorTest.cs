@@ -85,7 +85,7 @@
          Assert.AreEqual(null, result.ErrorMessage);
       }
 
-      private class InnerAccessor : IPropertyAccessorBehavior<int> {
+      private class InnerAccessor : IValueAccessorBehavior<int> {
          public int Value { get; set; }
 
          public int GetValue(IBehaviorContext vm, ValueStage stage) {

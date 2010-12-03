@@ -39,9 +39,9 @@
 
       // [TestMethod] // TODO
       public void CheckAccessorBehaviors() {
-         CalculatedPropertyBehavior<Person, string> calculatedStringBehavior;
-         MappedPropertyBehavior<PersonVM, DateTime> mappedDateTimeBehavior;
-         MappedPropertyBehavior<PersonVM, decimal> mappedDecimalBehavior;
+         CalculatedPropertyAccessor<PersonVM, Person, string> calculatedStringBehavior;
+         MappedPropertyAccessor<PersonVM, DateTime> mappedDateTimeBehavior;
+         MappedPropertyAccessor<PersonVM, decimal> mappedDecimalBehavior;
          InstancePropertyBehavior<bool> boolInstanceBehavior;
          CollectionPopulatorBehavior<PersonVM, PersonVM, Person> collectionPopulator;
 

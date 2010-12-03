@@ -1,4 +1,7 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Fluent {
+﻿using System.ComponentModel;
+using Inspiring.Mvvm.Common;
+using Inspiring.Mvvm.ViewModels.Core;
+namespace Inspiring.Mvvm.ViewModels.Fluent {
 
    /// <summary>
    ///   Creates various <see cref="VMProperty"/> objects that are either mapped
@@ -7,8 +10,8 @@
    /// <typeparam name="TVM">
    ///   The type of the VM for which properties are created.
    /// </typeparam>
-   /// <typeparam name="TSourceObject">
-   ///   The type of the source object as selected by the <see 
+   /// <typeparam name="TSourceValue">
+   ///   The type of the source value as selected by the <see 
    ///   cref="IVMPropertyFactory.Mapped"/> or <see 
    ///   cref="IVMPropertyFactory.Calculated"/> method.
    /// </typeparam>
@@ -16,11 +19,15 @@
    ///   Create an extension method on this interface if you want to support
    ///   mapped/calcualted properties for you own property type.
    /// </remarks>
-   public interface IVMPropertyFactoryWithSource<TVM, TSourceObject> where TVM : IViewModel {
+   public interface IVMPropertyFactoryWithSource<TVM, TSourceValue> :
+      IHideObjectMembers,
+      IConfigurationProvider
+      where TVM : IViewModel {
+
       /// <summary>
       ///   Creates a simple <see cref="VMProperty"/>.
       /// </summary>
-      VMProperty<TSourceObject> Property();
+      VMProperty<TSourceValue> Property();
 
       /// <summary>
       ///   <para>Creates a <see cref="VMProperty"/> that holds a child view model.
@@ -39,6 +46,10 @@
       ///   is called with the source object returned by the mapped or calculated 
       ///   source.
       /// </typeparam>
-      VMProperty<TChildVM> VM<TChildVM>() where TChildVM : IViewModel, ICanInitializeFrom<TSourceObject>;
+      VMProperty<TChildVM> VM<TChildVM>() where TChildVM : IViewModel, ICanInitializeFrom<TSourceValue>;
+
+      // TODO: Comment me
+      [EditorBrowsable(EditorBrowsableState.Never)]
+      IValueAccessorBehavior<TSourceValue> GetSourceAccessor();
    }
 }

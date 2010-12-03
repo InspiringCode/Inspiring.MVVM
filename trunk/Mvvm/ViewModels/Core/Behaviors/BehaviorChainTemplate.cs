@@ -16,15 +16,15 @@
    public sealed class BehaviorChainTemplate {
       private readonly List<BehaviorChainItemTemplate> _itemTemplates = new List<BehaviorChainItemTemplate>();
 
-      public BehaviorChainTemplate(IBehaviorFactory defaultBehaviorFactory = null) {
-         DefaultBehaviorFactory = defaultBehaviorFactory;
-      }
-
       /// <summary>
-      ///   This <see cref="IBehaviorFactory"/> is used if no factory is passed 
-      ///   to <see cref="Append"/>.
+      ///   Appends a disabled behavior chain item to the end of the behavior 
+      ///   template list of this behavior chain template.
       /// </summary>
-      public IBehaviorFactory DefaultBehaviorFactory { get; private set; }
+      public void Append(BehaviorKey disabledBehaviorKey) {
+         Contract.Requires<ArgumentNullException>(disabledBehaviorKey != null);
+
+         _itemTemplates.Add(new BehaviorChainItemTemplate { Key = disabledBehaviorKey });
+      }
 
       /// <summary>
       ///   Adds a behavior chain item template to the end of the behavior template
@@ -33,8 +33,7 @@
       /// <param name="factory">
       ///   The <see cref="IBehaviorFactory"/> that is used to create a concreate
       ///   <see cref="IBehavior"/> instance when a <see cref="BehaviorChainConfiguration"/>
-      ///   is created from this template. When null, the <see cref="DefaultBehaviorFactory"/>
-      ///   is used.
+      ///   is created from this template.
       /// </param>
       /// <param name="disabled">
       ///   If true, the behavior is not enabled in a <see cref="BehaviorChainConfiguration"/> 
@@ -42,13 +41,14 @@
       ///   created <see cref="BehaviorChain"/> unless <see 
       ///   cref="BehaviorChainConfiguration.Enable"/> is called.
       /// </param>
-      public void Append(BehaviorKey key, IBehaviorFactory factory = null, bool disabled = true) {
+      public void Append(BehaviorKey key, IBehaviorFactory factory, bool disabled = true) {
          Contract.Requires<ArgumentNullException>(key != null);
+         Contract.Requires<ArgumentNullException>(factory != null);
 
          _itemTemplates.Add(
             new BehaviorChainItemTemplate {
                Key = key,
-               Factory = factory ?? DefaultBehaviorFactory,
+               Factory = factory,
                IsDisabledByDefault = disabled
             }
          );

@@ -9,7 +9,7 @@
    ///   Once the actual <see cref="BehaviorChain"/>s are created an object of this
    ///   class is not needed anymore.
    /// </remarks>
-   internal sealed class VMDescriptorConfiguration {
+   public sealed class VMDescriptorConfiguration {
       public VMDescriptorConfiguration(BehaviorChainConfiguration viewModelConfiguration) {
          Contract.Requires(viewModelConfiguration != null);
 

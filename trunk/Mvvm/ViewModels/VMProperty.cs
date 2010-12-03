@@ -109,7 +109,7 @@
          Contract.Requires(context != null);
 
          return Behaviors
-            .GetNextBehavior<IPropertyAccessorBehavior<T>>()
+            .GetNextBehavior<IValueAccessorBehavior<T>>()
             .GetValue(context, stage);
       }
 
@@ -117,7 +117,7 @@
          Contract.Requires(context != null);
 
          Behaviors
-            .GetNextBehavior<IPropertyAccessorBehavior<T>>()
+            .GetNextBehavior<IValueAccessorBehavior<T>>()
             .SetValue(context, value);
       }
 
@@ -139,7 +139,7 @@
                object value = displayValueAccessor.GetDisplayValue(context);
                displayValueAccessor.SetDisplayValue(context, value);
             } else {
-               var typedAccessor = Behaviors.GetNextBehavior<IPropertyAccessorBehavior<T>>();
+               var typedAccessor = Behaviors.GetNextBehavior<IValueAccessorBehavior<T>>();
                T value = typedAccessor.GetValue(context, ValueStage.PostValidation);
                typedAccessor.SetValue(context, value);
             }

@@ -97,6 +97,15 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The default behavior factory does not support creating behaviors for &apos;{0}&apos;. Specify a custom &apos;IBehaviorFactory&apos; when you configure your &apos;BehaviorChainTemplate&apos;..
+        /// </summary>
+        internal static string BehaviorNotSupportedByFactory {
+            get {
+                return ResourceManager.GetString("BehaviorNotSupportedByFactory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot enable behavior with key &apos;{0}&apos; because no behavior instance was specified. Either specify a &apos;IBehaviorFactory&apos; in the &apos;BehaviorChainTemplate&apos; or pass in an &apos;IBehavior&apos; instance..
         /// </summary>
         internal static string CannotEnableBehavior {

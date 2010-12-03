@@ -249,4 +249,7 @@
   <data name="CannotEnableBehavior" xml:space="preserve">
     <value>Cannot enable behavior with key '{0}' because no behavior instance was specified. Either specify a 'IBehaviorFactory' in the 'BehaviorChainTemplate' or pass in an 'IBehavior' instance.</value>
   </data>
+  <data name="BehaviorNotSupportedByFactory" xml:space="preserve">
+    <value>The default behavior factory does not support creating behaviors for '{0}'. Specify a custom 'IBehaviorFactory' when you configure your 'BehaviorChainTemplate'.</value>
+  </data>
 </root>

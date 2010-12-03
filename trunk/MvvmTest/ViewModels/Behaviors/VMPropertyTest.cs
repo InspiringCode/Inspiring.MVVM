@@ -18,7 +18,7 @@ namespace Inspiring.MvvmTest.ViewModels.Behaviors {
          //Assert.AreEqual("Value 2", source.Value);
       }
 
-      private class AccessPropertyBehaviorFake<T> : Behavior, IPropertyAccessorBehavior<T> {
+      private class AccessPropertyBehaviorFake<T> : Behavior, IValueAccessorBehavior<T> {
          public T Value { get; set; }
 
          public T GetValue(IBehaviorContext vm, ValueStage stage) {

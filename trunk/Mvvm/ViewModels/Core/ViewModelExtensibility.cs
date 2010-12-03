@@ -30,7 +30,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          IRootVMPropertyFactory<TVM> factory,
          BehaviorConfiguration additionalConfiguration
       ) where TVM : IViewModel {
-         return ((VMPropertyFactory<TVM, TVM>)factory).WithConfiguration(additionalConfiguration);
+         return ((_VMPropertyFactory<TVM, TVM>)factory).WithConfiguration(additionalConfiguration);
       }
 
       //public static IRootVMPropertyFactory<TVM> CreatePropertyFactory<TVM>() where TVM : IViewModel {

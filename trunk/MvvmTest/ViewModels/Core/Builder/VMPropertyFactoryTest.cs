@@ -9,8 +9,8 @@
    [TestClass]
    public class VMPropertyFactoryTest {
       private BehaviorConfigurationDictionary _configs;
-      private VMPropertyFactory<PersonVM, PersonVM> _rootFactory;
-      private VMPropertyFactory<PersonVM, Person> _personFactory;
+      private _VMPropertyFactory<PersonVM, PersonVM> _rootFactory;
+      private _VMPropertyFactory<PersonVM, Person> _personFactory;
 
       private static void OverrideDefaultPropertyConfiguration() {
          BehaviorConfigurationFactory.OverrideDefaultConfiguration(
@@ -46,8 +46,8 @@
          OverrideDefaultViewModelPropertyConfiguration();
 
          _configs = new BehaviorConfigurationDictionary();
-         _rootFactory = new VMPropertyFactory<PersonVM, PersonVM>(PropertyPath.Empty<PersonVM>(), _configs);
-         _personFactory = new VMPropertyFactory<PersonVM, Person>(PropertyPath.Create((PersonVM vm) => vm.Person), _configs);
+         _rootFactory = new _VMPropertyFactory<PersonVM, PersonVM>(PropertyPath.Empty<PersonVM>(), _configs);
+         _personFactory = new _VMPropertyFactory<PersonVM, Person>(PropertyPath.Create((PersonVM vm) => vm.Person), _configs);
       }
 
       [TestCleanup]
@@ -58,10 +58,10 @@
       [TestMethod]
       public void MappedProperty() {
          var property = _rootFactory.Mapped(x => x.Person.FirstName);
-         AssertBehaviors(property, typeof(MappedPropertyBehavior<PersonVM, string>));
+         AssertBehaviors(property, typeof(MappedPropertyAccessor<PersonVM, string>));
 
          property = _personFactory.Mapped(x => x.FirstName);
-         AssertBehaviors(property, typeof(MappedPropertyBehavior<PersonVM, string>));
+         AssertBehaviors(property, typeof(MappedPropertyAccessor<PersonVM, string>));
       }
 
       [TestMethod]
@@ -69,14 +69,14 @@
          var property = _rootFactory.Calculated(x => x.Person.FirstName);
          AssertBehaviors(
             property,
-            typeof(CalculatedPropertyBehavior<PersonVM, string>)
+            typeof(CalculatedPropertyAccessor<PersonVM, PersonVM, string>)
          );
 
          property = _personFactory.Calculated(x => x.FirstName);
          AssertBehaviors(
             property,
-            typeof(CalculatedPropertyBehavior<Person, string>),
-            typeof(MappedPropertyBehavior<PersonVM, Person>)
+            typeof(CalculatedPropertyAccessor<PersonVM, Person, string>),
+            typeof(MappedPropertyAccessor<PersonVM, Person>)
          );
       }
 
@@ -86,7 +86,7 @@
          AssertBehaviors(
             property,
             typeof(CollectionPopulatorBehavior<PersonVM, ProjectVM, Project>),
-            typeof(MappedPropertyBehavior<PersonVM, IEnumerable<Project>>),
+            typeof(MappedPropertyAccessor<PersonVM, IEnumerable<Project>>),
             typeof(ViewModelFactoryBehavior<ProjectVM>),
             typeof(CollectionFactoryBehavior<ProjectVM>)
          );
@@ -95,7 +95,7 @@
          AssertBehaviors(
             property,
             typeof(CollectionPopulatorBehavior<PersonVM, ProjectVM, Project>),
-            typeof(MappedPropertyBehavior<PersonVM, IEnumerable<Project>>),
+            typeof(MappedPropertyAccessor<PersonVM, IEnumerable<Project>>),
             typeof(ViewModelFactoryBehavior<ProjectVM>),
             typeof(CollectionFactoryBehavior<ProjectVM>)
          );
@@ -108,7 +108,7 @@
             property,
             typeof(ViewModelPropertyInitializerBehavior<ProjectVM, Project>),
             typeof(ViewModelFactoryBehavior<ProjectVM>),
-            typeof(MappedPropertyBehavior<PersonVM, Project>)
+            typeof(MappedPropertyAccessor<PersonVM, Project>)
          );
 
          property = _personFactory.MappedVM(x => x.CurrentProject).Of<ProjectVM>();
@@ -116,7 +116,7 @@
             property,
             typeof(ViewModelPropertyInitializerBehavior<ProjectVM, Project>),
             typeof(ViewModelFactoryBehavior<ProjectVM>),
-            typeof(MappedPropertyBehavior<PersonVM, Project>)
+            typeof(MappedPropertyAccessor<PersonVM, Project>)
          );
       }
 
@@ -145,7 +145,7 @@
    [TestClass]
    public class ConfiguredVMPropertyFactoryTest {
       private Behavior _additionalBehavior;
-      private VMPropertyFactory<TestVM, TestVM> _configuredFactory;
+      private _VMPropertyFactory<TestVM, TestVM> _configuredFactory;
       private BehaviorConfigurationDictionary _configs;
 
       [TestInitialize]
@@ -161,7 +161,7 @@
 
          _configs = new BehaviorConfigurationDictionary();
 
-         VMPropertyFactory<TestVM, TestVM> factory = new VMPropertyFactory<TestVM, TestVM>(
+         _VMPropertyFactory<TestVM, TestVM> factory = new _VMPropertyFactory<TestVM, TestVM>(
             PropertyPath.Empty<TestVM>(),
             _configs
          );
