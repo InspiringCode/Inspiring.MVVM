@@ -6,6 +6,6 @@
    public interface IConfigurationProvider {
       // TODO: Comment me
       [EditorBrowsable(EditorBrowsableState.Never)]
-      VMDescriptorConfiguration GetConfiguration();
+      VMDescriptorConfiguration Configuration { get; }
    }
 }

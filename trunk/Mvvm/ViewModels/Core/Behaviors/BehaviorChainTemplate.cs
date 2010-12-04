@@ -23,7 +23,7 @@
       public void Append(BehaviorKey disabledBehaviorKey) {
          Contract.Requires<ArgumentNullException>(disabledBehaviorKey != null);
 
-         _itemTemplates.Add(new BehaviorChainItemTemplate { Key = disabledBehaviorKey });
+         _itemTemplates.Add(new BehaviorChainItemTemplate(disabledBehaviorKey));
       }
 
       /// <summary>
@@ -35,21 +35,20 @@
       ///   <see cref="IBehavior"/> instance when a <see cref="BehaviorChainConfiguration"/>
       ///   is created from this template.
       /// </param>
-      /// <param name="disabled">
+      /// <param name="isDisabledByDefault">
       ///   If true, the behavior is not enabled in a <see cref="BehaviorChainConfiguration"/> 
       ///   created from this template. This means it will not be included in the finally 
       ///   created <see cref="BehaviorChain"/> unless <see 
       ///   cref="BehaviorChainConfiguration.Enable"/> is called.
       /// </param>
-      public void Append(BehaviorKey key, IBehaviorFactory factory, bool disabled = true) {
+      public void Append(BehaviorKey key, IBehaviorFactory factory, bool isDisabledByDefault = true) {
          Contract.Requires<ArgumentNullException>(key != null);
          Contract.Requires<ArgumentNullException>(factory != null);
 
          _itemTemplates.Add(
-            new BehaviorChainItemTemplate {
-               Key = key,
+            new BehaviorChainItemTemplate(key) {
                Factory = factory,
-               IsDisabledByDefault = disabled
+               IsDisabledByDefault = isDisabledByDefault
             }
          );
       }
@@ -86,9 +85,19 @@
          public BehaviorKey Key { get; set; }
          public bool IsDisabledByDefault { get; set; }
 
+         public BehaviorChainItemTemplate(BehaviorKey key) {
+            Key = key;
+            IsDisabledByDefault = true;
+            Factory = null;
+         }
+
          [ContractInvariantMethod]
          private void ObjectInvariant() {
-            Contract.Invariant(IsDisabledByDefault ? Factory != null : true);
+            Contract.Invariant(!IsDisabledByDefault ? Factory != null : true);
+         }
+
+         public override string ToString() {
+            return Key.ToString();
          }
       }
    }

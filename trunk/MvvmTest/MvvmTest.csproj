@@ -86,7 +86,7 @@
     <Compile Include="ViewModels\- No Namespace -\VMCollectionTests.cs" />
     <Compile Include="ViewModels\Core\BehaviorTestBase.cs" />
     <Compile Include="ViewModels\Core\Builder\BehaviorsTest.cs" />
-    <Compile Include="ViewModels\Core\Builder\PropertyFactoryTests.cs" />
+    <Compile Include="ViewModels\Core\Builder\VMPropertyFactoryTests.cs" />
     <Compile Include="ViewModels\Core\Collections\AddNewHelperTests.cs" />
     <Compile Include="ViewModels\Core\Collections\Behaviors\CollectionChangeNotificationBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Collections\Behaviors\CollectionModificationBehaviorTestBase.cs" />

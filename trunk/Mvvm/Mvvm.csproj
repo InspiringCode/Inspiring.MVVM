@@ -131,10 +131,12 @@
     <Compile Include="ViewModels\Core\Behaviors\- Legacy -\DefaultBehaviorFactory.cs" />
     <Compile Include="ViewModels\Core\Behaviors\- Legacy -\IBehaviorConfigurationExpression.cs" />
     <Compile Include="ViewModels\Core\Behaviors\- Legacy -\VMBehaviorKey.cs" />
-    <Compile Include="ViewModels\Core\Builder\Properties\LocalVMPropertyFactory.cs" />
+    <Compile Include="ViewModels\Core\Builder\ConfigurationProvider.cs" />
+    <Compile Include="ViewModels\Core\Builder\Properties\VMPropertyFactoryLocal.cs" />
     <Compile Include="ViewModels\Core\Builder\Properties\VMCollectionPropertyFactory.cs" />
     <Compile Include="ViewModels\Core\Builder\Properties\VMCollectionPropertyFactoryWithSource.cs" />
     <Compile Include="ViewModels\Core\Builder\Properties\VMPropertyFactory.cs" />
+    <Compile Include="ViewModels\Core\Builder\Properties\VMPropertyFactoryBase.cs" />
     <Compile Include="ViewModels\Core\Builder\Properties\VMPropertyFactoryWithSource.cs" />
     <Compile Include="ViewModels\Core\Builder\ValidationBuilder.cs" />
     <Compile Include="ViewModels\Core\CollectionModificationController.cs" />

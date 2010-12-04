@@ -12,6 +12,7 @@ REM (imported if run as Administrator).
 CD /D %~dp0
 
 COPY /Y vm.snippet "%my_dir%"
+COPY /Y indoc.snippet "%my_dir%"
 
 ECHO.
 ECHO Installation finished!

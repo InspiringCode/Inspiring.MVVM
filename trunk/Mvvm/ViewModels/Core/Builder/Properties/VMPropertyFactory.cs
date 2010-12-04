@@ -8,21 +8,21 @@ using Inspiring.Mvvm.ViewModels.Fluent;
 namespace Inspiring.Mvvm.ViewModels.Core.Builder.Properties {
 
    internal sealed class VMPropertyFactory<TVM, TSource> :
+      ConfigurationProvider,
       IVMPropertyFactory<TVM, TSource>
       where TVM : IViewModel {
 
       private readonly PropertyPath<TVM, TSource> _sourceObjectPath;
-      private readonly VMDescriptorConfiguration _configuration;
 
       public VMPropertyFactory(
          PropertyPath<TVM, TSource> sourceObjectPath,
          VMDescriptorConfiguration configuration
-      ) {
+      )
+         : base(configuration) {
          Contract.Requires(sourceObjectPath != null);
          Contract.Requires(configuration != null);
 
          _sourceObjectPath = sourceObjectPath;
-         _configuration = configuration;
       }
 
       /// <inheritdoc />
@@ -37,21 +37,31 @@ namespace Inspiring.Mvvm.ViewModels.Core.Builder.Properties {
          var sourceValueAccessor = new MappedPropertyAccessor<TVM, T>(path);
 
          return new VMPropertyFactoryWithSource<TVM, T>(
-            _configuration,
+            Configuration,
             sourceValueAccessor
          );
       }
 
+      /// <inheritdoc />
       public IVMPropertyFactoryWithSource<TVM, T> Calculated<T>(
          Func<TSource, T> getter,
          Action<TSource, T> setter = null
       ) {
-         //new CalculatedPropertyBehavior<,
-         throw new NotImplementedException();
+         var sourceValueAccessor = new CalculatedPropertyAccessor<TVM, TSource, T>(
+            _sourceObjectPath,
+            getter,
+            setter
+         );
+
+         return new VMPropertyFactoryWithSource<TVM, T>(
+            Configuration,
+            sourceValueAccessor
+         );
       }
 
+      /// <inheritdoc />
       public ILocalVMPropertyFactory<TVM> Local() {
-         throw new NotImplementedException();
+         return new LocalVMPropertyLocal<TVM>(Configuration);
       }
 
       public IVMCollectionPropertyFactory<TVM> Collection() {
@@ -68,10 +78,6 @@ namespace Inspiring.Mvvm.ViewModels.Core.Builder.Properties {
          Action<TSource> execute,
          Func<TSource, bool> canExecute = null
       ) {
-         throw new NotImplementedException();
-      }
-
-      public VMDescriptorConfiguration GetConfiguration() {
          throw new NotImplementedException();
       }
    }

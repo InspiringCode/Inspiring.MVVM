@@ -53,7 +53,7 @@
          }
 
          item.Instance = behaviorInstance;
-         item.IsDisabled = true;
+         item.IsDisabled = false;
       }
 
       /// <summary>
@@ -139,6 +139,7 @@
       private class BehaviorChainItemConfiguration {
          public BehaviorChainItemConfiguration(BehaviorKey key) {
             Key = key;
+            IsDisabled = true;
          }
 
          public BehaviorKey Key { get; private set; }
@@ -147,7 +148,7 @@
 
          [ContractInvariantMethod]
          void ObjectInvariant() {
-            Contract.Invariant(IsDisabled ? Instance != null : true);
+            Contract.Invariant(!IsDisabled ? Instance != null : true);
          }
 
          public override string ToString() {
