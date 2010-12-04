@@ -1,7 +1,11 @@
 ﻿using System;
 namespace Inspiring.Mvvm.ViewModels.Core {
 
-   internal sealed class DefaultManualUpdateBehavior<TValue> : Behavior, IManuelUpdateBehavior {
+   internal sealed class DefaultManualUpdateBehavior<TValue> :
+      Behavior,
+      IBehaviorInitializationBehavior,
+      IManuelUpdateBehavior {
+
       private VMPropertyBase<TValue> _property;
 
       public void UpdateFromSource(IBehaviorContext vm) {
@@ -13,9 +17,9 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          // Nothing to do
       }
 
-      protected override void Initialize(BehaviorInitializationContext context) {
-         base.Initialize(context);
+      public void Initialize(BehaviorInitializationContext context) {
          _property = (VMPropertyBase<TValue>)context.Property;
+         this.CallNext(x => x.Initialize(context));
       }
    }
 }

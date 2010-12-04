@@ -4,7 +4,7 @@
    using Inspiring.Mvvm.ViewModels.Fluent;
 
    internal sealed class LocalVMPropertyLocal<TVM> :
-      VMPropertyFactoryBase,
+      VMPropertyFactoryBase<TVM>,
       ILocalVMPropertyFactory<TVM>
       where TVM : IViewModel {
 

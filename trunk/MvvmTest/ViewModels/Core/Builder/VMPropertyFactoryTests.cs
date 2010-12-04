@@ -16,7 +16,7 @@
             BehaviorChainTemplateKeys.ViewModel
          );
 
-         var viewModelConfiguration = template.CreateConfiguration<EmployeeVM>();
+         var viewModelConfiguration = template.CreateConfiguration(ViewModelBehaviorFactory.CreateInvoker<EmployeeVM>());
 
          Configuration = new VMDescriptorConfiguration(viewModelConfiguration);
       }
@@ -61,7 +61,7 @@
 
          Assert.IsFalse(ContainsBehavior<PropertyValidationBehavior<string>>(p));
          Assert.IsFalse(ContainsBehavior<AllowInvalidDisplayValuesBehavior>(p));
-         Assert.IsFalse(ContainsBehavior<RefreshableValueCahche<string>>(p));
+         Assert.IsFalse(ContainsBehavior<RefreshableValueCacheBehavior<string>>(p));
       }
 
       private VMPropertyFactory<EmployeeVM, EmployeeVM> CreateRootFactory() {

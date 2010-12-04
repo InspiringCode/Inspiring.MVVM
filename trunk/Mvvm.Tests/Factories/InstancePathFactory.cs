@@ -59,6 +59,16 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          void IViewModel.RaisePropertyChanged(string propertyName) {
             throw new NotImplementedException();
          }
+
+
+         public VMDescriptorBase Descriptor {
+            get {
+               throw new NotImplementedException();
+            }
+            set {
+               throw new NotImplementedException();
+            }
+         }
       }
    }
 }

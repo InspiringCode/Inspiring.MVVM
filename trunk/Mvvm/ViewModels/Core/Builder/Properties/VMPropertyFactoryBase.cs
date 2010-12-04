@@ -1,6 +1,9 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core.Builder.Properties {
 
-   internal abstract class VMPropertyFactoryBase : ConfigurationProvider {
+   internal abstract class VMPropertyFactoryBase<TVM> :
+      ConfigurationProvider
+      where TVM : IViewModel {
+
       public VMPropertyFactoryBase(VMDescriptorConfiguration configuration)
          : base(configuration) {
       }
@@ -8,7 +11,8 @@
       protected VMProperty<T> CreateProperty<T>(IValueAccessorBehavior<T> sourceValueAccessor) {
          var behaviorTemplate = BehaviorChainTemplateRegistry.GetTemplate(BehaviorChainTemplateKeys.Property);
 
-         var behaviorConfiguration = behaviorTemplate.CreateConfiguration<T>();
+         var factoryInvoker = PropertyBehaviorFactory.CreateInvoker<TVM, T>();
+         var behaviorConfiguration = behaviorTemplate.CreateConfiguration(factoryInvoker);
          behaviorConfiguration.Enable(BehaviorKeys.SourceValueAccessor, sourceValueAccessor);
 
          var property = new VMProperty<T>();

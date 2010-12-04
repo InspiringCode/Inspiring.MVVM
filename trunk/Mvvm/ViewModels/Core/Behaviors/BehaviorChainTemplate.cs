@@ -3,6 +3,12 @@
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
 
+   public enum DefaultBehaviorState {
+      Disabled,
+      Enabled,
+      DisabledWithoutFactory
+   }
+
    /// <summary>
    ///   A template that defines the ordering of <see cref="IBehavior"/> objects
    ///   in a <see cref="BehaviorChain"/>. It also defines how the behavior are
@@ -14,66 +20,79 @@
    ///   cref="CreateConfiguration"/> first to create a concrete chain.
    /// </remarks>
    public sealed class BehaviorChainTemplate {
-      private readonly List<BehaviorChainItemTemplate> _itemTemplates = new List<BehaviorChainItemTemplate>();
+      private readonly List<BehaviorChainItemTemplate> _itemTemplates;
+      private readonly IBehaviorFactory _behaviorFactory;
 
-      /// <summary>
-      ///   Appends a disabled behavior chain item to the end of the behavior 
-      ///   template list of this behavior chain template.
-      /// </summary>
-      public void Append(BehaviorKey disabledBehaviorKey) {
-         Contract.Requires<ArgumentNullException>(disabledBehaviorKey != null);
+      public BehaviorChainTemplate(IBehaviorFactory behaviorFactory)
+         : this(behaviorFactory, new List<BehaviorChainItemTemplate>()) {
+      }
 
-         _itemTemplates.Add(new BehaviorChainItemTemplate(disabledBehaviorKey));
+      private BehaviorChainTemplate(
+         IBehaviorFactory behaviorFactory,
+         List<BehaviorChainItemTemplate> itemTemplates
+      ) {
+         _behaviorFactory = behaviorFactory;
+         _itemTemplates = itemTemplates;
       }
 
       /// <summary>
-      ///   Adds a behavior chain item template to the end of the behavior template
-      ///   list of this behavior chain template.
+      ///   Returns a new <see cref="BehaviorChainTemplate"/> with a behavior
+      ///   chain item template added to the end of the item template list of 
+      ///   this behavior chain template.
       /// </summary>
-      /// <param name="factory">
-      ///   The <see cref="IBehaviorFactory"/> that is used to create a concreate
-      ///   <see cref="IBehavior"/> instance when a <see cref="BehaviorChainConfiguration"/>
-      ///   is created from this template.
-      /// </param>
-      /// <param name="isDisabledByDefault">
+      /// <param name="disabled">
       ///   If true, the behavior is not enabled in a <see cref="BehaviorChainConfiguration"/> 
       ///   created from this template. This means it will not be included in the finally 
-      ///   created <see cref="BehaviorChain"/> unless <see 
-      ///   cref="BehaviorChainConfiguration.Enable"/> is called.
+      ///   created <see cref="BehaviorChain"/> unless <see cref="BehaviorChainConfiguration.Enable"/>
+      ///   is called.
       /// </param>
-      public void Append(BehaviorKey key, IBehaviorFactory factory, bool isDisabledByDefault = true) {
+      public BehaviorChainTemplate Append(
+         BehaviorKey key,
+         DefaultBehaviorState state = DefaultBehaviorState.Enabled
+      ) {
          Contract.Requires<ArgumentNullException>(key != null);
+
+         var itemTemplatesClone = new List<BehaviorChainItemTemplate>(_itemTemplates);
+         itemTemplatesClone.Add(new BehaviorChainItemTemplate(key, state));
+
+         return new BehaviorChainTemplate(_behaviorFactory, itemTemplatesClone);
+      }
+
+      /// <summary>
+      ///   Returns a new <see cref="BehaviorChainTemplate"/> with the same
+      ///   behavior chain item templates but with a different <see 
+      ///   cref="IBehaviorFactory"/>.
+      /// </summary>
+      public BehaviorChainTemplate OverrideFactory(IBehaviorFactory factory) {
          Contract.Requires<ArgumentNullException>(factory != null);
 
-         _itemTemplates.Add(
-            new BehaviorChainItemTemplate(key) {
-               Factory = factory,
-               IsDisabledByDefault = isDisabledByDefault
-            }
-         );
+         // The _itemTemplates list can be shared because we do not modify it.
+         return new BehaviorChainTemplate(factory, _itemTemplates);
       }
 
       /// <summary>
       ///   Creates a new <see cref="BehaviorChainConfiguration"/> from this
       ///   template.
       /// </summary>
-      /// <typeparam name="T">
-      ///   The type the should be used for <see cref="IBehaviorFactory.Create"/>
-      ///   when the behaviors are instantiated. Pass the value type of the 
-      ///   VM property (e.g. String) for property behavior chains and the type
-      ///   of the View Model (e.g. EmployeeVM) for view model behavior chains.
-      /// </typeparam>
-      internal BehaviorChainConfiguration CreateConfiguration<T>() {
+      // TODO: Comment.
+      internal BehaviorChainConfiguration CreateConfiguration(BehaviorFactoryInvoker factoryInvoker) {
+         Contract.Requires(factoryInvoker != null);
          Contract.Ensures(Contract.Result<BehaviorChainConfiguration>() != null);
 
          var config = new BehaviorChainConfiguration();
 
          foreach (BehaviorChainItemTemplate itemTemplate in _itemTemplates) {
-            if (itemTemplate.Factory != null) {
-               IBehavior instance = itemTemplate.Factory.Create<T>();
-               config.Append(itemTemplate.Key, instance, itemTemplate.IsDisabledByDefault);
+            BehaviorKey key = itemTemplate.Key;
+
+            if (itemTemplate.State == DefaultBehaviorState.DisabledWithoutFactory) {
+               config.Append(key);
             } else {
-               config.Append(itemTemplate.Key);
+               IBehavior instance = factoryInvoker.Invoke(_behaviorFactory, key);
+               config.Append(key, instance);
+
+               if (itemTemplate.State == DefaultBehaviorState.Enabled) {
+                  config.Enable(key);
+               }
             }
          }
 
@@ -81,19 +100,20 @@
       }
 
       private class BehaviorChainItemTemplate {
-         public IBehaviorFactory Factory { get; set; }
-         public BehaviorKey Key { get; set; }
-         public bool IsDisabledByDefault { get; set; }
+         private readonly BehaviorKey _key;
+         private readonly DefaultBehaviorState _state;
 
-         public BehaviorChainItemTemplate(BehaviorKey key) {
-            Key = key;
-            IsDisabledByDefault = true;
-            Factory = null;
+         public BehaviorChainItemTemplate(BehaviorKey key, DefaultBehaviorState state) {
+            _key = key;
+            _state = state;
          }
 
-         [ContractInvariantMethod]
-         private void ObjectInvariant() {
-            Contract.Invariant(!IsDisabledByDefault ? Factory != null : true);
+         public BehaviorKey Key {
+            get { return _key; }
+         }
+
+         public DefaultBehaviorState State {
+            get { return _state; }
          }
 
          public override string ToString() {

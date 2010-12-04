@@ -2,7 +2,12 @@
    using System;
    using Inspiring.Mvvm.Common;
 
-   internal sealed class DisplayValueAccessorBehavior<TValue> : Behavior, IDisplayValueAccessorBehavior, IValidationBehavior {
+   internal sealed class DisplayValueAccessorBehavior<TValue> :
+      Behavior,
+      IBehaviorInitializationBehavior,
+      IDisplayValueAccessorBehavior,
+      IValidationBehavior {
+
       private FieldDefinition<string> _conversionErrorField;
       private string _propertyName;
 
@@ -52,12 +57,13 @@
             ValidationResult.Success();
       }
 
-      protected override void Initialize(BehaviorInitializationContext context) {
-         base.Initialize(context);
+      public void Initialize(BehaviorInitializationContext context) {
          _conversionErrorField = context.Fields.DefineField<string>(
             DynamicFieldGroups.ConversionErrorGroup
          );
          _propertyName = context.Property.PropertyName;
+
+         this.CallNext(x => x.Initialize(context));
       }
    }
 }

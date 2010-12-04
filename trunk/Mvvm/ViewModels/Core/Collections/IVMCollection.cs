@@ -7,6 +7,9 @@
    ///   especially required by the predefined collection behaviors.
    /// </summary>
    public interface IVMCollection<TItemVM> : ICollection<TItemVM> {
+      // TODO: Comment.
+      BehaviorChain Behaviors { get; }
+
       /// <summary>
       ///   <para>Indicates wheather the collection is in the middle of a complete 
       ///      repoulation process.</para>

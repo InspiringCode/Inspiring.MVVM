@@ -5,7 +5,6 @@
    using System.Linq;
    using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.Mvvm.ViewModels.Core.BehaviorInterfaces;
-   using Inspiring.Mvvm.ViewModels.Core.Collections;
 
    /// <summary>
    ///   
@@ -17,18 +16,18 @@
 
       private bool _isPopulating;
 
-      /// <param name="descriptor">
+      /// <param name="behaviors">
       ///   The descriptor holds the collection behaviors and other metadata.
       /// </param>
       /// <param name="owner">
       ///   The view model instance that holds this collection instance. It is
       ///   the <see cref="IViewModel.Parent"/> of all items.
       /// </param>
-      public VMCollection(VMCollectionDescriptor descriptor, IViewModel owner) {
-         Contract.Requires<ArgumentNullException>(descriptor != null);
+      public VMCollection(BehaviorChain behaviors, IViewModel owner) {
+         Contract.Requires<ArgumentNullException>(behaviors != null);
          Contract.Requires<ArgumentNullException>(owner != null);
 
-         Descriptor = descriptor;
+         Behaviors = behaviors;
          Owner = owner;
       }
 
@@ -50,9 +49,9 @@
       }
 
       /// <summary>
-      ///   Gets the descriptor of this list which holds the collection behaviors.
+      ///   Gets the <see cref="BehaviorChain"/> of this collection.
       /// </summary>
-      protected VMCollectionDescriptor Descriptor {
+      public BehaviorChain Behaviors {
          get;
          private set;
       }
@@ -84,7 +83,7 @@
       protected override void InsertItem(int index, TItemVM item) {
          base.InsertItem(index, item);
 
-         Descriptor.Behaviors.TryCall<ICollectionModificationBehavior<TItemVM>>(b =>
+         Behaviors.TryCall<IModificationCollectionBehavior<TItemVM>>(b =>
             b.ItemInserted(Owner.GetContext(), this, item, index)
          );
       }
@@ -95,7 +94,7 @@
 
          base.RemoveItem(index);
 
-         Descriptor.Behaviors.TryCall<ICollectionModificationBehavior<TItemVM>>(b =>
+         Behaviors.TryCall<IModificationCollectionBehavior<TItemVM>>(b =>
             b.ItemRemoved(Owner.GetContext(), this, removedItem, index)
          );
       }
@@ -106,7 +105,7 @@
 
          base.SetItem(index, item);
 
-         Descriptor.Behaviors.TryCall<ICollectionModificationBehavior<TItemVM>>(b =>
+         Behaviors.TryCall<IModificationCollectionBehavior<TItemVM>>(b =>
             b.ItemSet(Owner.GetContext(), this, previousItem, item, index)
          );
       }
@@ -117,14 +116,14 @@
 
          base.ClearItems();
 
-         Descriptor.Behaviors.TryCall<ICollectionModificationBehavior<TItemVM>>(b =>
+         Behaviors.TryCall<IModificationCollectionBehavior<TItemVM>>(b =>
             b.ItemsCleared(Owner.GetContext(), this, previousItems)
          );
       }
 
       [ContractInvariantMethod]
       private void ObjectInvariant() {
-         Contract.Invariant(Descriptor != null);
+         Contract.Invariant(Behaviors != null);
          Contract.Invariant(Owner != null);
       }
    }

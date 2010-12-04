@@ -20,7 +20,7 @@
             })
             .Build();
 
-         RefreshableValueCahche<string> b;
+         RefreshableValueCacheBehavior<string> b;
          Assert.IsTrue(descriptor.Property.Behaviors.TryGetBehavior(out b));
       }
 
@@ -39,7 +39,7 @@
             })
             .Build();
 
-         RefreshableValueCahche<string> b;
+         RefreshableValueCacheBehavior<string> b;
          Assert.IsTrue(descriptor.Property.Behaviors.TryGetBehavior(out b));
       }
 

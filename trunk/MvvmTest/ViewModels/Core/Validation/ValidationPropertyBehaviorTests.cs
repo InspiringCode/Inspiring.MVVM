@@ -6,12 +6,12 @@
 
    [TestClass]
    public class ValidationPropertyBehaviorTests : TestBase {
-      private PropertyBehaviorContextTestHelper _ctx;
+      private ContextTestHelper _ctx;
       private PropertyValidationBehavior<string> _behavior;
 
       [TestInitialize]
       public void Setup() {
-         _ctx = new PropertyBehaviorContextTestHelper();
+         _ctx = new ContextTestHelper();
          _behavior = new PropertyValidationBehavior<string>();
          _behavior.Initialize(_ctx.InitializationContext);
       }
@@ -133,9 +133,9 @@
       }
 
       private class NotifyChangeWatcher {
-         private PropertyBehaviorContextTestHelper _ctx;
+         private ContextTestHelper _ctx;
 
-         public NotifyChangeWatcher(PropertyBehaviorContextTestHelper ctx) {
+         public NotifyChangeWatcher(ContextTestHelper ctx) {
             _ctx = ctx;
          }
 

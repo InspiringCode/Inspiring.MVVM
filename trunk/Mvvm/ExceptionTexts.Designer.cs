@@ -88,6 +88,15 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The operation cannot be performed because the behavior is not initialized..
+        /// </summary>
+        internal static string BehaviorNotInitialized {
+            get {
+                return ResourceManager.GetString("BehaviorNotInitialized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The behavior &apos;{0}&apos; ist not registered. Make sure you specified the exact type of an already registered behavior..
         /// </summary>
         internal static string BehaviorNotRegistered {
@@ -165,6 +174,15 @@ namespace Inspiring.Mvvm {
         internal static string CouldNotResolveView {
             get {
                 return ResourceManager.GetString("CouldNotResolveView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The descriptor of a &apos;IViewModel&apos; cannot be changed once it has been set..
+        /// </summary>
+        internal static string DescriptorCannotBeChanged {
+            get {
+                return ResourceManager.GetString("DescriptorCannotBeChanged", resourceCulture);
             }
         }
         
@@ -313,7 +331,7 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Operations that modify state cannot be invoked on sealed objects. .
+        ///   Looks up a localized string similar to The object cannot be modified because it is sealed. Make sure you make all modifications before the object is sealed..
         /// </summary>
         internal static string ObjectIsSealed {
             get {
@@ -462,6 +480,15 @@ namespace Inspiring.Mvvm {
         internal static string WindowDialogResultNotAssigned {
             get {
                 return ResourceManager.GetString("WindowDialogResultNotAssigned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot create a behavior for &apos;{0}&apos;. Expected a behavior factory of type &apos;{1}&apos; but got one of type &apos;{2}&apos;. Make sure that you passed the correct factory to your &apos;BehaviorChainTemplate&apos;..
+        /// </summary>
+        internal static string WrongBehaviorFactoryType {
+            get {
+                return ResourceManager.GetString("WrongBehaviorFactoryType", resourceCulture);
             }
         }
     }

@@ -1,7 +1,11 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
 
-   public sealed class PropertyChangedBehavior<TValue> : Behavior, IValueAccessorBehavior<TValue> {
+   public sealed class PropertyChangedBehavior<TValue> :
+      Behavior,
+      IBehaviorInitializationBehavior,
+      IValueAccessorBehavior<TValue> {
+
       private VMPropertyBase<TValue> _property;
 
       public TValue GetValue(IBehaviorContext vm, ValueStage stage) {
@@ -18,9 +22,9 @@
          }
       }
 
-      protected override void Initialize(BehaviorInitializationContext context) {
-         base.Initialize(context);
+      public void Initialize(BehaviorInitializationContext context) {
          _property = (VMPropertyBase<TValue>)context.Property;
+         this.CallNext(x => x.Initialize(context));
       }
    }
 }

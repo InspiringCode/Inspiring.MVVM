@@ -1,6 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
 
-   internal sealed class BehaviorChain : Behavior {
+   public sealed class BehaviorChain : Behavior {
 
    }
 }

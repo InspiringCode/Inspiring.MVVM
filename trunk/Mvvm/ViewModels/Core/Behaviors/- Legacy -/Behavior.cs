@@ -1,9 +1,20 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Diagnostics.Contracts;
+   using Inspiring.Mvvm.Common;
 
-   public class Behavior : IBehavior {
-      public IBehavior Successor { get; set; }
+   public class Behavior : SealableObject, IBehavior {
+      private IBehavior _successor;
+
+      public IBehavior Successor {
+         get { return _successor; }
+         set {
+            RequireNotSealed();
+            _successor = value;
+         }
+      }
+
+
 
       public void TryCall<TBehavior>(Action<TBehavior> callAction) {
          TBehavior b;
@@ -42,23 +53,6 @@
 
          result = default(TBehavior);
          return false;
-      }
-
-      void IBehavior.Initialize(BehaviorInitializationContext context) {
-         Initialize(context);
-
-         if (Successor != null) {
-            Successor.Initialize(context);
-         }
-      }
-
-      /// <summary>
-      ///   Override this method if your behavior requires dynamic fields that 
-      ///   whose values are stored with each <see cref="ViewModel"/> instance.
-      ///   The value of fields defined in this way can be accessed via the 
-      ///   <see cref="IBehaviorContext.FieldValues"/> property.
-      /// </summary>
-      protected virtual void Initialize(BehaviorInitializationContext context) {
       }
    }
 }

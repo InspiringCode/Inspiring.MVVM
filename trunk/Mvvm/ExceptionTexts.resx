@@ -226,7 +226,7 @@
     <value>The 'CommonBehaviors' behavior '{0}' cannot be enabled on the given object.</value>
   </data>
   <data name="ObjectIsSealed" xml:space="preserve">
-    <value>Operations that modify state cannot be invoked on sealed objects. </value>
+    <value>The object cannot be modified because it is sealed. Make sure you make all modifications before the object is sealed.</value>
   </data>
   <data name="ServiceAlreadyRegistered" xml:space="preserve">
     <value>A serivce of type '{0}' is already registered. A registration cannot be overriden.</value>
@@ -251,5 +251,14 @@
   </data>
   <data name="BehaviorNotSupportedByFactory" xml:space="preserve">
     <value>The default behavior factory does not support creating behaviors for '{0}'. Specify a custom 'IBehaviorFactory' when you configure your 'BehaviorChainTemplate'.</value>
+  </data>
+  <data name="BehaviorNotInitialized" xml:space="preserve">
+    <value>The operation cannot be performed because the behavior is not initialized.</value>
+  </data>
+  <data name="DescriptorCannotBeChanged" xml:space="preserve">
+    <value>The descriptor of a 'IViewModel' cannot be changed once it has been set.</value>
+  </data>
+  <data name="WrongBehaviorFactoryType" xml:space="preserve">
+    <value>Cannot create a behavior for '{0}'. Expected a behavior factory of type '{1}' but got one of type '{2}'. Make sure that you passed the correct factory to your 'BehaviorChainTemplate'.</value>
   </data>
 </root>

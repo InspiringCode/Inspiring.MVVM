@@ -3,7 +3,12 @@
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
 
-   public sealed class DisplayValueValidationBehavior : Behavior, IDisplayValueAccessorBehavior, IValidationBehavior {
+   public sealed class DisplayValueValidationBehavior :
+      Behavior,
+      IBehaviorInitializationBehavior,
+      IDisplayValueAccessorBehavior,
+      IValidationBehavior {
+
       private FieldDefinition<string> _validationErrorField;
       private List<Func<object, ValidationResult>> _validations = new List<Func<object, ValidationResult>>();
 
@@ -36,11 +41,12 @@
          _validations.Add(validation);
       }
 
-      protected override void Initialize(BehaviorInitializationContext context) {
-         base.Initialize(context);
+      public void Initialize(BehaviorInitializationContext context) {
          _validationErrorField = context.Fields.DefineField<string>(
             DynamicFieldGroups.DisplayValueValidationErrorGroup
          );
+
+         this.CallNext(x => x.Initialize(context));
       }
    }
 }

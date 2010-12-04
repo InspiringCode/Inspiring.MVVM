@@ -38,9 +38,14 @@
          get { return Kernel; }
       }
 
+      VMDescriptorBase IViewModel.Descriptor {
+         get { return DescriptorBase; }
+         set { DescriptorBase = (TDescriptor)value; }
+      }
+
       protected TDescriptor DescriptorBase {
          get;
-         set;
+         private set;
       }
 
       protected IServiceLocator ServiceLocator {

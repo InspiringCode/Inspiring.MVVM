@@ -2,6 +2,7 @@
    using System;
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
+   using Inspiring.Mvvm.Common;
 
    /// <summary>
    ///   Holds the transient configuration of the <see cref="IBehavior"/> objects
@@ -16,7 +17,7 @@
    ///   is created the <see cref="BehaviorChainConfiguration"/> is not needed
    ///   anymore and should be discarded.
    /// </remarks>
-   public sealed class BehaviorChainConfiguration {
+   public sealed class BehaviorChainConfiguration : SealableObject {
       private List<BehaviorChainItemConfiguration> _items = new List<BehaviorChainItemConfiguration>();
 
       [Pure]
@@ -39,21 +40,21 @@
       public void Enable(BehaviorKey key, IBehavior behaviorInstance = null) {
          Contract.Requires<ArgumentNullException>(key != null);
          Contract.Requires<ArgumentException>(Contains(key));
+         RequireNotSealed();
 
          var item = GetItem(key);
 
          if (behaviorInstance != null) {
             item.Instance = behaviorInstance;
          } else {
-            if (item.Instance != null) {
+            if (item.Instance == null) {
                throw new ArgumentException(
                   ExceptionTexts.CannotEnableBehavior.FormatWith(key)
                );
             }
          }
 
-         item.Instance = behaviorInstance;
-         item.IsDisabled = false;
+         item.IsEnabled = true;
       }
 
       /// <summary>
@@ -73,6 +74,7 @@
          Contract.Requires<ArgumentNullException>(key != null);
          Contract.Requires<ArgumentException>(Contains(key));
          Contract.Requires<ArgumentNullException>(configurationAction != null);
+         RequireNotSealed();
 
          BehaviorChainItemConfiguration item = GetItem(key);
          Enable(key);
@@ -86,21 +88,20 @@
       /// </summary>
       internal void Append(BehaviorKey key) {
          Contract.Requires(key != null);
+         RequireNotSealed();
 
          _items.Add(new BehaviorChainItemConfiguration(key));
       }
 
       /// <summary>
-      ///   Adds a behavior configuration to the end of the chain.
+      ///   Adds a disabled behavior configuration to the end of the chain.
       /// </summary>
-      internal void Append(BehaviorKey key, IBehavior instance, bool isDisabled = false) {
+      internal void Append(BehaviorKey key, IBehavior instance) {
          Contract.Requires(key != null);
          Contract.Requires(instance != null);
+         RequireNotSealed();
 
-         var item = new BehaviorChainItemConfiguration(key);
-         item.Instance = instance;
-         item.IsDisabled = isDisabled;
-
+         var item = new BehaviorChainItemConfiguration(key) { Instance = instance };
          _items.Add(item);
       }
 
@@ -115,7 +116,7 @@
          IBehavior currentBehavior = chain;
 
          foreach (BehaviorChainItemConfiguration itemConfiguration in _items) {
-            if (!itemConfiguration.IsDisabled && itemConfiguration.Instance != null) {
+            if (itemConfiguration.IsEnabled) {
                currentBehavior.Successor = itemConfiguration.Instance;
                currentBehavior = itemConfiguration.Instance;
             }
@@ -139,16 +140,16 @@
       private class BehaviorChainItemConfiguration {
          public BehaviorChainItemConfiguration(BehaviorKey key) {
             Key = key;
-            IsDisabled = true;
+            IsEnabled = false;
          }
 
          public BehaviorKey Key { get; private set; }
-         public bool IsDisabled { get; set; }
+         public bool IsEnabled { get; set; }
          public IBehavior Instance { get; set; }
 
          [ContractInvariantMethod]
          void ObjectInvariant() {
-            Contract.Invariant(!IsDisabled ? Instance != null : true);
+            Contract.Invariant(IsEnabled ? Instance != null : true);
          }
 
          public override string ToString() {

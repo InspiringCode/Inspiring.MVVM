@@ -233,12 +233,13 @@
                )
             );
 
-            _config.Configuration.OverrideFactory(
-               VMBehaviorKey.CollectionFactory,
-               new ConstantBehaviorFactory(
-                  new CollectionFactoryBehavior<TItemVM>(itemDescriptor)
-               )
-            );
+            throw new NotImplementedException();
+            //_config.Configuration.OverrideFactory(
+            //   VMBehaviorKey.CollectionFactory,
+            //   new ConstantBehaviorFactory(
+            //      new CollectionFactoryBehavior<TItemVM>(itemDescriptor)
+            //   )
+            //);
 
             _config.Configuration.OverrideFactory(
                VMBehaviorKey.ViewModelFactory,
@@ -262,12 +263,13 @@
                )
             );
 
-            _config.Configuration.OverrideFactory(
-               VMBehaviorKey.CollectionFactory,
-               new ConstantBehaviorFactory(
-                  new CollectionFactoryBehavior<TItemVM>(itemDescriptor)
-               )
-            );
+            throw new NotImplementedException();
+            //_config.Configuration.OverrideFactory(
+            //   VMBehaviorKey.CollectionFactory,
+            //   new ConstantBehaviorFactory(
+            //      new CollectionFactoryBehavior<TItemVM>(itemDescriptor)
+            //   )
+            //);
 
             _config.Configuration.OverrideFactory(
                VMBehaviorKey.ViewModelFactory,

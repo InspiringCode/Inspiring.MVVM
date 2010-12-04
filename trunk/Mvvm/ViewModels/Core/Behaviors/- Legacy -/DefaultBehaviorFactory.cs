@@ -23,19 +23,19 @@
             case VMBehaviorKey.Validator:
                return new ValidationBehavior<TValue>();
             case VMBehaviorKey.PropertyValueCache:
-               return new RefreshableValueCahche<TValue>();
+               return new RefreshableValueCacheBehavior<TValue>();
             case VMBehaviorKey.PropertyChangedTrigger:
                return new PropertyChangedBehavior<TValue>();
             case VMBehaviorKey.CollectionValueCache:
-               return new RefreshableValueCahche<TValue>();
+               return new RefreshableValueCacheBehavior<TValue>();
             case VMBehaviorKey.CollectionValidator:
                throw new NotImplementedException("Validation is not implemented yet.");
             case VMBehaviorKey.CollectionInstanceCache:
-               return new CacheValueBehavior<TValue>();
+               return new ValueCacheBehavior<TValue>();
             case VMBehaviorKey.CommandValueCache:
-               return new CacheValueBehavior<TValue>();
+               return new ValueCacheBehavior<TValue>();
             case VMBehaviorKey.ViewModelValueCache:
-               return new RefreshableValueCahche<TValue>();
+               return new RefreshableValueCacheBehavior<TValue>();
             case VMBehaviorKey.ManualUpdateBehavior:
                return new DefaultManualUpdateBehavior<TValue>();
             case VMBehaviorKey.PropertyDescriptorBehavior:

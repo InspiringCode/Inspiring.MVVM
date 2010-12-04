@@ -17,6 +17,7 @@
    /// </remarks>
    public sealed class AllowInvalidDisplayValuesBehavior :
       Behavior,
+      IBehaviorInitializationBehavior,
       IDisplayValueAccessorBehavior,
       IHandlePropertyChangedBehavior {
 
@@ -47,11 +48,12 @@
          }
       }
 
-      protected override void Initialize(BehaviorInitializationContext context) {
-         base.Initialize(context);
+      public void Initialize(BehaviorInitializationContext context) {
          _invalidValueField = context.Fields.DefineField<object>(
             DynamicFieldGroups.InvalidValueGroup
          );
+
+         this.CallNext(x => x.Initialize(context));
       }
    }
 }

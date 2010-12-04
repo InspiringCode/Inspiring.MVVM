@@ -102,7 +102,8 @@
 
       internal override void ConfigureBehaviors(BehaviorConfiguration configuration, VMDescriptorBase descriptor) {
          Behaviors = configuration.CreateBehaviorChain<T>();
-         ((IBehavior)Behaviors).Initialize(new BehaviorInitializationContext(descriptor, this));
+         throw new NotImplementedException();
+         //((IBehavior)Behaviors).Initialize(new BehaviorInitializationContext(descriptor, this));
       }
 
       internal T GetValue(IBehaviorContext context, ValueStage stage) {

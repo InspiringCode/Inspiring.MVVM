@@ -14,7 +14,7 @@ namespace Inspiring.MvvmTest.ViewModels.__No_Namespace__ {
       [TestClass]
       public class VMCollection_ModificationBehavior_Tests : TestBase {
          private VMCollection<IViewModel> _collection;
-         private Mock<ICollectionModificationBehavior<IViewModel>> _behaviorMock;
+         private Mock<IModificationCollectionBehavior<IViewModel>> _behaviorMock;
          private IBehaviorContext _context;
          private IViewModel _owner;
 
@@ -26,12 +26,12 @@ namespace Inspiring.MvvmTest.ViewModels.__No_Namespace__ {
             ownerMock.Setup(x => x.GetContext()).Returns(_context);
             _owner = ownerMock.Object;
 
-            _behaviorMock = new Mock<ICollectionModificationBehavior<IViewModel>>();
+            _behaviorMock = new Mock<IModificationCollectionBehavior<IViewModel>>();
 
-            var descriptor = new VMCollectionDescriptor(new VMDescriptorStub());
-            descriptor.Behaviors.Successor = _behaviorMock.Object;
+            var behaviors = new BehaviorChain();
+            behaviors.Successor = _behaviorMock.Object;
 
-            _collection = new VMCollection<IViewModel>(descriptor, _owner);
+            _collection = new VMCollection<IViewModel>(behaviors, _owner);
          }
 
          [TestMethod]
@@ -114,7 +114,7 @@ namespace Inspiring.MvvmTest.ViewModels.__No_Namespace__ {
          var item0 = Mock<IViewModel>();
          var item1 = Mock<IViewModel>();
 
-         var collection = new VMCollection<IViewModel>(new VMCollectionDescriptor(new VMDescriptorStub()), Mock<IViewModel>());
+         var collection = new VMCollection<IViewModel>(new BehaviorChain(), Mock<IViewModel>());
          collection.Add(item0);
          collection.Add(item1);
 
@@ -128,7 +128,7 @@ namespace Inspiring.MvvmTest.ViewModels.__No_Namespace__ {
          var item0 = Mock<IViewModel>();
          var item1 = Mock<IViewModel>();
 
-         var collection = new VMCollection<IViewModel>(new VMCollectionDescriptor(new VMDescriptorStub()), Mock<IViewModel>());
+         var collection = new VMCollection<IViewModel>(new BehaviorChain(), Mock<IViewModel>());
          collection.Add(item0);
          collection.Add(item1);
 

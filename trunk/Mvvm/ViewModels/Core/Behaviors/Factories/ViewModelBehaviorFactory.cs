@@ -1,0 +1,37 @@
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
+   using System;
+
+   public class ViewModelBehaviorFactory : IBehaviorFactory {
+      public static readonly ViewModelBehaviorFactory Instance = new ViewModelBehaviorFactory();
+
+      public static BehaviorFactoryInvoker CreateInvoker<TVM>()
+         where TVM : IViewModel {
+
+         return new ViewModelBehaviorFactoryInvoker<TVM>();
+      }
+
+      public IBehavior Create<TVM>(BehaviorKey key) where TVM : IViewModel {
+         if (key == BehaviorKeys.TypeDescriptor) {
+            return new TypeDescriptorBehavior();
+         }
+
+         throw new NotSupportedException(
+            ExceptionTexts.BehaviorNotSupportedByFactory.FormatWith(key)
+         );
+      }
+
+      private class ViewModelBehaviorFactoryInvoker<TVM> :
+         BehaviorFactoryInvoker
+         where TVM : IViewModel {
+
+         public override IBehavior Invoke(IBehaviorFactory factory, BehaviorKey behaviorToCreate) {
+            var typedFactory = CastFactory<ViewModelBehaviorFactory>(factory, behaviorToCreate);
+            return typedFactory.Create<TVM>(behaviorToCreate);
+         }
+      }
+
+      IBehavior IBehaviorFactory.Create<T>() {
+         throw new NotImplementedException();
+      }
+   }
+}
