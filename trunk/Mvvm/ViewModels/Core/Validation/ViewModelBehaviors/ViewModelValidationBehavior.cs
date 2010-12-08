@@ -14,6 +14,14 @@
       /// <summary>
       ///   Adds a new <see cref="Validator"/> to the view model behavior.
       /// </summary>
+      /// <param name="validator">
+      ///   The <see cref="Validator"/> that is executed when the <paramref 
+      ///   name="targetProperty"/> defined on the VM specified by <paramref 
+      ///   name="targetPath"/> changes.
+      /// </param>
+      /// <param name="validatorType">
+      ///   Specifies what validation process should trigger the validator.
+      /// </param>
       /// <param name="targetPath">
       ///   The path to the descendant VM that should be validated. Pass <see 
       ///   cref="VMPropertyPath.Empty"/> if the current VM (or a property of it)
@@ -23,17 +31,22 @@
       ///   The property that should be validated. Pass null if you want to add
       ///   a view model validation.
       /// </param>
-      /// <param name="validator">
-      ///   The <see cref="Validator"/> that is executed when the <paramref 
-      ///   name="targetProperty"/> defined on the VM specified by <paramref 
-      ///   name="targetPath"/> changes.
-      /// </param>
-      public void AddValidator(VMPropertyPath targetPath, IVMProperty targetProperty, Validator validator) {
+      public void AddValidator(
+         Validator validator,
+         ValidationType validatorType,
+         VMPropertyPath targetPath,
+         IVMProperty targetProperty
+      ) {
          Contract.Requires<ArgumentNullException>(targetPath != null);
          Contract.Requires<ArgumentNullException>(validator != null);
+         Contract.Requires<ArgumentException>(
+            validatorType == ValidationType.ViewModel ?
+               targetProperty == null :
+               targetProperty != null
+         );
 
          _validators.Add(
-            new ValidatorDefinition(targetPath, targetProperty, validator)
+            new ValidatorDefinition(validator, validatorType, targetPath, targetProperty)
          );
       }
 
@@ -70,7 +83,7 @@
       ) {
          ValidationState newState = new ValidationState();
 
-         var validationArgs = new ValidationArgs(
+         var validationArgs = ValidationArgs.CreateViewModelValidationArgs(
             validationState: newState,
             changedPath: changedPath,
             changedProperty: changedProperty
@@ -117,20 +130,29 @@
       }
 
       private class ValidatorDefinition {
-         public ValidatorDefinition(VMPropertyPath targetPath, IVMProperty targetProperty, Validator validator) {
-            TargetPath = targetPath;
+         public ValidatorDefinition(
+            Validator validator,
+            ValidationType validatorType,
+            VMPropertyPath targetPath,
+            IVMProperty targetProperty
+         ) {
             Validator = validator;
+            ValidatorType = validatorType;
+            TargetPath = targetPath;
             TargetProperty = targetProperty;
          }
-         public VMPropertyPath TargetPath { get; private set; }
+
          public Validator Validator { get; private set; }
+         public ValidationType ValidatorType { get; private set; }
+         public VMPropertyPath TargetPath { get; private set; }
          public IVMProperty TargetProperty { get; private set; }
 
          public void Validate(ValidationArgs args) {
-            bool isSameValidatorType = args.TargetProperty == TargetProperty;
+            bool sameValidatorType = args.ValidationType == ValidatorType;
             bool validatorPathMatches = args.TargetPath.Matches(TargetPath);
+            bool sameTargetProperty = args.TargetProperty == TargetProperty;
 
-            if (isSameValidatorType && validatorPathMatches) {
+            if (sameValidatorType && validatorPathMatches && sameTargetProperty) {
                Validator.Validate(args);
             }
          }

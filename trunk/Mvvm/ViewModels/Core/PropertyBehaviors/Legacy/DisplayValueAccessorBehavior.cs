@@ -63,7 +63,7 @@
          );
          _propertyName = context.Property.PropertyName;
 
-         this.CallNext(x => x.Initialize(context));
+         this.InitializeNext(context);
       }
    }
 }

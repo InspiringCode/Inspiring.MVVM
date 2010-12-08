@@ -101,6 +101,11 @@
          property.SetValue(Kernel, value);
       }
 
+      protected internal T GetValidatedValue<T>(VMPropertyBase<T> property) {
+         Contract.Requires<ArgumentNullException>(property != null);
+         return property.GetValue(Kernel, ValueStage.PostValidation);
+      }
+
       protected internal object GetDisplayValue(VMPropertyBase property) {
          Contract.Requires<ArgumentNullException>(property != null);
          return property.GetDisplayValue(Kernel);

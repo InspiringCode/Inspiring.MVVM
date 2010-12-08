@@ -10,9 +10,9 @@
             var p = c.GetPropertyFactory(x => x.Source);
 
             return new TestVMDescriptor {
-               CalculatedMutableProperty = p.Calculated(x => x.GetCalculated(), (x, val) => x.SetCalculated(val)),
-               MappedMutableProperty = p.Mapped(x => x.MappedMutableValue),
-               LocalProperty = v.Local<decimal>(),
+               CalculatedMutableProperty = p.Calculated(x => x.GetCalculated(), (x, val) => x.SetCalculated(val)).Property(),
+               MappedMutableProperty = p.Mapped(x => x.MappedMutableValue).Property(),
+               LocalProperty = v.Local().Property<decimal>(),
                MappedVMProperty = p.MappedVM(x => x.ChildValue).Of<ChildVM>(),
                MappedCollectionProperty = p.MappedCollection(x => x.ChildCollection).Of<ChildVM>(ChildVM.Descriptor),
                MappedParentedCollectionProperty = p.MappedCollection(x => x.ChildCollection).OfParentAware<ParentedChildVM>(ParentedChildVM.Descriptor)
@@ -103,7 +103,7 @@
             var p = c.GetPropertyFactory(x => x.Source);
 
             return new ChildVMDescriptor {
-               MappedMutableProperty = p.Mapped(x => x.MappedMutableValue)
+               MappedMutableProperty = p.Mapped(x => x.MappedMutableValue).Property()
             };
          })
          .WithValidations((d, c) => {
@@ -167,7 +167,7 @@
             var p = c.GetPropertyFactory(x => x.Source);
 
             return new ParentedChildVMDescriptor {
-               MappedMutableProperty = p.Mapped(x => x.Source.MappedMutableValue)
+               MappedMutableProperty = p.Mapped(x => x.Source.MappedMutableValue).Property()
             };
          })
          .Build();

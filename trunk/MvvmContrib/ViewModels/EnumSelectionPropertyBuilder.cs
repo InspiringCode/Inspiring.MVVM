@@ -3,6 +3,7 @@
    using System.Linq;
    using System.Linq.Expressions;
    using Inspiring.Mvvm.ViewModels.Core;
+   using Inspiring.Mvvm.ViewModels.Fluent;
 
    public interface IEnumSelectionPropertyBuilder<TParentVM> where TParentVM : IViewModel {
       SingleSelectionProperty<TEnum> Mapped<TEnum>(
@@ -18,10 +19,10 @@
       IEnumSelectionPropertyBuilder<TParentVM>
       where TParentVM : IViewModel {
 
-      private IRootVMPropertyFactory<TParentVM> _propertyFactory;
+      private IVMPropertyFactory<TParentVM, TParentVM> _propertyFactory;
 
       public EnumSelectionPropertyBuilder(
-         IRootVMPropertyFactory<TParentVM> propertyFactory
+         IVMPropertyFactory<TParentVM, TParentVM> propertyFactory
       ) {
          _propertyFactory = propertyFactory;
       }

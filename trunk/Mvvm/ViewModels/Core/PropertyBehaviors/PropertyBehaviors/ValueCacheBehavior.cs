@@ -42,7 +42,7 @@
 
          SetInitialized();
 
-         this.CallNext(x => x.Initialize(context));
+         this.InitializeNext(context);
       }
    }
 }

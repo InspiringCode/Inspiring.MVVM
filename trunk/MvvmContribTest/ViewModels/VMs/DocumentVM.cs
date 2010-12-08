@@ -9,7 +9,7 @@
             var d = c.GetPropertyFactory(x => x.Document);
 
             return new DocumentVMDescriptor {
-               Name = d.Mapped(x => x.Name),
+               Name = d.Mapped(x => x.Name).Property(),
                Keywords = d.MappedVM(x => x).Of<KeywordSelectionVM>()
             };
          })

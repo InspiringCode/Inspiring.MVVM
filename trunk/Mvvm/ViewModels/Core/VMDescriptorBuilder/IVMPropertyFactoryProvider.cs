@@ -2,12 +2,13 @@
    using System;
    using System.Linq.Expressions;
    using Inspiring.Mvvm.Common;
+   using Inspiring.Mvvm.ViewModels.Fluent;
 
    /// <summary>
-   ///   A provider that creates <see cref="IVMPropertyFactory"/> objects. Different
+   ///   A provider that returns <see cref="IVMPropertyFactory"/> objects. Different
    ///   property factories can be created for different source objects.
    /// </summary>
-   public interface IVMPropertyFactoryProvider<TVM> : IHideObjectMembers {
+   public interface IVMPropertyFactoryProvider<TVM> : IHideObjectMembers where TVM : IViewModel {
       /// <summary>
       ///   <para>Returns a <see cref="IVMPropertyFactory"/> which creates <see
       ///      cref="VMProperty"/> objects.</para>
@@ -16,7 +17,7 @@
       ///      properties the VM instance is passed to their getter/setter 
       ///      delegates.</para>
       /// </summary>
-      IRootVMPropertyFactory<TVM> GetPropertyFactory();
+      IVMPropertyFactory<TVM, TVM> GetPropertyFactory();
 
       /// <summary>
       ///   Returns a <see cref="IVMPropertyFactory"/> which creates <see
@@ -35,6 +36,8 @@
       ///   and instead of 'Calculated(x => x.Person.CalculateReward(...))' 
       ///   you can use 'Calculated(x => x.CalculateReward(...))'.
       /// </remarks>
-      _IVMPropertyFactory<TVM, TSource> GetPropertyFactory<TSource>(Expression<Func<TVM, TSource>> sourceObjectSelector);
+      IVMPropertyFactory<TVM, TSource> GetPropertyFactory<TSource>(
+         Expression<Func<TVM, TSource>> sourceObjectSelector
+      );
    }
 }

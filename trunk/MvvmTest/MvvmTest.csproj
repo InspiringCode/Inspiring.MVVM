@@ -59,6 +59,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiTests\ViewModels\DisplayValueTests.cs" />
     <Compile Include="ApiTests\ViewModels\Domain\RichText.cs" />
     <Compile Include="ApiTests\ViewModels\Domain\Task.cs" />
     <Compile Include="ApiTests\ViewModels\SimpleValidationTests.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="TestUtils\ComparisonObject.cs" />
     <Compile Include="TestUtils\ComparisonObjectTests.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMCollectionTests.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\PropertyBehaviors\DisplayValueBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Behaviors\PropertyBehaviors\RefreshableValueCacheBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Behaviors\PropertyBehaviors\ValueCacheBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\BehaviorTestBase.cs" />

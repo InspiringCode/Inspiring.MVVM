@@ -31,7 +31,7 @@ namespace Inspiring.MvvmTest.ViewModels.Core.TypeDescriptor {
             .Setup(x => x.GetDisplayValue(It.IsAny<IBehaviorContext>()))
             .Returns(expectedReturnValue);
 
-         _property.Behaviors = new Behavior { Successor = mock.Object };
+         _property.Behaviors = new BehaviorChain { Successor = mock.Object };
 
          // Act
          object result = _descriptor.GetValue(_vm);
@@ -48,7 +48,7 @@ namespace Inspiring.MvvmTest.ViewModels.Core.TypeDescriptor {
          var mock = new Mock<IDisplayValueAccessorBehavior>(MockBehavior.Strict);
          mock.Setup(x => x.SetDisplayValue(It.IsAny<IBehaviorContext>(), expectedValue));
 
-         _property.Behaviors = new Behavior { Successor = mock.Object };
+         _property.Behaviors = new BehaviorChain { Successor = mock.Object };
 
          // Act
          _descriptor.SetValue(_vm, expectedValue);

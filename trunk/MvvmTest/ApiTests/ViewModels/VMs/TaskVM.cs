@@ -1,7 +1,4 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels {
-   using System;
-   using System.Collections.Generic;
-   using System.Linq;
    using Inspiring.Mvvm;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
@@ -11,15 +8,15 @@
          .For<TaskVM>()
          .CreateDescriptor(c => {
             var vm = c.GetPropertyFactory();
-            var t = c.GetPropertyFactory(x => x.Task);
+            var t = c.GetPropertyFactory(x => x.SourceTask);
 
             return new TaskVMDescriptor {
-               Title = t.Mapped(x => x.Title),
+               Title = t.Mapped(x => x.Title).Property(),
                Description = t.Calculated(
-                  task => task.Description.Html,
+                  task => task.Description != null ? task.Description.Html : null,
                   (task, val) => task.Description = new RichText(val)
-               ),
-               ScreenTitle = vm.Local<string>()
+               ).Property(),
+               ScreenTitle = vm.Local().Property<string>()
             };
          })
          .Build();
@@ -32,7 +29,7 @@
          : base(descriptor) {
       }
 
-      public Task Task { get; private set; }
+      public Task SourceTask { get; private set; }
 
       public string ScreenTitle {
          get { return GetValue(Descriptor.ScreenTitle); }
@@ -43,14 +40,14 @@
          get { return GetValue(Descriptor.Title); }
          set { SetValue(Descriptor.Title, value); }
       }
-      
+
       public string Description {
          get { return GetValue(Descriptor.Description); }
          set { SetValue(Descriptor.Description, value); }
       }
 
       public void InitializeFrom(Task source) {
-         Task = source;
+         SourceTask = source;
          ScreenTitle = "Edit task: " + source.Title;
       }
    }

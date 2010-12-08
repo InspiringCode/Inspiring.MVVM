@@ -25,7 +25,7 @@
             DynamicFieldGroups.BackingFieldGroup
          );
 
-         this.CallNext(x => x.Initialize(context));
+         this.InitializeNext(context);
       }
    }
 }

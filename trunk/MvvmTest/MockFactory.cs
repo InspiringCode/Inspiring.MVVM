@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.MvvmTest {
+   using System;
    using Inspiring.Mvvm;
    using Inspiring.Mvvm.Screens;
    using Inspiring.Mvvm.ViewModels;
@@ -62,7 +63,8 @@
       public static VMProperty<T> MockProperty<T>(BehaviorConfiguration config, VMDescriptor descriptor) {
          VMProperty<T> property = new VMProperty<T>();
          property.Initialize("Test");
-         property.ConfigureBehaviors(config, descriptor);
+         throw new NotImplementedException();
+         //property.ConfigureBehaviors(config, descriptor);
          return property;
       }
    }

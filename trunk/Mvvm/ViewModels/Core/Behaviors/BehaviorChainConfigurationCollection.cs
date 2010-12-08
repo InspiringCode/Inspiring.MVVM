@@ -71,5 +71,23 @@
             config.Enable(key);
          }
       }
+
+      /// <summary>
+      ///   Creates concrete <see cref="BehaviorChain"/> objects for each registered
+      ///   <see cref="BehaviorChainConfiguration"/> and assigns it to the <see 
+      ///   cref="VMPropertyBase.Behaviors"/> property of the <see cref="VMPropertyBase"/>
+      ///   object for which the <see cref="BehaviorChainConfiguration"/> was
+      ///   registered.
+      /// </summary>
+      internal void ApplyToProperties(VMDescriptorBase parentDescriptor) {
+         foreach (var pair in _propertyConfigurations) {
+            VMPropertyBase property = pair.Key;
+            BehaviorChainConfiguration config = pair.Value;
+
+            var chain = config.CreateChain();
+            chain.Initialize(parentDescriptor, property);
+            property.Behaviors = chain;
+         }
+      }
    }
 }

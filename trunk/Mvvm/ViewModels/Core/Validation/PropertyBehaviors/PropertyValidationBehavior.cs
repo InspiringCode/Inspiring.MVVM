@@ -44,11 +44,10 @@ namespace Inspiring.Mvvm.ViewModels.Core {
 
          var newState = new ValidationState();
 
-         var validationArgs = new ValidationArgs(
+         var validationArgs = ValidationArgs.CreatePropertyValidationArgs(
             validationState: newState,
-            changedPath: new InstancePath(context.VM),
-            changedProperty: _property,
-            targetProperty: _property
+            viewModel: context.VM,
+            property: _property
          );
 
          context.NotifyValidating(validationArgs);

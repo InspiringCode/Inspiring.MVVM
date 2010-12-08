@@ -4,30 +4,32 @@
    using Inspiring.Mvvm.Common;
 
    internal sealed class ValidationBuilder<TVM> : IValidationBuilder<TVM> where TVM : IViewModel {
-      private BehaviorConfigurationDictionary _configs;
+      private VMDescriptorConfiguration _configuration;
       private VMDescriptor _descriptor;
 
-      public ValidationBuilder(BehaviorConfigurationDictionary configs, VMDescriptor descriptor) {
-         Contract.Requires(configs != null);
+      public ValidationBuilder(VMDescriptorConfiguration configuration, VMDescriptor descriptor) {
+         Contract.Requires(configuration != null);
          Contract.Requires(descriptor != null);
 
-         _configs = configs;
+         _configuration = configuration;
          _descriptor = descriptor;
       }
 
       public IValidationBuilder<TVM, TValue> Check<TValue>(VMProperty<TValue> property) {
-         BehaviorConfiguration config = _configs.GetConfiguration(property);
+         throw new NotImplementedException();
+         //BehaviorConfiguration config = _configuration.GetConfiguration(property);
 
-         // Enable here, to allow enabling validation without defining a validation
-         // (needed for collection validations).
-         config.Enable(VMBehaviorKey.Validator);
-         config.Enable(VMBehaviorKey.InvalidDisplayValueCache);
+         //// Enable here, to allow enabling validation without defining a validation
+         //// (needed for collection validations).
+         //config.Enable(VMBehaviorKey.Validator);
+         //config.Enable(VMBehaviorKey.InvalidDisplayValueCache);
 
-         return new ValidationBuilder<TVM, TValue>(config, property);
+         //return new ValidationBuilder<TVM, TValue>(config, property);
       }
 
       public ICollectionValidationBuilder<TItemVM> CheckCollection<TItemVM>(IVMProperty<VMCollection<TItemVM>> property) where TItemVM : IViewModel {
-         return new CollectionValidationBuilder<TItemVM>(_configs, property);
+         throw new NotImplementedException();
+         //return new CollectionValidationBuilder<TItemVM>(_configuration, property);
       }
 
       public void ViewModelValidator(Action<TVM, _ViewModelValidationArgs> validator) {
@@ -56,16 +58,16 @@
 
       public void Custom(Action<TVM, TValue, ValidationArgs> validatorCallback) {
          var validator = new DelegateValidator<TVM, TValue>(validatorCallback);
-         
+
          ViewModelValidationBehavior behavior = null;
 
-         behavior.AddValidator(VMPropertyPath.Empty, _property, validator);
+         behavior.AddValidator(validator, ValidationType.PropertyValue, VMPropertyPath.Empty, _property);
 
          //_config.Configure<PropertyValidationBehavior<TValue>>(VMBehaviorKey.Validator, behavior => {
-            
+
          //});
 
-         
+
 
          throw new NotImplementedException("TODO2");
          //_config.Configure(VMBehaviorKey.Validator, (ValidationBehavior<TValue> behavior) => {

@@ -15,6 +15,7 @@
       }
 
       public bool HasValue<T>(FieldDefinition<T> field) {
+         Contract.Requires<ArgumentNullException>(field != null);
          CheckField(field);
 
          T value;
@@ -22,6 +23,7 @@
       }
 
       public T GetValue<T>(FieldDefinition<T> field) {
+         Contract.Requires<ArgumentNullException>(field != null);
          CheckField(field);
 
          T value;
@@ -33,6 +35,7 @@
       }
 
       public T GetValueOrDefault<T>(FieldDefinition<T> field) {
+         Contract.Requires<ArgumentNullException>(field != null);
          CheckField(field);
 
          T value;
@@ -44,6 +47,7 @@
       }
 
       public bool TryGetValue<T>(FieldDefinition<T> field, out T value) {
+         Contract.Requires<ArgumentNullException>(field != null);
          value = default(T);
 
          if (_fieldValues == null) {
@@ -65,6 +69,7 @@
       }
 
       public void SetValue<T>(FieldDefinition<T> field, T value) {
+         Contract.Requires<ArgumentNullException>(field != null);
          CheckField(field);
 
          EnsureFieldValues(field.GroupIndex);
@@ -72,6 +77,7 @@
       }
 
       public void ClearField<T>(FieldDefinition<T> field) {
+         Contract.Requires<ArgumentNullException>(field != null);
          CheckField(field);
 
          if (HasValue(field)) {

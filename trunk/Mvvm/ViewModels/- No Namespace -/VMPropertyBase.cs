@@ -59,7 +59,7 @@
          get { throw new NotImplementedException(); }
       }
 
-      Behavior IVMProperty.Behaviors {
+      BehaviorChain IVMProperty.Behaviors {
          get { throw new NotImplementedException(); }
       }
    }

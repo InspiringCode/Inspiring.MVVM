@@ -20,5 +20,20 @@
       public BehaviorChainConfigurationCollection PropertyConfigurations { get; private set; }
 
       public BehaviorChainConfiguration ViewModelConfiguration { get; private set; }
+
+      /// <summary>
+      ///   Creates concrete <see cref="BehaviorChain"/>s from the <see 
+      ///   cref="BehaviorChainConfiguration"/>s and assigns them to the <paramref 
+      ///   name="descriptor"/> and its VM properties.
+      /// </summary>
+      internal void ApplyTo(VMDescriptorBase descriptor) {
+         Contract.Ensures(descriptor.Behaviors != null);
+
+         var chain = ViewModelConfiguration.CreateChain();
+         chain.Initialize(descriptor);
+         descriptor.Behaviors = chain;
+
+         PropertyConfigurations.ApplyToProperties(descriptor);
+      }
    }
 }

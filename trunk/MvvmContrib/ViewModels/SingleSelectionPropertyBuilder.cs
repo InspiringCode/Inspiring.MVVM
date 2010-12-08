@@ -3,14 +3,15 @@
    using System.Collections.Generic;
    using System.Linq.Expressions;
    using Inspiring.Mvvm.ViewModels.Core;
+   using Inspiring.Mvvm.ViewModels.Fluent;
 
    internal sealed class SingleSelectionPropertyBuilder<TParentVM> :
       ISingleSelectionPropertyBuilder<TParentVM>
       where TParentVM : IViewModel {
 
-      private IRootVMPropertyFactory<TParentVM> _propertyFactory;
+      private IVMPropertyFactory<TParentVM, TParentVM> _propertyFactory;
 
-      public SingleSelectionPropertyBuilder(IRootVMPropertyFactory<TParentVM> propertyFactory) {
+      public SingleSelectionPropertyBuilder(IVMPropertyFactory<TParentVM, TParentVM> propertyFactory) {
          _propertyFactory = propertyFactory;
       }
 
@@ -30,26 +31,26 @@
       ISingleSelectionPropertyBuilder<TParentVM, TSourceItem>
       where TParentVM : IViewModel {
 
-      private IRootVMPropertyFactory<TParentVM> _propertyFactory;
+      private IVMPropertyFactory<TParentVM, TParentVM> _propertyFactory;
       private Func<TSourceItem, bool> _selectableItemFilter;
 
       private VMProperty<IEnumerable<TSourceItem>> _unfilteredSourceItemsProperty;
       private VMProperty<TSourceItem> _selectedSourceItemProperty;
 
       public SingleSelectionPropertyBuilder(
-         IRootVMPropertyFactory<TParentVM> propertyFactory,
+         IVMPropertyFactory<TParentVM, TParentVM> propertyFactory,
          Func<TParentVM, IEnumerable<TSourceItem>> sourceItemsGetter,
          Func<TSourceItem, bool> currentlySelectablePredicate
       ) {
          _propertyFactory = propertyFactory;
          _selectableItemFilter = currentlySelectablePredicate;
-         _unfilteredSourceItemsProperty = _propertyFactory.Calculated(sourceItemsGetter);
+         _unfilteredSourceItemsProperty = _propertyFactory.Calculated(sourceItemsGetter).Property();
       }
 
       public ISingleSelectionPropertyBuilder<TParentVM, TSourceItem> WithSelection(
          Expression<Func<TParentVM, TSourceItem>> selectedItemSelector
       ) {
-         _selectedSourceItemProperty = _propertyFactory.Mapped(selectedItemSelector);
+         _selectedSourceItemProperty = _propertyFactory.Mapped(selectedItemSelector).Property();
          return this;
       }
 
@@ -60,12 +61,12 @@
          _selectedSourceItemProperty = _propertyFactory.Calculated(
             selectionGetter,
             selectionSetter
-         );
+         ).Property();
          return this;
       }
 
       public SingleSelectionProperty<TSourceItem> Of(
-         Func<_IVMPropertyFactory<SelectionItemVM<TSourceItem>, TSourceItem>, VMDescriptor> descriptorFactory,
+         Func<IVMPropertyFactory<SelectionItemVM<TSourceItem>, TSourceItem>, VMDescriptor> descriptorFactory,
          Action<
             SingleSelectionVMDescriptor<TSourceItem, SelectionItemVM<TSourceItem>>,
             IValidationBuilder<SingleSelectionVM<TSourceItem, SelectionItemVM<TSourceItem>>>
@@ -91,26 +92,32 @@
          BehaviorConfiguration config = new BehaviorConfiguration();
          config.Enable(VMBehaviorKey.PropertyValueCache);
 
-         IRootVMPropertyFactory<TParentVM> configuredFactory = ViewModelExtensibility
-            .ConfigurePropertyFactory(_propertyFactory, config);
+         throw new NotImplementedException();
+         //IRootVMPropertyFactory<TParentVM> configuredFactory = ViewModelExtensibility
+         //   .ConfigurePropertyFactory(_propertyFactory, config);
 
-         return configuredFactory.Calculated<
-            SingleSelectionProperty<TSourceItem>,
-            SingleSelectionVM<TSourceItem, SelectionItemVM<TSourceItem>>>
-         (
-            parentVM =>
-               new SingleSelectionVM<TSourceItem, SelectionItemVM<TSourceItem>>(
-                  descriptor,
-                  parentVM,
-                  _selectableItemFilter
-               )
-         );
+         //return configuredFactory.Calculated<
+         //   SingleSelectionProperty<TSourceItem>,
+         //   SingleSelectionVM<TSourceItem, SelectionItemVM<TSourceItem>>>
+         //(
+         //   parentVM =>
+         //      new SingleSelectionVM<TSourceItem, SelectionItemVM<TSourceItem>>(
+         //         descriptor,
+         //         parentVM,
+         //         _selectableItemFilter
+         //      )
+         //);
       }
 
       public SingleSelectionProperty<TSourceItem, TItemVM> Of<TItemVM>(
          Func<_IVMPropertyFactory<SelectionItemVM<TSourceItem>, TSourceItem>, VMDescriptor> descriptorFactory
       ) where TItemVM : SelectionItemVM<TSourceItem> {
          throw new NotImplementedException("Not implemented yet: please tell me if you need it...");
+      }
+
+
+      public SingleSelectionProperty<TSourceItem> Of(Func<_IVMPropertyFactory<SelectionItemVM<TSourceItem>, TSourceItem>, VMDescriptor> descriptorFactory, Action<SingleSelectionVMDescriptor<TSourceItem, SelectionItemVM<TSourceItem>>, IValidationBuilder<SingleSelectionVM<TSourceItem, SelectionItemVM<TSourceItem>>>> validationConfigurator = null) {
+         throw new NotImplementedException();
       }
    }
 

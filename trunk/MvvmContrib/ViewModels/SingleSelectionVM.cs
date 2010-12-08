@@ -100,7 +100,7 @@
                   SelectedItem = v.Calculated(
                      (x) => x.FindSelectedItem(),
                      (x, value) => x.UpdateSelectedSourceItem(value)
-                  )
+                  ).Property()
                };
             });
 

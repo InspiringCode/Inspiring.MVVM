@@ -86,6 +86,7 @@
     <Compile Include="ViewModels\EnumLocalizer.cs" />
     <Compile Include="ViewModels\EnumSelectionPropertyBuilder.cs" />
     <Compile Include="ViewModels\ISelectionPropertyBuilder.cs" />
+    <Compile Include="ViewModels\IVMPropertyFactory.cs" />
     <Compile Include="ViewModels\SelectionExtensions.cs" />
     <Compile Include="ViewModels\SelectionItemVM.cs" />
     <Compile Include="ViewModels\SelectionPropertyConfiguration.cs" />

@@ -2,24 +2,14 @@
    using System.Diagnostics.Contracts;
 
    public sealed class BehaviorInitializationContext {
-      // TODO: Maybe refactor this to take only the descriptor?
       public BehaviorInitializationContext(
-         VMDescriptorBase descriptor
+         VMDescriptorBase descriptor,
+         IVMProperty property = null
       ) {
          Contract.Requires(descriptor != null);
 
          Fields = descriptor.Fields;
          Descriptor = descriptor;
-      }
-
-      public BehaviorInitializationContext(
-         VMDescriptorBase descriptor,
-         IVMProperty property
-      )
-         : this(descriptor) {
-         Contract.Requires(descriptor != null);
-         Contract.Requires(property != null);
-
          Property = property;
       }
 

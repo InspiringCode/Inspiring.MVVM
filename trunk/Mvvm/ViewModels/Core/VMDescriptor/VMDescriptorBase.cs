@@ -10,7 +10,7 @@
 
       public VMDescriptorBase() {
          _fields = new FieldDefinitionCollection();
-         Behaviors = new Behavior();
+         Behaviors = new BehaviorChain();
       }
 
       public FieldDefinitionCollection Fields {
@@ -30,7 +30,7 @@
          }
       }
 
-      public Behavior Behaviors { get; private set; }
+      public BehaviorChain Behaviors { get; internal set; }
 
       public bool IsSealed { get; private set; }
 

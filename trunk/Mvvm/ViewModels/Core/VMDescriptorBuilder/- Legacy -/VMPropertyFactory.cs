@@ -7,6 +7,7 @@
    using Inspiring.Mvvm.ViewModels.Core;
 
    /// <inheritdoc/>
+   [Obsolete]
    internal class _VMPropertyFactory<TVM, TSource> : _IVMPropertyFactory<TVM, TSource>, IRootVMPropertyFactory<TSource>, IBehaviorConfigurationDictionaryProvider where TVM : IViewModel {
       private PropertyPath<TVM, TSource> _sourceObjectPropertyPath;
       private BehaviorConfigurationDictionary _configurations;

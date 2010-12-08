@@ -225,27 +225,26 @@
          }
 
          private static ValidationArgs CreateViewModelValidationArgs(IViewModel changedVM = null) {
-            return new ValidationArgs(
+            return ValidationArgs.CreateViewModelValidationArgs(
                validationState: new ValidationState(),
                changedPath: new InstancePath(changedVM ?? Mock<IViewModel>())
             );
          }
 
          private static ValidationArgs CreatePropertyValidationArgs(IVMProperty targetProperty, IViewModel changedVM = null) {
-            return new ValidationArgs(
+            return ValidationArgs.CreatePropertyValidationArgs(
                validationState: new ValidationState(),
-               changedPath: new InstancePath(changedVM ?? Mock<IViewModel>()),
-               changedProperty: targetProperty,
-               targetProperty: targetProperty
+               viewModel: changedVM ?? Mock<IViewModel>(),
+               property: targetProperty
             );
          }
 
          private void AddViewModelValidatorSpy(VMPropertyPath path = null) {
-            _behavior.AddValidator(path ?? VMPropertyPath.Empty, null, _validator);
+            _behavior.AddValidator(_validator, ValidationType.ViewModel, path ?? VMPropertyPath.Empty, null);
          }
 
          private void AddPropertyValidatorSpy(IVMProperty forProperty, VMPropertyPath path = null) {
-            _behavior.AddValidator(path ?? VMPropertyPath.Empty, forProperty, _validator);
+            _behavior.AddValidator(_validator, ValidationType.PropertyValue, path ?? VMPropertyPath.Empty, forProperty);
          }
 
          private void InvokeOnValidating(ValidationArgs withArgs) {

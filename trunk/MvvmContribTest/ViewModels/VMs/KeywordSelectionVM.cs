@@ -13,8 +13,8 @@
 
             return new KeywordSelectionVMDescriptor {
                AllItems = vm.MappedCollection(x => x.FilteredItems).Of<KeywordVM>(KeywordVM.Descriptor),
-               SelectedItems = vm.Calculated(x => x.CreateSelectedItemsCollection()),
-               SelectedSourceItems = d.Mapped(x => x.Keywords)
+               SelectedItems = vm.Calculated(x => x.CreateSelectedItemsCollection()).Property(),
+               SelectedSourceItems = d.Mapped(x => x.Keywords).Property()
             };
          })
          .WithBehaviors((d, c) => {

@@ -4,6 +4,8 @@
    using System.Linq.Expressions;
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.ViewModels.Core;
+   using Inspiring.Mvvm.ViewModels.Core.Builder.Properties;
+   using Inspiring.Mvvm.ViewModels.Fluent;
 
    /// <summary>
    ///   Use this builder to create and initialize 'VMDescriptor' objects. The
@@ -28,30 +30,32 @@
 
       private class BuilderExpression<TVM> : IVMDescriptorBuilder<TVM>, IVMPropertyFactoryProvider<TVM>
          where TVM : IViewModel {
-         private BehaviorConfigurationDictionary _configurations = new BehaviorConfigurationDictionary();
+         private VMDescriptorConfiguration _configuration;
 
+         public BuilderExpression() {
+            var template = BehaviorChainTemplateRegistry.GetTemplate(BehaviorChainTemplateKeys.ViewModel);
+            var viewModelConfiguration = template.CreateConfiguration(ViewModelBehaviorFactory.CreateInvoker<TVM>());
+            _configuration = new VMDescriptorConfiguration(viewModelConfiguration);
+         }
+
+         /// <inheritdoc />
          public IVMDescriptorBuilder<TVM, TDescriptor> CreateDescriptor<TDescriptor>(
             Func<IVMPropertyFactoryProvider<TVM>, TDescriptor> descriptorFactory
          ) where TDescriptor : VMDescriptor {
             TDescriptor descriptor = descriptorFactory(this);
             descriptor.InitializePropertyNames();
-            return new BuilderExpression<TVM, TDescriptor>(descriptor, _configurations);
+            return new BuilderExpression<TVM, TDescriptor>(descriptor, _configuration);
          }
 
-         public IRootVMPropertyFactory<TVM> GetPropertyFactory() {
-            return new _VMPropertyFactory<TVM, TVM>(
-               PropertyPath.Empty<TVM>(),
-               _configurations
-            );
+         /// <inheritdoc />
+         public IVMPropertyFactory<TVM, TVM> GetPropertyFactory() {
+            return new VMPropertyFactory<TVM, TVM>(PropertyPath.Empty<TVM>(), _configuration);
          }
 
-         public _IVMPropertyFactory<TVM, TSource> GetPropertyFactory<TSource>(
-            Expression<Func<TVM, TSource>> sourceObjectSelector
-         ) {
-            return new _VMPropertyFactory<TVM, TSource>(
-               PropertyPath.Create(sourceObjectSelector),
-               _configurations
-            );
+         /// <inheritdoc />
+         public IVMPropertyFactory<TVM, TSource> GetPropertyFactory<TSource>(Expression<Func<TVM, TSource>> sourceObjectSelector) {
+            var path = PropertyPath.Create(sourceObjectSelector);
+            return new VMPropertyFactory<TVM, TSource>(path, _configuration);
          }
       }
 
@@ -60,11 +64,11 @@
          where TDescriptor : VMDescriptor {
 
          private TDescriptor _descriptor;
-         private BehaviorConfigurationDictionary _configurations;
+         private VMDescriptorConfiguration _configuration;
 
-         public BuilderExpression(TDescriptor descriptor, BehaviorConfigurationDictionary configurations) {
+         public BuilderExpression(TDescriptor descriptor, VMDescriptorConfiguration configuration) {
             _descriptor = descriptor;
-            _configurations = configurations;
+            _configuration = configuration;
          }
 
          public IVMDescriptorBuilder<TVM, TDescriptor> WithValidations(
@@ -72,7 +76,7 @@
          ) {
             validationConfigurator(
                _descriptor,
-               new ValidationBuilder<TVM>(_configurations, _descriptor)
+               new ValidationBuilder<TVM>(_configuration, _descriptor)
             );
 
             return this;
@@ -88,13 +92,13 @@
             Action<TDescriptor, IVMBehaviorConfigurator> behaviorConfigurator
          ) {
             Contract.Requires<ArgumentNullException>(behaviorConfigurator != null);
-            var builder = new BehaviorConfigurationBuilder(_configurations);
+            var builder = new BehaviorConfigurationBuilder(_configuration);
             behaviorConfigurator(_descriptor, builder);
             return this;
          }
 
          public TDescriptor Build() {
-            _configurations.ApplyToProperties(_descriptor);
+            _configuration.ApplyTo(_descriptor);
             return _descriptor;
          }
       }

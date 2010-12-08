@@ -1,11 +1,11 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels {
    using System;
    using System.Linq;
-   using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
    using Inspiring.MvvmTest.ViewModels;
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
    public class SimpleValidationTests : TestBase {
@@ -51,12 +51,12 @@
             .For<ValidatingTaskVM>()
             .CreateDescriptor(c => {
                var vm = c.GetPropertyFactory();
-               var t = c.GetPropertyFactory(x => x.Task);
+               var t = c.GetPropertyFactory(x => x.SourceTask);
 
                return new TaskVMDescriptor {
-                  Title = t.Mapped(x => x.Title),
-                  Description = vm.Local<string>(),
-                  ScreenTitle = vm.Local<string>()
+                  Title = t.Mapped(x => x.Title).Property(),
+                  Description = vm.Local().Property<string>(),
+                  ScreenTitle = vm.Local().Property<string>()
                };
             })
             .WithValidations((d, c) => {

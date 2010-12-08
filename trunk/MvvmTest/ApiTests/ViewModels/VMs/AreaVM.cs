@@ -11,7 +11,7 @@
             var a = c.GetPropertyFactory(x => x.Area);
 
             return new AreaVMDescriptor {
-               Caption = a.Mapped(x => x.Caption)
+               Caption = a.Mapped(x => x.Caption).Property()
             };
          })
          .Build();

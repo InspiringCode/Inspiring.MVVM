@@ -19,7 +19,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
 
       public void Initialize(BehaviorInitializationContext context) {
          _property = (VMPropertyBase<TValue>)context.Property;
-         this.CallNext(x => x.Initialize(context));
+         this.InitializeNext(context);
       }
    }
 }

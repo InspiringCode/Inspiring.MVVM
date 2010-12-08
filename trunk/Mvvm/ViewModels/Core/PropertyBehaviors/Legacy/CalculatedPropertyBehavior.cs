@@ -31,13 +31,14 @@
          Contract.Requires(sourceObjectPath != null);
          Contract.Requires(getter != null);
 
+         _sourceObjectPath = sourceObjectPath;
          _getter = getter;
          _setter = setter ?? ThrowingSetter;
       }
 
       public void Initialize(BehaviorInitializationContext context) {
          _property = context.Property;
-         this.CallNext(x => x.Initialize(context));
+         this.InitializeNext(context);
       }
 
       public TValue GetValue(IBehaviorContext context, ValueStage stage) {

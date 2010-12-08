@@ -46,7 +46,7 @@
             DynamicFieldGroups.DisplayValueValidationErrorGroup
          );
 
-         this.CallNext(x => x.Initialize(context));
+         this.InitializeNext(context);
       }
    }
 }

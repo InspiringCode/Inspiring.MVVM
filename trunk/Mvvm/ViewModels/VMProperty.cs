@@ -7,6 +7,7 @@
       internal VMPropertyBase(Type propertyType) {
          Contract.Requires(propertyType != null);
 
+         Behaviors = new BehaviorChain();
          PropertyType = propertyType;
       }
 
@@ -17,7 +18,7 @@
          Initialize(propertyName);
       }
 
-      public Behavior Behaviors { get; internal set; }
+      public BehaviorChain Behaviors { get; internal set; }
 
       public string PropertyName { get; private set; }
 
@@ -29,7 +30,7 @@
          PropertyName = propertyName;
       }
 
-      internal abstract void ConfigureBehaviors(BehaviorConfiguration configuration, VMDescriptorBase descriptor);
+      //internal abstract void ConfigureBehaviors(BehaviorConfiguration configuration, VMDescriptorBase descriptor);
 
 
       [Obsolete]
@@ -100,11 +101,11 @@
          : base(typeof(T)) {
       }
 
-      internal override void ConfigureBehaviors(BehaviorConfiguration configuration, VMDescriptorBase descriptor) {
-         Behaviors = configuration.CreateBehaviorChain<T>();
-         throw new NotImplementedException();
-         //((IBehavior)Behaviors).Initialize(new BehaviorInitializationContext(descriptor, this));
-      }
+      //internal override void ConfigureBehaviors(BehaviorConfiguration configuration, VMDescriptorBase descriptor) {
+      //   Behaviors = configuration.CreateBehaviorChain<T>();
+      //   throw new NotImplementedException();
+      //   //((IBehavior)Behaviors).Initialize(new BehaviorInitializationContext(descriptor, this));
+      //}
 
       internal T GetValue(IBehaviorContext context, ValueStage stage) {
          Contract.Requires(context != null);

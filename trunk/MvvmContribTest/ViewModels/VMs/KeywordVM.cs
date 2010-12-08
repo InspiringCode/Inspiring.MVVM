@@ -9,7 +9,7 @@
             var k = c.GetPropertyFactory(x => x.Keyword);
 
             return new KeywordVMDescriptor {
-               Name = k.Mapped(x => x.Name)
+               Name = k.Mapped(x => x.Name).Property()
             };
          })
          .Build();

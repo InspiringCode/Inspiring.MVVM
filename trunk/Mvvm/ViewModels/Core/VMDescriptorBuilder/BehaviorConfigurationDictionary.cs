@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
+   using System;
    using System.Collections.Generic;
 
    public sealed class BehaviorConfigurationDictionary {
@@ -14,12 +15,13 @@
       }
 
       internal void ApplyToProperties(VMDescriptor descriptor) {
-         foreach (var pair in _configurations) {
-            VMPropertyBase property = pair.Key;
-            BehaviorConfiguration config = pair.Value;
+         throw new NotImplementedException();
+         //foreach (var pair in _configurations) {
+         //   VMPropertyBase property = pair.Key;
+         //   BehaviorConfiguration config = pair.Value;
 
-            property.ConfigureBehaviors(config, descriptor);
-         }
+         //   property.ConfigureBehaviors(config, descriptor);
+         //}
       }
    }
 }

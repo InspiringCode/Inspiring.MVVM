@@ -11,14 +11,14 @@
                var p = c.GetPropertyFactory(x => x.Person);
 
                return new PersonVMDescriptor {
-                  FirstName = p.Mapped(x => x.FirstName),
-                  LastName = p.Mapped(x => x.LastName),
-                  BirthDate = p.Mapped(x => x.BirthDate),
-                  Salary = p.Calculated(x => x.Salary, (x, val) => x.Salary = val),
-                  Name = p.Calculated(x => String.Format("{0} {1}", x.FirstName, x.LastName)),
-                  IsSelected = v.Local<bool>(),
+                  FirstName = p.Mapped(x => x.FirstName).Property(),
+                  LastName = p.Mapped(x => x.LastName).Property(),
+                  BirthDate = p.Mapped(x => x.BirthDate).Property(),
+                  Salary = p.Calculated(x => x.Salary, (x, val) => x.Salary = val).Property(),
+                  Name = p.Calculated(x => String.Format("{0} {1}", x.FirstName, x.LastName)).Property(),
+                  IsSelected = v.Local().Property<bool>(),
                   Projects = p.MappedCollection(x => x.Projects).Of<ProjectVM>(PersonVM.Descriptor),
-                  CurrentProject = v.Local<ProjectVM>()
+                  CurrentProject = v.Local().Property<ProjectVM>()
                };
             })
          //.WithValidations((d, c) => {
@@ -65,7 +65,7 @@
                var v = c.GetPropertyFactory();
 
                return new ProjectVMDescriptor {
-                  Name = v.Mapped(x => x.Project.Name)
+                  Name = v.Mapped(x => x.Project.Name).Property()
                };
             })
          //.WithValidations((d, c) => {

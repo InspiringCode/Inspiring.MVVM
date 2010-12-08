@@ -24,7 +24,7 @@
                   } else {
                      return x.HasChanges ? DataState.Changed : DataState.Unchanged;
                   }
-               })
+               }).Property()
             };
          })
          .Build();

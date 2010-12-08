@@ -114,10 +114,10 @@
                var p = c.GetPropertyFactory(x => x.Person);
 
                return new PersonVMDescriptor {
-                  BirthDate = p.Mapped(x => x.BirthDate),
-                  Salary = p.Mapped(x => x.Salary),
-                  Name = p.Calculated(x => String.Format("{0} {1}", x.FirstName, x.LastName)),
-                  IsSelected = v.Local<bool>()
+                  BirthDate = p.Mapped(x => x.BirthDate).Property(),
+                  Salary = p.Mapped(x => x.Salary).Property(),
+                  Name = p.Calculated(x => String.Format("{0} {1}", x.FirstName, x.LastName)).Property(),
+                  IsSelected = v.Local().Property<bool>()
                };
             })
             .WithValidations((d, c) => {
