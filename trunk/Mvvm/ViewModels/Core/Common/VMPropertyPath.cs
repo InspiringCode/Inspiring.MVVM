@@ -1,7 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
+   using System.Collections.Generic;
    using System.Diagnostics.Contracts;
-   using System.Linq;
 
    /// <summary>
    ///   A class that describes a list of VM proprerties that need to be get in
@@ -11,25 +11,61 @@
    public sealed class VMPropertyPath {
       public static readonly VMPropertyPath Empty = new VMPropertyPath();
 
-      public VMPropertyPath(params IVMProperty[] properties) {
-         Contract.Requires<ArgumentNullException>(properties != null);
-         Contract.Requires(Contract.ForAll(properties, x => x != null));
+      private readonly List<IPropertyProvider> _properties;
 
-         Properties = properties;
+      public VMPropertyPath()
+         : this(new List<IPropertyProvider>()) {
       }
 
-      /// <summary>
-      ///   Gets the properties of the path in sequence. Example [Address, Street].
-      /// </summary>
-      public IVMProperty[] Properties { get; private set; }
+      private VMPropertyPath(List<IPropertyProvider> properties) {
+         _properties = properties;
+      }
 
       public int Length {
-         get { return Properties.Length; }
+         get { return _properties.Count; }
       }
 
-      /// <inheritdoc />
-      public override string ToString() {
-         return String.Join(".", Properties.Select(x => x.PropertyName));
+      public VMPropertyPath AddProperty<TDescriptor>(
+         Func<TDescriptor, IVMProperty> propertySelector
+      ) where TDescriptor : VMDescriptorBase {
+         var propertiesClone = new List<IPropertyProvider>(_properties);
+
+         propertiesClone.Add(
+            new PropertyProvider<TDescriptor>(propertySelector)
+         );
+
+         return new VMPropertyPath(propertiesClone);
       }
+
+      public IVMProperty GetProperty(int index, VMDescriptorBase declaringDescriptor) {
+         Contract.Requires<ArgumentNullException>(declaringDescriptor != null);
+         Contract.Requires<IndexOutOfRangeException>(0 <= index && index < Length);
+         Contract.Ensures(Contract.Result<IVMProperty>() != null);
+
+
+         return _properties[index].GetProperty(declaringDescriptor);
+      }
+
+      private interface IPropertyProvider {
+         IVMProperty GetProperty(VMDescriptorBase descriptor);
+      }
+
+      private sealed class PropertyProvider<TDescriptor> :
+         IPropertyProvider
+         where TDescriptor : VMDescriptorBase {
+
+         private readonly Func<TDescriptor, IVMProperty> _propertySelector;
+
+         public PropertyProvider(Func<TDescriptor, IVMProperty> propertySelector) {
+            Contract.Requires(propertySelector != null);
+            _propertySelector = propertySelector;
+         }
+
+         public IVMProperty GetProperty(VMDescriptorBase descriptor) {
+            TDescriptor concreteDescriptor = (TDescriptor)descriptor;
+            return _propertySelector(concreteDescriptor);
+         }
+      }
+
    }
 }

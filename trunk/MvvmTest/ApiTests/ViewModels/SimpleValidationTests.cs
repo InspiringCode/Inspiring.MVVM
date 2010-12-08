@@ -60,7 +60,7 @@
                };
             })
             .WithValidations((d, c) => {
-               c.Check(d.Title).Custom((task, value, args) => {
+               c.Check(x => x.Title).Custom((task, value, args) => {
                   if (String.IsNullOrEmpty(value)) {
                      args.Errors.Add(new ValidationError(ErrorMessage));
                   }

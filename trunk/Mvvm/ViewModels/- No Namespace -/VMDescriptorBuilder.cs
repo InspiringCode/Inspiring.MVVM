@@ -4,6 +4,7 @@
    using System.Linq.Expressions;
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.ViewModels.Core;
+   using Inspiring.Mvvm.ViewModels.Core.Builder;
    using Inspiring.Mvvm.ViewModels.Core.Builder.Properties;
    using Inspiring.Mvvm.ViewModels.Fluent;
 
@@ -59,25 +60,30 @@
          }
       }
 
-      private class BuilderExpression<TVM, TDescriptor> : IVMDescriptorBuilder<TVM, TDescriptor>
+      private class BuilderExpression<TVM, TDescriptor> :
+         ConfigurationProvider,
+         IVMDescriptorBuilder<TVM, TDescriptor>
          where TVM : IViewModel
          where TDescriptor : VMDescriptor {
 
          private TDescriptor _descriptor;
-         private VMDescriptorConfiguration _configuration;
 
-         public BuilderExpression(TDescriptor descriptor, VMDescriptorConfiguration configuration) {
+         public BuilderExpression(TDescriptor descriptor, VMDescriptorConfiguration configuration)
+            : base(configuration) {
             _descriptor = descriptor;
-            _configuration = configuration;
          }
 
          public IVMDescriptorBuilder<TVM, TDescriptor> WithValidations(
-            Action<TDescriptor, IValidationBuilder<TVM>> validationConfigurator
+            Action<TDescriptor, ValidatorBuilder<TVM, TDescriptor>> validatorConfigurator
          ) {
-            validationConfigurator(
-               _descriptor,
-               new ValidationBuilder<TVM>(_configuration, _descriptor)
-            );
+            var validatorBuilder = new ValidatorBuilder<TVM, TDescriptor>(Configuration);
+            validatorConfigurator(_descriptor, validatorBuilder);
+
+            //throw new NotImplementedException();
+            //validationConfigurator(
+            //   _descriptor,
+            //   new ValidationBuilder<TVM>(_configuration, _descriptor)
+            //);
 
             return this;
          }
@@ -92,13 +98,13 @@
             Action<TDescriptor, IVMBehaviorConfigurator> behaviorConfigurator
          ) {
             Contract.Requires<ArgumentNullException>(behaviorConfigurator != null);
-            var builder = new BehaviorConfigurationBuilder(_configuration);
+            var builder = new BehaviorConfigurationBuilder(Configuration);
             behaviorConfigurator(_descriptor, builder);
             return this;
          }
 
          public TDescriptor Build() {
-            _configuration.ApplyTo(_descriptor);
+            Configuration.ApplyTo(_descriptor);
             return _descriptor;
          }
       }

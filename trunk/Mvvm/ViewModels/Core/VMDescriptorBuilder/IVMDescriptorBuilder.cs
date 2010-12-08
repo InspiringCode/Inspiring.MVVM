@@ -55,7 +55,7 @@
       ///   })</code>.
       /// </param>
       IVMDescriptorBuilder<TVM, TDescriptor> WithValidations(
-         Action<TDescriptor, IValidationBuilder<TVM>> validationConfigurator
+         Action<TDescriptor, ValidatorBuilder<TVM, TDescriptor>> validationConfigurator
       );
 
       /// <summary>

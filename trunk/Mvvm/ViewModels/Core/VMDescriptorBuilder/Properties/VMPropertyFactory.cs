@@ -64,6 +64,7 @@ namespace Inspiring.Mvvm.ViewModels.Core.Builder.Properties {
          return new LocalVMPropertyLocal<TVM>(Configuration);
       }
 
+      /// <inheritdoc />
       public IVMCollectionPropertyFactory<TVM> Collection() {
          throw new NotImplementedException();
       }

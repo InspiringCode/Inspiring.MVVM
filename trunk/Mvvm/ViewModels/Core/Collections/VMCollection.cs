@@ -11,7 +11,8 @@
    /// </summary>
    public class VMCollection<TItemVM> :
       BindingList<TItemVM>,
-      IVMCollection<TItemVM>
+      IVMCollection<TItemVM>,
+      IVMCollectionExpression<TItemVM>
       where TItemVM : IViewModel {
 
       private bool _isPopulating;

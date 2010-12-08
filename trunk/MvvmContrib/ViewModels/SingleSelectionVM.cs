@@ -104,9 +104,10 @@
                };
             });
 
-         return validationConfigurator != null ?
-            builder.WithValidations(validationConfigurator).Build() :
-            builder.Build();
+         throw new NotImplementedException();
+         //return validationConfigurator != null ?
+         //   builder.WithValidations(validationConfigurator).Build() :
+         //   builder.Build();
       }
 
       private TItemVM FindSelectedItem() {

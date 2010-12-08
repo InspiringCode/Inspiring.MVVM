@@ -4,6 +4,7 @@
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
+   using Inspiring.MvvmTest.Stubs;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Moq;
 
@@ -93,7 +94,7 @@
       }
 
       [TestMethod]
-      public void Subpath_StartOneCountMaxInt_ReturnsOneStepPath() {
+      public void Subpath_StartOneCountMaxInt_ReturnsPathWithRemainingSteps() {
          var vm1 = new Mock<IViewModel>().Object;
          var vm2 = new Mock<IViewModel>().Object;
 
@@ -105,8 +106,9 @@
 
       [TestMethod]
       public void MatchStart_WithOnePropertyOnDefaultInstance_DoesNotMatch() {
-         var currentProjectProperty = new Mock<IVMProperty>().Object;
-         var properties = new VMPropertyPath(currentProjectProperty);
+         var employeeDescriptor = new EmployeeVMDescriptor();
+         var properties = new VMPropertyPath()
+            .AddProperty((EmployeeVMDescriptor d) => d.CurrentProject);
 
          var path = new InstancePath();
          InstancePathMatch match = path.MatchStart(properties);
@@ -116,10 +118,11 @@
 
       [TestMethod]
       public void MatchStart_WithOnePropertyOnOneStepPath_DoesNotMatch() {
-         var currentProjectProperty = new Mock<IVMProperty>().Object;
-         var properties = new VMPropertyPath(currentProjectProperty);
+         var employeeDescriptor = new EmployeeVMDescriptor();
+         var properties = new VMPropertyPath()
+            .AddProperty((EmployeeVMDescriptor d) => d.CurrentProject);
 
-         var employeeVM = new Mock<IViewModel>().Object;
+         var employeeVM = new ViewModelStub(employeeDescriptor);
          var path = new InstancePath(employeeVM);
          InstancePathMatch match = path.MatchStart(properties);
 
@@ -128,9 +131,9 @@
 
       [TestMethod]
       public void MatchStart_EmptyPropertyPath_DoesMatch() {
-         var vm = new Mock<IViewModel>().Object;
+         var vm = new ViewModelStub(new EmployeeVMDescriptor());
          var path = new InstancePath(vm);
-         var result = path.MatchStart(new VMPropertyPath());
+         var result = path.MatchStart(VMPropertyPath.Empty);
 
          Assert.IsTrue(result.Success);
          AssertHelper.AreEqual(CreateSteps(vm), result.MatchedPath.Steps, StepsAreEqual);
@@ -138,36 +141,39 @@
       }
 
       [TestMethod]
-      public void MatchStart_WithTwoMatcingPropertiesOnFourStepPath_DoesMatch() {
-         var currentProjectProperty = new Mock<IVMProperty>().Object;
-         var customerProperty = new Mock<IVMProperty>().Object;
-         var properties = new VMPropertyPath(currentProjectProperty, customerProperty);
+      public void MatchStart_WithTwoMatchingPropertiesOnFourStepPath_DoesMatch() {
+         var employeeDescriptor = new EmployeeVMDescriptor();
+         var projectDescriptor = new ProjectVMDescriptor();
 
-         var employeeVM = new Mock<IViewModel>();
-         var projectVM = new Mock<IViewModel>();
-         var customerVM = new Mock<IViewModel>();
-         var addressVM = new Mock<IViewModel>();
+         var properties = new VMPropertyPath()
+            .AddProperty((EmployeeVMDescriptor d) => d.CurrentProject)
+            .AddProperty((ProjectVMDescriptor d) => d.Customer);
 
-         employeeVM.Setup(x => x.GetValue(currentProjectProperty, ValueStage.PreValidation)).Returns(projectVM.Object);
-         projectVM.Setup(x => x.GetValue(customerProperty, ValueStage.PreValidation)).Returns(customerVM.Object);
+         var employeeVM = new ViewModelStub(employeeDescriptor);
+         var projectVM = new ViewModelStub(projectDescriptor);
+         var customerVM = new ViewModelStub(new CustomerVMDescriptor());
+         var addressVM = new ViewModelStub(new AddressVMDescriptor());
 
-         var path = new InstancePath(addressVM.Object);
-         path = path.PrependVM(customerVM.Object);
-         path = path.PrependVM(projectVM.Object);
-         path = path.PrependVM(employeeVM.Object);
+         employeeVM.SetValue(employeeDescriptor.CurrentProject, projectVM);
+         projectVM.SetValue(projectDescriptor.Customer, customerVM);
+
+         var path = new InstancePath(addressVM);
+         path = path.PrependVM(customerVM);
+         path = path.PrependVM(projectVM);
+         path = path.PrependVM(employeeVM);
 
          InstancePathMatch match = path.MatchStart(properties);
 
          Assert.IsTrue(match.Success);
 
          AssertHelper.AreEqual(
-            CreateSteps(employeeVM.Object, projectVM.Object, customerVM.Object),
+            CreateSteps(employeeVM, projectVM, customerVM),
             match.MatchedPath.Steps,
             StepsAreEqual
          );
 
          AssertHelper.AreEqual(
-            CreateSteps(addressVM.Object),
+            CreateSteps(addressVM),
             match.RemainingPath.Steps,
             StepsAreEqual
          );
@@ -175,20 +181,25 @@
 
       [TestMethod]
       public void MatchStart_WithTwoNonMatchingPropertiesOnThreeStepPath_DoesNotMatch() {
-         var currentProjectProperty = new Mock<IVMProperty>().Object;
-         var customerProperty = new Mock<IVMProperty>().Object;
-         var properties = new VMPropertyPath(currentProjectProperty, customerProperty);
+         var employeeDescriptor = new EmployeeVMDescriptor();
+         var projectDescriptor = new ProjectVMDescriptor();
 
-         var employeeVM = new Mock<IViewModel>();
-         var projectVM = new Mock<IViewModel>();
-         var customerVM = new Mock<IViewModel>();
+         var properties = new VMPropertyPath()
+            .AddProperty((EmployeeVMDescriptor d) => d.CurrentProject)
+            .AddProperty((ProjectVMDescriptor d) => d.Customer);
 
-         employeeVM.Setup(x => x.GetValue(currentProjectProperty, ValueStage.PreValidation)).Returns(projectVM.Object);
-         projectVM.Setup(x => x.GetValue(customerProperty, ValueStage.PreValidation)).Returns(new Object());
+         var employeeVM = new ViewModelStub(employeeDescriptor);
+         var projectVM = new ViewModelStub(projectDescriptor);
+         var customerVM = new ViewModelStub(new CustomerVMDescriptor());
 
-         var path = new InstancePath(customerVM.Object);
-         path = path.PrependVM(projectVM.Object);
-         path = path.PrependVM(employeeVM.Object);
+         var someOtherVM = new ViewModelStub();
+
+         employeeVM.SetValue(employeeDescriptor.CurrentProject, projectVM);
+         projectVM.SetValue(projectDescriptor.Customer, someOtherVM);
+
+         var path = new InstancePath(customerVM);
+         path = path.PrependVM(projectVM);
+         path = path.PrependVM(employeeVM);
 
          InstancePathMatch match = path.MatchStart(properties);
 
@@ -197,25 +208,28 @@
 
       [TestMethod]
       public void MatchStart_WithCollectionProperty_DoesMatch() {
-         var projectsProperty = new Mock<IVMProperty>().Object;
-         var customerProperty = new Mock<IVMProperty>().Object;
-         var properties = new VMPropertyPath(projectsProperty, customerProperty);
+         var employeeDescriptor = new EmployeeVMDescriptor();
+         var projectDescriptor = new ProjectVMDescriptor();
 
-         var employeeVM = new Mock<IViewModel>();
-         var projectVM = new Mock<IViewModel>();
-         var customerVM = new Mock<IViewModel>();
+         var properties = new VMPropertyPath()
+            .AddProperty((EmployeeVMDescriptor d) => d.Projects)
+            .AddProperty((ProjectVMDescriptor d) => d.Customer);
 
-         var projectsCollection = new Mock<IEnumerable>().Object;
+         var employeeVM = new ViewModelStub(employeeDescriptor);
+         var projectVM = new ViewModelStub(projectDescriptor);
+         var customerVM = new ViewModelStub(new CustomerVMDescriptor());
 
-         employeeVM.Setup(x => x.GetValue(projectsProperty, ValueStage.PreValidation)).Returns(projectsCollection);
-         projectVM.Setup(x => x.GetValue(customerProperty, ValueStage.PreValidation)).Returns(customerVM.Object);
+         var projectsCollection = new VMCollection<IViewModel>(new BehaviorChain(), employeeVM) { projectVM };
 
-         var path = new InstancePath(customerVM.Object);
+         employeeVM.SetValue(employeeDescriptor.Projects, projectVM);
+         projectVM.SetValue(projectDescriptor.Customer, customerVM);
 
-         path = path.PrependVM(projectVM.Object);
+         var path = new InstancePath(customerVM);
+
+         path = path.PrependVM(projectVM);
          path.PrependCollection(projectsCollection);
 
-         path = path.PrependVM(employeeVM.Object);
+         path = path.PrependVM(employeeVM);
 
          InstancePathMatch match = path.MatchStart(properties);
 
@@ -223,9 +237,9 @@
 
          AssertHelper.AreEqual(
             new InstancePathStep[] { 
-               new InstancePathStep(employeeVM.Object), 
-               new InstancePathStep(projectVM.Object) { ParentCollection = projectsCollection },
-               new InstancePathStep(customerVM.Object)
+               new InstancePathStep(employeeVM), 
+               new InstancePathStep(projectVM) { ParentCollection = projectsCollection },
+               new InstancePathStep(customerVM)
             },
             match.MatchedPath.Steps,
             StepsAreEqual
@@ -248,6 +262,36 @@
             y != null &&
             Object.ReferenceEquals(x.VM, y.VM) &&
             Object.ReferenceEquals(x.ParentCollection, y.ParentCollection);
+      }
+
+      private class EmployeeVMDescriptor : VMDescriptor {
+         public EmployeeVMDescriptor() {
+            CurrentProject = new VMProperty<IViewModel>();
+            Projects = new VMProperty<IVMCollection<ProjectVM>>();
+         }
+
+         public VMProperty<IViewModel> CurrentProject { get; set; }
+         public VMProperty<IVMCollection<ProjectVM>> Projects { get; set; }
+      }
+
+      private class ProjectVMDescriptor : VMDescriptor {
+         public ProjectVMDescriptor() {
+            Customer = new VMProperty<IViewModel>();
+         }
+
+         public VMProperty<IViewModel> Customer { get; set; }
+      }
+
+      private class CustomerVMDescriptor : VMDescriptor {
+         public CustomerVMDescriptor() {
+            Address = new VMProperty<IViewModel>();
+         }
+
+         public VMProperty<IViewModel> Address { get; set; }
+      }
+
+      private class AddressVMDescriptor : VMDescriptor {
+
       }
    }
 }

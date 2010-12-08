@@ -5,10 +5,12 @@
          this IVMProperty property,
          IBehaviorContext context
       ) {
-         return property
-            .Behaviors
-            .GetNextBehavior<IValidationStateProviderBehavior>()
-            .GetValidationState(context);
+         IValidationStateProviderBehavior stateProvider;
+         bool found = property.Behaviors.TryGetBehavior(out stateProvider);
+
+         return found ?
+            stateProvider.GetValidationState(context) :
+            ValidationState.Valid;
       }
 
       public static bool IsMutable(

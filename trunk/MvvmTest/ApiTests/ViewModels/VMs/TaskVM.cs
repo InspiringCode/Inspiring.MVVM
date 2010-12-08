@@ -32,18 +32,18 @@
       public Task SourceTask { get; private set; }
 
       public string ScreenTitle {
-         get { return GetValue(Descriptor.ScreenTitle); }
-         set { SetValue(Descriptor.ScreenTitle, value); }
+         get { return GetValue(DescriptorBase.ScreenTitle); }
+         set { SetValue(DescriptorBase.ScreenTitle, value); }
       }
 
       public string Title {
-         get { return GetValue(Descriptor.Title); }
-         set { SetValue(Descriptor.Title, value); }
+         get { return GetValue(DescriptorBase.Title); }
+         set { SetValue(DescriptorBase.Title, value); }
       }
 
       public string Description {
-         get { return GetValue(Descriptor.Description); }
-         set { SetValue(Descriptor.Description, value); }
+         get { return GetValue(DescriptorBase.Description); }
+         set { SetValue(DescriptorBase.Description, value); }
       }
 
       public void InitializeFrom(Task source) {

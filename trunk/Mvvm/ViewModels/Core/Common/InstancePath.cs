@@ -128,15 +128,14 @@
       public bool MatchStartCore(VMPropertyPath properties) {
          Contract.Requires<ArgumentNullException>(properties != null);
 
-         IVMProperty[] props = properties.Properties;
-
-         if (props.Length > Steps.Length - 1) {
+         if (properties.Length > Steps.Length - 1) {
             return false;
          }
 
-         for (int i = 0; i < props.Length; i++) {
-            IVMProperty prop = props[i];
+         for (int i = 0; i < properties.Length; i++) {
             IViewModel vm = Steps[i].VM;
+            IVMProperty prop = properties.GetProperty(i, vm.Descriptor);
+
             IViewModel expectedValue = Steps[i + 1].VM;
             IEnumerable expectedCollection = Steps[i + 1].ParentCollection;
 

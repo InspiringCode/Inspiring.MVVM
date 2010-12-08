@@ -196,7 +196,8 @@
 
          [TestMethod]
          public void OnValidating_ChildValidator_GetsCalled() {
-            AddViewModelValidatorSpy(new VMPropertyPath(_addressProperty));
+            Assert.Fail("Fix me!");
+            //AddViewModelValidatorSpy(new VMPropertyPath(_addressProperty));
 
             InvokeOnValidating(
                withArgs: CreateViewModelValidationArgs(
@@ -210,7 +211,8 @@
 
          [TestMethod]
          public void OnValidating_ChildValidator_GetsNotCalled() {
-            AddViewModelValidatorSpy(new VMPropertyPath(_addressProperty));
+            Assert.Fail("Fix me!");
+            //AddViewModelValidatorSpy(new VMPropertyPath(_addressProperty));
 
             var anotherVM = Mock<IViewModel>();
 

@@ -1,13 +1,15 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core.Builder {
+   using System.ComponentModel;
    using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.ViewModels.Fluent;
 
-   internal abstract class ConfigurationProvider : IConfigurationProvider {
+   public abstract class ConfigurationProvider : IConfigurationProvider {
       public ConfigurationProvider(VMDescriptorConfiguration configuration) {
          Contract.Requires(configuration != null);
          Configuration = configuration;
       }
 
+      [EditorBrowsable(EditorBrowsableState.Never)]
       public VMDescriptorConfiguration Configuration {
          get;
          private set;

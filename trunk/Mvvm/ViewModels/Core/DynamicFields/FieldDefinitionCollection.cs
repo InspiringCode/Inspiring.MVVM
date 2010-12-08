@@ -6,6 +6,10 @@
    public sealed class FieldDefinitionCollection {
       private List<FieldGroupInfo> _containedGroups = new List<FieldGroupInfo>();
 
+      public FieldDefinitionCollection() {
+
+      }
+
       public FieldDefinition<T> DefineField<T>(FieldDefinitionGroup group) {
          Contract.Requires<ArgumentNullException>(group != null);
          Contract.Ensures(Contract.Result<FieldDefinition<T>>() != null);

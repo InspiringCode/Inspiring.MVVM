@@ -1,13 +1,22 @@
 ﻿namespace Inspiring.MvvmTest.Stubs {
    using System;
+   using System.Collections.Generic;
    using Inspiring.Mvvm;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
 
    public class ViewModelStub : IViewModel {
-      public ViewModelStub() {
-         VMDescriptorBase descriptor = new VMDescriptorStub();
-         Kernel = new VMKernel(this, descriptor, ServiceLocator.Current);
+      private Dictionary<IVMProperty, object> _fakeValues;
+
+      public ViewModelStub()
+         : this(new VMDescriptorStub()) {
+
+      }
+
+      public ViewModelStub(VMDescriptorBase descriptor) {
+         _fakeValues = new Dictionary<IVMProperty, object>();
+         Descriptor = descriptor;
+         Kernel = new VMKernel(this, Descriptor, ServiceLocator.Current);
       }
 
       public VMKernel Kernel {
@@ -15,12 +24,14 @@
          private set;
       }
 
+
+
       public object GetValue(IVMProperty property, ValueStage stage = ValueStage.PreValidation) {
-         throw new NotImplementedException();
+         return _fakeValues[property];
       }
 
       public void SetValue(IVMProperty property, object value) {
-         throw new NotImplementedException();
+         _fakeValues[property] = value;
       }
 
       public bool IsValid(bool validateChildren) {
@@ -53,12 +64,8 @@
 
 
       public VMDescriptorBase Descriptor {
-         get {
-            throw new NotImplementedException();
-         }
-         set {
-            throw new NotImplementedException();
-         }
+         get;
+         set;
       }
    }
 }
