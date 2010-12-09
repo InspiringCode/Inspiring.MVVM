@@ -61,6 +61,7 @@
 
       BehaviorChain IVMProperty.Behaviors {
          get { throw new NotImplementedException(); }
+         set { throw new NotImplementedException(); }
       }
    }
 }

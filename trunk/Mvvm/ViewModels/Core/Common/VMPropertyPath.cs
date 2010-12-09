@@ -11,13 +11,13 @@
    public sealed class VMPropertyPath {
       public static readonly VMPropertyPath Empty = new VMPropertyPath();
 
-      private readonly List<IPropertyProvider> _properties;
+      private readonly List<PropertySelector> _properties;
 
       public VMPropertyPath()
-         : this(new List<IPropertyProvider>()) {
+         : this(new List<PropertySelector>()) {
       }
 
-      private VMPropertyPath(List<IPropertyProvider> properties) {
+      private VMPropertyPath(List<PropertySelector> properties) {
          _properties = properties;
       }
 
@@ -25,15 +25,9 @@
          get { return _properties.Count; }
       }
 
-      public VMPropertyPath AddProperty<TDescriptor>(
-         Func<TDescriptor, IVMProperty> propertySelector
-      ) where TDescriptor : VMDescriptorBase {
-         var propertiesClone = new List<IPropertyProvider>(_properties);
-
-         propertiesClone.Add(
-            new PropertyProvider<TDescriptor>(propertySelector)
-         );
-
+      public VMPropertyPath AddProperty(PropertySelector propertySelector) {
+         var propertiesClone = new List<PropertySelector>(_properties);
+         propertiesClone.Add(propertySelector);
          return new VMPropertyPath(propertiesClone);
       }
 
@@ -41,31 +35,30 @@
          Contract.Requires<ArgumentNullException>(declaringDescriptor != null);
          Contract.Requires<IndexOutOfRangeException>(0 <= index && index < Length);
          Contract.Ensures(Contract.Result<IVMProperty>() != null);
-
-
+         
          return _properties[index].GetProperty(declaringDescriptor);
       }
 
-      private interface IPropertyProvider {
-         IVMProperty GetProperty(VMDescriptorBase descriptor);
-      }
+      //private interface IPropertyProvider {
+      //   IVMProperty GetProperty(VMDescriptorBase descriptor);
+      //}
 
-      private sealed class PropertyProvider<TDescriptor> :
-         IPropertyProvider
-         where TDescriptor : VMDescriptorBase {
+      //private sealed class PropertyProvider<TDescriptor> :
+      //   IPropertyProvider
+      //   where TDescriptor : VMDescriptorBase {
 
-         private readonly Func<TDescriptor, IVMProperty> _propertySelector;
+      //   private readonly Func<TDescriptor, IVMProperty> _propertySelector;
 
-         public PropertyProvider(Func<TDescriptor, IVMProperty> propertySelector) {
-            Contract.Requires(propertySelector != null);
-            _propertySelector = propertySelector;
-         }
+      //   public PropertyProvider(Func<TDescriptor, IVMProperty> propertySelector) {
+      //      Contract.Requires(propertySelector != null);
+      //      _propertySelector = propertySelector;
+      //   }
 
-         public IVMProperty GetProperty(VMDescriptorBase descriptor) {
-            TDescriptor concreteDescriptor = (TDescriptor)descriptor;
-            return _propertySelector(concreteDescriptor);
-         }
-      }
+      //   public IVMProperty GetProperty(VMDescriptorBase descriptor) {
+      //      TDescriptor concreteDescriptor = (TDescriptor)descriptor;
+      //      return _propertySelector(concreteDescriptor);
+      //   }
+      //}
 
    }
 }

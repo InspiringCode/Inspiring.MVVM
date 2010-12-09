@@ -3,6 +3,7 @@
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Moq;
+   using System;
 
    [TestClass]
    public class ViewModelValidationBehaviorTests : TestBase {
@@ -246,7 +247,8 @@
          }
 
          private void AddPropertyValidatorSpy(IVMProperty forProperty, VMPropertyPath path = null) {
-            _behavior.AddValidator(_validator, ValidationType.PropertyValue, path ?? VMPropertyPath.Empty, forProperty);
+            throw new NotImplementedException();
+            //_behavior.AddValidator(_validator, ValidationType.PropertyValue, path ?? VMPropertyPath.Empty, forProperty);
          }
 
          private void InvokeOnValidating(ValidationArgs withArgs) {

@@ -3,7 +3,8 @@
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
 
-   internal sealed class ViewModelValidationBehavior :
+   // TODO: Make me internal please!
+   public sealed class ViewModelValidationBehavior :
       ViewModelBehavior,
       IBehaviorInitializationBehavior {
 
@@ -31,11 +32,11 @@
       ///   The property that should be validated. Pass null if you want to add
       ///   a view model validation.
       /// </param>
-      public void AddValidator(
+      internal void AddValidator(
          Validator validator,
          ValidationType validatorType,
          VMPropertyPath targetPath,
-         IVMProperty targetProperty
+         PropertySelector targetProperty
       ) {
          Contract.Requires<ArgumentNullException>(targetPath != null);
          Contract.Requires<ArgumentNullException>(validator != null);
@@ -134,7 +135,7 @@
             Validator validator,
             ValidationType validatorType,
             VMPropertyPath targetPath,
-            IVMProperty targetProperty
+            PropertySelector targetProperty
          ) {
             Validator = validator;
             ValidatorType = validatorType;
@@ -145,16 +146,24 @@
          public Validator Validator { get; private set; }
          public ValidationType ValidatorType { get; private set; }
          public VMPropertyPath TargetPath { get; private set; }
-         public IVMProperty TargetProperty { get; private set; }
+         public PropertySelector TargetProperty { get; private set; }
 
          public void Validate(ValidationArgs args) {
-            bool sameValidatorType = args.ValidationType == ValidatorType;
-            bool validatorPathMatches = args.TargetPath.Matches(TargetPath);
-            bool sameTargetProperty = args.TargetProperty == TargetProperty;
-
-            if (sameValidatorType && validatorPathMatches && sameTargetProperty) {
-               Validator.Validate(args);
+            if (args.ValidationType != ValidatorType) {
+               return;
             }
+
+            if (!args.TargetPath.Matches(TargetPath)) {
+               return;
+            }
+
+            IVMProperty targetProperty = TargetProperty.GetProperty(args.TargetVM.Descriptor);
+
+            if (args.TargetProperty != targetProperty) {
+               return;
+            }
+
+            Validator.Validate(args);
          }
       }
    }

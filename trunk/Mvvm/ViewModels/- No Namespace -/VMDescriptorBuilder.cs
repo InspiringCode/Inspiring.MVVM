@@ -76,7 +76,7 @@
          public IVMDescriptorBuilder<TVM, TDescriptor> WithValidations(
             Action<TDescriptor, ValidatorBuilder<TVM, TDescriptor>> validatorConfigurator
          ) {
-            var validatorBuilder = new ValidatorBuilder<TVM, TDescriptor>(Configuration);
+            var validatorBuilder = new ValidatorBuilder<TVM, TDescriptor>(Configuration, _descriptor);
             validatorConfigurator(_descriptor, validatorBuilder);
 
             //throw new NotImplementedException();

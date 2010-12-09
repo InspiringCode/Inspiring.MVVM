@@ -61,7 +61,7 @@
 
          ViewModelValidationBehavior behavior = null;
 
-         behavior.AddValidator(validator, ValidationType.PropertyValue, VMPropertyPath.Empty, _property);
+         //behavior.AddValidator(validator, ValidationType.PropertyValue, VMPropertyPath.Empty, _property);
 
          //_config.Configure<PropertyValidationBehavior<TValue>>(VMBehaviorKey.Validator, behavior => {
 

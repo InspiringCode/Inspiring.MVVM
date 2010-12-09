@@ -18,7 +18,7 @@
          Initialize(propertyName);
       }
 
-      public BehaviorChain Behaviors { get; internal set; }
+      public BehaviorChain Behaviors { get; set; }
 
       public string PropertyName { get; private set; }
 

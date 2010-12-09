@@ -1,13 +1,14 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using Inspiring.Mvvm.ViewModels.Core.Builder;
+   using System.Diagnostics.Contracts;
+   using Inspiring.Mvvm.Common;
 
-   public sealed class PropertyValidatorBuilder<TVM, TValue> :
-      ConfigurationProvider
-      where TVM : IViewModel {
+   public sealed class PropertyValidatorBuilder<TVM, TValue> where TVM : IViewModel {
+      private ViewModelValidationBehavior _validationBehavior;
 
-      internal PropertyValidatorBuilder(VMDescriptorConfiguration configuration)
-         : base(configuration) {
+      internal PropertyValidatorBuilder(ViewModelValidationBehavior behavior) {
+         Contract.Requires(behavior != null);
+         _validationBehavior = behavior;
       }
 
       /// <summary>
@@ -24,7 +25,34 @@
       ///   value of the property.
       /// </param>
       public void Custom(Action<TVM, TValue, ValidationArgs> validator) {
-         throw new NotImplementedException();
+         _validationBehavior.AddValidator(
+            new DelegateValidator(validator),
+            ValidationType.PropertyValue,
+            VMPropertyPath.Empty,
+            null
+         );
+      }
+
+      private sealed class DelegateValidator : Validator {
+         private Action<TVM, TValue, ValidationArgs> _validatorCallback;
+
+         public DelegateValidator(Action<TVM, TValue, ValidationArgs> validatorCallback) {
+            Contract.Requires(validatorCallback != null);
+            _validatorCallback = validatorCallback;
+         }
+
+         public override void Validate(ValidationArgs args) {
+            TVM vm = (TVM)args.TargetVM;
+            TValue value = (TValue)args.TargetVM.GetValue(args.TargetProperty);
+            _validatorCallback(vm, value, args);
+         }
+
+         public override string ToString() {
+            return String.Format(
+               "{{DelegateValidator: {0}}}",
+               DelegateUtils.GetFriendlyName(_validatorCallback)
+            );
+         }
       }
    }
 }

@@ -35,6 +35,6 @@
       /// <summary>
       ///   Gets the head of the chain of property behaviors.
       /// </summary>
-      BehaviorChain Behaviors { get; }
+      BehaviorChain Behaviors { get; set; }
    }
 }

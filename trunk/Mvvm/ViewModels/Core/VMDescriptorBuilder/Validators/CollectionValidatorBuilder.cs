@@ -1,14 +1,15 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Collections.Generic;
-   using Inspiring.Mvvm.ViewModels.Core.Builder;
+   using System.Diagnostics.Contracts;
 
-   public sealed class CollectionValidatorBuilder<TItemVM> :
-      ConfigurationProvider
-      where TItemVM : IViewModel {
+   public sealed class CollectionValidatorBuilder<TItemVM> where TItemVM : IViewModel {
+      private ViewModelValidationBehavior _validationBehavior;
 
-      internal CollectionValidatorBuilder(VMDescriptorConfiguration configuration)
-         : base(configuration) {
+      internal CollectionValidatorBuilder(ViewModelValidationBehavior validationBehavior) {
+         Contract.Requires(validationBehavior != null);
+
+         _validationBehavior = validationBehavior;
       }
 
       /// <summary>

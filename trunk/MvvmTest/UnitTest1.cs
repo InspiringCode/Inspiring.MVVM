@@ -17,7 +17,7 @@ namespace Inspiring.MvvmTest {
          ICustomTypeDescriptor d = new Test();
          Console.WriteLine(d.GetDefaultEvent());
 
-         var b = new ValidatorBuilder<TestVM, TestVMDescriptor>(null);
+         var b = new ValidatorBuilder<TestVM, TestVMDescriptor>(null, null);
          b.Check(x => x.LocalProperty);
          b.CheckCollection<ChildVM>(x => x.MappedCollectionProperty);
          b.CheckCollection<ChildVMDescriptor, string>(x => x.MappedCollectionProperty, x => x.MappedMutableProperty);

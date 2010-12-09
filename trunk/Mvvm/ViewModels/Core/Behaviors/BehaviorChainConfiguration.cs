@@ -83,6 +83,16 @@
          configurationAction(behavior);
       }
 
+      public TBehavior GetBehavior<TBehavior>(BehaviorKey withKey) where TBehavior : IBehavior {
+         Contract.Requires<ArgumentNullException>(withKey != null);
+         Contract.Requires<ArgumentException>(Contains(withKey));
+         Contract.Ensures(Contract.Result<TBehavior>() != null);
+         RequireNotSealed();
+
+         BehaviorChainItemConfiguration item = GetItem(withKey);
+         return (TBehavior)item.Instance;
+      }
+
       /// <summary>
       ///   Adds a disabled behavior configuration to the end of the chain.
       /// </summary>

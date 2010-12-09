@@ -8,8 +8,8 @@
    ///   of a VM descriptor.
    /// </summary>
    public sealed class BehaviorChainConfigurationCollection {
-      private readonly Dictionary<VMPropertyBase, BehaviorChainConfiguration> _propertyConfigurations
-         = new Dictionary<VMPropertyBase, BehaviorChainConfiguration>();
+      private readonly Dictionary<IVMProperty, BehaviorChainConfiguration> _propertyConfigurations
+         = new Dictionary<IVMProperty, BehaviorChainConfiguration>();
 
       /// <summary>
       ///   Gets the <see cref="BehaviorChainConfiguration"/> for the given 
@@ -19,7 +19,7 @@
       ///   The collection does not contain a configuration for the given property.
       ///   Make sure <see cref="RegisterProperty"/> was called.
       /// </exception>
-      public BehaviorChainConfiguration this[VMPropertyBase forProperty] {
+      public BehaviorChainConfiguration this[IVMProperty forProperty] {
          get {
             Contract.Requires<ArgumentNullException>(forProperty != null);
             Contract.Ensures(Contract.Result<BehaviorChainConfiguration>() != null);
@@ -81,7 +81,7 @@
       /// </summary>
       internal void ApplyToProperties(VMDescriptorBase parentDescriptor) {
          foreach (var pair in _propertyConfigurations) {
-            VMPropertyBase property = pair.Key;
+            IVMProperty property = pair.Key;
             BehaviorChainConfiguration config = pair.Value;
 
             var chain = config.CreateChain();
