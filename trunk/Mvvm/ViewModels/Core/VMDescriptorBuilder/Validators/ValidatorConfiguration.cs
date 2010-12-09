@@ -1,7 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System.Diagnostics.Contracts;
 
-   internal sealed class ValidatorConfiguration {
+   internal class ValidatorConfiguration {
       private readonly ViewModelValidationBehavior _validationBehavior;
       private readonly VMPropertyPath _targetPath;
       private readonly PropertySelector _targetProperty;
@@ -33,7 +33,7 @@
       ///   Returns a new <see cref="ValidatorConfiguration"/> with its <see 
       ///   cref="TargetProperty"/> set to the passed in property.
       /// </summary>
-      public ValidatorConfiguration SetTargetProperty(PropertySelector selector) {
+      public virtual ValidatorConfiguration SetTargetProperty(PropertySelector selector) {
          return new ValidatorConfiguration(_validationBehavior, _targetPath, selector);
       }
 
@@ -41,7 +41,7 @@
       ///   Returns a new <see cref="ValidatorConfiguration"/> whos TargetPath is
       ///   extended by the passed VM property.
       /// </summary>
-      public ValidatorConfiguration ExtendTargetPath(PropertySelector selector) {
+      public virtual ValidatorConfiguration ExtendTargetPath(PropertySelector selector) {
          return new ValidatorConfiguration(
             _validationBehavior,
             _targetPath.AddProperty(selector),
