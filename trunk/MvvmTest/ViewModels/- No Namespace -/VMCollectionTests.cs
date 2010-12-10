@@ -1,9 +1,6 @@
 ﻿using System.Linq;
 using Inspiring.Mvvm.ViewModels;
 using Inspiring.Mvvm.ViewModels.Core;
-using Inspiring.Mvvm.ViewModels.Core.BehaviorInterfaces;
-using Inspiring.Mvvm.ViewModels.Core.Collections;
-using Inspiring.MvvmTest.Stubs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

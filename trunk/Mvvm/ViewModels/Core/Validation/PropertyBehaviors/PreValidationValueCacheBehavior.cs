@@ -1,8 +1,7 @@
-﻿using System.Diagnostics.Contracts;
-namespace Inspiring.Mvvm.ViewModels.Core.Validation.PropertyBehaviors {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
 
    internal sealed class PreValidationValueCacheBehavior<TValue> :
-      Behavior,
+      InitializableBehavior,
       IBehaviorInitializationBehavior,
       IValueAccessorBehavior<TValue>,
       IRevalidationBehavior,
@@ -13,26 +12,43 @@ namespace Inspiring.Mvvm.ViewModels.Core.Validation.PropertyBehaviors {
 
       public void Initialize(BehaviorInitializationContext context) {
          _valueCacheField = context.Fields.DefineField<TValue>(ValueCacheGroup);
+         this.InitializeNext(context);
+         SetInitialized();
       }
 
       public TValue GetValue(IBehaviorContext context, ValueStage stage) {
          RequireInitialized();
-         return this.CallNext(x => x.GetValue(context, stage));
+
+         if (HasCachedValue(context)) {
+            return GetCachedValue(context);
+         }
+
+         return this.GetValueNext<TValue>(context);
       }
 
       public void SetValue(IBehaviorContext context, TValue value) {
          RequireInitialized();
 
-         this.CallNext(x => x.SetValue(context, value));
+         IValidationStateProviderBehavior stateBehavior;
+         bool hasStateBehavior = TryGetBehavior(out stateBehavior);
 
-         IValidationStatePropertyBehavior stateBehavior;
-         if (TryGetBehavior(out stateBehavior)) {
-            ValidationState state = stateBehavior.GetValidationState(context);
-            if (!state.IsValid) {
-               SetCache(context, value);
-            } else {
-               ClearCache(context);
-            }
+         if (!hasStateBehavior) {
+            this.SetValueNext(context, value);
+            return;
+         }
+
+         // Always cache the value, so that GetValue returns the new value when
+         // called in during the validation for example.
+         SetCache(context, value);
+
+         this.SetValueNext(context, value);
+
+         bool successfullySetValue = stateBehavior
+            .GetValidationState(context)
+            .IsValid;
+
+         if (successfullySetValue) {
+            ClearCache(context);
          }
       }
 
@@ -48,19 +64,20 @@ namespace Inspiring.Mvvm.ViewModels.Core.Validation.PropertyBehaviors {
          ClearCache(context);
       }
 
-      private void RequireInitialized() {
-         Contract.Assert(
-            _valueCacheField != null,
-            "Behavior not initialized."
-         );
-      }
-
       private void ClearCache(IBehaviorContext context) {
          context.FieldValues.ClearField(_valueCacheField);
       }
 
       private void SetCache(IBehaviorContext context, TValue value) {
          context.FieldValues.SetValue(_valueCacheField, value);
+      }
+
+      public TValue GetCachedValue(IBehaviorContext context) {
+         return context.FieldValues.GetValue(_valueCacheField);
+      }
+
+      private bool HasCachedValue(IBehaviorContext context) {
+         return context.FieldValues.HasValue(_valueCacheField);
       }
    }
 }

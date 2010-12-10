@@ -8,6 +8,8 @@
       public static readonly BehaviorKey DisplayValueAccessor = new BehaviorKey("DisplayValueAccessor");
       public static readonly BehaviorKey Validator = new BehaviorKey("Validator");
       public static readonly BehaviorKey PropertyChangedTrigger = new BehaviorKey("PropertyChangedTrigger");
+      public static readonly BehaviorKey PreValidationValueCache = new BehaviorKey("PropertyChangedTrigger");
+
       public static readonly BehaviorKey PropertyValueCache = new BehaviorKey("PropertyValueCache");
       public static readonly BehaviorKey ManualUpdateBehavior = new BehaviorKey("ManualUpdateBehavior");
 

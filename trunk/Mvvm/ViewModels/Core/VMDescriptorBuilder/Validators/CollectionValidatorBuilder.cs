@@ -4,12 +4,12 @@
    using System.Diagnostics.Contracts;
 
    public sealed class CollectionValidatorBuilder<TItemVM> where TItemVM : IViewModel {
-      private ViewModelValidationBehavior _validationBehavior;
+      private ValidatorConfiguration _configuration;
 
-      internal CollectionValidatorBuilder(ViewModelValidationBehavior validationBehavior) {
-         Contract.Requires(validationBehavior != null);
+      internal CollectionValidatorBuilder(ValidatorConfiguration configuration) {
+         Contract.Requires(configuration != null);
 
-         _validationBehavior = validationBehavior;
+         _configuration = configuration;
       }
 
       /// <summary>

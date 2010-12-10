@@ -167,7 +167,6 @@
     <Compile Include="ViewModels\Core\Common\IInitializationPropertyBehavior.cs" />
     <Compile Include="ViewModels\Core\Common\BehaviorInitializationContext.cs" />
     <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\DiscardingRevalidationBehavior.cs" />
-    <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\IValidationStatePropertyBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\PreValidationValueCacheBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\PropertyValidationBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationContext.cs" />
@@ -211,6 +210,7 @@
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Validators\CollectionValidatorBuilder.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Validators\PropertyValidatorBuilder.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Validators\ValidatorBuilder.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Validators\ValidatorBuilderBase.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Validators\ValidatorConfiguration.cs" />
     <Compile Include="ViewModels\Core\VMPropertyExtensionMethods.cs" />
     <Compile Include="ViewModels\ExtensionMethods.cs" />

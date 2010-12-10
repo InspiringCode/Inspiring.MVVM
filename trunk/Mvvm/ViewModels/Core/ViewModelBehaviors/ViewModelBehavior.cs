@@ -5,14 +5,14 @@
          IBehaviorContext context,
          ValidationArgs args
       ) {
-         this.CallNext(x => x.OnValidating(context, args));
+         this.OnValidatingNext(context, args);
       }
 
       protected internal virtual void OnSelfChanged(
          IBehaviorContext context,
          ChangeArgs args
       ) {
-         this.CallNext(x => x.OnSelfChanged(context, args));
+         this.OnSelfChangedNext(context, args);
       }
 
       protected internal virtual void OnChildChanged(
@@ -20,7 +20,7 @@
          ChangeArgs args,
          InstancePath changedChildPath
       ) {
-         this.CallNext(x => x.OnChildChanged(context, args, changedChildPath));
+         this.OnChildChangedNext(context, args, changedChildPath);
       }
 
       /// <summary>
@@ -38,7 +38,7 @@
          InstancePath changedPath
       ) {
          //Contract.Requires(changedPath.RootVM == context.VM && changedPath.LeafVM == args.ChangedVM);
-         this.CallNext(x => x.OnChanged(context, args, changedPath));
+         this.OnChangedNext(context, args, changedPath);
       }
 
 

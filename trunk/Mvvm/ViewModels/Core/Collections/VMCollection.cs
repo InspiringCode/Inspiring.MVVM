@@ -4,7 +4,6 @@
    using System.Diagnostics.Contracts;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels.Core;
-   using Inspiring.Mvvm.ViewModels.Core.BehaviorInterfaces;
 
    /// <summary>
    ///   

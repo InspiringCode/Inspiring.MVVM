@@ -64,7 +64,7 @@
 
          context.NotifyChange(args);
 
-         this.CallNext(x => x.UpdateFromSource(context));
+         this.UpdateFromSourceNext(context);
       }
 
       public void UpdateSource(IBehaviorContext vm) {

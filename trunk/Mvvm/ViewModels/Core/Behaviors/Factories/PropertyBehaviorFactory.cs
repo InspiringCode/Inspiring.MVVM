@@ -27,8 +27,12 @@
             return new PropertyDescriptorBehavior();
          }
 
+         if (key == BehaviorKeys.PreValidationValueCache) {
+            return new PreValidationValueCacheBehavior<TValue>();
+         }
+
          if (key == BehaviorKeys.Validator) {
-            return new ViewModelValidationBehavior();
+            return new PropertyValidationBehavior<TValue>();
          }
 
          if (key == BehaviorKeys.PropertyValueCache) {

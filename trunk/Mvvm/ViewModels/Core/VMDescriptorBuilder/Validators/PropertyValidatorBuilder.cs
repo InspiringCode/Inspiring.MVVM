@@ -4,11 +4,11 @@
    using Inspiring.Mvvm.Common;
 
    public sealed class PropertyValidatorBuilder<TVM, TValue> where TVM : IViewModel {
-      private ViewModelValidationBehavior _validationBehavior;
+      private ValidatorConfiguration _configuration;
 
-      internal PropertyValidatorBuilder(ViewModelValidationBehavior behavior) {
-         Contract.Requires(behavior != null);
-         _validationBehavior = behavior;
+      internal PropertyValidatorBuilder(ValidatorConfiguration configuration) {
+         Contract.Requires(configuration != null);
+         _configuration = configuration;
       }
 
       /// <summary>
@@ -25,12 +25,7 @@
       ///   value of the property.
       /// </param>
       public void Custom(Action<TVM, TValue, ValidationArgs> validator) {
-         _validationBehavior.AddValidator(
-            new DelegateValidator(validator),
-            ValidationType.PropertyValue,
-            VMPropertyPath.Empty,
-            null
-         );
+         _configuration.AddPropertyValidator(new DelegateValidator(validator));
       }
 
       private sealed class DelegateValidator : Validator {

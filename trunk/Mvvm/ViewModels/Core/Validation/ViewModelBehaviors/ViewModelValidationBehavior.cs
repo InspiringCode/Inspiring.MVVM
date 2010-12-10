@@ -51,10 +51,12 @@
          );
       }
 
-      public void Initialize(BehaviorInitializationContext initializationContext) {
-         _validationStateField = initializationContext
+      public void Initialize(BehaviorInitializationContext context) {
+         _validationStateField = context
             .Fields
             .DefineField<ValidationState>(ViewModel.GeneralFieldGroup);
+
+         this.InitializeNext(context);
       }
 
       public ValidationState GetValidationState(IBehaviorContext context) {

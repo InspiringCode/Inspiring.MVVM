@@ -13,6 +13,7 @@
          RegisterTemplate(
             BehaviorChainTemplateKeys.ViewModel,
             new BehaviorChainTemplate(ViewModelBehaviorFactory.Instance)
+               .Append(BehaviorKeys.Validator, DefaultBehaviorState.Disabled)
                .Append(BehaviorKeys.TypeDescriptor)
          );
       }
@@ -23,6 +24,7 @@
             new BehaviorChainTemplate(PropertyBehaviorFactory.Instance)
                .Append(BehaviorKeys.InvalidDisplayValueCache, DefaultBehaviorState.Disabled)
                .Append(BehaviorKeys.DisplayValueAccessor)
+               .Append(BehaviorKeys.PreValidationValueCache, DefaultBehaviorState.Disabled)
                .Append(BehaviorKeys.Validator, DefaultBehaviorState.Disabled)
                .Append(BehaviorKeys.PropertyChangedTrigger)
                .Append(BehaviorKeys.PropertyValueCache, DefaultBehaviorState.Disabled)

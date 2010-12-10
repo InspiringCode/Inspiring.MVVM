@@ -11,6 +11,10 @@
       }
 
       public IBehavior Create<TVM>(BehaviorKey key) where TVM : IViewModel {
+         if (key == BehaviorKeys.Validator) {
+            return new ViewModelValidationBehavior();
+         }
+
          if (key == BehaviorKeys.TypeDescriptor) {
             return new TypeDescriptorBehavior();
          }

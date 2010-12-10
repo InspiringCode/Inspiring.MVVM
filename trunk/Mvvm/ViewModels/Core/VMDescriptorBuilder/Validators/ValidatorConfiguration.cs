@@ -6,9 +6,8 @@
       private readonly VMPropertyPath _targetPath;
       private readonly PropertySelector _targetProperty;
 
-      public ValidatorConfiguration(ViewModelValidationBehavior validationBehavior)
-         : this(validationBehavior, VMPropertyPath.Empty, null) {
-         Contract.Requires(validationBehavior != null);
+      protected ValidatorConfiguration() {
+         _targetPath = VMPropertyPath.Empty;
       }
 
       private ValidatorConfiguration(
@@ -29,12 +28,20 @@
          get { return _targetProperty; }
       }
 
+      protected virtual ViewModelValidationBehavior ValidationBehavior {
+         get { return _validationBehavior; }
+      }
+
       /// <summary>
       ///   Returns a new <see cref="ValidatorConfiguration"/> with its <see 
       ///   cref="TargetProperty"/> set to the passed in property.
       /// </summary>
       public virtual ValidatorConfiguration SetTargetProperty(PropertySelector selector) {
-         return new ValidatorConfiguration(_validationBehavior, _targetPath, selector);
+         return new ValidatorConfiguration(
+            ValidationBehavior,
+            _targetPath,
+            selector
+         );
       }
 
       /// <summary>
@@ -43,7 +50,7 @@
       /// </summary>
       public virtual ValidatorConfiguration ExtendTargetPath(PropertySelector selector) {
          return new ValidatorConfiguration(
-            _validationBehavior,
+            ValidationBehavior,
             _targetPath.AddProperty(selector),
             _targetProperty
          );
@@ -52,7 +59,7 @@
       public void AddViewModelValidator(Validator validator) {
          Contract.Requires(validator != null);
 
-         _validationBehavior.AddValidator(
+         ValidationBehavior.AddValidator(
             validator,
             ValidationType.ViewModel,
             TargetPath,
@@ -64,9 +71,9 @@
          Contract.Requires(validator != null);
          Contract.Requires(TargetProperty != null);
 
-         _validationBehavior.AddValidator(
+         ValidationBehavior.AddValidator(
             validator,
-            ValidationType.ViewModel,
+            ValidationType.PropertyValue,
             TargetPath,
             TargetProperty
          );
@@ -76,7 +83,7 @@
          Contract.Requires(validator != null);
          Contract.Requires(TargetProperty != null);
 
-         _validationBehavior.AddValidator(
+         ValidationBehavior.AddValidator(
             validator,
             ValidationType.PropertyDisplayValue,
             TargetPath,

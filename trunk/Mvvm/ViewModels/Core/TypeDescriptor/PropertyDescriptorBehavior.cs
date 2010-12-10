@@ -22,6 +22,7 @@
 
       public void Initialize(BehaviorInitializationContext context) {
          _property = context.Property;
+         this.InitializeNext(context);
       }
 
       public void HandlePropertyChanged(IBehaviorContext context) {

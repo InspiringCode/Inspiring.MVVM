@@ -1,11 +1,12 @@
 ﻿using System.Diagnostics.Contracts;
+using System;
 namespace Inspiring.Mvvm.ViewModels.Core {
 
    internal sealed class PropertyValidationBehavior<TValue> :
       Behavior,
       IBehaviorInitializationBehavior,
-      //IPropertyAccessorBehavior<TValue>, // TODO: Add back interface after refactoring.
-      IValidationStatePropertyBehavior {
+      IValueAccessorBehavior<TValue>, 
+      IValidationStateProviderBehavior {
 
       private static readonly FieldDefinitionGroup ValidationErrorGroup = new FieldDefinitionGroup();
 
@@ -17,15 +18,21 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          _validationStateField = context
             .Fields
             .DefineField<ValidationState>(ValidationErrorGroup);
+
+         this.InitializeNext(context);
       }
 
-      public TValue GetValue(IBehaviorContext vm) {
-         return this.CallNext(x => x.GetValue(vm));
+      public TValue GetValue(IBehaviorContext context, ValueStage stage) {
+         IValueAccessorBehavior<TValue> next;
+         if (TryGetBehavior(out next)) {
+            return next.GetValue(context, stage);
+         }
+         throw new NotImplementedException();
       }
 
-      public void SetValue(IBehaviorContext vm, TValue value) {
-         if (Validate(vm).IsValid) {
-            this.CallNext(x => x.SetValue(vm, value));
+      public void SetValue(IBehaviorContext context, TValue value) {
+         if (Validate(context).IsValid) {
+            this.SetValueNext(context, value);
          }
       }
 

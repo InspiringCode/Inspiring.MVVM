@@ -2,7 +2,6 @@
    using System;
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
-   using Inspiring.Mvvm.ViewModels.Core.BehaviorInterfaces;
 
    internal sealed class SynchronizerCollectionBehavior<TItemVM, TItemSource> :
       Behavior,
@@ -34,7 +33,7 @@
          }
 
 
-         this.CallNext(x => x.ItemInserted(context, collection, item, index));
+         this.ItemInsertedNext(context, collection, item, index);
       }
 
       public void ItemRemoved(
@@ -60,7 +59,7 @@
             ThrowOutOfSyncExceptionIf(!itemWasFound || listSourceHasChanged);
          }
 
-         this.CallNext(x => x.ItemRemoved(context, collection, item, index));
+         this.ItemRemovedNext(context, collection, item, index);
       }
 
       public void ItemSet(
@@ -94,7 +93,7 @@
             ThrowOutOfSyncExceptionIf(listSourceHasChanged);
          }
 
-         this.CallNext(x => x.ItemSet(context, collection, previousItem, item, index));
+         this.ItemSetNext(context, collection, previousItem, item, index);
       }
 
       public void ItemsCleared(
@@ -112,7 +111,7 @@
             collectionSource.Clear();
          }
 
-         this.CallNext(x => x.ItemsCleared(context, collection, previousItems));
+         this.ItemsClearedNext(context, collection, previousItems);
       }
 
       private IEnumerable<TItemSource> GetSource(IBehaviorContext context) {

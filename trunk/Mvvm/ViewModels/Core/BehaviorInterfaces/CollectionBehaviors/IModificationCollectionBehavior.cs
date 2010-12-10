@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core.BehaviorInterfaces {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System.Diagnostics.Contracts;
    using Contracts;
 

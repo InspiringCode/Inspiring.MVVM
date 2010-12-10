@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System.Diagnostics.Contracts;
-   using Inspiring.Mvvm.ViewModels.Core.BehaviorInterfaces;
 
    internal sealed class DescriptorSetterCollectionBehavior<TItemVM> :
       Behavior,
@@ -16,20 +15,20 @@
 
       public void ItemInserted(IBehaviorContext context, IVMCollection<TItemVM> collection, TItemVM item, int index) {
          item.Descriptor = _itemDescriptor;
-         this.CallNext(x => x.ItemInserted(context, collection, item, index));
+         this.ItemInsertedNext(context, collection, item, index);
       }
 
       public void ItemSet(IBehaviorContext context, IVMCollection<TItemVM> collection, TItemVM previousItem, TItemVM item, int index) {
          item.Descriptor = _itemDescriptor;
-         this.CallNext(x => x.ItemSet(context, collection, previousItem, item, index));
+         this.ItemSetNext(context, collection, previousItem, item, index);
       }
 
       public void ItemRemoved(IBehaviorContext context, IVMCollection<TItemVM> collection, TItemVM item, int index) {
-         this.CallNext(x => x.ItemRemoved(context, collection, item, index));
+         this.ItemRemovedNext(context, collection, item, index);
       }
 
       public void ItemsCleared(IBehaviorContext context, IVMCollection<TItemVM> collection, TItemVM[] previousItems) {
-         this.CallNext(x => x.ItemsCleared(context, collection, previousItems));
+         this.ItemsClearedNext(context, collection, previousItems);
       }
    }
 }

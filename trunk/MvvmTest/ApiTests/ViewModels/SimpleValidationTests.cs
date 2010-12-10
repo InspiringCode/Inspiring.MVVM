@@ -25,21 +25,21 @@
       }
 
       [TestMethod]
-      public void GetValidationState_AfterPropertyBecameInvalid_ReturnsError() {
+      public void GetValidationState_AfterPropertyBecameValid_ReturnsError() {
          VM.Title = ArbitraryString;
          AssertTitleValid();
       }
 
       [TestMethod]
-      public void GetValidationState_AfterPropertyBecameValid_ReturnsSuccess() {
+      public void GetValidationState_AfterPropertyBecameInvalid_ReturnsSuccess() {
          VM.Title = ArbitraryString;
          VM.Title = String.Empty;
          AssertTitleInvalid();
       }
 
       private void AssertTitleInvalid() {
-         Assert.AreEqual(1, VM.TitleValidateState, "Validation state of 'Title' should contain exactly one validation error.");
-         Assert.AreEqual(ErrorMessage, VM.TitleValidateState.Errors.Single(), "The single validation error of 'Title' does not contain the expected error.");
+         Assert.AreEqual(1, VM.TitleValidateState.Errors.Count, "Validation state of 'Title' should contain exactly one validation error.");
+         Assert.AreEqual(ErrorMessage, VM.TitleValidateState.Errors.Single().Message, "The single validation error of 'Title' does not contain the expected error.");
       }
 
       private void AssertTitleValid() {

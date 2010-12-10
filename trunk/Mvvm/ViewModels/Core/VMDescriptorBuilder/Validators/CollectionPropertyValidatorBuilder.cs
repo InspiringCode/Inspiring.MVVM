@@ -4,11 +4,11 @@
    using System.Diagnostics.Contracts;
 
    public sealed class CollectionPropertyValidatorBuilder<TItemValue> {
-      private ViewModelValidationBehavior _validationBehavior;
+      private ValidatorConfiguration _configuration;
 
-      internal CollectionPropertyValidatorBuilder(ViewModelValidationBehavior validationBehavior) {
-         Contract.Requires(validationBehavior != null);
-         _validationBehavior = validationBehavior;
+      internal CollectionPropertyValidatorBuilder(ValidatorConfiguration configuration) {
+         Contract.Requires(configuration != null);
+         _configuration = configuration;
       }
 
       /// <summary>

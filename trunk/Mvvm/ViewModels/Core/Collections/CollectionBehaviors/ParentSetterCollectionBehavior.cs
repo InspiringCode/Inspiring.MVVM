@@ -1,5 +1,4 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
-   using Inspiring.Mvvm.ViewModels.Core.BehaviorInterfaces;
 
    internal sealed class ParentSetterCollectionBehavior<TItemVM> :
       Behavior,
@@ -15,7 +14,7 @@
          // Set the parent first so that validation and change notification can
          // propagate properly.
          item.Kernel.Parent = collection.Owner;
-         this.CallNext(x => x.ItemInserted(context, collection, item, index));
+         this.ItemInsertedNext(context, collection, item, index);
       }
 
       public void ItemRemoved(
@@ -26,7 +25,7 @@
       ) {
          // Clear the parent last so that validation and change notification can
          // propagate properly.
-         this.CallNext(x => x.ItemRemoved(context, collection, item, index));
+         this.ItemRemovedNext(context, collection, item, index);
          item.Kernel.Parent = null;
       }
 
@@ -38,7 +37,7 @@
          int index
       ) {
          item.Kernel.Parent = collection.Owner;
-         this.CallNext(x => x.ItemSet(context, collection, previousItem, item, index));
+         this.ItemSetNext(context, collection, previousItem, item, index);
          previousItem.Kernel.Parent = null;
       }
 
@@ -47,7 +46,7 @@
          IVMCollection<TItemVM> collection,
          TItemVM[] previousItems
       ) {
-         this.CallNext(x => x.ItemsCleared(context, collection, previousItems));
+         this.ItemsClearedNext(context, collection, previousItems);
 
          foreach (TItemVM item in previousItems) {
             item.Kernel.Parent = null;

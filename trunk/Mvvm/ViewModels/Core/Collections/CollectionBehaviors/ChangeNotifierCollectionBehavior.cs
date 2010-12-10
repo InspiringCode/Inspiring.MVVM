@@ -1,5 +1,4 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
-   using Inspiring.Mvvm.ViewModels.Core.BehaviorInterfaces;
 
    internal sealed class ChangeNotifierCollectionBehavior<TItemVM> :
       Behavior,
@@ -13,7 +12,7 @@
          int index
       ) {
          context.NotifyChange(new ChangeArgs(ChangeType.AddedToCollection, item));
-         this.CallNext(x => x.ItemInserted(context, collection, item, index));
+         this.ItemInsertedNext(context, collection, item, index);
       }
 
       public void ItemRemoved(
@@ -23,7 +22,7 @@
          int index
       ) {
          context.NotifyChange(new ChangeArgs(ChangeType.RemovedFromCollection, item));
-         this.CallNext(x => x.ItemRemoved(context, collection, item, index));
+         this.ItemRemovedNext(context, collection, item, index);
       }
 
       public void ItemSet(
@@ -36,7 +35,7 @@
          context.NotifyChange(new ChangeArgs(ChangeType.RemovedFromCollection, previousItem));
          context.NotifyChange(new ChangeArgs(ChangeType.AddedToCollection, item));
 
-         this.CallNext(x => x.ItemSet(context, collection, previousItem, item, index));
+         this.ItemSetNext(context, collection, previousItem, item, index);
       }
 
       public void ItemsCleared(
@@ -48,7 +47,7 @@
             context.NotifyChange(new ChangeArgs(ChangeType.RemovedFromCollection, item));
          }
 
-         this.CallNext(x => x.ItemsCleared(context, collection, previousItems));
+         this.ItemsClearedNext(context, collection, previousItems);
       }
    }
 }

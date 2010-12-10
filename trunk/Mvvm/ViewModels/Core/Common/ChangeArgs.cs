@@ -27,7 +27,10 @@
          IViewModel changedVM,
          IVMProperty changedProperty
       ) {
-         Contract.Requires(changeType == ChangeType.PropertyChanged);
+         Contract.Requires(
+            changeType == ChangeType.PropertyChanged || 
+            changeType == ChangeType.ValidationStateChanged
+         );
          Contract.Requires(changedVM != null);
          Contract.Requires(changedProperty != null);
 
@@ -64,8 +67,7 @@
       private void ObjectInvariant() {
          Contract.Invariant(ChangedVM != null);
          Contract.Invariant(
-            (ChangeType == ChangeType.PropertyChanged && ChangedProperty != null) ||
-            (ChangeType != ChangeType.PropertyChanged && ChangedProperty == null)
+            ChangeType == ChangeType.PropertyChanged ? ChangedProperty != null : true
          );
       }
    }
