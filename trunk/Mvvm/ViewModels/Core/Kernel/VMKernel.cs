@@ -83,6 +83,9 @@
 
       public void Revalidate(ValidationScope scope, ValidationMode mode) {
 
+         foreach (IVMProperty property in _descriptor.Properties) {
+            property.Revalidate(this, mode);
+         }
       }
 
       // TODO: Test and refactor me.
@@ -111,7 +114,7 @@
             args
                .ChangedProperty
                .Behaviors
-               .TryCall<IHandlePropertyChangedBehavior>(b => 
+               .TryCall<IHandlePropertyChangedBehavior>(b =>
                   b.HandlePropertyChanged(this)
                );
          }
@@ -132,7 +135,11 @@
          }
 
          if (args.ChangeType == ChangeType.PropertyChanged) {
-            _vm.RaisePropertyChanged(args.ChangedProperty.PropertyName);
+            _vm.NotifyPropertyChanged(args.ChangedProperty);
+         }
+
+         if (args.ChangeType == ChangeType.ValidationStateChanged) {
+            _vm.NotifyValidationStateChanged(args.ChangedProperty);
          }
       }
 

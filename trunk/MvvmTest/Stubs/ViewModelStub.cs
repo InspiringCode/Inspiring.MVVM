@@ -58,7 +58,7 @@
       }
 
 
-      public void RaisePropertyChanged(string propertyName) {
+      public void NotifyPropertyChanged(string propertyName) {
          throw new NotImplementedException();
       }
 
@@ -66,6 +66,15 @@
       public VMDescriptorBase Descriptor {
          get;
          set;
+      }
+
+
+      public void NotifyPropertyChanged(IVMProperty property) {
+         throw new NotImplementedException();
+      }
+
+      public void NotifyValidationStateChanged(IVMProperty property) {
+         throw new NotImplementedException();
       }
    }
 }

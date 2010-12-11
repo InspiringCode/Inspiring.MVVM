@@ -19,11 +19,11 @@
       public TValue GetValue(IBehaviorContext context, ValueStage stage) {
          RequireInitialized();
 
-         if (HasCachedValue(context)) {
+         if (stage == ValueStage.PreValidation && HasCachedValue(context)) {
             return GetCachedValue(context);
          }
 
-         return this.GetValueNext<TValue>(context);
+         return this.GetValueNext<TValue>(context, ValueStage.PostValidation);
       }
 
       public void SetValue(IBehaviorContext context, TValue value) {
@@ -55,8 +55,10 @@
       public void Revalidate(IBehaviorContext context, ValidationMode mode) {
          RequireInitialized();
          if (mode == ValidationMode.DiscardInvalidValues) {
-            ClearCache(context);
+            ClearCache(context); // TODO: Is this correct?
          }
+
+         this.RevalidateNext(context, mode);
       }
 
       public void HandlePropertyChanged(IBehaviorContext context) {

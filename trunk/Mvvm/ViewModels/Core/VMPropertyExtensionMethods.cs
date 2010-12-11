@@ -24,5 +24,12 @@
             mutabilityChecker.IsMutable(context) :
             true;
       }
+
+      public static void Revalidate(this IVMProperty property, IBehaviorContext context, ValidationMode mode) {
+         IRevalidationBehavior behavior;
+         if (property.Behaviors.TryGetBehavior(out behavior)) {
+            behavior.Revalidate(context, mode);
+         }
+      }
    }
 }

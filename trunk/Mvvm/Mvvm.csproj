@@ -109,7 +109,7 @@
     <Compile Include="ViewModels\Core\BehaviorInterfaces\CollectionBehaviors\IPopulatorCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\CollectionBehaviors\IModificationCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IValueAccessorBehavior.cs" />
-    <Compile Include="ViewModels\Core\BehaviorInterfaces\IRevalidationBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IRevalidationBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IValidationStateProviderBehavior.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorChain.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorChainConfiguration.cs" />

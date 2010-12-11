@@ -7,11 +7,15 @@
    [ContractClass(typeof(IViewModelContract))]
    public interface IViewModel {
       VMKernel Kernel { get; }
+      VMDescriptorBase Descriptor { get; set; }
+
       object GetValue(IVMProperty property, ValueStage stage = ValueStage.PreValidation);
       void SetValue(IVMProperty property, object value);
+      
       IBehaviorContext GetContext();
-      void RaisePropertyChanged(string propertyName);
-      VMDescriptorBase Descriptor { get; set; }
+      
+      void NotifyPropertyChanged(IVMProperty property);
+      void NotifyValidationStateChanged(IVMProperty property);
    }
 
    namespace Contracts {
@@ -35,7 +39,7 @@
             throw new System.NotImplementedException();
          }
 
-         public void RaisePropertyChanged(string propertyName) {
+         public void NotifyPropertyChanged(string propertyName) {
             throw new System.NotImplementedException();
          }
 
@@ -49,6 +53,15 @@
                   ExceptionTexts.DescriptorCannotBeChanged
                );
             }
+         }
+
+
+         public void NotifyPropertyChanged(IVMProperty property) {
+            throw new NotImplementedException();
+         }
+
+         public void NotifyValidationStateChanged(IVMProperty property) {
+            throw new NotImplementedException();
          }
       }
    }

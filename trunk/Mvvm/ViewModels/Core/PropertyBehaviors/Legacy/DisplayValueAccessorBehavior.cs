@@ -15,7 +15,7 @@
          IValueAccessorBehavior<TValue> accessBehavior =
             GetNextBehavior<IValueAccessorBehavior<TValue>>();
 
-         return accessBehavior.GetValue(vm, ValueStage.PostValidation);
+         return accessBehavior.GetValue(vm, ValueStage.PreValidation);
       }
 
       public void SetDisplayValue(IBehaviorContext vm, object value) {

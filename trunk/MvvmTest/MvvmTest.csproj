@@ -62,11 +62,14 @@
     <Compile Include="ApiTests\ViewModels\DisplayValueTests.cs" />
     <Compile Include="ApiTests\ViewModels\Domain\RichText.cs" />
     <Compile Include="ApiTests\ViewModels\Domain\Task.cs" />
-    <Compile Include="ApiTests\ViewModels\SimpleValidationTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\GeneralValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\TypeDescriptorTests.cs" />
     <Compile Include="ApiTests\ViewModels\AccessPropertyTests.cs" />
     <Compile Include="ApiTests\ViewModels\Domain\Area.cs" />
     <Compile Include="ApiTests\ViewModels\Domain\AreaRepository.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\ValidationEventTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\ValidationModeTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\ValidationScopeTests.cs" />
     <Compile Include="ApiTests\ViewModels\VMs\AreaVM.cs" />
     <Compile Include="ApiTests\ViewModels\VMs\TaskVM.cs" />
     <Compile Include="AssertHelper.cs" />
@@ -75,6 +78,7 @@
     <Compile Include="Common\HashCodeServiceTests.cs" />
     <Compile Include="Common\ServiceRegistryTests.cs" />
     <Compile Include="Common\TypeServiceTest.cs" />
+    <Compile Include="DomainAssert.cs" />
     <Compile Include="PropertyChangedCounter.cs" />
     <Compile Include="Screens\ScreenCreationBehaviorTest.cs" />
     <Compile Include="Stubs\BehaviorContextStub.cs" />
@@ -85,6 +89,7 @@
     <Compile Include="TestExtensions.cs" />
     <Compile Include="TestUtils\ComparisonObject.cs" />
     <Compile Include="TestUtils\ComparisonObjectTests.cs" />
+    <Compile Include="TestUtils\GenericComparisonObjectTests.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMCollectionTests.cs" />
     <Compile Include="ViewModels\Core\Behaviors\PropertyBehaviors\DisplayValueBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Behaviors\PropertyBehaviors\RefreshableValueCacheBehaviorTests.cs" />

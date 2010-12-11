@@ -10,7 +10,7 @@
          var sourceAccessor = GetNextBehavior<IValueAccessorBehavior<IEnumerable<TItemSource>>>();
          var vmFactory = GetNextBehavior<IViewModelFactoryBehavior<TItemVM>>();
 
-         IEnumerable<TItemSource> sourceItems = sourceAccessor.GetValue(context, ValueStage.PostValidation);
+         IEnumerable<TItemSource> sourceItems = sourceAccessor.GetValue(context);
 
          try {
             collection.IsPopulating = true;

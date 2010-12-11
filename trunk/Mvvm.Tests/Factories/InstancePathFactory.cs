@@ -55,12 +55,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          IBehaviorContext IViewModel.GetContext() {
             throw new NotImplementedException();
          }
-
-         void IViewModel.RaisePropertyChanged(string propertyName) {
-            throw new NotImplementedException();
-         }
-
-
+         
          public VMDescriptorBase Descriptor {
             get {
                throw new NotImplementedException();
@@ -68,6 +63,15 @@ namespace Inspiring.Mvvm.ViewModels.Core {
             set {
                throw new NotImplementedException();
             }
+         }
+
+
+         public void NotifyPropertyChanged(IVMProperty property) {
+            throw new NotImplementedException();
+         }
+
+         public void NotifyValidationStateChanged(IVMProperty property) {
+            throw new NotImplementedException();
          }
       }
    }

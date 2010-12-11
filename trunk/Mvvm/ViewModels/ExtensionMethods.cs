@@ -9,10 +9,10 @@
          }
       }
 
-      public static TValue GetValueNext<TValue>(this Behavior behavior, IBehaviorContext context) {
+      public static TValue GetValueNext<TValue>(this Behavior behavior, IBehaviorContext context, ValueStage stage) {
          return behavior
             .GetNextBehavior<IValueAccessorBehavior<TValue>>()
-            .GetValue(context);
+            .GetValue(context, stage);
       }
 
       public static void SetValueNext<TValue>(this Behavior behavior, IBehaviorContext context, TValue value) {
@@ -136,6 +136,17 @@
          IManuelUpdateBehavior next;
          if (behavior.TryGetBehavior(out next)) {
             next.UpdateSource(context);
+         }
+      }
+
+      public static void RevalidateNext(
+         this Behavior behavior,
+         IBehaviorContext context,
+         ValidationMode mode
+      ) {
+         IRevalidationBehavior next;
+         if (behavior.TryGetBehavior(out next)) {
+            next.Revalidate(context, mode);
          }
       }
    }

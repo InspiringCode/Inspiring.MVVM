@@ -6,7 +6,8 @@ namespace Inspiring.Mvvm.ViewModels.Core {
       Behavior,
       IBehaviorInitializationBehavior,
       IValueAccessorBehavior<TValue>, 
-      IValidationStateProviderBehavior {
+      IValidationStateProviderBehavior,
+      IRevalidationBehavior {
 
       private static readonly FieldDefinitionGroup ValidationErrorGroup = new FieldDefinitionGroup();
 
@@ -43,6 +44,19 @@ namespace Inspiring.Mvvm.ViewModels.Core {
             return state;
          } else {
             return ValidationState.Valid;
+         }
+      }
+
+      public void Revalidate(IBehaviorContext context, ValidationMode mode) {
+         switch (mode) {
+            case ValidationMode.CommitValidValues:
+               object displayValue = _property.GetValue(context, ValueStage.PreConversion);
+               _property.SetValue(context, displayValue);
+               break;
+            case ValidationMode.DiscardInvalidValues:
+               break;
+            default:
+               throw new NotSupportedException();
          }
       }
 

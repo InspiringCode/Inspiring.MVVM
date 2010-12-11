@@ -91,9 +91,9 @@
 
       public event PropertyChangedEventHandler PropertyChanged;
 
-      protected internal T GetValue<T>(VMPropertyBase<T> property, ValueStage stage = ValueStage.PreValidation) {
+      protected internal T GetValue<T>(VMPropertyBase<T> property) {
          Contract.Requires<ArgumentNullException>(property != null);
-         return property.GetValue(Kernel, stage);
+         return property.GetValue(Kernel, ValueStage.PreValidation);
       }
 
       protected internal void SetValue<T>(VMPropertyBase<T> property, T value) {
@@ -132,8 +132,24 @@
          return Kernel;
       }
 
-      void IViewModel.RaisePropertyChanged(string propertyName) {
-         OnPropertyChanged(propertyName);
+      void IViewModel.NotifyPropertyChanged(IVMProperty property) {
+         OnPropertyChanged(property);
+      }
+
+      void IViewModel.NotifyValidationStateChanged(IVMProperty property) {
+         OnValidationStateChanged(property);
+      }
+
+      protected virtual void OnPropertyChanged(IVMProperty property) {
+         OnPropertyChanged(property.PropertyName);
+      }
+
+      protected virtual void OnValidationStateChanged(IVMProperty property) {
+         if (property != null) {
+            OnPropertyChanged("Item[]");
+         } else {
+            OnPropertyChanged("Error");
+         }
       }
 
       protected virtual void OnPropertyChanged(string propertyName) {

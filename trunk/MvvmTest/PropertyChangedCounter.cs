@@ -45,5 +45,10 @@
             message != null ? " " + message : String.Empty
          );
       }
+
+      public void Reset() {
+         _assertedRaises = 0;
+         Count = 0;
+      }
    }
 }
