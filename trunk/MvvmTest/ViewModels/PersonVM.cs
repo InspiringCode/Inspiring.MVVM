@@ -16,9 +16,9 @@
                   BirthDate = p.Mapped(x => x.BirthDate).Property(),
                   Salary = p.Calculated(x => x.Salary, (x, val) => x.Salary = val).Property(),
                   Name = p.Calculated(x => String.Format("{0} {1}", x.FirstName, x.LastName)).Property(),
-                  IsSelected = v.Local().Property<bool>(),
+                  IsSelected = v.Local.Property<bool>(),
                   Projects = p.MappedCollection(x => x.Projects).Of<ProjectVM>(PersonVM.Descriptor),
-                  CurrentProject = v.Local().Property<ProjectVM>()
+                  CurrentProject = v.Local.Property<ProjectVM>()
                };
             })
          //.WithValidations((d, c) => {

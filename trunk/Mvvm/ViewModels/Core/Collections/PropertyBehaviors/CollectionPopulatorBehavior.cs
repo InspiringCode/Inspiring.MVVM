@@ -1,12 +1,11 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
 
-   internal sealed class CollectionPopulatorBehavior<TParentVM, TItemVM, TItemSource> :
+   internal sealed class CollectionPopulatorBehavior<TItemVM> :
       Behavior,
       IValueAccessorBehavior<IVMCollection<TItemVM>>,
       IMutabilityCheckerBehavior
-      where TItemVM : IViewModel
-      where TParentVM : IViewModel {
+      where TItemVM : IViewModel {
 
       public IVMCollection<TItemVM> GetValue(IBehaviorContext context, ValueStage stage) {
          var fac = GetNextBehavior<ICollectionFactoryBehavior<TItemVM>>();

@@ -26,6 +26,13 @@ namespace Inspiring.Mvvm.ViewModels.Core.Builder.Properties {
       }
 
       /// <inheritdoc />
+      public ILocalVMPropertyFactory<TVM> Local {
+         get {
+            return new LocalVMPropertyLocal<TVM>(Configuration);
+         }
+      }
+
+      /// <inheritdoc />
       public IVMPropertyFactoryWithSource<TVM, T> Mapped<T>(
          Expression<Func<TSource, T>> sourcePropertySelector
       ) {
@@ -60,19 +67,23 @@ namespace Inspiring.Mvvm.ViewModels.Core.Builder.Properties {
       }
 
       /// <inheritdoc />
-      public ILocalVMPropertyFactory<TVM> Local() {
-         return new LocalVMPropertyLocal<TVM>(Configuration);
-      }
-
-      /// <inheritdoc />
       public IVMCollectionPropertyFactory<TVM> Collection() {
          throw new NotImplementedException();
       }
 
+      /// <inheritdoc />
       public IVMCollectionPropertyFactoryWithSource<TVM, TItemSource> Collection<TItemSource>(
          Func<TSource, IEnumerable<TItemSource>> sourceCollectionSelector
       ) {
-         throw new NotImplementedException();
+         var sourceCollectionAccessor = new CalculatedPropertyAccessor<TVM, TSource, IEnumerable<TItemSource>>(
+            _sourceObjectPath,
+            sourceCollectionSelector
+         );
+
+         return new VMCollectionPropertyFactoryWithSource<TVM, TItemSource>(
+            Configuration,
+            sourceCollectionAccessor
+         );
       }
 
       public VMProperty<ICommand> Command(

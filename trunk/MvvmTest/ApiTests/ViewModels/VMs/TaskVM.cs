@@ -1,5 +1,4 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels {
-   using Inspiring.Mvvm;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
 
@@ -16,13 +15,13 @@
                   task => task.Description != null ? task.Description.Html : null,
                   (task, val) => task.Description = new RichText(val)
                ).Property(),
-               ScreenTitle = vm.Local().Property<string>()
+               ScreenTitle = vm.Local.Property<string>()
             };
          })
          .Build();
 
-      public TaskVM(IServiceLocator serviceLocator = null)
-         : base(Descriptor, serviceLocator) {
+      public TaskVM()
+         : base(Descriptor) {
       }
 
       public TaskVM(TaskVMDescriptor descriptor)

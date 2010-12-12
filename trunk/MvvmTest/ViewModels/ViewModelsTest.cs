@@ -37,7 +37,7 @@ namespace Inspiring.MvvmTest.ViewModels {
                   BirthDate = p.Mapped(x => x.BirthDate).Property(),
                   Salary = p.Mapped(x => x.Salary).Property(),
                   Name = p.Calculated(x => String.Format("{0} {1}", x.FirstName, x.LastName)).Property(),
-                  IsSelected = v.Local().Property<bool>()
+                  IsSelected = v.Local.Property<bool>()
                };
             })
             .Build();

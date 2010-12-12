@@ -2,6 +2,32 @@
    using System;
    using Inspiring.Mvvm.Common;
 
+   namespace New {
+      internal sealed class DisplayValueAccessorBehavior<TValue> :
+         Behavior,
+         IBehaviorInitializationBehavior,
+         IDisplayValueAccessorBehavior,
+         IValidationBehavior {
+
+         public void Initialize(BehaviorInitializationContext context) {
+            throw new NotImplementedException();
+         }
+
+         public object GetDisplayValue(IBehaviorContext vm) {
+            throw new NotImplementedException();
+         }
+
+         public void SetDisplayValue(IBehaviorContext vm, object value) {
+            throw new NotImplementedException();
+         }
+
+         public ValidationResult GetValidationResult(IBehaviorContext vm) {
+            throw new NotImplementedException();
+         }
+      }
+   }
+
+
    internal sealed class DisplayValueAccessorBehavior<TValue> :
       Behavior,
       IBehaviorInitializationBehavior,

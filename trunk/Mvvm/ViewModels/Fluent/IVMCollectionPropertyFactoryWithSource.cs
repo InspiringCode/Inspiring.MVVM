@@ -39,7 +39,11 @@
       ///   cref="ICanInitializeFrom.InitializeFrom"/> is called with the source 
       ///   object returned by the mapped or calculated source.
       /// </typeparam>
-      VMProperty<IVMCollection<TItemVM>> Of<TItemVM>()
+      /// <param name="itemDescriptor">
+      ///   Specifies the VM descriptor that should be used for the collection 
+      ///   items. All items must have the same descriptor.
+      /// </param>
+      VMProperty<IVMCollection<TItemVM>> Of<TItemVM>(VMDescriptorBase itemDescriptor)
          where TItemVM : IViewModel, ICanInitializeFrom<TItemSource>;
    }
 }

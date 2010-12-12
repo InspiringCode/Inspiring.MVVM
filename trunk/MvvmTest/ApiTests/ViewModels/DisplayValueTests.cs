@@ -127,7 +127,7 @@
                var vm = c.GetPropertyFactory();
 
                return new MovieReviewVMDescriptor {
-                  Rating = vm.Local().Property<Nullable<int>>()
+                  Rating = vm.Local.Property<Nullable<int>>()
                };
             })
             .Build();

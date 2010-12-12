@@ -6,14 +6,14 @@
 
       public static BehaviorFactoryInvoker CreateInvoker<TVM, TItemVM, TItemSource>()
          where TVM : IViewModel
-         where TItemVM : IViewModel {
+         where TItemVM : IViewModel, ICanInitializeFrom<TItemSource> {
 
          return new CollectionBehaviorFactoryInvoker<TVM, TItemVM, TItemSource>();
       }
 
       public virtual IBehavior Create<TVM, TItemVM, TItemSource>(BehaviorKey key)
          where TVM : IViewModel
-         where TItemVM : IViewModel {
+         where TItemVM : IViewModel, ICanInitializeFrom<TItemSource> {
 
          if (key == CollectionBehaviorKeys.ParentSetter) {
             return new ParentSetterCollectionBehavior<TItemVM>();
@@ -27,6 +27,10 @@
             return new ViewModelFactoryBehavior<TItemVM>();
          }
 
+         if (key == CollectionBehaviorKeys.Populator) {
+            return new PopulatorCollectionBehavior<TItemVM, TItemSource>();
+         }
+
          throw new NotSupportedException(
             ExceptionTexts.BehaviorNotSupportedByFactory.FormatWith(key)
          );
@@ -35,7 +39,7 @@
       private class CollectionBehaviorFactoryInvoker<TVM, TItemVM, TItemSource> :
          BehaviorFactoryInvoker
          where TVM : IViewModel
-         where TItemVM : IViewModel {
+         where TItemVM : IViewModel, ICanInitializeFrom<TItemSource> {
 
          public override IBehavior Invoke(IBehaviorFactory factory, BehaviorKey behaviorToCreate) {
             var typedFactory = CastFactory<CollectionBehaviorFactory>(factory, behaviorToCreate);

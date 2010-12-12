@@ -43,7 +43,7 @@
          MappedPropertyAccessor<PersonVM, DateTime> mappedDateTimeBehavior;
          MappedPropertyAccessor<PersonVM, decimal> mappedDecimalBehavior;
          InstancePropertyBehavior<bool> boolInstanceBehavior;
-         CollectionPopulatorBehavior<PersonVM, PersonVM, Person> collectionPopulator;
+         CollectionPopulatorBehavior<PersonVM> collectionPopulator;
 
          Assert.IsTrue(_descriptor.Name.Behaviors.TryGetBehavior(out calculatedStringBehavior));
          Assert.IsTrue(_descriptor.BirthDate.Behaviors.TryGetBehavior(out mappedDateTimeBehavior));
@@ -117,7 +117,7 @@
                   BirthDate = p.Mapped(x => x.BirthDate).Property(),
                   Salary = p.Mapped(x => x.Salary).Property(),
                   Name = p.Calculated(x => String.Format("{0} {1}", x.FirstName, x.LastName)).Property(),
-                  IsSelected = v.Local().Property<bool>()
+                  IsSelected = v.Local.Property<bool>()
                };
             })
             .WithValidations((d, c) => {

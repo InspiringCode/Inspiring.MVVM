@@ -23,7 +23,7 @@
          VM.ReturnValidationError();
          VM.TitleDisplayValue = NewValue;
          VM.ReturnValidationSuccess();
-         
+
          VM.RevalidateCommit();
 
          Assert.AreEqual(NewValue, VM.TitleSourceValue);
@@ -45,7 +45,7 @@
          VM.ReturnValidationError();
          VM.TitleDisplayValue = NewValue;
          VM.ReturnValidationSuccess();
-         
+
          var listener = CreatePropertyChangedListener();
          VM.RevalidateCommit();
          listener.AssertOneRaise();
@@ -148,7 +148,7 @@
                var v = c.GetPropertyFactory();
 
                return new TaskVMDescriptor {
-                  Title = v.Local().Property<string>()
+                  Title = v.Local.Property<string>()
                };
             })
             .WithValidations((d, c) => {

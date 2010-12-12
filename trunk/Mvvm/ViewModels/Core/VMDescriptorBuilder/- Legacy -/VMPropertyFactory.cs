@@ -230,7 +230,7 @@
             _config.Configuration.OverrideFactory(
                VMBehaviorKey.CollectionPopulator,
                new ConstantBehaviorFactory(
-                  new CollectionPopulatorBehavior<TParentVM, TItemVM, TItem>()
+                  new CollectionPopulatorBehavior<TItemVM>()
                )
             );
 
@@ -260,7 +260,7 @@
             _config.Configuration.OverrideFactory(
                VMBehaviorKey.CollectionPopulator,
                new ConstantBehaviorFactory(
-                  new CollectionPopulatorBehavior<TParentVM, TItemVM, TItem>()
+                  new CollectionPopulatorBehavior<TItemVM>()
                )
             );
 

@@ -39,6 +39,10 @@
             return new RefreshableValueCacheBehavior<TValue>();
          }
 
+         if (key == BehaviorKeys.CollectionInstanceCache) {
+            return new ValueCacheBehavior<TValue>();
+         }
+
          throw new NotSupportedException(
             ExceptionTexts.BehaviorNotSupportedByFactory.FormatWith(key)
          );

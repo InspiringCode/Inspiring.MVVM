@@ -12,7 +12,7 @@
             return new TestVMDescriptor {
                CalculatedMutableProperty = p.Calculated(x => x.GetCalculated(), (x, val) => x.SetCalculated(val)).Property(),
                MappedMutableProperty = p.Mapped(x => x.MappedMutableValue).Property(),
-               LocalProperty = v.Local().Property<decimal>(),
+               LocalProperty = v.Local.Property<decimal>(),
                MappedVMProperty = p.MappedVM(x => x.ChildValue).Of<ChildVM>(),
                MappedCollectionProperty = p.MappedCollection(x => x.ChildCollection).Of<ChildVM>(ChildVM.Descriptor),
                MappedParentedCollectionProperty = p.MappedCollection(x => x.ChildCollection).OfParentAware<ParentedChildVM>(ParentedChildVM.Descriptor)

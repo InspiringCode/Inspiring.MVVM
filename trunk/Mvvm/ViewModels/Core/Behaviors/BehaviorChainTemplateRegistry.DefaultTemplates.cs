@@ -7,6 +7,8 @@
       private static void RegisterDefaultTemplates() {
          RegisterViewModelTemplate();
          RegisterPropertyTemplate();
+         RegisterCollectionPropertyTemplate();
+         RegisterCollectionBehaviorsTemplate();
       }
 
       private static void RegisterViewModelTemplate() {
@@ -34,15 +36,27 @@
          );
       }
 
+      private static void RegisterCollectionPropertyTemplate() {
+         RegisterTemplate(
+            BehaviorChainTemplateKeys.CollectionProperty,
+            new BehaviorChainTemplate(PropertyBehaviorFactory.Instance)
+               .Append(BehaviorKeys.DisplayValueAccessor)
+               .Append(BehaviorKeys.CollectionInstanceCache)
+               .Append(BehaviorKeys.CollectionPopulator, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(BehaviorKeys.CollectionFactory, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(BehaviorKeys.TypeDescriptor)
+         );
+      }
+
       private static void RegisterCollectionBehaviorsTemplate() {
          RegisterTemplate(
             BehaviorChainTemplateKeys.DefaultCollectionBehaviors,
             new BehaviorChainTemplate(CollectionBehaviorFactory.Instance)
-               .Append(CollectionBehaviorKeys.DescriptorSetter)
+               .Append(CollectionBehaviorKeys.DescriptorSetter, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(CollectionBehaviorKeys.ParentSetter)
                .Append(CollectionBehaviorKeys.ChangeNotifier)
                .Append(CollectionBehaviorKeys.Populator)
-               .Append(CollectionBehaviorKeys.SourceCollectionAccessor)
+               .Append(CollectionBehaviorKeys.SourceCollectionAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(CollectionBehaviorKeys.ViewModelFactory)
          );
       }

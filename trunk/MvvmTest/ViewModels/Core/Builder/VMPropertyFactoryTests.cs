@@ -42,7 +42,7 @@
       [TestMethod]
       public void LocalProperty_RootFactory_InsertsProperBehaviors() {
          var f = CreateRootFactory();
-         var p = f.Local().Property<string>();
+         var p = f.Local.Property<string>();
 
          Assert.IsTrue(ContainsBehavior<InstancePropertyBehavior<string>>(p));
          AssertDefaultPropertyBehaviors(p);

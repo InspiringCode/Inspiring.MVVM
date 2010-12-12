@@ -85,7 +85,7 @@
          var property = _rootFactory.MappedCollection(x => x.Projects).Of<ProjectVM>(PersonVM.Descriptor);
          AssertBehaviors(
             property,
-            typeof(CollectionPopulatorBehavior<PersonVM, ProjectVM, Project>),
+            typeof(CollectionPopulatorBehavior<ProjectVM>),
             typeof(MappedPropertyAccessor<PersonVM, IEnumerable<Project>>),
             typeof(ViewModelFactoryBehavior<ProjectVM>),
             typeof(CollectionFactoryBehavior<ProjectVM>)
@@ -94,7 +94,7 @@
          property = _personFactory.MappedCollection(x => x.Projects).Of<ProjectVM>(PersonVM.Descriptor);
          AssertBehaviors(
             property,
-            typeof(CollectionPopulatorBehavior<PersonVM, ProjectVM, Project>),
+            typeof(CollectionPopulatorBehavior<ProjectVM>),
             typeof(MappedPropertyAccessor<PersonVM, IEnumerable<Project>>),
             typeof(ViewModelFactoryBehavior<ProjectVM>),
             typeof(CollectionFactoryBehavior<ProjectVM>)

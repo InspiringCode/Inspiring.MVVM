@@ -47,7 +47,7 @@
                var vm = c.GetPropertyFactory();
 
                return new TaskVMDescriptor {
-                  Title = vm.Local().Property<string>()
+                  Title = vm.Local.Property<string>()
                };
             })
             .WithValidations((d, c) => {

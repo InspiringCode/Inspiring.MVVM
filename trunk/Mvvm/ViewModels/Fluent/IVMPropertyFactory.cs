@@ -25,6 +25,16 @@
       where TVM : IViewModel {
 
       /// <summary>
+      ///   Creates a <see cref="VMProperty"/> that stores its value in the VM.
+      ///   It is similar to a normal get/set property but enhanced with all VM 
+      ///   property features.
+      /// </summary>
+      /// <typeparam name="T">
+      ///   The type of the property (e.g. <see cref="System.String"/>).
+      /// </typeparam>
+      ILocalVMPropertyFactory<TVM> Local { get; }
+
+      /// <summary>
       ///   Creates a <see cref="VMProperty"/> that reads and sets the value of
       ///   standard property declared on the the source object.
       /// </summary>
@@ -76,16 +86,6 @@
       ///   exception if its value is set.
       /// </remarks>
       IVMPropertyFactoryWithSource<TVM, T> Calculated<T>(Func<TSource, T> getter, Action<TSource, T> setter = null);
-
-      /// <summary>
-      ///   Creates a <see cref="VMProperty"/> that stores its value in the VM.
-      ///   It is similar to a normal get/set property but enhanced with all VM 
-      ///   property features.
-      /// </summary>
-      /// <typeparam name="T">
-      ///   The type of the property (e.g. <see cref="System.String"/>).
-      /// </typeparam>
-      ILocalVMPropertyFactory<TVM> Local();
 
       /// <summary>
       ///   Creates a local <see cref="VMProperty"/> of type <see cref="IVMCollection"/>
