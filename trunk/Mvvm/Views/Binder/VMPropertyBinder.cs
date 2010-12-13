@@ -2,7 +2,9 @@
    using System;
    using System.Linq.Expressions;
    using System.Windows;
+   using System.Windows.Input;
    using Inspiring.Mvvm.Common;
+   using Inspiring.Mvvm.Screens;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
 
@@ -25,6 +27,11 @@
          BinderContext context = QueueBuilderExecution();
          context.ExtendPropertyPath(path);
          context.SourcePropertyType = typeof(T);
+
+         // HACK ATTACK: My collegas needed a quick fix!!!!
+         if (typeof(T) == typeof(ICommand)) {
+            context.Binding.FallbackValue = DelegateCommand.AlwaysDisabled;
+         }
 
          // TODO: Always necessary? Is there a better place?
          context.Binding.ValidatesOnDataErrors = true;
