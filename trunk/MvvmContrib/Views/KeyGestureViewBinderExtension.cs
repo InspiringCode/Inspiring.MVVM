@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.Mvvm.Views {
+   using System;
    using System.Windows;
    using System.Windows.Data;
    using System.Windows.Input;
@@ -16,11 +17,19 @@
          BinderExpression.ExposeContext(
             expression,
             ctx => {
-               
+
                BindingOperations.SetBinding(binding, KeyBinding.CommandProperty, ctx.Binding);
 
-               var target = (UIElement)ctx.TargetObject;
-               target.InputBindings.Add(binding);
+               var targetUIElement = ctx.TargetObject as UIElement;
+               var targetContentElement = ctx.TargetObject as ContentElement;
+
+               if (targetUIElement != null) {
+                  targetUIElement.InputBindings.Add(binding);
+               } else if (targetContentElement != null) {
+                  targetContentElement.InputBindings.Add(binding);
+               } else {
+                  throw new NotSupportedException();
+               }
             }
          );
 
