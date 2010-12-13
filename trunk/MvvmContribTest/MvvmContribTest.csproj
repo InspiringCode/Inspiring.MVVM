@@ -42,10 +42,12 @@
       <HintPath>..\Libs\Moq\Moq.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -78,6 +80,14 @@
     <Compile Include="ViewModels\MultiSelectionTest.cs" />
     <Compile Include="ViewModels\PersonStatus.cs" />
     <Compile Include="ViewModels\SingleSelectionTest.cs" />
+    <Compile Include="Views\CustomKeyGestureExtensionTests.cs" />
+    <Compile Include="Views\CustomKeyGestureTests.cs" />
+    <Compile Include="Views\KeyGestureLocalizations.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KeyGestureLocalizations.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\KeyGestureViewBinderExtensionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MvvmContrib\MvvmContrib.csproj">
@@ -93,6 +103,10 @@
     <EmbeddedResource Include="EnumLocalizations.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>EnumLocalizations.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\KeyGestureLocalizations.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>KeyGestureLocalizations.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

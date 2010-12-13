@@ -26,6 +26,9 @@
          context.ExtendPropertyPath(path);
          context.SourcePropertyType = typeof(T);
 
+         // TODO: Always necessary? Is there a better place?
+         context.Binding.ValidatesOnDataErrors = true;
+
          return new PropertyBinderExpression<T>(context);
       }
 

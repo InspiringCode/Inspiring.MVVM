@@ -28,10 +28,12 @@
          PropertyPath = String.IsNullOrWhiteSpace(PropertyPath) ?
             propertyPathPostfix :
             PropertyPath + "." + propertyPathPostfix;
+
+         Binding.Path = new PropertyPath(PropertyPath);         
       }
 
-      public void PrepareBinding() {
-         Binding.Path = new PropertyPath(PropertyPath);
-      }
+      //public void PrepareBinding() {
+      //   Binding.Path = new PropertyPath(PropertyPath);
+      //}
    }
 }

@@ -5,7 +5,7 @@
       public void Execute(BinderContext context) {
          DataGridBoundColumn boundColumn = context.TargetObject as DataGridBoundColumn;
          if (boundColumn != null) {
-            context.PrepareBinding();
+            //context.PrepareBinding();
             boundColumn.Binding = context.Binding;
             context.Complete = true;
          }
