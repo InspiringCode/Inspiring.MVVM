@@ -60,7 +60,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiTests\ViewModels\CollectionTests.cs" />
+    <Compile Include="ApiTests\ViewModels\CommandPropertyTests.cs" />
     <Compile Include="ApiTests\ViewModels\DisplayValueTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Domain\Customer.cs" />
+    <Compile Include="ApiTests\ViewModels\Domain\Project.cs" />
     <Compile Include="ApiTests\ViewModels\Domain\RichText.cs" />
     <Compile Include="ApiTests\ViewModels\Domain\Task.cs" />
     <Compile Include="ApiTests\ViewModels\Domain\TaskRepository.cs" />
@@ -72,7 +75,10 @@
     <Compile Include="ApiTests\ViewModels\Validation\ValidationEventTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\ValidationModeTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\ValidationScopeTests.cs" />
+    <Compile Include="ApiTests\ViewModels\ViewModelPropertyTests.cs" />
     <Compile Include="ApiTests\ViewModels\VMs\AreaVM.cs" />
+    <Compile Include="ApiTests\ViewModels\VMs\CustomerVM.cs" />
+    <Compile Include="ApiTests\ViewModels\VMs\ProjectVM.cs" />
     <Compile Include="ApiTests\ViewModels\VMs\TaskListVM.cs" />
     <Compile Include="ApiTests\ViewModels\VMs\TaskVM.cs" />
     <Compile Include="AssertHelper.cs" />

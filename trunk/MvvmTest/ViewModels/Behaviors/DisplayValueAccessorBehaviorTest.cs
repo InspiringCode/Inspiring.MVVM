@@ -54,35 +54,35 @@
 
       // [TestMethod] // TODO
       public void CheckSetWithChangeRequest() {
-         var mock = new Mock<IVMValueConverter<int>>(MockBehavior.Strict);
-         mock.Setup(x => x.ConvertBack("Fourtytwo")).Returns(ConversionResult.Success(42));
-         mock.Setup(x => x.ConvertBack("Invalid")).Returns(ConversionResult.Failure<int>("Test"));
-         mock.Setup(x => x.ConvertBack("Eleven")).Returns(ConversionResult.Success(11));
+         //var mock = new Mock<IVMValueConverter<int>>(MockBehavior.Strict);
+         //mock.Setup(x => x.ConvertBack("Fourtytwo")).Returns(ConversionResult.Success(42));
+         //mock.Setup(x => x.ConvertBack("Invalid")).Returns(ConversionResult.Failure<int>("Test"));
+         //mock.Setup(x => x.ConvertBack("Eleven")).Returns(ConversionResult.Success(11));
 
-         var r = new ChangeValueRequest<int>("Fourtytwo", mock.Object);
-         _behavior.SetDisplayValue(_context, r);
-         Assert.AreEqual(_innerAccessor.Value, 42);
+         //var r = new ChangeValueRequest<int>("Fourtytwo", mock.Object);
+         //_behavior.SetDisplayValue(_context, r);
+         //Assert.AreEqual(_innerAccessor.Value, 42);
 
-         r = new ChangeValueRequest<int>("Invalid", mock.Object);
-         _behavior.SetDisplayValue(_context, r);
+         //r = new ChangeValueRequest<int>("Invalid", mock.Object);
+         //_behavior.SetDisplayValue(_context, r);
 
-         ValidationResult result = _behavior.GetValidationResult(_context);
-         Assert.IsNotNull(result);
-         Assert.IsFalse(result.Successful);
-         Assert.AreEqual("Test", result.ErrorMessage);
+         //ValidationResult result = _behavior.GetValidationResult(_context);
+         //Assert.IsNotNull(result);
+         //Assert.IsFalse(result.Successful);
+         //Assert.AreEqual("Test", result.ErrorMessage);
 
-         Assert.AreEqual(42, _behavior.GetDisplayValue(_context));
-         Assert.AreEqual(42, _innerAccessor.Value);
+         //Assert.AreEqual(42, _behavior.GetDisplayValue(_context));
+         //Assert.AreEqual(42, _innerAccessor.Value);
 
-         r = new ChangeValueRequest<int>("Eleven", mock.Object);
-         _behavior.SetDisplayValue(_context, r);
-         Assert.AreEqual(11, _behavior.GetDisplayValue(_context));
-         Assert.AreEqual(11, _innerAccessor.Value);
+         //r = new ChangeValueRequest<int>("Eleven", mock.Object);
+         //_behavior.SetDisplayValue(_context, r);
+         //Assert.AreEqual(11, _behavior.GetDisplayValue(_context));
+         //Assert.AreEqual(11, _innerAccessor.Value);
 
-         result = _behavior.GetValidationResult(_context);
-         Assert.IsNotNull(result);
-         Assert.IsTrue(result.Successful);
-         Assert.AreEqual(null, result.ErrorMessage);
+         //result = _behavior.GetValidationResult(_context);
+         //Assert.IsNotNull(result);
+         //Assert.IsTrue(result.Successful);
+         //Assert.AreEqual(null, result.ErrorMessage);
       }
 
       private class InnerAccessor : IValueAccessorBehavior<int> {

@@ -157,7 +157,7 @@
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\PopulatorCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\IVMCollection.cs" />
     <Compile Include="ViewModels\Core\Collections\VMCollection.cs" />
-    <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\DisplayValueBehavior.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\DisplayValueBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\RefreshableValueCacheBehavior.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\ViewModelTypeDescriptor.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionBehaviors\CollectionValidatorBehavior.cs" />
@@ -265,7 +265,7 @@
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\IValidationBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\MappedPropertyBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\PropertyChangedBehavior.cs" />
-    <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\DisplayValueAccessorBehavior.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\DisplayValueAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\ValidationBehavior.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\VMPropertyDescriptor.cs" />
     <Compile Include="ViewModels\Core\ChangeValueRequest.cs" />

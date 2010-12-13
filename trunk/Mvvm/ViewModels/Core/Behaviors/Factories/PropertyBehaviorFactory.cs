@@ -39,6 +39,10 @@
             return new RefreshableValueCacheBehavior<TValue>();
          }
 
+         if (key == BehaviorKeys.ValueCache) {
+            return new ValueCacheBehavior<TValue>();
+         }
+
          if (key == BehaviorKeys.CollectionInstanceCache) {
             return new ValueCacheBehavior<TValue>();
          }

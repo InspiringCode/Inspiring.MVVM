@@ -4,6 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
 using System.Windows.Input;
 using Inspiring.Mvvm.Common;
+using Inspiring.Mvvm.Screens;
 using Inspiring.Mvvm.ViewModels.Fluent;
 namespace Inspiring.Mvvm.ViewModels.Core.Builder.Properties {
 
@@ -90,7 +91,28 @@ namespace Inspiring.Mvvm.ViewModels.Core.Builder.Properties {
          Action<TSource> execute,
          Func<TSource, bool> canExecute = null
       ) {
-         throw new NotImplementedException();
+         // TODO: Is this really nice and clean?
+         var sourceValueAccessor = new CalculatedPropertyAccessor<TVM, TSource, ICommand>(
+            _sourceObjectPath,
+            sourceObject => DelegateCommand.For(
+               () => execute(sourceObject),
+               canExecute != null ? () => canExecute(sourceObject) : (Func<bool>)null
+            )
+         );
+
+         var template = BehaviorChainTemplateRegistry.GetTemplate(BehaviorChainTemplateKeys.CommandProperty);
+         var invoker = PropertyBehaviorFactory.CreateInvoker<TVM, ICommand>();
+         var configuration = template.CreateConfiguration(invoker);
+
+         configuration.Enable(BehaviorKeys.SourceValueAccessor, sourceValueAccessor);
+
+         var property = new VMProperty<ICommand>();
+
+         Configuration
+            .PropertyConfigurations
+            .RegisterProperty(property, configuration);
+
+         return property;
       }
    }
 }

@@ -31,5 +31,7 @@
       public static readonly BehaviorKey CollectionInstanceCache = new BehaviorKey("CollectionInstanceCache");
 
       public static readonly BehaviorKey CollectionPopulator = new BehaviorKey("CollectionPopulator");
+
+      public static readonly BehaviorKey ValueCache = new BehaviorKey("ValueCache");
    }
 }
