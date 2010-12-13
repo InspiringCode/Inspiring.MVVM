@@ -26,7 +26,21 @@
       }
 
       public VMProperty<TChildVM> VM<TChildVM>() where TChildVM : IViewModel, ICanInitializeFrom<TSourceValue> {
-         throw new NotImplementedException();
+         var template = BehaviorChainTemplateRegistry.GetTemplate(BehaviorChainTemplateKeys.ViewModelProperty);
+         var invoker = PropertyBehaviorFactory.CreateInvoker<TVM, TChildVM>();
+         var config = template.CreateConfiguration(invoker);
+
+         config.Enable(BehaviorKeys.ViewModelPropertyInitializer, new ViewModelPropertyInitializerBehavior<TChildVM, TSourceValue>());
+         config.Enable(BehaviorKeys.ViewModelFactory, new ViewModelFactoryBehavior<TChildVM>());
+         config.Enable(BehaviorKeys.SourceValueAccessor, _sourceValueAccessor);
+
+         VMProperty<TChildVM> property = new VMProperty<TChildVM>();
+
+         Configuration
+           .PropertyConfigurations
+           .RegisterProperty(property, config);
+
+         return property;
       }
 
 

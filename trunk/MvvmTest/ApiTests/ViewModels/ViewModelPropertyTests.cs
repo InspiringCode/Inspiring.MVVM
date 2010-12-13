@@ -1,9 +1,7 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels {
-   using System;
-   using System.Linq;
-   using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Inspiring.Mvvm.ViewModels;
-using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
+   using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
    public class ViewModelPropertyTests {
@@ -24,9 +22,9 @@ using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
          public void GetValue_ReturnsInitializedViewModel() {
             CustomerVM vm = VM.Customer;
             Assert.IsNotNull(vm);
-            Assert.AreEqual(Source, vm.CustomerSource);
+            Assert.AreEqual(Source.Customer, vm.CustomerSource);
          }
-         
+
          [TestMethod]
          public void SetValue_UpdatesSourceObject() {
             var newCustomer = new Customer();
@@ -57,6 +55,7 @@ using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
                   var v = c.GetPropertyFactory();
 
                   return new ProjectVMDescriptor {
+                     Title = v.Local.Property<string>(),
                      Customer = v.Mapped(x => x.ProjectSource.Customer).VM<CustomerVM>()
                   };
                })
@@ -75,6 +74,7 @@ using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
                   var v = c.GetPropertyFactory();
 
                   return new ProjectVMDescriptor {
+                     Title = v.Local.Property<string>(),
                      Customer = v.Calculated(
                         x => x.ProjectSource.Customer,
                         (x, val) => x.ProjectSource.Customer = val
@@ -96,6 +96,7 @@ using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
                   var p = c.GetPropertyFactory(x => x.ProjectSource);
 
                   return new ProjectVMDescriptor {
+                     Title = p.Local.Property<string>(),
                      Customer = p.Mapped(x => x.Customer).VM<CustomerVM>()
                   };
                })
@@ -114,6 +115,7 @@ using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
                   var p = c.GetPropertyFactory(x => x.ProjectSource);
 
                   return new ProjectVMDescriptor {
+                     Title = p.Local.Property<string>(),
                      Customer = p.Calculated(
                         x => x.Customer,
                         (x, val) => x.Customer = val

@@ -9,6 +9,7 @@
          RegisterPropertyTemplate();
          RegisterCollectionPropertyTemplate();
          RegisterCommandPropertyTemplate();
+         RegisterViewModelPropertyTemplate();
          RegisterCollectionBehaviorsTemplate();
       }
 
@@ -55,6 +56,19 @@
             new BehaviorChainTemplate(PropertyBehaviorFactory.Instance)
                .Append(BehaviorKeys.DisplayValueAccessor)
                .Append(BehaviorKeys.ValueCache)
+               .Append(BehaviorKeys.SourceValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(BehaviorKeys.TypeDescriptor)
+         );
+      }
+
+      private static void RegisterViewModelPropertyTemplate() {
+         RegisterTemplate(
+            BehaviorChainTemplateKeys.ViewModelProperty,
+            new BehaviorChainTemplate(PropertyBehaviorFactory.Instance)
+               .Append(BehaviorKeys.DisplayValueAccessor)
+               .Append(BehaviorKeys.ValueCache)
+               .Append(BehaviorKeys.ViewModelPropertyInitializer, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(BehaviorKeys.ViewModelFactory, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(BehaviorKeys.SourceValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(BehaviorKeys.TypeDescriptor)
          );

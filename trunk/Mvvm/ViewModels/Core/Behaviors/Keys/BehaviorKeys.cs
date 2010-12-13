@@ -33,5 +33,9 @@
       public static readonly BehaviorKey CollectionPopulator = new BehaviorKey("CollectionPopulator");
 
       public static readonly BehaviorKey ValueCache = new BehaviorKey("ValueCache");
+
+      public static readonly BehaviorKey ViewModelFactory = new BehaviorKey("ViewModelFactory");
+
+      public static readonly BehaviorKey ViewModelPropertyInitializer = new BehaviorKey("ViewModelPropertyInitializer");
    }
 }
