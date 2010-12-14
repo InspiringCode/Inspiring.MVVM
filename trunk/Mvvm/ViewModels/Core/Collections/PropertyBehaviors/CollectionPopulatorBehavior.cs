@@ -8,8 +8,7 @@
       where TItemVM : IViewModel {
 
       public IVMCollection<TItemVM> GetValue(IBehaviorContext context, ValueStage stage) {
-         var fac = GetNextBehavior<ICollectionFactoryBehavior<TItemVM>>();
-         var coll = fac.CreateCollection(context);
+         var coll = CreateCollection(context);
          var behavior = coll.Behaviors.GetNextBehavior<IPopulatorCollectionBehavior<TItemVM>>();
 
          behavior.Repopulate(context, coll);
@@ -25,6 +24,10 @@
 
       public bool IsMutable(IBehaviorContext vm) {
          return false;
+      }
+
+      private IVMCollection<TItemVM> CreateCollection(IBehaviorContext context) {
+         return this.GetValueNext<IVMCollection<TItemVM>>(context, ValueStage.PostValidation);
       }
    }
 }

@@ -30,6 +30,8 @@
          var invoker = PropertyBehaviorFactory.CreateInvoker<TVM, TChildVM>();
          var config = template.CreateConfiguration(invoker);
 
+         config.Enable(BehaviorKeys.ValueCache);
+         config.Enable(BehaviorKeys.ParentSetter, new ParentSetterBehavior<TChildVM>());
          config.Enable(BehaviorKeys.ViewModelPropertyInitializer, new ViewModelPropertyInitializerBehavior<TChildVM, TSourceValue>());
          config.Enable(BehaviorKeys.ViewModelFactory, new ViewModelFactoryBehavior<TChildVM>());
          config.Enable(BehaviorKeys.SourceValueAccessor, _sourceValueAccessor);

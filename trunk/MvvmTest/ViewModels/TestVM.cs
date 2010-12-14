@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels {
    using System.Collections.Generic;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.Mvvm.ViewModels.Core;
 
    internal sealed class TestVM : ViewModel<TestVMDescriptor> {
       public static readonly new TestVMDescriptor Descriptor = VMDescriptorBuilder
@@ -13,9 +14,10 @@
                CalculatedMutableProperty = p.Calculated(x => x.GetCalculated(), (x, val) => x.SetCalculated(val)).Property(),
                MappedMutableProperty = p.Mapped(x => x.MappedMutableValue).Property(),
                LocalProperty = v.Local.Property<decimal>(),
-               MappedVMProperty = p.MappedVM(x => x.ChildValue).Of<ChildVM>(),
-               MappedCollectionProperty = p.MappedCollection(x => x.ChildCollection).Of<ChildVM>(ChildVM.Descriptor),
-               MappedParentedCollectionProperty = p.MappedCollection(x => x.ChildCollection).OfParentAware<ParentedChildVM>(ParentedChildVM.Descriptor)
+               MappedVMProperty = p.Mapped(x => x.ChildValue).VM<ChildVM>(),
+               MappedCollectionProperty = p.Collection(x => x.ChildCollection).Of<ChildVM>(ChildVM.Descriptor),
+               MappedParentedCollectionProperty = p.Collection().Of<ParentedChildVM>(ParentedChildVM.Descriptor)
+               //MappedParentedCollectionProperty = p.Collection(x => x.ChildCollection).Of<ParentedChildVM>(ParentedChildVM.Descriptor)
             };
          })
          .Build();
@@ -50,12 +52,12 @@
          set { SetValue(Descriptor.MappedVMProperty, value); }
       }
 
-      public VMCollection<ChildVM> MappedCollectionAccessor {
+      public IVMCollection<ChildVM> MappedCollectionAccessor {
          get { return GetValue(Descriptor.MappedCollectionProperty); }
          set { SetValue(Descriptor.MappedCollectionProperty, value); }
       }
 
-      public VMCollection<ParentedChildVM> MappedParentedCollectionAccessor {
+      public IVMCollection<ParentedChildVM> MappedParentedCollectionAccessor {
          get { return GetValue(Descriptor.MappedParentedCollectionProperty); }
          set { SetValue(Descriptor.MappedParentedCollectionProperty, value); }
       }
@@ -86,8 +88,8 @@
       public VMProperty<string> MappedMutableProperty { get; set; }
       public VMProperty<decimal> LocalProperty { get; set; }
       public VMProperty<ChildVM> MappedVMProperty { get; set; }
-      public VMCollectionProperty<ChildVM> MappedCollectionProperty { get; set; }
-      public VMCollectionProperty<ParentedChildVM> MappedParentedCollectionProperty { get; set; }
+      public VMProperty<IVMCollection<ChildVM>> MappedCollectionProperty { get; set; }
+      public VMProperty<IVMCollection<ParentedChildVM>> MappedParentedCollectionProperty { get; set; }
    }
 
 

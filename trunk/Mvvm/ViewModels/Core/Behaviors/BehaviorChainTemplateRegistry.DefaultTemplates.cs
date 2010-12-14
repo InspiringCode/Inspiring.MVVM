@@ -43,8 +43,9 @@
             BehaviorChainTemplateKeys.CollectionProperty,
             new BehaviorChainTemplate(PropertyBehaviorFactory.Instance)
                .Append(BehaviorKeys.DisplayValueAccessor)
-               .Append(BehaviorKeys.CollectionInstanceCache)
+               .Append(BehaviorKeys.CollectionInstanceCache, DefaultBehaviorState.Disabled)
                .Append(BehaviorKeys.CollectionPopulator, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(BehaviorKeys.ValueCache)
                .Append(BehaviorKeys.CollectionFactory, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(BehaviorKeys.TypeDescriptor)
          );
@@ -66,7 +67,13 @@
             BehaviorChainTemplateKeys.ViewModelProperty,
             new BehaviorChainTemplate(PropertyBehaviorFactory.Instance)
                .Append(BehaviorKeys.DisplayValueAccessor)
-               .Append(BehaviorKeys.ValueCache)
+               .Append(BehaviorKeys.ValueCache, DefaultBehaviorState.Disabled)
+               .Append(BehaviorKeys.ParentSetter, DefaultBehaviorState.DisabledWithoutFactory)
+
+               // TODO: Rethink these two behaviors.
+               .Append(BehaviorKeys.PreValidationValueCache, DefaultBehaviorState.Disabled)
+               .Append(BehaviorKeys.Validator, DefaultBehaviorState.Disabled)
+
                .Append(BehaviorKeys.ViewModelPropertyInitializer, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(BehaviorKeys.ViewModelFactory, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(BehaviorKeys.SourceValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)
@@ -81,9 +88,9 @@
                .Append(CollectionBehaviorKeys.DescriptorSetter, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(CollectionBehaviorKeys.ParentSetter)
                .Append(CollectionBehaviorKeys.ChangeNotifier)
-               .Append(CollectionBehaviorKeys.Populator)
+               .Append(CollectionBehaviorKeys.Populator, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(CollectionBehaviorKeys.SourceCollectionAccessor, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(CollectionBehaviorKeys.ViewModelFactory)
+               .Append(CollectionBehaviorKeys.ViewModelFactory, DefaultBehaviorState.Disabled)
          );
       }
 

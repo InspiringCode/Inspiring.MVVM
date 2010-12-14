@@ -1,5 +1,4 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core.Builder.Properties {
-   using System;
    using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.ViewModels.Fluent;
 
@@ -21,7 +20,22 @@
       }
 
       public VMProperty<TChildVM> VM<TChildVM>() where TChildVM : IViewModel {
-         throw new NotImplementedException();
+         var template = BehaviorChainTemplateRegistry.GetTemplate(BehaviorChainTemplateKeys.ViewModelProperty);
+         var invoker = PropertyBehaviorFactory.CreateInvoker<TVM, TChildVM>();
+         var config = template.CreateConfiguration(invoker);
+
+         var sourceValueAccessor = new InstancePropertyBehavior<TChildVM>();
+
+         config.Enable(BehaviorKeys.ParentSetter, new ParentSetterBehavior<TChildVM>());
+         config.Enable(BehaviorKeys.SourceValueAccessor, sourceValueAccessor);
+
+         VMProperty<TChildVM> property = new VMProperty<TChildVM>();
+
+         Configuration
+           .PropertyConfigurations
+           .RegisterProperty(property, config);
+
+         return property;
       }
    }
 }

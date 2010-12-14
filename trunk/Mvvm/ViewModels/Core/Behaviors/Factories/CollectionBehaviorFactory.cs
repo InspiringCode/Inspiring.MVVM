@@ -4,16 +4,16 @@
    public class CollectionBehaviorFactory : IBehaviorFactory {
       public static readonly CollectionBehaviorFactory Instance = new CollectionBehaviorFactory();
 
-      public static BehaviorFactoryInvoker CreateInvoker<TVM, TItemVM, TItemSource>()
+      public static BehaviorFactoryInvoker CreateInvoker<TVM, TItemVM>()
          where TVM : IViewModel
-         where TItemVM : IViewModel, ICanInitializeFrom<TItemSource> {
+         where TItemVM : IViewModel {
 
-         return new CollectionBehaviorFactoryInvoker<TVM, TItemVM, TItemSource>();
+         return new CollectionBehaviorFactoryInvoker<TVM, TItemVM>();
       }
 
-      public virtual IBehavior Create<TVM, TItemVM, TItemSource>(BehaviorKey key)
+      public virtual IBehavior Create<TVM, TItemVM>(BehaviorKey key)
          where TVM : IViewModel
-         where TItemVM : IViewModel, ICanInitializeFrom<TItemSource> {
+         where TItemVM : IViewModel {
 
          if (key == CollectionBehaviorKeys.ParentSetter) {
             return new ParentSetterCollectionBehavior<TItemVM>();
@@ -27,23 +27,19 @@
             return new ViewModelFactoryBehavior<TItemVM>();
          }
 
-         if (key == CollectionBehaviorKeys.Populator) {
-            return new PopulatorCollectionBehavior<TItemVM, TItemSource>();
-         }
-
          throw new NotSupportedException(
             ExceptionTexts.BehaviorNotSupportedByFactory.FormatWith(key)
          );
       }
 
-      private class CollectionBehaviorFactoryInvoker<TVM, TItemVM, TItemSource> :
+      private class CollectionBehaviorFactoryInvoker<TVM, TItemVM> :
          BehaviorFactoryInvoker
          where TVM : IViewModel
-         where TItemVM : IViewModel, ICanInitializeFrom<TItemSource> {
+         where TItemVM : IViewModel {
 
          public override IBehavior Invoke(IBehaviorFactory factory, BehaviorKey behaviorToCreate) {
             var typedFactory = CastFactory<CollectionBehaviorFactory>(factory, behaviorToCreate);
-            return typedFactory.Create<TVM, TItemVM, TItemSource>(behaviorToCreate);
+            return typedFactory.Create<TVM, TItemVM>(behaviorToCreate);
          }
       }
 

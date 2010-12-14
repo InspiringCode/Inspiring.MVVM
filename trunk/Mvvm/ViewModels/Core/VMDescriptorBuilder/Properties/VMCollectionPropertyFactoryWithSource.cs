@@ -27,12 +27,13 @@
          var collectionBehaviorsTemplate = BehaviorChainTemplateRegistry.GetTemplate(
             BehaviorChainTemplateKeys.DefaultCollectionBehaviors
          );
-         var collectionFactoryInvoker = CollectionBehaviorFactory.CreateInvoker<TVM, TItemVM, TItemSource>();
+         var collectionFactoryInvoker = CollectionBehaviorFactory.CreateInvoker<TVM, TItemVM>();
          var collectionConfiguration = collectionBehaviorsTemplate.CreateConfiguration(collectionFactoryInvoker);
 
          collectionConfiguration.Enable(CollectionBehaviorKeys.SourceCollectionAccessor, _sourceCollectionAccessor);
          collectionConfiguration.Enable(CollectionBehaviorKeys.DescriptorSetter, new DescriptorSetterCollectionBehavior<TItemVM>(itemDescriptor));
-
+         collectionConfiguration.Enable(CollectionBehaviorKeys.Populator, new PopulatorCollectionBehavior<TItemVM, TItemSource>());
+         collectionConfiguration.Enable(CollectionBehaviorKeys.ViewModelFactory);
 
          var behaviorTemplate = BehaviorChainTemplateRegistry.GetTemplate(BehaviorChainTemplateKeys.CollectionProperty);
          var factoryInvoker = PropertyBehaviorFactory.CreateInvoker<TVM, IVMCollection<TItemVM>>();
@@ -42,6 +43,7 @@
 
          behaviorConfiguration.Enable(BehaviorKeys.CollectionFactory, fac);
          behaviorConfiguration.Enable(BehaviorKeys.CollectionPopulator, new CollectionPopulatorBehavior<TItemVM>());
+         behaviorConfiguration.Enable(BehaviorKeys.CollectionInstanceCache);
 
          var property = new VMProperty<IVMCollection<TItemVM>>();
 

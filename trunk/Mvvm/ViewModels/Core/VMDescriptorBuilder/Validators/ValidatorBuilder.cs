@@ -50,6 +50,7 @@
          Configuration.EnableValidation(PropertySelector.Create(propertySelector));
       }
 
+      // TODO: This is all messed up a bit. When should we enable what exactly?
       private class RootValidatorConfiguration : ValidatorConfiguration {
          private readonly VMDescriptorConfiguration _descriptorConfiguration;
          private readonly VMDescriptorBase _descriptor;
@@ -79,7 +80,7 @@
          }
 
          public override ValidatorConfiguration ExtendTargetPath(PropertySelector selector) {
-            EnableValidation(selector);
+            EnableViewModelValidation();
             return base.ExtendTargetPath(selector);
          }
 
@@ -103,9 +104,7 @@
          ///   VM descriptor.
          /// </summary>
          private void EnableValidation(IVMProperty forProperty) {
-            _descriptorConfiguration
-               .ViewModelConfiguration
-               .Enable(BehaviorKeys.Validator);
+            EnableViewModelValidation();
 
             _descriptorConfiguration
                .PropertyConfigurations[forProperty]
@@ -113,6 +112,12 @@
 
             _descriptorConfiguration
                .PropertyConfigurations[forProperty]
+               .Enable(BehaviorKeys.Validator);
+         }
+
+         private void EnableViewModelValidation() {
+            _descriptorConfiguration
+               .ViewModelConfiguration
                .Enable(BehaviorKeys.Validator);
          }
       }

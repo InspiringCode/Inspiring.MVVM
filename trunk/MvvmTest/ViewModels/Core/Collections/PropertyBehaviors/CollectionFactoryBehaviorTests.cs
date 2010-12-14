@@ -9,8 +9,8 @@ namespace Inspiring.MvvmTest.ViewModels.Behaviors {
       [TestMethod]
       public void CreateCollection_ReturnsDifferentInstanceEachTime() {
          var fac = CreateFactory();
-         var first = fac.CreateCollection(CreateContext());
-         var second = fac.CreateCollection(CreateContext());
+         var first = fac.GetValue(CreateContext());
+         var second = fac.GetValue(CreateContext());
 
          Assert.IsNotNull(first);
          Assert.IsNotNull(second);
@@ -20,8 +20,8 @@ namespace Inspiring.MvvmTest.ViewModels.Behaviors {
       [TestMethod]
       public void CreateCollection_AssignsSameBehaviorChainEachTime() {
          var fac = CreateFactory();
-         var first = fac.CreateCollection(CreateContext());
-         var second = fac.CreateCollection(CreateContext());
+         var first = fac.GetValue(CreateContext());
+         var second = fac.GetValue(CreateContext());
 
          Assert.AreSame(
             first.Reveal<BehaviorChain>("Behaviors"),

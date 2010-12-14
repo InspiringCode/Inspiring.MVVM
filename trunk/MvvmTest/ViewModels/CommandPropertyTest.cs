@@ -85,7 +85,7 @@ namespace Inspiring.MvvmTest.ViewModels {
             .Build();
 
          public CommandVM()
-            : base() {
+            : base(Descriptor) {
             Model = new Model();
          }
          public Model Model { get; set; }

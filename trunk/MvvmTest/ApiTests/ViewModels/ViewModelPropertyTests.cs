@@ -26,6 +26,14 @@
          }
 
          [TestMethod]
+         public void GetValue_Always_ReturnsSameInstance() {
+            var first = VM.Customer;
+            var second = VM.Customer;
+
+            Assert.AreSame(first, second);
+         }
+
+         [TestMethod]
          public void SetValue_UpdatesSourceObject() {
             var newCustomer = new Customer();
             var newCustomerVM = new CustomerVM();

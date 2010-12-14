@@ -59,6 +59,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiTests\ViewModels\LocalPropertyTests.cs" />
     <Compile Include="ApiTests\ViewModels\CollectionTests.cs" />
     <Compile Include="ApiTests\ViewModels\CommandPropertyTests.cs" />
     <Compile Include="ApiTests\ViewModels\DisplayValueTests.cs" />
@@ -72,6 +73,8 @@
     <Compile Include="ApiTests\ViewModels\AccessPropertyTests.cs" />
     <Compile Include="ApiTests\ViewModels\Domain\Area.cs" />
     <Compile Include="ApiTests\ViewModels\Domain\AreaRepository.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\HierarchyValidationFixture.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\ParentValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\ValidationEventTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\ValidationModeTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\ValidationScopeTests.cs" />

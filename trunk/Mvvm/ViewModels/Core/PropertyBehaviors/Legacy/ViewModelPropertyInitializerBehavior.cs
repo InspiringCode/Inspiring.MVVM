@@ -8,9 +8,9 @@
       public TVM GetValue(IBehaviorContext vm, ValueStage stage) {
          TVM instance = GetNextBehavior<IViewModelFactoryBehavior<TVM>>().CreateInstance(vm);
          TSource source = GetSourceObject(vm);
-         instance.InitializeFrom(source);
 
          instance.Kernel.Parent = vm.VM;
+         instance.InitializeFrom(source);
 
          return instance;
       }

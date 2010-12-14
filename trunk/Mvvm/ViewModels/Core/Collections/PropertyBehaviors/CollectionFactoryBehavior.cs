@@ -5,7 +5,7 @@
    /// <inheritdoc />
    public sealed class CollectionFactoryBehavior<TItemVM> :
       Behavior,
-      ICollectionFactoryBehavior<TItemVM>
+      IValueAccessorBehavior<IVMCollection<TItemVM>>
       where TItemVM : IViewModel {
 
       private BehaviorChain _collectionBehaviors;
@@ -26,8 +26,18 @@
          private set;
       }
 
-      /// <inheritdoc />
-      public IVMCollection<TItemVM> CreateCollection(IBehaviorContext context) {
+      ///// <inheritdoc />
+      //public IVMCollection<TItemVM> CreateCollection(IBehaviorContext context) {
+      //   if (_collectionBehaviors == null) {
+      //      _collectionBehaviors = CollectionBehaviorConfiguration.CreateChain();
+      //      CollectionBehaviorConfiguration.Seal();
+      //      Seal();
+      //   }
+
+      //   return new VMCollection<TItemVM>(_collectionBehaviors, owner: context.VM);
+      //}
+
+      public IVMCollection<TItemVM> GetValue(IBehaviorContext context, ValueStage stage = ValueStage.PreValidation) {
          if (_collectionBehaviors == null) {
             _collectionBehaviors = CollectionBehaviorConfiguration.CreateChain();
             CollectionBehaviorConfiguration.Seal();
@@ -35,6 +45,10 @@
          }
 
          return new VMCollection<TItemVM>(_collectionBehaviors, owner: context.VM);
+      }
+
+      public void SetValue(IBehaviorContext context, IVMCollection<TItemVM> value) {
+         throw new NotSupportedException();
       }
    }
 }

@@ -6,7 +6,7 @@
    ///   be used in VMs to hold a collection of child VMs. This interface is
    ///   especially required by the predefined collection behaviors.
    /// </summary>
-   public interface IVMCollection<TItemVM> : ICollection<TItemVM> {
+   public interface IVMCollection<TItemVM> : IList<TItemVM>, IVMCollectionExpression<TItemVM> {
       // TODO: Comment.
       BehaviorChain Behaviors { get; }
 

@@ -55,25 +55,25 @@
 
          var path = new InstancePath();
 
-         AssertHelper.Throws<InvalidOperationException>(() =>
-            path.PrependCollection(coll)
-         );
+         //AssertHelper.Throws<InvalidOperationException>(() =>
+         //   path.PrependCollection(coll)
+         //);
       }
 
-      [TestMethod]
-      public void PrependCollection_WithTwoStepPath_ModifiesFirstStep() {
-         var vm1 = new Mock<IViewModel>().Object;
-         var vm2 = new Mock<IViewModel>().Object;
-         var coll = new Mock<IEnumerable>().Object;
+      //[TestMethod]
+      //public void PrependCollection_WithTwoStepPath_ModifiesFirstStep() {
+      //   var vm1 = new Mock<IViewModel>().Object;
+      //   var vm2 = new Mock<IViewModel>().Object;
+      //   var coll = new Mock<IEnumerable>().Object;
 
-         var path = new InstancePath();
-         path = path.PrependVM(vm1);
-         path = path.PrependVM(vm2);
-         path.PrependCollection(coll);
+      //   var path = new InstancePath();
+      //   path = path.PrependVM(vm1);
+      //   path = path.PrependVM(vm2);
+      //   //path.PrependCollection(coll);
 
-         var step = path.Steps.First();
-         Assert.AreSame(coll, step.ParentCollection);
-      }
+      //   var step = path.Steps.First();
+      //   Assert.AreSame(coll, step.ParentCollection);
+      //}
 
       [TestMethod]
       public void Subpath_ZeroCountOnEmptyPath_ReturnsEmptyPath() {
@@ -221,13 +221,13 @@
 
          var projectsCollection = new VMCollection<IViewModel>(new BehaviorChain(), employeeVM) { projectVM };
 
-         employeeVM.SetValue(employeeDescriptor.Projects, projectVM);
+         employeeVM.SetValue(employeeDescriptor.Projects, projectsCollection);
          projectVM.SetValue(projectDescriptor.Customer, customerVM);
 
          var path = new InstancePath(customerVM);
 
          path = path.PrependVM(projectVM);
-         path.PrependCollection(projectsCollection);
+         //path.PrependCollection(projectsCollection);
 
          path = path.PrependVM(employeeVM);
 
@@ -238,7 +238,7 @@
          AssertHelper.AreEqual(
             new InstancePathStep[] { 
                new InstancePathStep(employeeVM), 
-               new InstancePathStep(projectVM) { ParentCollection = projectsCollection },
+               new InstancePathStep(projectVM),// { ParentCollection = projectsCollection },
                new InstancePathStep(customerVM)
             },
             match.MatchedPath.Steps,

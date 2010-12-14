@@ -23,6 +23,10 @@ namespace Inspiring.Mvvm.ViewModels.Fluent {
       /// <typeparam name="TItemVM">
       ///   The type of a collection item VM.
       /// </typeparam>
-      VMProperty<IVMCollection<TItemVM>> Of<TItemVM>() where TItemVM : IViewModel;
+      /// <remarks>
+      ///   Create an extension method on this interface if you want to support
+      ///   local properties for you own collection property type.
+      /// </remarks>
+      VMProperty<IVMCollection<TItemVM>> Of<TItemVM>(VMDescriptorBase itemDescriptor) where TItemVM : IViewModel;
    }
 }

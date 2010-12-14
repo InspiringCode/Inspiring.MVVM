@@ -70,14 +70,14 @@
          return new InstancePath(steps);
       }
 
-      public void PrependCollection(IEnumerable vmCollection) {
-         Contract.Requires<InvalidOperationException>(
-            !IsEmpty,
-            ExceptionTexts.CannotPrependCollectionToEmptyInstancePath
-         );
+      //public void PrependCollection(IEnumerable vmCollection) {
+      //   Contract.Requires<InvalidOperationException>(
+      //      !IsEmpty,
+      //      ExceptionTexts.CannotPrependCollectionToEmptyInstancePath
+      //   );
 
-         Steps[0].ParentCollection = vmCollection;
-      }
+      //   Steps[0].ParentCollection = vmCollection;
+      //}
 
       public InstancePathMatch MatchStart(VMPropertyPath properties) {
          Contract.Requires<ArgumentNullException>(properties != null);
@@ -139,15 +139,34 @@
             IViewModel expectedValue = Steps[i + 1].VM;
             IEnumerable expectedCollection = Steps[i + 1].ParentCollection;
 
-            object actualValue = vm.GetValue(prop);
+            object propertyValue = vm.GetValue(prop);
 
-            if (!Object.ReferenceEquals(expectedValue, actualValue) &&
-                !Object.ReferenceEquals(expectedCollection, actualValue)) {
+            if (!PropertyValueMatchesStep(propertyValue, Steps[i + 1])) {
+               //if (!Object.ReferenceEquals(expectedValue, propertyValue) &&
+               //    !Object.ReferenceEquals(expectedCollection, propertyValue)) {
                return false;
             }
          }
 
          return true;
+      }
+
+      private bool PropertyValueMatchesStep(object propertyValue, InstancePathStep step) {
+         // HACK: Is there a better way? An alternative would be that the item VMs
+         //       know its parent.
+
+         IViewModel stepVM = step.VM;
+
+         if (Object.ReferenceEquals(propertyValue, stepVM)) {
+            return true;
+         }
+
+         var collection = propertyValue as IEnumerable;
+         if (collection != null) {
+            return collection.Cast<object>().Contains(stepVM);
+         }
+
+         return false;
       }
    }
 

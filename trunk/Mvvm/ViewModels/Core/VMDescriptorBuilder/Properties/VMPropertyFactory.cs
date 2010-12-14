@@ -69,7 +69,7 @@ namespace Inspiring.Mvvm.ViewModels.Core.Builder.Properties {
 
       /// <inheritdoc />
       public IVMCollectionPropertyFactory<TVM> Collection() {
-         throw new NotImplementedException();
+         return new VMCollectionPropertyFactory<TVM>(Configuration);
       }
 
       /// <inheritdoc />

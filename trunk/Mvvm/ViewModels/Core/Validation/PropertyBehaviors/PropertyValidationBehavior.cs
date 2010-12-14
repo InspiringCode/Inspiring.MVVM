@@ -1,11 +1,11 @@
-﻿using System.Diagnostics.Contracts;
-using System;
+﻿using System;
+using System.Diagnostics.Contracts;
 namespace Inspiring.Mvvm.ViewModels.Core {
 
    internal sealed class PropertyValidationBehavior<TValue> :
       Behavior,
       IBehaviorInitializationBehavior,
-      IValueAccessorBehavior<TValue>, 
+      IValueAccessorBehavior<TValue>,
       IValidationStateProviderBehavior,
       IRevalidationBehavior {
 

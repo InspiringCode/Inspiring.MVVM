@@ -31,10 +31,25 @@
       ///   cref="CheckVM"/> calls may be chained to select any descendant VM.
       /// </summary>
       /// <param name="propertySelector">
-      ///   The given function should return a child VM property.
+      ///   The given function should return a collection VM property.
       /// </param>
       public ValidatorBuilderBase<ViewModel<TChildDescriptor>, TChildDescriptor> CheckVM<TChildDescriptor>(
          Func<TDescriptor, IVMProperty<ViewModel<TChildDescriptor>>> propertySelector
+      ) where TChildDescriptor : VMDescriptorBase {
+         var config = Configuration.ExtendTargetPath(PropertySelector.Create(propertySelector));
+         return new ValidatorBuilderBase<ViewModel<TChildDescriptor>, TChildDescriptor>(config);
+      }
+
+      /// <summary>
+      ///   Selects a child collection for whose items a validator should be 
+      ///   defined. <see cref="CheckVMs"/> may be freely intermixed with <see
+      ///   cref="CheckVM"/> calls to select any descendant VM.
+      /// </summary>
+      /// <param name="propertySelector">
+      ///   The given function should return a child VM property.
+      /// </param>
+      public ValidatorBuilderBase<ViewModel<TChildDescriptor>, TChildDescriptor> CheckVMs<TChildDescriptor>(
+         Func<TDescriptor, IVMProperty<IVMCollectionExpression<ViewModel<TChildDescriptor>>>> propertySelector
       ) where TChildDescriptor : VMDescriptorBase {
          var config = Configuration.ExtendTargetPath(PropertySelector.Create(propertySelector));
          return new ValidatorBuilderBase<ViewModel<TChildDescriptor>, TChildDescriptor>(config);

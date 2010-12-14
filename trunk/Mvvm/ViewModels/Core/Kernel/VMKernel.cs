@@ -82,6 +82,9 @@
       }
 
       public void Revalidate(ValidationScope scope, ValidationMode mode) {
+         if (scope != ValidationScope.SelfOnly) {
+            throw new NotImplementedException("Still TODO");
+         }
 
          foreach (IVMProperty property in _descriptor.Properties) {
             property.Revalidate(this, mode);

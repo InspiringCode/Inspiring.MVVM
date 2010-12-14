@@ -131,6 +131,7 @@
     <Compile Include="ViewModels\Core\Behaviors\Keys\CollectionBehaviorKeys.cs" />
     <Compile Include="ViewModels\Core\Behaviors\VMDescriptorConfiguration.cs" />
     <Compile Include="ViewModels\Core\IViewModel.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\ParentSetterBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertySelector.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\BehaviorConfigurationBuilder.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\BehaviorConfigurationDictionary.cs" />
