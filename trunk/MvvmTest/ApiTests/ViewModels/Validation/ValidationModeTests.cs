@@ -14,15 +14,15 @@
       [TestInitialize]
       public void Setup() {
          VM = new TaskVM();
-         VM.ReturnValidationSuccess();
+         VM.SetupValidatorToReturnSuccess();
          VM.TitleDisplayValue = OriginalValue;
       }
 
       [TestMethod]
       public void RevalidateCommitMode_ValidationSucceeds_UpdatesSourceValue() {
-         VM.ReturnValidationError();
+         VM.SetupValidatorToReturnError();
          VM.TitleDisplayValue = NewValue;
-         VM.ReturnValidationSuccess();
+         VM.SetupValidatorToReturnSuccess();
 
          VM.RevalidateCommit();
 
@@ -31,9 +31,9 @@
 
       [TestMethod]
       public void RevalidateCommitMode_ValidationSucceeds_UpdatesValidationState() {
-         VM.ReturnValidationError();
+         VM.SetupValidatorToReturnError();
          VM.TitleDisplayValue = NewValue;
-         VM.ReturnValidationSuccess();
+         VM.SetupValidatorToReturnSuccess();
 
          VM.RevalidateCommit();
 
@@ -42,9 +42,9 @@
 
       [TestMethod]
       public void RevalidateCommitMode_ValidationSucceeds_RaisesPropertyChanged() {
-         VM.ReturnValidationError();
+         VM.SetupValidatorToReturnError();
          VM.TitleDisplayValue = NewValue;
-         VM.ReturnValidationSuccess();
+         VM.SetupValidatorToReturnSuccess();
 
          var listener = CreatePropertyChangedListener();
          VM.RevalidateCommit();
@@ -53,7 +53,7 @@
 
       [TestMethod]
       public void RevalidateCommitMode_ValidationFails_DoesNotUpdateSourceValue() {
-         VM.ReturnValidationError();
+         VM.SetupValidatorToReturnError();
          VM.TitleDisplayValue = NewValue;
 
          VM.RevalidateCommit();
@@ -63,15 +63,17 @@
 
       [TestMethod]
       public void RevalidateCommitMode_ValidationFails_UpdatesValidationState() {
-         VM.ReturnValidationError();
+         VM.SetupValidatorToReturnError();
          VM.TitleDisplayValue = NewValue;
+
+         VM.RevalidateCommit();
 
          DomainAssert.AreEqual(CreateInvalidValidationState(), VM.TitleValidationState);
       }
 
       [TestMethod]
       public void RevalidateCommitMode_ValidationFails_DoesNotRaisePropertyChanged() {
-         VM.ReturnValidationError();
+         VM.SetupValidatorToReturnError();
          VM.TitleDisplayValue = NewValue;
 
          var listener = CreatePropertyChangedListener();
@@ -81,54 +83,62 @@
 
       [TestMethod]
       public void RevalidateDiscardMode_ValidationSucceeds_UpdatesDisplayValue() {
-         VM.ReturnValidationError();
+         VM.SetupValidatorToReturnError();
          VM.TitleDisplayValue = NewValue;
-         VM.ReturnValidationSuccess();
+         VM.SetupValidatorToReturnSuccess();
 
          VM.RevalidateDiscard();
+
          Assert.AreEqual(OriginalValue, VM.TitleDisplayValue);
       }
 
       [TestMethod]
       public void RevalidateDiscardMode_ValidationSucceeds_UpdatesValidationState() {
-         VM.ReturnValidationError();
+         VM.SetupValidatorToReturnError();
          VM.TitleDisplayValue = NewValue;
-         VM.ReturnValidationSuccess();
+         VM.SetupValidatorToReturnSuccess();
 
          VM.RevalidateDiscard();
+
          Assert.AreEqual(ValidationState.Valid, VM.TitleValidationState);
       }
 
       [TestMethod]
       public void RevalidateDiscardMode_ValidationFails_UpdatesDisplayValue() {
-         VM.ReturnValidationError();
+         VM.SetupValidatorToReturnError();
          VM.TitleDisplayValue = NewValue;
 
          VM.RevalidateDiscard();
+
          Assert.AreEqual(OriginalValue, VM.TitleDisplayValue);
       }
 
       [TestMethod]
       public void RevalidateDiscardMode_ValidationFails_UpdatesValidationState() {
-         VM.ReturnValidationError();
+         VM.SetupValidatorToReturnError();
          VM.TitleDisplayValue = NewValue;
 
          VM.RevalidateDiscard();
-         Assert.AreEqual(OriginalValue, VM.TitleDisplayValue);
+
+         DomainAssert.AreEqual(CreateInvalidValidationState(), VM.TitleValidationState);
       }
 
       [TestMethod]
       public void RevalidateDiscardMode_ValueChanges_PropertyChangedIsRaised() {
-         VM.ReturnValidationError();
+         VM.SetupValidatorToReturnError();
          VM.TitleDisplayValue = NewValue;
-         VM.ReturnValidationSuccess();
+         VM.SetupValidatorToReturnSuccess();
 
-
+         var listener = CreatePropertyChangedListener();
+         VM.RevalidateDiscard();
+         listener.AssertOneRaise();
       }
 
       [TestMethod]
       public void RevalidateDiscardMode_ValueDoesNotChange_PropertyChangedIsNotRaised() {
-         Assert.Inconclusive("Does this make sense?");
+         var listener = CreatePropertyChangedListener();
+         VM.RevalidateDiscard();
+         listener.AssertNoRaise();
       }
 
       private PropertyChangedCounter CreatePropertyChangedListener() {
@@ -180,11 +190,11 @@
 
          private bool ReturnError { get; set; }
 
-         public void ReturnValidationError() {
+         public void SetupValidatorToReturnError() {
             ReturnError = true;
          }
 
-         public void ReturnValidationSuccess() {
+         public void SetupValidatorToReturnSuccess() {
             ReturnError = false;
          }
 

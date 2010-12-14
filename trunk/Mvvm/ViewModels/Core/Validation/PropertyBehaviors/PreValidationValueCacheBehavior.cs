@@ -9,9 +9,12 @@
 
       private static readonly FieldDefinitionGroup ValueCacheGroup = new FieldDefinitionGroup();
       private FieldDefinition<TValue> _valueCacheField;
+      private IVMProperty _property;
 
       public void Initialize(BehaviorInitializationContext context) {
          _valueCacheField = context.Fields.DefineField<TValue>(ValueCacheGroup);
+         _property = context.Property;
+
          this.InitializeNext(context);
          SetInitialized();
       }
@@ -54,11 +57,17 @@
 
       public void Revalidate(IBehaviorContext context, ValidationMode mode) {
          RequireInitialized();
-         if (mode == ValidationMode.DiscardInvalidValues) {
-            ClearCache(context); // TODO: Is this correct?
-         }
 
-         this.RevalidateNext(context, mode);
+         if (mode == ValidationMode.DiscardInvalidValues && HasCachedValue(context)) {
+            ClearCache(context);
+            
+            this.RevalidateNext(context, mode);
+            
+            var args = new ChangeArgs(ChangeType.PropertyChanged, context.VM, _property);
+            context.NotifyChange(args);
+         } else {
+            this.RevalidateNext(context, mode);
+         }
       }
 
       public void HandlePropertyChanged(IBehaviorContext context) {

@@ -54,10 +54,13 @@ namespace Inspiring.Mvvm.ViewModels.Core {
                _property.SetValue(context, displayValue);
                break;
             case ValidationMode.DiscardInvalidValues:
+               Validate(context);
                break;
             default:
                throw new NotSupportedException();
          }
+
+         this.RevalidateNext(context, mode);
       }
 
       internal ValidationState Validate(IBehaviorContext context, ValidationContext validationContext) {
