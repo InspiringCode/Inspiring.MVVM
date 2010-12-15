@@ -15,7 +15,7 @@
                MappedMutableProperty = p.Mapped(x => x.MappedMutableValue).Property(),
                LocalProperty = v.Local.Property<decimal>(),
                MappedVMProperty = p.Mapped(x => x.ChildValue).VM<ChildVM>(),
-               MappedCollectionProperty = p.Collection(x => x.ChildCollection).Of<ChildVM>(ChildVM.Descriptor),
+               MappedCollectionProperty = p.Collection().Wraps(x => x.ChildCollection).Of<ChildVM>(ChildVM.Descriptor),
                MappedParentedCollectionProperty = p.Collection().Of<ParentedChildVM>(ParentedChildVM.Descriptor)
                //MappedParentedCollectionProperty = p.Collection(x => x.ChildCollection).Of<ParentedChildVM>(ParentedChildVM.Descriptor)
             };

@@ -1,17 +1,25 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core.Builder.Properties {
+   using System;
+   using System.Collections.Generic;
    using System.Diagnostics.Contracts;
+   using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.ViewModels.Fluent;
 
-   internal sealed class VMCollectionPropertyFactory<TVM> :
+   internal sealed class VMCollectionPropertyFactory<TVM, TSource> :
       ConfigurationProvider,
-      IVMCollectionPropertyFactory<TVM>
+      IVMCollectionPropertyFactory<TVM, TSource>
       where TVM : IViewModel {
 
+      private PropertyPath<TVM, TSource> _sourceObjectPath;
+
       public VMCollectionPropertyFactory(
+         PropertyPath<TVM, TSource> sourceObjectPath,
          VMDescriptorConfiguration configuration
       )
          : base(configuration) {
          Contract.Requires(configuration != null);
+
+         _sourceObjectPath = sourceObjectPath;
       }
 
       public VMProperty<IVMCollection<TItemVM>> Of<TItemVM>(VMDescriptorBase itemDescriptor) where TItemVM : IViewModel {
@@ -25,7 +33,7 @@
 
          collectionConfiguration.Enable(CollectionBehaviorKeys.SourceCollectionAccessor, sourceCollectionAccessor);
          collectionConfiguration.Enable(CollectionBehaviorKeys.DescriptorSetter, new DescriptorSetterCollectionBehavior<TItemVM>(itemDescriptor));
-         
+
          var behaviorTemplate = BehaviorChainTemplateRegistry.GetTemplate(BehaviorChainTemplateKeys.CollectionProperty);
          var factoryInvoker = PropertyBehaviorFactory.CreateInvoker<TVM, IVMCollection<TItemVM>>();
          var behaviorConfiguration = behaviorTemplate.CreateConfiguration(factoryInvoker);
@@ -43,6 +51,27 @@
             .RegisterProperty(property, behaviorConfiguration);
 
          return property;
+      }
+
+      /// <inheritdoc />
+      public IVMCollectionPropertyFactoryWithSource<TVM, TItemSource> Wraps<TItemSource>(
+         Func<TSource, IEnumerable<TItemSource>> sourceCollectionSelector
+      ) {
+         var sourceCollectionAccessor = new CalculatedPropertyAccessor<TVM, TSource, IEnumerable<TItemSource>>(
+            _sourceObjectPath,
+            sourceCollectionSelector
+         );
+
+         return new VMCollectionPropertyFactoryWithSource<TVM, TItemSource>(
+            Configuration,
+            sourceCollectionAccessor
+         );
+      }
+
+      public VMProperty<IVMCollection<TItemVM>> InitializedBy<TItemVM>(
+         Func<TSource, IEnumerable<TItemVM>> itemSelector
+      ) where TItemVM : IViewModel {
+         throw new NotImplementedException();
       }
    }
 }

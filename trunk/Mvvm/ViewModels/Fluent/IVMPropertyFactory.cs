@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Fluent {
    using System;
-   using System.Collections.Generic;
    using System.Linq.Expressions;
    using System.Windows.Input;
    using Inspiring.Mvvm.Common;
@@ -92,27 +91,27 @@
       ///   that stores its value in the VM. A collection property ensures that its 
       ///   item VMs are properly initialized (for example its Parent is set).
       /// </summary>
-      IVMCollectionPropertyFactory<TVM> Collection();
+      IVMCollectionPropertyFactory<TVM, TSource> Collection();
 
-      /// <summary>
-      ///   Creates a <see cref="VMProperty"/> of type <see cref="IVMCollection"/>
-      ///   whos items are synchronized with a source collection returned by the 
-      ///   passed <paramref name="sourceCollectionSelector"/>. A collection property 
-      ///   ensures that its item VMs are properly initialized (for example its 
-      ///   Parent is set).
-      /// </summary>
-      /// <param name="sourceCollectionSelector">
-      ///   <para>A function that should return the source collection with which 
-      ///      the <see cref="IVMCollection"/> is synchronized. This may be the
-      ///      value of a source object collection or you may create and return
-      ///      a new collection instance.</para> 
-      ///   <para>The <see cref="IViewModel"/> or some object referenced by it (as 
-      ///      defined by the <see cref="IVMPropertyFactoryProvider.GetFactory"/>
-      ///      method) is passed to the delegate.</para>  
-      /// </param>
-      IVMCollectionPropertyFactoryWithSource<TVM, TItemSource> Collection<TItemSource>(
-         Func<TSource, IEnumerable<TItemSource>> sourceCollectionSelector
-      );
+      ///// <summary>
+      /////   Creates a <see cref="VMProperty"/> of type <see cref="IVMCollection"/>
+      /////   whos items are synchronized with a source collection returned by the 
+      /////   passed <paramref name="sourceCollectionSelector"/>. A collection property 
+      /////   ensures that its item VMs are properly initialized (for example its 
+      /////   Parent is set).
+      ///// </summary>
+      ///// <param name="sourceCollectionSelector">
+      /////   <para>A function that should return the source collection with which 
+      /////      the <see cref="IVMCollection"/> is synchronized. This may be the
+      /////      value of a source object collection or you may create and return
+      /////      a new collection instance.</para> 
+      /////   <para>The <see cref="IViewModel"/> or some object referenced by it (as 
+      /////      defined by the <see cref="IVMPropertyFactoryProvider.GetFactory"/>
+      /////      method) is passed to the delegate.</para>  
+      ///// </param>
+      //IVMCollectionPropertyFactoryWithSource<TVM, TItemSource> Collection<TItemSource>(
+      //   Func<TSource, IEnumerable<TItemSource>> sourceCollectionSelector
+      //);
 
       /// <summary>
       ///   Creates a <see cref="VMProperty"/> of type <see cref="ICommand"/>.

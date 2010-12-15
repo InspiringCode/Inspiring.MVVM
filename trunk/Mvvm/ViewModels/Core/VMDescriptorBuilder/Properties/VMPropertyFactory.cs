@@ -68,24 +68,24 @@ namespace Inspiring.Mvvm.ViewModels.Core.Builder.Properties {
       }
 
       /// <inheritdoc />
-      public IVMCollectionPropertyFactory<TVM> Collection() {
-         return new VMCollectionPropertyFactory<TVM>(Configuration);
+      public IVMCollectionPropertyFactory<TVM, TSource> Collection() {
+         return new VMCollectionPropertyFactory<TVM, TSource>(_sourceObjectPath, Configuration);
       }
 
-      /// <inheritdoc />
-      public IVMCollectionPropertyFactoryWithSource<TVM, TItemSource> Collection<TItemSource>(
-         Func<TSource, IEnumerable<TItemSource>> sourceCollectionSelector
-      ) {
-         var sourceCollectionAccessor = new CalculatedPropertyAccessor<TVM, TSource, IEnumerable<TItemSource>>(
-            _sourceObjectPath,
-            sourceCollectionSelector
-         );
+      ///// <inheritdoc />
+      //public IVMCollectionPropertyFactoryWithSource<TVM, TItemSource> Collection<TItemSource>(
+      //   Func<TSource, IEnumerable<TItemSource>> sourceCollectionSelector
+      //) {
+      //   var sourceCollectionAccessor = new CalculatedPropertyAccessor<TVM, TSource, IEnumerable<TItemSource>>(
+      //      _sourceObjectPath,
+      //      sourceCollectionSelector
+      //   );
 
-         return new VMCollectionPropertyFactoryWithSource<TVM, TItemSource>(
-            Configuration,
-            sourceCollectionAccessor
-         );
-      }
+      //   return new VMCollectionPropertyFactoryWithSource<TVM, TItemSource>(
+      //      Configuration,
+      //      sourceCollectionAccessor
+      //   );
+      //}
 
       public VMProperty<ICommand> Command(
          Action<TSource> execute,
