@@ -3,6 +3,7 @@
    using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.Mvvm.ViewModels.Core;
 
    internal sealed class KeywordSelectionVM : ViewModel<KeywordSelectionVMDescriptor>, ICanInitializeFrom<Document> {
       public static readonly KeywordSelectionVMDescriptor Descriptor = VMDescriptorBuilder
@@ -12,7 +13,7 @@
             var d = c.GetPropertyFactory(x => x.Document);
 
             return new KeywordSelectionVMDescriptor {
-               AllItems = vm.MappedCollection(x => x.FilteredItems).Of<KeywordVM>(KeywordVM.Descriptor),
+               AllItems = vm.Collection().Wraps(x => x.FilteredItems).Of<KeywordVM>(KeywordVM.Descriptor),
                SelectedItems = vm.Calculated(x => x.CreateSelectedItemsCollection()).Property(),
                SelectedSourceItems = d.Mapped(x => x.Keywords).Property()
             };
@@ -47,11 +48,11 @@
          }
       }
 
-      public VMCollection<KeywordVM> SelectedItems {
+      public IVMCollection<KeywordVM> SelectedItems {
          get { return GetValue(Descriptor.SelectedItems); }
       }
 
-      public VMCollection<KeywordVM> AllItems {
+      public IVMCollection<KeywordVM> AllItems {
          get { return GetValue(Descriptor.AllItems); }
       }
 
@@ -114,7 +115,7 @@
    }
 
    internal sealed class KeywordSelectionVMDescriptor : VMDescriptor {
-      public VMCollectionProperty<KeywordVM> AllItems { get; set; }
+      public VMProperty<IVMCollection<KeywordVM>> AllItems { get; set; }
       public VMProperty<VMCollection<KeywordVM>> SelectedItems { get; set; }
       internal VMProperty<ICollection<Keyword>> SelectedSourceItems { get; set; }
    }

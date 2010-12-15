@@ -10,7 +10,7 @@
 
             return new DocumentVMDescriptor {
                Name = d.Mapped(x => x.Name).Property(),
-               Keywords = d.MappedVM(x => x).Of<KeywordSelectionVM>()
+               Keywords = d.Mapped(x => x).VM<KeywordSelectionVM>()
             };
          })
          .Build();

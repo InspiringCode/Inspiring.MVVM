@@ -41,7 +41,7 @@
 
 
       public IBindCollectionExpression<TItemDescriptor> Collection<TItemDescriptor>(
-         Expression<Func<TDescriptor, IBindableCollection<ViewModel<TItemDescriptor>>>> collectionPropertySelector
+         Expression<Func<TDescriptor, IVMProperty<IVMCollectionExpression<ViewModel<TItemDescriptor>>>>> collectionPropertySelector
       ) where TItemDescriptor : VMDescriptor {
          string path = ExpressionService.GetPropertyPathString(collectionPropertySelector);
 

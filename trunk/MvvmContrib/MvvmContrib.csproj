@@ -89,6 +89,7 @@
     <Compile Include="ViewModels\ISelectionPropertyBuilder.cs" />
     <Compile Include="ViewModels\IVMPropertyFactory.cs" />
     <Compile Include="ViewModels\MultiSelectionVM.cs" />
+    <Compile Include="ViewModels\MultiSelection\LookupPopulatorCollectionBehavior.cs" />
     <Compile Include="ViewModels\SelectionExtensions.cs" />
     <Compile Include="ViewModels\SelectionItemVM.cs" />
     <Compile Include="ViewModels\SelectionPropertyConfiguration.cs" />
@@ -116,9 +117,7 @@
   <ItemGroup>
     <Content Include="Finding screens.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\MultiSelection\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

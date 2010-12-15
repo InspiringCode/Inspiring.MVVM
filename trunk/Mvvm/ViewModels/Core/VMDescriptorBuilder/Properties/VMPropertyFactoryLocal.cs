@@ -4,7 +4,7 @@
 
    internal sealed class LocalVMPropertyLocal<TVM> :
       VMPropertyFactoryBase<TVM>,
-      ILocalVMPropertyFactory<TVM>
+      ILocalVMPropertyFactory
       where TVM : IViewModel {
 
       public LocalVMPropertyLocal(

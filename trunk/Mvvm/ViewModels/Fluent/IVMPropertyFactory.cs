@@ -18,10 +18,9 @@
    ///   calculated properties is different than <typeparamref name="TVM"/> 
    ///   (see <see cref="IVMPropertyFactoryProvider.GetFactory"/>).
    /// </typeparam>
-   public interface IVMPropertyFactory<TVM, TSource> :
+   public interface IVMPropertyFactory<TSource> :
       IHideObjectMembers,
-      IConfigurationProvider
-      where TVM : IViewModel {
+      IConfigurationProvider {
 
       /// <summary>
       ///   Creates a <see cref="VMProperty"/> that stores its value in the VM.
@@ -31,7 +30,7 @@
       /// <typeparam name="T">
       ///   The type of the property (e.g. <see cref="System.String"/>).
       /// </typeparam>
-      ILocalVMPropertyFactory<TVM> Local { get; }
+      ILocalVMPropertyFactory Local { get; }
 
       /// <summary>
       ///   Creates a <see cref="VMProperty"/> that reads and sets the value of
@@ -56,7 +55,7 @@
       ///      this case all properties are read in sequence and the value of 
       ///      the last property is returned or set on the sourceobject.</para>
       /// </remarks>
-      IVMPropertyFactoryWithSource<TVM, T> Mapped<T>(Expression<Func<TSource, T>> sourcePropertySelector);
+      IVMPropertyFactoryWithSource<T> Mapped<T>(Expression<Func<TSource, T>> sourcePropertySelector);
 
       /// <summary>
       ///   Creats a <see cref="VMProperty"/> that calls a delegate when the VM 
@@ -84,14 +83,14 @@
       ///   If no setter is specified, the VM property is readonly and throws an
       ///   exception if its value is set.
       /// </remarks>
-      IVMPropertyFactoryWithSource<TVM, T> Calculated<T>(Func<TSource, T> getter, Action<TSource, T> setter = null);
+      IVMPropertyFactoryWithSource<T> Calculated<T>(Func<TSource, T> getter, Action<TSource, T> setter = null);
 
       /// <summary>
       ///   Creates a local <see cref="VMProperty"/> of type <see cref="IVMCollection"/>
       ///   that stores its value in the VM. A collection property ensures that its 
       ///   item VMs are properly initialized (for example its Parent is set).
       /// </summary>
-      IVMCollectionPropertyFactory<TVM, TSource> Collection();
+      IVMCollectionPropertyFactory<TSource> Collection();
 
       ///// <summary>
       /////   Creates a <see cref="VMProperty"/> of type <see cref="IVMCollection"/>

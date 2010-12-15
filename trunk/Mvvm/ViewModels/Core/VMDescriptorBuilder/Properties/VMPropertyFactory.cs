@@ -10,7 +10,7 @@ namespace Inspiring.Mvvm.ViewModels.Core.Builder.Properties {
 
    internal sealed class VMPropertyFactory<TVM, TSource> :
       ConfigurationProvider,
-      IVMPropertyFactory<TVM, TSource>
+      IVMPropertyFactory<TSource>
       where TVM : IViewModel {
 
       private readonly PropertyPath<TVM, TSource> _sourceObjectPath;
@@ -27,14 +27,14 @@ namespace Inspiring.Mvvm.ViewModels.Core.Builder.Properties {
       }
 
       /// <inheritdoc />
-      public ILocalVMPropertyFactory<TVM> Local {
+      public ILocalVMPropertyFactory Local {
          get {
             return new LocalVMPropertyLocal<TVM>(Configuration);
          }
       }
 
       /// <inheritdoc />
-      public IVMPropertyFactoryWithSource<TVM, T> Mapped<T>(
+      public IVMPropertyFactoryWithSource<T> Mapped<T>(
          Expression<Func<TSource, T>> sourcePropertySelector
       ) {
          var path = PropertyPath.Concat(
@@ -51,7 +51,7 @@ namespace Inspiring.Mvvm.ViewModels.Core.Builder.Properties {
       }
 
       /// <inheritdoc />
-      public IVMPropertyFactoryWithSource<TVM, T> Calculated<T>(
+      public IVMPropertyFactoryWithSource<T> Calculated<T>(
          Func<TSource, T> getter,
          Action<TSource, T> setter = null
       ) {
@@ -68,7 +68,7 @@ namespace Inspiring.Mvvm.ViewModels.Core.Builder.Properties {
       }
 
       /// <inheritdoc />
-      public IVMCollectionPropertyFactory<TVM, TSource> Collection() {
+      public IVMCollectionPropertyFactory<TSource> Collection() {
          return new VMCollectionPropertyFactory<TVM, TSource>(_sourceObjectPath, Configuration);
       }
 

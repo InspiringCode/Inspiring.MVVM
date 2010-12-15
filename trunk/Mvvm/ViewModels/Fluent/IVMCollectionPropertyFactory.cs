@@ -14,10 +14,9 @@ namespace Inspiring.Mvvm.ViewModels.Fluent {
    ///   Create an extension method on this interface if you want to support
    ///   local properties for you own collection property type.
    /// </remarks>
-   public interface IVMCollectionPropertyFactory<TVM, TSource> :
+   public interface IVMCollectionPropertyFactory<TSource> :
       IHideObjectMembers,
-      IConfigurationProvider
-      where TVM : IViewModel {
+      IConfigurationProvider {
 
       /// <summary>
       ///   Creates a the property.
@@ -47,7 +46,7 @@ namespace Inspiring.Mvvm.ViewModels.Fluent {
       ///      defined by the <see cref="IVMPropertyFactoryProvider.GetFactory"/>
       ///      method) is passed to the delegate.</para>  
       /// </param>
-      IVMCollectionPropertyFactoryWithSource<TVM, TItemSource> Wraps<TItemSource>(
+      IVMCollectionPropertyFactoryWithSource<TItemSource> Wraps<TItemSource>(
          Func<TSource, IEnumerable<TItemSource>> sourceCollectionSelector
       );
 

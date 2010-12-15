@@ -3,6 +3,7 @@
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
+   using Inspiring.Mvvm.ViewModels.Core;
 
    [TestClass]
    public class EnumSelectionTest {
@@ -63,7 +64,7 @@
          return _vm.InvokeGetValue(PersonVM.Descriptor.Status);
       }
 
-      private VMCollection<SelectionItemVM<PersonStatus>> GetAllItems() {
+      private IVMCollection<SelectionItemVM<PersonStatus>> GetAllItems() {
          return GetSelection().AllItems;
       }
 

@@ -55,7 +55,7 @@
          set { /*ViewModelExtensibility.SetForeignProperty(Parent, Descriptor.SelectedSourceItem, value);*/ throw new NotImplementedException(); }
       }
 
-      public VMCollection<TItemVM> AllItems {
+      public IVMCollection<TItemVM> AllItems {
          get { return GetValue(Descriptor.AllItems); }
       }
 
@@ -93,8 +93,7 @@
                   UnfilteredSourceItems = allSourceItemsProperty,
                   SelectedSourceItem = selectedSourceItemProperty,
 
-                  AllItems = v
-                     .MappedCollection(x => x.FilteredItems)
+                  AllItems = v.Collection().Wraps(x => x.FilteredItems)
                      .Of<TItemVM>(itemDescriptor),
 
                   SelectedItem = v.Calculated(
@@ -131,7 +130,7 @@
 
       internal VMProperty<TSourceItem> SelectedSourceItem { get; set; }
 
-      public VMCollectionProperty<TItemVM> AllItems { get; set; }
+      public VMProperty<IVMCollection<TItemVM>> AllItems { get; set; }
 
       public VMProperty<TItemVM> SelectedItem { get; set; }
    }

@@ -7,7 +7,7 @@
 
    internal sealed class VMCollectionPropertyFactory<TVM, TSource> :
       ConfigurationProvider,
-      IVMCollectionPropertyFactory<TVM, TSource>
+      IVMCollectionPropertyFactory<TSource>
       where TVM : IViewModel {
 
       private PropertyPath<TVM, TSource> _sourceObjectPath;
@@ -54,7 +54,7 @@
       }
 
       /// <inheritdoc />
-      public IVMCollectionPropertyFactoryWithSource<TVM, TItemSource> Wraps<TItemSource>(
+      public IVMCollectionPropertyFactoryWithSource<TItemSource> Wraps<TItemSource>(
          Func<TSource, IEnumerable<TItemSource>> sourceCollectionSelector
       ) {
          var sourceCollectionAccessor = new CalculatedPropertyAccessor<TVM, TSource, IEnumerable<TItemSource>>(

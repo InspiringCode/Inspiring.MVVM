@@ -5,6 +5,8 @@
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.MvvmTest;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
+   using System.ComponentModel;
+   using Inspiring.Mvvm.ViewModels.Core;
 
    [TestClass]
    public class SingleSelectionTest {
@@ -145,7 +147,7 @@
          var selectedItemCounter = new PropertyChangedCounter(singleSelection, "SelectedItem");
          var allItemsCounter = new PropertyChangedCounter(singleSelection, "AllItems");
          bool listChangedWasInvoked = false;
-         singleSelection.AllItems.ListChanged += (_, __) => {
+         ((IBindingList)singleSelection.AllItems).ListChanged += (_, __) => {
             listChangedWasInvoked = true;
          };
 
@@ -172,7 +174,7 @@
          //Assert.IsTrue(singleSelection.IsValid(false));
       }
 
-      private VMCollection<SelectionItemVM<PersonStatus>> GetAllItems(
+      private IVMCollection<SelectionItemVM<PersonStatus>> GetAllItems(
          SingleSelectionProperty<PersonStatus> singleSelectionProperty
       ) {
          return _vm.InvokeGetValue(singleSelectionProperty).AllItems;

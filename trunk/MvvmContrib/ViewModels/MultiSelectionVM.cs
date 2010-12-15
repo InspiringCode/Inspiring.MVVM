@@ -38,6 +38,10 @@
          set;
       }
 
+      private ICollection<TItemSource> SelectedSourceItems {
+         get { return GetValue(DescriptorBase.SelectedSourceItems); }
+      }
+
       private IEnumerable<TItemSource> GetActiveSourceItems() {
          IEnumerable<TItemSource> allSourceItems = GetValue(Descriptor.AllSourceItems);
          IEnumerable<TItemSource> selectedSourceItems = GetValue(Descriptor.SelectedSourceItems);
@@ -52,21 +56,29 @@
          );
       }
 
-      //private MultiSelectionVMDescriptor<TItemSource, TItemVM> CreateDescriptor(
-      //   Func<IVMPropertyFactory<TSourceObject, TSourceObject>, VMProperty<ICollection<TItemSource>>> selectedSourceItemsPropertyFactory,
-      //   Func<IVMPropertyFactory<TSourceObject, TSourceObject>, VMProperty<ICollection<TItemSource>>> allSourceItemsPropertyFactory
-      //) {
-      //   var x = VMDescriptorBuilder
-      //      .For<MultiSelectionVM<TSourceObject, TItemSource, TItemVM>>()
-      //      .CreateDescriptor(c => {
-      //         var v = c.GetPropertyFactory(x => x.SourceObject);
-      //         return new MultiSelectionVMDescriptor<TItemSource, TItemVM> {
-      //            AllSourceItems = allSourceItemsPropertyFactory(v)
-      //            //SelectedSourceItems = selectedSourceItemsPropertyFactory(v)
-      //         };
-      //      })
-      //      .Build();
-      //}
+      private MultiSelectionVMDescriptor<TItemSource, TItemVM> CreateDescriptor(
+         VMDescriptorBase itemDescriptor,
+         Func<IVMPropertyFactory<TSourceObject>, VMProperty<ICollection<TItemSource>>> selectedSourceItemsPropertyFactory,
+         Func<IVMPropertyFactory<TSourceObject>, VMProperty<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory
+      ) {
+         return VMDescriptorBuilder
+            .For<MultiSelectionVM<TSourceObject, TItemSource, TItemVM>>()
+            .CreateDescriptor(c => {
+               var v = c.GetPropertyFactory();
+               var fac = c.GetPropertyFactory(x => x.SourceObject);
+
+               return new MultiSelectionVMDescriptor<TItemSource, TItemVM> {
+                  AllSourceItems = allSourceItemsPropertyFactory(fac),
+                  SelectedSourceItems = selectedSourceItemsPropertyFactory(fac),
+                  AllItems = v.Collection().Wraps(x => x.GetActiveSourceItems()).Of<TItemVM>(itemDescriptor),
+                  SelectedItems = v.Collection().Wraps(x => x.SelectedSourceItems).Of<TItemVM>(itemDescriptor)
+               };
+            })
+            .WithBehaviors((d, c) => {
+               // Enable(CollectionBehaviorKeys.Populator, new LookupPopulatorCollectionBehavior<...>(x => x.AllItems);
+            })
+            .Build();
+      }
    }
 
    public sealed class MultiSelectionVMDescriptor<TItemSource, TItemVM> :

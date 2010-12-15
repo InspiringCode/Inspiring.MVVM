@@ -87,8 +87,8 @@
                var com = c.GetPropertyFactory(x => x.Company);
 
                return new CompanyVMDescriptor {
-                  Employees = v.MappedCollection(x => x.Company.Employees).Of<PersonVM>(PersonVM.Descriptor),
-                  Customers = com.MappedCollection(x => x.Customers).Of<PersonVM>(PersonVM.Descriptor)
+                  Employees = v.Collection().Wraps(x => x.Company.Employees).Of<PersonVM>(PersonVM.Descriptor),
+                  Customers = com.Collection().Wraps(x => x.Customers).Of<PersonVM>(PersonVM.Descriptor)
                };
             })
             .Build();
@@ -102,8 +102,8 @@
       }
 
       private class CompanyVMDescriptor : VMDescriptor {
-         public VMCollectionProperty<PersonVM> Employees { get; set; }
-         public VMCollectionProperty<PersonVM> Customers { get; set; }
+         public VMProperty<IVMCollection<PersonVM>> Employees { get; set; }
+         public VMProperty<IVMCollection<PersonVM>> Customers { get; set; }
       }
 
       private class PersonVM : ViewModel<PersonVMDescriptor>, ICanInitializeFrom<Person> {

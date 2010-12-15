@@ -19,10 +19,10 @@
       IEnumSelectionPropertyBuilder<TParentVM>
       where TParentVM : IViewModel {
 
-      private IVMPropertyFactory<TParentVM, TParentVM> _propertyFactory;
+      private IVMPropertyFactory<TParentVM> _propertyFactory;
 
       public EnumSelectionPropertyBuilder(
-         IVMPropertyFactory<TParentVM, TParentVM> propertyFactory
+         IVMPropertyFactory<TParentVM> propertyFactory
       ) {
          _propertyFactory = propertyFactory;
       }

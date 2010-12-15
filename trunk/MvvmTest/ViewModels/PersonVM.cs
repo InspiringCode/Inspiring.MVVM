@@ -2,6 +2,7 @@
    using System;
    using System.Collections.Generic;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.Mvvm.ViewModels.Core;
 
    public class PersonVM : ViewModel<PersonVMDescriptor>, ICanInitializeFrom<Person> {
       public static readonly PersonVMDescriptor Descriptor = VMDescriptorBuilder
@@ -17,7 +18,7 @@
                   Salary = p.Calculated(x => x.Salary, (x, val) => x.Salary = val).Property(),
                   Name = p.Calculated(x => String.Format("{0} {1}", x.FirstName, x.LastName)).Property(),
                   IsSelected = v.Local.Property<bool>(),
-                  Projects = p.MappedCollection(x => x.Projects).Of<ProjectVM>(PersonVM.Descriptor),
+                  Projects = p.Collection().Wraps(x => x.Projects).Of<ProjectVM>(PersonVM.Descriptor),
                   CurrentProject = v.Local.Property<ProjectVM>()
                };
             })
@@ -55,7 +56,7 @@
       public VMProperty<decimal> Salary { get; set; }
       public VMProperty<bool> IsSelected { get; set; }
       public VMProperty<ProjectVM> CurrentProject { get; set; }
-      public VMCollectionProperty<ProjectVM> Projects { get; set; }
+      public VMProperty<IVMCollection<ProjectVM>> Projects { get; set; }
    }
 
    public class ProjectVM : ViewModel<ProjectVMDescriptor>, ICanInitializeFrom<Project> {

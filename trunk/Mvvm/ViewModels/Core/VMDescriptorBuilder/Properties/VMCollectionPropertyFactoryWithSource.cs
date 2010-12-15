@@ -5,7 +5,7 @@
 
    internal sealed class VMCollectionPropertyFactoryWithSource<TVM, TItemSource> :
       ConfigurationProvider,
-      IVMCollectionPropertyFactoryWithSource<TVM, TItemSource>
+      IVMCollectionPropertyFactoryWithSource<TItemSource>
       where TVM : IViewModel {
 
       private IValueAccessorBehavior<IEnumerable<TItemSource>> _sourceCollectionAccessor;

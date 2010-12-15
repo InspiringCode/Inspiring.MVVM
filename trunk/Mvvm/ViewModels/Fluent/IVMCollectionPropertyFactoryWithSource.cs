@@ -17,10 +17,9 @@
    ///   Create an extension method on this interface if you want to support
    ///   synchronized properties for you own collection property type.
    /// </remarks>
-   public interface IVMCollectionPropertyFactoryWithSource<TVM, TItemSource> :
+   public interface IVMCollectionPropertyFactoryWithSource<TItemSource> :
       IHideObjectMembers,
-      IConfigurationProvider
-      where TVM : IViewModel {
+      IConfigurationProvider {
 
       /// <summary>
       ///   Creates a the property.

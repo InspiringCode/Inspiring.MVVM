@@ -17,7 +17,7 @@
       ///      properties the VM instance is passed to their getter/setter 
       ///      delegates.</para>
       /// </summary>
-      IVMPropertyFactory<TVM, TVM> GetPropertyFactory();
+      IVMPropertyFactory<TVM> GetPropertyFactory();
 
       /// <summary>
       ///   Returns a <see cref="IVMPropertyFactory"/> which creates <see
@@ -36,7 +36,7 @@
       ///   and instead of 'Calculated(x => x.Person.CalculateReward(...))' 
       ///   you can use 'Calculated(x => x.CalculateReward(...))'.
       /// </remarks>
-      IVMPropertyFactory<TVM, TSource> GetPropertyFactory<TSource>(
+      IVMPropertyFactory<TSource> GetPropertyFactory<TSource>(
          Expression<Func<TVM, TSource>> sourceObjectSelector
       );
    }

@@ -11,10 +11,9 @@ namespace Inspiring.Mvvm.ViewModels.Fluent {
    ///   Create an extension method on this interface if you want to support
    ///   local properties for you own property type.
    /// </remarks>
-   public interface ILocalVMPropertyFactory<TVM> :
+   public interface ILocalVMPropertyFactory :
       IHideObjectMembers,
-      IConfigurationProvider
-      where TVM : IViewModel {
+      IConfigurationProvider {
 
       /// <summary>
       ///   Creates a simple <see cref="VMProperty"/>.

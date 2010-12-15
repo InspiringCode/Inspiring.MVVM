@@ -79,6 +79,15 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The lookup collection does not contain a VM for the source item: &apos;{0}&apos;..
+        /// </summary>
+        internal static string LookupViewModelNotFound {
+            get {
+                return ResourceManager.GetString("LookupViewModelNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to T must be an enumeration..
         /// </summary>
         internal static string TypeNotEnum {

@@ -9,9 +9,9 @@
       ISingleSelectionPropertyBuilder<TParentVM>
       where TParentVM : IViewModel {
 
-      private IVMPropertyFactory<TParentVM, TParentVM> _propertyFactory;
+      private IVMPropertyFactory< TParentVM> _propertyFactory;
 
-      public SingleSelectionPropertyBuilder(IVMPropertyFactory<TParentVM, TParentVM> propertyFactory) {
+      public SingleSelectionPropertyBuilder(IVMPropertyFactory<TParentVM> propertyFactory) {
          _propertyFactory = propertyFactory;
       }
 
@@ -31,14 +31,14 @@
       ISingleSelectionPropertyBuilder<TParentVM, TSourceItem>
       where TParentVM : IViewModel {
 
-      private IVMPropertyFactory<TParentVM, TParentVM> _propertyFactory;
+      private IVMPropertyFactory<TParentVM> _propertyFactory;
       private Func<TSourceItem, bool> _selectableItemFilter;
 
       private VMProperty<IEnumerable<TSourceItem>> _unfilteredSourceItemsProperty;
       private VMProperty<TSourceItem> _selectedSourceItemProperty;
 
       public SingleSelectionPropertyBuilder(
-         IVMPropertyFactory<TParentVM, TParentVM> propertyFactory,
+         IVMPropertyFactory<TParentVM> propertyFactory,
          Func<TParentVM, IEnumerable<TSourceItem>> sourceItemsGetter,
          Func<TSourceItem, bool> currentlySelectablePredicate
       ) {
@@ -66,7 +66,7 @@
       }
 
       public SingleSelectionProperty<TSourceItem> Of(
-         Func<IVMPropertyFactory<SelectionItemVM<TSourceItem>, TSourceItem>, VMDescriptor> descriptorFactory,
+         Func<IVMPropertyFactory<TSourceItem>, VMDescriptor> descriptorFactory,
          Action<
             SingleSelectionVMDescriptor<TSourceItem, SelectionItemVM<TSourceItem>>,
             IValidationBuilder<SingleSelectionVM<TSourceItem, SelectionItemVM<TSourceItem>>>

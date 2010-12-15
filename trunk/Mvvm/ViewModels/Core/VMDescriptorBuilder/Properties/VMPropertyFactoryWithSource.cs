@@ -5,7 +5,7 @@
 
    internal sealed class VMPropertyFactoryWithSource<TVM, TSourceValue> :
       VMPropertyFactoryBase<TVM>,
-      IVMPropertyFactoryWithSource<TVM, TSourceValue>
+      IVMPropertyFactoryWithSource<TSourceValue>
       where TVM : IViewModel {
 
       private readonly IValueAccessorBehavior<TSourceValue> _sourceValueAccessor;

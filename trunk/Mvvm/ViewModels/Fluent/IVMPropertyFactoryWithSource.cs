@@ -19,10 +19,9 @@ namespace Inspiring.Mvvm.ViewModels.Fluent {
    ///   Create an extension method on this interface if you want to support
    ///   mapped/calcualted properties for you own property type.
    /// </remarks>
-   public interface IVMPropertyFactoryWithSource<TVM, TSourceValue> :
+   public interface IVMPropertyFactoryWithSource<TSourceValue> :
       IHideObjectMembers,
-      IConfigurationProvider
-      where TVM : IViewModel {
+      IConfigurationProvider {
 
       /// <summary>
       ///   Creates a simple <see cref="VMProperty"/>.

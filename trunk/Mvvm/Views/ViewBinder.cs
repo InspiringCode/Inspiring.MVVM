@@ -55,7 +55,7 @@
       IBindToExpression<T> Property<T>(Expression<Func<TDescriptor, VMPropertyBase<T>>> sourcePropertySelector);
 
       IBindCollectionExpression<TItemDescriptor> Collection<TItemDescriptor>(
-         Expression<Func<TDescriptor, IBindableCollection<ViewModel<TItemDescriptor>>>> collectionPropertySelector
+         Expression<Func<TDescriptor, IVMProperty<IVMCollectionExpression<ViewModel<TItemDescriptor>>>>> collectionPropertySelector
       ) where TItemDescriptor : VMDescriptor;
 
       void VM<TChildDescriptor>(

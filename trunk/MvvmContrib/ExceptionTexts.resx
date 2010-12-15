@@ -123,6 +123,9 @@
   <data name="ExecuteCalledWithoutActualCommand" xml:space="preserve">
     <value>'Execute' cannot be called if no actual command implementation is registered. Make sure you call 'Execute' only if 'CanExecute' returns true.</value>
   </data>
+  <data name="LookupViewModelNotFound" xml:space="preserve">
+    <value>The lookup collection does not contain a VM for the source item: '{0}'.</value>
+  </data>
   <data name="TypeNotEnum" xml:space="preserve">
     <value>T must be an enumeration.</value>
   </data>
