@@ -2,12 +2,12 @@
    using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.ViewModels.Fluent;
 
-   internal sealed class LocalVMPropertyLocal<TVM> :
+   internal sealed class VMPropertyFactoryLocal<TVM> :
       VMPropertyFactoryBase<TVM>,
       ILocalVMPropertyFactory
       where TVM : IViewModel {
 
-      public LocalVMPropertyLocal(
+      public VMPropertyFactoryLocal(
          VMDescriptorConfiguration configuration
       )
          : base(configuration) {

@@ -90,6 +90,7 @@
     <Compile Include="ViewModels\IVMPropertyFactory.cs" />
     <Compile Include="ViewModels\MultiSelectionVM.cs" />
     <Compile Include="ViewModels\MultiSelection\LookupPopulatorCollectionBehavior.cs" />
+    <Compile Include="ViewModels\MultiSelection\MultiSelectionBuilder.cs" />
     <Compile Include="ViewModels\SelectionExtensions.cs" />
     <Compile Include="ViewModels\SelectionItemVM.cs" />
     <Compile Include="ViewModels\SelectionPropertyConfiguration.cs" />

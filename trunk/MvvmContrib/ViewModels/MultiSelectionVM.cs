@@ -11,20 +11,16 @@
       ICanInitializeFrom<TSourceObject>
       where TItemVM : IViewModel, ICanInitializeFrom<TItemSource> {
 
-      public static readonly MultiSelectionVMDescriptor<TItemSource, TItemVM> Descriptor = VMDescriptorBuilder
-         .For<MultiSelectionVM<TSourceObject, TItemSource, TItemVM>>()
-         .CreateDescriptor(c => {
-            var vm = c.GetPropertyFactory();
-
-            return new MultiSelectionVMDescriptor<TItemSource, TItemVM> {
-
-            };
-         })
-         .Build();
-
       public MultiSelectionVM(
-         IServiceLocator serviceLocator)
-         : base(Descriptor, serviceLocator) {
+        IServiceLocator serviceLocator,
+        VMDescriptorBase itemDescriptor,
+        Func<IVMPropertyFactory<TSourceObject>, VMProperty<ICollection<TItemSource>>> selectedSourceItemsPropertyFactory,
+        Func<IVMPropertyFactory<TSourceObject>, VMProperty<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory
+     )
+         : base(
+            CreateDescriptor(itemDescriptor, selectedSourceItemsPropertyFactory, allSourceItemsPropertyFactory),
+            serviceLocator
+         ) {
       }
 
       public TSourceObject SourceObject { get; private set; }
@@ -43,8 +39,8 @@
       }
 
       private IEnumerable<TItemSource> GetActiveSourceItems() {
-         IEnumerable<TItemSource> allSourceItems = GetValue(Descriptor.AllSourceItems);
-         IEnumerable<TItemSource> selectedSourceItems = GetValue(Descriptor.SelectedSourceItems);
+         IEnumerable<TItemSource> allSourceItems = GetValue(DescriptorBase.AllSourceItems);
+         IEnumerable<TItemSource> selectedSourceItems = GetValue(DescriptorBase.SelectedSourceItems);
 
          if (ActiveItemFilter == null) {
             return allSourceItems;
@@ -56,7 +52,7 @@
          );
       }
 
-      private MultiSelectionVMDescriptor<TItemSource, TItemVM> CreateDescriptor(
+      private static MultiSelectionVMDescriptor<TItemSource, TItemVM> CreateDescriptor(
          VMDescriptorBase itemDescriptor,
          Func<IVMPropertyFactory<TSourceObject>, VMProperty<ICollection<TItemSource>>> selectedSourceItemsPropertyFactory,
          Func<IVMPropertyFactory<TSourceObject>, VMProperty<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory

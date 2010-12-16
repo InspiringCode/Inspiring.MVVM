@@ -29,7 +29,7 @@ namespace Inspiring.Mvvm.ViewModels.Core.Builder.Properties {
       /// <inheritdoc />
       public ILocalVMPropertyFactory Local {
          get {
-            return new LocalVMPropertyLocal<TVM>(Configuration);
+            return new VMPropertyFactoryLocal<TVM>(Configuration);
          }
       }
 

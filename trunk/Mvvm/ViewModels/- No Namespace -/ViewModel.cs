@@ -18,8 +18,8 @@
       IDataErrorInfo
       where TDescriptor : VMDescriptorBase {
 
-      public ViewModel() {
-
+      public ViewModel(IServiceLocator serviceLocator = null) {
+         ServiceLocator = serviceLocator ?? Mvvm.ServiceLocator.Current;
       }
 
       public ViewModel(TDescriptor descriptor, IServiceLocator serviceLocator = null) {
