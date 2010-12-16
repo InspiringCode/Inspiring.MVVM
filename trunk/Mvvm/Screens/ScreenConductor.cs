@@ -54,7 +54,7 @@
          }
       }
 
-      public void CloseScreen(IScreen screen) {
+      public bool CloseScreen(IScreen screen) {
          if (!_screens.Items.Contains(screen)) {
             throw new ArgumentException(ExceptionTexts.ScreenNotContainedByConductor);
          }
@@ -64,7 +64,10 @@
             ActiveScreen = next;
             screen.Close();
             _screens.Items.Remove(screen);
+            return true;
          }
+
+         return false;
       }
 
       protected virtual IScreen ChooseNextScreen(IScreen screen) {

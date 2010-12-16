@@ -48,9 +48,9 @@
          }
       }
 
-      public void CloseView(object view) {
+      public bool CloseView(object view) {
          IScreen screen = ScreenFor(view);
-         _screens.CloseScreen(screen);
+         return _screens.CloseScreen(screen);
       }
 
       protected virtual void OnActiveViewChanged(object view) {
