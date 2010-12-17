@@ -73,8 +73,8 @@
          public static readonly TaskListVMDescriptor Descriptor = VMDescriptorBuilder
             .For<TaskListVM>()
             .CreateDescriptor(c => {
-               var v = c.GetPropertyFactory();
-               var s = c.GetPropertyFactory(x => x.Source);
+               var v = c.GetPropertyBuilder();
+               var s = c.GetPropertyBuilder(x => x.Source);
 
                return new TaskListVMDescriptor {
                   RootCommand = v.Command(x => x.Source.ExecuteAction()),

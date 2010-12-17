@@ -13,7 +13,7 @@
       public static readonly SaveDiscardVMDescriptor Descriptor = VMDescriptorBuilder
          .For<SaveDiscardVM>()
          .CreateDescriptor(c => {
-            var h = c.GetPropertyFactory(x => x.DialogActionHandler);
+            var h = c.GetPropertyBuilder(x => x.DialogActionHandler);
 
             return new SaveDiscardVMDescriptor {
                Save = h.Command(x => x.Save(), x => x.CanSave()),

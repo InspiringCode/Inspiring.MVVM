@@ -6,8 +6,8 @@
       public static readonly TaskVMDescriptor Descriptor = VMDescriptorBuilder
          .For<TaskVM>()
          .CreateDescriptor(c => {
-            var vm = c.GetPropertyFactory();
-            var t = c.GetPropertyFactory(x => x.SourceTask);
+            var vm = c.GetPropertyBuilder();
+            var t = c.GetPropertyBuilder(x => x.SourceTask);
 
             return new TaskVMDescriptor {
                Title = t.Mapped(x => x.Title).Property(),

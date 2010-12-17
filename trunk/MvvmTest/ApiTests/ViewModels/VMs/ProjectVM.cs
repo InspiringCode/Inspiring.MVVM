@@ -7,7 +7,7 @@
       public static readonly ProjectVMDescriptor Descriptor = VMDescriptorBuilder
          .For<ProjectVM>()
          .CreateDescriptor(c => {
-            var p = c.GetPropertyFactory(x => x.ProjectSource);
+            var p = c.GetPropertyBuilder(x => x.ProjectSource);
 
             return new ProjectVMDescriptor {
                Title = p.Mapped(x => x.Title).Property(),

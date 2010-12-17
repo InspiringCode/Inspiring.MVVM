@@ -124,7 +124,7 @@
          public static readonly MovieReviewVMDescriptor Descriptor = VMDescriptorBuilder
             .For<MovieReviewVM>()
             .CreateDescriptor(c => {
-               var vm = c.GetPropertyFactory();
+               var vm = c.GetPropertyBuilder();
 
                return new MovieReviewVMDescriptor {
                   Rating = vm.Local.Property<int>(),

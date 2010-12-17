@@ -83,8 +83,8 @@
          public static readonly CompanyVMDescriptor Descriptor = VMDescriptorBuilder
             .For<CompanyVM>()
             .CreateDescriptor(c => {
-               var v = c.GetPropertyFactory();
-               var com = c.GetPropertyFactory(x => x.Company);
+               var v = c.GetPropertyBuilder();
+               var com = c.GetPropertyBuilder(x => x.Company);
 
                return new CompanyVMDescriptor {
                   Employees = v.Collection().Wraps(x => x.Company.Employees).Of<PersonVM>(PersonVM.Descriptor),
@@ -110,8 +110,8 @@
          public static readonly PersonVMDescriptor Descriptor = VMDescriptorBuilder
             .For<PersonVM>()
             .CreateDescriptor(c => {
-               var v = c.GetPropertyFactory();
-               var p = c.GetPropertyFactory(x => x.Person);
+               var v = c.GetPropertyBuilder();
+               var p = c.GetPropertyBuilder(x => x.Person);
 
                return new PersonVMDescriptor {
                   BirthDate = p.Mapped(x => x.BirthDate).Property(),

@@ -32,7 +32,7 @@
       ///   </para>
       /// </param>
       IVMDescriptorBuilder<TVM, TDescriptor> CreateDescriptor<TDescriptor>(
-         Func<IVMPropertyFactoryProvider<TVM>, TDescriptor> descriptorFactory
+         Func<IVMPropertyBuilderProvider<TVM>, TDescriptor> descriptorFactory
       ) where TDescriptor : VMDescriptor;
    }
 

@@ -34,7 +34,7 @@
          public static readonly TestVMDescriptor Descriptor = VMDescriptorBuilder
             .For<TestVM>()
             .CreateDescriptor(c => {
-               var vm = c.GetPropertyFactory();
+               var vm = c.GetPropertyBuilder();
 
                return new TestVMDescriptor {
                   ViewModelCommand = vm.Local.Property<ICommand>()

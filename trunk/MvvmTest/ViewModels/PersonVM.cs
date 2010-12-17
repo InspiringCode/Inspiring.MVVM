@@ -8,8 +8,8 @@
       public static readonly PersonVMDescriptor Descriptor = VMDescriptorBuilder
             .For<PersonVM>()
             .CreateDescriptor(c => {
-               var v = c.GetPropertyFactory();
-               var p = c.GetPropertyFactory(x => x.Person);
+               var v = c.GetPropertyBuilder();
+               var p = c.GetPropertyBuilder(x => x.Person);
 
                return new PersonVMDescriptor {
                   FirstName = p.Mapped(x => x.FirstName).Property(),
@@ -63,7 +63,7 @@
       public static readonly ProjectVMDescriptor Descriptor = VMDescriptorBuilder
             .For<ProjectVM>()
             .CreateDescriptor(c => {
-               var v = c.GetPropertyFactory();
+               var v = c.GetPropertyBuilder();
 
                return new ProjectVMDescriptor {
                   Name = v.Mapped(x => x.Project.Name).Property()

@@ -60,8 +60,8 @@
          return VMDescriptorBuilder
             .For<MultiSelectionVM<TSourceObject, TItemSource, TItemVM>>()
             .CreateDescriptor(c => {
-               var v = c.GetPropertyFactory();
-               var fac = c.GetPropertyFactory(x => x.SourceObject);
+               var v = c.GetPropertyBuilder();
+               var fac = c.GetPropertyBuilder(x => x.SourceObject);
 
                return new MultiSelectionVMDescriptor<TItemSource, TItemVM> {
                   AllSourceItems = allSourceItemsPropertyFactory(fac),

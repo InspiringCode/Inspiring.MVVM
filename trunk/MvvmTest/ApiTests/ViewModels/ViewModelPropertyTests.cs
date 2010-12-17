@@ -60,7 +60,7 @@
             var descriptor = VMDescriptorBuilder
                .For<ProjectVM>()
                .CreateDescriptor(c => {
-                  var v = c.GetPropertyFactory();
+                  var v = c.GetPropertyBuilder();
 
                   return new ProjectVMDescriptor {
                      Title = v.Local.Property<string>(),
@@ -79,7 +79,7 @@
             var descriptor = VMDescriptorBuilder
                .For<ProjectVM>()
                .CreateDescriptor(c => {
-                  var v = c.GetPropertyFactory();
+                  var v = c.GetPropertyBuilder();
 
                   return new ProjectVMDescriptor {
                      Title = v.Local.Property<string>(),
@@ -101,7 +101,7 @@
             var descriptor = VMDescriptorBuilder
                .For<ProjectVM>()
                .CreateDescriptor(c => {
-                  var p = c.GetPropertyFactory(x => x.ProjectSource);
+                  var p = c.GetPropertyBuilder(x => x.ProjectSource);
 
                   return new ProjectVMDescriptor {
                      Title = p.Local.Property<string>(),
@@ -120,7 +120,7 @@
             var descriptor = VMDescriptorBuilder
                .For<ProjectVM>()
                .CreateDescriptor(c => {
-                  var p = c.GetPropertyFactory(x => x.ProjectSource);
+                  var p = c.GetPropertyBuilder(x => x.ProjectSource);
 
                   return new ProjectVMDescriptor {
                      Title = p.Local.Property<string>(),

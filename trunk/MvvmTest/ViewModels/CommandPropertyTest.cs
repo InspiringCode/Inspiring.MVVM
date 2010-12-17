@@ -75,8 +75,8 @@ namespace Inspiring.MvvmTest.ViewModels {
          public static readonly CommandVMDescriptor Descriptor = VMDescriptorBuilder
             .For<CommandVM>()
             .CreateDescriptor(c => {
-               var v = c.GetPropertyFactory();
-               var m = c.GetPropertyFactory(x => x.Model);
+               var v = c.GetPropertyBuilder();
+               var m = c.GetPropertyBuilder(x => x.Model);
                return new CommandVMDescriptor {
                   ViewModelCommand = v.Command(vm => vm.ViewModelAction(), vm => vm.ViewModelCanAction()),
                   ModelCommand = m.Command(model => model.ModelActionMethod())

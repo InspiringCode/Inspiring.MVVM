@@ -3,6 +3,7 @@ using System.ComponentModel;
 using Inspiring.Mvvm;
 using Inspiring.Mvvm.ViewModels;
 using Inspiring.Mvvm.ViewModels.Core;
+using Inspiring.Mvvm.ViewModels.Fluent;
 using Inspiring.MvvmTest.Stubs;
 using Inspiring.MvvmTest.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -29,7 +30,8 @@ namespace Inspiring.MvvmTest {
       }
 
       internal static void Validate(TestVM vm, decimal value, ValidationArgs args) {
-
+         IVMPropertyBuilder<TestVM> x = null;
+         
       }
 
       private class Test : ViewModelTypeDescriptor {

@@ -80,8 +80,8 @@
          public static readonly PersonVMDescriptor Descriptor = VMDescriptorBuilder
             .For<PersonVM>()
             .CreateDescriptor(c => {
-               var vm = c.GetPropertyFactory();
-               var p = c.GetPropertyFactory(x => x.Person);
+               var vm = c.GetPropertyBuilder();
+               var p = c.GetPropertyBuilder(x => x.Person);
 
                return new PersonVMDescriptor {
                   Status = vm.EnumSelection().Mapped(x => x.Person.CurrentStatus)

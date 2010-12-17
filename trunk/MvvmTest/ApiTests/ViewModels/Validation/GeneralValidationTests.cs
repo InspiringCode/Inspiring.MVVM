@@ -44,7 +44,7 @@
          public static TaskVMDescriptor Descriptor = VMDescriptorBuilder
             .For<TaskVM>()
             .CreateDescriptor(c => {
-               var vm = c.GetPropertyFactory();
+               var vm = c.GetPropertyBuilder();
 
                return new TaskVMDescriptor {
                   Title = vm.Local.Property<string>()

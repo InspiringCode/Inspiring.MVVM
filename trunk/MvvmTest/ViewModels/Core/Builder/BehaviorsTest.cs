@@ -10,7 +10,7 @@
          var descriptor = VMDescriptorBuilder
             .For<TestVM>()
             .CreateDescriptor(c => {
-               var f = c.GetPropertyFactory();
+               var f = c.GetPropertyBuilder();
                return new TestVMDescriptor {
                   Property = f.Calculated(x => "").Property()
                };
@@ -29,7 +29,7 @@
          var descriptor = VMDescriptorBuilder
             .For<TestVM>()
             .CreateDescriptor(c => {
-               var f = c.GetPropertyFactory();
+               var f = c.GetPropertyBuilder();
                return new TestVMDescriptor {
                   Property = f.Calculated(x => "").Property()
                };

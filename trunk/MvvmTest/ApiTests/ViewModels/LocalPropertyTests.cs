@@ -42,7 +42,7 @@
          public static readonly EmployeeVMDescriptor Descriptor = VMDescriptorBuilder
             .For<EmployeeVM>()
             .CreateDescriptor(c => {
-               var vm = c.GetPropertyFactory();
+               var vm = c.GetPropertyBuilder();
 
                return new EmployeeVMDescriptor {
                   CurrentProject = vm.Local.VM<ProjectVM>(),

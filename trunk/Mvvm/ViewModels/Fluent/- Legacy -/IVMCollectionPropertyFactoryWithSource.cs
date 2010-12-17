@@ -25,18 +25,11 @@
       ///   Creates a the property.
       /// </summary>
       /// <typeparam name="TItemVM">
-      ///   <para>The type of the collection item VM (for example PersonVM). A 
-      ///      new instance of <typeparamref name="TVM"/> is created for each item 
-      ///      of the source collection using the service locator of the parent VM,
-      ///      <see cref="ICanInitializeFrom.InitializeFrom"/> is called with the 
-      ///      source item and the item VM is added to the collection.</para>
-      ///   <para>The soure collection is selected with the <see 
-      ///      cref="IVMPropertyFactory.Collection"/> method.</para>
-      /// returned by the mapped or calculated
-      ///   source.
-      /// <see 
-      ///   cref="ICanInitializeFrom.InitializeFrom"/> is called with the source 
-      ///   object returned by the mapped or calculated source.
+      ///   The type of the collection item VM (for example PersonVM). A 
+      ///   new instance of <typeparamref name="TVM"/> is created for each item 
+      ///   of the source collection using the service locator of the parent VM,
+      ///   <see cref="ICanInitializeFrom.InitializeFrom"/> is called with the 
+      ///   source item and the item VM is added to the collection.
       /// </typeparam>
       /// <param name="itemDescriptor">
       ///   Specifies the VM descriptor that should be used for the collection 

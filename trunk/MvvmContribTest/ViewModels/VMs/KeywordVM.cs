@@ -5,8 +5,8 @@
       public static readonly KeywordVMDescriptor Descriptor = VMDescriptorBuilder
          .For<KeywordVM>()
          .CreateDescriptor(c => {
-            var vm = c.GetPropertyFactory();
-            var k = c.GetPropertyFactory(x => x.Keyword);
+            var vm = c.GetPropertyBuilder();
+            var k = c.GetPropertyBuilder(x => x.Keyword);
 
             return new KeywordVMDescriptor {
                Name = k.Mapped(x => x.Name).Property()

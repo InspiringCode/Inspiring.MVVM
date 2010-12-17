@@ -76,7 +76,7 @@
          public static readonly EmployeeVMDescriptor Descriptor = VMDescriptorBuilder
             .For<EmployeeVM>()
             .CreateDescriptor(c => {
-               var v = c.GetPropertyFactory();
+               var v = c.GetPropertyBuilder();
 
                return new EmployeeVMDescriptor {
                   Name = v.Local.Property<string>(),
@@ -115,7 +115,7 @@
          public static readonly ProjectVMDescriptor Descriptor = VMDescriptorBuilder
             .For<ProjectVM>()
             .CreateDescriptor(c => {
-               var v = c.GetPropertyFactory();
+               var v = c.GetPropertyBuilder();
 
                return new ProjectVMDescriptor {
                   Title = v.Local.Property<string>(),
@@ -155,7 +155,7 @@
          public static readonly CustomerVMDescriptor Descriptor = VMDescriptorBuilder
             .For<CustomerVM>()
             .CreateDescriptor(c => {
-               var v = c.GetPropertyFactory();
+               var v = c.GetPropertyBuilder();
 
                return new CustomerVMDescriptor {
                   Name = v.Local.Property<string>(),

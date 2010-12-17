@@ -7,8 +7,8 @@
       public static readonly AreaVMDescriptor Descriptor = VMDescriptorBuilder
          .For<AreaVM>()
          .CreateDescriptor(c => {
-            var vm = c.GetPropertyFactory();
-            var a = c.GetPropertyFactory(x => x.Area);
+            var vm = c.GetPropertyBuilder();
+            var a = c.GetPropertyBuilder(x => x.Area);
 
             return new AreaVMDescriptor {
                Caption = a.Mapped(x => x.Caption).Property()

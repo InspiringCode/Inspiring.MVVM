@@ -9,8 +9,8 @@
       public static readonly KeywordSelectionVMDescriptor Descriptor = VMDescriptorBuilder
          .For<KeywordSelectionVM>()
          .CreateDescriptor(c => {
-            var vm = c.GetPropertyFactory();
-            var d = c.GetPropertyFactory(x => x.Document);
+            var vm = c.GetPropertyBuilder();
+            var d = c.GetPropertyBuilder(x => x.Document);
 
             return new KeywordSelectionVMDescriptor {
                AllItems = vm.Collection().Wraps(x => x.FilteredItems).Of<KeywordVM>(KeywordVM.Descriptor),

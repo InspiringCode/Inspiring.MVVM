@@ -87,7 +87,7 @@
          var builder = VMDescriptorBuilder
             .For<SingleSelectionVM<TSourceItem, TItemVM>>()
             .CreateDescriptor(c => {
-               var v = c.GetPropertyFactory();
+               var v = c.GetPropertyBuilder();
 
                return new SingleSelectionVMDescriptor<TSourceItem, TItemVM> {
                   UnfilteredSourceItems = allSourceItemsProperty,

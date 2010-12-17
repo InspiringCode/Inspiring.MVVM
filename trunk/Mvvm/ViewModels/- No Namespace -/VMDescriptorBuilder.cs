@@ -29,7 +29,7 @@
          return new BuilderExpression<TVM>();
       }
 
-      private class BuilderExpression<TVM> : IVMDescriptorBuilder<TVM>, IVMPropertyFactoryProvider<TVM>
+      private class BuilderExpression<TVM> : IVMDescriptorBuilder<TVM>, IVMPropertyBuilderProvider<TVM>
          where TVM : IViewModel {
          private VMDescriptorConfiguration _configuration;
 
@@ -41,7 +41,7 @@
 
          /// <inheritdoc />
          public IVMDescriptorBuilder<TVM, TDescriptor> CreateDescriptor<TDescriptor>(
-            Func<IVMPropertyFactoryProvider<TVM>, TDescriptor> descriptorFactory
+            Func<IVMPropertyBuilderProvider<TVM>, TDescriptor> descriptorFactory
          ) where TDescriptor : VMDescriptor {
             TDescriptor descriptor = descriptorFactory(this);
             descriptor.InitializePropertyNames();
@@ -49,12 +49,12 @@
          }
 
          /// <inheritdoc />
-         public IVMPropertyFactory<TVM> GetPropertyFactory() {
+         public IVMPropertyFactory<TVM> GetPropertyBuilder() {
             return new VMPropertyFactory<TVM, TVM>(PropertyPath.Empty<TVM>(), _configuration);
          }
 
          /// <inheritdoc />
-         public IVMPropertyFactory<TSource> GetPropertyFactory<TSource>(Expression<Func<TVM, TSource>> sourceObjectSelector) {
+         public IVMPropertyFactory<TSource> GetPropertyBuilder<TSource>(Expression<Func<TVM, TSource>> sourceObjectSelector) {
             var path = PropertyPath.Create(sourceObjectSelector);
             return new VMPropertyFactory<TVM, TSource>(path, _configuration);
          }

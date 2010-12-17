@@ -75,7 +75,7 @@
          VMDescriptor itemDescriptor = VMDescriptorBuilder
             .For<SelectionItemVM<TSourceItem>>()
             .CreateDescriptor(c => {
-               var factory = c.GetPropertyFactory(x => x.SourceItem);
+               var factory = c.GetPropertyBuilder(x => x.SourceItem);
 
                return descriptorFactory(factory);
             })

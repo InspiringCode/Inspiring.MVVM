@@ -32,7 +32,7 @@
       ///      property path of the property whose value should be returned and
       ///      updated by the returned 'VMProperty'.</para>
       ///   <para>The first argument of the expression ('x' in the example) is
-      ///      the the value of the model property this factory was created for.
+      ///      the value of the model property this factory was created for.
       ///      If this factory was created by 'GetPropertyFactory(x => x.Person)'
       ///      the first argument would be the value of the 'Person' property of
       ///      the current 'ViewModel'.</para>

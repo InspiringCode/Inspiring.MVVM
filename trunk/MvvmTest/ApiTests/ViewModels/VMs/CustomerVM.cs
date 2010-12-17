@@ -6,7 +6,7 @@
       public static readonly CustomerVMDescriptor Descriptor = VMDescriptorBuilder
          .For<CustomerVM>()
          .CreateDescriptor(c => {
-            var cust = c.GetPropertyFactory(x => x.CustomerSource);
+            var cust = c.GetPropertyBuilder(x => x.CustomerSource);
 
             return new CustomerVMDescriptor {
                Title = cust.Mapped(x => x.Title).Property()

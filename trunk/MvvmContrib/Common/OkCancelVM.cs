@@ -6,7 +6,7 @@
       public static readonly OkCancelVMDescriptor Descriptor = VMDescriptorBuilder
          .For<OkCancelVM>()
          .CreateDescriptor(c => {
-            var h = c.GetPropertyFactory(x => x.DialogActionHandler);
+            var h = c.GetPropertyBuilder(x => x.DialogActionHandler);
 
             return new OkCancelVMDescriptor {
                Ok = h.Command(x => x.Ok(), x => x.CanOk()),

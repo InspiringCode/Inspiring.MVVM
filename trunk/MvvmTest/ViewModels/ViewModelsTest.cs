@@ -28,8 +28,8 @@ namespace Inspiring.MvvmTest.ViewModels {
          public static readonly PersonVMDescriptor Descriptor = VMDescriptorBuilder
             .For<PersonVM>()
             .CreateDescriptor(pro => {
-               var v = pro.GetPropertyFactory();
-               var p = pro.GetPropertyFactory(x => x.Person);
+               var v = pro.GetPropertyBuilder();
+               var p = pro.GetPropertyBuilder(x => x.Person);
 
                return new PersonVMDescriptor {
                   FirstName = p.Mapped(x => x.FirstName).Property(),

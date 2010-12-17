@@ -7,8 +7,8 @@
       public static readonly new TestVMDescriptor Descriptor = VMDescriptorBuilder
          .For<TestVM>()
          .CreateDescriptor(c => {
-            var v = c.GetPropertyFactory();
-            var p = c.GetPropertyFactory(x => x.Source);
+            var v = c.GetPropertyBuilder();
+            var p = c.GetPropertyBuilder(x => x.Source);
 
             return new TestVMDescriptor {
                CalculatedMutableProperty = p.Calculated(x => x.GetCalculated(), (x, val) => x.SetCalculated(val)).Property(),
@@ -101,8 +101,8 @@
       public static readonly ChildVMDescriptor Descriptor = VMDescriptorBuilder
          .For<ChildVM>()
          .CreateDescriptor(c => {
-            var v = c.GetPropertyFactory();
-            var p = c.GetPropertyFactory(x => x.Source);
+            var v = c.GetPropertyBuilder();
+            var p = c.GetPropertyBuilder(x => x.Source);
 
             return new ChildVMDescriptor {
                MappedMutableProperty = p.Mapped(x => x.MappedMutableValue).Property()
@@ -165,8 +165,8 @@
       public static readonly ParentedChildVMDescriptor Descriptor = VMDescriptorBuilder
          .For<ParentedChildVM>()
          .CreateDescriptor(c => {
-            var v = c.GetPropertyFactory();
-            var p = c.GetPropertyFactory(x => x.Source);
+            var v = c.GetPropertyBuilder();
+            var p = c.GetPropertyBuilder(x => x.Source);
 
             return new ParentedChildVMDescriptor {
                MappedMutableProperty = p.Mapped(x => x.Source.MappedMutableValue).Property()

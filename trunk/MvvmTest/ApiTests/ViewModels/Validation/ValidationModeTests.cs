@@ -155,7 +155,7 @@
          public static readonly TaskVMDescriptor Descriptor = VMDescriptorBuilder
             .For<TaskVM>()
             .CreateDescriptor(c => {
-               var v = c.GetPropertyFactory();
+               var v = c.GetPropertyBuilder();
 
                return new TaskVMDescriptor {
                   Title = v.Local.Property<string>()

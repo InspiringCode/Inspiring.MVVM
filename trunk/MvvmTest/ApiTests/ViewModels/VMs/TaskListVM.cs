@@ -8,7 +8,7 @@
       public static readonly TaskListVMDescriptor Descriptor = VMDescriptorBuilder
          .For<TaskListVM>()
          .CreateDescriptor(c => {
-            var vm = c.GetPropertyFactory();
+            var vm = c.GetPropertyBuilder();
 
             return new TaskListVMDescriptor {
                Tasks = vm.Collection().Wraps(x => x.TasksSource).Of<TaskVM>(TaskVM.Descriptor)

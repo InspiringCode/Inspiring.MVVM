@@ -5,8 +5,8 @@
       public static readonly DocumentVMDescriptor Descriptor = VMDescriptorBuilder
          .For<DocumentVM>()
          .CreateDescriptor(c => {
-            var vm = c.GetPropertyFactory();
-            var d = c.GetPropertyFactory(x => x.Document);
+            var vm = c.GetPropertyBuilder();
+            var d = c.GetPropertyBuilder(x => x.Document);
 
             return new DocumentVMDescriptor {
                Name = d.Mapped(x => x.Name).Property(),
