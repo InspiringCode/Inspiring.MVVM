@@ -36,25 +36,13 @@
       ///   that is initialized with the items returned by the passed <paramref 
       ///   name="itemsProvider"/>.
       /// </summary>
-      /// <typeparam name="TItemVM">
-      ///   The type of the collection item VM (for example PersonVM). A 
-      ///   new instance of <typeparamref name="TVM"/> is created for each item 
-      ///   of the source collection using the service locator of the parent VM,
-      ///   <see cref="ICanInitializeFrom.InitializeFrom"/> is called with the 
-      ///   source item and the item VM is added to the collection.
-      /// </typeparam>
-      /// <param name="initialItemsProvider">
+      /// <param name="itemsProvider">
       ///   A function that returns the contents of the VM collection. It is called
       ///   the first time the collection is accessed or when <see 
       ///   cref="VMKernel.UpdateFromSource"/> is called.
       /// </param>
-      /// <param name="itemDescriptor">
-      ///   Specifies the VM descriptor that should be used for the collection 
-      ///   items. All items must have the same descriptor.
-      /// </param>
-      VMProperty<IVMCollection<TItemVM>> InitializedWith<TItemVM>(
-         Func<TSourceObject, IEnumerable<TItemVM>> initialItemsProvider,
-         VMDescriptorBase itemDescriptor
+      IPopulatedCollectionPropertyBuilder<TItemVM> PopulatedWith<TItemVM>(
+         Func<TSourceObject, IEnumerable<TItemVM>> itemsProvider
       ) where TItemVM : IViewModel;
 
       /// <summary>

@@ -104,7 +104,7 @@
       [TestMethod]
       public void CollectionProperty_Initialized_InsertsPropertyBehaviors() {
          var f = CreateRootFactory();
-         var p = f.Collection.InitializedWith(x => Enumerable.Empty<ProjectVM>(), new VMDescriptorStub());
+         var p = f.Collection.PopulatedWith(x => Enumerable.Empty<ProjectVM>()).With(new VMDescriptorStub());
 
          AssertDefaultCollectionPropertyBehaviors(p);
          Assert.IsTrue(ContainsBehavior<CollectionPopulatorBehavior<ProjectVM>>(p));

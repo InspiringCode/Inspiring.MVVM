@@ -150,6 +150,7 @@
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\- Legacy -\VMPropertyFactory.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\- Legacy -\VMPropertyFactoryBase.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\- Legacy -\VMPropertyFactoryWithSource.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\IPopulatedCollectionPropertyBuilder.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\VMPropertyBuilder.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\VMPropertyBuilderBase.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\ValidationBuilder.cs" />
@@ -228,12 +229,12 @@
     <Compile Include="ViewModels\Fluent\- Legacy -\IVMCollectionPropertyFactoryWithSource.cs" />
     <Compile Include="ViewModels\Fluent\- Legacy -\IVMPropertyFactory.cs" />
     <Compile Include="ViewModels\Fluent\- Legacy -\IVMPropertyFactoryWithSource.cs" />
-    <Compile Include="ViewModels\Fluent\ICollectionPropertyBuilder.cs" />
-    <Compile Include="ViewModels\Fluent\ICollectionPropertyBuilderWithSource.cs" />
-    <Compile Include="ViewModels\Fluent\IVMPropertyBuilder.cs" />
-    <Compile Include="ViewModels\Fluent\IValuePropertyBuilder.cs" />
-    <Compile Include="ViewModels\Fluent\IViewModelPropertyBuilder.cs" />
-    <Compile Include="ViewModels\Fluent\IViewModelPropertyBuilderWithSource.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\ICollectionPropertyBuilder.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\ICollectionPropertyBuilderWithSource.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\IVMPropertyBuilder.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\IValuePropertyBuilder.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\IViewModelPropertyBuilder.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\IViewModelPropertyBuilderWithSource.cs" />
     <Compile Include="ViewModels\IHasSourceObject.cs" />
     <Compile Include="ViewModels\IViewModel.cs" />
     <Compile Include="ViewModels\IVMContext.cs" />

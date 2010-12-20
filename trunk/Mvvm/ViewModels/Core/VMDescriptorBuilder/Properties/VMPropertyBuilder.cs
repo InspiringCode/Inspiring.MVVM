@@ -5,8 +5,8 @@
    using System.Linq.Expressions;
    using System.Windows.Input;
    using Inspiring.Mvvm.Common;
-   using Inspiring.Mvvm.ViewModels.Fluent;
    using Inspiring.Mvvm.Screens;
+   using Inspiring.Mvvm.ViewModels.Fluent;
 
    internal sealed class VMPropertyBuilder<TVM, TSourceObject> :
       VMPropertyBuilderBase<TVM>,
@@ -143,21 +143,13 @@
       }
 
       /// <inheritdoc />
-      VMProperty<IVMCollection<TItemVM>> ICollectionPropertyBuilder<TSourceObject>.InitializedWith<TItemVM>(
-         Func<TSourceObject, IEnumerable<TItemVM>> initialItemsProvider,
-         VMDescriptorBase itemDescriptor
+      IPopulatedCollectionPropertyBuilder<TItemVM> ICollectionPropertyBuilder<TSourceObject>.PopulatedWith<TItemVM>(
+         Func<TSourceObject, IEnumerable<TItemVM>> itemsProvider
       ) {
-         var collectionConfiguration = GetCollectionConfiguration<TItemVM>(itemDescriptor);
-
-         collectionConfiguration.Enable(CollectionBehaviorKeys.SourceAccessor, GetSourceObjectAccessor());
-         collectionConfiguration.Enable(
-            CollectionBehaviorKeys.Populator,
-            new DelegatePopulatorCollectionBehavior<TItemVM, TSourceObject>(initialItemsProvider)
-         );
-
-         return CreateCollectionProperty<TItemVM>(
-            collectionConfiguration,
-            isPopulatable: true
+         return new PopulatedCollectionPropertyBuilder<TItemVM>(
+            Configuration,
+            GetSourceObjectAccessor(),
+            new DelegatePopulatorCollectionBehavior<TItemVM, TSourceObject>(itemsProvider)
          );
       }
 
@@ -245,6 +237,40 @@
 
          VMProperty<TChildVM> IViewModelPropertyBuilderWithSource<TSourceValue>.With<TChildVM>() {
             return CreateViewModelProperty<TChildVM, TSourceValue>(_sourceValueAccessor);
+         }
+      }
+
+      private class PopulatedCollectionPropertyBuilder<TItemVM> :
+         VMPropertyBuilderBase<TVM>,
+         IPopulatedCollectionPropertyBuilder<TItemVM>
+         where TItemVM : IViewModel {
+
+         private IValueAccessorBehavior<TSourceObject> _sourceObjectAccessor;
+         private IPopulatorCollectionBehavior<TItemVM> _collectionPopulator;
+
+         public PopulatedCollectionPropertyBuilder(
+            VMDescriptorConfiguration configuration,
+            IValueAccessorBehavior<TSourceObject> sourceObjectAccessor,
+            IPopulatorCollectionBehavior<TItemVM> collectionPopulator
+         )
+            : base(configuration) {
+            Contract.Requires(sourceObjectAccessor != null);
+            Contract.Requires(collectionPopulator != null);
+
+            _sourceObjectAccessor = sourceObjectAccessor;
+            _collectionPopulator = collectionPopulator;
+         }
+
+         public VMProperty<IVMCollection<TItemVM>> With(VMDescriptorBase itemDescriptor) {
+            var collectionConfiguration = GetCollectionConfiguration<TItemVM>(itemDescriptor);
+
+            collectionConfiguration.Enable(CollectionBehaviorKeys.SourceAccessor, _sourceObjectAccessor);
+            collectionConfiguration.Enable(CollectionBehaviorKeys.Populator, _collectionPopulator);
+
+            return CreateCollectionProperty<TItemVM>(
+               collectionConfiguration,
+               isPopulatable: true
+            );
          }
       }
    }
