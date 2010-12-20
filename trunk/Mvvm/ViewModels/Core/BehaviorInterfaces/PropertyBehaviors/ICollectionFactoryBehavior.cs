@@ -1,5 +1,4 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
-   using System;
    using System.Diagnostics.Contracts;
    using Contracts;
 
@@ -7,8 +6,9 @@
    ///   A property behavior that creates new, empty <see cref="IVMCollection"/>
    ///   instances.
    /// </summary>
-   [ContractClass(typeof(ICollectionFactoryBehaviorContract<>))]
-   internal interface ICollectionFactoryBehavior<TItemVM> : IBehavior where TItemVM : IViewModel {
+   // TODO: Refactor this? Own behavior? See also VMBehaviorBuilder.
+   [ContractClass(typeof(ICollectionFactoryBehaviorContract))]
+   internal interface ICollectionBehaviorConfigurationBehavior : IBehavior {
       /// <summary>
       ///   <para>Gets the <see cref="BehaviorChainConfiguration"/> that is used 
       ///      for the VM collection instances (see <see cref="IVMCollection"/> 
@@ -19,19 +19,13 @@
       ///      all collection instances created by this factory.</para>
       /// </summary>
       BehaviorChainConfiguration CollectionBehaviorConfiguration { get; }
-
-      /// <summary>
-      ///   Returns a new <see cref="IVMCollection"/> instance.
-      /// </summary>
-      IVMCollection<TItemVM> CreateCollection(IBehaviorContext context);
    }
 
    namespace Contracts {
       /// <inheritdoc />
-      [ContractClassFor(typeof(ICollectionFactoryBehavior<>))]
-      internal abstract class ICollectionFactoryBehaviorContract<TItemVM> :
-         ICollectionFactoryBehavior<TItemVM>
-         where TItemVM : IViewModel {
+      [ContractClassFor(typeof(ICollectionBehaviorConfigurationBehavior))]
+      internal abstract class ICollectionFactoryBehaviorContract :
+         ICollectionBehaviorConfigurationBehavior {
 
          /// <inheritdoc />
          public BehaviorChainConfiguration CollectionBehaviorConfiguration {
@@ -45,18 +39,6 @@
          public IBehavior Successor {
             get { return null; }
             set { }
-         }
-
-         /// <inheritdoc />
-         public IVMCollection<TItemVM> CreateCollection(IBehaviorContext context) {
-            Contract.Requires(context != null);
-            Contract.Ensures(Contract.Result<IVMCollection<TItemVM>>() != null);
-
-            return null;
-         }
-
-         [Obsolete]
-         public void Initialize(BehaviorInitializationContext context) {
          }
       }
    }

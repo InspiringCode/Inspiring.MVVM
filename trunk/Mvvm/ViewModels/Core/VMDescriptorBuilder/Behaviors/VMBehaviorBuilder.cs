@@ -33,6 +33,18 @@
          }
 
          /// <inheritdoc />
+         ISinglePropertyBehaviorBuilder<TValue> ISinglePropertyBehaviorBuilder<TValue>.CollectionBehaviors {
+            get {
+               // TODO: Refactor this?
+               BehaviorChainConfiguration collectionConfiguration = _propertyConfiguration
+                  .GetBehavior<ICollectionBehaviorConfigurationBehavior>(BehaviorKeys.CollectionFactory)
+                  .CollectionBehaviorConfiguration;
+
+               return new SinglePropertyBehaviorBuilder<TValue>(collectionConfiguration);
+            }
+         }
+
+         /// <inheritdoc />
          ISinglePropertyBehaviorBuilder<TValue> ISinglePropertyBehaviorBuilder<TValue>.Enable(
             BehaviorKey key,
             IBehavior behaviorInstance

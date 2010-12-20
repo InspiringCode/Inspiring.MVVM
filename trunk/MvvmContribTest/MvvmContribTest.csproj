@@ -70,6 +70,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screens\ApplicationCommandManagerTest.cs" />
     <Compile Include="Screens\FindScreenTest.cs" />
+    <Compile Include="ViewModels\MultiSelection\LookupPopulatorCollectionBehaviorTests.cs" />
     <Compile Include="ViewModels\VMs\DocumentVM.cs" />
     <Compile Include="ViewModels\VMs\KeywordSelectionVM.cs" />
     <Compile Include="ViewModels\VMs\KeywordVM.cs" />
@@ -93,6 +94,10 @@
     <ProjectReference Include="..\MvvmContrib\MvvmContrib.csproj">
       <Project>{7D10FFF8-1916-49C7-9532-9AFC7ED22B03}</Project>
       <Name>MvvmContrib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MvvmTest\MvvmTest.csproj">
+      <Project>{4BDD1C93-B8FB-4CCB-9980-0A0AD4502D8C}</Project>
+      <Name>MvvmTest</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mvvm\Mvvm.csproj">
       <Project>{B2E313EF-1DB8-423E-AB2E-5767F02BD026}</Project>

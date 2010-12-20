@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.MultiSelection {
+﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
@@ -27,7 +27,7 @@
 
          var sourceItems = this.GetValueNext<IEnumerable<TItemSource>>(
             context,
-            ValueStage.PostValidation
+            ValueStage.None
          );
 
          try {

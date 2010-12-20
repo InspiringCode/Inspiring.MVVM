@@ -5,6 +5,7 @@
    /// <inheritdoc />
    public sealed class CollectionFactoryBehavior<TItemVM> :
       Behavior,
+      ICollectionBehaviorConfigurationBehavior,
       IValueAccessorBehavior<IVMCollection<TItemVM>>
       where TItemVM : IViewModel {
 

@@ -44,7 +44,7 @@
       }
 
       protected class ContextTestHelper {
-         public ContextTestHelper(IVMProperty property = null) {
+         public ContextTestHelper(IViewModel viewModel = null, IVMProperty property = null) {
             if (property == null) {
                property = new Mock<IVMProperty>().Object;
             }
@@ -60,7 +60,7 @@
                descriptor.Fields.CreateValueHolder()
             );
 
-            VM = new ViewModelStub();
+            VM = viewModel ?? new ViewModelStub();
 
             ContextMock = new Mock<IBehaviorContext>();
             ContextMock

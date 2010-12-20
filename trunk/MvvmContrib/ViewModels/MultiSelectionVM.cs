@@ -9,7 +9,7 @@
    public sealed class MultiSelectionVM<TSourceObject, TItemSource, TItemVM> :
       ViewModel<MultiSelectionVMDescriptor<TItemSource, TItemVM>>,
       ICanInitializeFrom<TSourceObject>
-      where TItemVM : IViewModel, ICanInitializeFrom<TItemSource> {
+      where TItemVM : IViewModel, IVMCollectionItem<TItemSource> {
 
       public MultiSelectionVM(
         IServiceLocator serviceLocator,
@@ -32,6 +32,10 @@
       public Func<TItemSource, bool> ActiveItemFilter {
          get;
          set;
+      }
+
+      private IVMCollection<TItemVM> AllItems {
+         get { return GetValue(DescriptorBase.AllItems); }
       }
 
       private ICollection<TItemSource> SelectedSourceItems {
@@ -71,8 +75,12 @@
                };
             })
             .WithBehaviors(c => {
-               throw new NotImplementedException();
-               // Enable(CollectionBehaviorKeys.Populator, new LookupPopulatorCollectionBehavior<...>(x => x.AllItems);
+               c.For(x => x.SelectedItems).CollectionBehaviors.Enable(
+                  CollectionBehaviorKeys.Populator,
+                  new LookupPopulatorCollectionBehavior<MultiSelectionVM<TSourceObject, TItemSource, TItemVM>, TItemVM, TItemSource>(
+                     multiSelectionVM => multiSelectionVM.AllItems
+                  )
+               );
             })
             .Build();
       }

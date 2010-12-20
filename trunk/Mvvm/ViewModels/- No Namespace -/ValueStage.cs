@@ -5,6 +5,11 @@
    /// </summary>
    public enum ValueStage {
       /// <summary>
+      ///   The stage is not relevant for the current operation.
+      /// </summary>
+      None,
+
+      /// <summary>
       ///   The value before it is converted to the type of the property. It is
       ///   usually set by the View and may be of a different type than the 
       ///   property.

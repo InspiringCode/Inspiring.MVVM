@@ -24,6 +24,11 @@
       );
 
       /// <summary>
+      ///   Configures the collection behaviors of a collection property.
+      /// </summary>
+      ISinglePropertyBehaviorBuilder<TValue> CollectionBehaviors { get; }
+
+      /// <summary>
       ///   Calls the '<paramref name="configurationAction"/>' with the behavior
       ///   specified by '<paramref name="key"/>' and enables it.
       /// </summary>
