@@ -49,14 +49,14 @@
          }
 
          /// <inheritdoc />
-         public IVMPropertyFactory<TVM> GetPropertyBuilder() {
-            return new VMPropertyFactory<TVM, TVM>(PropertyPath.Empty<TVM>(), _configuration);
+         public IVMPropertyBuilder<TVM> GetPropertyBuilder() {
+            return new VMPropertyBuilder<TVM, TVM>(PropertyPath.Empty<TVM>(), _configuration);
          }
 
          /// <inheritdoc />
-         public IVMPropertyFactory<TSource> GetPropertyBuilder<TSource>(Expression<Func<TVM, TSource>> sourceObjectSelector) {
+         public IVMPropertyBuilder<TSource> GetPropertyBuilder<TSource>(Expression<Func<TVM, TSource>> sourceObjectSelector) {
             var path = PropertyPath.Create(sourceObjectSelector);
-            return new VMPropertyFactory<TVM, TSource>(path, _configuration);
+            return new VMPropertyBuilder<TVM, TSource>(path, _configuration);
          }
       }
 

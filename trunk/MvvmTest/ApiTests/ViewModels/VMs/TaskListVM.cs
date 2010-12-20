@@ -11,7 +11,7 @@
             var vm = c.GetPropertyBuilder();
 
             return new TaskListVMDescriptor {
-               Tasks = vm.Collection().Wraps(x => x.TasksSource).Of<TaskVM>(TaskVM.Descriptor)
+               Tasks = vm.Collection.Wraps(x => x.TasksSource).With<TaskVM>(TaskVM.Descriptor)
             };
          })
          .Build();

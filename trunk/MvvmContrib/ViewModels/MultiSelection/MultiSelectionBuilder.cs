@@ -15,7 +15,7 @@
          var builder = new MultiSelectionBuilder<TSourceObject, TItemSource>(sourceObjectPropertyFactory);
 
          builder.SelectedSourceItemsPropertyFactory = factory =>
-            factory.Calculated(selectedSourceItemsSelector).Property();
+            factory.Property.DelegatesTo(selectedSourceItemsSelector);
 
          return builder;
       }
@@ -29,12 +29,12 @@
          _sourceObjectPropertyFactory = sourceObjectPropertyFactory;
       }
 
-      internal Func<IVMPropertyFactory<TSourceObject>, VMProperty<ICollection<TItemSource>>> SelectedSourceItemsPropertyFactory {
+      internal Func<IVMPropertyBuilder<TSourceObject>, VMProperty<ICollection<TItemSource>>> SelectedSourceItemsPropertyFactory {
          get;
          set;
       }
 
-      internal Func<IVMPropertyFactory<TSourceObject>, VMProperty<IEnumerable<TItemSource>>> AllSourceItemsPropertyFactory {
+      internal Func<IVMPropertyBuilder<TSourceObject>, VMProperty<IEnumerable<TItemSource>>> AllSourceItemsPropertyFactory {
          get;
          set;
       }

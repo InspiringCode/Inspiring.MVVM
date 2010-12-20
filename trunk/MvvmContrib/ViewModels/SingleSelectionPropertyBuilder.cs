@@ -9,9 +9,9 @@
       ISingleSelectionPropertyBuilder<TParentVM>
       where TParentVM : IViewModel {
 
-      private IVMPropertyFactory< TParentVM> _propertyFactory;
+      private IVMPropertyBuilder<TParentVM> _propertyFactory;
 
-      public SingleSelectionPropertyBuilder(IVMPropertyFactory<TParentVM> propertyFactory) {
+      public SingleSelectionPropertyBuilder(IVMPropertyBuilder<TParentVM> propertyFactory) {
          _propertyFactory = propertyFactory;
       }
 
@@ -31,26 +31,26 @@
       ISingleSelectionPropertyBuilder<TParentVM, TSourceItem>
       where TParentVM : IViewModel {
 
-      private IVMPropertyFactory<TParentVM> _propertyFactory;
+      private IVMPropertyBuilder<TParentVM> _propertyFactory;
       private Func<TSourceItem, bool> _selectableItemFilter;
 
       private VMProperty<IEnumerable<TSourceItem>> _unfilteredSourceItemsProperty;
       private VMProperty<TSourceItem> _selectedSourceItemProperty;
 
       public SingleSelectionPropertyBuilder(
-         IVMPropertyFactory<TParentVM> propertyFactory,
+         IVMPropertyBuilder<TParentVM> propertyFactory,
          Func<TParentVM, IEnumerable<TSourceItem>> sourceItemsGetter,
          Func<TSourceItem, bool> currentlySelectablePredicate
       ) {
          _propertyFactory = propertyFactory;
          _selectableItemFilter = currentlySelectablePredicate;
-         _unfilteredSourceItemsProperty = _propertyFactory.Calculated(sourceItemsGetter).Property();
+         _unfilteredSourceItemsProperty = _propertyFactory.Property.DelegatesTo(sourceItemsGetter);
       }
 
       public ISingleSelectionPropertyBuilder<TParentVM, TSourceItem> WithSelection(
          Expression<Func<TParentVM, TSourceItem>> selectedItemSelector
       ) {
-         _selectedSourceItemProperty = _propertyFactory.Mapped(selectedItemSelector).Property();
+         _selectedSourceItemProperty = _propertyFactory.Property.MapsTo(selectedItemSelector);
          return this;
       }
 
@@ -58,15 +58,15 @@
          Func<TParentVM, TSourceItem> selectionGetter,
          Action<TParentVM, TSourceItem> selectionSetter
       ) {
-         _selectedSourceItemProperty = _propertyFactory.Calculated(
+         _selectedSourceItemProperty = _propertyFactory.Property.DelegatesTo(
             selectionGetter,
             selectionSetter
-         ).Property();
+         );
          return this;
       }
 
       public SingleSelectionProperty<TSourceItem> Of(
-         Func<IVMPropertyFactory<TSourceItem>, VMDescriptor> descriptorFactory,
+         Func<IVMPropertyBuilder<TSourceItem>, VMDescriptor> descriptorFactory,
          Action<
             SingleSelectionVMDescriptor<TSourceItem, SelectionItemVM<TSourceItem>>,
             IValidationBuilder<SingleSelectionVM<TSourceItem, SelectionItemVM<TSourceItem>>>

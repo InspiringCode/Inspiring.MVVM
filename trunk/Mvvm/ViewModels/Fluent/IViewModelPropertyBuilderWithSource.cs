@@ -16,6 +16,6 @@
       ///   cref="ICanInitializeFrom.InitializeFrom"/> is called with the source 
       ///   object just selected.
       /// </typeparam>
-      VMProperty<TChildVM> With<TChildVM>() where TChildVM : IViewModel;
+      VMProperty<TChildVM> With<TChildVM>() where TChildVM : IViewModel, ICanInitializeFrom<TSourceValue>;
    }
 }

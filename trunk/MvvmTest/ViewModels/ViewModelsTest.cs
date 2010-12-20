@@ -32,12 +32,12 @@ namespace Inspiring.MvvmTest.ViewModels {
                var p = pro.GetPropertyBuilder(x => x.Person);
 
                return new PersonVMDescriptor {
-                  FirstName = p.Mapped(x => x.FirstName).Property(),
-                  LastName = p.Mapped(x => x.LastName).Property(),
-                  BirthDate = p.Mapped(x => x.BirthDate).Property(),
-                  Salary = p.Mapped(x => x.Salary).Property(),
-                  Name = p.Calculated(x => String.Format("{0} {1}", x.FirstName, x.LastName)).Property(),
-                  IsSelected = v.Local.Property<bool>()
+                  FirstName = p.Property.MapsTo(x => x.FirstName),
+                  LastName = p.Property.MapsTo(x => x.LastName),
+                  BirthDate = p.Property.MapsTo(x => x.BirthDate),
+                  Salary = p.Property.MapsTo(x => x.Salary),
+                  Name = p.Property.DelegatesTo(x => String.Format("{0} {1}", x.FirstName, x.LastName)),
+                  IsSelected = v.Property.Of<bool>()
                };
             })
             .Build();

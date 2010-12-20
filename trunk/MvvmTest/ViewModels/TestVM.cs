@@ -11,12 +11,12 @@
             var p = c.GetPropertyBuilder(x => x.Source);
 
             return new TestVMDescriptor {
-               CalculatedMutableProperty = p.Calculated(x => x.GetCalculated(), (x, val) => x.SetCalculated(val)).Property(),
-               MappedMutableProperty = p.Mapped(x => x.MappedMutableValue).Property(),
-               LocalProperty = v.Local.Property<decimal>(),
-               MappedVMProperty = p.Mapped(x => x.ChildValue).VM<ChildVM>(),
-               MappedCollectionProperty = p.Collection().Wraps(x => x.ChildCollection).Of<ChildVM>(ChildVM.Descriptor),
-               MappedParentedCollectionProperty = p.Collection().Of<ParentedChildVM>(ParentedChildVM.Descriptor)
+               CalculatedMutableProperty = p.Property.DelegatesTo(x => x.GetCalculated(), (x, val) => x.SetCalculated(val)),
+               MappedMutableProperty = p.Property.MapsTo(x => x.MappedMutableValue),
+               LocalProperty = v.Property.Of<decimal>(),
+               MappedVMProperty = p.VM.Wraps(x => x.ChildValue).With<ChildVM>(),
+               MappedCollectionProperty = p.Collection.Wraps(x => x.ChildCollection).With<ChildVM>(ChildVM.Descriptor),
+               MappedParentedCollectionProperty = p.Collection.Of<ParentedChildVM>(ParentedChildVM.Descriptor)
                //MappedParentedCollectionProperty = p.Collection(x => x.ChildCollection).Of<ParentedChildVM>(ParentedChildVM.Descriptor)
             };
          })
@@ -105,7 +105,7 @@
             var p = c.GetPropertyBuilder(x => x.Source);
 
             return new ChildVMDescriptor {
-               MappedMutableProperty = p.Mapped(x => x.MappedMutableValue).Property()
+               MappedMutableProperty = p.Property.MapsTo(x => x.MappedMutableValue)
             };
          })
          .WithValidations((d, c) => {
@@ -169,7 +169,7 @@
             var p = c.GetPropertyBuilder(x => x.Source);
 
             return new ParentedChildVMDescriptor {
-               MappedMutableProperty = p.Mapped(x => x.Source.MappedMutableValue).Property()
+               MappedMutableProperty = p.Property.MapsTo(x => x.Source.MappedMutableValue)
             };
          })
          .Build();

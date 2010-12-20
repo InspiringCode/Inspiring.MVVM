@@ -2,7 +2,7 @@
    using System;
    using System.Collections.Generic;
    using Inspiring.Mvvm.ViewModels.Core;
-   
+
    /// <summary>
    ///   Provides a fluent interface to create collection <see cref="VMProperty"/>
    ///   objects.
@@ -48,8 +48,13 @@
       ///   the first time the collection is accessed or when <see 
       ///   cref="VMKernel.UpdateFromSource"/> is called.
       /// </param>
+      /// <param name="itemDescriptor">
+      ///   Specifies the VM descriptor that should be used for the collection 
+      ///   items. All items must have the same descriptor.
+      /// </param>
       VMProperty<IVMCollection<TItemVM>> InitializedWith<TItemVM>(
-         Func<IEnumerable<TItemVM>> initialItemsProvider
+         Func<TSourceObject, IEnumerable<TItemVM>> initialItemsProvider,
+         VMDescriptorBase itemDescriptor
       ) where TItemVM : IViewModel;
 
       /// <summary>

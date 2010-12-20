@@ -89,7 +89,7 @@
                .Append(CollectionBehaviorKeys.ParentSetter)
                .Append(CollectionBehaviorKeys.ChangeNotifier)
                .Append(CollectionBehaviorKeys.Populator, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(CollectionBehaviorKeys.SourceCollectionAccessor, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(CollectionBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(CollectionBehaviorKeys.ViewModelFactory, DefaultBehaviorState.Disabled)
          );
       }

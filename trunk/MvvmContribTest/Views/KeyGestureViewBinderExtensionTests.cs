@@ -37,7 +37,7 @@
                var vm = c.GetPropertyBuilder();
 
                return new TestVMDescriptor {
-                  ViewModelCommand = vm.Local.Property<ICommand>()
+                  ViewModelCommand = vm.Property.Of<ICommand>()
                };
             })
             .Build();

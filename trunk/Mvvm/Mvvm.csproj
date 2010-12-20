@@ -131,7 +131,9 @@
     <Compile Include="ViewModels\Core\Behaviors\Keys\CollectionBehaviorKeys.cs" />
     <Compile Include="ViewModels\Core\Behaviors\VMDescriptorConfiguration.cs" />
     <Compile Include="ViewModels\Core\IViewModel.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionBehaviors\DelegatePopulatorCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\ParentSetterBehavior.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\DelegateViewModelFactory.cs" />
     <Compile Include="ViewModels\Core\PropertySelector.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\BehaviorConfigurationBuilder.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\BehaviorConfigurationDictionary.cs" />
@@ -143,12 +145,13 @@
     <Compile Include="ViewModels\Core\Behaviors\- Legacy -\VMBehaviorKey.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\ConfigurationProvider.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\- Legacy -\VMPropertyFactoryLocal.cs" />
-    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\ValuePropertyBuilder.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\- Legacy -\VMCollectionPropertyFactory.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\- Legacy -\VMCollectionPropertyFactoryWithSource.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\- Legacy -\VMPropertyFactory.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\- Legacy -\VMPropertyFactoryBase.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\- Legacy -\VMPropertyFactoryWithSource.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\VMPropertyBuilder.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\VMPropertyBuilderBase.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\ValidationBuilder.cs" />
     <Compile Include="ViewModels\Core\CollectionModificationController.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\CollectionValidationBuilder.cs" />
@@ -318,7 +321,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ViewModels\Core\PropertyBehaviors\CollectionBehaviors\" />
     <Folder Include="ViewModels\Core\PropertyBehaviors\ViewModelBehaviors\" />
     <Folder Include="Views\TestDoubles\" />
   </ItemGroup>

@@ -9,7 +9,7 @@
             var cust = c.GetPropertyBuilder(x => x.CustomerSource);
 
             return new CustomerVMDescriptor {
-               Title = cust.Mapped(x => x.Title).Property()
+               Title = cust.Property.MapsTo(x => x.Title)
             };
          })
          .Build();

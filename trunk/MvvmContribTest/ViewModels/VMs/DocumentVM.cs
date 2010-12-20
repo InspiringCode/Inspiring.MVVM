@@ -9,8 +9,8 @@
             var d = c.GetPropertyBuilder(x => x.Document);
 
             return new DocumentVMDescriptor {
-               Name = d.Mapped(x => x.Name).Property(),
-               Keywords = d.Mapped(x => x).VM<KeywordSelectionVM>()
+               Name = d.Property.MapsTo(x => x.Name),
+               Keywords = d.VM.Wraps(x => x).With<KeywordSelectionVM>()
             };
          })
          .Build();

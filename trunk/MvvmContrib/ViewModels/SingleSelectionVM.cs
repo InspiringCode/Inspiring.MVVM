@@ -93,13 +93,13 @@
                   UnfilteredSourceItems = allSourceItemsProperty,
                   SelectedSourceItem = selectedSourceItemProperty,
 
-                  AllItems = v.Collection().Wraps(x => x.FilteredItems)
-                     .Of<TItemVM>(itemDescriptor),
+                  AllItems = v.Collection.Wraps(x => x.FilteredItems)
+                     .With<TItemVM>(itemDescriptor),
 
-                  SelectedItem = v.Calculated(
+                  SelectedItem = v.Property.DelegatesTo(
                      (x) => x.FindSelectedItem(),
                      (x, value) => x.UpdateSelectedSourceItem(value)
-                  ).Property()
+                  )
                };
             });
 

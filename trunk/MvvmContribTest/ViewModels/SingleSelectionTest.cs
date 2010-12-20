@@ -198,15 +198,15 @@
                      .WithItems(x => x.AllStatus, x => x.IsSelectable)
                      .WithSelection(x => x.Person.CurrentStatus)
                      .Of(i => new StatusSelectionItemVMDescriptor {
-                        Name = i.Mapped(x => x.Name),
-                        Description = i.Mapped(x => x.Description)
+                        Name = i.Property.MapsTo(x => x.Name),
+                        Description = i.Property.MapsTo(x => x.Description)
                      }),
                   StatusUnfiltered = vm.SingleSelection()
                      .WithItems(x => x.AllStatus)
                      .WithSelection(x => x.Person.CurrentStatus)
                      .Of(i => new StatusSelectionItemVMDescriptor {
-                        Name = i.Mapped(x => x.Name),
-                        Description = i.Mapped(x => x.Description)
+                        Name = i.Property.MapsTo(x => x.Name),
+                        Description = i.Property.MapsTo(x => x.Description)
                      })
                };
             })

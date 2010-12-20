@@ -12,7 +12,7 @@
             .CreateDescriptor(c => {
                var f = c.GetPropertyBuilder();
                return new TestVMDescriptor {
-                  Property = f.Calculated(x => "").Property()
+                  Property = f.Property.DelegatesTo(x => "")
                };
             })
             .WithBehaviors((d, c) => {
@@ -31,7 +31,7 @@
             .CreateDescriptor(c => {
                var f = c.GetPropertyBuilder();
                return new TestVMDescriptor {
-                  Property = f.Calculated(x => "").Property()
+                  Property = f.Property.DelegatesTo(x => "")
                };
             })
             .WithBehaviors((d, c) => {

@@ -10,8 +10,8 @@
             var p = c.GetPropertyBuilder(x => x.ProjectSource);
 
             return new ProjectVMDescriptor {
-               Title = p.Mapped(x => x.Title).Property(),
-               Customer = p.Mapped(x => x.Customer).VM<CustomerVM>()
+               Title = p.Property.MapsTo(x => x.Title),
+               Customer = p.VM.Wraps(x => x.Customer).With<CustomerVM>()
             };
          })
          .Build();

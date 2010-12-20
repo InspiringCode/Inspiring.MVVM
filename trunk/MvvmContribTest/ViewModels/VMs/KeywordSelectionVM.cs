@@ -13,9 +13,9 @@
             var d = c.GetPropertyBuilder(x => x.Document);
 
             return new KeywordSelectionVMDescriptor {
-               AllItems = vm.Collection().Wraps(x => x.FilteredItems).Of<KeywordVM>(KeywordVM.Descriptor),
-               SelectedItems = vm.Calculated(x => x.CreateSelectedItemsCollection()).Property(),
-               SelectedSourceItems = d.Mapped(x => x.Keywords).Property()
+               AllItems = vm.Collection.Wraps(x => x.FilteredItems).With<KeywordVM>(KeywordVM.Descriptor),
+               SelectedItems = vm.Property.DelegatesTo(x => x.CreateSelectedItemsCollection()),
+               SelectedSourceItems = d.Property.MapsTo(x => x.Keywords)
             };
          })
          .WithBehaviors((d, c) => {

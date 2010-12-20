@@ -45,8 +45,8 @@
                var vm = c.GetPropertyBuilder();
 
                return new EmployeeVMDescriptor {
-                  CurrentProject = vm.Local.VM<ProjectVM>(),
-                  Projects = vm.Collection().Of<ProjectVM>(ProjectVM.Descriptor)
+                  CurrentProject = vm.VM.Of<ProjectVM>(),
+                  Projects = vm.Collection.Of<ProjectVM>(ProjectVM.Descriptor)
                };
             })
             .Build();

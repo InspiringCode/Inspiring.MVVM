@@ -10,12 +10,12 @@
             var t = c.GetPropertyBuilder(x => x.SourceTask);
 
             return new TaskVMDescriptor {
-               Title = t.Mapped(x => x.Title).Property(),
-               Description = t.Calculated(
+               Title = t.Property.MapsTo(x => x.Title),
+               Description = t.Property.DelegatesTo(
                   task => task.Description != null ? task.Description.Html : null,
                   (task, val) => task.Description = new RichText(val)
-               ).Property(),
-               ScreenTitle = vm.Local.Property<string>()
+               ),
+               ScreenTitle = vm.Property.Of<string>()
             };
          })
          .Build();

@@ -26,7 +26,7 @@
       ///      'VMDescriptor'. Example: <code>CreateDescriptor(c => {
       ///         var v = c.GetPropertyFactory();
       ///         return new PersonVMDescriptor {
-      ///            FirstName = v.Mapped(x => x.Person.FirstName);
+      ///            FirstName = v.Property.MapsTo(x => x.Person.FirstName);
       ///         };
       ///      })</code>.
       ///   </para>

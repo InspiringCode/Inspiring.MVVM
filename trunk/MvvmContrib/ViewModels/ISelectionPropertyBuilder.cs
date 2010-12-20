@@ -3,6 +3,7 @@
    using System.Collections.Generic;
    using System.Linq.Expressions;
    using Inspiring.Mvvm.ViewModels.Core;
+   using Inspiring.Mvvm.ViewModels.Fluent;
 
    public interface ISingleSelectionPropertyBuilder<TParentVM> where TParentVM : IViewModel {
       ISingleSelectionPropertyBuilder<TParentVM, TSourceItem> WithItems<TSourceItem>(
@@ -22,7 +23,7 @@
       );
 
       SingleSelectionProperty<TSourceItem> Of(
-         Func<_IVMPropertyFactory<SelectionItemVM<TSourceItem>, TSourceItem>, VMDescriptor> descriptorFactory,
+         Func<IVMPropertyBuilder<TSourceItem>, VMDescriptor> descriptorFactory,
          Action<
             SingleSelectionVMDescriptor<TSourceItem, SelectionItemVM<TSourceItem>>,
             IValidationBuilder<SingleSelectionVM<TSourceItem, SelectionItemVM<TSourceItem>>>

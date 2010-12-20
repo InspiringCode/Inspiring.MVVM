@@ -79,8 +79,8 @@
                var v = c.GetPropertyBuilder();
 
                return new EmployeeVMDescriptor {
-                  Name = v.Local.Property<string>(),
-                  Projects = v.Collection().Of<ProjectVM>(ProjectVM.Descriptor)
+                  Name = v.Property.Of<string>(),
+                  Projects = v.Collection.Of<ProjectVM>(ProjectVM.Descriptor)
                };
             })
             .WithValidations((d, c) => {
@@ -118,9 +118,9 @@
                var v = c.GetPropertyBuilder();
 
                return new ProjectVMDescriptor {
-                  Title = v.Local.Property<string>(),
-                  Description = v.Local.Property<string>(),
-                  Customer = v.Local.VM<CustomerVM>()
+                  Title = v.Property.Of<string>(),
+                  Description = v.Property.Of<string>(),
+                  Customer = v.VM.Of<CustomerVM>()
                };
             })
             .WithValidations((d, c) => {
@@ -158,9 +158,9 @@
                var v = c.GetPropertyBuilder();
 
                return new CustomerVMDescriptor {
-                  Name = v.Local.Property<string>(),
-                  Address = v.Local.Property<string>(),
-                  PostalCode = v.Local.Property<int>()
+                  Name = v.Property.Of<string>(),
+                  Address = v.Property.Of<string>(),
+                  PostalCode = v.Property.Of<int>()
                };
             })
             .WithValidations((d, c) => {

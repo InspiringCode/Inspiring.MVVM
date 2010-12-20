@@ -9,7 +9,7 @@
 
       public static readonly BehaviorKey Populator = new BehaviorKey("Populator");
 
-      public static readonly BehaviorKey SourceCollectionAccessor = new BehaviorKey("SourceCollectionAccessor");
+      public static readonly BehaviorKey SourceAccessor = new BehaviorKey("SourceAccessor");
 
       public static readonly BehaviorKey ViewModelFactory = new BehaviorKey("ViewModelFactory");
    }

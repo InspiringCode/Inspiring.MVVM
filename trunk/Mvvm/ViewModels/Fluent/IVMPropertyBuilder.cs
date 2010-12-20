@@ -1,4 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Fluent {
+   using System;
+   using System.Windows.Input;
+
    /// <summary>
    ///   Provides a fluent interface to create <see cref="VMProperty"/> objects.
    /// </summary>
@@ -27,5 +30,20 @@
       ///   initialized (for example its parent is set).
       /// </summary>
       ICollectionPropertyBuilder<TSourceObject> Collection { get; }
+
+      /// <summary>
+      ///   Creates a <see cref="VMProperty"/> of type <see cref="ICommand"/>.
+      /// </summary>
+      /// <param name="execute">
+      ///   A delegate that is called when the command is executed.
+      /// </param>
+      /// <param name="canExecute">
+      ///   A delegate taht is called to check whether the command can currently
+      ///   be executed.
+      /// </param>
+      VMProperty<ICommand> Command(
+         Action<TSourceObject> execute,
+         Func<TSourceObject, bool> canExecute = null
+      );
    }
 }

@@ -87,8 +87,8 @@
                var com = c.GetPropertyBuilder(x => x.Company);
 
                return new CompanyVMDescriptor {
-                  Employees = v.Collection().Wraps(x => x.Company.Employees).Of<PersonVM>(PersonVM.Descriptor),
-                  Customers = com.Collection().Wraps(x => x.Customers).Of<PersonVM>(PersonVM.Descriptor)
+                  Employees = v.Collection.Wraps(x => x.Company.Employees).With<PersonVM>(PersonVM.Descriptor),
+                  Customers = com.Collection.Wraps(x => x.Customers).With<PersonVM>(PersonVM.Descriptor)
                };
             })
             .Build();
@@ -114,10 +114,10 @@
                var p = c.GetPropertyBuilder(x => x.Person);
 
                return new PersonVMDescriptor {
-                  BirthDate = p.Mapped(x => x.BirthDate).Property(),
-                  Salary = p.Mapped(x => x.Salary).Property(),
-                  Name = p.Calculated(x => String.Format("{0} {1}", x.FirstName, x.LastName)).Property(),
-                  IsSelected = v.Local.Property<bool>()
+                  BirthDate = p.Property.MapsTo(x => x.BirthDate),
+                  Salary = p.Property.MapsTo(x => x.Salary),
+                  Name = p.Property.DelegatesTo(x => String.Format("{0} {1}", x.FirstName, x.LastName)),
+                  IsSelected = v.Property.Of<bool>()
                };
             })
             .WithValidations((d, c) => {

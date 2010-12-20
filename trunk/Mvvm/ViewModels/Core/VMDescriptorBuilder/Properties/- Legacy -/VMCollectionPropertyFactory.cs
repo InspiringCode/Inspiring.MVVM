@@ -31,7 +31,7 @@
          var collectionFactoryInvoker = CollectionBehaviorFactory.CreateInvoker<TVM, TItemVM>();
          var collectionConfiguration = collectionBehaviorsTemplate.CreateConfiguration(collectionFactoryInvoker);
 
-         collectionConfiguration.Enable(CollectionBehaviorKeys.SourceCollectionAccessor, sourceCollectionAccessor);
+         collectionConfiguration.Enable(CollectionBehaviorKeys.SourceAccessor, sourceCollectionAccessor);
          collectionConfiguration.Enable(CollectionBehaviorKeys.DescriptorSetter, new DescriptorSetterCollectionBehavior<TItemVM>(itemDescriptor));
 
          var behaviorTemplate = BehaviorChainTemplateRegistry.GetTemplate(BehaviorChainTemplateKeys.CollectionProperty);

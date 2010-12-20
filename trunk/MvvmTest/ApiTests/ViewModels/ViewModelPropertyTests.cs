@@ -63,8 +63,8 @@
                   var v = c.GetPropertyBuilder();
 
                   return new ProjectVMDescriptor {
-                     Title = v.Local.Property<string>(),
-                     Customer = v.Mapped(x => x.ProjectSource.Customer).VM<CustomerVM>()
+                     Title = v.Property.Of<string>(),
+                     Customer = v.VM.Wraps(x => x.ProjectSource.Customer).With<CustomerVM>()
                   };
                })
                .Build();
@@ -82,11 +82,11 @@
                   var v = c.GetPropertyBuilder();
 
                   return new ProjectVMDescriptor {
-                     Title = v.Local.Property<string>(),
-                     Customer = v.Calculated(
+                     Title = v.Property.Of<string>(),
+                     Customer = v.VM.Wraps(
                         x => x.ProjectSource.Customer,
                         (x, val) => x.ProjectSource.Customer = val
-                     ).VM<CustomerVM>()
+                     ).With<CustomerVM>()
                   };
                })
                .Build();
@@ -104,8 +104,8 @@
                   var p = c.GetPropertyBuilder(x => x.ProjectSource);
 
                   return new ProjectVMDescriptor {
-                     Title = p.Local.Property<string>(),
-                     Customer = p.Mapped(x => x.Customer).VM<CustomerVM>()
+                     Title = p.Property.Of<string>(),
+                     Customer = p.VM.Wraps(x => x.Customer).With<CustomerVM>()
                   };
                })
                .Build();
@@ -123,11 +123,11 @@
                   var p = c.GetPropertyBuilder(x => x.ProjectSource);
 
                   return new ProjectVMDescriptor {
-                     Title = p.Local.Property<string>(),
-                     Customer = p.Calculated(
+                     Title = p.Property.Of<string>(),
+                     Customer = p.VM.Wraps(
                         x => x.Customer,
                         (x, val) => x.Customer = val
-                     ).VM<CustomerVM>()
+                     ).With<CustomerVM>()
                   };
                })
                .Build();

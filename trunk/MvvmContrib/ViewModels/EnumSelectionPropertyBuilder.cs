@@ -19,10 +19,10 @@
       IEnumSelectionPropertyBuilder<TParentVM>
       where TParentVM : IViewModel {
 
-      private IVMPropertyFactory<TParentVM> _propertyFactory;
+      private IVMPropertyBuilder<TParentVM> _propertyFactory;
 
       public EnumSelectionPropertyBuilder(
-         IVMPropertyFactory<TParentVM> propertyFactory
+         IVMPropertyBuilder<TParentVM> propertyFactory
       ) {
          _propertyFactory = propertyFactory;
       }
@@ -42,7 +42,7 @@
             .Of(
                i => {
                   return new SelectionItemVMDescriptor {
-                     Caption = i.Calculated(x => EnumLocalizer.GetCaption(x))
+                     Caption = i.Property.DelegatesTo(x => EnumLocalizer.GetCaption(x))
                   };
                },
                validationConfigurator

@@ -18,13 +18,13 @@
             return new SaveDiscardVMDescriptor {
                Save = h.Command(x => x.Save(), x => x.CanSave()),
                Discard = h.Command(x => x.Discard(), x => x.CanDiscard()),
-               State = h.Calculated(x => {
+               State = h.Property.DelegatesTo(x => {
                   if (!x.IsValid) {
                      return DataState.Invalid;
                   } else {
                      return x.HasChanges ? DataState.Changed : DataState.Unchanged;
                   }
-               }).Property()
+               })
             };
          })
          .Build();

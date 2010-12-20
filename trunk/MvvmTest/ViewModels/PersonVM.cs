@@ -12,14 +12,14 @@
                var p = c.GetPropertyBuilder(x => x.Person);
 
                return new PersonVMDescriptor {
-                  FirstName = p.Mapped(x => x.FirstName).Property(),
-                  LastName = p.Mapped(x => x.LastName).Property(),
-                  BirthDate = p.Mapped(x => x.BirthDate).Property(),
-                  Salary = p.Calculated(x => x.Salary, (x, val) => x.Salary = val).Property(),
-                  Name = p.Calculated(x => String.Format("{0} {1}", x.FirstName, x.LastName)).Property(),
-                  IsSelected = v.Local.Property<bool>(),
-                  Projects = p.Collection().Wraps(x => x.Projects).Of<ProjectVM>(PersonVM.Descriptor),
-                  CurrentProject = v.Local.Property<ProjectVM>()
+                  FirstName = p.Property.MapsTo(x => x.FirstName),
+                  LastName = p.Property.MapsTo(x => x.LastName),
+                  BirthDate = p.Property.MapsTo(x => x.BirthDate),
+                  Salary = p.Property.DelegatesTo(x => x.Salary, (x, val) => x.Salary = val),
+                  Name = p.Property.DelegatesTo(x => String.Format("{0} {1}", x.FirstName, x.LastName)),
+                  IsSelected = v.Property.Of<bool>(),
+                  Projects = p.Collection.Wraps(x => x.Projects).With<ProjectVM>(PersonVM.Descriptor),
+                  CurrentProject = v.Property.Of<ProjectVM>()
                };
             })
          //.WithValidations((d, c) => {
@@ -66,7 +66,7 @@
                var v = c.GetPropertyBuilder();
 
                return new ProjectVMDescriptor {
-                  Name = v.Mapped(x => x.Project.Name).Property()
+                  Name = v.Property.MapsTo(x => x.Project.Name)
                };
             })
          //.WithValidations((d, c) => {

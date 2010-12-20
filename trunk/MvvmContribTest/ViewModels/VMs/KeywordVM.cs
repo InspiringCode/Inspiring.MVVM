@@ -9,7 +9,7 @@
             var k = c.GetPropertyBuilder(x => x.Keyword);
 
             return new KeywordVMDescriptor {
-               Name = k.Mapped(x => x.Name).Property()
+               Name = k.Property.MapsTo(x => x.Name)
             };
          })
          .Build();

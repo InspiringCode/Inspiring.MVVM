@@ -30,7 +30,7 @@
          var collectionFactoryInvoker = CollectionBehaviorFactory.CreateInvoker<TVM, TItemVM>();
          var collectionConfiguration = collectionBehaviorsTemplate.CreateConfiguration(collectionFactoryInvoker);
 
-         collectionConfiguration.Enable(CollectionBehaviorKeys.SourceCollectionAccessor, _sourceCollectionAccessor);
+         collectionConfiguration.Enable(CollectionBehaviorKeys.SourceAccessor, _sourceCollectionAccessor);
          collectionConfiguration.Enable(CollectionBehaviorKeys.DescriptorSetter, new DescriptorSetterCollectionBehavior<TItemVM>(itemDescriptor));
          collectionConfiguration.Enable(CollectionBehaviorKeys.Populator, new PopulatorCollectionBehavior<TItemVM, TItemSource>());
          collectionConfiguration.Enable(CollectionBehaviorKeys.ViewModelFactory);

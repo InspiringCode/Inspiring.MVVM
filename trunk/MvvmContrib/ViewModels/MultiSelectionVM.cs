@@ -14,8 +14,8 @@
       public MultiSelectionVM(
         IServiceLocator serviceLocator,
         VMDescriptorBase itemDescriptor,
-        Func<IVMPropertyFactory<TSourceObject>, VMProperty<ICollection<TItemSource>>> selectedSourceItemsPropertyFactory,
-        Func<IVMPropertyFactory<TSourceObject>, VMProperty<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory
+        Func<IVMPropertyBuilder<TSourceObject>, VMProperty<ICollection<TItemSource>>> selectedSourceItemsPropertyFactory,
+        Func<IVMPropertyBuilder<TSourceObject>, VMProperty<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory
      )
          : base(
             CreateDescriptor(itemDescriptor, selectedSourceItemsPropertyFactory, allSourceItemsPropertyFactory),
@@ -54,8 +54,8 @@
 
       private static MultiSelectionVMDescriptor<TItemSource, TItemVM> CreateDescriptor(
          VMDescriptorBase itemDescriptor,
-         Func<IVMPropertyFactory<TSourceObject>, VMProperty<ICollection<TItemSource>>> selectedSourceItemsPropertyFactory,
-         Func<IVMPropertyFactory<TSourceObject>, VMProperty<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory
+         Func<IVMPropertyBuilder<TSourceObject>, VMProperty<ICollection<TItemSource>>> selectedSourceItemsPropertyFactory,
+         Func<IVMPropertyBuilder<TSourceObject>, VMProperty<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory
       ) {
          return VMDescriptorBuilder
             .For<MultiSelectionVM<TSourceObject, TItemSource, TItemVM>>()
@@ -66,8 +66,8 @@
                return new MultiSelectionVMDescriptor<TItemSource, TItemVM> {
                   AllSourceItems = allSourceItemsPropertyFactory(fac),
                   SelectedSourceItems = selectedSourceItemsPropertyFactory(fac),
-                  AllItems = v.Collection().Wraps(x => x.GetActiveSourceItems()).Of<TItemVM>(itemDescriptor),
-                  SelectedItems = v.Collection().Wraps(x => x.SelectedSourceItems).Of<TItemVM>(itemDescriptor)
+                  AllItems = v.Collection.Wraps(x => x.GetActiveSourceItems()).With<TItemVM>(itemDescriptor),
+                  SelectedItems = v.Collection.Wraps(x => x.SelectedSourceItems).With<TItemVM>(itemDescriptor)
                };
             })
             .WithBehaviors((d, c) => {

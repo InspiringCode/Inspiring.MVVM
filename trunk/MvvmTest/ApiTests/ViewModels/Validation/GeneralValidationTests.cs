@@ -47,7 +47,7 @@
                var vm = c.GetPropertyBuilder();
 
                return new TaskVMDescriptor {
-                  Title = vm.Local.Property<string>()
+                  Title = vm.Property.Of<string>()
                };
             })
             .WithValidations((d, c) => {
