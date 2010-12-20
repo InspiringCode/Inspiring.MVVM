@@ -70,7 +70,8 @@
                   SelectedItems = v.Collection.Wraps(x => x.SelectedSourceItems).With<TItemVM>(itemDescriptor)
                };
             })
-            .WithBehaviors((d, c) => {
+            .WithBehaviors(c => {
+               throw new NotImplementedException();
                // Enable(CollectionBehaviorKeys.Populator, new LookupPopulatorCollectionBehavior<...>(x => x.AllItems);
             })
             .Build();

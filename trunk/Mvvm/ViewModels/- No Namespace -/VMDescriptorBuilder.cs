@@ -4,8 +4,6 @@
    using System.Linq.Expressions;
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.ViewModels.Core;
-   using Inspiring.Mvvm.ViewModels.Core.Builder;
-   using Inspiring.Mvvm.ViewModels.Core.Builder.Properties;
    using Inspiring.Mvvm.ViewModels.Fluent;
 
    /// <summary>
@@ -95,11 +93,11 @@
          }
 
          public IVMDescriptorBuilder<TVM, TDescriptor> WithBehaviors(
-            Action<TDescriptor, IVMBehaviorConfigurator> behaviorConfigurator
+            Action<IVMBehaviorBuilder<TDescriptor>> behaviorBuildAction
          ) {
-            Contract.Requires<ArgumentNullException>(behaviorConfigurator != null);
-            var builder = new BehaviorConfigurationBuilder(Configuration);
-            behaviorConfigurator(_descriptor, builder);
+            Contract.Requires<ArgumentNullException>(behaviorBuildAction != null);
+            var builder = new VMBehaviorBuilder<TDescriptor>(Configuration, _descriptor);
+            behaviorBuildAction(builder);
             return this;
          }
 

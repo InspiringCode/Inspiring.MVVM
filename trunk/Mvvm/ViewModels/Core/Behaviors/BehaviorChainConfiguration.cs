@@ -32,10 +32,10 @@
       ///   included in the behavior chain returned by <see cref="CreateChain"/>.
       /// </summary>
       /// <param name="behaviorInstance">
-      ///   If the <see cref="BehaviorChainTemplate"/> does not specify a <see 
-      ///   cref="IBehaviorFactory"/> the behavior instance that should be used
-      ///   in the behavior chain must be set with this parameter (an <see 
-      ///   cref="ArgumentException"/> is thrown otherwise).
+      ///   Specifies or overrides the default behavior instance provided by the
+      ///   <see cref="BehaviorChainTemplate"/>. This parameter is required if
+      ///   the template has defined the behavior with the <see 
+      ///   cref="DefaultBehaviorState.DisabledWithoutFactory"/> option.
       /// </param>
       public void Enable(BehaviorKey key, IBehavior behaviorInstance = null) {
          Contract.Requires<ArgumentNullException>(key != null);
@@ -65,7 +65,7 @@
       /// </summary>
       /// <typeparam name="T">
       ///   The type of the behavior to configure. This may be the concrete type
-      ///   of the behavior of a base type/interface.
+      ///   of the behavior or a base type/interface.
       /// </typeparam>
       public void ConfigureBehavior<T>(
          BehaviorKey key,

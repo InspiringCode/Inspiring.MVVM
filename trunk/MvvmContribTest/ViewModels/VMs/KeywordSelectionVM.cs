@@ -18,8 +18,9 @@
                SelectedSourceItems = d.Property.MapsTo(x => x.Keywords)
             };
          })
-         .WithBehaviors((d, c) => {
-            c.Disconnect(d.SelectedItems);
+         .WithBehaviors((c) => {
+            throw new NotImplementedException();
+            //c.Disconnect(d.SelectedItems);
          })
          .Build();
 

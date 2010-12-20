@@ -77,7 +77,7 @@
       );
 
       IVMDescriptorBuilder<TVM, TDescriptor> WithBehaviors(
-         Action<TDescriptor, IVMBehaviorConfigurator> behaviorConfigurator
+         Action<IVMBehaviorBuilder<TDescriptor>> behaviorConfigurator
       );
 
       /// <summary>

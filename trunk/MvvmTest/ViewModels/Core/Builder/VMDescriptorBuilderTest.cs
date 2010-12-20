@@ -126,7 +126,7 @@
             .WithDependencies((d, c) => {
 
             })
-            .WithBehaviors((d, c) => {
+            .WithBehaviors(c => {
             })
             .Build();
          public PersonVM()

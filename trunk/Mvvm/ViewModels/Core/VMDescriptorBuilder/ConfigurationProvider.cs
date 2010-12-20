@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core.Builder {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System.ComponentModel;
    using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.ViewModels.Fluent;

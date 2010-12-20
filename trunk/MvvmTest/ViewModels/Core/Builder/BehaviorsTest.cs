@@ -2,6 +2,7 @@
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
+   using System;
 
    [TestClass]
    public class BehaviorsTest {
@@ -15,8 +16,9 @@
                   Property = f.Property.DelegatesTo(x => "")
                };
             })
-            .WithBehaviors((d, c) => {
-               c.Custom(d.Property, VMBehaviorKey.PropertyValueCache);
+            .WithBehaviors(c => {
+               throw new NotImplementedException();
+               //c.Custom(d.Property, VMBehaviorKey.PropertyValueCache);
             })
             .Build();
 
@@ -34,8 +36,9 @@
                   Property = f.Property.DelegatesTo(x => "")
                };
             })
-            .WithBehaviors((d, c) => {
-               c.Disconnect(d.Property);
+            .WithBehaviors(c => {
+               throw new NotImplementedException();
+               //c.Disconnect(d.Property);
             })
             .Build();
 
