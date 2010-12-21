@@ -59,6 +59,7 @@
     <Compile Include="..\MvvmTest\PropertyChangedCounter.cs">
       <Link>PropertyChangedCounter.cs</Link>
     </Compile>
+    <Compile Include="ApiTests\ViewModels\Selection\MultiSelectionTests.cs" />
     <Compile Include="AssertHelper.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Common\SaveDiscardVMTest.cs" />
@@ -70,14 +71,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screens\ApplicationCommandManagerTest.cs" />
     <Compile Include="Screens\FindScreenTest.cs" />
-    <Compile Include="ViewModels\MultiSelection\LookupPopulatorCollectionBehaviorTests.cs" />
-    <Compile Include="ViewModels\VMs\DocumentVM.cs" />
+    <Compile Include="ViewModels\Selection\LookupPopulatorCollectionBehaviorTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Selection\VMs\UserVM.cs" />
     <Compile Include="ViewModels\VMs\KeywordSelectionVM.cs" />
-    <Compile Include="ViewModels\VMs\KeywordVM.cs" />
-    <Compile Include="ViewModels\VMs\Document.cs" />
+    <Compile Include="ApiTests\ViewModels\Selection\VMs\GroupVM.cs" />
+    <Compile Include="ApiTests\ViewModels\Selection\Domain\User.cs" />
     <Compile Include="ViewModels\EnumLocalizerTest.cs" />
     <Compile Include="ViewModels\EnumSelectionTest.cs" />
-    <Compile Include="ViewModels\VMs\Keyword.cs" />
+    <Compile Include="ApiTests\ViewModels\Selection\Domain\Group.cs" />
     <Compile Include="ViewModels\MultiSelectionTest.cs" />
     <Compile Include="ViewModels\PersonStatus.cs" />
     <Compile Include="ViewModels\SingleSelectionTest.cs" />

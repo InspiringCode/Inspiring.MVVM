@@ -14,8 +14,9 @@
          _customFactory = customFactory;
       }
 
-      public TValue CreateInstance(IBehaviorContext vm) {
-         return vm.ServiceLocator.GetInstance<TValue>();
+      public TValue CreateInstance(IBehaviorContext context) {
+         TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context, ValueStage.None);
+         return _customFactory(sourceObject);
       }
    }
 }

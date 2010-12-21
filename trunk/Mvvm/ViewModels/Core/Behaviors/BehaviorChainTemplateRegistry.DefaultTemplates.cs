@@ -75,6 +75,7 @@
                .Append(BehaviorKeys.Validator, DefaultBehaviorState.Disabled)
 
                .Append(BehaviorKeys.ViewModelPropertyInitializer, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(BehaviorKeys.ViewModelAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(BehaviorKeys.ViewModelFactory, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(BehaviorKeys.SourceValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(BehaviorKeys.TypeDescriptor)

@@ -1,6 +1,8 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Fluent {
    using System;
    using System.Windows.Input;
+   using Inspiring.Mvvm.Common;
+using Inspiring.Mvvm.ViewModels.Core;
 
    /// <summary>
    ///   Provides a fluent interface to create <see cref="VMProperty"/> objects.
@@ -10,7 +12,7 @@
    ///   cref="IVMPropertyBuilderProvider.GetPropertyBuilder"/> method call 
    ///   used to create the <see cref="IVMPropertyBuilder"/>.
    /// </typeparam>
-   public interface IVMPropertyBuilder<TSourceObject> {
+   public interface IVMPropertyBuilder<TSourceObject> : IHideObjectMembers {
       /// <summary>
       ///   Creates a <see cref="VMProperty"/> that holds a simple value (an object,
       ///   string or value type).

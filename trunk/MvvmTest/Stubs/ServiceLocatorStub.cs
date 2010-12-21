@@ -1,20 +1,28 @@
 ﻿namespace Inspiring.MvvmTest.Stubs {
    using System;
-   using Inspiring.Mvvm;
+   using System.Collections.Generic;
 
-   internal sealed class ServiceLocatorStub : IServiceLocator {
-      public ServiceLocatorStub(object objectToReturn = null) {
-         ObjectToReturn = objectToReturn;
+   public sealed class ServiceLocatorStub : ReflectionServiceLocator {
+      private Dictionary<Type, object> _instances = new Dictionary<Type, object>();
+
+      public override TService GetInstance<TService>() {
+         if (_instances.ContainsKey(typeof(TService))) {
+            return (TService)_instances[typeof(TService)];
+         } else {
+            return base.GetInstance<TService>();
+         }
       }
 
-      public object ObjectToReturn { get; set; }
-
-      public TService GetInstance<TService>() {
-         return (TService)ObjectToReturn;
+      public override object TryGetInstance(Type serviceType) {
+         if (_instances.ContainsKey(serviceType)) {
+            return _instances[serviceType];
+         } else {
+            return base.TryGetInstance(serviceType);
+         }
       }
 
-      public object TryGetInstance(Type serviceType) {
-         return ObjectToReturn;
+      public void Register<TInterface>(TInterface implementation) {
+         _instances[typeof(TInterface)] = implementation;
       }
    }
 }

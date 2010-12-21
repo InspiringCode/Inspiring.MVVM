@@ -1,11 +1,11 @@
-﻿namespace Inspiring.MvvmContribTest.ViewModels {
+﻿namespace Inspiring.MvvmContribTest.ApiTests.ViewModels {
    using System;
    using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
 
-   internal sealed class KeywordSelectionVM : ViewModel<KeywordSelectionVMDescriptor>, ICanInitializeFrom<Document> {
+   internal sealed class KeywordSelectionVM : ViewModel<KeywordSelectionVMDescriptor>, ICanInitializeFrom<User> {
       public static readonly KeywordSelectionVMDescriptor Descriptor = VMDescriptorBuilder
          .For<KeywordSelectionVM>()
          .CreateDescriptor(c => {
@@ -13,9 +13,9 @@
             var d = c.GetPropertyBuilder(x => x.Document);
 
             return new KeywordSelectionVMDescriptor {
-               AllItems = vm.Collection.Wraps(x => x.FilteredItems).With<KeywordVM>(KeywordVM.Descriptor),
+               AllItems = vm.Collection.Wraps(x => x.FilteredItems).With<GroupVM>(GroupVM.Descriptor),
                SelectedItems = vm.Property.DelegatesTo(x => x.CreateSelectedItemsCollection()),
-               SelectedSourceItems = d.Property.MapsTo(x => x.Keywords)
+               SelectedSourceItems = d.Property.MapsTo(x => x.Groups)
             };
          })
          .WithBehaviors((c) => {
@@ -24,23 +24,23 @@
          })
          .Build();
 
-      private IEnumerable<Keyword> _allSourceItems;
+      private IEnumerable<Group> _allSourceItems;
 
       public KeywordSelectionVM()
          : base() {
       }
 
-      public Document Document { get; private set; }
+      public User Document { get; private set; }
 
-      public void InitializeFrom(Document source) {
+      public void InitializeFrom(User source) {
          Document = source;
       }
 
-      public IEnumerable<Keyword> AllSourceItems {
+      public IEnumerable<Group> AllSourceItems {
          private get {
             if (_allSourceItems == null) {
-               object injected = Kernel.ServiceLocator.TryGetInstance(typeof(IEnumerable<Keyword>));
-               _allSourceItems = injected as IEnumerable<Keyword>;
+               object injected = Kernel.ServiceLocator.TryGetInstance(typeof(IEnumerable<Group>));
+               _allSourceItems = injected as IEnumerable<Group>;
             }
             return _allSourceItems;
          }
@@ -49,39 +49,39 @@
          }
       }
 
-      public IVMCollection<KeywordVM> SelectedItems {
+      public IVMCollection<GroupVM> SelectedItems {
          get { return GetValue(Descriptor.SelectedItems); }
       }
 
-      public IVMCollection<KeywordVM> AllItems {
+      public IVMCollection<GroupVM> AllItems {
          get { return GetValue(Descriptor.AllItems); }
       }
 
-      private IEnumerable<Keyword> FilteredItems {
+      private IEnumerable<Group> FilteredItems {
          get {
             return
                AllSourceItems.Where(i =>
                   IsItemSelectable(i) ||
-                  SelectedItems.Any(x => x.Keyword == i)
+                  SelectedItems.Any(x => x.GroupSource == i)
                )
                .ToArray();
          }
       }
 
-      private bool IsItemSelectable(Keyword keyword) {
-         return keyword.IsActive();
+      private bool IsItemSelectable(Group keyword) {
+         return keyword.IsActive;
       }
 
-      private ICollection<Keyword> SelectedSourceItems {
+      private ICollection<Group> SelectedSourceItems {
          get { return GetValue(Descriptor.SelectedSourceItems); }
       }
 
-      private VMCollection<KeywordVM> CreateSelectedItemsCollection() {
+      private VMCollection<GroupVM> CreateSelectedItemsCollection() {
          throw new NotImplementedException();
          //var coll = new VMCollection<KeywordVM>(this, KeywordVM.Descriptor);
 
-         IEnumerable<KeywordVM> selectedItemVMs = SelectedSourceItems
-            .Select(i => AllItems.Single(x => x.Keyword == i));
+         IEnumerable<GroupVM> selectedItemVMs = SelectedSourceItems
+            .Select(i => AllItems.Single(x => x.GroupSource == i));
 
          //coll.Popuplate(
          //   selectedItemVMs,
@@ -116,8 +116,8 @@
    }
 
    internal sealed class KeywordSelectionVMDescriptor : VMDescriptor {
-      public VMProperty<IVMCollection<KeywordVM>> AllItems { get; set; }
-      public VMProperty<VMCollection<KeywordVM>> SelectedItems { get; set; }
-      internal VMProperty<ICollection<Keyword>> SelectedSourceItems { get; set; }
+      public VMProperty<IVMCollection<GroupVM>> AllItems { get; set; }
+      public VMProperty<VMCollection<GroupVM>> SelectedItems { get; set; }
+      internal VMProperty<ICollection<Group>> SelectedSourceItems { get; set; }
    }
 }

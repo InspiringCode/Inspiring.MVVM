@@ -1,28 +1,29 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
-   using Inspiring.Mvvm.ViewModels.Core.Builder;
 
    // TODO: Document and clean up the whole builder stuff a bit.
-   internal abstract class VMPropertyBuilderBase<TVM> : ConfigurationProvider where TVM : IViewModel {
-      public VMPropertyBuilderBase(VMDescriptorConfiguration configuration)
+   public sealed class VMPropertyFactory<TVM> : ConfigurationProvider where TVM : IViewModel {
+      public VMPropertyFactory(VMDescriptorConfiguration configuration)
          : base(configuration) {
       }
 
-      protected VMProperty<T> CreateProperty<T>(IValueAccessorBehavior<T> sourceValueAccessor) {
+      public VMProperty<T> CreateProperty<T>(IValueAccessorBehavior<T> sourceValueAccessor) {
          BehaviorChainConfiguration config = GetPropertyConfiguration<T>(BehaviorChainTemplateKeys.Property);
          config.Enable(BehaviorKeys.SourceValueAccessor, sourceValueAccessor);
          return CreateProperty<T>(config);
       }
 
-      protected VMProperty<TChildVM> CreateViewModelProperty<TChildVM>() where TChildVM : IViewModel {
+      public VMProperty<TChildVM> CreateViewModelProperty<TChildVM>(
+         IValueAccessorBehavior<TChildVM> sourceValueAccessor
+      ) where TChildVM : IViewModel {
          BehaviorChainConfiguration config = GetPropertyConfiguration<TChildVM>(BehaviorChainTemplateKeys.ViewModelProperty);
 
          config.Enable(BehaviorKeys.ParentSetter, new ParentSetterBehavior<TChildVM>());
-         config.Enable(BehaviorKeys.SourceValueAccessor, new InstancePropertyBehavior<TChildVM>());
+         config.Enable(BehaviorKeys.SourceValueAccessor, sourceValueAccessor);
 
          return CreateProperty<TChildVM>(config);
       }
 
-      protected VMProperty<TChildVM> CreateViewModelProperty<TChildVM, TSourceValue>(
+      public VMProperty<TChildVM> CreateViewModelProperty<TChildVM, TSourceValue>(
          IValueAccessorBehavior<TSourceValue> sourceValueAccessor
       ) where TChildVM : IViewModel, ICanInitializeFrom<TSourceValue> {
          BehaviorChainConfiguration config = GetPropertyConfiguration<TChildVM>(BehaviorChainTemplateKeys.ViewModelProperty);
@@ -30,27 +31,29 @@
          config.Enable(BehaviorKeys.ValueCache);
          config.Enable(BehaviorKeys.ParentSetter, new ParentSetterBehavior<TChildVM>());
          config.Enable(BehaviorKeys.ViewModelPropertyInitializer, new ViewModelPropertyInitializerBehavior<TChildVM, TSourceValue>());
+         config.Enable(BehaviorKeys.ViewModelAccessor, new ViewModelFactoryAccessorBehavior<TChildVM>());
          config.Enable(BehaviorKeys.ViewModelFactory, new ViewModelFactoryBehavior<TChildVM>());
          config.Enable(BehaviorKeys.SourceValueAccessor, sourceValueAccessor);
 
          return CreateProperty<TChildVM>(config);
       }
 
-      protected VMProperty<TChildVM> CreateViewModelProperty<TChildVM, TSourceObject>(
-         IValueAccessorBehavior<TSourceObject> sourceValueAccessor,
+      public VMProperty<TChildVM> CreateViewModelProperty<TChildVM, TSourceObject>(
+         IValueAccessorBehavior<TSourceObject> sourceObjectAccessor,
          IViewModelFactoryBehavior<TChildVM> customFactory
       ) where TChildVM : IViewModel {
          BehaviorChainConfiguration config = GetPropertyConfiguration<TChildVM>(BehaviorChainTemplateKeys.ViewModelProperty);
 
          config.Enable(BehaviorKeys.ValueCache);
          config.Enable(BehaviorKeys.ParentSetter, new ParentSetterBehavior<TChildVM>());
+         config.Enable(BehaviorKeys.ViewModelAccessor, new ViewModelFactoryAccessorBehavior<TChildVM>());
          config.Enable(BehaviorKeys.ViewModelFactory, customFactory);
-         config.Enable(BehaviorKeys.SourceValueAccessor, sourceValueAccessor);
+         config.Enable(BehaviorKeys.SourceValueAccessor, sourceObjectAccessor);
 
          return CreateProperty<TChildVM>(config);
       }
 
-      protected VMProperty<IVMCollection<TItemVM>> CreateCollectionProperty<TItemVM>(
+      public VMProperty<IVMCollection<TItemVM>> CreateCollectionProperty<TItemVM>(
          BehaviorChainConfiguration collectionConfiguration,
          bool isPopulatable
       ) where TItemVM : IViewModel {
@@ -69,7 +72,7 @@
          return CreateProperty<IVMCollection<TItemVM>>(config);
       }
 
-      protected BehaviorChainConfiguration GetCollectionConfiguration<TItemVM>(
+      internal BehaviorChainConfiguration GetCollectionConfiguration<TItemVM>(
          VMDescriptorBase itemDescriptor
       ) where TItemVM : IViewModel {
          var template = BehaviorChainTemplateRegistry.GetTemplate(BehaviorChainTemplateKeys.DefaultCollectionBehaviors);
@@ -84,13 +87,13 @@
          return config;
       }
 
-      protected BehaviorChainConfiguration GetPropertyConfiguration<TValue>(BehaviorChainTemplateKey key) {
+      internal BehaviorChainConfiguration GetPropertyConfiguration<TValue>(BehaviorChainTemplateKey key) {
          var template = BehaviorChainTemplateRegistry.GetTemplate(key);
          var invoker = PropertyBehaviorFactory.CreateInvoker<TVM, TValue>();
          return template.CreateConfiguration(invoker);
       }
 
-      protected VMProperty<TValue> CreateProperty<TValue>(BehaviorChainConfiguration config) {
+      internal VMProperty<TValue> CreateProperty<TValue>(BehaviorChainConfiguration config) {
          var property = new VMProperty<TValue>();
 
          Configuration

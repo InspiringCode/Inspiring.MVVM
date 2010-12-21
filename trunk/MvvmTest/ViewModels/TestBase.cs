@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels {
    using System;
+   using Inspiring.Mvvm;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.MvvmTest.Stubs;
@@ -13,6 +14,11 @@
 
       protected static T Mock<T>() where T : class {
          return new Mock<T>().Object;
+      }
+
+      [TestCleanup]
+      public void Cleanup() {
+         ServiceLocator.SetServiceLocator(new ReflectionServiceLocator());
       }
 
       protected class ViewModelBehaviorContextHelper {

@@ -92,6 +92,7 @@
     <Compile Include="Common\TypeServiceTest.cs" />
     <Compile Include="DomainAssert.cs" />
     <Compile Include="PropertyChangedCounter.cs" />
+    <Compile Include="ReflectionServiceLocator.cs" />
     <Compile Include="Screens\ScreenCreationBehaviorTest.cs" />
     <Compile Include="Stubs\BehaviorContextStub.cs" />
     <Compile Include="Stubs\ServiceLocatorStub.cs" />

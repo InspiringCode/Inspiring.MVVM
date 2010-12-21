@@ -10,8 +10,7 @@
    ///   The type of the source value from which a collection item VM is initialized.
    /// </typeparam>
    public interface ICollectionPropertyBuilderWithSource<TItemSource> :
-      IHideObjectMembers,
-      IConfigurationProvider {
+      IHideObjectMembers {
 
       /// <summary>
       ///   Selects the type of the collection item.

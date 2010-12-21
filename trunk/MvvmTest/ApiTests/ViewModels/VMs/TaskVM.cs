@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels {
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
+using Inspiring.Mvvm.ViewModels.Core;
 
    public class TaskVM : ViewModel<TaskVMDescriptor>, ICanInitializeFrom<Task> {
       public static readonly TaskVMDescriptor Descriptor = VMDescriptorBuilder

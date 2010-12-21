@@ -1,6 +1,8 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Fluent {
    using System;
+   using System.ComponentModel;
    using System.Linq.Expressions;
+   using Inspiring.Mvvm.ViewModels.Core;
 
    /// <summary>
    ///   Provides a fluent interface to create <see cref="VMProperty"/> that 
@@ -79,5 +81,9 @@
       ///   The type of the property (e.g. <see cref="System.String"/>).
       /// </typeparam>
       VMProperty<T> Of<T>();
+
+      // TODO: Comment
+      [EditorBrowsable(EditorBrowsableState.Never)]
+      VMProperty<T> Custom<T>(IValueAccessorBehavior<T> sourceValueAccessor);
    }
 }

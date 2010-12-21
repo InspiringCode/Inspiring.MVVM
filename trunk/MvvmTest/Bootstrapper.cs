@@ -15,15 +15,5 @@
 
          ServiceLocator.SetServiceLocator(new ReflectionServiceLocator());
       }
-
-      private class ReflectionServiceLocator : IServiceLocator {
-         public TService GetInstance<TService>() {
-            return Activator.CreateInstance<TService>();
-         }
-
-         public object TryGetInstance(Type serviceType) {
-            return Activator.CreateInstance(serviceType);
-         }
-      }
    }
 }

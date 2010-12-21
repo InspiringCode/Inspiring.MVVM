@@ -33,7 +33,7 @@
          config.Enable(BehaviorKeys.ValueCache);
          config.Enable(BehaviorKeys.ParentSetter, new ParentSetterBehavior<TChildVM>());
          config.Enable(BehaviorKeys.ViewModelPropertyInitializer, new ViewModelPropertyInitializerBehavior<TChildVM, TSourceValue>());
-         config.Enable(BehaviorKeys.ViewModelFactory, new ViewModelFactoryBehavior<TChildVM>());
+         config.Enable(BehaviorKeys.ViewModelAccessor, new ViewModelFactoryBehavior<TChildVM>());
          config.Enable(BehaviorKeys.SourceValueAccessor, _sourceValueAccessor);
 
          VMProperty<TChildVM> property = new VMProperty<TChildVM>();

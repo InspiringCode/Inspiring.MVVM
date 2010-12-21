@@ -1,6 +1,8 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Fluent {
    using System;
+   using System.ComponentModel;
    using System.Linq.Expressions;
+   using Inspiring.Mvvm.ViewModels.Core;
 
    /// <summary>
    ///   Provides a fluent interface to create <see cref="VMProperty"/> that 
@@ -75,5 +77,17 @@
       ///   The type of the child VM (for example PersonVM).
       /// </typeparam>
       VMProperty<TChildVM> Of<TChildVM>() where TChildVM : IViewModel;
+
+      // TODO: Comment
+      [EditorBrowsable(EditorBrowsableState.Never)]
+      VMProperty<TChildVM> Custom<TChildVM>(
+         IValueAccessorBehavior<TChildVM> viewModelAccessor
+      ) where TChildVM : IViewModel;
+
+      // TODO: Comment
+      [EditorBrowsable(EditorBrowsableState.Never)]
+      VMProperty<TChildVM> Custom<TChildVM>(
+         IViewModelFactoryBehavior<TChildVM> viewModelFactory
+      ) where TChildVM : IViewModel;
    }
 }

@@ -134,6 +134,7 @@
     <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionBehaviors\DelegatePopulatorCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\ParentSetterBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\DelegateViewModelFactory.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\ViewModelFactoryAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertySelector.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\BehaviorConfigurationBuilder.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\BehaviorConfigurationDictionary.cs" />
@@ -155,7 +156,7 @@
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\- Legacy -\VMPropertyFactoryWithSource.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\Interfaces\IPopulatedCollectionPropertyBuilder.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\VMPropertyBuilder.cs" />
-    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\VMPropertyBuilderBase.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\VMPropertyFactory.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\ValidationBuilder.cs" />
     <Compile Include="ViewModels\Core\CollectionModificationController.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\CollectionValidationBuilder.cs" />

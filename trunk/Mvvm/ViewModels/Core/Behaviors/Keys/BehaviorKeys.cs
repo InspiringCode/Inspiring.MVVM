@@ -34,10 +34,12 @@
 
       public static readonly BehaviorKey ValueCache = new BehaviorKey("ValueCache");
 
-      public static readonly BehaviorKey ViewModelFactory = new BehaviorKey("ViewModelFactory");
+      public static readonly BehaviorKey ViewModelAccessor = new BehaviorKey("ViewModelAccessor");
 
       public static readonly BehaviorKey ViewModelPropertyInitializer = new BehaviorKey("ViewModelPropertyInitializer");
 
       public static readonly BehaviorKey ParentSetter = new BehaviorKey("ParentSetter");
+
+      public static readonly BehaviorKey ViewModelFactory = new BehaviorKey("ViewModelFactory");
    }
 }
