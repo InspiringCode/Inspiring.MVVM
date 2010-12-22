@@ -7,6 +7,8 @@
 
       public static readonly BehaviorKey ChangeNotifier = new BehaviorKey("ChangeNotifier");
 
+      public static readonly BehaviorKey SourceSynchronizer = new BehaviorKey("SourceSynchronizer");
+
       public static readonly BehaviorKey Populator = new BehaviorKey("Populator");
 
       public static readonly BehaviorKey SourceAccessor = new BehaviorKey("SourceAccessor");

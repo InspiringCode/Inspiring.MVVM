@@ -212,6 +212,7 @@
          ) {
             var collectionConfiguration = Factory.GetCollectionConfiguration<TItemVM>(itemDescriptor);
 
+            collectionConfiguration.Enable(CollectionBehaviorKeys.SourceSynchronizer, new SynchronizerCollectionBehavior<TItemVM, TItemSource>());
             collectionConfiguration.Enable(CollectionBehaviorKeys.SourceAccessor, _sourceCollectionAccessor);
             collectionConfiguration.Enable(CollectionBehaviorKeys.ViewModelFactory, new ViewModelFactoryBehavior<TItemVM>());
             collectionConfiguration.Enable(

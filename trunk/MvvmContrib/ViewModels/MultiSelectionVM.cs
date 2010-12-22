@@ -43,7 +43,7 @@
          get { return GetValue(DescriptorBase.AllItems); }
       }
 
-      public IVMCollection<TItemVM> Selectedtems {
+      public IVMCollection<TItemVM> SelectedItems {
          get { return GetValue(DescriptorBase.SelectedItems); }
       }
 

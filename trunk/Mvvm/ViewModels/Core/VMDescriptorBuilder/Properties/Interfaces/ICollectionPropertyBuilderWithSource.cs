@@ -27,6 +27,6 @@
       ///   items. All items must have the same descriptor.
       /// </param>
       VMProperty<IVMCollection<TItemVM>> With<TItemVM>(VMDescriptorBase itemDescriptor)
-         where TItemVM : IViewModel, ICanInitializeFrom<TItemSource>;
+         where TItemVM : IViewModel, IVMCollectionItem<TItemSource>;
    }
 }

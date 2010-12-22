@@ -14,24 +14,25 @@
          TItemVM item,
          int index
       ) {
-         IEnumerable<TItemSource> source = GetSource(context);
+         if (!collection.IsPopulating) {
+            IEnumerable<TItemSource> source = GetSource(context);
 
-         var listSource = source as IList<TItemSource>;
-         var collectionSource = source as ICollection<TItemSource>;
+            var listSource = source as IList<TItemSource>;
+            var collectionSource = source as ICollection<TItemSource>;
 
-         if (listSource != null) {
-            listSource.Insert(index, item.Source);
-         } else {
+            if (listSource != null) {
+               listSource.Insert(index, item.Source);
+            } else {
+               if (collectionSource != null) {
+                  collectionSource.Add(item.Source);
+               }
+            }
+
             if (collectionSource != null) {
-               collectionSource.Add(item.Source);
+               bool listSourceHasChanged = collectionSource.Count != collection.Count;
+               ThrowOutOfSyncExceptionIf(listSourceHasChanged);
             }
          }
-
-         if (collectionSource != null) {
-            bool listSourceHasChanged = collectionSource.Count != collection.Count;
-            ThrowOutOfSyncExceptionIf(listSourceHasChanged);
-         }
-
 
          this.ItemInsertedNext(context, collection, item, index);
       }
@@ -42,21 +43,23 @@
          TItemVM item,
          int index
       ) {
-         IEnumerable<TItemSource> source = GetSource(context);
+         if (!collection.IsPopulating) {
+            IEnumerable<TItemSource> source = GetSource(context);
 
-         var listSource = source as IList<TItemSource>;
-         var collectionSource = source as ICollection<TItemSource>;
+            var listSource = source as IList<TItemSource>;
+            var collectionSource = source as ICollection<TItemSource>;
 
-         if (listSource != null) {
-            bool listSourceHasChanged = !Object.ReferenceEquals(listSource[index], item.Source);
-            ThrowOutOfSyncExceptionIf(listSourceHasChanged);
-         }
+            if (listSource != null) {
+               bool listSourceHasChanged = !Object.ReferenceEquals(listSource[index], item.Source);
+               ThrowOutOfSyncExceptionIf(listSourceHasChanged);
+            }
 
-         if (collectionSource != null) {
-            bool itemWasFound = collectionSource.Remove(item.Source);
-            bool listSourceHasChanged = collectionSource.Count != collection.Count;
+            if (collectionSource != null) {
+               bool itemWasFound = collectionSource.Remove(item.Source);
+               bool listSourceHasChanged = collectionSource.Count != collection.Count;
 
-            ThrowOutOfSyncExceptionIf(!itemWasFound || listSourceHasChanged);
+               ThrowOutOfSyncExceptionIf(!itemWasFound || listSourceHasChanged);
+            }
          }
 
          this.ItemRemovedNext(context, collection, item, index);
@@ -69,28 +72,30 @@
          TItemVM item,
          int index
       ) {
-         IEnumerable<TItemSource> source = GetSource(context);
+         if (!collection.IsPopulating) {
+            IEnumerable<TItemSource> source = GetSource(context);
 
-         var listSource = source as IList<TItemSource>;
-         var collectionSource = source as ICollection<TItemSource>;
+            var listSource = source as IList<TItemSource>;
+            var collectionSource = source as ICollection<TItemSource>;
 
-         if (listSource != null) {
-            bool listSourceHasChanged = !Object.Equals(listSource[index], previousItem.Source);
-            ThrowOutOfSyncExceptionIf(listSourceHasChanged);
+            if (listSource != null) {
+               bool listSourceHasChanged = !Object.Equals(listSource[index], previousItem.Source);
+               ThrowOutOfSyncExceptionIf(listSourceHasChanged);
 
-            listSource[index] = item.Source;
-         } else {
-            if (collectionSource != null) {
-               bool itemWasFound = collectionSource.Remove(previousItem.Source);
-               ThrowOutOfSyncExceptionIf(!itemWasFound);
+               listSource[index] = item.Source;
+            } else {
+               if (collectionSource != null) {
+                  bool itemWasFound = collectionSource.Remove(previousItem.Source);
+                  ThrowOutOfSyncExceptionIf(!itemWasFound);
 
-               collectionSource.Add(item.Source);
+                  collectionSource.Add(item.Source);
+               }
             }
-         }
 
-         if (collectionSource != null) {
-            bool listSourceHasChanged = collectionSource.Count != collection.Count;
-            ThrowOutOfSyncExceptionIf(listSourceHasChanged);
+            if (collectionSource != null) {
+               bool listSourceHasChanged = collectionSource.Count != collection.Count;
+               ThrowOutOfSyncExceptionIf(listSourceHasChanged);
+            }
          }
 
          this.ItemSetNext(context, collection, previousItem, item, index);
@@ -101,14 +106,16 @@
          IVMCollection<TItemVM> collection,
          TItemVM[] previousItems
       ) {
-         IEnumerable<TItemSource> source = GetSource(context);
+         if (!collection.IsPopulating) {
+            IEnumerable<TItemSource> source = GetSource(context);
 
-         var collectionSource = source as ICollection<TItemSource>;
-         if (collectionSource != null) {
-            bool listSourceHasChanged = collectionSource.Count != previousItems.Length;
-            ThrowOutOfSyncExceptionIf(listSourceHasChanged);
+            var collectionSource = source as ICollection<TItemSource>;
+            if (collectionSource != null) {
+               bool listSourceHasChanged = collectionSource.Count != previousItems.Length;
+               ThrowOutOfSyncExceptionIf(listSourceHasChanged);
 
-            collectionSource.Clear();
+               collectionSource.Clear();
+            }
          }
 
          this.ItemsClearedNext(context, collection, previousItems);

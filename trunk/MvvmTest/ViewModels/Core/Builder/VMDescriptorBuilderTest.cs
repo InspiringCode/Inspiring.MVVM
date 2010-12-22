@@ -106,7 +106,7 @@
          public VMProperty<IVMCollection<PersonVM>> Customers { get; set; }
       }
 
-      private class PersonVM : ViewModel<PersonVMDescriptor>, ICanInitializeFrom<Person> {
+      private class PersonVM : ViewModel<PersonVMDescriptor>, IVMCollectionItem<Person> {
          public static readonly PersonVMDescriptor Descriptor = VMDescriptorBuilder
             .For<PersonVM>()
             .CreateDescriptor(c => {
@@ -134,6 +134,10 @@
 
          }
          public Person Person { get; set; }
+
+         Person IVMCollectionItem<Person>.Source {
+            get { return Person; }
+         }
 
          public void InitializeFrom(Person source) {
             Person = source;

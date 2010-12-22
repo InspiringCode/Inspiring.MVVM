@@ -35,17 +35,31 @@
          IEnumerable<TItemVM> sourceCollection,
          IList<TItemVM> targetCollection
       ) {
+         if (sourceCollection == null) {
+            targetCollection.Clear();
+            return;
+         }
+
          int targetIndex = 0;
+
          foreach (TItemVM sourceItem in sourceCollection) {
             if (targetIndex >= targetCollection.Count) {
                targetCollection.Add(sourceItem);
             } else {
+               // Update all target collection position that currently hold a different
+               // item the same position in the source collection.
                if (!Object.ReferenceEquals(targetCollection[targetIndex], sourceItem)) {
                   targetCollection[targetIndex] = sourceItem;
                }
             }
 
             targetIndex++;
+         }
+
+         // Remove left over items if the number of items of the source collection is
+         // less than the number of items of the target collection.
+         while (targetIndex < targetCollection.Count) {
+            targetCollection.RemoveAt(targetCollection.Count - 1);
          }
       }
 

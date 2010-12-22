@@ -3,7 +3,7 @@
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
 using Inspiring.Mvvm.ViewModels.Core;
 
-   public class TaskVM : ViewModel<TaskVMDescriptor>, ICanInitializeFrom<Task> {
+   public class TaskVM : ViewModel<TaskVMDescriptor>, IVMCollectionItem<Task> {
       public static readonly TaskVMDescriptor Descriptor = VMDescriptorBuilder
          .For<TaskVM>()
          .CreateDescriptor(c => {
@@ -44,6 +44,10 @@ using Inspiring.Mvvm.ViewModels.Core;
       public string Description {
          get { return GetValue(DescriptorBase.Description); }
          set { SetValue(DescriptorBase.Description, value); }
+      }
+
+      Task IVMCollectionItem<Task>.Source {
+         get { return SourceTask; }
       }
 
       public void InitializeFrom(Task source) {

@@ -202,10 +202,15 @@
          public Employee SourcePerson { get; private set; }
       }
 
-      private class ProjectVM : ViewModelStub, ICanInitializeFrom<Project> {
-         public Employee SourcePerson { get; private set; }
+      private class ProjectVM : ViewModelStub, IVMCollectionItem<Project> {
+         public Project SourceProject { get; private set; }
+
+         Project IVMCollectionItem<Project>.Source {
+            get { return SourceProject; }
+         }
 
          public void InitializeFrom(Project source) {
+            SourceProject = source;
          }
       }
 

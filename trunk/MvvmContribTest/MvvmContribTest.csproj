@@ -82,6 +82,7 @@
     <Compile Include="ViewModels\MultiSelectionTest.cs" />
     <Compile Include="ViewModels\PersonStatus.cs" />
     <Compile Include="ViewModels\SingleSelectionTest.cs" />
+    <Compile Include="ViewModelTestExtensions.cs" />
     <Compile Include="Views\CustomKeyGestureExtensionTests.cs" />
     <Compile Include="Views\CustomKeyGestureTests.cs" />
     <Compile Include="Views\KeyGestureLocalizations.Designer.cs">

@@ -62,6 +62,16 @@
          return this;
       }
 
+      public MultiSelectionBuilder<TSourceObject, TItemSource> WithItems(
+         Func<TSourceObject, IEnumerable<TItemSource>> allSourceItemsSelector
+      ) {
+         AllSourceItemsPropertyFactory = delegate(IVMPropertyBuilder<TSourceObject> factory) {
+            return factory.Property.DelegatesTo(allSourceItemsSelector);
+         };
+
+         return this;
+      }
+
       public VMProperty<MultiSelectionVM<TItemSource, TItemVM>> Of<TItemVM>(
          VMDescriptorBase itemDescriptor
       ) where TItemVM : IViewModel, IVMCollectionItem<TItemSource> {

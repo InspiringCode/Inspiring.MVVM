@@ -2,7 +2,7 @@
 namespace Inspiring.Mvvm.ViewModels {
    public class SelectionItemVM<TSourceItem> :
       ViewModel<VMDescriptor>,
-      ICanInitializeFrom<TSourceItem>,
+      IVMCollectionItem<TSourceItem>,
       IComparable<SelectionItemVM<TSourceItem>> {
 
       public TSourceItem SourceItem { get; private set; }
@@ -29,6 +29,10 @@ namespace Inspiring.Mvvm.ViewModels {
          //return desc != null ?
          //   GetValue(desc.Caption) :
          //   null;
+      }
+
+      TSourceItem IVMCollectionItem<TSourceItem>.Source {
+         get { return SourceItem; }
       }
    }
 
