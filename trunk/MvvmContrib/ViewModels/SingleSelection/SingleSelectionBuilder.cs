@@ -1,18 +1,18 @@
-﻿namespace Inspiring.Mvvm.ViewModels {
+﻿namespace Inspiring.Mvvm.ViewModels.SingleSelection {
    using System;
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.Mvvm.ViewModels.Fluent;
 
-   public class MultiSelectionBuilder<TSourceObject, TItemSource> {
+   public class SingleSelectionBuilder<TSourceObject, TItemSource> {
       private IVMPropertyBuilder<TSourceObject> _sourceObjectPropertyBuilder;
 
       /// <param name="sourceObjectPropertyBuilder">
       ///   The original <see cref="VMPropertyBuilder"/> that was extended by
       ///   with the extension method.
       /// </param>
-      internal MultiSelectionBuilder(IVMPropertyBuilder<TSourceObject> sourceObjectPropertyBuilder) {
+      internal SingleSelectionBuilder(IVMPropertyBuilder<TSourceObject> sourceObjectPropertyBuilder) {
          Contract.Requires(sourceObjectPropertyBuilder != null);
          _sourceObjectPropertyBuilder = sourceObjectPropertyBuilder;
       }
@@ -20,7 +20,7 @@
       /// <summary>
       ///   Caches the property builder.
       /// </summary>
-      internal Func<IVMPropertyBuilder<TSourceObject>, VMProperty<ICollection<TItemSource>>> SelectedSourceItemsPropertyFactory {
+      internal Func<IVMPropertyBuilder<TSourceObject>, VMProperty<TItemSource>> SelectedSourceItemPropertyFactory {
          get;
          set;
       }
@@ -38,12 +38,12 @@
          set;
       }
 
-      public MultiSelectionBuilder<TSourceObject, TItemSource> WithFilter(Func<TItemSource, bool> filter) {
+      public SingleSelectionBuilder<TSourceObject, TItemSource> WithFilter(Func<TItemSource, bool> filter) {
          Filter = filter;
          return this;
       }
 
-      public MultiSelectionBuilder<TSourceObject, TItemSource> WithItems(
+      public SingleSelectionBuilder<TSourceObject, TItemSource> WithItems(
          Func<TSourceObject, IEnumerable<TItemSource>> allSourceItemsSelector
       ) {
          AllSourceItemsPropertyFactory = delegate(IVMPropertyBuilder<TSourceObject> factory) {
@@ -53,10 +53,10 @@
          return this;
       }
 
-      public VMProperty<MultiSelectionVM<TItemSource, TItemVM>> Of<TItemVM>(
+      public VMProperty<SingleSelectionVM<TItemSource, TItemVM>> Of<TItemVM>(
          VMDescriptorBase itemDescriptor
       ) where TItemVM : IViewModel, IVMCollectionItem<TItemSource> {
-         Contract.Assert(SelectedSourceItemsPropertyFactory != null);
+         Contract.Assert(SelectedSourceItemPropertyFactory != null);
 
          var allSourceItemsPropertyFactory =
             AllSourceItemsPropertyFactory ??
@@ -64,22 +64,22 @@
 
          // The descriptor is created only once for every owner VM property/descriptor
          // and reused for every VM instance created from the owner VM descriptor.
-         var descriptor = MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>.CreateDescriptor(
+         var descriptor = SingleSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>.CreateDescriptor(
             itemDescriptor,
-            SelectedSourceItemsPropertyFactory,
+            SelectedSourceItemPropertyFactory,
             allSourceItemsPropertyFactory
          );
 
          return _sourceObjectPropertyBuilder.VM.Custom(
-            viewModelFactory: new MultSelectionFactory<TItemVM>(descriptor, Filter)
+            viewModelFactory: new SingleSelectionFactory<TItemVM>(descriptor, Filter)
          );
       }
 
-      public VMProperty<MultiSelectionVM<TItemSource>> WithCaption(
+      public VMProperty<SingleSelectionVM<TItemSource>> WithCaption(
          Func<TItemSource, string> captionGetter
       )  {
          Contract.Requires<ArgumentNullException>(captionGetter != null);
-         Contract.Assert(SelectedSourceItemsPropertyFactory != null);
+         Contract.Assert(SelectedSourceItemPropertyFactory != null);
 
          SelectionItemVMDescriptor itemDescriptor = VMDescriptorBuilder
             .For<SelectionItemVM<TItemSource>>()
@@ -99,14 +99,14 @@
 
          // The descriptor is created only once for every owner VM property/descriptor
          // and reused for every VM instance created from the owner VM descriptor.
-         var descriptor = MultiSelectionWithSourceVM<TSourceObject, TItemSource>.CreateDescriptor(
+         var descriptor = SingleSelectionWithSourceVM<TSourceObject, TItemSource>.CreateDescriptor(
             itemDescriptor,
-            SelectedSourceItemsPropertyFactory,
+            SelectedSourceItemPropertyFactory,
             allSourceItemsPropertyFactory
          );
 
          return _sourceObjectPropertyBuilder.VM.Custom(
-            viewModelFactory: new MultSelectionFactory(descriptor, Filter)
+            viewModelFactory: new SingleSelectionFactory(descriptor, Filter)
          );
       }
       
@@ -124,23 +124,23 @@
          };
       }
 
-      private class MultSelectionFactory<TItemVM> :
+      private class SingleSelectionFactory<TItemVM> :
          Behavior,
-         IViewModelFactoryBehavior<MultiSelectionVM<TItemSource, TItemVM>>
+         IViewModelFactoryBehavior<SingleSelectionVM<TItemSource, TItemVM>>
          where TItemVM : IViewModel, IVMCollectionItem<TItemSource> {
 
-         private MultiSelectionVMDescriptor<TItemSource, TItemVM> _descriptor;
+         private SingleSelectionVMDescriptor<TItemSource, TItemVM> _descriptor;
          private Func<TItemSource, bool> _filter;
 
-         public MultSelectionFactory(MultiSelectionVMDescriptor<TItemSource, TItemVM> descriptor, Func<TItemSource, bool> filter) {
+         public SingleSelectionFactory(SingleSelectionVMDescriptor<TItemSource, TItemVM> descriptor, Func<TItemSource, bool> filter) {
             _descriptor = descriptor;
             _filter = filter;
          }
 
-         public MultiSelectionVM<TItemSource, TItemVM> CreateInstance(IBehaviorContext context) {
+         public SingleSelectionVM<TItemSource, TItemVM> CreateInstance(IBehaviorContext context) {
             TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context, ValueStage.None);
 
-            var vm = new MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>(
+            var vm = new SingleSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>(
                _descriptor,
                context.ServiceLocator
             );
@@ -153,22 +153,22 @@
          }
       }
 
-      private class MultSelectionFactory :
+      private class SingleSelectionFactory :
          Behavior,
-         IViewModelFactoryBehavior<MultiSelectionVM<TItemSource>> {
+         IViewModelFactoryBehavior<SingleSelectionVM<TItemSource>> {
 
-         private MultiSelectionVMDescriptor<TItemSource> _descriptor;
+         private SingleSelectionVMDescriptor<TItemSource> _descriptor;
          private Func<TItemSource, bool> _filter;
 
-         public MultSelectionFactory(MultiSelectionVMDescriptor<TItemSource> descriptor, Func<TItemSource, bool> filter) {
+         public SingleSelectionFactory(SingleSelectionVMDescriptor<TItemSource> descriptor, Func<TItemSource, bool> filter) {
             _descriptor = descriptor;
             _filter = filter;
          }
 
-         public MultiSelectionVM<TItemSource> CreateInstance(IBehaviorContext context) {
+         public SingleSelectionVM<TItemSource> CreateInstance(IBehaviorContext context) {
             TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context, ValueStage.None);
 
-            var vm = new MultiSelectionWithSourceVM<TSourceObject, TItemSource>(
+            var vm = new SingleSelectionWithSourceVM<TSourceObject, TItemSource>(
                _descriptor,
                context.ServiceLocator
             );

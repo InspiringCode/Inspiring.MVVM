@@ -14,6 +14,8 @@
 
       public string Name { get; set; }
 
+      public Department Department { get; set; }
+
       public ICollection<Group> Groups { get; private set; }
 
       public override string ToString() {

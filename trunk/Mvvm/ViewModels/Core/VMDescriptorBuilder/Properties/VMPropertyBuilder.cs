@@ -125,6 +125,20 @@
       }
 
       /// <inheritdoc />
+      VMProperty<TChildVM> IViewModelPropertyBuilder<TSourceObject>.DelegatesTo<TChildVM>(
+         Func<TSourceObject, TChildVM> getter,
+         Action<TSourceObject, TChildVM> setter
+      ) {
+         return Factory.CreateViewModelProperty<TChildVM, TSourceObject>(
+            viewModelAccessor: new CalculatedPropertyAccessor<TVM, TSourceObject, TChildVM>(
+               _sourceObjectPath,
+               getter,
+               setter
+            )
+         );
+      }
+
+      /// <inheritdoc />
       VMProperty<TChildVM> IViewModelPropertyBuilder<TSourceObject>.Of<TChildVM>() {
          return Factory.CreateViewModelProperty<TChildVM>(new InstancePropertyBehavior<TChildVM>());
       }

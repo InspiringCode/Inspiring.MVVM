@@ -16,7 +16,10 @@
       internal void InitializePropertyNames() {
          foreach (PropertyInfo pi in GetVMPropertyDefinitions()) {
             VMPropertyBase property = GetVMProperty(pi);
-            property.Initialize(pi.Name);
+            if (property != null) {
+               // TODO: Is this the optimal way?
+               property.Initialize(pi.Name);
+            }
          }
       }
 

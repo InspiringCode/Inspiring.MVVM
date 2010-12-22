@@ -129,12 +129,12 @@
       }
 
       [TestMethod]
-      public void ViewModelProperty_CreatedBy_InsertsProperBehaviors() {
+      public void ViewModelProperty_DelegatesTo_InsertsProperBehaviors() {
          var f = CreateRootFactory();
-         var p = f.VM.CreatedBy(x => new ProjectVM());
+         var p = f.VM.DelegatesTo(x => new ProjectVM());
 
          AssertDefaultViewModelBehaviors(p);
-         Assert.IsTrue(ContainsBehavior<DelegateViewModelFactory<EmployeeVM, ProjectVM>>(p));
+         Assert.IsTrue(ContainsBehavior<CalculatedPropertyAccessor<EmployeeVM, EmployeeVM, ProjectVM>>(p));
          Assert.IsTrue(ContainsBehavior<ValueCacheBehavior<ProjectVM>>(p));
          Assert.IsFalse(ContainsBehavior<ViewModelPropertyInitializerBehavior<ProjectVM, Project>>(p));
       }

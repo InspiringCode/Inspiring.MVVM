@@ -65,8 +65,14 @@
       ///   A delegate that is called the first time the VM property is accessed 
       ///   and should return a new child VM instance.
       /// </param>
+      [Obsolete("Use DelegatesTo")]
       VMProperty<TChildVM> CreatedBy<TChildVM>(
          Func<TSourceObject, TChildVM> viewModelFactory
+      ) where TChildVM : IViewModel;
+
+      VMProperty<TChildVM> DelegatesTo<TChildVM>(
+         Func<TSourceObject, TChildVM> getter,
+         Action<TSourceObject, TChildVM> setter = null
       ) where TChildVM : IViewModel;
 
       /// <summary>

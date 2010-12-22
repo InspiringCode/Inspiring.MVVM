@@ -1,38 +1,31 @@
-﻿using System;
-namespace Inspiring.Mvvm.ViewModels {
+﻿namespace Inspiring.Mvvm.ViewModels {
+   using System;
+
    public class SelectionItemVM<TSourceItem> :
-      ViewModel<VMDescriptor>,
+      ViewModel<SelectionItemVMDescriptor>,
       IVMCollectionItem<TSourceItem>,
       IComparable<SelectionItemVM<TSourceItem>> {
 
-      public TSourceItem SourceItem { get; private set; }
+      // The descriptor is set by the collection
+      public SelectionItemVM() {
+      }
+
+      public TSourceItem Source { get; private set; }
+
+      public string Caption {
+         get { return GetValue(DescriptorBase.Caption); }
+      }
 
       public void InitializeFrom(TSourceItem source) {
-         SourceItem = source;
+         Source = source;
       }
 
       public override string ToString() {
-         return GetCaption() ?? base.ToString();
+         return Caption ?? base.ToString();
       }
 
       public int CompareTo(SelectionItemVM<TSourceItem> other) {
-         string caption = GetCaption();
-         string otherCaption = other.GetCaption();
-
-         return String.Compare(caption, otherCaption);
-      }
-
-      private string GetCaption() {
-         throw new NotImplementedException();
-         //var desc = _descriptor as SelectionItemVMDescriptor;
-
-         //return desc != null ?
-         //   GetValue(desc.Caption) :
-         //   null;
-      }
-
-      TSourceItem IVMCollectionItem<TSourceItem>.Source {
-         get { return SourceItem; }
+         return String.Compare(Caption, other.Caption);
       }
    }
 

@@ -89,9 +89,12 @@
     <Compile Include="ViewModels\EnumSelectionPropertyBuilder.cs" />
     <Compile Include="ViewModels\ISelectionPropertyBuilder.cs" />
     <Compile Include="ViewModels\IVMPropertyFactory.cs" />
-    <Compile Include="ViewModels\MultiSelectionVM.cs" />
+    <Compile Include="ViewModels\MultiSelection\MultiSelectionVM.cs" />
     <Compile Include="ViewModels\MultiSelection\LookupPopulatorCollectionBehavior.cs" />
     <Compile Include="ViewModels\MultiSelection\MultiSelectionBuilder.cs" />
+    <Compile Include="ViewModels\MultiSelection\MultiSelectionVMDescriptor.cs" />
+    <Compile Include="ViewModels\MultiSelection\MultiSelectionWithSourceVM.cs" />
+    <Compile Include="ViewModels\SelectionBuilderExtensions.cs" />
     <Compile Include="ViewModels\SelectionExtensions.cs" />
     <Compile Include="ViewModels\SelectionItemVM.cs" />
     <Compile Include="ViewModels\SelectionPropertyConfiguration.cs" />
@@ -99,6 +102,10 @@
     <Compile Include="ViewModels\SingleSelectionPropertyBuilder.cs" />
     <Compile Include="ViewModels\SingleSelectionVM.cs" />
     <Compile Include="Screens\IMessageBoxService.cs" />
+    <Compile Include="ViewModels\SingleSelection\SingleSelectionBuilder.cs" />
+    <Compile Include="ViewModels\SingleSelection\SingleSelectionVMDescriptor.cs" />
+    <Compile Include="ViewModels\SingleSelection\SingleSelectionWithSourceVM.cs" />
+    <Compile Include="ViewModels\SingleSelection\SingleSelectionVM.cs" />
     <Compile Include="Views\CustomKeyGesture.cs" />
     <Compile Include="Views\CustomKeyGestureExtension.cs" />
     <Compile Include="Views\KeyGestureViewBinderExtension.cs" />

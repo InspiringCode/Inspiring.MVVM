@@ -53,6 +53,22 @@
          return CreateProperty<TChildVM>(config);
       }
 
+      public VMProperty<TChildVM> CreateViewModelProperty<TChildVM, TSourceObject>(
+         //IValueAccessorBehavior<TSourceObject> sourceObjectAccessor,
+         IValueAccessorBehavior<TChildVM> viewModelAccessor
+      ) where TChildVM : IViewModel {
+         BehaviorChainConfiguration config = GetPropertyConfiguration<TChildVM>(BehaviorChainTemplateKeys.ViewModelProperty);
+
+         // TODO: What is the right behavior here?????? Important!
+         //config.Enable(BehaviorKeys.ValueCache);
+         config.Enable(BehaviorKeys.ParentSetter, new ParentSetterBehavior<TChildVM>());
+         config.Enable(BehaviorKeys.ViewModelAccessor, viewModelAccessor);
+         //config.Enable(BehaviorKeys.ViewModelFactory, customFactory);
+         //config.Enable(BehaviorKeys.SourceValueAccessor, sourceObjectAccessor);
+
+         return CreateProperty<TChildVM>(config);
+      }
+
       public VMProperty<IVMCollection<TItemVM>> CreateCollectionProperty<TItemVM>(
          BehaviorChainConfiguration collectionConfiguration,
          bool isPopulatable
