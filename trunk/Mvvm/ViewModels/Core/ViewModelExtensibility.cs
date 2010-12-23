@@ -25,16 +25,5 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          throw new NotImplementedException();
          //property.SetValue(foreignViewModel, value);
       }
-
-      public static IRootVMPropertyFactory<TVM> ConfigurePropertyFactory<TVM>(
-         IRootVMPropertyFactory<TVM> factory,
-         BehaviorConfiguration additionalConfiguration
-      ) where TVM : IViewModel {
-         return ((_VMPropertyFactory<TVM, TVM>)factory).WithConfiguration(additionalConfiguration);
-      }
-
-      //public static IRootVMPropertyFactory<TVM> CreatePropertyFactory<TVM>() where TVM : IViewModel {
-      //   return new VMPropertyFactory<TVM, TVM>(PropertyPath.Empty<TVM>, 
-      //}
    }
 }

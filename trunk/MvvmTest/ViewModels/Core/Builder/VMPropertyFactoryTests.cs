@@ -4,7 +4,6 @@
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
-   using Inspiring.Mvvm.ViewModels.Core.Builder.Properties;
    using Inspiring.MvvmTest.Stubs;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -191,8 +190,8 @@
          );
       }
 
-      private VMPropertyFactory<EmployeeVM, Employee> CreateSourceObjectFactory() {
-         return new VMPropertyFactory<EmployeeVM, Employee>(
+      private VMPropertyBuilder<EmployeeVM, Employee> CreateSourceObjectFactory() {
+         return new VMPropertyBuilder<EmployeeVM, Employee>(
             PropertyPath.Create((EmployeeVM x) => x.SourcePerson),
             Configuration
          );
