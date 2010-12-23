@@ -26,19 +26,18 @@ namespace Inspiring.MvvmTest.ViewModels {
 
       private class PersonVM : ViewModel<PersonVMDescriptor> {
          public static readonly PersonVMDescriptor Descriptor = VMDescriptorBuilder
+            .OfType<PersonVMDescriptor>()
             .For<PersonVM>()
-            .CreateDescriptor(pro => {
+            .WithProperties((d, pro) => {
                var v = pro.GetPropertyBuilder();
                var p = pro.GetPropertyBuilder(x => x.Person);
 
-               return new PersonVMDescriptor {
-                  FirstName = p.Property.MapsTo(x => x.FirstName),
-                  LastName = p.Property.MapsTo(x => x.LastName),
-                  BirthDate = p.Property.MapsTo(x => x.BirthDate),
-                  Salary = p.Property.MapsTo(x => x.Salary),
-                  Name = p.Property.DelegatesTo(x => String.Format("{0} {1}", x.FirstName, x.LastName)),
-                  IsSelected = v.Property.Of<bool>()
-               };
+               d.FirstName = p.Property.MapsTo(x => x.FirstName);
+               d.LastName = p.Property.MapsTo(x => x.LastName);
+               d.BirthDate = p.Property.MapsTo(x => x.BirthDate);
+               d.Salary = p.Property.MapsTo(x => x.Salary);
+               d.Name = p.Property.DelegatesTo(x => String.Format("{0} {1}", x.FirstName, x.LastName));
+               d.IsSelected = v.Property.Of<bool>();
             })
             .Build();
 

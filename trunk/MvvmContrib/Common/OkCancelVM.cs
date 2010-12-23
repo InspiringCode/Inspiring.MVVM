@@ -4,14 +4,13 @@
 
    public sealed class OkCancelVM : ViewModel<OkCancelVMDescriptor>, ICanInitializeFrom<IOkCancelHandler> {
       public static readonly OkCancelVMDescriptor Descriptor = VMDescriptorBuilder
+         .OfType<OkCancelVMDescriptor>()
          .For<OkCancelVM>()
-         .CreateDescriptor(c => {
+         .WithProperties((d, c) => {
             var h = c.GetPropertyBuilder(x => x.DialogActionHandler);
 
-            return new OkCancelVMDescriptor {
-               Ok = h.Command(x => x.Ok(), x => x.CanOk()),
-               Cancel = h.Command(x => x.Cancel(), x => x.CanCancel())
-            };
+            d.Ok = h.Command(x => x.Ok(), x => x.CanOk());
+            d.Cancel = h.Command(x => x.Cancel(), x => x.CanCancel());
          })
          .Build();
 

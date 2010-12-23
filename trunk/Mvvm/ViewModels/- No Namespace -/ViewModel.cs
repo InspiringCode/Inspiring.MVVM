@@ -14,6 +14,7 @@
    public abstract class ViewModel<TDescriptor> :
       ViewModelTypeDescriptor,
       IViewModel,
+      IViewModel<TDescriptor>,
       INotifyPropertyChanged,
       IDataErrorInfo
       where TDescriptor : VMDescriptorBase {

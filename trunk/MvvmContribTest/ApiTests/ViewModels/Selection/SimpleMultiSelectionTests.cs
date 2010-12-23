@@ -33,19 +33,18 @@
 
       internal sealed class UserVM : ViewModel<UserVMDescriptor>, ICanInitializeFrom<User> {
          public static UserVMDescriptor Descriptor = VMDescriptorBuilder
+            .OfType<UserVMDescriptor>()
             .For<UserVM>()
-            .CreateDescriptor(c => {
+            .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
                var s = c.GetPropertyBuilder(x => x.UserSource);
 
-               return new UserVMDescriptor {
-                  Name = s.Property.MapsTo(x => x.Name),
-                  Groups = v
-                     .MultiSelection(x => x.UserSource.Groups)
-                     .WithItems(x => x.AllSourceGroups)
-                     .WithFilter(x => x.IsActive)
-                     .WithCaption(x => x.Name)
-               };
+               d.Name = s.Property.MapsTo(x => x.Name);
+               d.Groups = v
+                  .MultiSelection(x => x.UserSource.Groups)
+                  .WithItems(x => x.AllSourceGroups)
+                  .WithFilter(x => x.IsActive)
+                  .WithCaption(x => x.Name);
             })
             .Build();
 

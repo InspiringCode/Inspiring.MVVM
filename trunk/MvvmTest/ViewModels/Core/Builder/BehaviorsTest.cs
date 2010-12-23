@@ -9,12 +9,11 @@
       [TestMethod]
       public void CustomBehaviorIntegrationTest() {
          var descriptor = VMDescriptorBuilder
-            .For<TestVM>()
-            .CreateDescriptor(c => {
+            .OfType<TestVMDescriptor>()
+            .For<TesTVM>()
+            .WithProperties((d, c) => {
                var f = c.GetPropertyBuilder();
-               return new TestVMDescriptor {
-                  Property = f.Property.DelegatesTo(x => "")
-               };
+               d.Property = f.Property.DelegatesTo(x => "");
             })
             .WithBehaviors(c => {
                throw new NotImplementedException();
@@ -29,12 +28,12 @@
       [TestMethod] // Maybe delete
       public void CustomBehaviorIntegrationTest_Disconnect() {
          var descriptor = VMDescriptorBuilder
-            .For<TestVM>()
-            .CreateDescriptor(c => {
+            .OfType<TestVMDescriptor>()
+            .For<TesTVM>()
+            .WithProperties((d, c) => {
                var f = c.GetPropertyBuilder();
-               return new TestVMDescriptor {
-                  Property = f.Property.DelegatesTo(x => "")
-               };
+
+               d.Property = f.Property.DelegatesTo(x => "");
             })
             .WithBehaviors(c => {
                throw new NotImplementedException();

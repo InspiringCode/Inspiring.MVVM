@@ -82,13 +82,12 @@
          Contract.Assert(SelectedSourceItemPropertyFactory != null);
 
          SelectionItemVMDescriptor itemDescriptor = VMDescriptorBuilder
+            .OfType<SelectionItemVMDescriptor>()
             .For<SelectionItemVM<TItemSource>>()
-            .CreateDescriptor(c => {
+            .WithProperties((d, c) => {
                var s = c.GetPropertyBuilder(x => x.Source);
 
-               return new SelectionItemVMDescriptor {
-                  Caption = s.Property.DelegatesTo(captionGetter)
-               };
+               d.Caption = s.Property.DelegatesTo(captionGetter);
             })
             .Build();
 

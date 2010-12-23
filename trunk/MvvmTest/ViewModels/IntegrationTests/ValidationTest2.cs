@@ -109,8 +109,8 @@
 
 //      private class ParenTVM : IViewModel<ParentVMDescriptor> {
 //         public static readonly ParentVMDescriptor Descriptor = VMDescriptorBuilder
-//            .For<ParentVM>()
-//            .CreateDescriptor(c => {
+//            .OfType<>().For<ParentVM>()
+//            .WithProperties((d, c) => {
 //               var v = c.GetPropertyFactory();
 
 //               return new ParentVMDescriptor {
@@ -132,15 +132,15 @@
 
 //      private class ChildVM : ViewModel<ChildVMDescriptor> {
 //         public static readonly ChildVMDescriptor Descriptor = VMDescriptorBuilder
-//            .For<ChildVM>()
-//            .CreateDescriptor(c => {
+//            .OfType<>().For<ChildVM>()
+//            .WithProperties((d, c) => {
 //               var v = c.GetPropertyFactory();
 
 //               return new ChildVMDescriptor {
 //                  StringProperty = v.Local<string>()
 //               };
 //            })
-//            .WithValidations((d, c) => {
+//            .WithValidators(c => {
 //               c.Check(d.StringProperty).Custom((vm, val) =>
 //                  !String.IsNullOrEmpty(val) ?
 //                     ValidationResult.Success() :

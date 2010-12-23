@@ -6,13 +6,12 @@
 
    public sealed class TaskListVM : ViewModel<TaskListVMDescriptor>, ICanInitializeFrom<IEnumerable<Task>> {
       public static readonly TaskListVMDescriptor Descriptor = VMDescriptorBuilder
+         .OfType<TaskListVMDescriptor>()
          .For<TaskListVM>()
-         .CreateDescriptor(c => {
+         .WithProperties((d, c) => {
             var vm = c.GetPropertyBuilder();
 
-            return new TaskListVMDescriptor {
-               Tasks = vm.Collection.Wraps(x => x.TasksSource).With<TaskVM>(TaskVM.Descriptor)
-            };
+            d.Tasks = vm.Collection.Wraps(x => x.TasksSource).With<TaskVM>(TaskVM.Descriptor);
          })
          .Build();
 

@@ -198,8 +198,9 @@
          var sourceUser = new User(selectedGroups);
 
          UserVMDescriptor descriptor = VMDescriptorBuilder
+            .OfType<UserVMDescriptor>()
             .For<UserVM>()
-            .CreateDescriptor(c => {
+            .WithProperties((d, c) => {
                var u = c.GetPropertyBuilder(x => x.UserSource);
 
                var builder = u.MultiSelection(x => x.Groups);
@@ -216,10 +217,8 @@
                   builder = builder.WithItems(allGroupsSelector);
                }
 
-               return new UserVMDescriptor {
-                  Name = u.Property.MapsTo(x => x.Name),
-                  Groups = builder.Of<GroupVM>(GroupVM.Descriptor)
-               };
+               d.Name = u.Property.MapsTo(x => x.Name);
+               d.Groups = builder.Of<GroupVM>(GroupVM.Descriptor);
             })
             .Build();
 

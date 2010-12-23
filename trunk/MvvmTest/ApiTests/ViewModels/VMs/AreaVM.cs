@@ -5,14 +5,13 @@
 
    public sealed class AreaVM : ViewModel<AreaVMDescriptor>, ICanInitializeFrom<Area> {
       public static readonly AreaVMDescriptor Descriptor = VMDescriptorBuilder
+         .OfType<AreaVMDescriptor>()
          .For<AreaVM>()
-         .CreateDescriptor(c => {
+         .WithProperties((d, c) => {
             var vm = c.GetPropertyBuilder();
             var a = c.GetPropertyBuilder(x => x.Area);
 
-            return new AreaVMDescriptor {
-               Caption = a.Property.MapsTo(x => x.Caption)
-            };
+            d.Caption = a.Property.MapsTo(x => x.Caption);
          })
          .Build();
 

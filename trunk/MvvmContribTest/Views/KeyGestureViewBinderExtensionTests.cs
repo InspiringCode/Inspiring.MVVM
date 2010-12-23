@@ -32,13 +32,12 @@
 
       public sealed class TestVM : ViewModel<TestVMDescriptor> {
          public static readonly TestVMDescriptor Descriptor = VMDescriptorBuilder
+            .OfType<TestVMDescriptor>()
             .For<TestVM>()
-            .CreateDescriptor(c => {
+            .WithProperties((d, c) => {
                var vm = c.GetPropertyBuilder();
 
-               return new TestVMDescriptor {
-                  ViewModelCommand = vm.Property.Of<ICommand>()
-               };
+               d.ViewModelCommand = vm.Property.Of<ICommand>();
             })
             .Build();
 

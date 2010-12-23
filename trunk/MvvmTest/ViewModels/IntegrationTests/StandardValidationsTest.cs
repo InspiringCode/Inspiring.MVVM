@@ -83,15 +83,15 @@
 
 //      private class ParenTVM : IViewModel<ParentVMDescriptor> {
 //         public static readonly ParentVMDescriptor Descriptor = VMDescriptorBuilder
-//            .For<ParentVM>()
-//            .CreateDescriptor(c => {
+//            .OfType<>().For<ParentVM>()
+//            .WithProperties((d, c) => {
 //               var v = c.GetPropertyFactory();
 
 //               return new ParentVMDescriptor {
 //                  Children = v.MappedCollection(x => x.Source).Of<ChildVM>(ChildVM.Descriptor)
 //               };
 //            })
-//            .WithValidations((d, c) => {
+//            .WithValidators(c => {
 //               c.PropagateChildErrors("Child invalid");
 //            })
 //            .Build();
@@ -112,15 +112,15 @@
 
 //      private class ChildVM : ViewModel<ChildVMDescriptor>, ICanInitializeFrom<string> {
 //         public static readonly ChildVMDescriptor Descriptor = VMDescriptorBuilder
-//            .For<ChildVM>()
-//            .CreateDescriptor(c => {
+//            .OfType<>().For<ChildVM>()
+//            .WithProperties((d, c) => {
 //               var v = c.GetPropertyFactory();
 
 //               return new ChildVMDescriptor {
 //                  StringProperty = v.Local<string>()
 //               };
 //            })
-//            .WithValidations((d, c) => {
+//            .WithValidators(c => {
 //               c.Check(d.StringProperty).HasValue("No value");
 //               c.Check(d.StringProperty).Length(4, "Max length {0}");
 //               c.Check(d.StringProperty).WithParent<ParentVM>().IsUnique(x => x.Children, x => x.StringProperty, "Duplicate value");

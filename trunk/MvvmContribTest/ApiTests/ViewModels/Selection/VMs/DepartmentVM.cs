@@ -3,14 +3,13 @@
 
    internal sealed class DepartmentVM : ViewModel<DepartmentVMDescriptor>, IVMCollectionItem<Department> {
       public static readonly DepartmentVMDescriptor Descriptor = VMDescriptorBuilder
-         .For<GroupVM>()
-         .CreateDescriptor(c => {
+         .OfType<DepartmentVMDescriptor>()
+         .For<DepartmentVM>()
+         .WithProperties((d, c) => {
             var vm = c.GetPropertyBuilder();
-            var k = c.GetPropertyBuilder(x => x.GroupSource);
+            var k = c.GetPropertyBuilder(x => x.DepartmentSource);
 
-            return new DepartmentVMDescriptor {
-               Name = k.Property.MapsTo(x => x.Name)
-            };
+            d.Name = k.Property.MapsTo(x => x.Name);
          })
          .Build();
 

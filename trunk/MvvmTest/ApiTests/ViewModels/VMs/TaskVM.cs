@@ -5,19 +5,18 @@ using Inspiring.Mvvm.ViewModels.Core;
 
    public class TaskVM : ViewModel<TaskVMDescriptor>, IVMCollectionItem<Task> {
       public static readonly TaskVMDescriptor Descriptor = VMDescriptorBuilder
+         .OfType<TaskVMDescriptor>()
          .For<TaskVM>()
-         .CreateDescriptor(c => {
+         .WithProperties((d, c) => {
             var vm = c.GetPropertyBuilder();
             var t = c.GetPropertyBuilder(x => x.SourceTask);
 
-            return new TaskVMDescriptor {
-               Title = t.Property.MapsTo(x => x.Title),
-               Description = t.Property.DelegatesTo(
+            d.Title = t.Property.MapsTo(x => x.Title);
+            d.Description = t.Property.DelegatesTo(
                   task => task.Description != null ? task.Description.Html : null,
                   (task, val) => task.Description = new RichText(val)
-               ),
-               ScreenTitle = vm.Property.Of<string>()
-            };
+               );
+            d.ScreenTitle = vm.Property.Of<string>();
          })
          .Build();
 

@@ -9,8 +9,17 @@
          var b = new TypeDescriptorBehavior();
          b.Initialize(new BehaviorInitializationContext(this));
          Behaviors.Successor = b;
-         
+
          RegisterService(new ViewModelValidatorHolder());
+      }
+
+      /// <summary>
+      ///   Gets or sets the builder that was used to create and configure this
+      ///   instance. This is esepcially important for VM inheritance.
+      /// </summary>
+      internal IVMDescriptorBuilder Builder {
+         get;
+         set;
       }
 
       internal void InitializePropertyNames() {

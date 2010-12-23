@@ -71,18 +71,17 @@
 
       public sealed class TaskListVM : ViewModel<TaskListVMDescriptor> {
          public static readonly TaskListVMDescriptor Descriptor = VMDescriptorBuilder
+            .OfType<TaskListVMDescriptor>()
             .For<TaskListVM>()
-            .CreateDescriptor(c => {
+            .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
                var s = c.GetPropertyBuilder(x => x.Source);
 
-               return new TaskListVMDescriptor {
-                  RootCommand = v.Command(x => x.Source.ExecuteAction()),
-                  RelativeCommand = s.Command(
-                     x => x.ExecuteAction(),
-                     x => x.CanExecuteAction()
-                  )
-               };
+               d.RootCommand = v.Command(x => x.Source.ExecuteAction());
+               d.RelativeCommand = s.Command(
+                  x => x.ExecuteAction(),
+                  x => x.CanExecuteAction()
+               );
             })
             .Build();
 

@@ -122,13 +122,12 @@
 
       private class MovieReviewVM : ViewModel<MovieReviewVMDescriptor> {
          public static readonly MovieReviewVMDescriptor Descriptor = VMDescriptorBuilder
+            .OfType<MovieReviewVMDescriptor>()
             .For<MovieReviewVM>()
-            .CreateDescriptor(c => {
+            .WithProperties((d, c) => {
                var vm = c.GetPropertyBuilder();
-
-               return new MovieReviewVMDescriptor {
-                  Rating = vm.Property.Of<Nullable<int>>()
-               };
+               
+               d.Rating = vm.Property.Of<Nullable<int>>();
             })
             .Build();
 

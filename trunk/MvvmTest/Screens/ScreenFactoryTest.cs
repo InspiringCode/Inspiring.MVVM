@@ -45,7 +45,7 @@
       public void ScreenWithSubjectIsCreatedAndInitialized() {
          //var mock = new Mock<IScreenInitializer>();
 
-         //var sf = ScreenFactory.WithSubject("Test").For<SubjectScreen>();
+         //var sf = ScreenFactory.WithSubject("Test").OfType<>().For<SubjectScreen>();
          //SubjectScreen s = sf.Create(mock.Object);
 
          //Assert.IsNotNull(s);

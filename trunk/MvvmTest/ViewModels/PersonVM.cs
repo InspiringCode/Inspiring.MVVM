@@ -6,23 +6,22 @@
 
    public class PersonVM : ViewModel<PersonVMDescriptor>, ICanInitializeFrom<Person> {
       public static readonly PersonVMDescriptor Descriptor = VMDescriptorBuilder
+            .OfType<PersonVMDescriptor>()
             .For<PersonVM>()
-            .CreateDescriptor(c => {
+            .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
                var p = c.GetPropertyBuilder(x => x.Person);
 
-               return new PersonVMDescriptor {
-                  FirstName = p.Property.MapsTo(x => x.FirstName),
-                  LastName = p.Property.MapsTo(x => x.LastName),
-                  BirthDate = p.Property.MapsTo(x => x.BirthDate),
-                  Salary = p.Property.DelegatesTo(x => x.Salary, (x, val) => x.Salary = val),
-                  Name = p.Property.DelegatesTo(x => String.Format("{0} {1}", x.FirstName, x.LastName)),
-                  IsSelected = v.Property.Of<bool>(),
-                  Projects = p.Collection.Wraps(x => x.Projects).With<ProjectVM>(PersonVM.Descriptor),
-                  CurrentProject = v.Property.Of<ProjectVM>()
-               };
+               d.FirstName = p.Property.MapsTo(x => x.FirstName);
+               d.LastName = p.Property.MapsTo(x => x.LastName);
+               d.BirthDate = p.Property.MapsTo(x => x.BirthDate);
+               d.Salary = p.Property.DelegatesTo(x => x.Salary, (x, val) => x.Salary = val);
+               d.Name = p.Property.DelegatesTo(x => String.Format("{0} {1}", x.FirstName, x.LastName));
+               d.IsSelected = v.Property.Of<bool>();
+               d.Projects = p.Collection.Wraps(x => x.Projects).With<ProjectVM>(PersonVM.Descriptor);
+               d.CurrentProject = v.Property.Of<ProjectVM>();
             })
-         //.WithValidations((d, c) => {
+         //.WithValidators(c => {
          //})
          //.WithDependencies((d, c) => {
          //})
@@ -61,15 +60,14 @@
 
    public class ProjectVM : ViewModel<ProjectVMDescriptor>, IVMCollectionItem<Project> {
       public static readonly ProjectVMDescriptor Descriptor = VMDescriptorBuilder
+            .OfType<ProjectVMDescriptor>()
             .For<ProjectVM>()
-            .CreateDescriptor(c => {
+            .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
 
-               return new ProjectVMDescriptor {
-                  Name = v.Property.MapsTo(x => x.Project.Name)
-               };
+               d.Name = v.Property.MapsTo(x => x.Project.Name);
             })
-         //.WithValidations((d, c) => {
+         //.WithValidators(c => {
          //})
          //.WithDependencies((d, c) => {
          //})

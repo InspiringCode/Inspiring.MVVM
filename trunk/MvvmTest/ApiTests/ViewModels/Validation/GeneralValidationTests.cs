@@ -42,15 +42,14 @@
 
       public class TaskVM : ViewModel<TaskVMDescriptor> {
          public static TaskVMDescriptor Descriptor = VMDescriptorBuilder
+            .OfType<TaskVMDescriptor>()
             .For<TaskVM>()
-            .CreateDescriptor(c => {
+            .WithProperties((d, c) => {
                var vm = c.GetPropertyBuilder();
 
-               return new TaskVMDescriptor {
-                  Title = vm.Property.Of<string>()
-               };
+               d.Title = vm.Property.Of<string>();
             })
-            .WithValidations((d, c) => {
+            .WithValidators(c => {
                c.Check(x => x.Title).Custom((task, value, args) => {
                   if (String.IsNullOrEmpty(value)) {
                      args.Errors.Add(new ValidationError(ErrorMessage));

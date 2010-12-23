@@ -53,17 +53,16 @@
          Func<IVMPropertyBuilder<TSourceObject>, VMProperty<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory
       ) {
          return VMDescriptorBuilder
+            .OfType<MultiSelectionVMDescriptor<TItemSource, TItemVM>>()
             .For<MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>>()
-            .CreateDescriptor(c => {
+            .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
                var source = c.GetPropertyBuilder(x => x.SourceObject);
 
-               return new MultiSelectionVMDescriptor<TItemSource, TItemVM> {
-                  AllSourceItems = allSourceItemsPropertyFactory(source),
-                  SelectedSourceItems = selectedSourceItemsPropertyFactory(source),
-                  AllItems = v.Collection.Wraps(vm => vm.GetActiveSourceItems()).With<TItemVM>(itemDescriptor),
-                  SelectedItems = v.Collection.Wraps(vm => vm.SelectedSourceItems).With<TItemVM>(itemDescriptor)
-               };
+               d.AllSourceItems = allSourceItemsPropertyFactory(source);
+               d.SelectedSourceItems = selectedSourceItemsPropertyFactory(source);
+               d.AllItems = v.Collection.Wraps(vm => vm.GetActiveSourceItems()).With<TItemVM>(itemDescriptor);
+               d.SelectedItems = v.Collection.Wraps(vm => vm.SelectedSourceItems).With<TItemVM>(itemDescriptor);
             })
             .WithBehaviors(c => {
                // This behavior ensures, that the 'SelectedItems' collection returns the same
@@ -130,17 +129,16 @@
          Func<IVMPropertyBuilder<TSourceObject>, VMProperty<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory
       ) {
          return VMDescriptorBuilder
+            .OfType<MultiSelectionVMDescriptor<TItemSource>>()
             .For<MultiSelectionWithSourceVM<TSourceObject, TItemSource>>()
-            .CreateDescriptor(c => {
+            .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
                var source = c.GetPropertyBuilder(x => x.SourceObject);
 
-               return new MultiSelectionVMDescriptor<TItemSource> {
-                  AllSourceItems = allSourceItemsPropertyFactory(source),
-                  SelectedSourceItems = selectedSourceItemsPropertyFactory(source),
-                  AllItems = v.Collection.Wraps(vm => vm.GetActiveSourceItems()).With<SelectionItemVM<TItemSource>>(itemDescriptor),
-                  SelectedItems = v.Collection.Wraps(vm => vm.SelectedSourceItems).With<SelectionItemVM<TItemSource>>(itemDescriptor)
-               };
+               d.AllSourceItems = allSourceItemsPropertyFactory(source);
+               d.SelectedSourceItems = selectedSourceItemsPropertyFactory(source);
+               d.AllItems = v.Collection.Wraps(vm => vm.GetActiveSourceItems()).With<SelectionItemVM<TItemSource>>(itemDescriptor);
+               d.SelectedItems = v.Collection.Wraps(vm => vm.SelectedSourceItems).With<SelectionItemVM<TItemSource>>(itemDescriptor);
             })
             .WithBehaviors(c => {
                // This behavior ensures, that the 'SelectedItems' collection returns the same

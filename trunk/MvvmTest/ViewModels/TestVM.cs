@@ -5,20 +5,19 @@
 
    internal sealed class TestVM : ViewModel<TestVMDescriptor> {
       public static readonly new TestVMDescriptor Descriptor = VMDescriptorBuilder
+         .OfType<TestVMDescriptor>()
          .For<TestVM>()
-         .CreateDescriptor(c => {
+         .WithProperties((d, c) => {
             var v = c.GetPropertyBuilder();
             var p = c.GetPropertyBuilder(x => x.Source);
 
-            return new TestVMDescriptor {
-               CalculatedMutableProperty = p.Property.DelegatesTo(x => x.GetCalculated(), (x, val) => x.SetCalculated(val)),
-               MappedMutableProperty = p.Property.MapsTo(x => x.MappedMutableValue),
-               LocalProperty = v.Property.Of<decimal>(),
-               MappedVMProperty = p.VM.Wraps(x => x.ChildValue).With<ChildVM>(),
-               MappedCollectionProperty = p.Collection.Wraps(x => x.ChildCollection).With<ChildVM>(ChildVM.Descriptor),
-               MappedParentedCollectionProperty = p.Collection.Of<ParentedChildVM>(ParentedChildVM.Descriptor)
-               //MappedParentedCollectionProperty = p.Collection(x => x.ChildCollection).Of<ParentedChildVM>(ParentedChildVM.Descriptor)
-            };
+            d.CalculatedMutableProperty = p.Property.DelegatesTo(x => x.GetCalculated(), (x, val) => x.SetCalculated(val));
+            d.MappedMutableProperty = p.Property.MapsTo(x => x.MappedMutableValue);
+            d.LocalProperty = v.Property.Of<decimal>();
+            d.MappedVMProperty = p.VM.Wraps(x => x.ChildValue).With<ChildVM>();
+            d.MappedCollectionProperty = p.Collection.Wraps(x => x.ChildCollection).With<ChildVM>(ChildVM.Descriptor);
+            d.MappedParentedCollectionProperty = p.Collection.Of<ParentedChildVM>(ParentedChildVM.Descriptor);
+            //MappedParentedCollectionProperty = p.Collection(x => x.ChildCollection).Of<ParentedChildVM>(ParentedChildVM.Descriptor)
          })
          .Build();
 
@@ -99,16 +98,15 @@
       IVMCollectionItem<ChildVMSource> {
 
       public static readonly ChildVMDescriptor Descriptor = VMDescriptorBuilder
+         .OfType<ChildVMDescriptor>()
          .For<ChildVM>()
-         .CreateDescriptor(c => {
+         .WithProperties((d, c) => {
             var v = c.GetPropertyBuilder();
             var p = c.GetPropertyBuilder(x => x.Source);
 
-            return new ChildVMDescriptor {
-               MappedMutableProperty = p.Property.MapsTo(x => x.MappedMutableValue)
-            };
+            d.MappedMutableProperty = p.Property.MapsTo(x => x.MappedMutableValue);
          })
-         .WithValidations((d, c) => {
+         .WithValidators(c => {
             //c.Check(d.MappedMutableProperty).Custom((_, __) => ValidationResult.Success());
          })
          .Build();
@@ -163,14 +161,13 @@
       IVMCollectionItem<ChildVMSource> {
 
       public static readonly ParentedChildVMDescriptor Descriptor = VMDescriptorBuilder
+         .OfType<ParentedChildVMDescriptor>()
          .For<ParentedChildVM>()
-         .CreateDescriptor(c => {
+         .WithProperties((d, c) => {
             var v = c.GetPropertyBuilder();
             var p = c.GetPropertyBuilder(x => x.Source);
 
-            return new ParentedChildVMDescriptor {
-               MappedMutableProperty = p.Property.MapsTo(x => x.Source.MappedMutableValue)
-            };
+            d.MappedMutableProperty = p.Property.MapsTo(x => x.Source.MappedMutableValue);
          })
          .Build();
 

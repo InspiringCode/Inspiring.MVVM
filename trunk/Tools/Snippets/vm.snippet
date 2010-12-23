@@ -22,19 +22,17 @@
           </Function>
         </Literal>
       </Declarations>
-      <Code Language="csharp">
-  <![CDATA[   using Inspiring.Mvvm;
+      <Code Language="csharp"><![CDATA[   using Inspiring.Mvvm;
    using Inspiring.Mvvm.ViewModels;
 
    public sealed class $sourceObject$VM : ViewModel<$sourceObject$VMDescriptor>, ICanInitializeFrom<$sourceObject$> {
       public static readonly $sourceObject$VMDescriptor Descriptor = VMDescriptorBuilder
-         .For<$sourceObject$VM>()
-         .CreateDescriptor(c => {
+         .OfType<$sourceObject$VMDescriptor>()
+		 .For<$sourceObject$VM>()
+         .WithProperties((d, c) => {
 			var vm = c.GetPropertyFactory();
 
-            return new $sourceObject$VMDescriptor {
-				
-            };
+            
          })
          .Build();
 

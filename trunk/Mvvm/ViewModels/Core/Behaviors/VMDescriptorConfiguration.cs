@@ -19,7 +19,7 @@
 
       public BehaviorChainConfigurationCollection PropertyConfigurations { get; private set; }
 
-      public BehaviorChainConfiguration ViewModelConfiguration { get; private set; }
+      public BehaviorChainConfiguration ViewModelConfiguration { get; internal set; }
 
       /// <summary>
       ///   Creates concrete <see cref="BehaviorChain"/>s from the <see 

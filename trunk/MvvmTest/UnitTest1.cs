@@ -2,7 +2,9 @@
 using System.ComponentModel;
 using Inspiring.Mvvm;
 using Inspiring.Mvvm.ViewModels;
+using Inspiring.Mvvm.ViewModels.__No_Namespace__;
 using Inspiring.Mvvm.ViewModels.Core;
+using Inspiring.Mvvm.ViewModels.Core.VMDescriptorBuilder;
 using Inspiring.Mvvm.ViewModels.Fluent;
 using Inspiring.MvvmTest.Stubs;
 using Inspiring.MvvmTest.ViewModels;
@@ -13,6 +15,23 @@ using Moq.Sequences;
 namespace Inspiring.MvvmTest {
    [TestClass]
    public class UnitTest1 : TestBase {
+      //private class AVMDescriptor : VMDescriptor {
+      //}
+
+      //private class BVMDescriptor : AVMDescriptor {
+      //}
+
+      //private class AVM : IViewModel<AVMDescriptor> {
+      //}
+
+      //private class BVM : AVM {
+      //}
+
+      [TestMethod]
+      public void MyTestMethod3() {
+         //VMDescriptorBuilder<PersonVMDescriptor> test = null;
+      }
+
       [TestMethod]
       public void MyTestMethod2() {
          ICustomTypeDescriptor d = new Test();
@@ -31,7 +50,7 @@ namespace Inspiring.MvvmTest {
 
       internal static void Validate(TestVM vm, decimal value, ValidationArgs args) {
          IVMPropertyBuilder<TestVM> x = null;
-         
+
       }
 
       private class Test : ViewModelTypeDescriptor {

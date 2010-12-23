@@ -5,14 +5,13 @@
 
    public sealed class ProjectVM : ViewModel<ProjectVMDescriptor>, ICanInitializeFrom<Project> {
       public static readonly ProjectVMDescriptor Descriptor = VMDescriptorBuilder
+         .OfType<ProjectVMDescriptor>()
          .For<ProjectVM>()
-         .CreateDescriptor(c => {
+         .WithProperties((d, c) => {
             var p = c.GetPropertyBuilder(x => x.ProjectSource);
 
-            return new ProjectVMDescriptor {
-               Title = p.Property.MapsTo(x => x.Title),
-               Customer = p.VM.Wraps(x => x.Customer).With<CustomerVM>()
-            };
+            d.Title = p.Property.MapsTo(x => x.Title);
+            d.Customer = p.VM.Wraps(x => x.Customer).With<CustomerVM>();
          })
          .Build();
 

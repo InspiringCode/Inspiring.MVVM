@@ -94,11 +94,11 @@
 //            base.OnInitialize();
 //            MainConductor = Children.AddNew(ScreenFactory
 //               .WithSubject(new ScreenConductorSubject("Main"))
-//               .For<ScreenConductor>()
+//               .OfType<>().For<ScreenConductor>()
 //            );
 //            DockConductor = Children.AddNew(ScreenFactory
 //               .WithSubject(new ScreenConductorSubject("Dock"))
-//               .For<ScreenConductor>()
+//               .OfType<>().For<ScreenConductor>()
 //            );
 
 //            MainConductor.OpenScreen(ScreenFactory.For<PersonScreen>());
@@ -119,7 +119,7 @@
 //            base.OnInitialize();
 //            PersonConductor = Children.AddNew(ScreenFactory
 //               .WithSubject(new ScreenConductorSubject("Persons"))
-//               .For<ScreenConductor>()
+//               .OfType<>().For<ScreenConductor>()
 //            );
 
 //            PersonConductor.OpenScreen(ScreenFactory.For<PersonInfoScreen>());

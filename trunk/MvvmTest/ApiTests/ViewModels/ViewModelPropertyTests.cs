@@ -58,14 +58,13 @@
       public class MappedRootPropertyFactoryTests : BaseTests {
          protected override ProjectVM CreateVM() {
             var descriptor = VMDescriptorBuilder
+               .OfType<ProjectVMDescriptor>()
                .For<ProjectVM>()
-               .CreateDescriptor(c => {
+               .WithProperties((d, c) => {
                   var v = c.GetPropertyBuilder();
 
-                  return new ProjectVMDescriptor {
-                     Title = v.Property.Of<string>(),
-                     Customer = v.VM.Wraps(x => x.ProjectSource.Customer).With<CustomerVM>()
-                  };
+                  d.Title = v.Property.Of<string>();
+                  d.Customer = v.VM.Wraps(x => x.ProjectSource.Customer).With<CustomerVM>();
                })
                .Build();
 
@@ -77,17 +76,16 @@
       public class CalculatedRootPropertyFactoryTests : BaseTests {
          protected override ProjectVM CreateVM() {
             var descriptor = VMDescriptorBuilder
+               .OfType<ProjectVMDescriptor>()
                .For<ProjectVM>()
-               .CreateDescriptor(c => {
+               .WithProperties((d, c) => {
                   var v = c.GetPropertyBuilder();
 
-                  return new ProjectVMDescriptor {
-                     Title = v.Property.Of<string>(),
-                     Customer = v.VM.Wraps(
-                        x => x.ProjectSource.Customer,
-                        (x, val) => x.ProjectSource.Customer = val
-                     ).With<CustomerVM>()
-                  };
+                  d.Title = v.Property.Of<string>();
+                  d.Customer = v.VM.Wraps(
+                     x => x.ProjectSource.Customer,
+                     (x, val) => x.ProjectSource.Customer = val
+                  ).With<CustomerVM>();
                })
                .Build();
 
@@ -99,14 +97,12 @@
       public class MappedRelativePropertyFactoryTests : BaseTests {
          protected override ProjectVM CreateVM() {
             var descriptor = VMDescriptorBuilder
-               .For<ProjectVM>()
-               .CreateDescriptor(c => {
+               .OfType<ProjectVMDescriptor>().For<ProjectVM>()
+               .WithProperties((d, c) => {
                   var p = c.GetPropertyBuilder(x => x.ProjectSource);
 
-                  return new ProjectVMDescriptor {
-                     Title = p.Property.Of<string>(),
-                     Customer = p.VM.Wraps(x => x.Customer).With<CustomerVM>()
-                  };
+                  d.Title = p.Property.Of<string>();
+                  d.Customer = p.VM.Wraps(x => x.Customer).With<CustomerVM>();
                })
                .Build();
 
@@ -118,17 +114,15 @@
       public class CalculatedRelativePropertyFactoryTests : BaseTests {
          protected override ProjectVM CreateVM() {
             var descriptor = VMDescriptorBuilder
-               .For<ProjectVM>()
-               .CreateDescriptor(c => {
+               .OfType<ProjectVMDescriptor>().For<ProjectVM>()
+               .WithProperties((d, c) => {
                   var p = c.GetPropertyBuilder(x => x.ProjectSource);
 
-                  return new ProjectVMDescriptor {
-                     Title = p.Property.Of<string>(),
-                     Customer = p.VM.Wraps(
-                        x => x.Customer,
-                        (x, val) => x.Customer = val
-                     ).With<CustomerVM>()
-                  };
+                  d.Title = p.Property.Of<string>();
+                  d.Customer = p.VM.Wraps(
+                     x => x.Customer,
+                     (x, val) => x.Customer = val
+                  ).With<CustomerVM>();
                })
                .Build();
 

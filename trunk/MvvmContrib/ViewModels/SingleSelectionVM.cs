@@ -85,8 +85,8 @@
 //         > validationConfigurator
 //      ) {
 //         var builder = VMDescriptorBuilder
-//            .For<SingleSelectionVM<TSourceItem, TItemVM>>()
-//            .CreateDescriptor(c => {
+//            .OfType<>().For<SingleSelectionVM<TSourceItem, TItemVM>>()
+//            .WithProperties((d, c) => {
 //               var v = c.GetPropertyBuilder();
 
 //               return new SingleSelectionVMDescriptor<TSourceItem, TItemVM> {
@@ -105,7 +105,7 @@
 
 //         throw new NotImplementedException();
 //         //return validationConfigurator != null ?
-//         //   builder.WithValidations(validationConfigurator).Build() :
+//         //   builder.WithValidators(validationConfigurator).Build() :
 //         //   builder.Build();
 //      }
 

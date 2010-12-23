@@ -3,14 +3,13 @@
 
    internal sealed class GroupVM : ViewModel<GroupVMDescriptor>, ICanInitializeFrom<Group>, IVMCollectionItem<Group> {
       public static readonly GroupVMDescriptor Descriptor = VMDescriptorBuilder
+         .OfType<GroupVMDescriptor>()
          .For<GroupVM>()
-         .CreateDescriptor(c => {
+         .WithProperties((d, c) => {
             var vm = c.GetPropertyBuilder();
             var k = c.GetPropertyBuilder(x => x.GroupSource);
 
-            return new GroupVMDescriptor {
-               Name = k.Property.MapsTo(x => x.Name)
-            };
+            d.Name = k.Property.MapsTo(x => x.Name);
          })
          .Build();
 

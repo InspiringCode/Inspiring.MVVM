@@ -2,7 +2,6 @@
    using System;
    using System.Collections.Generic;
    using System.Linq;
-   using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.Mvvm.ViewModels.Fluent;
 
    public sealed class SingleSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM> :
@@ -54,22 +53,21 @@
          Func<IVMPropertyBuilder<TSourceObject>, VMProperty<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory
       ) {
          return VMDescriptorBuilder
+            .OfType<SingleSelectionVMDescriptor<TItemSource, TItemVM>>()
             .For<SingleSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>>()
-            .CreateDescriptor(c => {
+            .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
                var source = c.GetPropertyBuilder(x => x.SourceObject);
 
-               return new SingleSelectionVMDescriptor<TItemSource, TItemVM> {
-                  AllSourceItems = allSourceItemsPropertyFactory(source),
-                  SelectedSourceItem = selectedSourceItemPropertyFactory(source),
-                  AllItems = v.Collection.Wraps(vm => vm.GetActiveSourceItems()).With<TItemVM>(itemDescriptor),
-                  SelectedItem = v.VM.DelegatesTo(
-                     vm => vm.SelectedSourceItem != null ?
-                        vm.AllItems.Single(i => Object.Equals(i.Source, vm.SelectedSourceItem)) :
-                        default(TItemVM),
-                     (vm, value) => vm.SelectedSourceItem = value.Source
-                  )
-               };
+               d.AllSourceItems = allSourceItemsPropertyFactory(source);
+               d.SelectedSourceItem = selectedSourceItemPropertyFactory(source);
+               d.AllItems = v.Collection.Wraps(vm => vm.GetActiveSourceItems()).With<TItemVM>(itemDescriptor);
+               d.SelectedItem = v.VM.DelegatesTo(
+                  vm => vm.SelectedSourceItem != null ?
+                     vm.AllItems.Single(i => Object.Equals(i.Source, vm.SelectedSourceItem)) :
+                     default(TItemVM),
+                  (vm, value) => vm.SelectedSourceItem = value.Source
+               );
             })
             //.WithBehaviors(c => {
             //   // This behavior ensures, that the 'SelectedItems' collection returns the same
@@ -136,20 +134,19 @@
          Func<IVMPropertyBuilder<TSourceObject>, VMProperty<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory
       ) {
          return VMDescriptorBuilder
+            .OfType<SingleSelectionVMDescriptor<TItemSource>>()
             .For<SingleSelectionWithSourceVM<TSourceObject, TItemSource>>()
-            .CreateDescriptor(c => {
+            .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
                var source = c.GetPropertyBuilder(x => x.SourceObject);
 
-               return new SingleSelectionVMDescriptor<TItemSource> {
-                  AllSourceItems = allSourceItemsPropertyFactory(source),
-                  SelectedSourceItem = selectedSourceItemsPropertyFactory(source),
-                  AllItems = v.Collection.Wraps(vm => vm.GetActiveSourceItems()).With<SelectionItemVM<TItemSource>>(itemDescriptor),
-                  SelectedItem = v.VM.DelegatesTo(
-                      vm => vm.AllItems.Single(i => Object.Equals(i.Source, vm.SelectedSourceItem)),
-                      (vm, value) => vm.SelectedSourceItem = value.Source
-                   )
-               };
+               d.AllSourceItems = allSourceItemsPropertyFactory(source);
+               d.SelectedSourceItem = selectedSourceItemsPropertyFactory(source);
+               d.AllItems = v.Collection.Wraps(vm => vm.GetActiveSourceItems()).With<SelectionItemVM<TItemSource>>(itemDescriptor);
+               d.SelectedItem = v.VM.DelegatesTo(
+                   vm => vm.AllItems.Single(i => Object.Equals(i.Source, vm.SelectedSourceItem)),
+                   (vm, value) => vm.SelectedSourceItem = value.Source
+                );
             })
             //.WithBehaviors(c => {
             //   // This behavior ensures, that the 'SelectedItems' collection returns the same

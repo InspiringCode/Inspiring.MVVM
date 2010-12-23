@@ -4,13 +4,12 @@
 
    public sealed class CustomerVM : ViewModel<CustomerVMDescriptor>, ICanInitializeFrom<Customer> {
       public static readonly CustomerVMDescriptor Descriptor = VMDescriptorBuilder
+         .OfType<CustomerVMDescriptor>()
          .For<CustomerVM>()
-         .CreateDescriptor(c => {
+         .WithProperties((d, c) => {
             var cust = c.GetPropertyBuilder(x => x.CustomerSource);
 
-            return new CustomerVMDescriptor {
-               Title = cust.Property.MapsTo(x => x.Title)
-            };
+            d.Title = cust.Property.MapsTo(x => x.Title);
          })
          .Build();
 

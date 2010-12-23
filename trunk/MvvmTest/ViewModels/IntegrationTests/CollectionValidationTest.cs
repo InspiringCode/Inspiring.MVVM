@@ -108,8 +108,8 @@
 
 //      private class EmployeeVM : ViewModel<EmployeeVMDescriptor> {
 //         public static readonly EmployeeVMDescriptor Descriptor = VMDescriptorBuilder
-//            .For<EmployeeVM>()
-//            .CreateDescriptor(c => {
+//            .OfType<>().For<EmployeeVM>()
+//            .WithProperties((d, c) => {
 //               var v = c.GetPropertyFactory();
 
 //               return new EmployeeVMDescriptor {
@@ -117,7 +117,7 @@
 //                  SpareTimeProjects = v.MappedCollection(x => x.SpareTimeProjectsSource).Of<ProjectVM>(ProjectVM.Descriptor)
 //               };
 //            })
-//            .WithValidations((d, c) => {
+//            .WithValidators(c => {
 //               c.CheckCollection(d.Projects).Custom((project, projects, args) => {
 //                  if (projects.Any(x => x != project && x.Name == (string)args.PropertyValue)) {
 //                     args.AddError("Duplicate");
@@ -155,15 +155,15 @@
 
 //      private class ProjectVM : ViewModel<ProjectVMDescriptor>, ICanInitializeFrom<string>, IVMCollectionItem<string> {
 //         public static readonly ProjectVMDescriptor Descriptor = VMDescriptorBuilder
-//            .For<ProjectVM>()
-//            .CreateDescriptor(c => {
+//            .OfType<>().For<ProjectVM>()
+//            .WithProperties((d, c) => {
 //               var v = c.GetPropertyFactory();
 
 //               return new ProjectVMDescriptor {
 //                  Name = v.Local<string>()
 //               };
 //            })
-//            .WithValidations((d, c) => {
+//            .WithValidators(c => {
 //               c.Check(d.Name); // HACK: Enable validation
 //            })
 //            .Build();

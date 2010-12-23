@@ -153,15 +153,14 @@
 
       public sealed class TaskVM : ViewModel<TaskVMDescriptor> {
          public static readonly TaskVMDescriptor Descriptor = VMDescriptorBuilder
+            .OfType<TaskVMDescriptor>()
             .For<TaskVM>()
-            .CreateDescriptor(c => {
+            .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
 
-               return new TaskVMDescriptor {
-                  Title = v.Property.Of<string>()
-               };
+               d.Title = v.Property.Of<string>();
             })
-            .WithValidations((d, c) => {
+            .WithValidators(c => {
                c.Check(x => x.Title).Custom((vm, val, args) => {
                   if (vm.ReturnError) {
                      args.Errors.Add(new ValidationError(ErrorText));

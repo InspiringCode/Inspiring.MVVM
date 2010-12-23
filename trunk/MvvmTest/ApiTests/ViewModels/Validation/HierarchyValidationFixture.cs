@@ -74,16 +74,15 @@
 
       public sealed class EmployeeVM : ViewModel<EmployeeVMDescriptor> {
          public static readonly EmployeeVMDescriptor Descriptor = VMDescriptorBuilder
+            .OfType<EmployeeVMDescriptor>()
             .For<EmployeeVM>()
-            .CreateDescriptor(c => {
+            .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
 
-               return new EmployeeVMDescriptor {
-                  Name = v.Property.Of<string>(),
-                  Projects = v.Collection.Of<ProjectVM>(ProjectVM.Descriptor)
-               };
+               d.Name = v.Property.Of<string>();
+               d.Projects = v.Collection.Of<ProjectVM>(ProjectVM.Descriptor);
             })
-            .WithValidations((d, c) => {
+            .WithValidators(c => {
                c.Check(x => x.Name).Custom((vm, val, args) => {
                   vm.Log.AddCall(Validator.EmployeeName, args);
                });
@@ -113,17 +112,16 @@
 
       public sealed class ProjectVM : ViewModel<ProjectVMDescriptor> {
          public static readonly ProjectVMDescriptor Descriptor = VMDescriptorBuilder
+            .OfType<ProjectVMDescriptor>()
             .For<ProjectVM>()
-            .CreateDescriptor(c => {
+            .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
 
-               return new ProjectVMDescriptor {
-                  Title = v.Property.Of<string>(),
-                  Description = v.Property.Of<string>(),
-                  Customer = v.VM.Of<CustomerVM>()
-               };
+               d.Title = v.Property.Of<string>();
+               d.Description = v.Property.Of<string>();
+               d.Customer = v.VM.Of<CustomerVM>();
             })
-            .WithValidations((d, c) => {
+            .WithValidators(c => {
                c.EnableParentValidation(x => x.Title);
 
                c.Check(x => x.Description).Custom((vm, val, args) => {
@@ -153,17 +151,16 @@
 
       public sealed class CustomerVM : ViewModel<CustomerVMDescriptor> {
          public static readonly CustomerVMDescriptor Descriptor = VMDescriptorBuilder
+            .OfType<CustomerVMDescriptor>()
             .For<CustomerVM>()
-            .CreateDescriptor(c => {
+            .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
 
-               return new CustomerVMDescriptor {
-                  Name = v.Property.Of<string>(),
-                  Address = v.Property.Of<string>(),
-                  PostalCode = v.Property.Of<int>()
-               };
+               d.Name = v.Property.Of<string>();
+               d.Address = v.Property.Of<string>();
+               d.PostalCode = v.Property.Of<int>();
             })
-            .WithValidations((d, c) => {
+            .WithValidators(c => {
                c.EnableParentValidation(x => x.Name);
                c.EnableParentValidation(x => x.Address);
                c.Check(x => x.PostalCode).Custom((vm, val, args) => {

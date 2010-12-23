@@ -23,7 +23,7 @@
       ///      instance.</para>
       ///   <para>Use the passed in '<see cref="IVMPropertyFactoryProvider"/>' to
       ///      create 'VMProperty' instances and assign them to your 
-      ///      'VMDescriptor'. Example: <code>CreateDescriptor(c => {
+      ///      'VMDescriptor'. Example: <code>.WithProperties((d, c) => {
       ///         var v = c.GetPropertyFactory();
       ///         return new PersonVMDescriptor {
       ///            FirstName = v.Property.MapsTo(x => x.Person.FirstName);
@@ -73,7 +73,7 @@
       ///   })</code>.
       /// </param>
       IVMDescriptorBuilder<TVM, TDescriptor> WithDependencies(
-         Action<TDescriptor, IVMDependencyConfigurator> dependencyConfigurator
+         Action<TDescriptor, IVMDependencyConfigurator<TDescriptor>> dependencyConfigurator
       );
 
       IVMDescriptorBuilder<TVM, TDescriptor> WithBehaviors(

@@ -73,8 +73,8 @@
 //         > validationConfigurator = null
 //      ) {
 //         VMDescriptor itemDescriptor = VMDescriptorBuilder
-//            .For<SelectionItemVM<TSourceItem>>()
-//            .CreateDescriptor(c => {
+//            .OfType<>().For<SelectionItemVM<TSourceItem>>()
+//            .WithProperties((d, c) => {
 //               var factory = c.GetPropertyBuilder(x => x.Source);
 
 //               return descriptorFactory(factory);

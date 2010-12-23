@@ -11,21 +11,20 @@
 
    public sealed class SaveDiscardVM : ViewModel<SaveDiscardVMDescriptor>, ICanInitializeFrom<ISaveDiscardHandler> {
       public static readonly SaveDiscardVMDescriptor Descriptor = VMDescriptorBuilder
+         .OfType<SaveDiscardVMDescriptor>()
          .For<SaveDiscardVM>()
-         .CreateDescriptor(c => {
+         .WithProperties((d, c) => {
             var h = c.GetPropertyBuilder(x => x.DialogActionHandler);
 
-            return new SaveDiscardVMDescriptor {
-               Save = h.Command(x => x.Save(), x => x.CanSave()),
-               Discard = h.Command(x => x.Discard(), x => x.CanDiscard()),
-               State = h.Property.DelegatesTo(x => {
+               d.Save = h.Command(x => x.Save(), x => x.CanSave());
+               d.Discard = h.Command(x => x.Discard(), x => x.CanDiscard());
+               d.State = h.Property.DelegatesTo(x => {
                   if (!x.IsValid) {
                      return DataState.Invalid;
                   } else {
                      return x.HasChanges ? DataState.Changed : DataState.Unchanged;
                   }
-               })
-            };
+               });
          })
          .Build();
 

@@ -78,8 +78,8 @@
 
 //      private sealed class PersonVM : ViewModel<PersonVMDescriptor>, ICanInitializeFrom<Person> {
 //         public static readonly PersonVMDescriptor Descriptor = VMDescriptorBuilder
-//            .For<PersonVM>()
-//            .CreateDescriptor(c => {
+//            .OfType<>().For<PersonVM>()
+//            .WithProperties((d, c) => {
 //               var vm = c.GetPropertyBuilder();
 //               var p = c.GetPropertyBuilder(x => x.Person);
 

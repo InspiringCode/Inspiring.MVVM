@@ -7,16 +7,15 @@
 
    internal sealed class KeywordSelectionVM : ViewModel<KeywordSelectionVMDescriptor>, ICanInitializeFrom<User> {
       public static readonly KeywordSelectionVMDescriptor Descriptor = VMDescriptorBuilder
+         .OfType<KeywordSelectionVMDescriptor>()
          .For<KeywordSelectionVM>()
-         .CreateDescriptor(c => {
+         .WithProperties((d, c) => {
             var vm = c.GetPropertyBuilder();
-            var d = c.GetPropertyBuilder(x => x.Document);
+            var doc = c.GetPropertyBuilder(x => x.Document);
 
-            return new KeywordSelectionVMDescriptor {
-               AllItems = vm.Collection.Wraps(x => x.FilteredItems).With<GroupVM>(GroupVM.Descriptor),
-               SelectedItems = vm.Property.DelegatesTo(x => x.CreateSelectedItemsCollection()),
-               SelectedSourceItems = d.Property.MapsTo(x => x.Groups)
-            };
+            d.AllItems = vm.Collection.Wraps(x => x.FilteredItems).With<GroupVM>(GroupVM.Descriptor);
+            d.SelectedItems = vm.Property.DelegatesTo(x => x.CreateSelectedItemsCollection());
+            d.SelectedSourceItems = doc.Property.MapsTo(x => x.Groups);
          })
          .WithBehaviors((c) => {
             throw new NotImplementedException();

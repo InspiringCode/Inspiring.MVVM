@@ -81,15 +81,14 @@
 
       private class CompanyVM : ViewModel<CompanyVMDescriptor> {
          public static readonly CompanyVMDescriptor Descriptor = VMDescriptorBuilder
+            .OfType<CompanyVMDescriptor>()
             .For<CompanyVM>()
-            .CreateDescriptor(c => {
+            .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
                var com = c.GetPropertyBuilder(x => x.Company);
 
-               return new CompanyVMDescriptor {
-                  Employees = v.Collection.Wraps(x => x.Company.Employees).With<PersonVM>(PersonVM.Descriptor),
-                  Customers = com.Collection.Wraps(x => x.Customers).With<PersonVM>(PersonVM.Descriptor)
-               };
+               d.Employees = v.Collection.Wraps(x => x.Company.Employees).With<PersonVM>(PersonVM.Descriptor);
+               d.Customers = com.Collection.Wraps(x => x.Customers).With<PersonVM>(PersonVM.Descriptor);
             })
             .Build();
 
@@ -108,22 +107,21 @@
 
       private class PersonVM : ViewModel<PersonVMDescriptor>, IVMCollectionItem<Person> {
          public static readonly PersonVMDescriptor Descriptor = VMDescriptorBuilder
+            .OfType<PersonVMDescriptor>()
             .For<PersonVM>()
-            .CreateDescriptor(c => {
+            .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
                var p = c.GetPropertyBuilder(x => x.Person);
 
-               return new PersonVMDescriptor {
-                  BirthDate = p.Property.MapsTo(x => x.BirthDate),
-                  Salary = p.Property.MapsTo(x => x.Salary),
-                  Name = p.Property.DelegatesTo(x => String.Format("{0} {1}", x.FirstName, x.LastName)),
-                  IsSelected = v.Property.Of<bool>()
-               };
+               d.BirthDate = p.Property.MapsTo(x => x.BirthDate);
+               d.Salary = p.Property.MapsTo(x => x.Salary);
+               d.Name = p.Property.DelegatesTo(x => String.Format("{0} {1}", x.FirstName, x.LastName));
+               d.IsSelected = v.Property.Of<bool>();
             })
-            .WithValidations((d, c) => {
+            .WithValidators(c => {
 
             })
-            .WithDependencies((d, c) => {
+            .WithPropertyDependencies(c => {
 
             })
             .WithBehaviors(c => {

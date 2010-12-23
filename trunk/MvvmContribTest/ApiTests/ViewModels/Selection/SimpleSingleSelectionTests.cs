@@ -2,8 +2,8 @@
    using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
-   using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Inspiring.Mvvm.ViewModels.SingleSelection;
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
    public class SimpleSingleSelectionTests {
@@ -44,19 +44,18 @@
 
       internal sealed class UserVM : ViewModel<UserVMDescriptor>, ICanInitializeFrom<User> {
          public static UserVMDescriptor Descriptor = VMDescriptorBuilder
+            .OfType<UserVMDescriptor>()
             .For<UserVM>()
-            .CreateDescriptor(c => {
+            .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
                var s = c.GetPropertyBuilder(x => x.UserSource);
 
-               return new UserVMDescriptor {
-                  Name = s.Property.MapsTo(x => x.Name),
-                  Department = v
-                     .SingleSelection(x => x.UserSource.Department)
-                     .WithItems(x => x.AllSourceDepartments)
-                     .WithFilter(x => x.IsActive)
-                     .WithCaption(x => x.Name)
-               };
+               d.Name = s.Property.MapsTo(x => x.Name);
+               d.Department = v
+                  .SingleSelection(x => x.UserSource.Department)
+                  .WithItems(x => x.AllSourceDepartments)
+                  .WithFilter(x => x.IsActive)
+                  .WithCaption(x => x.Name);
             })
             .Build();
 

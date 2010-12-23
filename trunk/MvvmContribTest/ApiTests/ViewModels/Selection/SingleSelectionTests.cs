@@ -91,8 +91,9 @@
          var sourceUser = new User();
 
          UserVMDescriptor descriptor = VMDescriptorBuilder
+            .OfType<UserVMDescriptor>()
             .For<UserVM>()
-            .CreateDescriptor(c => {
+            .WithProperties((d, c) => {
                var u = c.GetPropertyBuilder(x => x.UserSource);
 
                var builder = u.SingleSelection(x => x.Department);
@@ -109,10 +110,8 @@
                   builder = builder.WithItems(allDepartmentsSelector);
                }
 
-               return new UserVMDescriptor {
-                  Name = u.Property.MapsTo(x => x.Name),
-                  Department = builder.Of<DepartmentVM>(DepartmentVM.Descriptor)
-               };
+               d.Name = u.Property.MapsTo(x => x.Name);
+               d.Department = builder.Of<DepartmentVM>(DepartmentVM.Descriptor);
             })
             .Build();
 
