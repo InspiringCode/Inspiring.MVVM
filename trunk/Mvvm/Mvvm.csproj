@@ -139,8 +139,10 @@
     <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\ManualUpdateCollectionPropertyBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\ManualUpdatePropertyBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\ManualUpdateViewModelPropertyBehavior.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\RevalidationBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\ViewModelFactoryAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertySelector.cs" />
+    <Compile Include="ViewModels\Core\PropertyTypeHelper.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\BehaviorConfigurationBuilder.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\BehaviorConfigurationDictionary.cs" />
     <Compile Include="ViewModels\Core\Behaviors\- Legacy -\BehaviorConfiguration.cs" />
