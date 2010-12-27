@@ -9,6 +9,7 @@
 
       public void Initialize(BehaviorInitializationContext context) {
          _property = context.Property;
+         this.InitializeNext(context);
          SetInitialized();
       }
 

@@ -92,6 +92,11 @@
          foreach (IVMProperty property in _descriptor.Properties) {
             property.Revalidate(this, mode);
          }
+
+         _descriptor
+            .Behaviors
+            .GetNextBehavior<ViewModelValidationBehavior>()
+            .Validate(this);
       }
 
       // TODO: Test and refactor me.

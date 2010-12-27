@@ -11,7 +11,7 @@
          TItemVM item,
          int index
       ) {
-         context.NotifyChange(new ChangeArgs(ChangeType.AddedToCollection, item));
+         item.GetContext().NotifyChange(new ChangeArgs(ChangeType.AddedToCollection, item));
          this.ItemInsertedNext(context, collection, item, index);
       }
 
@@ -21,7 +21,7 @@
          TItemVM item,
          int index
       ) {
-         context.NotifyChange(new ChangeArgs(ChangeType.RemovedFromCollection, item));
+         item.GetContext().NotifyChange(new ChangeArgs(ChangeType.RemovedFromCollection, item));
          this.ItemRemovedNext(context, collection, item, index);
       }
 
@@ -32,8 +32,8 @@
          TItemVM item,
          int index
       ) {
-         context.NotifyChange(new ChangeArgs(ChangeType.RemovedFromCollection, previousItem));
-         context.NotifyChange(new ChangeArgs(ChangeType.AddedToCollection, item));
+         previousItem.GetContext().NotifyChange(new ChangeArgs(ChangeType.RemovedFromCollection, previousItem));
+         item.GetContext().NotifyChange(new ChangeArgs(ChangeType.AddedToCollection, item));
 
          this.ItemSetNext(context, collection, previousItem, item, index);
       }
@@ -44,7 +44,7 @@
          TItemVM[] previousItems
       ) {
          foreach (TItemVM item in previousItems) {
-            context.NotifyChange(new ChangeArgs(ChangeType.RemovedFromCollection, item));
+            item.GetContext().NotifyChange(new ChangeArgs(ChangeType.RemovedFromCollection, item));
          }
 
          this.ItemsClearedNext(context, collection, previousItems);

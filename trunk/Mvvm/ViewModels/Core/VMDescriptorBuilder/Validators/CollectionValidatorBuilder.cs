@@ -2,6 +2,7 @@
    using System;
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
+   using Inspiring.Mvvm.Common;
 
    public sealed class CollectionValidatorBuilder<TItemVM> where TItemVM : IViewModel {
       private ValidatorConfiguration _configuration;
@@ -27,7 +28,33 @@
       ///   collection items.
       /// </param>
       public void Custom(Action<TItemVM, IEnumerable<TItemVM>, ValidationArgs> validator) {
+         _configuration.AddViewModelValidator(new DelegateValidator(validator));
+      }
 
+      private sealed class DelegateValidator : Validator {
+         private Action<TItemVM, IEnumerable<TItemVM>, ValidationArgs> _validatorCallback;
+
+         public DelegateValidator(Action<TItemVM, IEnumerable<TItemVM>, ValidationArgs> validatorCallback) {
+            Contract.Requires(validatorCallback != null);
+            _validatorCallback = validatorCallback;
+         }
+
+         public override void Validate(ValidationArgs args) {
+            var item = (TItemVM)args.TargetVM;
+            var items = (IEnumerable<TItemVM>)args
+               .TargetVM
+               .Kernel
+               .OwnerCollection;
+
+            _validatorCallback(item, items, args);
+         }
+
+         public override string ToString() {
+            return String.Format(
+               "{{DelegateValidator: {0}}}",
+               DelegateUtils.GetFriendlyName(_validatorCallback)
+            );
+         }
       }
    }
 }

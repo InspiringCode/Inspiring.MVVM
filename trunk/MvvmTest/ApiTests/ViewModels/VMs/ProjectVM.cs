@@ -13,6 +13,9 @@
             d.Title = p.Property.MapsTo(x => x.Title);
             d.Customer = p.VM.Wraps(x => x.Customer).With<CustomerVM>();
          })
+         .WithValidators(b => {
+            b.EnableParentValidation();
+         })
          .Build();
 
       public ProjectVM()
@@ -31,12 +34,21 @@
          set { SetValue(DescriptorBase.Customer, value); }
       }
 
+      public string Title {
+         get { return GetValue(DescriptorBase.Title); }
+         set { SetValue(DescriptorBase.Title, value); }
+      }
+
       public void InitializeFrom(Project source) {
          ProjectSource = source;
       }
 
       public void UpdateCustomerFromSource() {
          Kernel.UpdateFromSource(DescriptorBase.Customer);
+      }
+
+      public void Revalidate() {
+         Kernel.Revalidate(ValidationScope.SelfOnly, ValidationMode.DiscardInvalidValues);
       }
    }
 

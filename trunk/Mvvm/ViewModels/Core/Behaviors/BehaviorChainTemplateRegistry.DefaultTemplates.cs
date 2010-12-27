@@ -45,6 +45,11 @@
             new BehaviorChainTemplate(PropertyBehaviorFactory.Instance)
                .Append(BehaviorKeys.DisplayValueAccessor)
                .Append(BehaviorKeys.ManualUpdateBehavior, DefaultBehaviorState.DisabledWithoutFactory)
+               
+               // TODO: Rethink these two behaviors.
+               .Append(BehaviorKeys.PreValidationValueCache, DefaultBehaviorState.Disabled)
+               .Append(BehaviorKeys.Validator, DefaultBehaviorState.Disabled)
+
                .Append(BehaviorKeys.ValueCache)
                .Append(BehaviorKeys.CollectionPopulator, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(BehaviorKeys.CollectionFactory, DefaultBehaviorState.DisabledWithoutFactory)

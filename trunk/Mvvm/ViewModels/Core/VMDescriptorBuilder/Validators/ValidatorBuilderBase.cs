@@ -61,7 +61,7 @@
       public CollectionValidatorBuilder<TItemVM> CheckCollection<TItemVM>(
          Func<TDescriptor, IVMProperty<IVMCollectionExpression<TItemVM>>> collectionSelector
       ) where TItemVM : IViewModel {
-         var config = Configuration.SetTargetProperty(PropertySelector.Create(collectionSelector));
+         var config = Configuration.ExtendTargetPath(PropertySelector.Create(collectionSelector));
          return new CollectionValidatorBuilder<TItemVM>(config);
       }
 
@@ -79,7 +79,10 @@
          Func<TDescriptor, IVMProperty<IVMCollectionExpression<ViewModel<TItemDescriptor>>>> collectionSelector,
          Func<TItemDescriptor, IVMProperty<TItemValue>> itemPropertySelector
       ) where TItemDescriptor : VMDescriptorBase {
-         var config = Configuration.SetTargetProperty(PropertySelector.Create(collectionSelector));
+         var config = Configuration
+            .ExtendTargetPath(PropertySelector.Create(collectionSelector))
+            .SetTargetProperty(PropertySelector.Create(itemPropertySelector));
+
          return new CollectionPropertyValidatorBuilder<TItemValue>(config);
       }
    }

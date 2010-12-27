@@ -159,12 +159,14 @@
                return;
             }
 
-            IVMProperty targetProperty = TargetProperty.GetProperty(args.TargetVM.Descriptor);
+            if (TargetProperty != null) {
+               IVMProperty targetProperty = TargetProperty.GetProperty(args.TargetVM.Descriptor);
 
-            if (args.TargetProperty != targetProperty) {
-               return;
+               if (args.TargetProperty != targetProperty) {
+                  return;
+               }
             }
-
+            
             Validator.Validate(args);
          }
       }
