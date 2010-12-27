@@ -6,9 +6,14 @@
          : base(configuration) {
       }
 
-      public VMProperty<T> CreateProperty<T>(IValueAccessorBehavior<T> sourceValueAccessor) {
+      public VMProperty<T> CreateProperty<T>(IValueAccessorBehavior<T> sourceValueAccessor, bool supportsManualUpdate) {
          BehaviorChainConfiguration config = GetPropertyConfiguration<T>(BehaviorChainTemplateKeys.Property);
          config.Enable(BehaviorKeys.SourceValueAccessor, sourceValueAccessor);
+
+         if (supportsManualUpdate) {
+            config.Enable(BehaviorKeys.ManualUpdateBehavior);
+         }
+
          return CreateProperty<T>(config);
       }
 
@@ -23,11 +28,14 @@
          return CreateProperty<TChildVM>(config);
       }
 
+      // TODO: Recheck all that ManualUpdate stuff.
+
       public VMProperty<TChildVM> CreateViewModelProperty<TChildVM, TSourceValue>(
          IValueAccessorBehavior<TSourceValue> sourceValueAccessor
       ) where TChildVM : IViewModel, ICanInitializeFrom<TSourceValue> {
          BehaviorChainConfiguration config = GetPropertyConfiguration<TChildVM>(BehaviorChainTemplateKeys.ViewModelProperty);
 
+         config.Enable(BehaviorKeys.ManualUpdateBehavior, new ManualUpdateViewModelPropertyBehavior<TChildVM, TSourceValue>());
          config.Enable(BehaviorKeys.ValueCache);
          config.Enable(BehaviorKeys.ParentSetter, new ParentSetterBehavior<TChildVM>());
          config.Enable(BehaviorKeys.ViewModelPropertyInitializer, new ViewModelPropertyInitializerBehavior<TChildVM, TSourceValue>());
@@ -60,7 +68,7 @@
          BehaviorChainConfiguration config = GetPropertyConfiguration<TChildVM>(BehaviorChainTemplateKeys.ViewModelProperty);
 
          // TODO: What is the right behavior here?????? Important!
-         //config.Enable(BehaviorKeys.ValueCache);
+         config.Enable(BehaviorKeys.ValueCache, new RefreshableValueCacheBehavior<TChildVM>());
          config.Enable(BehaviorKeys.ParentSetter, new ParentSetterBehavior<TChildVM>());
          config.Enable(BehaviorKeys.ViewModelAccessor, viewModelAccessor);
          //config.Enable(BehaviorKeys.ViewModelFactory, customFactory);
@@ -76,7 +84,8 @@
          var config = GetPropertyConfiguration<IVMCollection<TItemVM>>(BehaviorChainTemplateKeys.CollectionProperty);
 
          if (isPopulatable) {
-            config.Enable(BehaviorKeys.CollectionInstanceCache);
+            //config.Enable(BehaviorKeys.CollectionInstanceCache);
+            config.Enable(BehaviorKeys.ManualUpdateBehavior, new ManualUpdateCollectionPropertyBehavior<TItemVM>());
             config.Enable(BehaviorKeys.CollectionPopulator, new CollectionPopulatorBehavior<TItemVM>());
          }
 

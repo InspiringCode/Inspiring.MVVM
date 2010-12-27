@@ -9,10 +9,7 @@
 
       public IVMCollection<TItemVM> GetValue(IBehaviorContext context, ValueStage stage) {
          var coll = CreateCollection(context);
-         var behavior = coll.Behaviors.GetNextBehavior<IPopulatorCollectionBehavior<TItemVM>>();
-
-         behavior.Repopulate(context, coll);
-
+         Repopulate(context, coll);
          return coll;
       }
 
@@ -24,6 +21,14 @@
 
       public bool IsMutable(IBehaviorContext vm) {
          return false;
+      }
+
+      public void Repopulate(IBehaviorContext context, IVMCollection<TItemVM> collection) {
+         var behavior = collection
+            .Behaviors
+            .GetNextBehavior<IPopulatorCollectionBehavior<TItemVM>>();
+
+         behavior.Repopulate(context, collection);
       }
 
       private IVMCollection<TItemVM> CreateCollection(IBehaviorContext context) {

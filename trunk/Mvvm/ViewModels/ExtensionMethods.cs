@@ -9,7 +9,7 @@
          }
       }
 
-      public static TValue GetValueNext<TValue>(this Behavior behavior, IBehaviorContext context, ValueStage stage) {
+      public static TValue GetValueNext<TValue>(this Behavior behavior, IBehaviorContext context, ValueStage stage = ValueStage.None) {
          return behavior
             .GetNextBehavior<IValueAccessorBehavior<TValue>>()
             .GetValue(context, stage);
@@ -123,7 +123,7 @@
          this Behavior behavior,
          IBehaviorContext context
       ) {
-         IManuelUpdateBehavior next;
+         IManualUpdateBehavior next;
          if (behavior.TryGetBehavior(out next)) {
             next.UpdateFromSource(context);
          }
@@ -133,7 +133,7 @@
          this Behavior behavior,
          IBehaviorContext context
       ) {
-         IManuelUpdateBehavior next;
+         IManualUpdateBehavior next;
          if (behavior.TryGetBehavior(out next)) {
             next.UpdateSource(context);
          }

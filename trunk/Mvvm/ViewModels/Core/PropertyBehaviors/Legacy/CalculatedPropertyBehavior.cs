@@ -12,7 +12,7 @@
       IBehaviorInitializationBehavior,
       IValueAccessorBehavior<TValue>,
       IMutabilityCheckerBehavior,
-      IManuelUpdateBehavior {
+      IManualUpdateBehavior {
 
       private static readonly Action<TSource, TValue> ThrowingSetter = delegate {
          throw new InvalidOperationException(ExceptionTexts.NoSetterDelegate);

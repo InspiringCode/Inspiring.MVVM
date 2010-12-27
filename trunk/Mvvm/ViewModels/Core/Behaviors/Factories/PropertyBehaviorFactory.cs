@@ -47,6 +47,10 @@
             return new ValueCacheBehavior<TValue>();
          }
 
+         if (key == BehaviorKeys.ManualUpdateBehavior) {
+            return new ManualUpdatePropertyBehavior();
+         }
+
          throw new NotSupportedException(
             ExceptionTexts.BehaviorNotSupportedByFactory.FormatWith(key)
          );

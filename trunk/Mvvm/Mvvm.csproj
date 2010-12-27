@@ -136,6 +136,9 @@
     <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionBehaviors\DelegatePopulatorCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\ParentSetterBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\DelegateViewModelFactory.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\ManualUpdateCollectionPropertyBehavior.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\ManualUpdatePropertyBehavior.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\ManualUpdateViewModelPropertyBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\ViewModelFactoryAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertySelector.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\BehaviorConfigurationBuilder.cs" />
@@ -275,7 +278,7 @@
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\DynamicFieldGroups.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\InstancePropertyBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IDisplayValueAccessorBehavior.cs" />
-    <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\IManuelUpdateBehavior.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\IManualUpdateBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\IHandlePropertyChangedBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\IHandlePropertyChangingBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\IValidationBehavior.cs" />

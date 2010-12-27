@@ -28,6 +28,7 @@
             new BehaviorChainTemplate(PropertyBehaviorFactory.Instance)
                .Append(BehaviorKeys.InvalidDisplayValueCache, DefaultBehaviorState.Disabled)
                .Append(BehaviorKeys.DisplayValueAccessor)
+               .Append(BehaviorKeys.ManualUpdateBehavior, DefaultBehaviorState.Disabled)
                .Append(BehaviorKeys.PreValidationValueCache, DefaultBehaviorState.Disabled)
                .Append(BehaviorKeys.Validator, DefaultBehaviorState.Disabled)
                .Append(BehaviorKeys.PropertyChangedTrigger)
@@ -43,9 +44,9 @@
             BehaviorChainTemplateKeys.CollectionProperty,
             new BehaviorChainTemplate(PropertyBehaviorFactory.Instance)
                .Append(BehaviorKeys.DisplayValueAccessor)
-               .Append(BehaviorKeys.CollectionInstanceCache, DefaultBehaviorState.Disabled)
-               .Append(BehaviorKeys.CollectionPopulator, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(BehaviorKeys.ManualUpdateBehavior, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(BehaviorKeys.ValueCache)
+               .Append(BehaviorKeys.CollectionPopulator, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(BehaviorKeys.CollectionFactory, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(BehaviorKeys.TypeDescriptor)
          );
@@ -67,6 +68,7 @@
             BehaviorChainTemplateKeys.ViewModelProperty,
             new BehaviorChainTemplate(PropertyBehaviorFactory.Instance)
                .Append(BehaviorKeys.DisplayValueAccessor)
+               .Append(BehaviorKeys.ManualUpdateBehavior, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(BehaviorKeys.ValueCache, DefaultBehaviorState.Disabled)
                .Append(BehaviorKeys.ParentSetter, DefaultBehaviorState.DisabledWithoutFactory)
 

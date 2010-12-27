@@ -4,7 +4,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
    internal sealed class DefaultManualUpdateBehavior<TValue> :
       Behavior,
       IBehaviorInitializationBehavior,
-      IManuelUpdateBehavior {
+      IManualUpdateBehavior {
 
       private VMPropertyBase<TValue> _property;
 

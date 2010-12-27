@@ -121,6 +121,14 @@
          Kernel.Revalidate(scope, mode);
       }
 
+      protected void UpdateFromSource() {
+         Kernel.UpdateFromSource();
+      }
+
+      protected void UpdateFromSource(VMPropertyBase property) {
+         Kernel.UpdateFromSource(property);
+      }
+
       object IViewModel.GetValue(IVMProperty property, ValueStage stage) {
          return property.GetValue(Kernel, stage);
       }

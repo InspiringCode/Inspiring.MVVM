@@ -57,7 +57,8 @@
          );
 
          return Factory.CreateProperty(
-            sourceValueAccessor: new MappedPropertyAccessor<TVM, T>(path)
+            sourceValueAccessor: new MappedPropertyAccessor<TVM, T>(path),
+            supportsManualUpdate: true
          );
       }
 
@@ -72,13 +73,14 @@
             setter
          );
 
-         return Factory.CreateProperty(sourceValueAccessor);
+         return Factory.CreateProperty(sourceValueAccessor, supportsManualUpdate: true);
       }
 
       /// <inheritdoc />
       VMProperty<T> IValuePropertyBuilder<TSourceObject>.Of<T>() {
          return Factory.CreateProperty(
-            sourceValueAccessor: new InstancePropertyBehavior<T>()
+            sourceValueAccessor: new InstancePropertyBehavior<T>(),
+            supportsManualUpdate: false
          );
       }
 
@@ -307,7 +309,7 @@
       }
 
       VMProperty<T> IValuePropertyBuilder<TSourceObject>.Custom<T>(IValueAccessorBehavior<T> sourceValueAccessor) {
-         return Factory.CreateProperty(sourceValueAccessor);
+         return Factory.CreateProperty(sourceValueAccessor, supportsManualUpdate: true);
       }
    }
 }
