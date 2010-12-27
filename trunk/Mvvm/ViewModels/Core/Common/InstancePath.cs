@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Collections;
    using System.Diagnostics.Contracts;
    using System.Linq;
 
@@ -136,8 +135,8 @@
             IViewModel vm = Steps[i].VM;
             IVMProperty prop = properties.GetProperty(i, vm.Descriptor);
 
-            IViewModel expectedValue = Steps[i + 1].VM;
-            IEnumerable expectedCollection = Steps[i + 1].ParentCollection;
+            //IViewModel expectedValue = Steps[i + 1].VM;
+            //IEnumerable expectedCollection = Steps[i + 1].ParentCollection;
 
             object propertyValue = vm.GetValue(prop);
 
@@ -161,9 +160,13 @@
             return true;
          }
 
-         var collection = propertyValue as IEnumerable;
-         if (collection != null) {
-            return collection.Cast<object>().Contains(stepVM);
+         //var collection = propertyValue as IEnumerable;
+         //if (collection != null) {
+         //   return collection.Cast<object>().Contains(stepVM);
+         //}
+
+         if (Object.ReferenceEquals(propertyValue, stepVM.Kernel.OwnerCollection)) {
+            return true;
          }
 
          return false;
@@ -179,7 +182,7 @@
 
       public IViewModel VM { get; private set; }
 
-      public IEnumerable ParentCollection { get; set; }
+      //public IEnumerable ParentCollection { get; set; }
 
       //public override bool Equals(object obj) {
       //   InstancePathStep other = obj as InstancePathStep;

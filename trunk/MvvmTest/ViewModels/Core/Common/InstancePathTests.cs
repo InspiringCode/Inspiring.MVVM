@@ -224,6 +224,8 @@
          employeeVM.SetValue(employeeDescriptor.Projects, projectsCollection);
          projectVM.SetValue(projectDescriptor.Customer, customerVM);
 
+         projectVM.Kernel.OwnerCollection = projectsCollection;
+
          var path = new InstancePath(customerVM);
 
          path = path.PrependVM(projectVM);
@@ -260,8 +262,8 @@
          return
             x != null &&
             y != null &&
-            Object.ReferenceEquals(x.VM, y.VM) &&
-            Object.ReferenceEquals(x.ParentCollection, y.ParentCollection);
+            Object.ReferenceEquals(x.VM, y.VM);// &&
+         //Object.ReferenceEquals(x.ParentCollection, y.ParentCollection);
       }
 
       private class EmployeeVMDescriptor : VMDescriptor {

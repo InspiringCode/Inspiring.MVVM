@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
+   using System.Collections;
    using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.ViewModels;
 
@@ -28,6 +29,8 @@
       IViewModel IBehaviorContext.VM {
          get { return _vm; }
       }
+
+      internal IEnumerable OwnerCollection { get; set; }
 
       FieldValueHolder IBehaviorContext.FieldValues {
          get {

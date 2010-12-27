@@ -151,8 +151,8 @@
          return
             x != null &&
             y != null &&
-            Object.ReferenceEquals(x.VM, y.VM) &&
-            Object.ReferenceEquals(x.ParentCollection, y.ParentCollection);
+            Object.ReferenceEquals(x.VM, y.VM);// &&
+         //Object.ReferenceEquals(x.ParentCollection, y.ParentCollection);
       }
    }
 }

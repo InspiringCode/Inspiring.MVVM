@@ -14,6 +14,7 @@
          // Set the parent first so that validation and change notification can
          // propagate properly.
          item.Kernel.Parent = collection.Owner;
+         item.Kernel.OwnerCollection = collection;
          this.ItemInsertedNext(context, collection, item, index);
       }
 
@@ -27,6 +28,7 @@
          // propagate properly.
          this.ItemRemovedNext(context, collection, item, index);
          item.Kernel.Parent = null;
+         item.Kernel.OwnerCollection = null;
       }
 
       public void ItemSet(
@@ -37,8 +39,10 @@
          int index
       ) {
          item.Kernel.Parent = collection.Owner;
+         item.Kernel.OwnerCollection = collection;
          this.ItemSetNext(context, collection, previousItem, item, index);
          previousItem.Kernel.Parent = null;
+         previousItem.Kernel.OwnerCollection = null;
       }
 
       public void ItemsCleared(
@@ -50,6 +54,7 @@
 
          foreach (TItemVM item in previousItems) {
             item.Kernel.Parent = null;
+            item.Kernel.OwnerCollection = null;
          }
       }
    }
