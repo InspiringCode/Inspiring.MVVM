@@ -4,6 +4,10 @@
    internal sealed class RefreshableValueCacheBehavior<TValue> : ValueCacheBehavior<TValue>, IManualUpdateBehavior {
       private IVMProperty _property;
 
+      public RefreshableValueCacheBehavior() {
+         throw new NotImplementedException("Redesign this, propably inherit from CacheBehavior");
+      }
+
       public void UpdateFromSource(IBehaviorContext context) {
          TValue oldValue = GetValue(context, ValueStage.PostValidation);
          CopyFromSource(context);

@@ -26,7 +26,7 @@
       [TestMethod]
       public void GetValue_Initially_ReturnsSourceValue() {
          SetSourceValue(ArbitraryString);
-         var actualValue = Behavior.GetValue(Context);
+         var actualValue = Behavior.GetValue(Context, ValueStage.None);
 
          Assert.AreEqual(ArbitraryString, actualValue);
       }
@@ -34,10 +34,10 @@
       [TestMethod]
       public void GetValue_SecondTime_ReturnsCachedValue() {
          SetSourceValue(ArbitraryString);
-         Behavior.GetValue(Context);
+         Behavior.GetValue(Context, ValueStage.None);
          SetSourceValue(AnotherArbitraryString);
-         
-         var actualValue = Behavior.GetValue(Context);
+
+         var actualValue = Behavior.GetValue(Context, ValueStage.None);
 
          Assert.AreEqual(ArbitraryString, actualValue);
       }

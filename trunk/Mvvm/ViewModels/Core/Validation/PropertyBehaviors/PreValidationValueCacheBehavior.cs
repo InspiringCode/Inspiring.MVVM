@@ -1,29 +1,24 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
 
    internal sealed class PreValidationValueCacheBehavior<TValue> :
-      InitializableBehavior,
-      IBehaviorInitializationBehavior,
+      CacheBehavior<TValue>,
       IValueAccessorBehavior<TValue>,
       IRevalidationBehavior,
       IHandlePropertyChangedBehavior {
 
       private static readonly FieldDefinitionGroup ValueCacheGroup = new FieldDefinitionGroup();
-      private FieldDefinition<TValue> _valueCacheField;
       private IVMProperty _property;
 
-      public void Initialize(BehaviorInitializationContext context) {
-         _valueCacheField = context.Fields.DefineField<TValue>(ValueCacheGroup);
+      public override void Initialize(BehaviorInitializationContext context) {
          _property = context.Property;
-
-         this.InitializeNext(context);
-         SetInitialized();
+         base.Initialize(context);
       }
 
       public TValue GetValue(IBehaviorContext context, ValueStage stage) {
          RequireInitialized();
 
          if (stage == ValueStage.PreValidation && HasCachedValue(context)) {
-            return GetCachedValue(context);
+            return GetCache(context);
          }
 
          return this.GetValueNext<TValue>(context, ValueStage.PostValidation);
@@ -60,9 +55,9 @@
 
          if (mode == ValidationMode.DiscardInvalidValues && HasCachedValue(context)) {
             ClearCache(context);
-            
+
             this.RevalidateNext(context, mode);
-            
+
             var args = new ChangeArgs(ChangeType.PropertyChanged, context.VM, _property);
             context.NotifyChange(args);
          } else {
@@ -75,20 +70,8 @@
          ClearCache(context);
       }
 
-      private void ClearCache(IBehaviorContext context) {
-         context.FieldValues.ClearField(_valueCacheField);
-      }
-
-      private void SetCache(IBehaviorContext context, TValue value) {
-         context.FieldValues.SetValue(_valueCacheField, value);
-      }
-
-      public TValue GetCachedValue(IBehaviorContext context) {
-         return context.FieldValues.GetValue(_valueCacheField);
-      }
-
-      private bool HasCachedValue(IBehaviorContext context) {
-         return context.FieldValues.HasValue(_valueCacheField);
+      protected override FieldDefinitionGroup GetFieldGroup() {
+         return ValueCacheGroup;
       }
    }
 }

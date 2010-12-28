@@ -23,7 +23,7 @@
       /// <summary>
       ///   
       /// </summary>
-      public static readonly BehaviorKey SourceValueAccessor = new BehaviorKey("SourceValueAccessor");
+      public static readonly BehaviorKey SourceAccessor = new BehaviorKey("SourceAccessor");
 
 
       public static readonly BehaviorKey CollectionFactory = new BehaviorKey("CollectionFactory");
@@ -37,6 +37,8 @@
       public static readonly BehaviorKey ViewModelAccessor = new BehaviorKey("ViewModelAccessor");
 
       public static readonly BehaviorKey ViewModelPropertyInitializer = new BehaviorKey("ViewModelPropertyInitializer");
+
+      public static readonly BehaviorKey ParentInitializer = new BehaviorKey("ParentInitializer");
 
       public static readonly BehaviorKey ParentSetter = new BehaviorKey("ParentSetter");
 

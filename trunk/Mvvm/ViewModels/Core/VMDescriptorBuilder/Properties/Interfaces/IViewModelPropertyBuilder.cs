@@ -61,15 +61,14 @@
       ///   Creates a simple <see cref="VMProperty"/> that holds a child view 
       ///   model that can be get and set.
       /// </summary>
-      /// <param name="viewModelFactory">
+      /// <param name="getter">
       ///   A delegate that is called the first time the VM property is accessed 
       ///   and should return a new child VM instance.
       /// </param>
-      [Obsolete("Use DelegatesTo")]
-      VMProperty<TChildVM> CreatedBy<TChildVM>(
-         Func<TSourceObject, TChildVM> viewModelFactory
-      ) where TChildVM : IViewModel;
-
+      /// <param name="setter">
+      ///   A delegate that is called each time the property is set to a new VM
+      ///   object.
+      /// </param>
       VMProperty<TChildVM> DelegatesTo<TChildVM>(
          Func<TSourceObject, TChildVM> getter,
          Action<TSourceObject, TChildVM> setter = null
@@ -90,10 +89,10 @@
          IValueAccessorBehavior<TChildVM> viewModelAccessor
       ) where TChildVM : IViewModel;
 
-      // TODO: Comment
-      [EditorBrowsable(EditorBrowsableState.Never)]
-      VMProperty<TChildVM> Custom<TChildVM>(
-         IViewModelFactoryBehavior<TChildVM> viewModelFactory
-      ) where TChildVM : IViewModel;
+      //// TODO: Comment
+      //[EditorBrowsable(EditorBrowsableState.Never)]
+      //VMProperty<TChildVM> Custom<TChildVM>(
+      //   IViewModelFactoryBehavior<TChildVM> viewModelFactory
+      //) where TChildVM : IViewModel;
    }
 }

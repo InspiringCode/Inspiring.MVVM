@@ -117,32 +117,27 @@
       }
 
       /// <inheritdoc />
-      VMProperty<TChildVM> IViewModelPropertyBuilder<TSourceObject>.CreatedBy<TChildVM>(
-         Func<TSourceObject, TChildVM> viewModelFactory
-      ) {
-         return Factory.CreateViewModelProperty<TChildVM, TSourceObject>(
-            sourceObjectAccessor: GetSourceObjectAccessor(),
-            customFactory: new DelegateViewModelFactory<TSourceObject, TChildVM>(viewModelFactory)
-         );
-      }
-
-      /// <inheritdoc />
       VMProperty<TChildVM> IViewModelPropertyBuilder<TSourceObject>.DelegatesTo<TChildVM>(
          Func<TSourceObject, TChildVM> getter,
          Action<TSourceObject, TChildVM> setter
       ) {
-         return Factory.CreateViewModelProperty<TChildVM, TSourceObject>(
+         return Factory.CreateViewModelProperty(
             viewModelAccessor: new CalculatedPropertyAccessor<TVM, TSourceObject, TChildVM>(
                _sourceObjectPath,
                getter,
                setter
-            )
+            ),
+            cachesValue: true
          );
       }
 
       /// <inheritdoc />
       VMProperty<TChildVM> IViewModelPropertyBuilder<TSourceObject>.Of<TChildVM>() {
-         return Factory.CreateViewModelProperty<TChildVM>(new InstancePropertyBehavior<TChildVM>());
+         return Factory.CreateViewModelProperty(
+            viewModelAccessor: new InstancePropertyBehavior<TChildVM>(),
+            needsViewModelFactory: false,
+            cachesValue: false
+         );
       }
 
 
@@ -199,7 +194,7 @@
          );
 
          var config = Factory.GetPropertyConfiguration<ICommand>(BehaviorChainTemplateKeys.CommandProperty);
-         config.Enable(BehaviorKeys.SourceValueAccessor, sourceValueAccessor);
+         config.Enable(BehaviorKeys.SourceAccessor, sourceValueAccessor);
          return Factory.CreateProperty<ICommand>(config);
       }
 
@@ -260,7 +255,12 @@
          private VMPropertyFactory<TVM> Factory { get; set; }
 
          VMProperty<TChildVM> IViewModelPropertyBuilderWithSource<TSourceValue>.With<TChildVM>() {
-            return Factory.CreateViewModelProperty<TChildVM, TSourceValue>(_sourceValueAccessor);
+            return Factory.CreateViewModelProperty(
+               viewModelAccessor: new ViewModelWithSourceAcessorBehavior<TChildVM, TSourceValue>(),
+               sourceAccessor: _sourceValueAccessor,
+               needsViewModelFactory: true,
+               cachesValue: true
+            );
          }
       }
 
@@ -301,11 +301,12 @@
 
 
       VMProperty<TChildVM> IViewModelPropertyBuilder<TSourceObject>.Custom<TChildVM>(IValueAccessorBehavior<TChildVM> viewModelAccessor) {
-         return Factory.CreateViewModelProperty(viewModelAccessor);
-      }
-
-      VMProperty<TChildVM> IViewModelPropertyBuilder<TSourceObject>.Custom<TChildVM>(IViewModelFactoryBehavior<TChildVM> viewModelFactory) {
-         return Factory.CreateViewModelProperty(GetSourceObjectAccessor(), viewModelFactory);
+         return Factory.CreateViewModelProperty(
+            viewModelAccessor: viewModelAccessor,
+            sourceAccessor: GetSourceObjectAccessor(),
+            needsViewModelFactory: true,
+            cachesValue: true
+         );
       }
 
       VMProperty<T> IValuePropertyBuilder<TSourceObject>.Custom<T>(IValueAccessorBehavior<T> sourceValueAccessor) {

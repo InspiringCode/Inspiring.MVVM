@@ -119,6 +119,7 @@
     <Compile Include="ViewModels\Core\Behaviors\BehaviorExtensionMethods.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Factories\CollectionBehaviorFactory.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Factories\IBehaviorFactoryInvoker.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Factories\ViewModelPropertyBehaviorFactory.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Keys\BehaviorChainTemplateKey.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Keys\BehaviorChainTemplateKeys.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorChainTemplateRegistry.cs" />
@@ -133,6 +134,7 @@
     <Compile Include="ViewModels\Core\Behaviors\VMDescriptorConfiguration.cs" />
     <Compile Include="ViewModels\Core\IViewModel.cs" />
     <Compile Include="ViewModels\Core\IVMDescriptorBuilder.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\CacheBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionBehaviors\DelegatePopulatorCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\ParentSetterBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\DelegateViewModelFactory.cs" />
@@ -141,6 +143,7 @@
     <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\ManualUpdateViewModelPropertyBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\RevalidationBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\ViewModelFactoryAccessorBehavior.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\ViewModelWithSourceAcessorBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertySelector.cs" />
     <Compile Include="ViewModels\Core\PropertyTypeHelper.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\BehaviorConfigurationBuilder.cs" />
@@ -201,7 +204,6 @@
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IViewModelFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\PropagateVMContextBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\ViewModelFactoryBehavior.cs" />
-    <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\ViewModelPropertyInitializerBehavior.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\SimplePropertyDescriptor.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\PropertyDescriptorBehavior.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\TypeDescriptorBehavior.cs" />

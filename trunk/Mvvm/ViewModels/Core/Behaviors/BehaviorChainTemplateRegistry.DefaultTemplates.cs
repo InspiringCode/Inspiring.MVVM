@@ -32,9 +32,9 @@
                .Append(BehaviorKeys.PreValidationValueCache, DefaultBehaviorState.Disabled)
                .Append(BehaviorKeys.Validator, DefaultBehaviorState.Disabled)
                .Append(BehaviorKeys.PropertyChangedTrigger)
-               .Append(BehaviorKeys.PropertyValueCache, DefaultBehaviorState.Disabled)
+               .Append(BehaviorKeys.PropertyValueCache, DefaultBehaviorState.DisabledWithoutFactory) // TODO!
             //.Append(BehaviorKeys.ManualUpdateBehavior) // TODO: Is this correct?
-               .Append(BehaviorKeys.SourceValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(BehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(BehaviorKeys.TypeDescriptor)
          );
       }
@@ -45,7 +45,7 @@
             new BehaviorChainTemplate(PropertyBehaviorFactory.Instance)
                .Append(BehaviorKeys.DisplayValueAccessor)
                .Append(BehaviorKeys.ManualUpdateBehavior, DefaultBehaviorState.DisabledWithoutFactory)
-               
+
                // TODO: Rethink these two behaviors.
                .Append(BehaviorKeys.PreValidationValueCache, DefaultBehaviorState.Disabled)
                .Append(BehaviorKeys.Validator, DefaultBehaviorState.Disabled)
@@ -63,7 +63,7 @@
             new BehaviorChainTemplate(PropertyBehaviorFactory.Instance)
                .Append(BehaviorKeys.DisplayValueAccessor)
                .Append(BehaviorKeys.ValueCache)
-               .Append(BehaviorKeys.SourceValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(BehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(BehaviorKeys.TypeDescriptor)
          );
       }
@@ -71,20 +71,21 @@
       private static void RegisterViewModelPropertyTemplate() {
          RegisterTemplate(
             BehaviorChainTemplateKeys.ViewModelProperty,
-            new BehaviorChainTemplate(PropertyBehaviorFactory.Instance)
+            new BehaviorChainTemplate(ViewModelPropertyBehaviorFactory.Instance)
                .Append(BehaviorKeys.DisplayValueAccessor)
+            // TODO: Rethink.
                .Append(BehaviorKeys.ManualUpdateBehavior, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(BehaviorKeys.ValueCache, DefaultBehaviorState.Disabled)
-               .Append(BehaviorKeys.ParentSetter, DefaultBehaviorState.DisabledWithoutFactory)
 
-               // TODO: Rethink these two behaviors.
+               .Append(BehaviorKeys.ParentSetter)
+
                .Append(BehaviorKeys.PreValidationValueCache, DefaultBehaviorState.Disabled)
                .Append(BehaviorKeys.Validator, DefaultBehaviorState.Disabled)
+               .Append(BehaviorKeys.ValueCache, DefaultBehaviorState.Disabled)
 
-               .Append(BehaviorKeys.ViewModelPropertyInitializer, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(BehaviorKeys.ParentInitializer)
                .Append(BehaviorKeys.ViewModelAccessor, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(BehaviorKeys.ViewModelFactory, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(BehaviorKeys.SourceValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(BehaviorKeys.ViewModelFactory, DefaultBehaviorState.Disabled)
+               .Append(BehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(BehaviorKeys.TypeDescriptor)
          );
       }

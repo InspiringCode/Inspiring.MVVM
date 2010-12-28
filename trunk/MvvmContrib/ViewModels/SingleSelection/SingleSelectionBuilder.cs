@@ -71,7 +71,7 @@
          );
 
          return _sourceObjectPropertyBuilder.VM.Custom(
-            viewModelFactory: new SingleSelectionFactory<TItemVM>(descriptor, Filter)
+            viewModelAccessor: new SingleSelectionFactory<TItemVM>(descriptor, Filter)
          );
       }
 
@@ -105,7 +105,7 @@
          );
 
          return _sourceObjectPropertyBuilder.VM.Custom(
-            viewModelFactory: new SingleSelectionFactory(descriptor, Filter)
+            viewModelAccessor: new SingleSelectionFactory(descriptor, Filter)
          );
       }
       
@@ -125,7 +125,7 @@
 
       private class SingleSelectionFactory<TItemVM> :
          Behavior,
-         IViewModelFactoryBehavior<SingleSelectionVM<TItemSource, TItemVM>>
+         IValueAccessorBehavior<SingleSelectionVM<TItemSource, TItemVM>>
          where TItemVM : IViewModel, IVMCollectionItem<TItemSource> {
 
          private SingleSelectionVMDescriptor<TItemSource, TItemVM> _descriptor;
@@ -136,7 +136,7 @@
             _filter = filter;
          }
 
-         public SingleSelectionVM<TItemSource, TItemVM> CreateInstance(IBehaviorContext context) {
+         public SingleSelectionVM<TItemSource, TItemVM> GetValue(IBehaviorContext context, ValueStage stage = ValueStage.PreValidation) {
             TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context, ValueStage.None);
 
             var vm = new SingleSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>(
@@ -145,16 +145,19 @@
             );
 
             vm.InitializeFrom(sourceObject);
-
             vm.ActiveItemFilter = _filter;
 
             return vm;
+         }
+
+         public void SetValue(IBehaviorContext context, SingleSelectionVM<TItemSource, TItemVM> value) {
+            throw new NotSupportedException();
          }
       }
 
       private class SingleSelectionFactory :
          Behavior,
-         IViewModelFactoryBehavior<SingleSelectionVM<TItemSource>> {
+         IValueAccessorBehavior<SingleSelectionVM<TItemSource>> {
 
          private SingleSelectionVMDescriptor<TItemSource> _descriptor;
          private Func<TItemSource, bool> _filter;
@@ -164,7 +167,7 @@
             _filter = filter;
          }
 
-         public SingleSelectionVM<TItemSource> CreateInstance(IBehaviorContext context) {
+         public SingleSelectionVM<TItemSource> GetValue(IBehaviorContext context, ValueStage stage = ValueStage.PreValidation) {
             TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context, ValueStage.None);
 
             var vm = new SingleSelectionWithSourceVM<TSourceObject, TItemSource>(
@@ -173,10 +176,13 @@
             );
 
             vm.InitializeFrom(sourceObject);
-
             vm.ActiveItemFilter = _filter;
 
             return vm;
+         }
+
+         public void SetValue(IBehaviorContext context, SingleSelectionVM<TItemSource> value) {
+            throw new NotSupportedException();
          }
       }
 

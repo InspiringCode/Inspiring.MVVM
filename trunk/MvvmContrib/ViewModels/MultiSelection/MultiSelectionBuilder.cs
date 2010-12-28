@@ -71,13 +71,13 @@
          );
 
          return _sourceObjectPropertyBuilder.VM.Custom(
-            viewModelFactory: new MultSelectionFactory<TItemVM>(descriptor, Filter)
+            viewModelAccessor: new MultSelectionAccessor<TItemVM>(descriptor, Filter)
          );
       }
 
       public VMProperty<MultiSelectionVM<TItemSource>> WithCaption(
          Func<TItemSource, string> captionGetter
-      )  {
+      ) {
          Contract.Requires<ArgumentNullException>(captionGetter != null);
          Contract.Assert(SelectedSourceItemsPropertyFactory != null);
 
@@ -105,10 +105,10 @@
          );
 
          return _sourceObjectPropertyBuilder.VM.Custom(
-            viewModelFactory: new MultSelectionFactory(descriptor, Filter)
+            viewModelAccessor: new MultSelectionAccessor(descriptor, Filter)
          );
       }
-      
+
 
       /// <summary>
       ///   If no source for 'AllItems' was specified, all items are by default 
@@ -123,20 +123,20 @@
          };
       }
 
-      private class MultSelectionFactory<TItemVM> :
+      private class MultSelectionAccessor<TItemVM> :
          Behavior,
-         IViewModelFactoryBehavior<MultiSelectionVM<TItemSource, TItemVM>>
+         IValueAccessorBehavior<MultiSelectionVM<TItemSource, TItemVM>>
          where TItemVM : IViewModel, IVMCollectionItem<TItemSource> {
 
          private MultiSelectionVMDescriptor<TItemSource, TItemVM> _descriptor;
          private Func<TItemSource, bool> _filter;
 
-         public MultSelectionFactory(MultiSelectionVMDescriptor<TItemSource, TItemVM> descriptor, Func<TItemSource, bool> filter) {
+         public MultSelectionAccessor(MultiSelectionVMDescriptor<TItemSource, TItemVM> descriptor, Func<TItemSource, bool> filter) {
             _descriptor = descriptor;
             _filter = filter;
          }
 
-         public MultiSelectionVM<TItemSource, TItemVM> CreateInstance(IBehaviorContext context) {
+         public MultiSelectionVM<TItemSource, TItemVM> GetValue(IBehaviorContext context, ValueStage stage = ValueStage.PreValidation) {
             TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context, ValueStage.None);
 
             var vm = new MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>(
@@ -145,26 +145,29 @@
             );
 
             vm.InitializeFrom(sourceObject);
-
             vm.ActiveItemFilter = _filter;
 
             return vm;
          }
+
+         public void SetValue(IBehaviorContext context, MultiSelectionVM<TItemSource, TItemVM> value) {
+            throw new NotSupportedException();
+         }
       }
 
-      private class MultSelectionFactory :
+      private class MultSelectionAccessor :
          Behavior,
-         IViewModelFactoryBehavior<MultiSelectionVM<TItemSource>> {
+         IValueAccessorBehavior<MultiSelectionVM<TItemSource>> {
 
          private MultiSelectionVMDescriptor<TItemSource> _descriptor;
          private Func<TItemSource, bool> _filter;
 
-         public MultSelectionFactory(MultiSelectionVMDescriptor<TItemSource> descriptor, Func<TItemSource, bool> filter) {
+         public MultSelectionAccessor(MultiSelectionVMDescriptor<TItemSource> descriptor, Func<TItemSource, bool> filter) {
             _descriptor = descriptor;
             _filter = filter;
          }
 
-         public MultiSelectionVM<TItemSource> CreateInstance(IBehaviorContext context) {
+         public MultiSelectionVM<TItemSource> GetValue(IBehaviorContext context, ValueStage stage = ValueStage.PreValidation) {
             TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context, ValueStage.None);
 
             var vm = new MultiSelectionWithSourceVM<TSourceObject, TItemSource>(
@@ -177,6 +180,10 @@
             vm.ActiveItemFilter = _filter;
 
             return vm;
+         }
+
+         public void SetValue(IBehaviorContext context, MultiSelectionVM<TItemSource> value) {
+            throw new NotSupportedException();
          }
       }
 

@@ -58,7 +58,7 @@
          AssertDefaultViewModelBehaviors(p);
          Assert.IsTrue(ContainsBehavior<MappedPropertyAccessor<EmployeeVM, Project>>(p));
          Assert.IsTrue(ContainsBehavior<ViewModelFactoryBehavior<ProjectVM>>(p));
-         Assert.IsTrue(ContainsBehavior<ViewModelPropertyInitializerBehavior<ProjectVM, Project>>(p));
+         Assert.IsTrue(ContainsBehavior<ViewModelWithSourceAcessorBehavior<ProjectVM, Project>>(p));
          Assert.IsTrue(ContainsBehavior<ValueCacheBehavior<ProjectVM>>(p));
       }
 
@@ -70,7 +70,7 @@
          AssertDefaultViewModelBehaviors(p);
          Assert.IsTrue(ContainsBehavior<CalculatedPropertyAccessor<EmployeeVM, EmployeeVM, Project>>(p));
          Assert.IsTrue(ContainsBehavior<ViewModelFactoryBehavior<ProjectVM>>(p));
-         Assert.IsTrue(ContainsBehavior<ViewModelPropertyInitializerBehavior<ProjectVM, Project>>(p));
+         Assert.IsTrue(ContainsBehavior<ViewModelWithSourceAcessorBehavior<ProjectVM, Project>>(p));
          Assert.IsTrue(ContainsBehavior<ValueCacheBehavior<ProjectVM>>(p));
       }
 
@@ -82,7 +82,7 @@
          AssertDefaultViewModelBehaviors(p);
          Assert.IsTrue(ContainsBehavior<InstancePropertyBehavior<ProjectVM>>(p));
          Assert.IsFalse(ContainsBehavior<ViewModelFactoryBehavior<ProjectVM>>(p));
-         Assert.IsFalse(ContainsBehavior<ViewModelPropertyInitializerBehavior<ProjectVM, Project>>(p));
+         Assert.IsFalse(ContainsBehavior<ViewModelWithSourceAcessorBehavior<ProjectVM, Project>>(p));
          Assert.IsFalse(ContainsBehavior<ValueCacheBehavior<ProjectVM>>(p));
       }
 
@@ -135,7 +135,7 @@
          AssertDefaultViewModelBehaviors(p);
          Assert.IsTrue(ContainsBehavior<CalculatedPropertyAccessor<EmployeeVM, EmployeeVM, ProjectVM>>(p));
          Assert.IsTrue(ContainsBehavior<ValueCacheBehavior<ProjectVM>>(p));
-         Assert.IsFalse(ContainsBehavior<ViewModelPropertyInitializerBehavior<ProjectVM, Project>>(p));
+         Assert.IsFalse(ContainsBehavior<ViewModelWithSourceAcessorBehavior<ProjectVM, Project>>(p));
       }
 
       private void AssertDefaultPropertyBehaviors(VMPropertyBase p) {

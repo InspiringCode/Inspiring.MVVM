@@ -28,10 +28,10 @@ using Inspiring.Mvvm.ViewModels.Core;
       [TestMethod]
       public void UpdateFromSource_UpdatesCache() {
          SetSourceValue(ArbitraryString);
-         Behavior.GetValue(Context);
+         Behavior.GetValue(Context, ValueStage.None);
          SetSourceValue(AnotherArbitraryString);
          Behavior.UpdateFromSource(Context);
-         var actualValue = Behavior.GetValue(Context);
+         var actualValue = Behavior.GetValue(Context, ValueStage.None);
 
          Assert.AreEqual(AnotherArbitraryString, actualValue);
       }

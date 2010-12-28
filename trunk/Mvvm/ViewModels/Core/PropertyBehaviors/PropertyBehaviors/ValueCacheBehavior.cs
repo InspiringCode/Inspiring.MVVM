@@ -1,48 +1,28 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    internal class ValueCacheBehavior<TValue> :
-      InitializableBehavior,
-      IValueAccessorBehavior<TValue>,
-      IBehaviorInitializationBehavior {
-      FieldDefinition<TValue> _valueCacheField;
+      CacheBehavior<TValue>,
+      IValueAccessorBehavior<TValue> {
 
-      protected void CopyFromSource(IBehaviorContext vm) {
+      private static readonly FieldDefinitionGroup ValueCacheGroup = new FieldDefinitionGroup();
+
+      public TValue GetValue(IBehaviorContext context, ValueStage stage) {
          RequireInitialized();
 
-         IValueAccessorBehavior<TValue> accessBehavior = GetNextBehavior<IValueAccessorBehavior<TValue>>();
-         TValue sourceValue = accessBehavior.GetValue(vm, ValueStage.PostValidation);
-         vm.FieldValues.SetValue(_valueCacheField, sourceValue);
-      }
-
-      protected void CopyToSource(IBehaviorContext vm) {
-         RequireInitialized();
-
-         IValueAccessorBehavior<TValue> accessBehavior = GetNextBehavior<IValueAccessorBehavior<TValue>>();
-         TValue localValue = vm.FieldValues.GetValueOrDefault(_valueCacheField);
-         accessBehavior.SetValue(vm, localValue);
-      }
-
-      public TValue GetValue(IBehaviorContext vm, ValueStage stage = ValueStage.PreValidation) {
-         RequireInitialized();
-
-         if (!vm.FieldValues.HasValue(_valueCacheField)) {
-            CopyFromSource(vm);
+         if (!HasCachedValue(context)) {
+            CopyFromSource(context);
          }
-         return vm.FieldValues.GetValue(_valueCacheField);
+
+         return GetCache(context);
       }
 
-      public void SetValue(IBehaviorContext vm, TValue value) {
+      public void SetValue(IBehaviorContext context, TValue value) {
          RequireInitialized();
-         vm.FieldValues.SetValue(_valueCacheField, value);
+         SetCache(context, value);
+         this.SetValueNext(context, value);
       }
-
-      public virtual void Initialize(BehaviorInitializationContext context) {
-         _valueCacheField = context.Fields.DefineField<TValue>(
-            DynamicFieldGroups.ValueCacheGroup
-         );
-
-         SetInitialized();
-
-         this.InitializeNext(context);
+      
+      protected override FieldDefinitionGroup GetFieldGroup() {
+         return ValueCacheGroup;
       }
    }
 }
