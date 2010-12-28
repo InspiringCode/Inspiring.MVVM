@@ -51,6 +51,10 @@
             return new ManualUpdatePropertyBehavior();
          }
 
+         if (key == BehaviorKeys.DescendantValidator) {
+            return new DescendantValidationBehavior<TValue>();
+         }
+
          throw new NotSupportedException(
             ExceptionTexts.BehaviorNotSupportedByFactory.FormatWith(key)
          );

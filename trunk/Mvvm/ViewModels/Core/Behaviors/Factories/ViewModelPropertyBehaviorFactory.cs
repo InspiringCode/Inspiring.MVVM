@@ -53,6 +53,10 @@
             return new ViewModelFactoryBehavior<TChildVM>();
          }
 
+         if (key == BehaviorKeys.DescendantValidator) {
+            return new DescendantValidationBehavior<TChildVM>();
+         }
+
          throw new NotSupportedException(
             ExceptionTexts.BehaviorNotSupportedByFactory.FormatWith(key)
          );

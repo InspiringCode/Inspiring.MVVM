@@ -28,7 +28,7 @@
          EmployeeVM employee = CreateEmployeeVM();
          employee.Projects.Add(CreateProjectVM());
 
-         Log.ExpectCalls(Validator.EmployeeName, Validator.ProjectTitle);
+         Log.ExpectCalls(Validator.EmployeeName, Validator.ProjectTitle, Validator.ProjectDescription);
          employee.Revalidate(ValidationScope.FullSubtree);
          Log.VerifyCalls();
       }

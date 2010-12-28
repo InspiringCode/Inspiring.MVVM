@@ -8,12 +8,22 @@
       }
 
       public static bool IsViewModelCollection(Type propertyType) {
-         return propertyType
-            .GetInterfaces()
-            .Any(x =>
-               x.IsGenericType &&
-               x.GetGenericTypeDefinition() == typeof(IVMCollection<>)
-            );
+         if (IsVMCollectionInterface(propertyType)) {
+            return true;
+         }
+
+         bool implementsInterface =
+            propertyType
+               .GetInterfaces()
+               .Any(IsVMCollectionInterface);
+
+         return implementsInterface;
+      }
+
+      private static bool IsVMCollectionInterface(Type type) {
+         return
+            type.IsGenericType &&
+            type.GetGenericTypeDefinition() == typeof(IVMCollection<>);
       }
    }
 }

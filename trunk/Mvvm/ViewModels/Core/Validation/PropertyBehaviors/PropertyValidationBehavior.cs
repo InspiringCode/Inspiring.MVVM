@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
+using System.Collections;
 namespace Inspiring.Mvvm.ViewModels.Core {
 
    internal sealed class PropertyValidationBehavior<TValue> :
@@ -11,8 +12,8 @@ namespace Inspiring.Mvvm.ViewModels.Core {
 
       private static readonly FieldDefinitionGroup ValidationErrorGroup = new FieldDefinitionGroup();
 
-      private IVMProperty _property;
       private FieldDefinition<ValidationState> _validationStateField;
+      private IVMProperty _property;
 
       public void Initialize(BehaviorInitializationContext context) {
          _property = context.Property;
@@ -24,11 +25,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
       }
 
       public TValue GetValue(IBehaviorContext context, ValueStage stage) {
-         IValueAccessorBehavior<TValue> next;
-         if (TryGetBehavior(out next)) {
-            return next.GetValue(context, stage);
-         }
-         throw new NotImplementedException();
+         return this.GetValueNext<TValue>(context, stage);
       }
 
       public void SetValue(IBehaviorContext context, TValue value) {

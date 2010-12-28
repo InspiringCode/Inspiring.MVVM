@@ -149,5 +149,17 @@
             next.Revalidate(context, mode);
          }
       }
+
+      public static void RevalidateDescendantsNext(
+         this Behavior behavior,
+         IBehaviorContext context,
+         ValidationScope scope,
+         ValidationMode mode
+      ) {
+         IDescendantValidationBehavior next;
+         if (behavior.TryGetBehavior(out next)) {
+            next.RevalidateDescendants(context, scope, mode);
+         }
+      }
    }
 }

@@ -85,8 +85,16 @@
       }
 
       public void Revalidate(ValidationScope scope, ValidationMode mode) {
-         if (scope != ValidationScope.SelfOnly) {
+         if (scope == ValidationScope.SelfAndValidatedChildren) {
             throw new NotImplementedException("Still TODO");
+         }
+
+         if (scope == ValidationScope.FullSubtree) {
+            foreach (IVMProperty property in _descriptor.Properties) {
+               property
+                  .Behaviors
+                  .RevalidateDescendantsNext(this, scope, mode);
+            }
          }
 
          foreach (IVMProperty property in _descriptor.Properties) {

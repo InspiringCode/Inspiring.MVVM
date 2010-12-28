@@ -1,22 +1,22 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core.PropertyBehaviors.PropertyBehaviors {
-   using System;
+﻿//namespace Inspiring.Mvvm.ViewModels.Core.PropertyBehaviors.PropertyBehaviors {
+//   using System;
 
-   internal sealed class RevalidationBehavior<TValue> :
-      Behavior,
-      IRevalidationBehavior {
+//   internal sealed class RevalidationBehavior<TValue> :
+//      Behavior,
+//      IRevalidationBehavior {
 
-      private bool _isViewModelProperty;
+//      private bool _isViewModelProperty;
 
-      public RevalidationBehavior() {
-         _isViewModelProperty = PropertyTypeHelper.IsViewModel(typeof(TValue));
-      }
+//      public RevalidationBehavior() {
+//         _isViewModelProperty = PropertyTypeHelper.IsViewModel(typeof(TValue));
+//      }
 
-      public void Revalidate(IBehaviorContext context, ValidationMode mode) {
-         throw new NotImplementedException();
-      }
+//      public void Revalidate(IBehaviorContext context, ValidationMode mode) {
+//         throw new NotImplementedException();
+//      }
 
-      private void ClearPrevalidationValueCache() {
-         // TODO: Maybe better to rearrange stack?
-      }
-   }
-}
+//      private void ClearPrevalidationValueCache() {
+//         // TODO: Maybe better to rearrange stack?
+//      }
+//   }
+//}

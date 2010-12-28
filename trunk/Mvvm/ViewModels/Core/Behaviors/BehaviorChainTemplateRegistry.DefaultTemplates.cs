@@ -50,6 +50,8 @@
                .Append(BehaviorKeys.PreValidationValueCache, DefaultBehaviorState.Disabled)
                .Append(BehaviorKeys.Validator, DefaultBehaviorState.Disabled)
 
+               .Append(BehaviorKeys.DescendantValidator)
+
                .Append(BehaviorKeys.ValueCache)
                .Append(BehaviorKeys.CollectionPopulator, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(BehaviorKeys.CollectionFactory, DefaultBehaviorState.DisabledWithoutFactory)
@@ -80,6 +82,9 @@
 
                .Append(BehaviorKeys.PreValidationValueCache, DefaultBehaviorState.Disabled)
                .Append(BehaviorKeys.Validator, DefaultBehaviorState.Disabled)
+
+               .Append(BehaviorKeys.DescendantValidator)
+
                .Append(BehaviorKeys.ValueCache, DefaultBehaviorState.Disabled)
 
                .Append(BehaviorKeys.ParentInitializer)
