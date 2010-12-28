@@ -23,7 +23,7 @@
       public TValue GetValue(IBehaviorContext context, ValueStage stage = ValueStage.PreValidation) {
          TValue childVM = this.GetValueNext<TValue>(context, stage);
 
-         if (_setParentOnGetValue && childVM.Kernel.Parent == null) {
+         if (_setParentOnGetValue && childVM != null && childVM.Kernel.Parent == null) {
             childVM.Kernel.Parent = context.VM;
          }
 
@@ -39,7 +39,7 @@
          // Note 2: We do not set the parent if it is already set because the VM
          // may already be the child of a different VM.
 
-         if (_setParentOnSetValue && value.Kernel.Parent == null) {
+         if (_setParentOnSetValue && value != null && value.Kernel.Parent == null) {
             value.Kernel.Parent = context.VM;
          }
 

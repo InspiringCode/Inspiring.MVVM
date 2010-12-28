@@ -83,6 +83,7 @@
     <Compile Include="ApiTests\ViewModels\VMs\AreaVM.cs" />
     <Compile Include="ApiTests\ViewModels\VMs\CustomerVM.cs" />
     <Compile Include="ApiTests\ViewModels\VMs\ProjectVM.cs" />
+    <Compile Include="ApiTests\ViewModels\VMs\StateVM.cs" />
     <Compile Include="ApiTests\ViewModels\VMs\TaskListVM.cs" />
     <Compile Include="ApiTests\ViewModels\VMs\TaskVM.cs" />
     <Compile Include="AssertHelper.cs" />

@@ -1,213 +1,328 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Validation {
+   using System.Linq;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
    [TestClass]
    public class ValidationModeTests {
-      private const string OriginalValue = "Original value";
-      private const string NewValue = "New value";
-      private const string ErrorText = "Validation error";
 
-      private TaskVM VM { get; set; }
+      [TestClass]
+      public abstract class AbstractValidationModeTests {
+         protected TaskVM VM { get; set; }
 
-      [TestInitialize]
-      public void Setup() {
-         VM = new TaskVM();
-         VM.SetupValidatorToReturnSuccess();
-         VM.TitleDisplayValue = OriginalValue;
-      }
+         protected abstract object NewValue { get; }
 
-      [TestMethod]
-      public void RevalidateCommitMode_ValidationSucceeds_UpdatesSourceValue() {
-         VM.SetupValidatorToReturnError();
-         VM.TitleDisplayValue = NewValue;
-         VM.SetupValidatorToReturnSuccess();
+         protected abstract object OriginalValue { get; }
 
-         VM.RevalidateCommit();
+         protected abstract object SourceValue { get; set; }
 
-         Assert.AreEqual(NewValue, VM.TitleSourceValue);
-      }
+         protected abstract object DisplayValue { get; set; }
 
-      [TestMethod]
-      public void RevalidateCommitMode_ValidationSucceeds_UpdatesValidationState() {
-         VM.SetupValidatorToReturnError();
-         VM.TitleDisplayValue = NewValue;
-         VM.SetupValidatorToReturnSuccess();
+         protected abstract ValidationState ValidationState { get; }
 
-         VM.RevalidateCommit();
+         protected abstract string PropertyName { get; }
 
-         DomainAssert.AreEqual(ValidationState.Valid, VM.TitleValidationState);
-      }
-
-      [TestMethod]
-      public void RevalidateCommitMode_ValidationSucceeds_RaisesPropertyChanged() {
-         VM.SetupValidatorToReturnError();
-         VM.TitleDisplayValue = NewValue;
-         VM.SetupValidatorToReturnSuccess();
-
-         var listener = CreatePropertyChangedListener();
-         VM.RevalidateCommit();
-         listener.AssertOneRaise();
-      }
-
-      [TestMethod]
-      public void RevalidateCommitMode_ValidationFails_DoesNotUpdateSourceValue() {
-         VM.SetupValidatorToReturnError();
-         VM.TitleDisplayValue = NewValue;
-
-         VM.RevalidateCommit();
-
-         Assert.AreEqual(OriginalValue, VM.TitleSourceValue);
-      }
-
-      [TestMethod]
-      public void RevalidateCommitMode_ValidationFails_UpdatesValidationState() {
-         VM.SetupValidatorToReturnError();
-         VM.TitleDisplayValue = NewValue;
-
-         VM.RevalidateCommit();
-
-         DomainAssert.AreEqual(CreateInvalidValidationState(), VM.TitleValidationState);
-      }
-
-      [TestMethod]
-      public void RevalidateCommitMode_ValidationFails_DoesNotRaisePropertyChanged() {
-         VM.SetupValidatorToReturnError();
-         VM.TitleDisplayValue = NewValue;
-
-         var listener = CreatePropertyChangedListener();
-         VM.RevalidateCommit();
-         listener.AssertNoRaise();
-      }
-
-      [TestMethod]
-      public void RevalidateDiscardMode_ValidationSucceeds_UpdatesDisplayValue() {
-         VM.SetupValidatorToReturnError();
-         VM.TitleDisplayValue = NewValue;
-         VM.SetupValidatorToReturnSuccess();
-
-         VM.RevalidateDiscard();
-
-         Assert.AreEqual(OriginalValue, VM.TitleDisplayValue);
-      }
-
-      [TestMethod]
-      public void RevalidateDiscardMode_ValidationSucceeds_UpdatesValidationState() {
-         VM.SetupValidatorToReturnError();
-         VM.TitleDisplayValue = NewValue;
-         VM.SetupValidatorToReturnSuccess();
-
-         VM.RevalidateDiscard();
-
-         Assert.AreEqual(ValidationState.Valid, VM.TitleValidationState);
-      }
-
-      [TestMethod]
-      public void RevalidateDiscardMode_ValidationFails_UpdatesDisplayValue() {
-         VM.SetupValidatorToReturnError();
-         VM.TitleDisplayValue = NewValue;
-
-         VM.RevalidateDiscard();
-
-         Assert.AreEqual(OriginalValue, VM.TitleDisplayValue);
-      }
-
-      [TestMethod]
-      public void RevalidateDiscardMode_ValidationFails_UpdatesValidationState() {
-         VM.SetupValidatorToReturnError();
-         VM.TitleDisplayValue = NewValue;
-
-         VM.RevalidateDiscard();
-
-         DomainAssert.AreEqual(CreateInvalidValidationState(), VM.TitleValidationState);
-      }
-
-      [TestMethod]
-      public void RevalidateDiscardMode_ValueChanges_PropertyChangedIsRaised() {
-         VM.SetupValidatorToReturnError();
-         VM.TitleDisplayValue = NewValue;
-         VM.SetupValidatorToReturnSuccess();
-
-         var listener = CreatePropertyChangedListener();
-         VM.RevalidateDiscard();
-         listener.AssertOneRaise();
-      }
-
-      [TestMethod]
-      public void RevalidateDiscardMode_ValueDoesNotChange_PropertyChangedIsNotRaised() {
-         var listener = CreatePropertyChangedListener();
-         VM.RevalidateDiscard();
-         listener.AssertNoRaise();
-      }
-
-      private PropertyChangedCounter CreatePropertyChangedListener() {
-         return new PropertyChangedCounter(VM, "Title");
-      }
-
-      private ValidationState CreateInvalidValidationState() {
-         var state = new ValidationState();
-         state.Errors.Add(new ValidationError(ErrorText));
-         return state;
-      }
-
-      public sealed class TaskVM : ViewModel<TaskVMDescriptor> {
-         public static readonly TaskVMDescriptor Descriptor = VMDescriptorBuilder
-            .OfType<TaskVMDescriptor>()
-            .For<TaskVM>()
-            .WithProperties((d, c) => {
-               var v = c.GetPropertyBuilder();
-
-               d.Title = v.Property.Of<string>();
-            })
-            .WithValidators(c => {
-               c.Check(x => x.Title).Custom((vm, val, args) => {
-                  if (vm.ReturnError) {
-                     args.Errors.Add(new ValidationError(ErrorText));
-                  }
-               });
-            })
-            .Build();
-
-         public TaskVM()
-            : base(Descriptor) {
+         private static ValidationState InvalidValidationState {
+            get {
+               var state = new ValidationState();
+               state.Errors.Add(new ValidationError("Validation Error"));
+               return state;
+            }
          }
 
-         public object TitleDisplayValue {
-            get { return GetDisplayValue(Descriptor.Title); }
-            set { SetDisplayValue(Descriptor.Title, value); }
+         [TestInitialize]
+         public void Setup() {
+            VM = new TaskVM();
          }
 
-         public string TitleSourceValue {
-            get { return GetValidatedValue(Descriptor.Title); }
-            set { SetValue(Descriptor.Title, value); }
+         [TestMethod]
+         public void RevalidateCommitMode_ValidationSucceeds_UpdatesSourceValue() {
+            SetPropertyToValidValue(OriginalValue);
+            SetPropertyToInvalidValue(NewValue);
+            SetupValidatorToReturnSuccess();
+
+            RevalidateCommit();
+
+            Assert.AreEqual(NewValue, SourceValue);
          }
 
-         public ValidationState TitleValidationState {
-            get { return Kernel.GetValidationState(Descriptor.Title); }
+         [TestMethod]
+         public void RevalidateCommitMode_ValidationSucceeds_UpdatesValidationState() {
+            SetPropertyToValidValue(OriginalValue);
+            SetPropertyToInvalidValue(NewValue);
+            SetupValidatorToReturnSuccess();
+
+            RevalidateCommit();
+
+            DomainAssert.AreEqual(ValidationState.Valid, ValidationState);
          }
 
-         private bool ReturnError { get; set; }
+         [TestMethod]
+         public void RevalidateCommitMode_ValidationSucceeds_RaisesPropertyChanged() {
+            SetPropertyToValidValue(OriginalValue);
+            SetPropertyToInvalidValue(NewValue);
+            SetupValidatorToReturnSuccess();
 
-         public void SetupValidatorToReturnError() {
-            ReturnError = true;
+            var listener = CreatePropertyChangedListener();
+            RevalidateCommit();
+            listener.AssertOneRaise();
          }
 
-         public void SetupValidatorToReturnSuccess() {
-            ReturnError = false;
+         [TestMethod]
+         public void RevalidateCommitMode_ValidationFails_DoesNotUpdateSourceValue() {
+            SetPropertyToValidValue(OriginalValue);
+            SetPropertyToInvalidValue(NewValue);
+            SetupValidatorToReturnError();
+
+            RevalidateCommit();
+
+            Assert.AreEqual(OriginalValue, SourceValue);
          }
 
-         public void RevalidateCommit() {
-            Revalidate(ValidationScope.SelfOnly, ValidationMode.CommitValidValues);
+         [TestMethod]
+         public void RevalidateCommitMode_ValidationFails_UpdatesValidationState() {
+            SetPropertyToValidValue(OriginalValue);
+            SetPropertyToInvalidValue(NewValue);
+            SetupValidatorToReturnError();
+
+            RevalidateCommit();
+
+            DomainAssert.AreEqual(InvalidValidationState, ValidationState);
          }
 
-         public void RevalidateDiscard() {
-            Revalidate(ValidationScope.SelfOnly, ValidationMode.DiscardInvalidValues);
+         [TestMethod]
+         public void RevalidateCommitMode_ValidationFails_DoesNotRaisePropertyChanged() {
+            SetPropertyToValidValue(OriginalValue);
+            SetPropertyToInvalidValue(NewValue);
+            SetupValidatorToReturnError();
+
+            var listener = CreatePropertyChangedListener();
+            RevalidateCommit();
+            listener.AssertNoRaise();
+         }
+
+         [TestMethod]
+         public void RevalidateDiscardMode_ValidationSucceeds_UpdatesDisplayValue() {
+            SetPropertyToValidValue(OriginalValue);
+            SetPropertyToInvalidValue(NewValue);
+            SetupValidatorToReturnSuccess();
+
+            RevalidateDiscard();
+
+            Assert.AreEqual(OriginalValue, DisplayValue);
+         }
+
+         [TestMethod]
+         public void RevalidateDiscardMode_ValidationSucceeds_UpdatesValidationState() {
+            SetPropertyToValidValue(OriginalValue);
+            SetPropertyToInvalidValue(NewValue);
+            SetupValidatorToReturnSuccess();
+
+            RevalidateDiscard();
+
+            Assert.AreEqual(ValidationState.Valid, ValidationState);
+         }
+
+         [TestMethod]
+         public void RevalidateDiscardMode_ValidationFails_UpdatesDisplayValue() {
+            SetPropertyToValidValue(OriginalValue);
+            SetPropertyToInvalidValue(NewValue);
+            SetupValidatorToReturnError();
+
+            RevalidateDiscard();
+
+            Assert.AreEqual(OriginalValue, DisplayValue);
+         }
+
+         [TestMethod]
+         public void RevalidateDiscardMode_ValidationFails_UpdatesValidationState() {
+            SetPropertyToValidValue(OriginalValue);
+            SetPropertyToInvalidValue(NewValue);
+            SetupValidatorToReturnError();
+
+            RevalidateDiscard();
+
+            DomainAssert.AreEqual(InvalidValidationState, ValidationState);
+         }
+
+         [TestMethod]
+         public void RevalidateDiscardMode_ValueChanges_PropertyChangedIsRaised() {
+            SetPropertyToValidValue(OriginalValue);
+            SetPropertyToInvalidValue(NewValue);
+            SetupValidatorToReturnSuccess();
+
+            var listener = CreatePropertyChangedListener();
+            RevalidateDiscard();
+            listener.AssertOneRaise();
+         }
+
+         [TestMethod]
+         public void RevalidateDiscardMode_ValueDoesNotChange_PropertyChangedIsNotRaised() {
+            SetPropertyToValidValue(OriginalValue);
+
+            var listener = CreatePropertyChangedListener();
+            RevalidateDiscard();
+            listener.AssertNoRaise();
+         }
+
+         private void SetPropertyToInvalidValue(object invalidValue) {
+            SetupValidatorToReturnError();
+            DisplayValue = invalidValue;
+         }
+
+         private void SetPropertyToValidValue(object validValue) {
+            SetupValidatorToReturnSuccess();
+            DisplayValue = validValue;
+         }
+
+         private void SetupValidatorToReturnSuccess() {
+            VM.ReturnError = false;
+         }
+
+         private void SetupValidatorToReturnError() {
+            VM.ReturnError = true;
+         }
+
+         private void RevalidateDiscard() {
+            VM.Revalidate(ValidationMode.DiscardInvalidValues);
+         }
+
+         private void RevalidateCommit() {
+            VM.Revalidate(ValidationMode.CommitValidValues);
+         }
+
+         private PropertyChangedCounter CreatePropertyChangedListener() {
+            return new PropertyChangedCounter(VM, PropertyName);
+         }
+
+         public sealed class TaskVM : ViewModel<TaskVMDescriptor> {
+            public static readonly TaskVMDescriptor Descriptor = VMDescriptorBuilder
+               .OfType<TaskVMDescriptor>()
+               .For<TaskVM>()
+               .WithProperties((d, c) => {
+                  var v = c.GetPropertyBuilder();
+
+                  d.Title = v.Property.Of<string>();
+                  d.State = v.VM.Of<StateVM>();
+               })
+               .WithValidators(c => {
+                  c.Check(x => x.Title).Custom((vm, val, args) => {
+                     if (vm.ReturnError) {
+                        args.Errors.Add(InvalidValidationState.Errors.Single());
+                     }
+                  });
+                  c.Check(x => x.State).Custom((vm, val, args) => {
+                     if (vm.ReturnError) {
+                        args.Errors.Add(InvalidValidationState.Errors.Single());
+                     }
+                  });
+               })
+               .Build();
+
+            public TaskVM()
+               : base(Descriptor) {
+            }
+
+            public object TitleDisplayValue {
+               get { return GetDisplayValue(Descriptor.Title); }
+               set { SetDisplayValue(Descriptor.Title, value); }
+            }
+
+            public string TitleSourceValue {
+               get { return GetValidatedValue(Descriptor.Title); }
+               set { SetValue(Descriptor.Title, value); }
+            }
+
+            public ValidationState TitleValidationState {
+               get { return Kernel.GetValidationState(Descriptor.Title); }
+            }
+
+            public object StateDisplayValue {
+               get { return GetDisplayValue(Descriptor.State); }
+               set { SetDisplayValue(Descriptor.State, value); }
+            }
+
+            public StateVM StateSourceValue {
+               get { return GetValidatedValue(Descriptor.State); }
+               set { SetValue(Descriptor.State, value); }
+            }
+
+            public ValidationState StateValidationState {
+               get { return Kernel.GetValidationState(Descriptor.State); }
+            }
+
+            public bool ReturnError { get; set; }
+
+            public void Revalidate(ValidationMode mode) {
+               Revalidate(ValidationScope.SelfOnly, mode);
+            }
+         }
+
+         public sealed class TaskVMDescriptor : VMDescriptor {
+            public VMProperty<string> Title { get; set; }
+            public VMProperty<StateVM> State { get; set; }
          }
       }
 
-      public sealed class TaskVMDescriptor : VMDescriptor {
-         public VMProperty<string> Title { get; set; }
+      [TestClass]
+      public class PropertyValidationModeTests : AbstractValidationModeTests {
+         protected override object OriginalValue {
+            get { return "Original Value"; }
+         }
+
+         protected override object NewValue {
+            get { return "New Value"; }
+         }
+
+         protected override object SourceValue {
+            get { return VM.TitleSourceValue; }
+            set { VM.TitleSourceValue = (string)value; }
+         }
+
+         protected override object DisplayValue {
+            get { return VM.TitleDisplayValue; }
+            set { VM.TitleDisplayValue = value; }
+         }
+
+         protected override ValidationState ValidationState {
+            get { return VM.TitleValidationState; }
+         }
+
+         protected override string PropertyName {
+            get { return "Title"; }
+         }
+      }
+
+      [TestClass]
+      public class ViewModelValidationModeTests : AbstractValidationModeTests {
+         private readonly StateVM _originalValue = new StateVM("Orignal Value");
+         private readonly StateVM _newValue = new StateVM("New Value");
+
+         protected override object OriginalValue {
+            get { return _originalValue; }
+         }
+
+         protected override object NewValue {
+            get { return _newValue; }
+         }
+
+         protected override object SourceValue {
+            get { return VM.StateSourceValue; }
+            set { VM.StateSourceValue = (StateVM)value; }
+         }
+
+         protected override object DisplayValue {
+            get { return VM.StateDisplayValue; }
+            set { VM.StateDisplayValue = value; }
+         }
+
+         protected override ValidationState ValidationState {
+            get { return VM.StateValidationState; }
+         }
+
+         protected override string PropertyName {
+            get { return "State"; }
+         }
       }
    }
 }

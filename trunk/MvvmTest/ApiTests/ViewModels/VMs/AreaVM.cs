@@ -1,5 +1,4 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels {
-   using Inspiring.Mvvm;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
 
@@ -15,7 +14,7 @@
          })
          .Build();
 
-      public AreaVM(IServiceLocator serviceLocator)
+      public AreaVM()
          : base(Descriptor) {
       }
 
