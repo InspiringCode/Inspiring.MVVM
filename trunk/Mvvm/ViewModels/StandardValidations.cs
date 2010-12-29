@@ -1,13 +1,12 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
-   using System.Collections.Generic;
    using System.Linq;
    using System.Text.RegularExpressions;
    using Inspiring.Mvvm.ViewModels.Core;
 
    public static class StandardValidations {
       public static void HasValue<TVM, TValue>(
-         this IValidationBuilder<TVM, TValue> builder,
+         this PropertyValidatorBuilder<TVM, TValue> builder,
          string errorMessage
       ) where TVM : IViewModel {
          builder.Custom((TVM vm, TValue value, ValidationArgs args) => {
@@ -22,7 +21,7 @@
       }
 
       public static void Length<TVM>(
-         this IValidationBuilder<TVM, string> builder,
+         this PropertyValidatorBuilder<TVM, string> builder,
          int maximumLength,
          string errorMessage
       ) where TVM : IViewModel {
@@ -51,30 +50,44 @@
       //   });
       //}
 
-      public static void IsUnique<TItemVM, TItemValue>(
-         this ICollectionValidationBuilder<TItemVM, TItemValue> builder,
-         string errorMessage
-      ) where TItemVM : IViewModel {
-         builder.Custom(args => {
-            if (args.AllItems.Any(i => !Object.Equals(i.VM, args.Item.VM) && Object.Equals(i.Value, args.Item.Value))) {
-               args.AddError(errorMessage);
-            }
+      //public static void IsUnique<TItemVM, TItemValue>(
+      //   this ICollectionValidationBuilder<TItemVM, TItemValue> builder,
+      //   string errorMessage
+      //) where TItemVM : IViewModel {
+      //   builder.Custom(args => {
+      //      if (args.AllItems.Any(i => !Object.Equals(i.VM, args.Item.VM) && Object.Equals(i.Value, args.Item.Value))) {
+      //         args.AddError(errorMessage);
+      //      }
 
-            args.AffectsOtherItems = true;
-         });
-      }
+      //      args.AffectsOtherItems = true;
+      //   });
+      //}
+
+      //public static void IsUnique<TItemVM>(
+      //   this ICollectionValidationBuilder<TItemVM, string> builder,
+      //   StringComparison comparisonType,
+      //   string errorMessage
+      //) where TItemVM : IViewModel {
+      //   builder.Custom(args => {
+      //      if (args.AllItems.Any(i => !Object.Equals(i.VM, args.Item.VM) && String.Equals(i.Value, args.Item.Value, comparisonType))) {
+      //         args.AddError(errorMessage);
+      //      }
+
+      //      args.AffectsOtherItems = true;
+      //   });
+      //}
 
       public static void IsUnique<TItemVM>(
-         this ICollectionValidationBuilder<TItemVM, string> builder,
+         this CollectionPropertyValidatorBuilder<string> builder,
          StringComparison comparisonType,
          string errorMessage
       ) where TItemVM : IViewModel {
-         builder.Custom(args => {
-            if (args.AllItems.Any(i => !Object.Equals(i.VM, args.Item.VM) && String.Equals(i.Value, args.Item.Value, comparisonType))) {
-               args.AddError(errorMessage);
+         builder.Custom((value, values, args) => {
+            if (values.Count(val => String.Equals(val, value, comparisonType)) > 1) {
+               args.Errors.Add(new ValidationError(errorMessage));
             }
 
-            args.AffectsOtherItems = true;
+            // TODO: Affects other items!!!
          });
       }
 
@@ -105,7 +118,7 @@
 
       // TODO: Test me.
       public static void RegexValidation<TVM>(
-         this IValidationBuilder<TVM, string> builder,
+         this PropertyValidatorBuilder<TVM, string> builder,
          string regexPattern,
          string errorMessage
       ) where TVM : IViewModel {
