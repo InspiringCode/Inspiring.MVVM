@@ -2,6 +2,7 @@
    using System;
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
+   using System.Linq;
    using System.Linq.Expressions;
    using Inspiring.Mvvm.ViewModels.Fluent;
    using Inspiring.Mvvm.ViewModels.SingleSelection;
@@ -37,6 +38,23 @@
             factory.Property.MapsTo(selectedSourceItemSelector);
 
          return builder;
+      }
+
+      public static VMProperty<SingleSelectionVM<TEnum>> EnumSelection<TSourceObject, TEnum>(
+         this IVMPropertyBuilder<TSourceObject> sourceObjectPropertyFactory,
+         Expression<Func<TSourceObject, TEnum>> selectedSourceItemSelector
+      ) {
+         Contract.Requires<ArgumentNullException>(selectedSourceItemSelector != null);
+         Contract.Requires(sourceObjectPropertyFactory != null);
+
+         return sourceObjectPropertyFactory
+            .SingleSelection(selectedSourceItemSelector)
+            .WithItems(x => GetEnumValues<TEnum>())
+            .WithCaption(x => EnumLocalizer.GetCaption(x));
+      }
+
+      private static TEnum[] GetEnumValues<TEnum>() {
+         return Enum.GetValues(typeof(TEnum)).Cast<TEnum>().ToArray();
       }
    }
 }
