@@ -103,13 +103,13 @@
       }
 
       private sealed class EmployeeVM : ViewModel<EmployeeVMDescriptor> {
-         public static readonly EmployeeVMDescriptor Descriptor = VMDescriptorBuilder
+         public static readonly EmployeeVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<EmployeeVMDescriptor>()
             .For<EmployeeVM>()
             .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
 
-               d.Projects = v.Collection.Of<ProjectVM>(ProjectVM.Descriptor);
+               d.Projects = v.Collection.Of<ProjectVM>(ProjectVM.ClassDescriptor);
             })
             .WithValidators(c => {
                c.CheckCollection(x => x.Projects, x => x.Title).Custom((value, values, args) => {
@@ -135,7 +135,7 @@
             .Build();
 
          public EmployeeVM()
-            : base(Descriptor) {
+            : base(ClassDescriptor) {
 
             ValueArgs = new ValidatorArguments<string>();
             ItemArgs = new ValidatorArguments<ProjectVM>();

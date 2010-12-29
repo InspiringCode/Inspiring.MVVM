@@ -107,7 +107,7 @@
 //      }
 
 //      private class EmployeeVM : ViewModel<EmployeeVMDescriptor> {
-//         public static readonly EmployeeVMDescriptor Descriptor = VMDescriptorBuilder
+//         public static readonly EmployeeVMDescriptor ClassDescriptor = VMDescriptorBuilder
 //            .OfType<>().For<EmployeeVM>()
 //            .WithProperties((d, c) => {
 //               var v = c.GetPropertyFactory();
@@ -136,7 +136,7 @@
 //            .Build();
 
 //         public EmployeeVM()
-//            : base(Descriptor) {
+//            : base(ClassDescriptor) {
 //            ProjectsSource = new List<string>();
 //         }
 
@@ -154,7 +154,7 @@
 //      }
 
 //      private class ProjectVM : ViewModel<ProjectVMDescriptor>, ICanInitializeFrom<string>, IVMCollectionItem<string> {
-//         public static readonly ProjectVMDescriptor Descriptor = VMDescriptorBuilder
+//         public static readonly ProjectVMDescriptor ClassDescriptor = VMDescriptorBuilder
 //            .OfType<>().For<ProjectVM>()
 //            .WithProperties((d, c) => {
 //               var v = c.GetPropertyFactory();

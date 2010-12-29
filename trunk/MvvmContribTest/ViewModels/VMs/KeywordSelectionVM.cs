@@ -6,14 +6,14 @@
    using Inspiring.Mvvm.ViewModels.Core;
 
    internal sealed class KeywordSelectionVM : ViewModel<KeywordSelectionVMDescriptor>, ICanInitializeFrom<User> {
-      public static readonly KeywordSelectionVMDescriptor Descriptor = VMDescriptorBuilder
+      public static readonly KeywordSelectionVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<KeywordSelectionVMDescriptor>()
          .For<KeywordSelectionVM>()
          .WithProperties((d, c) => {
             var vm = c.GetPropertyBuilder();
             var doc = c.GetPropertyBuilder(x => x.Document);
 
-            d.AllItems = vm.Collection.Wraps(x => x.FilteredItems).With<GroupVM>(GroupVM.Descriptor);
+            d.AllItems = vm.Collection.Wraps(x => x.FilteredItems).With<GroupVM>(GroupVM.ClassDescriptor);
             d.SelectedItems = vm.Property.DelegatesTo(x => x.CreateSelectedItemsCollection());
             d.SelectedSourceItems = doc.Property.MapsTo(x => x.Groups);
          })

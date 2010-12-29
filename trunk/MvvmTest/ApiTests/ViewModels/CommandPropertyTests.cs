@@ -70,7 +70,7 @@
       }
 
       public sealed class TaskListVM : ViewModel<TaskListVMDescriptor> {
-         public static readonly TaskListVMDescriptor Descriptor = VMDescriptorBuilder
+         public static readonly TaskListVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<TaskListVMDescriptor>()
             .For<TaskListVM>()
             .WithProperties((d, c) => {
@@ -86,7 +86,7 @@
             .Build();
 
          public TaskListVM(SourceObject sourceObject)
-            : base(Descriptor) {
+            : base(ClassDescriptor) {
             Source = sourceObject;
          }
 

@@ -15,19 +15,19 @@
       }
 
       public string Name {
-         get { return GetValue(DescriptorBase.Name); }
+         get { return GetValue(Descriptor.Name); }
       }
 
       public MultiSelectionVM<Group, GroupVM> Groups {
-         get { return GetValue(DescriptorBase.Groups); }
+         get { return GetValue(Descriptor.Groups); }
       }
 
       public SingleSelectionVM<Department, DepartmentVM> Department {
-         get { return GetValue(DescriptorBase.Department); }
+         get { return GetValue(Descriptor.Department); }
       }
 
       public void UpdateGroupsFromSource() {
-         UpdateFromSource(DescriptorBase.Groups);
+         UpdateFromSource(Descriptor.Groups);
       }
    }
 

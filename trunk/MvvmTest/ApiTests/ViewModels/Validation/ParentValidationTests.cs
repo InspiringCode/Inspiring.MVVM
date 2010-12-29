@@ -22,8 +22,8 @@
          Assert.AreSame(project, args.ChangedVM);
          Assert.AreSame(project, args.TargetVM);
          Assert.AreSame(emp, args.OwnerVM);
-         Assert.AreSame(ProjectVM.Descriptor.Title, args.ChangedProperty);
-         Assert.AreSame(ProjectVM.Descriptor.Title, args.TargetProperty);
+         Assert.AreSame(ProjectVM.ClassDescriptor.Title, args.ChangedProperty);
+         Assert.AreSame(ProjectVM.ClassDescriptor.Title, args.TargetProperty);
          Assert.AreEqual(ValidationType.PropertyValue, args.ValidationType);
       }
 
@@ -43,8 +43,8 @@
          Assert.AreSame(customer, args.ChangedVM);
          Assert.AreSame(customer, args.TargetVM);
          Assert.AreSame(project, args.OwnerVM);
-         Assert.AreSame(CustomerVM.Descriptor.Address, args.ChangedProperty);
-         Assert.AreSame(CustomerVM.Descriptor.Address, args.TargetProperty);
+         Assert.AreSame(CustomerVM.ClassDescriptor.Address, args.ChangedProperty);
+         Assert.AreSame(CustomerVM.ClassDescriptor.Address, args.TargetProperty);
          Assert.AreEqual(ValidationType.PropertyValue, args.ValidationType);
       }
 
@@ -67,8 +67,8 @@
          Assert.AreSame(customer, args.ChangedVM);
          Assert.AreSame(customer, args.TargetVM);
          Assert.AreSame(employee, args.OwnerVM);
-         Assert.AreSame(CustomerVM.Descriptor.Name, args.ChangedProperty);
-         Assert.AreSame(CustomerVM.Descriptor.Name, args.TargetProperty);
+         Assert.AreSame(CustomerVM.ClassDescriptor.Name, args.ChangedProperty);
+         Assert.AreSame(CustomerVM.ClassDescriptor.Name, args.TargetProperty);
          Assert.AreEqual(ValidationType.PropertyValue, args.ValidationType);
       }
 

@@ -26,7 +26,7 @@
    using Inspiring.Mvvm.ViewModels;
 
    public sealed class $sourceObject$VM : ViewModel<$sourceObject$VMDescriptor>, ICanInitializeFrom<$sourceObject$> {
-      public static readonly $sourceObject$VMDescriptor Descriptor = VMDescriptorBuilder
+      public static readonly $sourceObject$VMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<$sourceObject$VMDescriptor>()
 		 .For<$sourceObject$VM>()
          .WithProperties((d, c) => {
@@ -37,7 +37,7 @@
          .Build();
 
       public $sourceObject$VM(IServiceLocator serviceLocator)
-         : base(Descriptor, serviceLocator) {
+         : base(ClassDescriptor, serviceLocator) {
       }
 
       public $sourceObject$ $sourceObject$ { get; private set; }

@@ -111,7 +111,7 @@
                }
 
                d.Name = u.Property.MapsTo(x => x.Name);
-               d.Department = builder.Of<DepartmentVM>(DepartmentVM.Descriptor);
+               d.Department = builder.Of<DepartmentVM>(DepartmentVM.ClassDescriptor);
             })
             .Build();
 

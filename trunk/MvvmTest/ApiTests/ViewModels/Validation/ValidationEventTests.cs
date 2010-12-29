@@ -47,7 +47,7 @@
       }
 
       public sealed class TaskVM : ViewModel<TaskVMDescriptor> {
-         public static readonly TaskVMDescriptor Descriptor = VMDescriptorBuilder
+         public static readonly TaskVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<TaskVMDescriptor>()
             .For<TaskVM>()
             .WithProperties((d, c) => {
@@ -65,7 +65,7 @@
             .Build();
 
          public TaskVM()
-            : base(Descriptor) {
+            : base(ClassDescriptor) {
          }
 
          private bool ReturnError { get; set; }

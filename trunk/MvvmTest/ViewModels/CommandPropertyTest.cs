@@ -14,8 +14,8 @@ namespace Inspiring.MvvmTest.ViewModels {
 
       [TestMethod]
       public void GetValue_FirstAccess_CommandIsCreated() {
-         ICommand vmCommand = _vm.GetValue(CommandVM.Descriptor.ViewModelCommand);
-         ICommand modelCommand = _vm.GetValue(CommandVM.Descriptor.ModelCommand);
+         ICommand vmCommand = _vm.GetValue(CommandVM.ClassDescriptor.ViewModelCommand);
+         ICommand modelCommand = _vm.GetValue(CommandVM.ClassDescriptor.ModelCommand);
 
          Assert.IsNotNull(vmCommand);
          Assert.IsNotNull(modelCommand);
@@ -29,7 +29,7 @@ namespace Inspiring.MvvmTest.ViewModels {
       [TestMethod]
       public void ExecuteCommand_ViewModelMethodInvoked() {
          // Arrange
-         ICommand command = _vm.GetValue(CommandVM.Descriptor.ViewModelCommand);
+         ICommand command = _vm.GetValue(CommandVM.ClassDescriptor.ViewModelCommand);
 
          // Act
          command.Execute(null);
@@ -40,7 +40,7 @@ namespace Inspiring.MvvmTest.ViewModels {
 
       [TestMethod]
       public void ExecuteCommand_ModelMethodInvoked() {
-         ICommand command = _vm.GetValue(CommandVM.Descriptor.ModelCommand);
+         ICommand command = _vm.GetValue(CommandVM.ClassDescriptor.ModelCommand);
 
          command.Execute(null);
 
@@ -51,7 +51,7 @@ namespace Inspiring.MvvmTest.ViewModels {
       [TestMethod]
       public void CanExecuteCommand_ViewModelMethodInvoked() {
          // Arrange
-         ICommand command = _vm.GetValue(CommandVM.Descriptor.ViewModelCommand);
+         ICommand command = _vm.GetValue(CommandVM.ClassDescriptor.ViewModelCommand);
 
          // Act
          bool result = command.CanExecute(null);
@@ -62,7 +62,7 @@ namespace Inspiring.MvvmTest.ViewModels {
 
       [TestMethod]
       public void CanExecuteCommand_ModelMethodInvoked() {
-         ICommand command = _vm.GetValue(CommandVM.Descriptor.ModelCommand);
+         ICommand command = _vm.GetValue(CommandVM.ClassDescriptor.ModelCommand);
 
          bool result = command.CanExecute(null);
 
@@ -72,7 +72,7 @@ namespace Inspiring.MvvmTest.ViewModels {
 
 
       private class CommandVM : ViewModel<CommandVMDescriptor> {
-         public static readonly CommandVMDescriptor Descriptor = VMDescriptorBuilder
+         public static readonly CommandVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<CommandVMDescriptor>()
             .For<CommandVM>()
             .WithProperties((d, c) => {
@@ -85,7 +85,7 @@ namespace Inspiring.MvvmTest.ViewModels {
             .Build();
 
          public CommandVM()
-            : base(Descriptor) {
+            : base(ClassDescriptor) {
             Model = new Model();
          }
          public Model Model { get; set; }

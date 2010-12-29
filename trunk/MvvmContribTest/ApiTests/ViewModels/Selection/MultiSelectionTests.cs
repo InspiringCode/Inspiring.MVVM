@@ -255,7 +255,7 @@
                }
 
                d.Name = u.Property.MapsTo(x => x.Name);
-               d.Groups = builder.Of<GroupVM>(GroupVM.Descriptor);
+               d.Groups = builder.Of<GroupVM>(GroupVM.ClassDescriptor);
             })
             .Build();
 

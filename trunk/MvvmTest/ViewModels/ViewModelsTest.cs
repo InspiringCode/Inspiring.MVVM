@@ -25,7 +25,7 @@ namespace Inspiring.MvvmTest.ViewModels {
       }
 
       private class PersonVM : ViewModel<PersonVMDescriptor> {
-         public static readonly PersonVMDescriptor Descriptor = VMDescriptorBuilder
+         public static readonly PersonVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<PersonVMDescriptor>()
             .For<PersonVM>()
             .WithProperties((d, pro) => {

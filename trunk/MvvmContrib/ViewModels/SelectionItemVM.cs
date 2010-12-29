@@ -13,7 +13,7 @@
       public TSourceItem Source { get; private set; }
 
       public string Caption {
-         get { return GetValue(DescriptorBase.Caption); }
+         get { return GetValue(Descriptor.Caption); }
       }
 
       public void InitializeFrom(TSourceItem source) {

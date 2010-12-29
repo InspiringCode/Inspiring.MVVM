@@ -10,7 +10,7 @@
    }
 
    public sealed class SaveDiscardVM : ViewModel<SaveDiscardVMDescriptor>, ICanInitializeFrom<ISaveDiscardHandler> {
-      public static readonly SaveDiscardVMDescriptor Descriptor = VMDescriptorBuilder
+      public static readonly SaveDiscardVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<SaveDiscardVMDescriptor>()
          .For<SaveDiscardVM>()
          .WithProperties((d, c) => {

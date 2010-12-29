@@ -3,7 +3,7 @@
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
 
    public sealed class AreaVM : ViewModel<AreaVMDescriptor>, ICanInitializeFrom<Area> {
-      public static readonly AreaVMDescriptor Descriptor = VMDescriptorBuilder
+      public static readonly AreaVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<AreaVMDescriptor>()
          .For<AreaVM>()
          .WithProperties((d, c) => {
@@ -15,7 +15,7 @@
          .Build();
 
       public AreaVM()
-         : base(Descriptor) {
+         : base(ClassDescriptor) {
       }
 
       public Area Area { get; private set; }

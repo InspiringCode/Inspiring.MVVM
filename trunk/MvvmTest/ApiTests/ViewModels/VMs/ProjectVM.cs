@@ -4,7 +4,7 @@
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
 
    public sealed class ProjectVM : ViewModel<ProjectVMDescriptor>, ICanInitializeFrom<Project> {
-      public static readonly ProjectVMDescriptor Descriptor = VMDescriptorBuilder
+      public static readonly ProjectVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<ProjectVMDescriptor>()
          .For<ProjectVM>()
          .WithProperties((d, c) => {
@@ -19,7 +19,7 @@
          .Build();
 
       public ProjectVM()
-         : this(Descriptor) {
+         : this(ClassDescriptor) {
       }
 
       public ProjectVM(ProjectVMDescriptor descriptor)
@@ -30,13 +30,13 @@
       public Project ProjectSource { get; private set; }
 
       public CustomerVM Customer {
-         get { return GetValue(DescriptorBase.Customer); }
-         set { SetValue(DescriptorBase.Customer, value); }
+         get { return GetValue(Descriptor.Customer); }
+         set { SetValue(Descriptor.Customer, value); }
       }
 
       public string Title {
-         get { return GetValue(DescriptorBase.Title); }
-         set { SetValue(DescriptorBase.Title, value); }
+         get { return GetValue(Descriptor.Title); }
+         set { SetValue(Descriptor.Title, value); }
       }
 
       public void InitializeFrom(Project source) {
@@ -44,7 +44,7 @@
       }
 
       public void UpdateCustomerFromSource() {
-         Kernel.UpdateFromSource(DescriptorBase.Customer);
+         Kernel.UpdateFromSource(Descriptor.Customer);
       }
 
       public void Revalidate() {

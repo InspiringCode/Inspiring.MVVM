@@ -4,7 +4,7 @@
    using Inspiring.Mvvm.ViewModels.Core;
 
    internal sealed class TestVM : ViewModel<TestVMDescriptor> {
-      public static readonly new TestVMDescriptor Descriptor = VMDescriptorBuilder
+      public static readonly new TestVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<TestVMDescriptor>()
          .For<TestVM>()
          .WithProperties((d, c) => {
@@ -15,8 +15,8 @@
             d.MappedMutableProperty = p.Property.MapsTo(x => x.MappedMutableValue);
             d.LocalProperty = v.Property.Of<decimal>();
             d.MappedVMProperty = p.VM.Wraps(x => x.ChildValue).With<ChildVM>();
-            d.MappedCollectionProperty = p.Collection.Wraps(x => x.ChildCollection).With<ChildVM>(ChildVM.Descriptor);
-            d.MappedParentedCollectionProperty = p.Collection.Of<ParentedChildVM>(ParentedChildVM.Descriptor);
+            d.MappedCollectionProperty = p.Collection.Wraps(x => x.ChildCollection).With<ChildVM>(ChildVM.ClassDescriptor);
+            d.MappedParentedCollectionProperty = p.Collection.Of<ParentedChildVM>(ParentedChildVM.ClassDescriptor);
             //MappedParentedCollectionProperty = p.Collection(x => x.ChildCollection).Of<ParentedChildVM>(ParentedChildVM.Descriptor)
          })
          .Build();
@@ -97,7 +97,7 @@
       ICanInitializeFrom<ChildVMSource>,
       IVMCollectionItem<ChildVMSource> {
 
-      public static readonly ChildVMDescriptor Descriptor = VMDescriptorBuilder
+      public static readonly ChildVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<ChildVMDescriptor>()
          .For<ChildVM>()
          .WithProperties((d, c) => {
@@ -160,7 +160,7 @@
       ICanInitializeFrom<SourceWithParent<TestVM, ChildVMSource>>,
       IVMCollectionItem<ChildVMSource> {
 
-      public static readonly ParentedChildVMDescriptor Descriptor = VMDescriptorBuilder
+      public static readonly ParentedChildVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<ParentedChildVMDescriptor>()
          .For<ParentedChildVM>()
          .WithProperties((d, c) => {

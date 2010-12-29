@@ -2,7 +2,7 @@
    using Inspiring.Mvvm.ViewModels;
 
    internal sealed class DepartmentVM : ViewModel<DepartmentVMDescriptor>, IVMCollectionItem<Department> {
-      public static readonly DepartmentVMDescriptor Descriptor = VMDescriptorBuilder
+      public static readonly DepartmentVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<DepartmentVMDescriptor>()
          .For<DepartmentVM>()
          .WithProperties((d, c) => {
@@ -20,7 +20,7 @@
       public Department DepartmentSource { get; private set; }
 
       public string Name {
-         get { return GetValue(DescriptorBase.Name); }
+         get { return GetValue(Descriptor.Name); }
       }
 
       public void InitializeFrom(Department source) {

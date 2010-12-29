@@ -3,7 +3,7 @@
    using Inspiring.Mvvm.ViewModels;
 
    public sealed class OkCancelVM : ViewModel<OkCancelVMDescriptor>, ICanInitializeFrom<IOkCancelHandler> {
-      public static readonly OkCancelVMDescriptor Descriptor = VMDescriptorBuilder
+      public static readonly OkCancelVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<OkCancelVMDescriptor>()
          .For<OkCancelVM>()
          .WithProperties((d, c) => {

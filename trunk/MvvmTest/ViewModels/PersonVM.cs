@@ -5,7 +5,7 @@
    using Inspiring.Mvvm.ViewModels.Core;
 
    public class PersonVM : ViewModel<PersonVMDescriptor>, ICanInitializeFrom<Person> {
-      public static readonly PersonVMDescriptor Descriptor = VMDescriptorBuilder
+      public static readonly PersonVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<PersonVMDescriptor>()
             .For<PersonVM>()
             .WithProperties((d, c) => {
@@ -18,7 +18,7 @@
                d.Salary = p.Property.DelegatesTo(x => x.Salary, (x, val) => x.Salary = val);
                d.Name = p.Property.DelegatesTo(x => String.Format("{0} {1}", x.FirstName, x.LastName));
                d.IsSelected = v.Property.Of<bool>();
-               d.Projects = p.Collection.Wraps(x => x.Projects).With<ProjectVM>(PersonVM.Descriptor);
+               d.Projects = p.Collection.Wraps(x => x.Projects).With<ProjectVM>(PersonVM.ClassDescriptor);
                d.CurrentProject = v.Property.Of<ProjectVM>();
             })
          //.WithValidators(c => {
@@ -59,7 +59,7 @@
    }
 
    public class ProjectVM : ViewModel<ProjectVMDescriptor>, IVMCollectionItem<Project> {
-      public static readonly ProjectVMDescriptor Descriptor = VMDescriptorBuilder
+      public static readonly ProjectVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<ProjectVMDescriptor>()
             .For<ProjectVM>()
             .WithProperties((d, c) => {

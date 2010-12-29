@@ -19,8 +19,8 @@ namespace Inspiring.MvvmTest.Views {
       }
 
       private string VMFirstName {
-         get { return _vm.GetValue(PersonVM.Descriptor.FirstName); }
-         set { _vm.SetValue(PersonVM.Descriptor.FirstName, value); }
+         get { return _vm.GetValue(PersonVM.ClassDescriptor.FirstName); }
+         set { _vm.SetValue(PersonVM.ClassDescriptor.FirstName, value); }
       }
 
       [TestInitialize]

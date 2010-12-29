@@ -43,7 +43,7 @@
       }
 
       internal sealed class UserVM : ViewModel<UserVMDescriptor>, ICanInitializeFrom<User> {
-         public static UserVMDescriptor Descriptor = VMDescriptorBuilder
+         public static UserVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<UserVMDescriptor>()
             .For<UserVM>()
             .WithProperties((d, c) => {
@@ -60,7 +60,7 @@
             .Build();
 
          public UserVM(IEnumerable<Department> allSourceDepartments = null)
-            : base(Descriptor) {
+            : base(ClassDescriptor) {
             AllSourceDepartments = allSourceDepartments;
             UserSource = new User();
          }
@@ -74,11 +74,11 @@
          }
 
          public string Name {
-            get { return GetValue(DescriptorBase.Name); }
+            get { return GetValue(Descriptor.Name); }
          }
 
          public SingleSelectionVM<Department> Department {
-            get { return GetValue(DescriptorBase.Department); }
+            get { return GetValue(Descriptor.Department); }
          }
       }
 

@@ -41,7 +41,7 @@
       }
 
       public class TaskVM : ViewModel<TaskVMDescriptor> {
-         public static TaskVMDescriptor Descriptor = VMDescriptorBuilder
+         public static TaskVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<TaskVMDescriptor>()
             .For<TaskVM>()
             .WithProperties((d, c) => {
@@ -59,7 +59,7 @@
             .Build();
 
          public TaskVM()
-            : base(Descriptor) {
+            : base(ClassDescriptor) {
          }
 
          public ValidationState TitleValidationState {

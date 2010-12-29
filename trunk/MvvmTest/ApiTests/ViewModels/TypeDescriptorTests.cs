@@ -121,7 +121,7 @@
       ///   Example VM.
       /// </summary>
       private sealed class MovieReviewVM : ViewModel<MovieReviewVMDescriptor> {
-         public static readonly MovieReviewVMDescriptor Descriptor = VMDescriptorBuilder
+         public static readonly MovieReviewVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<MovieReviewVMDescriptor>()
             .For<MovieReviewVM>()
             .WithProperties((d, c) => {
@@ -133,7 +133,7 @@
             .Build();
 
          public MovieReviewVM()
-            : base(Descriptor) {
+            : base(ClassDescriptor) {
          }
 
          public string Comment {

@@ -89,7 +89,7 @@
    //   }
 
    //   public class ParentParenTVM : IViewModel<ParentParentVMDescriptor> {
-   //      public static readonly ParentParentVMDescriptor Descriptor = VMDescriptorBuilder
+   //      public static readonly ParentParentVMDescriptor ClassDescriptor = VMDescriptorBuilder
    //         .OfType<>().For<ParentParentVM>()
    //         .WithProperties((d, c) => {
    //            var vm = c.GetPropertyFactory();
@@ -101,7 +101,7 @@
    //         .Build();
 
    //      public ParentParentVM()
-   //         : base(Descriptor) {
+   //         : base(ClassDescriptor) {
    //         SetValue(Descriptor.Children, new VMCollection<ParentVM>(this, ParentVM.Descriptor));
    //      }
 
@@ -127,7 +127,7 @@
    //   }
 
    //   public class ParenTVM : IViewModel<ParentVMDescriptor> {
-   //      public static readonly ParentVMDescriptor Descriptor = VMDescriptorBuilder
+   //      public static readonly ParentVMDescriptor ClassDescriptor = VMDescriptorBuilder
    //         .OfType<>().For<ParentVM>()
    //         .WithProperties((d, c) => {
    //            var v = c.GetPropertyFactory();
@@ -139,7 +139,7 @@
    //         .Build();
 
    //      public ParentVM()
-   //         : base(Descriptor) {
+   //         : base(ClassDescriptor) {
    //         Source = new List<string>();
    //      }
 
@@ -168,7 +168,7 @@
    //   }
 
    //   public class ChildVM : ViewModel<ChildVMDescriptor>, ICanInitializeFrom<string>, IHasSourceObject<string> {
-   //      public static readonly ChildVMDescriptor Descriptor = VMDescriptorBuilder
+   //      public static readonly ChildVMDescriptor ClassDescriptor = VMDescriptorBuilder
    //         .OfType<>().For<ChildVM>()
    //         .WithProperties((d, c) => {
    //            var v = c.GetPropertyFactory();
@@ -180,7 +180,7 @@
    //         .Build();
 
    //      public ChildVM()
-   //         : base(Descriptor) {
+   //         : base(ClassDescriptor) {
    //      }
 
    //      public string StringProperty {

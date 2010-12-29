@@ -3,7 +3,7 @@
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
 
    public sealed class CustomerVM : ViewModel<CustomerVMDescriptor>, ICanInitializeFrom<Customer> {
-      public static readonly CustomerVMDescriptor Descriptor = VMDescriptorBuilder
+      public static readonly CustomerVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<CustomerVMDescriptor>()
          .For<CustomerVM>()
          .WithProperties((d, c) => {
@@ -14,7 +14,7 @@
          .Build();
 
       public CustomerVM()
-         : base(Descriptor) {
+         : base(ClassDescriptor) {
       }
 
       public Customer CustomerSource { get; private set; }

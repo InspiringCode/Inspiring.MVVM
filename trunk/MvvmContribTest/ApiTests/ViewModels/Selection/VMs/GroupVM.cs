@@ -2,7 +2,7 @@
    using Inspiring.Mvvm.ViewModels;
 
    internal sealed class GroupVM : ViewModel<GroupVMDescriptor>, ICanInitializeFrom<Group>, IVMCollectionItem<Group> {
-      public static readonly GroupVMDescriptor Descriptor = VMDescriptorBuilder
+      public static readonly GroupVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<GroupVMDescriptor>()
          .For<GroupVM>()
          .WithProperties((d, c) => {
@@ -20,7 +20,7 @@
       public Group GroupSource { get; private set; }
 
       public string Name {
-         get { return GetValue(DescriptorBase.Name); }
+         get { return GetValue(Descriptor.Name); }
       }
 
       public void InitializeFrom(Group source) {

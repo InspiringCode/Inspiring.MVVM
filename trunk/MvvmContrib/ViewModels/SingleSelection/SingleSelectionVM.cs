@@ -30,21 +30,21 @@
       }
 
       public IEnumerable<TItemSource> AllSourceItems {
-         get { return GetValue(DescriptorBase.AllSourceItems); }
+         get { return GetValue(Descriptor.AllSourceItems); }
       }
 
       public TItemSource SelectedSourceItem {
-         get { return GetValue(DescriptorBase.SelectedSourceItem); }
-         set { SetValue(DescriptorBase.SelectedSourceItem, value); }
+         get { return GetValue(Descriptor.SelectedSourceItem); }
+         set { SetValue(Descriptor.SelectedSourceItem, value); }
       }
 
       public IVMCollection<TItemVM> AllItems {
-         get { return GetValue(DescriptorBase.AllItems); }
+         get { return GetValue(Descriptor.AllItems); }
       }
 
       public TItemVM SelectedItem {
-         get { return GetValue(DescriptorBase.SelectedItem); }
-         set { SetValue(DescriptorBase.SelectedItem, value); }
+         get { return GetValue(Descriptor.SelectedItem); }
+         set { SetValue(Descriptor.SelectedItem, value); }
       }
 
       /// <summary>
@@ -54,7 +54,7 @@
       /// </summary>
       internal IEnumerable<TItemSource> GetActiveSourceItems() {
          IEnumerable<TItemSource> allSourceItems = AllSourceItems;
-         TItemSource selectedSourceItem = GetValue(DescriptorBase.SelectedSourceItem);
+         TItemSource selectedSourceItem = GetValue(Descriptor.SelectedSourceItem);
 
          if (ActiveItemFilter == null) {
             return allSourceItems;

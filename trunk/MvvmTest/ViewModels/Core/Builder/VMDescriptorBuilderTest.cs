@@ -13,8 +13,8 @@
 
       [TestInitialize]
       public void Setup() {
-         _descriptor = PersonVM.Descriptor;
-         _companyDescriptor = CompanyVM.Descriptor;
+         _descriptor = PersonVM.ClassDescriptor;
+         _companyDescriptor = CompanyVM.ClassDescriptor;
       }
 
       [TestMethod]
@@ -80,15 +80,15 @@
       }
 
       private class CompanyVM : ViewModel<CompanyVMDescriptor> {
-         public static readonly CompanyVMDescriptor Descriptor = VMDescriptorBuilder
+         public static readonly CompanyVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<CompanyVMDescriptor>()
             .For<CompanyVM>()
             .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
                var com = c.GetPropertyBuilder(x => x.Company);
 
-               d.Employees = v.Collection.Wraps(x => x.Company.Employees).With<PersonVM>(PersonVM.Descriptor);
-               d.Customers = com.Collection.Wraps(x => x.Customers).With<PersonVM>(PersonVM.Descriptor);
+               d.Employees = v.Collection.Wraps(x => x.Company.Employees).With<PersonVM>(PersonVM.ClassDescriptor);
+               d.Customers = com.Collection.Wraps(x => x.Customers).With<PersonVM>(PersonVM.ClassDescriptor);
             })
             .Build();
 
@@ -106,7 +106,7 @@
       }
 
       private class PersonVM : ViewModel<PersonVMDescriptor>, IVMCollectionItem<Person> {
-         public static readonly PersonVMDescriptor Descriptor = VMDescriptorBuilder
+         public static readonly PersonVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<PersonVMDescriptor>()
             .For<PersonVM>()
             .WithProperties((d, c) => {

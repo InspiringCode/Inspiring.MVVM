@@ -73,14 +73,14 @@
       }
 
       public sealed class EmployeeVM : ViewModel<EmployeeVMDescriptor> {
-         public static readonly EmployeeVMDescriptor Descriptor = VMDescriptorBuilder
+         public static readonly EmployeeVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<EmployeeVMDescriptor>()
             .For<EmployeeVM>()
             .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
 
                d.Name = v.Property.Of<string>();
-               d.Projects = v.Collection.Of<ProjectVM>(ProjectVM.Descriptor);
+               d.Projects = v.Collection.Of<ProjectVM>(ProjectVM.ClassDescriptor);
             })
             .WithValidators(c => {
                c.Check(x => x.Name).Custom((vm, val, args) => {
@@ -96,7 +96,7 @@
             .Build();
 
          public EmployeeVM()
-            : base(Descriptor) {
+            : base(ClassDescriptor) {
          }
 
          public ValidationLog Log { get; set; }
@@ -111,7 +111,7 @@
       }
 
       public sealed class ProjectVM : ViewModel<ProjectVMDescriptor> {
-         public static readonly ProjectVMDescriptor Descriptor = VMDescriptorBuilder
+         public static readonly ProjectVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<ProjectVMDescriptor>()
             .For<ProjectVM>()
             .WithProperties((d, c) => {
@@ -134,7 +134,7 @@
             .Build();
 
          public ProjectVM()
-            : base(Descriptor) {
+            : base(ClassDescriptor) {
          }
 
          public ValidationLog Log { get; set; }
@@ -150,7 +150,7 @@
       }
 
       public sealed class CustomerVM : ViewModel<CustomerVMDescriptor> {
-         public static readonly CustomerVMDescriptor Descriptor = VMDescriptorBuilder
+         public static readonly CustomerVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<CustomerVMDescriptor>()
             .For<CustomerVM>()
             .WithProperties((d, c) => {
@@ -170,7 +170,7 @@
             .Build();
 
          public CustomerVM()
-            : base(Descriptor) {
+            : base(ClassDescriptor) {
          }
 
          public ValidationLog Log { get; set; }

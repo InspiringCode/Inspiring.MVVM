@@ -4,7 +4,7 @@
 using Inspiring.Mvvm.ViewModels.Core;
 
    public class TaskVM : ViewModel<TaskVMDescriptor>, IVMCollectionItem<Task> {
-      public static readonly TaskVMDescriptor Descriptor = VMDescriptorBuilder
+      public static readonly TaskVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<TaskVMDescriptor>()
          .For<TaskVM>()
          .WithProperties((d, c) => {
@@ -21,7 +21,7 @@ using Inspiring.Mvvm.ViewModels.Core;
          .Build();
 
       public TaskVM()
-         : base(Descriptor) {
+         : base(ClassDescriptor) {
       }
 
       public TaskVM(TaskVMDescriptor descriptor)
@@ -31,18 +31,18 @@ using Inspiring.Mvvm.ViewModels.Core;
       public Task SourceTask { get; private set; }
 
       public string ScreenTitle {
-         get { return GetValue(DescriptorBase.ScreenTitle); }
-         set { SetValue(DescriptorBase.ScreenTitle, value); }
+         get { return GetValue(Descriptor.ScreenTitle); }
+         set { SetValue(Descriptor.ScreenTitle, value); }
       }
 
       public string Title {
-         get { return GetValue(DescriptorBase.Title); }
-         set { SetValue(DescriptorBase.Title, value); }
+         get { return GetValue(Descriptor.Title); }
+         set { SetValue(Descriptor.Title, value); }
       }
 
       public string Description {
-         get { return GetValue(DescriptorBase.Description); }
-         set { SetValue(DescriptorBase.Description, value); }
+         get { return GetValue(Descriptor.Description); }
+         set { SetValue(Descriptor.Description, value); }
       }
 
       Task IVMCollectionItem<Task>.Source {

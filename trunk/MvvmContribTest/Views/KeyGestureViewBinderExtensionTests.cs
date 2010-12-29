@@ -31,7 +31,7 @@
       }
 
       public sealed class TestVM : ViewModel<TestVMDescriptor> {
-         public static readonly TestVMDescriptor Descriptor = VMDescriptorBuilder
+         public static readonly TestVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<TestVMDescriptor>()
             .For<TestVM>()
             .WithProperties((d, c) => {
@@ -42,7 +42,7 @@
             .Build();
 
          public TestVM()
-            : base(Descriptor) {
+            : base(ClassDescriptor) {
          }
       }
 

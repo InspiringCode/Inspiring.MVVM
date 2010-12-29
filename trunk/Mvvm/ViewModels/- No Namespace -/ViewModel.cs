@@ -24,7 +24,7 @@
       }
 
       public ViewModel(TDescriptor descriptor, IServiceLocator serviceLocator = null) {
-         DescriptorBase = descriptor;
+         Descriptor = descriptor;
          ServiceLocator = serviceLocator ?? Mvvm.ServiceLocator.Current;
       }
 
@@ -40,11 +40,11 @@
       }
 
       VMDescriptorBase IViewModel.Descriptor {
-         get { return DescriptorBase; }
-         set { DescriptorBase = (TDescriptor)value; }
+         get { return Descriptor; }
+         set { Descriptor = (TDescriptor)value; }
       }
 
-      protected TDescriptor DescriptorBase {
+      protected TDescriptor Descriptor {
          get;
          private set;
       }
@@ -57,14 +57,14 @@
       protected VMKernel Kernel {
          get {
             Contract.Requires<InvalidOperationException>(
-               DescriptorBase != null,
+               Descriptor != null,
                ExceptionTexts.DescriptorNotSet
             );
 
             Contract.Ensures(Contract.Result<VMKernel>() != null);
 
             if (_kernel == null) {
-               _kernel = new VMKernel(this, DescriptorBase, ServiceLocator);
+               _kernel = new VMKernel(this, Descriptor, ServiceLocator);
             }
 
             return _kernel;
@@ -179,11 +179,11 @@
 
       protected override PropertyDescriptorCollection GetPropertyDescriptors() {
          Contract.Requires<InvalidOperationException>(
-            DescriptorBase != null,
+            Descriptor != null,
             ExceptionTexts.DescriptorNotSet
          );
 
-         return DescriptorBase
+         return Descriptor
             .Behaviors
             .GetNextBehavior<TypeDescriptorBehavior>()
             .PropertyDescriptors;

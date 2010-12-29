@@ -39,19 +39,19 @@
       }
 
       public sealed class EmployeeVM : ViewModel<EmployeeVMDescriptor> {
-         public static readonly EmployeeVMDescriptor Descriptor = VMDescriptorBuilder
+         public static readonly EmployeeVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<EmployeeVMDescriptor>()
             .For<EmployeeVM>()
             .WithProperties((d, c) => {
                var vm = c.GetPropertyBuilder();
 
                d.CurrentProject = vm.VM.Of<ProjectVM>();
-               d.Projects = vm.Collection.Of<ProjectVM>(ProjectVM.Descriptor);
+               d.Projects = vm.Collection.Of<ProjectVM>(ProjectVM.ClassDescriptor);
             })
             .Build();
 
          public EmployeeVM()
-            : base(Descriptor) {
+            : base(ClassDescriptor) {
          }
 
          public ProjectVM CurrentProject {

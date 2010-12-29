@@ -26,8 +26,8 @@ namespace Inspiring.MvvmTest.ViewModels {
          //AssertNoChange(TestVM.Descriptor.MappedMutableProperty, () => _source.MappedMutableValue = "New value");
          //AssertNoChange(TestVM.Descriptor.CalculatedMutableProperty, () => _source.SetCalculated(43));
          //AssertNoChange(TestVM.Descriptor.LocalProperty, () => { });
-         AssertNoChange(TestVM.Descriptor.MappedVMProperty, () => _source.ChildValue.MappedMutableValue = "Childtest new");
-         AssertNoChange(TestVM.Descriptor.MappedCollectionProperty, () => _source.AddChild(new ChildVMSource { MappedMutableValue = "New value" }));
+         AssertNoChange(TestVM.ClassDescriptor.MappedVMProperty, () => _source.ChildValue.MappedMutableValue = "Childtest new");
+         AssertNoChange(TestVM.ClassDescriptor.MappedCollectionProperty, () => _source.AddChild(new ChildVMSource { MappedMutableValue = "New value" }));
          Assert.Inconclusive("Disconnected properties are not supported yet.");
       }
 
@@ -36,7 +36,7 @@ namespace Inspiring.MvvmTest.ViewModels {
          Assert.Inconclusive("Disconnected properties are not supported yet.");
 
          CheckUpdateFromSource(
-            TestVM.Descriptor.MappedMutableProperty,
+            TestVM.ClassDescriptor.MappedMutableProperty,
             () => _source.MappedMutableValue = "New value"
          );
       }
@@ -46,7 +46,7 @@ namespace Inspiring.MvvmTest.ViewModels {
          Assert.Inconclusive("Disconnected properties are not supported yet.");
 
          CheckUpdateFromSource(
-            TestVM.Descriptor.CalculatedMutableProperty,
+            TestVM.ClassDescriptor.CalculatedMutableProperty,
             () => _source.SetCalculated(43)
          );
       }
@@ -56,14 +56,14 @@ namespace Inspiring.MvvmTest.ViewModels {
          Assert.Inconclusive("Disconnected properties are not supported yet.");
 
          AssertHelper.Throws<ArgumentException>(() =>
-            _vm.InvokeUpdateFromSource(TestVM.Descriptor.LocalProperty)
+            _vm.InvokeUpdateFromSource(TestVM.ClassDescriptor.LocalProperty)
          );
       }
 
       [TestMethod]
       public void UpdateFromSourceForMappedVM() {
          CheckUpdateFromSource(
-            TestVM.Descriptor.MappedVMProperty,
+            TestVM.ClassDescriptor.MappedVMProperty,
             () => _source.ChildValue.MappedMutableValue = "New value"
          );
       }
@@ -71,7 +71,7 @@ namespace Inspiring.MvvmTest.ViewModels {
       [TestMethod]
       public void UpdateFromSourceForMappedCollection() {
          CheckUpdateFromSource(
-            TestVM.Descriptor.MappedVMProperty,
+            TestVM.ClassDescriptor.MappedVMProperty,
             () => _source.AddChild(new ChildVMSource())
          );
       }
@@ -79,7 +79,7 @@ namespace Inspiring.MvvmTest.ViewModels {
       [TestMethod]
       public void UpdateSourceForMappedMutableProperty() {
          CheckUpdateSource(
-            TestVM.Descriptor.MappedMutableProperty,
+            TestVM.ClassDescriptor.MappedMutableProperty,
             "New value",
             () => _source.MappedMutableValue
          );
@@ -88,7 +88,7 @@ namespace Inspiring.MvvmTest.ViewModels {
       [TestMethod]
       public void UpdateSourceForCalculatedMutableProperty() {
          CheckUpdateSource(
-            TestVM.Descriptor.CalculatedMutableProperty,
+            TestVM.ClassDescriptor.CalculatedMutableProperty,
             43,
             () => _source.CalculatedMutableValue
          );
@@ -97,19 +97,19 @@ namespace Inspiring.MvvmTest.ViewModels {
       //[TestMethod] // TODO
       public void UpdateSourceForLocalProperty() {
          AssertHelper.Throws<ArgumentException>(() =>
-             _vm.InvokeUpdateSource(TestVM.Descriptor.LocalProperty)
+             _vm.InvokeUpdateSource(TestVM.ClassDescriptor.LocalProperty)
          );
       }
 
       public void UpdateSourceForMappedVM() {
          AssertHelper.Throws<NotSupportedException>(() =>
-            _vm.InvokeUpdateSource(TestVM.Descriptor.MappedVMProperty)
+            _vm.InvokeUpdateSource(TestVM.ClassDescriptor.MappedVMProperty)
          );
       }
 
       public void UpdateSourceForMappedCollection() {
          AssertHelper.Throws<NotSupportedException>(() =>
-            _vm.InvokeUpdateSource(TestVM.Descriptor.MappedCollectionProperty)
+            _vm.InvokeUpdateSource(TestVM.ClassDescriptor.MappedCollectionProperty)
          );
       }
 

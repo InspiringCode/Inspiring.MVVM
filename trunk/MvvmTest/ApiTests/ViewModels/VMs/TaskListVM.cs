@@ -5,18 +5,18 @@
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
 
    public sealed class TaskListVM : ViewModel<TaskListVMDescriptor>, ICanInitializeFrom<IEnumerable<Task>> {
-      public static readonly TaskListVMDescriptor Descriptor = VMDescriptorBuilder
+      public static readonly TaskListVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<TaskListVMDescriptor>()
          .For<TaskListVM>()
          .WithProperties((d, c) => {
             var vm = c.GetPropertyBuilder();
 
-            d.Tasks = vm.Collection.Wraps(x => x.TasksSource).With<TaskVM>(TaskVM.Descriptor);
+            d.Tasks = vm.Collection.Wraps(x => x.TasksSource).With<TaskVM>(TaskVM.ClassDescriptor);
          })
          .Build();
 
       public TaskListVM()
-         : base(Descriptor) {
+         : base(ClassDescriptor) {
       }
 
       public IEnumerable<Task> TasksSource { get; private set; }

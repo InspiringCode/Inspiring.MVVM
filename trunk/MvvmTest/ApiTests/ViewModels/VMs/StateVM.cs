@@ -2,7 +2,7 @@
    using Inspiring.Mvvm.ViewModels;
 
    public sealed class StateVM : ViewModel<StateVMDescriptor> {
-      public static readonly StateVMDescriptor Descriptor = VMDescriptorBuilder
+      public static readonly StateVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<StateVMDescriptor>()
          .For<StateVM>()
          .WithProperties((d, c) => {
@@ -12,7 +12,7 @@
          .Build();
 
       public StateVM(string caption)
-         : base(Descriptor) {
+         : base(ClassDescriptor) {
          Caption = caption;
       }
 
