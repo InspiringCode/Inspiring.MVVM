@@ -45,5 +45,7 @@
       public static readonly BehaviorKey ViewModelFactory = new BehaviorKey("ViewModelFactory");
 
       public static readonly BehaviorKey DescendantValidator = new BehaviorKey("DescendantValidator");
+
+      public static readonly BehaviorKey ManualUpdateCoordinator = new BehaviorKey("ManualUpdateCoordinator");
    }
 }

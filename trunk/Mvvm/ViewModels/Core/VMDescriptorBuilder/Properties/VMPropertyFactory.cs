@@ -94,7 +94,13 @@
       //   return CreateProperty<TChildVM>(config);
       //}
 
-      public VMProperty<TChildVM> CreateViewModelProperty<TChildVM>(IValueAccessorBehavior<TChildVM> viewModelAccessor, IBehavior sourceAccessor = null, bool needsViewModelFactory = false, bool cachesValue = false) where TChildVM : IViewModel {
+      public VMProperty<TChildVM> CreateViewModelProperty<TChildVM>(
+         IValueAccessorBehavior<TChildVM> viewModelAccessor, 
+         IBehavior sourceAccessor = null,
+         IBehavior manualUpdateBehavior = null,
+         bool needsViewModelFactory = false, 
+         bool cachesValue = false
+      ) where TChildVM : IViewModel {
          BehaviorChainConfiguration config = GetBasicViewModelPropertyConfiguration<TChildVM>();
 
          config.Enable(BehaviorKeys.ViewModelAccessor, viewModelAccessor);
@@ -109,6 +115,10 @@
 
          if (sourceAccessor != null) {
             config.Enable(BehaviorKeys.SourceAccessor, sourceAccessor);
+         }
+
+         if (manualUpdateBehavior != null) {
+            config.Enable(BehaviorKeys.ManualUpdateBehavior, manualUpdateBehavior);
          }
 
          return CreateProperty<TChildVM>(config);

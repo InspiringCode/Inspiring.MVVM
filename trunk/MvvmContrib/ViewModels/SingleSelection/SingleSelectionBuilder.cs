@@ -70,14 +70,24 @@
             allSourceItemsPropertyFactory
          );
 
-         return _sourceObjectPropertyBuilder.VM.Custom(
+         var property = _sourceObjectPropertyBuilder.VM.Custom(
             viewModelAccessor: new SingleSelectionFactory<TItemVM>(descriptor, Filter)
          );
+
+         _sourceObjectPropertyBuilder
+            .Configuration
+            .PropertyConfigurations[property]
+            .Enable(
+               BehaviorKeys.ManualUpdateBehavior,
+               new ManualUpdateSelectionPropertyBehavior<SingleSelectionVM<TItemSource, TItemVM>, TSourceObject>()
+            );
+
+         return property;
       }
 
       public VMProperty<SingleSelectionVM<TItemSource>> WithCaption(
          Func<TItemSource, string> captionGetter
-      )  {
+      ) {
          Contract.Requires<ArgumentNullException>(captionGetter != null);
          Contract.Assert(SelectedSourceItemPropertyFactory != null);
 
@@ -104,11 +114,21 @@
             allSourceItemsPropertyFactory
          );
 
-         return _sourceObjectPropertyBuilder.VM.Custom(
+         var property = _sourceObjectPropertyBuilder.VM.Custom(
             viewModelAccessor: new SingleSelectionFactory(descriptor, Filter)
          );
+
+         _sourceObjectPropertyBuilder
+            .Configuration
+            .PropertyConfigurations[property]
+            .Enable(
+               BehaviorKeys.ManualUpdateBehavior,
+               new ManualUpdateSelectionPropertyBehavior<SingleSelectionVM<TItemSource, SelectionItemVM<TItemSource>>, TSourceObject>()
+            );
+
+         return property;
       }
-      
+
 
       /// <summary>
       ///   If no source for 'AllItems' was specified, all items are by default 

@@ -5,8 +5,8 @@
       IManualUpdateBehavior
       where TItemVM : IViewModel {
 
-      public void UpdateFromSource(IBehaviorContext context) {
-         this.UpdateFromSourceNext(context);
+      public void UpdatePropertyFromSource(IBehaviorContext context) {
+         this.UpdatePropertyFromSourceNext(context);
 
          var collection = this.GetValueNext<IVMCollection<TItemVM>>(context);
          var repopulationBehavior = this.GetNextBehavior<CollectionPopulatorBehavior<TItemVM>>();
@@ -14,8 +14,8 @@
          repopulationBehavior.Repopulate(context, collection);
       }
 
-      public void UpdateSource(IBehaviorContext context) {
-         this.UpdateSourceNext(context);
+      public void UpdatePropertySource(IBehaviorContext context) {
+         this.UpdatePropertySourceNext(context);
       }
    }
 }

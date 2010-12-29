@@ -129,6 +129,15 @@
          Kernel.UpdateFromSource(property);
       }
 
+      protected void UpdateSource() {
+         Kernel.UpdateSource();
+      }
+
+      protected void UpdateSource(VMPropertyBase property) {
+         Kernel.UpdateSource(property);
+      }
+
+
       object IViewModel.GetValue(IVMProperty property, ValueStage stage) {
          return property.GetValue(Kernel, stage);
       }

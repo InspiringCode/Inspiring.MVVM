@@ -55,7 +55,7 @@
          return _setter != ThrowingSetter;
       }
 
-      public void UpdateFromSource(IBehaviorContext context) {
+      public void UpdatePropertyFromSource(IBehaviorContext context) {
          var args = new ChangeArgs(
             ChangeType.PropertyChanged,
             changedVM: context.VM,
@@ -64,10 +64,10 @@
 
          context.NotifyChange(args);
 
-         this.UpdateFromSourceNext(context);
+         this.UpdatePropertyFromSourceNext(context);
       }
 
-      public void UpdateSource(IBehaviorContext vm) {
+      public void UpdatePropertySource(IBehaviorContext vm) {
          // Nothing to do
       }
    }

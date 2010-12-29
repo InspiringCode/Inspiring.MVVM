@@ -119,13 +119,44 @@
          }
       }
 
-      public static void UpdateFromSourceNext(
+      public static void UpdatePropertyFromSourceNext(
          this Behavior behavior,
          IBehaviorContext context
       ) {
          IManualUpdateBehavior next;
          if (behavior.TryGetBehavior(out next)) {
+            next.UpdatePropertyFromSource(context);
+         }
+      }
+
+      public static void UpdatePropertySourceNext(
+         this Behavior behavior,
+         IBehaviorContext context
+      ) {
+         IManualUpdateBehavior next;
+         if (behavior.TryGetBehavior(out next)) {
+            next.UpdatePropertySource(context);
+         }
+      }
+
+      public static void UpdateFromSourceNext(
+         this Behavior behavior,
+         IBehaviorContext context
+      ) {
+         IManualUpdateCoordinatorBehavior next;
+         if (behavior.TryGetBehavior(out next)) {
             next.UpdateFromSource(context);
+         }
+      }
+
+      public static void UpdateFromSourceNext(
+         this Behavior behavior,
+         IBehaviorContext context,
+         IVMProperty property
+      ) {
+         IManualUpdateCoordinatorBehavior next;
+         if (behavior.TryGetBehavior(out next)) {
+            next.UpdateFromSource(context, property);
          }
       }
 
@@ -133,9 +164,20 @@
          this Behavior behavior,
          IBehaviorContext context
       ) {
-         IManualUpdateBehavior next;
+         IManualUpdateCoordinatorBehavior next;
          if (behavior.TryGetBehavior(out next)) {
             next.UpdateSource(context);
+         }
+      }
+
+      public static void UpdateSourceNext(
+         this Behavior behavior,
+         IBehaviorContext context,
+         IVMProperty property
+      ) {
+         IManualUpdateCoordinatorBehavior next;
+         if (behavior.TryGetBehavior(out next)) {
+            next.UpdateSource(context, property);
          }
       }
 

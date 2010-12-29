@@ -8,7 +8,7 @@
          throw new NotImplementedException("Redesign this, propably inherit from CacheBehavior");
       }
 
-      public void UpdateFromSource(IBehaviorContext context) {
+      public void UpdatePropertyFromSource(IBehaviorContext context) {
          TValue oldValue = GetValue(context, ValueStage.PostValidation);
          CopyFromSource(context);
          TValue newValue = GetValue(context, ValueStage.PostValidation);
@@ -19,7 +19,7 @@
          }
       }
 
-      public void UpdateSource(IBehaviorContext vm) {
+      public void UpdatePropertySource(IBehaviorContext vm) {
          CopyToSource(vm);
       }
 

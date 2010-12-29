@@ -68,8 +68,8 @@
       private readonly IVMDescriptorBuilder _baseBuilder;
       private Action<TDescriptor, IVMPropertyBuilderProvider<TVM>> _propertyConfigurator;
       private Action<ValidatorBuilder<TVM, TDescriptor>> _validatorConfigurator;
-      private Action<IVMBehaviorBuilder<TDescriptor>> _behaviorConfigurator;
-      private Action<ViewModelBehaviorBuilder<TVM>> _viewModelBehaviorConfigurator;
+      private Action<IVMBehaviorBuilder<TVM, TDescriptor>> _behaviorConfigurator;
+      private Action<ViewModelBehaviorBuilder<TVM, TDescriptor>> _viewModelBehaviorConfigurator;
       private Action<IVMDependencyConfigurator<TDescriptor>> _dependencyConfigurator;
 
       internal VMDescriptorBuilder(IVMDescriptorBuilder baseBuilder) {
@@ -105,7 +105,7 @@
 
       /// <inheritdoc />
       public IVMDescriptorBuilderWithProperties<TDescriptor, TVM> WithBehaviors(
-         Action<IVMBehaviorBuilder<TDescriptor>> behaviorConfigurator
+         Action<IVMBehaviorBuilder<TVM, TDescriptor>> behaviorConfigurator
       ) {
          Contract.Requires<ArgumentNullException>(behaviorConfigurator != null);
          _behaviorConfigurator = behaviorConfigurator;
@@ -114,7 +114,7 @@
 
       /// <inheritdoc />
       public IVMDescriptorBuilderWithProperties<TDescriptor, TVM> WithViewModelBehaviors(
-         Action<ViewModelBehaviorBuilder<TVM>> behaviorConfigurator
+         Action<ViewModelBehaviorBuilder<TVM, TDescriptor>> behaviorConfigurator
       ) {
          Contract.Requires<ArgumentNullException>(behaviorConfigurator != null);
          _viewModelBehaviorConfigurator = behaviorConfigurator;
@@ -147,9 +147,9 @@
          }
 
          var propertyBuilderProvider = new VMPropertyBuilderProvider<TVM>(configuration);
-         var viewModeBehaviorBulider = new ViewModelBehaviorBuilder<TVM>(configuration);
+         var viewModeBehaviorBulider = new ViewModelBehaviorBuilder<TVM, TDescriptor>(configuration, descriptor);
          var validatorBuilder = new ValidatorBuilder<TVM, TDescriptor>(configuration, descriptor);
-         var behaviorBuilder = new VMBehaviorBuilder<TDescriptor>(configuration, descriptor);
+         var behaviorBuilder = new VMBehaviorBuilder<TVM, TDescriptor>(configuration, descriptor);
 
          _propertyConfigurator(descriptor, propertyBuilderProvider);
 

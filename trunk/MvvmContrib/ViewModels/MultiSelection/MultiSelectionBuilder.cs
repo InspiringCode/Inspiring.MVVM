@@ -70,9 +70,19 @@
             allSourceItemsPropertyFactory
          );
 
-         return _sourceObjectPropertyBuilder.VM.Custom(
+         var property = _sourceObjectPropertyBuilder.VM.Custom(
             viewModelAccessor: new MultSelectionAccessor<TItemVM>(descriptor, Filter)
          );
+
+         _sourceObjectPropertyBuilder
+            .Configuration
+            .PropertyConfigurations[property]
+            .Enable(
+               BehaviorKeys.ManualUpdateBehavior,
+               new ManualUpdateSelectionPropertyBehavior<MultiSelectionVM<TItemSource, TItemVM>, TSourceObject>()
+            );
+
+         return property;
       }
 
       public VMProperty<MultiSelectionVM<TItemSource>> WithCaption(
@@ -104,9 +114,19 @@
             allSourceItemsPropertyFactory
          );
 
-         return _sourceObjectPropertyBuilder.VM.Custom(
+         var property = _sourceObjectPropertyBuilder.VM.Custom(
             viewModelAccessor: new MultSelectionAccessor(descriptor, Filter)
          );
+
+         _sourceObjectPropertyBuilder
+            .Configuration
+            .PropertyConfigurations[property]
+            .Enable(
+               BehaviorKeys.ManualUpdateBehavior,
+               new ManualUpdateSelectionPropertyBehavior<MultiSelectionVM<TItemSource, SelectionItemVM<TItemSource>>, TSourceObject>()
+            );
+
+         return property;
       }
 
 

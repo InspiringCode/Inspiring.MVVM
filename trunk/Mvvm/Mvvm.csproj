@@ -113,6 +113,7 @@
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IValueAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IRevalidationBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IValidationStateProviderBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\ViewModelBehaviors\IManualUpdateCoordinatorBehavior.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorChain.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorChainConfiguration.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorChainConfigurationCollection.cs" />
@@ -145,6 +146,8 @@
     <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\RevalidationBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\ViewModelFactoryAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\ViewModelWithSourceAcessorBehavior.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\ViewModelBehaviors\ChangeListenerBehavior.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\ViewModelBehaviors\ManualUpdateCoordinatorBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertySelector.cs" />
     <Compile Include="ViewModels\Core\PropertyTypeHelper.cs" />
     <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\DescendantValidationBehavior.cs" />
@@ -333,7 +336,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ViewModels\Core\PropertyBehaviors\ViewModelBehaviors\" />
     <Folder Include="Views\TestDoubles\" />
   </ItemGroup>
   <ItemGroup>

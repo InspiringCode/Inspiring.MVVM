@@ -8,12 +8,12 @@ namespace Inspiring.Mvvm.ViewModels.Core {
 
       private VMPropertyBase<TValue> _property;
 
-      public void UpdateFromSource(IBehaviorContext vm) {
+      public void UpdatePropertyFromSource(IBehaviorContext vm) {
          throw new NotImplementedException("TODO2");
          //vm.RaisePropertyChanged(_property);
       }
 
-      public void UpdateSource(IBehaviorContext vm) {
+      public void UpdatePropertySource(IBehaviorContext vm) {
          // Nothing to do
       }
 

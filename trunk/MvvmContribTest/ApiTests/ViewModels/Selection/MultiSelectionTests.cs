@@ -7,6 +7,7 @@
    using Inspiring.MvvmTest.Stubs;
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
+   using System.ComponentModel;
 
    [TestClass]
    public class MultiSelectionTests : TestBase {
@@ -138,6 +139,39 @@
          AssertSelectedSourceItemsAreEqual(vm, new GroupVM[] { });
       }
 
+
+      [TestMethod]
+      public void UpdateFromSource_RaisesExpectedEvents() {
+         var allGroups = new List<Group> { Group1 };
+         var selectedGroups = new List<Group> { Group1 };
+         
+         UserVM vm = CreateUserVM(
+            allGroupsSelector: x => allGroups,
+            selectedGroupsSelector: x => selectedGroups
+         );
+
+         Assert.AreEqual(1, vm.Groups.SelectedItems.Count); // Trigger initial load
+
+         allGroups = new List<Group> { Group2 };
+         selectedGroups = new List<Group> { Group2 };
+
+         string eventSequence = "|";
+
+         vm.Groups.PropertyChanged += (_, e) => {
+            if (e.PropertyName == "SelectedItems") {
+               eventSequence += ("PropertyChanged" + "|");
+            }
+         };
+
+         ((IBindingList)vm.Groups.AllItems).ListChanged += (_, e) => {
+            eventSequence += ("ListChanged" + "|");
+         };
+
+         vm.UpdateGroupsFromSource();
+
+         Assert.AreEqual("|ListChanged|PropertyChanged|", eventSequence);
+      }
+
       /// <summary>
       ///   Asserts that the source groups of the 'AllItems' property of the
       ///   selection VM are equal to the given source items.
@@ -189,6 +223,7 @@
          Func<Group, bool> filter = null,
          Group[] allGroups = null,
          Func<User, IEnumerable<Group>> allGroupsSelector = null,
+         Func<User, ICollection<Group>> selectedGroupsSelector = null,
          params Group[] selectedGroups
       ) {
          if (allGroups != null && allGroupsSelector != null) {
@@ -203,7 +238,9 @@
             .WithProperties((d, c) => {
                var u = c.GetPropertyBuilder(x => x.UserSource);
 
-               var builder = u.MultiSelection(x => x.Groups);
+               var builder = selectedGroupsSelector != null ?
+                  u.MultiSelection(selectedGroupsSelector) :
+                  u.MultiSelection(x => x.Groups);
 
                if (filter != null) {
                   builder = builder.WithFilter(filter);

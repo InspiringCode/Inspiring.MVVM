@@ -25,6 +25,10 @@
       public SingleSelectionVM<Department, DepartmentVM> Department {
          get { return GetValue(DescriptorBase.Department); }
       }
+
+      public void UpdateGroupsFromSource() {
+         UpdateFromSource(DescriptorBase.Groups);
+      }
    }
 
    internal sealed class UserVMDescriptor : VMDescriptor {

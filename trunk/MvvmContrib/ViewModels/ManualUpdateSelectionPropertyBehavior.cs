@@ -1,10 +1,10 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core {
+﻿namespace Inspiring.Mvvm.ViewModels {
+   using Inspiring.Mvvm.ViewModels.Core;
 
-   // TODO: Does this really have to be public?
-   public sealed class ManualUpdateViewModelPropertyBehavior<TChildVM, TChildSource> :
+   internal sealed class ManualUpdateSelectionPropertyBehavior<TChildVM, TChildSource> :
       Behavior,
       IManualUpdateBehavior
-      where TChildVM : IViewModel, ICanInitializeFrom<TChildSource> {
+      where TChildVM : IViewModel {
 
       public void UpdatePropertyFromSource(IBehaviorContext context) {
          // Refreshes the source value cache if this is a disconnected property.
@@ -13,7 +13,9 @@
          TChildSource sourceValue = this.GetValueNext<TChildSource>(context);
          TChildVM vm = this.GetValueNext<TChildVM>(context);
 
-         vm.InitializeFrom(sourceValue);
+         var initializableVM = (ICanInitializeFrom<TChildSource>)vm;
+         initializableVM.InitializeFrom(sourceValue);
+
          vm.Kernel.UpdateFromSource();
       }
 

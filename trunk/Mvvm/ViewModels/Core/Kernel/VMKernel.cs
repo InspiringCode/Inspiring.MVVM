@@ -69,19 +69,19 @@
       }
 
       public void UpdateFromSource() {
-         throw new NotImplementedException();
-         //IManuelUpdateBehavior behavior;
-         //_descriptor
-         //   .Properties
-         //   .Where(x => x.Behaviors.TryGetBehavior(out behavior))
-         //   .ForEach(UpdateFromSource);
+         _descriptor.Behaviors.UpdateFromSourceNext(this);
       }
 
       public void UpdateFromSource(VMPropertyBase property) {
-         throw new NotImplementedException();
-         //property.Behaviors
-         //   .GetNextBehavior<IManuelUpdateBehavior>()
-         //   .UpdateFromSource(this);
+         _descriptor.Behaviors.UpdateFromSourceNext(this, property);
+      }
+
+      public void UpdateSource() {
+         _descriptor.Behaviors.UpdateSourceNext(this);
+      }
+
+      public void UpdateSource(VMPropertyBase property) {
+         _descriptor.Behaviors.UpdateSourceNext(this, property);
       }
 
       public void Revalidate(ValidationScope scope, ValidationMode mode) {
@@ -105,24 +105,6 @@
             .Behaviors
             .GetNextBehavior<ViewModelValidationBehavior>()
             .Validate(this);
-      }
-
-      // TODO: Test and refactor me.
-      protected void UpdateSource() {
-         throw new NotImplementedException();
-         //RequireDescriptor();
-         //IManuelUpdateBehavior behavior;
-         //_descriptor
-         //   .Properties
-         //   .Where(x => x.Behaviors.TryGetBehavior(out behavior))
-         //   .ForEach(UpdateFromSource);
-      }
-
-      protected void UpdateSource(VMPropertyBase property) {
-         throw new NotImplementedException();
-         //property.Behaviors
-         //   .GetNextBehavior<IManuelUpdateBehavior>()
-         //   .UpdateSource(this);
       }
 
       private void NotifyChange(ChangeArgs args, InstancePath changedPath) {

@@ -4,7 +4,7 @@
    /// <summary>
    ///   Implements a fluent interface to configure property behaviors.
    /// </summary>
-   public interface IVMBehaviorBuilder<TDescriptor> {
+   public interface IVMBehaviorBuilder<TVM, TDescriptor> {
       /// <summary>
       ///   Configures the <see cref="BehaviorChainConfiguration"/> of a single
       ///   property.
@@ -12,7 +12,7 @@
       /// <param name="propertySelector">
       ///   Selects the property which should be configured.
       /// </param>
-      ISinglePropertyBehaviorBuilder<TValue> For<TValue>(
+      ISinglePropertyBehaviorBuilder<TVM, TValue> For<TValue>(
          Func<TDescriptor, IVMProperty<TValue>> propertySelector
       );
    }

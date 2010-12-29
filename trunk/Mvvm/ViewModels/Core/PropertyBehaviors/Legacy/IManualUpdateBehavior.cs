@@ -5,8 +5,8 @@
    /// </summary>
    //[ContractClass(typeof(DisconnectedVMBehaviorContracts<>))]
    public interface IManualUpdateBehavior : IBehavior {
-      void UpdateFromSource(IBehaviorContext context);
-      void UpdateSource(IBehaviorContext context);
+      void UpdatePropertyFromSource(IBehaviorContext context);
+      void UpdatePropertySource(IBehaviorContext context);
    }
 
    //[ContractClassFor(typeof(ICacheValueBehavior<>))]

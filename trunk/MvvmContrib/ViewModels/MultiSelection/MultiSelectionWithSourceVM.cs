@@ -80,6 +80,21 @@
                   BehaviorKeys.DisplayValueAccessor,
                   new SettableListDisplayValueBehavior<TItemVM>()
                );
+
+               c.For(x => x.SelectedItems).AddChangeHandler((vm, args, path) => {
+                  vm.OnPropertyChanged("SelectedItems"); // HACK!
+               });
+            })
+            .WithViewModelBehaviors(b => {
+               b.OverrideUpdateFromSourceProperties(
+                  x => x.AllSourceItems,
+                  x => x.SelectedSourceItems,
+                  x => x.AllItems,
+                  x => x.SelectedItems
+               );
+               b.OverrideUpdateSourceProperties(
+                  x => x.SelectedSourceItems
+               );
             })
             .Build();
       }
@@ -155,6 +170,21 @@
                c.For(x => x.SelectedItems).Enable(
                   BehaviorKeys.DisplayValueAccessor,
                   new SettableListDisplayValueBehavior<SelectionItemVM<TItemSource>>()
+               );
+
+               c.For(x => x.SelectedItems).AddChangeHandler((vm, args, path) => {
+                  vm.OnPropertyChanged("SelectedItems"); // HACK!
+               });
+            })
+            .WithViewModelBehaviors(b => {
+               b.OverrideUpdateFromSourceProperties(
+                  x => x.AllSourceItems,
+                  x => x.SelectedSourceItems,
+                  x => x.AllItems,
+                  x => x.SelectedItems
+               );
+               b.OverrideUpdateSourceProperties(
+                  x => x.SelectedSourceItems // TODO: Is this enough? Rethink disconnected SelectionVMs...
                );
             })
             .Build();

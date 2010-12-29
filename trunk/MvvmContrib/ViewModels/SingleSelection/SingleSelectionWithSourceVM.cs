@@ -69,6 +69,17 @@
                   (vm, value) => vm.SelectedSourceItem = value.Source
                );
             })
+            .WithViewModelBehaviors(b => {
+               b.OverrideUpdateFromSourceProperties(
+                  x => x.AllSourceItems,
+                  x => x.SelectedSourceItem,
+                  x => x.AllItems,
+                  x => x.SelectedItem
+               );
+               b.OverrideUpdateSourceProperties(
+                  x => x.SelectedSourceItem
+               );
+            })
             //.WithBehaviors(c => {
             //   // This behavior ensures, that the 'SelectedItems' collection returns the same
             //   // VM instances (for the same source items) as the 'AllItems' collection.
@@ -147,6 +158,17 @@
                    vm => vm.AllItems.Single(i => Object.Equals(i.Source, vm.SelectedSourceItem)),
                    (vm, value) => vm.SelectedSourceItem = value.Source
                 );
+            })
+            .WithViewModelBehaviors(b => {
+               b.OverrideUpdateFromSourceProperties(
+                  x => x.AllSourceItems,
+                  x => x.SelectedSourceItem,
+                  x => x.AllItems,
+                  x => x.SelectedItem
+               );
+               b.OverrideUpdateSourceProperties(
+                  x => x.SelectedSourceItem
+               );
             })
             //.WithBehaviors(c => {
             //   // This behavior ensures, that the 'SelectedItems' collection returns the same

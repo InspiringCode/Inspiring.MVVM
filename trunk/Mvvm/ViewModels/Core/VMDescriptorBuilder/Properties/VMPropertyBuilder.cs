@@ -257,6 +257,7 @@
          VMProperty<TChildVM> IViewModelPropertyBuilderWithSource<TSourceValue>.With<TChildVM>() {
             return Factory.CreateViewModelProperty(
                viewModelAccessor: new ViewModelWithSourceAcessorBehavior<TChildVM, TSourceValue>(),
+               manualUpdateBehavior: new ManualUpdateViewModelPropertyBehavior<TChildVM, TSourceValue>(),
                sourceAccessor: _sourceValueAccessor,
                needsViewModelFactory: true,
                cachesValue: true
@@ -304,6 +305,18 @@
          return Factory.CreateViewModelProperty(
             viewModelAccessor: viewModelAccessor,
             sourceAccessor: GetSourceObjectAccessor(),
+            needsViewModelFactory: true,
+            cachesValue: true
+         );
+      }
+
+      VMProperty<TChildVM> IViewModelPropertyBuilder<TSourceObject>.Custom<TChildVM, TChildSource>(
+         IValueAccessorBehavior<TChildVM> viewModelAccessor
+      ) {
+         return Factory.CreateViewModelProperty(
+            viewModelAccessor: viewModelAccessor,
+            sourceAccessor: GetSourceObjectAccessor(),
+            manualUpdateBehavior: new ManualUpdateViewModelPropertyBehavior<TChildVM, TChildSource>(),
             needsViewModelFactory: true,
             cachesValue: true
          );

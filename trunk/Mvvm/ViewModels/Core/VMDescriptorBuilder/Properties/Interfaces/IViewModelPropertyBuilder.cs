@@ -90,6 +90,11 @@
       ) where TChildVM : IViewModel;
 
       //// TODO: Comment
+      VMProperty<TChildVM> Custom<TChildVM, TChildSource>(
+         IValueAccessorBehavior<TChildVM> viewModelAccessor
+      ) where TChildVM : IViewModel, ICanInitializeFrom<TChildSource>;
+
+      //// TODO: Comment
       //[EditorBrowsable(EditorBrowsableState.Never)]
       //VMProperty<TChildVM> Custom<TChildVM>(
       //   IViewModelFactoryBehavior<TChildVM> viewModelFactory

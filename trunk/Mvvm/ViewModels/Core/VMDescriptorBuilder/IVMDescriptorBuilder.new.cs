@@ -71,7 +71,7 @@
       ///   <see cref="IVMBehaviorBuilder"/> passed to the delegate.
       /// </param>
       IVMDescriptorBuilderWithProperties<TDescriptor, TVM> WithBehaviors(
-         Action<IVMBehaviorBuilder<TDescriptor>> behaviorConfigurator
+         Action<IVMBehaviorBuilder<TVM, TDescriptor>> behaviorConfigurator
       );
 
       /// <summary>
@@ -83,7 +83,7 @@
       ///   <see cref="IVMBehaviorBuilder"/> passed to the delegate.
       /// </param>
       IVMDescriptorBuilderWithProperties<TDescriptor, TVM> WithViewModelBehaviors(
-         Action<ViewModelBehaviorBuilder<TVM>> behaviorConfigurator
+         Action<ViewModelBehaviorBuilder<TVM, TDescriptor>> behaviorConfigurator
       );
 
       /// <summary>

@@ -30,7 +30,7 @@ using Inspiring.Mvvm.ViewModels.Core;
          SetSourceValue(ArbitraryString);
          Behavior.GetValue(Context, ValueStage.None);
          SetSourceValue(AnotherArbitraryString);
-         Behavior.UpdateFromSource(Context);
+         Behavior.UpdatePropertyFromSource(Context);
          var actualValue = Behavior.GetValue(Context, ValueStage.None);
 
          Assert.AreEqual(AnotherArbitraryString, actualValue);
@@ -39,7 +39,7 @@ using Inspiring.Mvvm.ViewModels.Core;
       [TestMethod]
       public void UpdateSource_UpdatesSource() {
          Behavior.SetValue(Context, ArbitraryString);
-         Behavior.UpdateSource(Context);
+         Behavior.UpdatePropertySource(Context);
 
          SourceAccessorMock.Verify(
             x => x.SetValue(It.IsAny<IBehaviorContext>(), ArbitraryString),

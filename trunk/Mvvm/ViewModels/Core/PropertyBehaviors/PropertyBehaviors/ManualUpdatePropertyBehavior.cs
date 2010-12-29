@@ -13,13 +13,14 @@
          SetInitialized();
       }
 
-      public void UpdateFromSource(IBehaviorContext context) {
+      public void UpdatePropertyFromSource(IBehaviorContext context) {
          RequireInitialized();
 
-         this.UpdateFromSourceNext(context);
+         this.UpdatePropertyFromSourceNext(context);
 
-         var validationBehavior = GetNextBehavior<IRevalidationBehavior>();
-         validationBehavior.Revalidate(context, ValidationMode.DiscardInvalidValues);
+         this.RevalidateNext(context, ValidationMode.DiscardInvalidValues);
+         //var validationBehavior = GetNextBehavior<IRevalidationBehavior>();
+         //validationBehavior.Revalidate(context, ValidationMode.DiscardInvalidValues);
 
          context.NotifyChange(
             new ChangeArgs(
@@ -30,9 +31,9 @@
          );
       }
 
-      public void UpdateSource(IBehaviorContext context) {
+      public void UpdatePropertySource(IBehaviorContext context) {
          RequireInitialized();
-         this.UpdateSourceNext(context);
+         this.UpdatePropertySourceNext(context);
       }
    }
 }

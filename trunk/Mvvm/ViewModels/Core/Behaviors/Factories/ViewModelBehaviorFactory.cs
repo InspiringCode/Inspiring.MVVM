@@ -15,6 +15,10 @@
             return new ViewModelValidationBehavior();
          }
 
+         if (key == BehaviorKeys.ManualUpdateCoordinator) {
+            return new ManualUpdateCoordinatorBehavior();
+         }
+
          if (key == BehaviorKeys.TypeDescriptor) {
             return new TypeDescriptorBehavior();
          }

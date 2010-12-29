@@ -17,6 +17,7 @@
          RegisterTemplate(
             BehaviorChainTemplateKeys.ViewModel,
             new BehaviorChainTemplate(ViewModelBehaviorFactory.Instance)
+               .Append(BehaviorKeys.ManualUpdateCoordinator)
                .Append(BehaviorKeys.Validator, DefaultBehaviorState.Disabled)
                .Append(BehaviorKeys.TypeDescriptor)
          );
