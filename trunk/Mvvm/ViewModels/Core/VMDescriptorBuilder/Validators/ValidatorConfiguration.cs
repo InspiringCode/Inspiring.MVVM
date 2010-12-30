@@ -56,7 +56,7 @@
          );
       }
 
-      public void AddViewModelValidator(Validator validator) {
+      public virtual void AddViewModelValidator(Validator validator) {
          Contract.Requires(validator != null);
 
          ValidationBehavior.AddValidator(
@@ -67,7 +67,7 @@
          );
       }
 
-      public void AddPropertyValidator(Validator validator) {
+      public virtual void AddPropertyValidator(Validator validator) {
          Contract.Requires(validator != null);
          Contract.Requires(TargetProperty != null);
 
@@ -79,7 +79,7 @@
          );
       }
 
-      public void AddDisplayValueValidator(Validator validator) {
+      public virtual void AddDisplayValueValidator(Validator validator) {
          Contract.Requires(validator != null);
          Contract.Requires(TargetProperty != null);
 

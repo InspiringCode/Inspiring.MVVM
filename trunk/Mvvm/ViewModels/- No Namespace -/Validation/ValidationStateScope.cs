@@ -3,6 +3,7 @@
       All,
       Self,
       Descendants,
-      ViewModelValidations
+      ViewModelValidationsOnly,
+      PropertiesOnly
    }
 }

@@ -11,6 +11,7 @@
       private FieldValueHolder _fieldValues;
 
       private ValidationState _viewModelValidationState = ValidationState.Valid;
+      private ValidationState _propertiesValidationState = ValidationState.Valid;
       private ValidationState _selfOnlyValidationState = ValidationState.Valid;
       private ValidationState _descendantsOnlyValidationState = ValidationState.Valid;
       private ValidationState _validationState = ValidationState.Valid;
@@ -73,8 +74,10 @@
                return _selfOnlyValidationState;
             case ValidationStateScope.Descendants:
                return _descendantsOnlyValidationState;
-            case ValidationStateScope.ViewModelValidations:
+            case ValidationStateScope.ViewModelValidationsOnly:
                return _viewModelValidationState;
+            case ValidationStateScope.PropertiesOnly:
+               return _propertiesValidationState;
             default:
                throw new NotSupportedException();
          }
@@ -146,6 +149,10 @@
                );
          }
 
+         if (args.ChangeType == ChangeType.ValidationStateChanged) {
+            UpdateValidationState();
+         }
+
          ViewModelBehavior behavior;
          if (_descriptor.Behaviors.TryGetBehavior(out behavior)) {
             if (selfChanged) {
@@ -155,10 +162,6 @@
             }
 
             behavior.OnChanged(this, args, changedPath);
-         }
-
-         if (args.ChangeType == ChangeType.ValidationStateChanged) {
-            UpdateValidationState();
          }
 
          if (Parent != null) {
@@ -192,13 +195,15 @@
       private void UpdateValidationState() {
          _viewModelValidationState = _descriptor.GetValidationState(this);
 
+         _propertiesValidationState = ValidationState.Join(
+            _descriptor
+               .Properties
+               .Select(x => x.GetValidationState(this))
+               .ToArray()
+         );
+
          _selfOnlyValidationState = ValidationState.Join(
-            ValidationState.Join(
-               _descriptor
-                  .Properties
-                  .Select(x => x.GetValidationState(this))
-                  .ToArray()
-            ),
+            _propertiesValidationState,
             _viewModelValidationState
          );
 

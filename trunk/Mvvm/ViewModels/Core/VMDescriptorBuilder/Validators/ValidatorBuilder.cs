@@ -84,6 +84,11 @@
             return base.ExtendTargetPath(selector);
          }
 
+         public override void AddViewModelValidator(Validator validator) {
+            EnableViewModelValidation();
+            base.AddViewModelValidator(validator);
+         }
+
          public void EnableValidationForAllProperties() {
             _descriptor
                .Properties
@@ -115,6 +120,7 @@
                .Enable(BehaviorKeys.Validator);
          }
 
+         // TODO: Should this really be public??
          private void EnableViewModelValidation() {
             _descriptorConfiguration
                .ViewModelConfiguration

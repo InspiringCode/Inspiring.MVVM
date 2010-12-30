@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Diagnostics.Contracts;
+   using Inspiring.Mvvm.Common;
 
    public class ValidatorBuilderBase<TVM, TDescriptor>
       where TVM : IViewModel
@@ -84,6 +85,36 @@
             .SetTargetProperty(PropertySelector.Create(itemPropertySelector));
 
          return new CollectionPropertyValidatorBuilder<TItemDescriptor, TItemValue>(config);
+      }
+
+      /// <summary>
+      ///   Defines a custom validator that is executed every time the VM or 
+      ///   any descendant VM changes.
+      /// </summary>
+      public void CheckViewModel(Action<TVM, ValidationArgs> validator) {
+         Configuration.AddViewModelValidator(new DelegateValidator(validator));
+      }
+
+      private sealed class DelegateValidator : Validator {
+         private Action<TVM, ValidationArgs> _validatorCallback;
+
+         public DelegateValidator(Action<TVM, ValidationArgs> validatorCallback) {
+            Contract.Requires(validatorCallback != null);
+            _validatorCallback = validatorCallback;
+         }
+
+         public override void Validate(ValidationArgs args) {
+            Contract.Assert(args.TargetProperty == null);
+
+            _validatorCallback((TVM)args.TargetVM, args);
+         }
+
+         public override string ToString() {
+            return String.Format(
+               "{{DelegateValidator: {0}}}",
+               DelegateUtils.GetFriendlyName(_validatorCallback)
+            );
+         }
       }
    }
 }

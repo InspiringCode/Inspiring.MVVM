@@ -112,30 +112,32 @@
          //});
       }
 
-      public static void PropagateChildErrors<TVM>(
-         this IValidationBuilder<TVM> builder,
+      public static void PropagateChildErrors<TVM, TDescriptor>(
+         this ValidatorBuilderBase<TVM, TDescriptor> builder,
          string errorMessage
-      ) where TVM : IViewModel {
-         throw new NotImplementedException();
-
-         //builder.ViewModelValidator((vm, args) => {
-         //   if (!vm.AreChildrenValid(validateGrandchildren: false)) {
-         //      args.AddError(errorMessage);
-         //   }
-         //});
+      )
+         where TVM : IViewModel
+         where TDescriptor : VMDescriptorBase {
+         builder.CheckViewModel((vm, args) => {
+            if (!vm.Kernel.GetValidationState(ValidationStateScope.Descendants).IsValid) {
+               args.Errors.Add(new ValidationError(errorMessage));
+            }
+         });
       }
 
       // TODO: Test me.
-      public static void ValidateProperties<TVM>(
-         this IValidationBuilder<TVM> builder,
+      public static void ValidateProperties<TVM, TDescriptor>(
+         this ValidatorBuilderBase<TVM, TDescriptor> builder,
          string errorMessage
-      ) where TVM : IViewModel {
-         throw new NotImplementedException();
-         //builder.ViewModelValidator((vm, args) => {
-         //   if (!vm.ArePropertiesValid(validateChildren: false)) {
-         //      args.AddError(errorMessage);
-         //   }
-         //});
+      )
+         where TVM : IViewModel
+         where TDescriptor : VMDescriptorBase {
+
+         builder.CheckViewModel((vm, args) => {
+            if (!vm.Kernel.GetValidationState(ValidationStateScope.PropertiesOnly).IsValid) {
+               args.Errors.Add(new ValidationError(errorMessage));
+            }
+         });
       }
 
       // TODO: Test me.

@@ -61,6 +61,9 @@
             return new IsLoadedIndicatorBehavior<TChildVM>();
          }
 
+         if (key == BehaviorKeys.PropertyChangedTrigger) {
+            return new PropertyChangedBehavior<TChildVM>();
+         }
 
          throw new NotSupportedException(
             ExceptionTexts.BehaviorNotSupportedByFactory.FormatWith(key)

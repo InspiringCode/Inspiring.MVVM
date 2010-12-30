@@ -95,7 +95,7 @@ namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
                   StringComparison.CurrentCultureIgnoreCase,
                   "Duplicate value"
                );
-               //c.PropagateChildErrors("Child invalid");
+               c.PropagateChildErrors("Child invalid");
             })
             .Build();
 

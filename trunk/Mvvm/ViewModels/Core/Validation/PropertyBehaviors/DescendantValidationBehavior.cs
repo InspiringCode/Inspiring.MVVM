@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
+   using System.Linq;
    using System.Collections;
    using System.Diagnostics.Contracts;
 
@@ -51,7 +52,8 @@
             if (_isViewModelProperty) {
                var childVM = (IViewModel)this.GetValueNext<TValue>(context, ValueStage.None); // TODO: What stage?
                if (childVM != null) {
-                  return childVM.Kernel.GetValidationState(ValidationStateScope.All);
+                  var state = childVM.Kernel.GetValidationState(ValidationStateScope.All);
+                  return state;
                }
             }
 
@@ -59,9 +61,13 @@
                var collection = (IEnumerable)this.GetValueNext<TValue>(context, ValueStage.None); // TODO: What stage?
 
                if (collection != null) {
-                  foreach (IViewModel childVM in collection) {
-                     childVM.Kernel.GetValidationState(ValidationStateScope.All);
-                  }
+                  var state = ValidationState.Join(
+                     collection
+                        .Cast<IViewModel>()
+                        .Select(x => x.Kernel.GetValidationState(ValidationStateScope.All))
+                        .ToArray()
+                  );
+                  return state;
                }
             }
          }

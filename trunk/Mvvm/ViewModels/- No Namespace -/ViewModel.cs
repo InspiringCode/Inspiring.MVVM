@@ -73,7 +73,7 @@
 
       string IDataErrorInfo.Error {
          get {
-            ValidationState state = Kernel.GetValidationState(ValidationStateScope.ViewModelValidations);
+            ValidationState state = Kernel.GetValidationState(ValidationStateScope.ViewModelValidationsOnly);
             return state.IsValid ?
                null :
                state.Errors.First().Message;

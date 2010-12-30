@@ -5,7 +5,10 @@
       IIsLoadedIndicatorBehavior {
 
       public bool IsLoaded(IBehaviorContext context) {
-         return GetNextBehavior<ValueCacheBehavior<TValue>>().HasCachedValue(context);
+         ValueCacheBehavior<TValue> cacheBehavior;
+         return TryGetBehavior(out cacheBehavior) ?
+            cacheBehavior.HasCachedValue(context) :
+            true;
       }
    }
 }

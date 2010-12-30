@@ -88,6 +88,7 @@
                .Append(BehaviorKeys.DescendantValidator)
 
                .Append(BehaviorKeys.IsLoadedIndicator)
+               .Append(BehaviorKeys.PropertyChangedTrigger)
                .Append(BehaviorKeys.ValueCache, DefaultBehaviorState.Disabled)
 
                .Append(BehaviorKeys.ParentInitializer)
