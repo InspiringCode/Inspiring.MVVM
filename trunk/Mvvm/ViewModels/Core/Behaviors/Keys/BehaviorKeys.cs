@@ -47,5 +47,7 @@
       public static readonly BehaviorKey DescendantValidator = new BehaviorKey("DescendantValidator");
 
       public static readonly BehaviorKey ManualUpdateCoordinator = new BehaviorKey("ManualUpdateCoordinator");
+
+      public static readonly BehaviorKey IsLoadedIndicator = new BehaviorKey("IsLoadedIndicator");
    }
 }

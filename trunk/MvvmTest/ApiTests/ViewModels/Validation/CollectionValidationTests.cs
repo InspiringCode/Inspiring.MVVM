@@ -112,12 +112,12 @@
                d.Projects = v.Collection.Of<ProjectVM>(ProjectVM.ClassDescriptor);
             })
             .WithValidators(c => {
-               c.CheckCollection(x => x.Projects, x => x.Title).Custom((value, values, args) => {
+               c.CheckCollection(x => x.Projects, x => x.Title).Custom<ProjectVM>((item, items, property, args) => {
                   var vm = (EmployeeVM)args.OwnerVM;
 
                   vm.ValueArgs.InvocationCount++;
-                  vm.ValueArgs.Item = value;
-                  vm.ValueArgs.Items = values;
+                  vm.ValueArgs.Item = item.GetValue(property);
+                  vm.ValueArgs.Items = items.Select(x => x.GetValue(property)).ToArray();
                   vm.ValueArgs.ValidationArgs = args;
                   vm.ValueArgs.TargetVMHistory.Add(args.TargetVM);
                });

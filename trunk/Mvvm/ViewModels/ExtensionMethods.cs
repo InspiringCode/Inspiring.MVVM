@@ -184,24 +184,56 @@
       public static void RevalidateNext(
          this Behavior behavior,
          IBehaviorContext context,
+         ValidationContext validationContext,
          ValidationMode mode
       ) {
          IRevalidationBehavior next;
          if (behavior.TryGetBehavior(out next)) {
-            next.Revalidate(context, mode);
+            next.Revalidate(context, validationContext, mode);
          }
       }
 
       public static void RevalidateDescendantsNext(
          this Behavior behavior,
          IBehaviorContext context,
+         ValidationContext validationContext,
          ValidationScope scope,
          ValidationMode mode
       ) {
          IDescendantValidationBehavior next;
          if (behavior.TryGetBehavior(out next)) {
-            next.RevalidateDescendants(context, scope, mode);
+            next.RevalidateDescendants(context, validationContext, scope, mode);
          }
+      }
+
+      public static ValidationState GetValidationStateNext(
+         this Behavior behavior,
+         IBehaviorContext context
+      ) {
+         IValidationStateProviderBehavior next;
+         return behavior.TryGetBehavior(out next) ?
+            next.GetValidationState(context) :
+            ValidationState.Valid;
+      }
+
+      public static ValidationState GetDescendantsValidationStateNext(
+         this Behavior behavior,
+         IBehaviorContext context
+      ) {
+         IValidationStateProviderBehavior next;
+         return behavior.TryGetBehavior(out next) ?
+            next.GetDescendantsValidationState(context) :
+            ValidationState.Valid;
+      }
+
+      public static bool IsLoadedNext(
+         this Behavior behavior,
+         IBehaviorContext context
+      ) {
+         IIsLoadedIndicatorBehavior next;
+         return behavior.TryGetBehavior(out next) ?
+            next.IsLoaded(context) :
+            true;
       }
    }
 }

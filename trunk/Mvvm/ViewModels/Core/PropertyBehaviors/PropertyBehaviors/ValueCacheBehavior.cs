@@ -20,7 +20,11 @@
          SetCache(context, value);
          this.SetValueNext(context, value);
       }
-      
+
+      public new bool HasCachedValue(IBehaviorContext context) {
+         return base.HasCachedValue(context);
+      }
+
       protected override FieldDefinitionGroup GetFieldGroup() {
          return ValueCacheGroup;
       }

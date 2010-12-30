@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
-   using System.Linq;
    using System.Text.RegularExpressions;
    using Inspiring.Mvvm.ViewModels.Core;
 
@@ -77,18 +76,40 @@
       //   });
       //}
 
-      public static void IsUnique<TItemVM>(
-         this CollectionPropertyValidatorBuilder<string> builder,
+      public static void IsUnique<TItemDescriptor>(
+         this CollectionPropertyValidatorBuilder<TItemDescriptor, string> builder,
          StringComparison comparisonType,
          string errorMessage
-      ) where TItemVM : IViewModel {
-         builder.Custom((value, values, args) => {
-            if (values.Count(val => String.Equals(val, value, comparisonType)) > 1) {
-               args.Errors.Add(new ValidationError(errorMessage));
+      ) where TItemDescriptor : VMDescriptorBase {
+         builder.Custom<ViewModel<TItemDescriptor>>((item, items, property, args) => {
+            bool isUnique = true;
+            string itemPropertyValue = item.GetValue(property);
+
+            foreach (ViewModel<TItemDescriptor> i in items) {
+               if (!Object.ReferenceEquals(i, item)) {
+                  if (String.Equals(i.GetValue(property), itemPropertyValue, comparisonType)) {
+                     isUnique = false;
+                     args.RevalidationQueue.Add(i);
+                  }
+
+                  if (!((IViewModel)i).Kernel.GetValidationState(ValidationStateScope.Self).IsValid) {
+                     args.RevalidationQueue.Add(i);
+                  }
+               }
             }
 
-            // TODO: Affects other items!!!
+            if (!isUnique) {
+               args.Errors.Add(new ValidationError(errorMessage));
+            }
          });
+
+         //builder.Custom((value, values, args) => {
+         //   if (values.Count(val => String.Equals(val, value, comparisonType)) > 1) {
+         //      args.Errors.Add(new ValidationError(errorMessage));
+         //   }
+
+         //   // TODO: Affects other items!!!
+         //});
       }
 
       public static void PropagateChildErrors<TVM>(
@@ -96,6 +117,7 @@
          string errorMessage
       ) where TVM : IViewModel {
          throw new NotImplementedException();
+
          //builder.ViewModelValidator((vm, args) => {
          //   if (!vm.AreChildrenValid(validateGrandchildren: false)) {
          //      args.AddError(errorMessage);

@@ -31,7 +31,7 @@
 
          [TestMethod]
          public void Validate_CallsViewModelValidating() {
-            _behavior.Validate(_ctx.Context);
+            Validate();
             Expect_NotifyValidating_WasCalledOnContext();
          }
 
@@ -41,7 +41,7 @@
             SetupInvalidPropertyValidationCallback();
 
             watcher.StartWatching();
-            _behavior.Validate(_ctx.Context);
+            Validate();
             watcher.ExpectOneValidationStateChangedInvocation();
          }
 
@@ -49,22 +49,22 @@
          public void Validate_ValidationStateChangesToValid_NotifyChangeIsCalled() {
             var watcher = new NotifyChangeWatcher(_ctx);
             SetupInvalidPropertyValidationCallback();
-            _behavior.Validate(_ctx.Context);
+            Validate();
             SetupValidPropertyValidationCallback();
 
             watcher.StartWatching();
-            _behavior.Validate(_ctx.Context);
+            Validate();
             watcher.ExpectOneValidationStateChangedInvocation();
          }
 
          [TestMethod]
          public void Validate_ValidationStateStaysValid_NotifyChangeIsNotCalled() {
             SetupValidPropertyValidationCallback();
-            _behavior.Validate(_ctx.Context);
+            Validate();
 
             var watcher = new NotifyChangeWatcher(_ctx);
             watcher.StartWatching();
-            _behavior.Validate(_ctx.Context);
+            Validate();
             watcher.ExepctNoInvocation();
          }
 
@@ -91,6 +91,12 @@
               .ContextMock
               .Setup(x => x.NotifyValidating(It.IsAny<ValidationArgs>()))
               .Callback<ValidationArgs>(args => args.Errors.Add(expectedError));
+         }
+         
+         private void Validate() {
+            ValidationContext.BeginValidation();
+            _behavior.Validate(_ctx.Context, ValidationContext.Current);
+            ValidationContext.CompleteValidation(ValidationMode.CommitValidValues);
          }
 
          private class NotifyChangeWatcher {
@@ -228,14 +234,18 @@
          }
 
          private static ValidationArgs CreateViewModelValidationArgs(IViewModel changedVM = null) {
+            ValidationContext.BeginValidation();
             return ValidationArgs.CreateViewModelValidationArgs(
+               ValidationContext.Current, // TODO
                validationState: new ValidationState(),
                changedPath: new InstancePath(changedVM ?? Mock<IViewModel>())
             );
          }
 
          private static ValidationArgs CreatePropertyValidationArgs(IVMProperty targetProperty, IViewModel changedVM = null) {
+            ValidationContext.BeginValidation();
             return ValidationArgs.CreatePropertyValidationArgs(
+               ValidationContext.Current, // TODO
                validationState: new ValidationState(),
                viewModel: changedVM ?? Mock<IViewModel>(),
                property: targetProperty

@@ -6,10 +6,11 @@
          this VMDescriptorBase descriptor,
          IBehaviorContext context
       ) {
-         return descriptor
-            .Behaviors
-            .GetNextBehavior<IValidationStateProviderBehavior>()
-            .GetValidationState(context);
+         ViewModelValidationBehavior behavior; // TODO: Interface?
+
+         return descriptor.Behaviors.TryGetBehavior(out behavior) ?
+            behavior.GetValidationState(context) :
+            ValidationState.Valid;
       }
    }
 }

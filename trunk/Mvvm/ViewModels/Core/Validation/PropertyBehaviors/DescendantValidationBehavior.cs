@@ -4,7 +4,8 @@
 
    internal sealed class DescendantValidationBehavior<TValue> :
       Behavior,
-      IDescendantValidationBehavior {
+      IDescendantValidationBehavior,
+      IValidationStateProviderBehavior {
 
       private readonly bool _isViewModelProperty;
       private readonly bool _isCollectionProperty;
@@ -19,13 +20,14 @@
 
       public void RevalidateDescendants(
          IBehaviorContext context,
+         ValidationContext validationContext,
          ValidationScope scope,
          ValidationMode mode
       ) {
          if (_isViewModelProperty) {
             var childVM = (IViewModel)this.GetValueNext<TValue>(context, ValueStage.None); // TODO: What stage?
             if (childVM != null) {
-               childVM.Kernel.Revalidate(scope, mode);
+               childVM.Kernel.Revalidate(validationContext, scope, mode);
             }
          }
 
@@ -34,10 +36,37 @@
 
             if (collection != null) {
                foreach (IViewModel childVM in collection) {
-                  childVM.Kernel.Revalidate(scope, mode);
+                  childVM.Kernel.Revalidate(validationContext, scope, mode);
                }
             }
          }
+      }
+
+      public ValidationState GetValidationState(IBehaviorContext context) {
+         return this.GetValidationStateNext(context);
+      }
+
+      public ValidationState GetDescendantsValidationState(IBehaviorContext context) {
+         if (this.IsLoadedNext(context)) {
+            if (_isViewModelProperty) {
+               var childVM = (IViewModel)this.GetValueNext<TValue>(context, ValueStage.None); // TODO: What stage?
+               if (childVM != null) {
+                  return childVM.Kernel.GetValidationState(ValidationStateScope.All);
+               }
+            }
+
+            if (_isCollectionProperty) {
+               var collection = (IEnumerable)this.GetValueNext<TValue>(context, ValueStage.None); // TODO: What stage?
+
+               if (collection != null) {
+                  foreach (IViewModel childVM in collection) {
+                     childVM.Kernel.GetValidationState(ValidationStateScope.All);
+                  }
+               }
+            }
+         }
+
+         return ValidationState.Valid;
       }
    }
 }

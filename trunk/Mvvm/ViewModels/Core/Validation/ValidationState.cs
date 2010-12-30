@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Diagnostics.Contracts;
+   using System.Linq;
    using Inspiring.Mvvm.Common;
 
    /// <summary>
@@ -43,6 +44,20 @@
          get {
             return Errors.Count == 0;
          }
+      }
+
+      /// <summary>
+      ///   Creates a new <see cref="ValidationState"/> that contains the errors 
+      ///   of all passed in states.
+      /// </summary>
+      public static ValidationState Join(params ValidationState[] states) {
+         var state = new ValidationState();
+
+         states
+            .SelectMany(x => x.Errors)
+            .ForEach(state.Errors.Add);
+
+         return state;
       }
 
       /// <summary>

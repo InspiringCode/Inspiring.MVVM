@@ -102,6 +102,7 @@
     <Compile Include="ServiceLocator.cs" />
     <Compile Include="ViewModels\- No Namespace -\Validation\ValidationMode.cs" />
     <Compile Include="ViewModels\- No Namespace -\Validation\ValidationScope.cs" />
+    <Compile Include="ViewModels\- No Namespace -\Validation\ValidationStateScope.cs" />
     <Compile Include="ViewModels\- No Namespace -\ValueStage.cs" />
     <Compile Include="ViewModels\- No Namespace -\ViewModel.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMDescriptorBuilder.new.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="ViewModels\Core\BehaviorInterfaces\CollectionBehaviors\IPopulatorCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\CollectionBehaviors\IModificationCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IDescendantValidationBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IIsLoadedIndicatorBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IValueAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IRevalidationBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IValidationStateProviderBehavior.cs" />
@@ -140,6 +142,7 @@
     <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionBehaviors\DelegatePopulatorCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\ParentSetterBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\DelegateViewModelFactory.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\IsLoadedIndicatorBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\ManualUpdateCollectionPropertyBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\ManualUpdatePropertyBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\ManualUpdateViewModelPropertyBehavior.cs" />
@@ -151,6 +154,7 @@
     <Compile Include="ViewModels\Core\PropertySelector.cs" />
     <Compile Include="ViewModels\Core\PropertyTypeHelper.cs" />
     <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\DescendantValidationBehavior.cs" />
+    <Compile Include="ViewModels\Core\Validation\RevalidationQueue.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\BehaviorConfigurationBuilder.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\BehaviorConfigurationDictionary.cs" />
     <Compile Include="ViewModels\Core\Behaviors\- Legacy -\BehaviorConfiguration.cs" />

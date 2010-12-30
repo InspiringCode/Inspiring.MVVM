@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
-using System.Collections;
 namespace Inspiring.Mvvm.ViewModels.Core {
 
    internal sealed class PropertyValidationBehavior<TValue> :
@@ -44,20 +43,24 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          }
       }
 
-      public void Revalidate(IBehaviorContext context, ValidationMode mode) {
+      public ValidationState GetDescendantsValidationState(IBehaviorContext context) {
+         return this.GetDescendantsValidationStateNext(context);
+      }
+
+      public void Revalidate(IBehaviorContext context, ValidationContext validationContext, ValidationMode mode) {
          switch (mode) {
             case ValidationMode.CommitValidValues:
                object displayValue = _property.GetValue(context, ValueStage.PreConversion);
                _property.SetValue(context, displayValue);
                break;
             case ValidationMode.DiscardInvalidValues:
-               Validate(context);
+               Validate(context, validationContext);
                break;
             default:
                throw new NotSupportedException();
          }
 
-         this.RevalidateNext(context, mode);
+         this.RevalidateNext(context, validationContext, mode);
       }
 
       internal ValidationState Validate(IBehaviorContext context, ValidationContext validationContext) {
@@ -66,6 +69,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          var newState = new ValidationState();
 
          var validationArgs = ValidationArgs.CreatePropertyValidationArgs(
+            validationContext,
             validationState: newState,
             viewModel: context.VM,
             property: _property
@@ -94,11 +98,15 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          return newState;
       }
 
-      internal ValidationState Validate(IBehaviorContext context) {
+      private ValidationState Validate(IBehaviorContext context) {
          Contract.Ensures(Contract.Result<ValidationState>() != null);
 
-         ValidationContext validationContext = new ValidationContext();
-         return Validate(context, validationContext);
+         ValidationContext.BeginValidation();
+         var result = Validate(context, ValidationContext.Current);
+         ValidationContext.CompleteValidation(ValidationMode.CommitValidValues);
+
+         return result;
       }
+
    }
 }

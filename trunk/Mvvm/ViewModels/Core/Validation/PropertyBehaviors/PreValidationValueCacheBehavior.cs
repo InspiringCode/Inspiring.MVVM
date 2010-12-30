@@ -50,18 +50,18 @@
          }
       }
 
-      public void Revalidate(IBehaviorContext context, ValidationMode mode) {
+      public void Revalidate(IBehaviorContext context, ValidationContext validationContext, ValidationMode mode) {
          RequireInitialized();
 
          if (mode == ValidationMode.DiscardInvalidValues && HasCachedValue(context)) {
             ClearCache(context);
 
-            this.RevalidateNext(context, mode);
+            this.RevalidateNext(context, validationContext, mode);
 
             var args = new ChangeArgs(ChangeType.PropertyChanged, context.VM, _property);
             context.NotifyChange(args);
          } else {
-            this.RevalidateNext(context, mode);
+            this.RevalidateNext(context, validationContext, mode);
          }
       }
 

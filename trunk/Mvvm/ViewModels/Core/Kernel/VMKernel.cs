@@ -2,12 +2,18 @@
    using System;
    using System.Collections;
    using System.Diagnostics.Contracts;
+   using System.Linq;
    using Inspiring.Mvvm.ViewModels;
 
    public sealed class VMKernel : IBehaviorContext {
       private readonly IViewModel _vm;
       private readonly VMDescriptorBase _descriptor;
       private FieldValueHolder _fieldValues;
+
+      private ValidationState _viewModelValidationState = ValidationState.Valid;
+      private ValidationState _selfOnlyValidationState = ValidationState.Valid;
+      private ValidationState _descendantsOnlyValidationState = ValidationState.Valid;
+      private ValidationState _validationState = ValidationState.Valid;
 
       public VMKernel(IViewModel vm, VMDescriptorBase descriptor, IServiceLocator serviceLocator) {
          Contract.Requires<ArgumentNullException>(vm != null);
@@ -59,13 +65,23 @@
          return forProperty.GetValidationState(this);
       }
 
-      public ValidationState GetValidationState() {
-         return _descriptor.GetValidationState(this);
+      public ValidationState GetValidationState(ValidationStateScope scope = ValidationStateScope.All) {
+         switch (scope) {
+            case ValidationStateScope.All:
+               return _validationState;
+            case ValidationStateScope.Self:
+               return _selfOnlyValidationState;
+            case ValidationStateScope.Descendants:
+               return _descendantsOnlyValidationState;
+            case ValidationStateScope.ViewModelValidations:
+               return _viewModelValidationState;
+            default:
+               throw new NotSupportedException();
+         }
       }
 
       public IVMProperty GetProperty(string propertyName) {
-         throw new NotImplementedException();
-         //return _descriptor.Properties[propertyName];
+         return _descriptor.Properties[propertyName];
       }
 
       public void UpdateFromSource() {
@@ -85,6 +101,16 @@
       }
 
       public void Revalidate(ValidationScope scope, ValidationMode mode) {
+         ValidationContext.BeginValidation();
+         Revalidate(ValidationContext.Current, scope, mode);
+         ValidationContext.CompleteValidation(mode);
+      }
+
+      internal void Revalidate(
+         ValidationContext validationContext,
+         ValidationScope scope,
+         ValidationMode mode
+      ) {
          if (scope == ValidationScope.SelfAndValidatedChildren) {
             throw new NotImplementedException("Still TODO");
          }
@@ -93,18 +119,18 @@
             foreach (IVMProperty property in _descriptor.Properties) {
                property
                   .Behaviors
-                  .RevalidateDescendantsNext(this, scope, mode);
+                  .RevalidateDescendantsNext(this, validationContext, scope, mode);
             }
          }
 
          foreach (IVMProperty property in _descriptor.Properties) {
-            property.Revalidate(this, mode);
+            property.Revalidate(this, validationContext, mode);
          }
 
          _descriptor
             .Behaviors
             .GetNextBehavior<ViewModelValidationBehavior>()
-            .Validate(this);
+            .Validate(this, validationContext);
       }
 
       private void NotifyChange(ChangeArgs args, InstancePath changedPath) {
@@ -131,15 +157,19 @@
             behavior.OnChanged(this, args, changedPath);
          }
 
+         if (args.ChangeType == ChangeType.ValidationStateChanged) {
+            UpdateValidationState();
+         }
+
          if (Parent != null) {
             Parent.Kernel.NotifyChange(args, changedPath);
          }
 
-         if (args.ChangeType == ChangeType.PropertyChanged) {
+         if (args.ChangeType == ChangeType.PropertyChanged && args.ChangedVM == _vm) {
             _vm.NotifyPropertyChanged(args.ChangedProperty);
          }
 
-         if (args.ChangeType == ChangeType.ValidationStateChanged) {
+         if (args.ChangeType == ChangeType.ValidationStateChanged && args.ChangedVM == _vm) {
             _vm.NotifyValidationStateChanged(args.ChangedProperty);
          }
       }
@@ -159,5 +189,30 @@
          }
       }
 
+      private void UpdateValidationState() {
+         _viewModelValidationState = _descriptor.GetValidationState(this);
+
+         _selfOnlyValidationState = ValidationState.Join(
+            ValidationState.Join(
+               _descriptor
+                  .Properties
+                  .Select(x => x.GetValidationState(this))
+                  .ToArray()
+            ),
+            _viewModelValidationState
+         );
+
+         _descendantsOnlyValidationState = ValidationState.Join(
+            _descriptor
+               .Properties
+               .Select(x => x.Behaviors.GetDescendantsValidationStateNext(this))
+               .ToArray()
+         );
+
+         _validationState = ValidationState.Join(
+            _selfOnlyValidationState,
+            _descendantsOnlyValidationState
+         );
+      }
    }
 }

@@ -25,10 +25,10 @@
             true;
       }
 
-      public static void Revalidate(this IVMProperty property, IBehaviorContext context, ValidationMode mode) {
+      public static void Revalidate(this IVMProperty property, IBehaviorContext context, ValidationContext validationContext, ValidationMode mode) {
          IRevalidationBehavior behavior;
          if (property.Behaviors.TryGetBehavior(out behavior)) {
-            behavior.Revalidate(context, mode);
+            behavior.Revalidate(context, validationContext, mode);
          }
       }
    }

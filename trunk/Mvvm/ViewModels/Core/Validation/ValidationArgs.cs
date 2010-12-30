@@ -32,6 +32,7 @@
    /// </remarks>
    public class ValidationArgs {
       private readonly ValidationType _validationType;
+      private readonly ValidationContext _validationContext;
       private readonly ValidationState _validationState;
       private readonly InstancePath _targetPath;
       private readonly IVMProperty _targetProperty;
@@ -40,6 +41,7 @@
 
       private ValidationArgs(
          ValidationType validationType,
+         ValidationContext validationContext,
          ValidationState validationState,
          InstancePath changedPath,
          IVMProperty changedProperty,
@@ -47,11 +49,13 @@
          InstancePath targetPath
       ) {
          Contract.Requires(validationState != null);
+         Contract.Requires(validationContext != null);
          Contract.Requires(targetPath != null);
          Contract.Requires(changedPath != null);
          Contract.Requires(!changedPath.IsEmpty);
 
          _validationType = validationType;
+         _validationContext = validationContext;
          _validationState = validationState;
          _targetPath = targetPath;
          _targetProperty = targetProperty;
@@ -140,6 +144,17 @@
       }
 
       /// <summary>
+      ///   Holds VMs that should be revalidated after the current validation
+      ///   process is complete.
+      /// </summary>
+      public RevalidationQueue RevalidationQueue {
+         get {
+            Contract.Ensures(Contract.Result<RevalidationQueue>() != null);
+            return _validationContext.RevalidationQueue;
+         }
+      }
+
+      /// <summary>
       ///   Gets what kind of value is being validated.
       /// </summary>
       internal ValidationType ValidationType {
@@ -161,9 +176,11 @@
       ///   The path to the VM that has changed and is causing the validation.
       /// </param>
       public static ValidationArgs CreateViewModelValidationArgs(
+         ValidationContext validationContext,
          ValidationState validationState,
          InstancePath changedPath
       ) {
+         Contract.Requires(validationContext != null);
          Contract.Requires(validationState != null);
          Contract.Requires(changedPath != null);
          Contract.Requires(!changedPath.IsEmpty);
@@ -176,6 +193,7 @@
 
          return new ValidationArgs(
             ValidationType.ViewModel,
+            validationContext,
             validationState,
             changedPath,
             changedProperty: null,
@@ -196,10 +214,12 @@
       ///   The path to the VM that has changed and is causing the validation.
       /// </param>
       public static ValidationArgs CreateViewModelValidationArgs(
+         ValidationContext validationContext,
          ValidationState validationState,
          InstancePath changedPath,
          IVMProperty changedProperty
       ) {
+         Contract.Requires(validationContext != null);
          Contract.Requires(validationState != null);
          Contract.Requires(changedPath != null);
          Contract.Requires(!changedPath.IsEmpty);
@@ -212,6 +232,7 @@
 
          return new ValidationArgs(
             ValidationType.ViewModel,
+            validationContext,
             validationState,
             changedPath,
             changedProperty,
@@ -240,10 +261,12 @@
       ///   The VM property that is about to change and that should be validated.
       /// </param>
       public static ValidationArgs CreatePropertyValidationArgs(
+         ValidationContext validationContext,
          ValidationState validationState,
          IViewModel viewModel,
          IVMProperty property
       ) {
+         Contract.Requires(validationContext != null);
          Contract.Requires(validationState != null);
          Contract.Requires(viewModel != null);
          Contract.Requires(property != null);
@@ -258,6 +281,7 @@
 
          return new ValidationArgs(
             ValidationType.PropertyValue,
+            validationContext,
             validationState,
             changedPath: viewModelPath,
             changedProperty: property,
@@ -280,6 +304,7 @@
       ///   The VM property that is about to change and that should be validated.
       /// </param>
       public static ValidationArgs CreateDisplayValueValidationArgs(
+         ValidationContext validationContext,
          ValidationState validationState,
          IViewModel viewModel,
          IVMProperty property
@@ -298,6 +323,7 @@
 
          return new ValidationArgs(
             ValidationType.PropertyDisplayValue,
+            validationContext,
             validationState,
             changedPath: viewModelPath,
             changedProperty: property,
@@ -319,6 +345,7 @@
 
          return new ValidationArgs(
             _validationType,
+            _validationContext,
             _validationState,
             changedPath: ChangedPath,
             changedProperty: ChangedProperty,

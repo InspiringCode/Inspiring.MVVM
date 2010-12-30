@@ -23,21 +23,30 @@
 
       protected class ViewModelBehaviorContextHelper {
          public ViewModelBehaviorContextHelper() {
-            var fields = new FieldDefinitionCollection();
+            //var fields = new FieldDefinitionCollection();
 
-            InitializationContext = new BehaviorInitializationContext(new VMDescriptorStub()); // Is this correct?
+            var descriptor = new VMDescriptorStub();
 
-            var fieldValues = new Lazy<FieldValueHolder>(() =>
-               fields.CreateValueHolder()
-            );
+            InitializationContext = new BehaviorInitializationContext(descriptor); // Is this correct?
+
+            //var fieldValues = new Lazy<FieldValueHolder>(() =>
+            //   fields.CreateValueHolder()
+            //);
+
+            VM = new ViewModelStub(descriptor);
+
+            IBehaviorContext ctx = VM.Kernel;
 
             ContextMock = new Mock<IBehaviorContext>();
             ContextMock
                .Setup(x => x.FieldValues)
-               .Returns(() => fieldValues.Value);
+               .Returns(ctx.FieldValues);
+
+            ContextMock
+               .Setup(x => x.VM)
+               .Returns(VM);
 
             Context = ContextMock.Object;
-            VM = Context.VM;
          }
 
          public IViewModel VM { get; private set; }

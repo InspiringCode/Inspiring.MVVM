@@ -3,6 +3,7 @@
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Moq;
+   using Inspiring.Mvvm.ViewModels;
 
    [TestClass]
    public class ValidationPropertyBehaviorTests : TestBase {
@@ -20,14 +21,15 @@
 
       [TestMethod]
       public void Validate_WithStateParameter_CallsPropertyValidating() {
-         _behavior.Validate(_ctx.Context, new ValidationContext());
+         ValidationContext.BeginValidation();
+         _behavior.Validate(_ctx.Context, ValidationContext.Current);
          AssertNotifyPropertyValidatingWasCalledOnContext();
 
       }
 
       [TestMethod]
       public void Validate_CallsPropertyValidating() {
-         _behavior.Validate(_ctx.Context);
+         Validate();
          AssertNotifyPropertyValidatingWasCalledOnContext();
       }
 
@@ -37,7 +39,7 @@
          SetupInvalidPropertyValidationCallback();
 
          watcher.StartWatching();
-         _behavior.Validate(_ctx.Context);
+         Validate();
          watcher.ExpectOneValidationStateChangedInvocation();
       }
 
@@ -45,22 +47,22 @@
       public void Validate_ValidationStateChangesToValid_NotifyChangeIsCalled() {
          var watcher = new NotifyChangeWatcher(_ctx);
          SetupInvalidPropertyValidationCallback();
-         _behavior.Validate(_ctx.Context);
+         Validate();
          SetupValidPropertyValidationCallback();
 
          watcher.StartWatching();
-         _behavior.Validate(_ctx.Context);
+         Validate();
          watcher.ExpectOneValidationStateChangedInvocation();
       }
 
       [TestMethod]
       public void Validate_ValidationStateStaysValid_NotifyChangeIsNotCalled() {
          SetupValidPropertyValidationCallback();
-         _behavior.Validate(_ctx.Context);
+         Validate();
 
          var watcher = new NotifyChangeWatcher(_ctx);
          watcher.StartWatching();
-         _behavior.Validate(_ctx.Context);
+         Validate();
          watcher.ExepctNoInvocation();
       }
 
@@ -76,7 +78,7 @@
 
       [TestMethod]
       public void GetValidationState_AfterValidateWithoutErrors_ReturnsValidState() {
-         _behavior.Validate(_ctx.Context);
+         Validate();
          var state = _behavior.GetValidationState(_ctx.Context);
          Assert.AreSame(ValidationState.Valid, state);
       }
@@ -86,7 +88,7 @@
          ValidationError expectedError = new ValidationError("Test");
          SetupInvalidPropertyValidationCallback(expectedError);
 
-         _behavior.Validate(_ctx.Context);
+         Validate();
          var state = _behavior.GetValidationState(_ctx.Context);
 
          CollectionAssert.AreEquivalent(
@@ -106,6 +108,12 @@
       }
 
       #endregion
+
+      private void Validate() {
+         ValidationContext.BeginValidation();
+         _behavior.Validate(_ctx.Context, ValidationContext.Current);
+         ValidationContext.CompleteValidation(ValidationMode.CommitValidValues);
+      }
 
       private void SetupValidPropertyValidationCallback() {
          _ctx

@@ -53,6 +53,7 @@
 
                .Append(BehaviorKeys.DescendantValidator)
 
+               .Append(BehaviorKeys.IsLoadedIndicator)
                .Append(BehaviorKeys.ValueCache)
                .Append(BehaviorKeys.CollectionPopulator, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(BehaviorKeys.CollectionFactory, DefaultBehaviorState.DisabledWithoutFactory)
@@ -86,6 +87,7 @@
 
                .Append(BehaviorKeys.DescendantValidator)
 
+               .Append(BehaviorKeys.IsLoadedIndicator)
                .Append(BehaviorKeys.ValueCache, DefaultBehaviorState.Disabled)
 
                .Append(BehaviorKeys.ParentInitializer)

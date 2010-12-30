@@ -91,6 +91,10 @@ namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
                d.Children = v.Collection.Wraps(x => x.Source).With<ChildVM>(ChildVM.ClassDescriptor);
             })
             .WithValidators(c => {
+               c.CheckCollection(x => x.Children, x => x.StringProperty).IsUnique(
+                  StringComparison.CurrentCultureIgnoreCase,
+                  "Duplicate value"
+               );
                //c.PropagateChildErrors("Child invalid");
             })
             .Build();
@@ -121,8 +125,8 @@ namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
                d.StringProperty = v.Property.Of<string>();
             })
             .WithValidators(c => {
-               //c.Check(x => x.StringProperty).HasValue("No value");
-               //c.Check(x => x.StringProperty).Length(4, "Max length {0}");
+               c.Check(x => x.StringProperty).HasValue("No value");
+               c.Check(x => x.StringProperty).Length(4, "Max length {0}");
             })
             .Build();
 

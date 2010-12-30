@@ -57,6 +57,11 @@
             return new DescendantValidationBehavior<TChildVM>();
          }
 
+         if (key == BehaviorKeys.IsLoadedIndicator) {
+            return new IsLoadedIndicatorBehavior<TChildVM>();
+         }
+
+
          throw new NotSupportedException(
             ExceptionTexts.BehaviorNotSupportedByFactory.FormatWith(key)
          );

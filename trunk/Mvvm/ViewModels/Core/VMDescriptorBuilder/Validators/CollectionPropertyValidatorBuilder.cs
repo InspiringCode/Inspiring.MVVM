@@ -1,12 +1,12 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Linq;
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.Common;
-   using System.Collections;
 
-   public sealed class CollectionPropertyValidatorBuilder<TItemValue> {
+   public sealed class CollectionPropertyValidatorBuilder<TItemDescriptor, TItemValue>
+      where TItemDescriptor : VMDescriptorBase {
+
       private ValidatorConfiguration _configuration;
 
       internal CollectionPropertyValidatorBuilder(ValidatorConfiguration configuration) {
@@ -27,28 +27,33 @@
       ///   new value of the changin property, the second argument contains the
       ///   property values of all collection items.
       /// </param>
-      public void Custom(Action<TItemValue, IEnumerable<TItemValue>, ValidationArgs> validator) {
+      public void Custom<TItemVM>(
+         Action<TItemVM, IEnumerable<TItemVM>, VMProperty<TItemValue>, ValidationArgs> validator
+       ) where TItemVM : ViewModel<TItemDescriptor> {
          Contract.Requires<ArgumentNullException>(validator != null);
-         _configuration.AddPropertyValidator(new DelegateValidator(validator));
+         _configuration.AddPropertyValidator(new DelegateValidator<TItemVM>(validator));
       }
 
-      private sealed class DelegateValidator : Validator {
-         private Action<TItemValue, IEnumerable<TItemValue>, ValidationArgs> _validatorCallback;
+      private sealed class DelegateValidator<TItemVM> : Validator {
+         private Action<TItemVM, IEnumerable<TItemVM>, VMProperty<TItemValue>, ValidationArgs> _validatorCallback;
 
-         public DelegateValidator(Action<TItemValue, IEnumerable<TItemValue>, ValidationArgs> validatorCallback) {
+         public DelegateValidator(Action<TItemVM, IEnumerable<TItemVM>, VMProperty<TItemValue>, ValidationArgs> validatorCallback) {
             Contract.Requires(validatorCallback != null);
             _validatorCallback = validatorCallback;
          }
 
          public override void Validate(ValidationArgs args) {
-            TItemValue value = (TItemValue)args.TargetVM.GetValue(args.TargetProperty);
-            IEnumerable<TItemValue> values = args
-               .TargetVM
-               .Kernel.OwnerCollection
-               .Cast<IViewModel>()
-               .Select(x => (TItemValue)x.GetValue(args.TargetProperty));
+            Contract.Assert(args.TargetProperty != null);
 
-            _validatorCallback(value, values, args);
+            var item = (TItemVM)args.TargetVM;
+            var items = (IEnumerable<TItemVM>)args
+               .TargetVM
+               .Kernel
+               .OwnerCollection;
+
+            var property = (VMProperty<TItemValue>)args.TargetProperty;
+
+            _validatorCallback(item, items, property, args);
          }
 
          public override string ToString() {

@@ -69,10 +69,10 @@
          }
       }
 
-      internal void Validate(IBehaviorContext context) {
+      internal void Validate(IBehaviorContext context, ValidationContext validationContext) {
          Validate(
             context,
-            new ValidationContext(),
+            validationContext,
             changedPath: new InstancePath(context.VM),
             changedProperty: null
          );
@@ -87,6 +87,7 @@
          ValidationState newState = new ValidationState();
 
          var validationArgs = ValidationArgs.CreateViewModelValidationArgs(
+            validationContext,
             validationState: newState,
             changedPath: changedPath,
             changedProperty: changedProperty
@@ -117,12 +118,16 @@
          ChangeArgs args,
          InstancePath changedPath
       ) {
+         ValidationContext.BeginValidation();
+
          Validate(
             context,
-            new ValidationContext(),
+            ValidationContext.Current,
             changedPath: changedPath,
             changedProperty: args.ChangedProperty
          );
+
+         ValidationContext.CompleteValidation(ValidationMode.CommitValidValues);
 
          base.OnChanged(context, args, changedPath);
       }
@@ -166,7 +171,7 @@
                   return;
                }
             }
-            
+
             Validator.Validate(args);
          }
       }

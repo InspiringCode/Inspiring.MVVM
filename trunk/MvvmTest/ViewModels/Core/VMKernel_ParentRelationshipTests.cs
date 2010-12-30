@@ -30,8 +30,9 @@
          var behaviorSpy = new OnValidatingSpy();
 
          var kernel = (IBehaviorContext)CreateKernel(withBehavior: behaviorSpy);
-
-         var args = ValidationArgs.CreateViewModelValidationArgs(new ValidationState(), new InstancePath(kernel.VM));
+         
+         ValidationContext.BeginValidation();
+         var args = ValidationArgs.CreateViewModelValidationArgs(ValidationContext.Current, new ValidationState(), new InstancePath(kernel.VM)); // TODO: Context
          kernel.NotifyValidating(args);
 
          Assert.AreEqual(1, behaviorSpy.IncovationCount, "Behavior was not called.");
@@ -83,7 +84,8 @@
          kernel.Parent = parentVM;
          parentKernel.Parent = grandParentVM;
 
-         var args = ValidationArgs.CreateViewModelValidationArgs(new ValidationState(), new InstancePath(kernelContext.VM));
+         ValidationContext.BeginValidation();
+         var args = ValidationArgs.CreateViewModelValidationArgs(ValidationContext.Current, new ValidationState(), new InstancePath(kernelContext.VM)); // TODO: Context
          kernelContext.NotifyValidating(args);
 
          Assert.AreEqual(1, parentSpy.IncovationCount, "Behavior of parent was not invoked.");
