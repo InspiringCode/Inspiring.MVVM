@@ -124,7 +124,6 @@
     <Compile Include="ViewModels\Core\PropertyBehaviors\ValidationBehaviorTest.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\TypeDescriptorServiceTests.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\VMPropertyDescriptorTests.cs" />
-    <Compile Include="ViewModels\- Legacy -\ViewModelValidatorHolderTests.cs" />
     <Compile Include="ViewModels\Core\Validation\PreValidationValueCacheBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationErrorCollectionTests.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationPropertyBehaviorTests.cs" />
@@ -170,7 +169,6 @@
     <Compile Include="ViewModels\PersonVM.cs" />
     <Compile Include="ViewModels\TypeDescriptorTest.cs" />
     <Compile Include="ViewModels\ViewModelsTest.cs" />
-    <Compile Include="ViewModels\ViewModelTest.cs" />
     <Compile Include="ViewModels\ViewModel_ParentChild.cs" />
     <Compile Include="ViewModels\VMCollectionPropertyTest.cs" />
     <Compile Include="ViewModels\Core\Builder\VMDescriptorBuilderTest.cs" />

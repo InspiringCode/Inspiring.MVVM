@@ -9,8 +9,6 @@
          var b = new TypeDescriptorBehavior();
          b.Initialize(new BehaviorInitializationContext(this));
          Behaviors.Successor = b;
-
-         RegisterService(new ViewModelValidatorHolder());
       }
 
       /// <summary>

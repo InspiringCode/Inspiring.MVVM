@@ -1,10 +1,9 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
    using System.Diagnostics.Contracts;
-   using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.ViewModels.Core;
 
-   public abstract class VMDescriptorBase : ServiceRegistry {
+   public abstract class VMDescriptorBase {
       private VMPropertyCollection _properties;
       private readonly FieldDefinitionCollection _fields;
 

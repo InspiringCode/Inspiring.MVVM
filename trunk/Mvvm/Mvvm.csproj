@@ -106,7 +106,6 @@
     <Compile Include="ViewModels\- No Namespace -\ValueStage.cs" />
     <Compile Include="ViewModels\- No Namespace -\ViewModel.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMDescriptorBuilder.new.cs" />
-    <Compile Include="ViewModels\- No Namespace -\VMPropertyBase.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\ICollectionFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\CollectionBehaviors\IPopulatorCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\CollectionBehaviors\IModificationCollectionBehavior.cs" />
@@ -172,7 +171,6 @@
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\Interfaces\IPopulatedCollectionPropertyBuilder.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\VMPropertyBuilder.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\VMPropertyFactory.cs" />
-    <Compile Include="ViewModels\Core\VMDescriptorBuilder\ValidationBuilder.cs" />
     <Compile Include="ViewModels\Core\CollectionModificationController.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\CollectionValidationBuilder.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\ChangeNotifierCollectionBehavior.cs" />
@@ -225,7 +223,6 @@
     <Compile Include="ViewModels\Core\Validation\ViewModelBehaviors\ViewModelValidationBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\ViewModelValidator.cs" />
     <Compile Include="ViewModels\Core\Validation\ViewModelValidationArgs.cs" />
-    <Compile Include="ViewModels\Core\- Legacy -\ViewModelValidatorHolder.cs" />
     <Compile Include="ViewModels\Core\ViewModelBehaviors\IViewModelBehaviorContext.cs" />
     <Compile Include="ViewModels\Core\ViewModelBehaviors\ViewModelBehavior.cs" />
     <Compile Include="ViewModels\Core\ViewModelExtensibility.cs" />
@@ -309,7 +306,6 @@
     <Compile Include="ViewModels\ViewModel.cs" />
     <Compile Include="ViewModels\VMCollection.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMDescriptor.cs" />
-    <Compile Include="ViewModels\- No Namespace -\VMDescriptorBuilder.cs" />
     <Compile Include="ViewModels\VMProperty.cs" />
     <Compile Include="Views\Binder\BinderBuildStep.cs" />
     <Compile Include="Views\Binder\BinderBuildStepRegistry.cs" />

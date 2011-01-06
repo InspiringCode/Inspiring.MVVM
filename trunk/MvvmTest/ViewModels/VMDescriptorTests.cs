@@ -27,36 +27,6 @@
       }
 
       [TestMethod]
-      public void GetService_TypeDescriptorService_ReturnsSameInstanceTwice() {
-         var descriptor = new EmptyDescriptor();
-         var first = descriptor.GetService<TypeDescriptorBehavior>();
-         var second = descriptor.GetService<TypeDescriptorBehavior>();
-
-         Assert.IsNotNull(first);
-         Assert.AreSame(first, second);
-      }
-
-      [TestMethod]
-      public void GetService_ViewModelValidatorHolder_ReturnsSameInstanceTwice() {
-         var descriptor = new EmptyDescriptor();
-         var first = descriptor.GetService<ViewModelValidatorHolder>();
-         var second = descriptor.GetService<ViewModelValidatorHolder>();
-
-         Assert.IsNotNull(first);
-         Assert.AreSame(first, second);
-      }
-
-      [TestMethod]
-      public void GetService_FieldDefinitionCollection_ReturnsSameInstanceTwice() {
-         var descriptor = new EmptyDescriptor();
-         var first = descriptor.GetService<FieldDefinitionCollection>();
-         var second = descriptor.GetService<FieldDefinitionCollection>();
-
-         Assert.IsNotNull(first);
-         Assert.AreSame(first, second);
-      }
-
-      [TestMethod]
       public void InitializePropertyNames_SimpleProperty_PropertyNameIsAssigned() {
          var descriptor = new TestDescriptor() {
             SimpleProperty = new VMProperty<string>()

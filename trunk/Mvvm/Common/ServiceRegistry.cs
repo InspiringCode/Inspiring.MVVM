@@ -5,6 +5,7 @@
    /// <summary>
    ///   A simple dictionary of Type to instance mappings.
    /// </summary>
+   [Obsolete("Does anybody need this anymore?")]
    public class ServiceRegistry {
       private Dictionary<Type, object> _instances;
 
