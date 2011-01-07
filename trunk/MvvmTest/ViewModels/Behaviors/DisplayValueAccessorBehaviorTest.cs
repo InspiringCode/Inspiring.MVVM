@@ -88,7 +88,7 @@
       private class InnerAccessor : IValueAccessorBehavior<int> {
          public int Value { get; set; }
 
-         public int GetValue(IBehaviorContext vm, ValueStage stage) {
+         public int GetValue(IBehaviorContext vm) {
             return Value;
          }
 

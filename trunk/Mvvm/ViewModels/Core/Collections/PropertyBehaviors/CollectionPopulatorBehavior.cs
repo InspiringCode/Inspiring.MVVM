@@ -7,7 +7,7 @@
       IMutabilityCheckerBehavior
       where TItemVM : IViewModel {
 
-      public IVMCollection<TItemVM> GetValue(IBehaviorContext context, ValueStage stage) {
+      public IVMCollection<TItemVM> GetValue(IBehaviorContext context) {
          var coll = CreateCollection(context);
          Repopulate(context, coll);
          return coll;
@@ -32,7 +32,7 @@
       }
 
       private IVMCollection<TItemVM> CreateCollection(IBehaviorContext context) {
-         return this.GetValueNext<IVMCollection<TItemVM>>(context, ValueStage.PostValidation);
+         return this.GetValueNext<IVMCollection<TItemVM>>(context);
       }
    }
 }

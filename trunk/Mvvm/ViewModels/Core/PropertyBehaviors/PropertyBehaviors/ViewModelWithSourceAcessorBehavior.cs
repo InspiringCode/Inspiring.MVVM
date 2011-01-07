@@ -4,7 +4,7 @@
       Behavior, IValueAccessorBehavior<TVM>
       where TVM : IViewModel, ICanInitializeFrom<TSource> {
 
-      public TVM GetValue(IBehaviorContext context, ValueStage stage) {
+      public TVM GetValue(IBehaviorContext context) {
          var factory = GetNextBehavior<IViewModelFactoryBehavior<TVM>>();
 
          TVM instance = factory.CreateInstance(context);

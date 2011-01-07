@@ -12,7 +12,7 @@
 
       private FieldDefinition<TValue> _backingField;
 
-      public TValue GetValue(IBehaviorContext vm, ValueStage stage) {
+      public TValue GetValue(IBehaviorContext vm) {
          return vm.FieldValues.GetValueOrDefault(_backingField);
       }
 

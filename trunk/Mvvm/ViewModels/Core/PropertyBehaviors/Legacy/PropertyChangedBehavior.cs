@@ -8,15 +8,15 @@
 
       private IVMProperty _property;
 
-      public TValue GetValue(IBehaviorContext vm, ValueStage stage) {
+      public TValue GetValue(IBehaviorContext vm) {
          RequireInitialized();
-         return GetNextBehavior<IValueAccessorBehavior<TValue>>().GetValue(vm, stage);
+         return GetNextBehavior<IValueAccessorBehavior<TValue>>().GetValue(vm);
       }
 
       public void SetValue(IBehaviorContext context, TValue value) {
          RequireInitialized();
 
-         TValue oldValue = GetValue(context, ValueStage.PostValidation);
+         TValue oldValue = GetValue(context);
          GetNextBehavior<IValueAccessorBehavior<TValue>>().SetValue(context, value);
 
          if (!Object.Equals(value, oldValue)) {

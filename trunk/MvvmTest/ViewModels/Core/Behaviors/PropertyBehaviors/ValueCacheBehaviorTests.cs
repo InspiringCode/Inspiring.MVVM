@@ -26,7 +26,7 @@
       [TestMethod]
       public void GetValue_Initially_ReturnsSourceValue() {
          SetSourceValue(ArbitraryString);
-         var actualValue = Behavior.GetValue(Context, ValueStage.None);
+         var actualValue = Behavior.GetValue(Context);
 
          Assert.AreEqual(ArbitraryString, actualValue);
       }
@@ -34,10 +34,10 @@
       [TestMethod]
       public void GetValue_SecondTime_ReturnsCachedValue() {
          SetSourceValue(ArbitraryString);
-         Behavior.GetValue(Context, ValueStage.None);
+         Behavior.GetValue(Context);
          SetSourceValue(AnotherArbitraryString);
 
-         var actualValue = Behavior.GetValue(Context, ValueStage.None);
+         var actualValue = Behavior.GetValue(Context);
 
          Assert.AreEqual(ArbitraryString, actualValue);
       }
@@ -55,7 +55,7 @@
 
       private void SetSourceValue(string value) {
          SourceAccessorMock.Setup(
-            x => x.GetValue(It.IsAny<IBehaviorContext>(), It.IsAny<ValueStage>())
+            x => x.GetValue(It.IsAny<IBehaviorContext>())
          )
          .Returns(value);
       }

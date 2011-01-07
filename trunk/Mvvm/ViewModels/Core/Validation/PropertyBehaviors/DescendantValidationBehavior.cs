@@ -1,7 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
-   using System.Linq;
    using System.Collections;
    using System.Diagnostics.Contracts;
+   using System.Linq;
 
    internal sealed class DescendantValidationBehavior<TValue> :
       Behavior,
@@ -26,14 +26,14 @@
          ValidationMode mode
       ) {
          if (_isViewModelProperty) {
-            var childVM = (IViewModel)this.GetValueNext<TValue>(context, ValueStage.None); // TODO: What stage?
+            var childVM = (IViewModel)this.GetValueNext<TValue>(context); // TODO: What stage?
             if (childVM != null) {
                childVM.Kernel.Revalidate(validationContext, scope, mode);
             }
          }
 
          if (_isCollectionProperty) {
-            var collection = (IEnumerable)this.GetValueNext<TValue>(context, ValueStage.None); // TODO: What stage?
+            var collection = (IEnumerable)this.GetValueNext<TValue>(context); // TODO: What stage?
 
             if (collection != null) {
                foreach (IViewModel childVM in collection) {
@@ -50,7 +50,7 @@
       public ValidationState GetDescendantsValidationState(IBehaviorContext context) {
          if (this.IsLoadedNext(context)) {
             if (_isViewModelProperty) {
-               var childVM = (IViewModel)this.GetValueNext<TValue>(context, ValueStage.None); // TODO: What stage?
+               var childVM = (IViewModel)this.GetValueNext<TValue>(context); // TODO: What stage?
                if (childVM != null) {
                   var state = childVM.Kernel.GetValidationState(ValidationStateScope.All);
                   return state;
@@ -58,7 +58,7 @@
             }
 
             if (_isCollectionProperty) {
-               var collection = (IEnumerable)this.GetValueNext<TValue>(context, ValueStage.None); // TODO: What stage?
+               var collection = (IEnumerable)this.GetValueNext<TValue>(context); // TODO: What stage?
 
                if (collection != null) {
                   var state = ValidationState.Join(

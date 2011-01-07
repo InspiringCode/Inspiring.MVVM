@@ -156,8 +156,8 @@
             _filter = filter;
          }
 
-         public SingleSelectionVM<TItemSource, TItemVM> GetValue(IBehaviorContext context, ValueStage stage = ValueStage.PreValidation) {
-            TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context, ValueStage.None);
+         public SingleSelectionVM<TItemSource, TItemVM> GetValue(IBehaviorContext context) {
+            TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context);
 
             var vm = new SingleSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>(
                _descriptor,
@@ -187,8 +187,8 @@
             _filter = filter;
          }
 
-         public SingleSelectionVM<TItemSource> GetValue(IBehaviorContext context, ValueStage stage = ValueStage.PreValidation) {
-            TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context, ValueStage.None);
+         public SingleSelectionVM<TItemSource> GetValue(IBehaviorContext context) {
+            TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context);
 
             var vm = new SingleSelectionWithSourceVM<TSourceObject, TItemSource>(
                _descriptor,
@@ -210,7 +210,7 @@
          Behavior,
          IValueAccessorBehavior<IEnumerable<TItemSource>> {
 
-         public IEnumerable<TItemSource> GetValue(IBehaviorContext context, ValueStage stage) {
+         public IEnumerable<TItemSource> GetValue(IBehaviorContext context) {
             // TODO: Better error message
             return context.ServiceLocator.GetInstance<IEnumerable<TItemSource>>();
          }

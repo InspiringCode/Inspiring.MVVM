@@ -15,7 +15,7 @@
          var stub = new Mock<IValueAccessorBehavior<IEnumerable<ItemSource>>>(MockBehavior.Strict);
 
          stub
-            .Setup(x => x.GetValue(It.IsAny<IBehaviorContext>(), It.IsAny<ValueStage>()))
+            .Setup(x => x.GetValue(It.IsAny<IBehaviorContext>()))
             .Returns(sourceItems);
 
          stub.SetupAllProperties();

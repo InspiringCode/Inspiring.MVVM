@@ -64,7 +64,7 @@
       }
 
       private IVMCollection<TItemVM> GetTargetCollection(IBehaviorContext context) {
-         return this.GetValueNext<IVMCollection<TItemVM>>(context, ValueStage.None);
+         return this.GetValueNext<IVMCollection<TItemVM>>(context);
       }
    }
 }

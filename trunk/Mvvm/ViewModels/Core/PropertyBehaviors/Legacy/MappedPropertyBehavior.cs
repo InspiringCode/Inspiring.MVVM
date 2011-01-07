@@ -22,7 +22,7 @@
          _path = path;
       }
 
-      public TValue GetValue(IBehaviorContext vm, ValueStage stage) {
+      public TValue GetValue(IBehaviorContext vm) {
          return _path.GetValue((TVM)vm.VM);
       }
 

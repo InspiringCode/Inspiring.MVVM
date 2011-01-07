@@ -18,8 +18,7 @@
       }
 
       public void Repopulate(IBehaviorContext context, IVMCollection<TItemVM> collection) {
-         TSourceObject sourceObject = GetNextBehavior<IValueAccessorBehavior<TSourceObject>>()
-            .GetValue(context, ValueStage.PostValidation);
+         TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context);
 
          IEnumerable<TItemVM> items = _customItemProvider(sourceObject);
 

@@ -67,7 +67,7 @@
 
          var sourceAccessorStub = new Mock<IValueAccessorBehavior<IEnumerable<Project>>>();
          sourceAccessorStub
-            .Setup(x => x.GetValue(It.IsAny<IBehaviorContext>(), It.IsAny<ValueStage>()))
+            .Setup(x => x.GetValue(It.IsAny<IBehaviorContext>()))
             .Returns(sourceObjectCollection ?? Enumerable.Empty<Project>());
 
          behavior.Successor = sourceAccessorStub.Object;

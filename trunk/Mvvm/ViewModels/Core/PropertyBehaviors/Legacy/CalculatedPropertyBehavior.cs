@@ -41,7 +41,7 @@
          this.InitializeNext(context);
       }
 
-      public TValue GetValue(IBehaviorContext context, ValueStage stage) {
+      public TValue GetValue(IBehaviorContext context) {
          var sourceObject = _sourceObjectPath.GetValue((TVM)context.VM);
          return _getter(sourceObject);
       }

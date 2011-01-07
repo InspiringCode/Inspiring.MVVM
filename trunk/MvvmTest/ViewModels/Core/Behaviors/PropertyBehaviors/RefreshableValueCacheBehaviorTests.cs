@@ -28,10 +28,10 @@ using Inspiring.Mvvm.ViewModels.Core;
       [TestMethod]
       public void UpdateFromSource_UpdatesCache() {
          SetSourceValue(ArbitraryString);
-         Behavior.GetValue(Context, ValueStage.None);
+         Behavior.GetValue(Context);
          SetSourceValue(AnotherArbitraryString);
          Behavior.UpdatePropertyFromSource(Context);
-         var actualValue = Behavior.GetValue(Context, ValueStage.None);
+         var actualValue = Behavior.GetValue(Context);
 
          Assert.AreEqual(AnotherArbitraryString, actualValue);
       }
@@ -49,7 +49,7 @@ using Inspiring.Mvvm.ViewModels.Core;
 
       private void SetSourceValue(string value) {
          SourceAccessorMock.Setup(
-            x => x.GetValue(It.IsAny<IBehaviorContext>(), It.IsAny<ValueStage>())
+            x => x.GetValue(It.IsAny<IBehaviorContext>())
          )
          .Returns(value);
       }

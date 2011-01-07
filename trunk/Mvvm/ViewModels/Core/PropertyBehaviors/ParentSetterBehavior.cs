@@ -20,8 +20,8 @@
       }
 
       /// <inheritdoc />
-      public TValue GetValue(IBehaviorContext context, ValueStage stage = ValueStage.PreValidation) {
-         TValue childVM = this.GetValueNext<TValue>(context, stage);
+      public TValue GetValue(IBehaviorContext context) {
+         TValue childVM = this.GetValueNext<TValue>(context);
 
          if (_setParentOnGetValue && childVM != null && childVM.Kernel.Parent == null) {
             childVM.Kernel.Parent = context.VM;

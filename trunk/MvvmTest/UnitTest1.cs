@@ -2,9 +2,7 @@
 using System.ComponentModel;
 using Inspiring.Mvvm;
 using Inspiring.Mvvm.ViewModels;
-using Inspiring.Mvvm.ViewModels.__No_Namespace__;
 using Inspiring.Mvvm.ViewModels.Core;
-using Inspiring.Mvvm.ViewModels.Core.VMDescriptorBuilder;
 using Inspiring.Mvvm.ViewModels.Fluent;
 using Inspiring.MvvmTest.Stubs;
 using Inspiring.MvvmTest.ViewModels;

@@ -15,7 +15,7 @@
          _canExecute = canExecute;
       }
 
-      public ICommand GetValue(IBehaviorContext vm, ValueStage stage) {
+      public ICommand GetValue(IBehaviorContext vm) {
          // TODO: Is there a better way that has less overhead?
          TSource source = GetSourceObject(vm);
 
@@ -31,11 +31,12 @@
          throw new NotSupportedException();
       }
 
-      private TSource GetSourceObject(IBehaviorContext vm) {
+      private TSource GetSourceObject(IBehaviorContext context) {
+         // TODO: Why is there a specail case?
          IValueAccessorBehavior<TSource> sourceAccessor;
          return TryGetBehavior(out sourceAccessor) ?
-            sourceAccessor.GetValue(vm, ValueStage.PostValidation) :
-            (TSource)vm;
+            sourceAccessor.GetValue(context) :
+            (TSource)context;
       }
    }
 }

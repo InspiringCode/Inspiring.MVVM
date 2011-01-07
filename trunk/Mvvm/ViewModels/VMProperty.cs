@@ -46,8 +46,6 @@
          }
       }
 
-      internal abstract void Revalidate(IBehaviorContext context);
-
       //internal ValidationResult GetValidationResult(IBehaviorContext context) {
       //   IValidationBehavior validationBehavior;
       //   if (Behaviors.TryGetBehavior(out validationBehavior)) {
@@ -66,8 +64,13 @@
       //}
 
 
-      object IVMProperty.GetValue(IBehaviorContext context, ValueStage stage) {
-         return GetValueCore(context, stage);
+      object IVMProperty.GetValue(IBehaviorContext context) {
+         return GetValueCore(context);
+      }
+
+
+      object IVMProperty.GetDisplayValue(IBehaviorContext context) {
+         return GetDisplayValue(context);
       }
 
       void IVMProperty.SetValue(IBehaviorContext context, object value) {
@@ -90,9 +93,11 @@
             .SetDisplayValue(context, value);
       }
 
-      protected abstract object GetValueCore(IBehaviorContext context, ValueStage stage);
+      protected abstract object GetValueCore(IBehaviorContext context);
 
       protected abstract void SetValueCore(IBehaviorContext context, object value);
+
+
    }
 
    public abstract class VMPropertyBase<T> : VMPropertyBase, IVMProperty<T> {
@@ -107,12 +112,12 @@
       //   //((IBehavior)Behaviors).Initialize(new BehaviorInitializationContext(descriptor, this));
       //}
 
-      internal T GetValue(IBehaviorContext context, ValueStage stage) {
+      internal T GetValue(IBehaviorContext context) {
          Contract.Requires(context != null);
 
          return Behaviors
             .GetNextBehavior<IValueAccessorBehavior<T>>()
-            .GetValue(context, stage);
+            .GetValue(context);
       }
 
       internal void SetValue(IBehaviorContext context, T value) {
@@ -123,31 +128,12 @@
             .SetValue(context, value);
       }
 
-      protected override object GetValueCore(IBehaviorContext context, ValueStage stage) {
-         return stage == ValueStage.PreConversion ?
-            GetDisplayValue(context) :
-            GetValue(context, stage);
+      protected override object GetValueCore(IBehaviorContext context) {
+         return GetValue(context);
       }
 
       protected override void SetValueCore(IBehaviorContext context, object value) {
          SetDisplayValue(context, value);
-      }
-
-      [Obsolete]
-      internal override void Revalidate(IBehaviorContext context) {
-         if (this.IsMutable(context)) {
-            IDisplayValueAccessorBehavior displayValueAccessor;
-            if (Behaviors.TryGetBehavior(out displayValueAccessor)) {
-               object value = displayValueAccessor.GetDisplayValue(context);
-               displayValueAccessor.SetDisplayValue(context, value);
-            } else {
-               var typedAccessor = Behaviors.GetNextBehavior<IValueAccessorBehavior<T>>();
-               T value = typedAccessor.GetValue(context, ValueStage.PostValidation);
-               typedAccessor.SetValue(context, value);
-            }
-         } else {
-            // TODO: Implement validation for readonly properties!
-         }
       }
    }
 

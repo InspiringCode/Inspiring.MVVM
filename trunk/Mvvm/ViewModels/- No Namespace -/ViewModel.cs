@@ -94,7 +94,7 @@
 
       protected internal T GetValue<T>(VMPropertyBase<T> property) {
          Contract.Requires<ArgumentNullException>(property != null);
-         return property.GetValue(Kernel, ValueStage.PreValidation);
+         return property.GetValue(Kernel);
       }
 
       protected internal void SetValue<T>(VMPropertyBase<T> property, T value) {
@@ -104,7 +104,7 @@
 
       protected internal T GetValidatedValue<T>(VMPropertyBase<T> property) {
          Contract.Requires<ArgumentNullException>(property != null);
-         return property.GetValue(Kernel, ValueStage.PostValidation);
+         return property.Behaviors.GetValidatedValueNext<T>(Kernel); // TODO: Refactor.
       }
 
       protected internal object GetDisplayValue(VMPropertyBase property) {
@@ -138,8 +138,8 @@
       }
 
 
-      object IViewModel.GetValue(IVMProperty property, ValueStage stage) {
-         return property.GetValue(Kernel, stage);
+      object IViewModel.GetValue(IVMProperty property) {
+         return property.GetValue(Kernel);
       }
 
       void IViewModel.SetValue(IVMProperty property, object value) {

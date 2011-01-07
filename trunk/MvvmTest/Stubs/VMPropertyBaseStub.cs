@@ -11,11 +11,7 @@
          : base(propertyType, propertyName) {
       }
 
-      internal override void Revalidate(IBehaviorContext context) {
-         throw new NotImplementedException("TODO");
-      }
-
-      protected override object GetValueCore(IBehaviorContext context, ValueStage stage) {
+      protected override object GetValueCore(IBehaviorContext context) {
          throw new NotImplementedException();
       }
 

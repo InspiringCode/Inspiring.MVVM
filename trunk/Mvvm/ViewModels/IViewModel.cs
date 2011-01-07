@@ -9,11 +9,11 @@
       VMKernel Kernel { get; }
       VMDescriptorBase Descriptor { get; set; }
 
-      object GetValue(IVMProperty property, ValueStage stage = ValueStage.PreValidation);
+      object GetValue(IVMProperty property);
       void SetValue(IVMProperty property, object value);
-      
+
       IBehaviorContext GetContext();
-      
+
       void NotifyPropertyChanged(IVMProperty property);
       void NotifyValidationStateChanged(IVMProperty property);
    }
@@ -27,7 +27,7 @@
             get { return null; }
          }
 
-         public object GetValue(IVMProperty property, ValueStage stage = ValueStage.PreValidation) {
+         public object GetValue(IVMProperty property) {
             throw new System.NotImplementedException();
          }
 

@@ -21,7 +21,7 @@ namespace Inspiring.MvvmTest.ViewModels.Behaviors {
       private class AccessPropertyBehaviorFake<T> : Behavior, IValueAccessorBehavior<T> {
          public T Value { get; set; }
 
-         public T GetValue(IBehaviorContext vm, ValueStage stage) {
+         public T GetValue(IBehaviorContext vm) {
             return Value;
          }
 

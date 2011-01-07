@@ -25,10 +25,7 @@
          Dictionary<TItemSource, TItemVM> lookupDictionary = lookupSource
             .ToDictionary(x => x.Source);
 
-         var sourceItems = this.GetValueNext<IEnumerable<TItemSource>>(
-            context,
-            ValueStage.None
-         );
+         var sourceItems = this.GetValueNext<IEnumerable<TItemSource>>(context);
 
          try {
             collection.IsPopulating = true;

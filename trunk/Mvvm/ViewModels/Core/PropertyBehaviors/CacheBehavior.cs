@@ -23,7 +23,7 @@
          RequireInitialized();
 
          if (HasCachedValue(context)) {
-            this.SetValueNext(context, GetCache(context));
+            this.SetValueNext(context, GetCachedValue(context));
          }
       }
 
@@ -32,7 +32,7 @@
          return context.FieldValues.HasValue(_valueCacheField);
       }
 
-      protected TValue GetCache(IBehaviorContext context) {
+      protected TValue GetCachedValue(IBehaviorContext context) {
          RequireInitialized();
          return context.FieldValues.GetValue(_valueCacheField);
       }

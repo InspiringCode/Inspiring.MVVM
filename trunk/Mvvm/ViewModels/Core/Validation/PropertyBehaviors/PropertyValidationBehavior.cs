@@ -23,8 +23,8 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          this.InitializeNext(context);
       }
 
-      public TValue GetValue(IBehaviorContext context, ValueStage stage) {
-         return this.GetValueNext<TValue>(context, stage);
+      public TValue GetValue(IBehaviorContext context) {
+         return this.GetValueNext<TValue>(context);
       }
 
       public void SetValue(IBehaviorContext context, TValue value) {
@@ -50,7 +50,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
       public void Revalidate(IBehaviorContext context, ValidationContext validationContext, ValidationMode mode) {
          switch (mode) {
             case ValidationMode.CommitValidValues:
-               object displayValue = _property.GetValue(context, ValueStage.PreConversion);
+               object displayValue = _property.GetDisplayValue(context);
                _property.SetValue(context, displayValue);
                break;
             case ValidationMode.DiscardInvalidValues:

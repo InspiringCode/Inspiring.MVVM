@@ -11,14 +11,14 @@ namespace Inspiring.MvvmTest.ViewModels.Core.TypeDescriptor {
    public class VMPropertyDescriptorTests {
       private VMPropertyBase _property;
       private PropertyDescriptor _descriptor;
-      private IBehaviorContext _vm;
+      private IViewModel _vm;
 
       [TestInitialize]
       public void Setup() {
          _property = new VMPropertyBaseStub(typeof(object), "Test");
 
          _descriptor = new VMPropertyDescriptor(_property);
-         _vm = new Mock<IBehaviorContext>().Object;
+         _vm = new ViewModelStub();
       }
 
       [TestMethod]

@@ -24,11 +24,6 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          }
 
          public object GetValue(IVMProperty property) {
-            throw new System.NotImplementedException();
-         }
-
-
-         public object GetValue(IVMProperty property, ValueStage stage = ValueStage.PreValidation) {
             throw new NotImplementedException();
          }
 
@@ -40,7 +35,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
             get { throw new NotImplementedException(); }
          }
 
-         object IViewModel.GetValue(IVMProperty property, ValueStage stage) {
+         object IViewModel.GetValue(IVMProperty property) {
             throw new NotImplementedException();
          }
 
@@ -55,7 +50,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          IBehaviorContext IViewModel.GetContext() {
             throw new NotImplementedException();
          }
-         
+
          public VMDescriptorBase Descriptor {
             get {
                throw new NotImplementedException();

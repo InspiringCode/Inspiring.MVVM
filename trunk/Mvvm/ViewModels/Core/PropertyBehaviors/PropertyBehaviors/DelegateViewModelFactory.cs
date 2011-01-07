@@ -15,7 +15,7 @@
       }
 
       public TValue CreateInstance(IBehaviorContext context) {
-         TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context, ValueStage.None);
+         TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context);
          return _customFactory(sourceObject);
       }
    }

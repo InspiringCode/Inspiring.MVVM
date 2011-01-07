@@ -23,7 +23,7 @@
 
       public override object GetValue(object component) {
          IViewModel vm = CastComponent(component);
-         return _property.GetValue(vm.GetContext(), ValueStage.PreConversion);
+         return _property.GetDisplayValue(vm.GetContext());
       }
 
       public override void SetValue(object component, object value) {

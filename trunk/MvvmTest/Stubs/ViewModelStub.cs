@@ -26,7 +26,7 @@
 
 
 
-      public object GetValue(IVMProperty property, ValueStage stage = ValueStage.PreValidation) {
+      public object GetValue(IVMProperty property) {
          return _fakeValues[property];
       }
 
@@ -54,7 +54,7 @@
 
 
       public IBehaviorContext GetContext() {
-         throw new NotImplementedException();
+         return Kernel;
       }
 
 

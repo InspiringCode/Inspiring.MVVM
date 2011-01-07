@@ -155,7 +155,7 @@
 
             var mock = new Mock<IViewModel>();
             mock
-               .Setup(x => x.GetValue(_addressProperty, ValueStage.PreValidation))
+               .Setup(x => x.GetValue(_addressProperty))
                .Returns(_addressVM);
 
             _employeeVM = mock.Object;

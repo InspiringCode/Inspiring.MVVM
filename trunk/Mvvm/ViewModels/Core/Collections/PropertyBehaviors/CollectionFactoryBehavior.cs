@@ -38,7 +38,7 @@
       //   return new VMCollection<TItemVM>(_collectionBehaviors, owner: context.VM);
       //}
 
-      public IVMCollection<TItemVM> GetValue(IBehaviorContext context, ValueStage stage = ValueStage.PreValidation) {
+      public IVMCollection<TItemVM> GetValue(IBehaviorContext context) {
          if (_collectionBehaviors == null) {
             _collectionBehaviors = CollectionBehaviorConfiguration.CreateChain();
             CollectionBehaviorConfiguration.Seal();

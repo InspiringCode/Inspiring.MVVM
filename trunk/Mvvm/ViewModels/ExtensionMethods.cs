@@ -9,10 +9,25 @@
          }
       }
 
-      public static TValue GetValueNext<TValue>(this Behavior behavior, IBehaviorContext context, ValueStage stage = ValueStage.None) {
+      public static TValue GetValidatedValueNext<TValue>(
+         this Behavior behavior,
+         IBehaviorContext context
+      ) {
+         IValidatedValueAccessorBehavior<TValue> validatedValueAccessor;
+         bool containsValidatedValueAccessor = behavior.TryGetBehavior(out validatedValueAccessor);
+
+         if (containsValidatedValueAccessor) {
+            return validatedValueAccessor.GetValidatedValue(context);
+         } else {
+            TValue unvalidatedValue = behavior.GetValueNext<TValue>(context);
+            return unvalidatedValue;
+         }
+      }
+
+      public static TValue GetValueNext<TValue>(this Behavior behavior, IBehaviorContext context) {
          return behavior
             .GetNextBehavior<IValueAccessorBehavior<TValue>>()
-            .GetValue(context, stage);
+            .GetValue(context);
       }
 
       public static void SetValueNext<TValue>(this Behavior behavior, IBehaviorContext context, TValue value) {

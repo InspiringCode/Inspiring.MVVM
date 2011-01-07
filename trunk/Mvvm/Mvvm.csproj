@@ -103,14 +103,14 @@
     <Compile Include="ViewModels\- No Namespace -\Validation\ValidationMode.cs" />
     <Compile Include="ViewModels\- No Namespace -\Validation\ValidationScope.cs" />
     <Compile Include="ViewModels\- No Namespace -\Validation\ValidationStateScope.cs" />
-    <Compile Include="ViewModels\- No Namespace -\ValueStage.cs" />
     <Compile Include="ViewModels\- No Namespace -\ViewModel.cs" />
-    <Compile Include="ViewModels\- No Namespace -\VMDescriptorBuilder.new.cs" />
+    <Compile Include="ViewModels\- No Namespace -\VMDescriptorBuilder.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\ICollectionFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\CollectionBehaviors\IPopulatorCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\CollectionBehaviors\IModificationCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IDescendantValidationBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IIsLoadedIndicatorBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IValidatedValueAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IValueAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IRevalidationBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IValidationStateProviderBehavior.cs" />

@@ -9,9 +9,9 @@
       }
 
       public void UpdatePropertyFromSource(IBehaviorContext context) {
-         TValue oldValue = GetValue(context, ValueStage.PostValidation);
+         TValue oldValue = GetValue(context);
          CopyFromSource(context);
-         TValue newValue = GetValue(context, ValueStage.PostValidation);
+         TValue newValue = GetValue(context);
 
          if (!Object.Equals(oldValue, newValue)) {
             var args = new ChangeArgs(ChangeType.PropertyChanged, context.VM, _property);

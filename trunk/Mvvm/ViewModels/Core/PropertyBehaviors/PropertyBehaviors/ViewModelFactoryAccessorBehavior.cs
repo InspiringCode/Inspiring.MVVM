@@ -6,7 +6,7 @@
       IValueAccessorBehavior<TValue>
       where TValue : IViewModel {
 
-      public TValue GetValue(IBehaviorContext context, ValueStage stage) {
+      public TValue GetValue(IBehaviorContext context) {
          var factory = GetNextBehavior<IViewModelFactoryBehavior<TValue>>();
          return factory.CreateInstance(context);
       }

@@ -3,6 +3,7 @@
    internal sealed class PreValidationValueCacheBehavior<TValue> :
       CacheBehavior<TValue>,
       IValueAccessorBehavior<TValue>,
+      IValidatedValueAccessorBehavior<TValue>,
       IRevalidationBehavior,
       IHandlePropertyChangedBehavior {
 
@@ -14,14 +15,16 @@
          base.Initialize(context);
       }
 
-      public TValue GetValue(IBehaviorContext context, ValueStage stage) {
+      public TValue GetValidatedValue(IBehaviorContext context) {
+         return this.GetValueNext<TValue>(context);
+      }
+
+      public TValue GetValue(IBehaviorContext context) {
          RequireInitialized();
 
-         if (stage == ValueStage.PreValidation && HasCachedValue(context)) {
-            return GetCache(context);
-         }
-
-         return this.GetValueNext<TValue>(context, ValueStage.PostValidation);
+         return HasCachedValue(context) ?
+            GetCachedValue(context) :
+            GetValidatedValue(context);
       }
 
       public void SetValue(IBehaviorContext context, TValue value) {

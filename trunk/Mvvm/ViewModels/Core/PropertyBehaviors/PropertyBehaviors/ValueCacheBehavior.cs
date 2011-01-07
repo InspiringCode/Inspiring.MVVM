@@ -5,14 +5,14 @@
 
       private static readonly FieldDefinitionGroup ValueCacheGroup = new FieldDefinitionGroup();
 
-      public TValue GetValue(IBehaviorContext context, ValueStage stage) {
+      public TValue GetValue(IBehaviorContext context) {
          RequireInitialized();
 
          if (!HasCachedValue(context)) {
             CopyFromSource(context);
          }
 
-         return GetCache(context);
+         return GetCachedValue(context);
       }
 
       public void SetValue(IBehaviorContext context, TValue value) {

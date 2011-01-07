@@ -42,7 +42,7 @@
          IValueAccessorBehavior<TValue> accessBehavior =
             GetNextBehavior<IValueAccessorBehavior<TValue>>();
 
-         return accessBehavior.GetValue(vm, ValueStage.PreValidation);
+         return accessBehavior.GetValue(vm);
       }
 
       public void SetDisplayValue(IBehaviorContext vm, object value) {

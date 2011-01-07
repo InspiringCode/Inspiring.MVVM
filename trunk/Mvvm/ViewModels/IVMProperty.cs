@@ -24,7 +24,9 @@
       ///   extension method, because we don't know the generic type of the <see 
       ///   cref="IPropertyAccessorBehavior"/>.
       /// </remarks>
-      object GetValue(IBehaviorContext context, ValueStage stage);
+      object GetValue(IBehaviorContext context);
+
+      object GetDisplayValue(IBehaviorContext context);
 
       /// <summary>
       ///   Sets the value of this property on the given view model (specified

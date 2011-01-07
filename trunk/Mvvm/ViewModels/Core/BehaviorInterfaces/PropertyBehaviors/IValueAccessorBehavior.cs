@@ -10,14 +10,14 @@
    /// <typeparam propertyName="TValue">The type of the property target.</typeparam>
    [ContractClass(typeof(IValueAccessorContract<>))]
    public interface IValueAccessorBehavior<TValue> : IBehavior {
-      TValue GetValue(IBehaviorContext context, ValueStage stage = ValueStage.PreValidation);
+      TValue GetValue(IBehaviorContext context);
       void SetValue(IBehaviorContext context, TValue value);
    }
 
    namespace Contracts {
       [ContractClassFor(typeof(IValueAccessorBehavior<>))]
       internal abstract class IValueAccessorContract<TValue> : IValueAccessorBehavior<TValue> {
-         public TValue GetValue(IBehaviorContext vm, ValueStage stage) {
+         public TValue GetValue(IBehaviorContext vm) {
             Contract.Requires<ArgumentNullException>(vm != null);
             return default(TValue);
          }
