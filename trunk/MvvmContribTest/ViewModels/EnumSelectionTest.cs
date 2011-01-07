@@ -95,7 +95,7 @@
 
          public Person Person { get; private set; }
 
-         public T InvokeGetValue<T>(VMPropertyBase<T> property) {
+         public T InvokeGetValue<T>(VMProperty<T> property) {
             return GetValue(property);
          }
 

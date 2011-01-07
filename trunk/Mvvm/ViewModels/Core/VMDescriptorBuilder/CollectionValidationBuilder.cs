@@ -14,7 +14,7 @@
       }
 
       public void Custom(CollectionValidator<TItemVM> validation) {
-         BehaviorConfiguration conf = _configs.GetConfiguration((VMPropertyBase)_property); // HACK
+         BehaviorConfiguration conf = _configs.GetConfiguration((VMProperty)_property); // HACK
          conf.Enable(VMBehaviorKey.CollectionValidator);
          conf.OverrideFactory(VMBehaviorKey.CollectionValidator, new CollectionValidationBehavior<TItemVM>());
          conf.Configure<CollectionValidationBehavior<TItemVM>>(VMBehaviorKey.CollectionValidator, c => {

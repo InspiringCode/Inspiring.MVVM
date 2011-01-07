@@ -21,7 +21,7 @@
          };
 
          CollectionAssert.AreEquivalent(
-            new VMPropertyBase[] { descriptor.SimpleProperty },
+            new VMProperty[] { descriptor.SimpleProperty },
             descriptor.Properties.ToArray()
          );
       }

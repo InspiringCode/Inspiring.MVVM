@@ -92,27 +92,27 @@
 
       public event PropertyChangedEventHandler PropertyChanged;
 
-      protected internal T GetValue<T>(VMPropertyBase<T> property) {
+      protected internal T GetValue<T>(VMProperty<T> property) {
          Contract.Requires<ArgumentNullException>(property != null);
          return property.GetValue(Kernel);
       }
 
-      protected internal void SetValue<T>(VMPropertyBase<T> property, T value) {
+      protected internal void SetValue<T>(VMProperty<T> property, T value) {
          Contract.Requires<ArgumentNullException>(property != null);
          property.SetValue(Kernel, value);
       }
 
-      protected internal T GetValidatedValue<T>(VMPropertyBase<T> property) {
+      protected internal T GetValidatedValue<T>(VMProperty<T> property) {
          Contract.Requires<ArgumentNullException>(property != null);
          return property.Behaviors.GetValidatedValueNext<T>(Kernel); // TODO: Refactor.
       }
 
-      protected internal object GetDisplayValue(VMPropertyBase property) {
+      protected internal object GetDisplayValue(VMProperty property) {
          Contract.Requires<ArgumentNullException>(property != null);
          return property.GetDisplayValue(Kernel);
       }
 
-      protected internal void SetDisplayValue(VMPropertyBase property, object value) {
+      protected internal void SetDisplayValue(VMProperty property, object value) {
          Contract.Requires<ArgumentNullException>(property != null);
          property.SetDisplayValue(Kernel, value);
       }
@@ -125,7 +125,7 @@
          Kernel.UpdateFromSource();
       }
 
-      protected void UpdateFromSource(VMPropertyBase property) {
+      protected void UpdateFromSource(VMProperty property) {
          Kernel.UpdateFromSource(property);
       }
 
@@ -133,7 +133,7 @@
          Kernel.UpdateSource();
       }
 
-      protected void UpdateSource(VMPropertyBase property) {
+      protected void UpdateSource(VMProperty property) {
          Kernel.UpdateSource(property);
       }
 

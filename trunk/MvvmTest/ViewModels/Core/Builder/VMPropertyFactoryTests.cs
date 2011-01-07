@@ -138,7 +138,7 @@
          Assert.IsFalse(ContainsBehavior<ViewModelWithSourceAcessorBehavior<ProjectVM, Project>>(p));
       }
 
-      private void AssertDefaultPropertyBehaviors(VMPropertyBase p) {
+      private void AssertDefaultPropertyBehaviors(VMProperty p) {
          Assert.IsTrue(ContainsBehavior<PropertyDescriptorBehavior>(p));
 
          Assert.IsFalse(ContainsBehavior<PropertyValidationBehavior<string>>(p));
@@ -146,13 +146,13 @@
          Assert.IsFalse(ContainsBehavior<RefreshableValueCacheBehavior<string>>(p));
       }
 
-      private void AssertDefaultViewModelBehaviors(VMPropertyBase p) {
+      private void AssertDefaultViewModelBehaviors(VMProperty p) {
          Assert.IsTrue(ContainsBehavior<DisplayValueAccessorBehavior<ProjectVM>>(p));
          Assert.IsTrue(ContainsBehavior<ParentSetterBehavior<ProjectVM>>(p));
          Assert.IsTrue(ContainsBehavior<PropertyDescriptorBehavior>(p));
       }
 
-      private void AssertDefaultCollectionPropertyBehaviors(VMPropertyBase p) {
+      private void AssertDefaultCollectionPropertyBehaviors(VMProperty p) {
          Assert.IsTrue(ContainsBehavior<IDisplayValueAccessorBehavior>(p));
          Assert.IsTrue(ContainsBehavior<ValueCacheBehavior<IVMCollection<ProjectVM>>>(p));
          Assert.IsTrue(ContainsBehavior<CollectionFactoryBehavior<ProjectVM>>(p));
@@ -164,7 +164,7 @@
 
       }
 
-      private bool ContainsBehavior<T>(VMPropertyBase property) where T : IBehavior {
+      private bool ContainsBehavior<T>(VMProperty property) where T : IBehavior {
          var config = Configuration.PropertyConfigurations[property];
          BehaviorChain chain = config.CreateChain();
 
@@ -172,7 +172,7 @@
          return chain.TryGetBehavior<T>(out behavior);
       }
 
-      private bool ContainsCollectionBehavior<T>(VMPropertyBase property) where T : IBehavior {
+      private bool ContainsCollectionBehavior<T>(VMProperty property) where T : IBehavior {
          var config = Configuration.PropertyConfigurations[property];
          var propertyChain = config.CreateChain();
 

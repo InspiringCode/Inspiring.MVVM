@@ -52,7 +52,7 @@
    }
 
    public interface IVMBinder<TDescriptor> {
-      IBindToExpression<T> Property<T>(Expression<Func<TDescriptor, VMPropertyBase<T>>> sourcePropertySelector);
+      IBindToExpression<T> Property<T>(Expression<Func<TDescriptor, VMProperty<T>>> sourcePropertySelector);
 
       IBindCollectionExpression<TItemDescriptor> Collection<TItemDescriptor>(
          Expression<Func<TDescriptor, IVMProperty<IVMCollectionExpression<ViewModel<TItemDescriptor>>>>> collectionPropertySelector

@@ -6,7 +6,7 @@
    public sealed class ValidationContext {
       public ValidationContext(
          IViewModel targetVM,
-         VMPropertyBase targetProperty,
+         VMProperty targetProperty,
          object newValue
       ) {
          Contract.Requires(targetVM != null);
@@ -18,7 +18,7 @@
          Errors = new List<ValidationError>();
       }
 
-      public VMPropertyBase TargetProperty { get; private set; }
+      public VMProperty TargetProperty { get; private set; }
 
       public object NewValue { get; private set; }
 

@@ -22,7 +22,7 @@
 
       internal void InitializePropertyNames() {
          foreach (PropertyInfo pi in GetVMPropertyDefinitions()) {
-            VMPropertyBase property = GetVMProperty(pi);
+            VMProperty property = GetVMProperty(pi);
             if (property != null) {
                // TODO: Is this the optimal way?
                property.Initialize(pi.Name);
@@ -31,14 +31,14 @@
       }
 
       protected override VMPropertyCollection DiscoverProperties() {
-         IEnumerable<VMPropertyBase> properties = GetVMPropertyDefinitions()
+         IEnumerable<VMProperty> properties = GetVMPropertyDefinitions()
             .Select(GetVMProperty);
 
          return new VMPropertyCollection(properties.ToArray());
       }
 
       private static bool IsVMPropertyDefinition(PropertyInfo pi) {
-         return typeof(VMPropertyBase).IsAssignableFrom(pi.PropertyType);
+         return typeof(VMProperty).IsAssignableFrom(pi.PropertyType);
       }
 
       private IEnumerable<PropertyInfo> GetVMPropertyDefinitions() {
@@ -47,8 +47,8 @@
             .Where(IsVMPropertyDefinition);
       }
 
-      private VMPropertyBase GetVMProperty(PropertyInfo pi) {
-         return (VMPropertyBase)pi.GetValue(this, null);
+      private VMProperty GetVMProperty(PropertyInfo pi) {
+         return (VMProperty)pi.GetValue(this, null);
       }
    }
 }

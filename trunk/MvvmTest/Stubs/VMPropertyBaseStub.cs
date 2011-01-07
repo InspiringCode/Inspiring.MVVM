@@ -3,7 +3,7 @@
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
 
-   internal sealed class VMPropertyBaseStub : VMPropertyBase {
+   internal sealed class VMPropertyBaseStub : VMProperty {
       //public VMPropertyBaseStub() {
       //}
 

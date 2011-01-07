@@ -62,6 +62,26 @@
          }
       }
 
+      public T GetValue<T>(VMProperty<T> property) {
+         return property.Behaviors.GetValueNext<T>(this);
+      }
+
+      public T GetValidatedValue<T>(VMProperty<T> property) {
+         return property.Behaviors.GetValidatedValueNext<T>(this);
+      }
+
+      public void SetValue<T>(VMProperty<T> property, T value) {
+         property.Behaviors.SetValueNext<T>(this, value);
+      }
+
+      public object GetDisplayValue(VMProperty property) {
+         throw new NotImplementedException();
+      }
+
+      public void SetDisplayValue(VMProperty property, object value) {
+         throw new NotImplementedException();
+      }
+
       public ValidationState GetValidationState(IVMProperty forProperty) {
          return forProperty.GetValidationState(this);
       }
@@ -91,7 +111,7 @@
          _descriptor.Behaviors.UpdateFromSourceNext(this);
       }
 
-      public void UpdateFromSource(VMPropertyBase property) {
+      public void UpdateFromSource(VMProperty property) {
          _descriptor.Behaviors.UpdateFromSourceNext(this, property);
       }
 
@@ -99,7 +119,7 @@
          _descriptor.Behaviors.UpdateSourceNext(this);
       }
 
-      public void UpdateSource(VMPropertyBase property) {
+      public void UpdateSource(VMProperty property) {
          _descriptor.Behaviors.UpdateSourceNext(this, property);
       }
 

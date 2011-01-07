@@ -113,7 +113,7 @@ namespace Inspiring.MvvmTest.ViewModels {
          );
       }
 
-      private void CheckUpdateFromSource<T>(VMPropertyBase<T> property, Action sourceMutator) {
+      private void CheckUpdateFromSource<T>(VMProperty<T> property, Action sourceMutator) {
          bool called = false;
          T propertyChangedValue = default(T);
          PropertyChangedEventHandler handler = delegate(object sender, PropertyChangedEventArgs args) {
@@ -155,7 +155,7 @@ namespace Inspiring.MvvmTest.ViewModels {
       }
 
       private void CheckUpdateSource<T>(
-         VMPropertyBase<T> property,
+         VMProperty<T> property,
          T newValue,
          Func<T> sourceValueGetter
       ) {
@@ -170,7 +170,7 @@ namespace Inspiring.MvvmTest.ViewModels {
          );
       }
 
-      private void AssertNoChange<T>(VMPropertyBase<T> property, Action testCode) {
+      private void AssertNoChange<T>(VMProperty<T> property, Action testCode) {
          var before = _vm.GetValue(property);
          testCode();
          var after = _vm.GetValue(property);

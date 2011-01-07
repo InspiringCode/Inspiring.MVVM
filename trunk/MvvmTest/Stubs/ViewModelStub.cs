@@ -46,7 +46,7 @@
 
       public event EventHandler<ValidationEventArgs> Validated;
 
-      public void InvokeValidate(IViewModel changedVM, VMPropertyBase changedProperty) {
+      public void InvokeValidate(IViewModel changedVM, VMProperty changedProperty) {
          throw new NotImplementedException();
       }
 

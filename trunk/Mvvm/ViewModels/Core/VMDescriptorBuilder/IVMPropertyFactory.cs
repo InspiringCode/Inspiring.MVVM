@@ -10,7 +10,7 @@
    }
 
    /// <summary>
-   ///   A factory that creates <see cref="VMPropertyBase"/> instances configured 
+   ///   A factory that creates <see cref="VMProperty"/> instances configured 
    ///   with a certain value source. You can get an instance of this interface
    ///   by calling 'VMDescriptorBuilder.For&lt;PersonVM&gt;().WithProperties((d, c) => {
    ///      var p = c.GetPropertyFactory(x => x.Person);
@@ -80,7 +80,7 @@
    }
 
    /// <summary>
-   ///   A factory that creates <see cref="VMPropertyBase"/> instances configured 
+   ///   A factory that creates <see cref="VMProperty"/> instances configured 
    ///   with a certain value source. You can get an instance of this interface
    ///   by calling 'VMDescriptorBuilder.For&lt;PersonVM&gt;().WithProperties((d, c) => {
    ///      var v = c.GetPropertyFactory();
@@ -128,7 +128,7 @@
 
       // TODO: Is there a better way? Needed for single selection contrib extension.
       TProperty Calculated<TProperty, T>(Func<TVM, T> getter, Action<TVM, T> setter = null)
-         where TProperty : VMPropertyBase<T>, new();
+         where TProperty : VMProperty<T>, new();
 
       /// <summary>
       ///   Creates a simple property that uses the view model to store its 

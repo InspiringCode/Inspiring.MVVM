@@ -4,14 +4,14 @@
    using Inspiring.Mvvm.ViewModels;
 
    internal sealed class VMDescriptorStub : VMDescriptorBase {
-      List<VMPropertyBase> _properties;
+      List<VMProperty> _properties;
 
       public VMDescriptorStub() {
-         _properties = new List<VMPropertyBase>();
+         _properties = new List<VMProperty>();
       }
 
-      public VMDescriptorStub(params VMPropertyBase[] properties) {
-         _properties = new List<VMPropertyBase>(properties);
+      public VMDescriptorStub(params VMProperty[] properties) {
+         _properties = new List<VMProperty>(properties);
       }
 
       public void AddProperty(string name, Type type) {

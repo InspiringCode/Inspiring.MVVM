@@ -61,11 +61,11 @@
          set { SetValue(Descriptor.MappedParentedCollectionProperty, value); }
       }
 
-      public void InvokeUpdateFromSource(VMPropertyBase property) {
+      public void InvokeUpdateFromSource(VMProperty property) {
          //UpdateFromSource(property);
       }
 
-      public void InvokeUpdateSource(VMPropertyBase property) {
+      public void InvokeUpdateSource(VMProperty property) {
          //UpdateSource(property);
       }
 

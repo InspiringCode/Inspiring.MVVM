@@ -3,15 +3,15 @@
    using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.ViewModels.Core;
 
-   public abstract class VMPropertyBase : IVMProperty {
-      internal VMPropertyBase(Type propertyType) {
+   public abstract class VMProperty : IVMProperty {
+      internal VMProperty(Type propertyType) {
          Contract.Requires(propertyType != null);
 
          Behaviors = new BehaviorChain();
          PropertyType = propertyType;
       }
 
-      internal VMPropertyBase(Type propertyType, string propertyName)
+      internal VMProperty(Type propertyType, string propertyName)
          : this(propertyType) {
          Contract.Requires(propertyName != null);
 
@@ -100,9 +100,9 @@
 
    }
 
-   public abstract class VMPropertyBase<T> : VMPropertyBase, IVMProperty<T> {
+   public class VMProperty<T> : VMProperty, IVMProperty<T> {
 
-      public VMPropertyBase()
+      public VMProperty()
          : base(typeof(T)) {
       }
 
@@ -137,6 +137,6 @@
       }
    }
 
-   public class VMProperty<T> : VMPropertyBase<T> {
-   }
+   //public class VMProperty<T> : VMProperty<T> {
+   //}
 }

@@ -11,7 +11,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
 
       public static T GetForeignProerty<T>(
          IViewModel foreignViewModel,
-         VMPropertyBase<T> property
+         VMProperty<T> property
       ) {
          throw new NotImplementedException();
          //return property.GetValue(foreignViewModel);
@@ -19,7 +19,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
 
       public static void SetForeignProperty<T>(
          IViewModel foreignViewModel,
-         VMPropertyBase<T> property,
+         VMProperty<T> property,
          T value
       ) {
          throw new NotImplementedException();

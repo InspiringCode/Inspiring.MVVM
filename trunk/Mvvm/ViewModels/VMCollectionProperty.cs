@@ -2,7 +2,7 @@
    using Inspiring.Mvvm.ViewModels.Core;
 
    public sealed class VMCollectionProperty<TItemVM> :
-      VMPropertyBase<VMCollection<TItemVM>>,
+      VMProperty<VMCollection<TItemVM>>,
       IBindableCollection<TItemVM>
       where TItemVM : IViewModel {
    }
