@@ -48,14 +48,14 @@
    }
 
    public class PersonVMDescriptor : VMDescriptor {
-      public VMProperty<string> Name { get; set; }
-      public VMProperty<string> FirstName { get; set; }
-      public VMProperty<string> LastName { get; set; }
-      public VMProperty<DateTime> BirthDate { get; set; }
-      public VMProperty<decimal> Salary { get; set; }
-      public VMProperty<bool> IsSelected { get; set; }
-      public VMProperty<ProjectVM> CurrentProject { get; set; }
-      public VMProperty<IVMCollection<ProjectVM>> Projects { get; set; }
+      public IVMProperty<string> Name { get; set; }
+      public IVMProperty<string> FirstName { get; set; }
+      public IVMProperty<string> LastName { get; set; }
+      public IVMProperty<DateTime> BirthDate { get; set; }
+      public IVMProperty<decimal> Salary { get; set; }
+      public IVMProperty<bool> IsSelected { get; set; }
+      public IVMProperty<ProjectVM> CurrentProject { get; set; }
+      public IVMProperty<IVMCollection<ProjectVM>> Projects { get; set; }
    }
 
    public class ProjectVM : ViewModel<ProjectVMDescriptor>, IVMCollectionItem<Project> {
@@ -96,8 +96,8 @@
    }
 
    public class ProjectVMDescriptor : VMDescriptor {
-      public VMProperty<string> Name { get; set; }
-      public VMProperty<int> MemberCount { get; set; }
+      public IVMProperty<string> Name { get; set; }
+      public IVMProperty<int> MemberCount { get; set; }
    }
 
    public class Person {

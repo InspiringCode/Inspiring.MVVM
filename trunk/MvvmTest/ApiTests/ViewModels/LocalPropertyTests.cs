@@ -65,8 +65,8 @@
       }
 
       public sealed class EmployeeVMDescriptor : VMDescriptor {
-         public VMProperty<ProjectVM> CurrentProject { get; set; }
-         public VMProperty<IVMCollection<ProjectVM>> Projects { get; set; }
+         public IVMProperty<ProjectVM> CurrentProject { get; set; }
+         public IVMProperty<IVMCollection<ProjectVM>> Projects { get; set; }
       }
    }
 }

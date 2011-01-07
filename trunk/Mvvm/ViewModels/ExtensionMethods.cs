@@ -36,6 +36,19 @@
             .SetValue(context, value);
       }
 
+
+      public static object GetDisplayValueNext(this Behavior behavior, IBehaviorContext context) {
+         return behavior
+            .GetNextBehavior<IDisplayValueAccessorBehavior>()
+            .GetDisplayValue(context);
+      }
+
+      public static void SetDisplayValueNext(this Behavior behavior, IBehaviorContext context, object value) {
+         behavior
+            .GetNextBehavior<IDisplayValueAccessorBehavior>()
+            .SetDisplayValue(context, value);
+      }
+
       public static void OnSelfChangedNext(
          this Behavior behavior,
          IBehaviorContext context,

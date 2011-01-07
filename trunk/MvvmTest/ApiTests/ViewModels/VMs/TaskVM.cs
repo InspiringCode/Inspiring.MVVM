@@ -56,8 +56,8 @@ using Inspiring.Mvvm.ViewModels.Core;
    }
 
    public sealed class TaskVMDescriptor : VMDescriptor {
-      public VMProperty<string> Title { get; set; }
-      public VMProperty<string> Description { get; set; }
-      public VMProperty<string> ScreenTitle { get; set; }
+      public IVMProperty<string> Title { get; set; }
+      public IVMProperty<string> Description { get; set; }
+      public IVMProperty<string> ScreenTitle { get; set; }
    }
 }

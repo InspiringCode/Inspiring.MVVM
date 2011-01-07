@@ -95,7 +95,7 @@
 
          public Person Person { get; private set; }
 
-         public T InvokeGetValue<T>(VMProperty<T> property) {
+         public T InvokeGetValue<T>(IVMProperty<T> property) {
             return GetValue(property);
          }
 
@@ -105,7 +105,7 @@
       }
 
       private sealed class PersonVMDescriptor : VMDescriptor {
-         public VMProperty<SingleSelectionVM<PersonStatus>> Status { get; set; }
+         public IVMProperty<SingleSelectionVM<PersonStatus>> Status { get; set; }
       }
 
       private class Person {
@@ -114,7 +114,7 @@
    }
 
    internal class StatusSelectionItemVMDescriptor : VMDescriptor {
-      public VMProperty<string> Name { get; set; }
+      public IVMProperty<string> Name { get; set; }
 
    }
 }

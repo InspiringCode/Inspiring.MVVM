@@ -14,7 +14,7 @@
       }
 
       public void Custom(CollectionValidator<TItemVM> validation) {
-         BehaviorConfiguration conf = _configs.GetConfiguration((VMProperty)_property); // HACK
+         BehaviorConfiguration conf = _configs.GetConfiguration((IVMProperty)_property); // HACK
          conf.Enable(VMBehaviorKey.CollectionValidator);
          conf.OverrideFactory(VMBehaviorKey.CollectionValidator, new CollectionValidationBehavior<TItemVM>());
          conf.Configure<CollectionValidationBehavior<TItemVM>>(VMBehaviorKey.CollectionValidator, c => {
@@ -23,7 +23,7 @@
       }
 
       public ICollectionValidationBuilder<TItemVM, TValue> Check<TValue>(
-         VMProperty<TValue> itemProperty
+         IVMProperty<TValue> itemProperty
       ) {
          return new CollectionValidationBuilder<TItemVM, TValue>(this, itemProperty);
       }
@@ -34,11 +34,11 @@
       where TItemVM : IViewModel {
 
       private CollectionValidationBuilder<TItemVM> _parent;
-      private VMProperty<TItemValue> _itemProperty;
+      private IVMProperty<TItemValue> _itemProperty;
 
       public CollectionValidationBuilder(
          CollectionValidationBuilder<TItemVM> parent,
-         VMProperty<TItemValue> itemProperty
+         IVMProperty<TItemValue> itemProperty
       ) {
          _parent = parent;
          _itemProperty = itemProperty;

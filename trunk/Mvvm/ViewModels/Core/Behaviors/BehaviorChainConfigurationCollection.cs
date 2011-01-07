@@ -33,7 +33,7 @@
       ///   <paramref name="property"/>.
       /// </summary>
       public void RegisterProperty<TValue>(
-         VMProperty<TValue> property,
+         IVMProperty<TValue> property,
          BehaviorChainConfiguration configuration
       ) {
          Contract.Requires<ArgumentNullException>(property != null);
@@ -75,7 +75,7 @@
       /// <summary>
       ///   Creates concrete <see cref="BehaviorChain"/> objects for each registered
       ///   <see cref="BehaviorChainConfiguration"/> and assigns it to the <see 
-      ///   cref="VMProperty.Behaviors"/> property of the <see cref="VMProperty"/>
+      ///   cref="IVMProperty.Behaviors"/> property of the <see cref="IVMProperty"/>
       ///   object for which the <see cref="BehaviorChainConfiguration"/> was
       ///   registered.
       /// </summary>

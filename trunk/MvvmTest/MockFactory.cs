@@ -49,8 +49,8 @@
          return mock;
       }
 
-      public static VMProperty<T> MockProperty<T>(BehaviorConfiguration config, VMDescriptor descriptor) {
-         VMProperty<T> property = new VMProperty<T>();
+      public static IVMProperty<T> MockProperty<T>(BehaviorConfiguration config, VMDescriptor descriptor) {
+         IVMProperty<T> property = new VMProperty<T>();
          property.Initialize("Test");
          throw new NotImplementedException();
          //property.ConfigureBehaviors(config, descriptor);

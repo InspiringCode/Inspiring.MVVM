@@ -28,16 +28,16 @@
       ///   property values of all collection items.
       /// </param>
       public void Custom<TItemVM>(
-         Action<TItemVM, IEnumerable<TItemVM>, VMProperty<TItemValue>, ValidationArgs> validator
+         Action<TItemVM, IEnumerable<TItemVM>, IVMProperty<TItemValue>, ValidationArgs> validator
        ) where TItemVM : ViewModel<TItemDescriptor> {
          Contract.Requires<ArgumentNullException>(validator != null);
          _configuration.AddPropertyValidator(new DelegateValidator<TItemVM>(validator));
       }
 
       private sealed class DelegateValidator<TItemVM> : Validator {
-         private Action<TItemVM, IEnumerable<TItemVM>, VMProperty<TItemValue>, ValidationArgs> _validatorCallback;
+         private Action<TItemVM, IEnumerable<TItemVM>, IVMProperty<TItemValue>, ValidationArgs> _validatorCallback;
 
-         public DelegateValidator(Action<TItemVM, IEnumerable<TItemVM>, VMProperty<TItemValue>, ValidationArgs> validatorCallback) {
+         public DelegateValidator(Action<TItemVM, IEnumerable<TItemVM>, IVMProperty<TItemValue>, ValidationArgs> validatorCallback) {
             Contract.Requires(validatorCallback != null);
             _validatorCallback = validatorCallback;
          }
@@ -51,7 +51,7 @@
                .Kernel
                .OwnerCollection;
 
-            var property = (VMProperty<TItemValue>)args.TargetProperty;
+            var property = (IVMProperty<TItemValue>)args.TargetProperty;
 
             _validatorCallback(item, items, property, args);
          }

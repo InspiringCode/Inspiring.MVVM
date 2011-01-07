@@ -48,7 +48,7 @@
       private class TesTVM : ViewModel<TestVMDescriptor> { }
 
       private class TestVMDescriptor : VMDescriptor {
-         public VMProperty<string> Property { get; set; }
+         public IVMProperty<string> Property { get; set; }
       }
    }
 }

@@ -3,7 +3,7 @@
    using Inspiring.Mvvm.ViewModels.Core;
 
    /// <summary>
-   ///   Creates <see cref="VMProperty"/> objects of type <see 
+   ///   Creates <see cref="IVMProperty"/> objects of type <see 
    ///   cref="IVMCollection"/> that is synchronized with a source collection.
    /// </summary>
    /// <typeparam name="TVM">
@@ -35,7 +35,7 @@
       ///   Specifies the VM descriptor that should be used for the collection 
       ///   items. All items must have the same descriptor.
       /// </param>
-      VMProperty<IVMCollection<TItemVM>> Of<TItemVM>(VMDescriptorBase itemDescriptor)
+      IVMProperty<IVMCollection<TItemVM>> Of<TItemVM>(VMDescriptorBase itemDescriptor)
          where TItemVM : IViewModel, ICanInitializeFrom<TItemSource>;
    }
 }

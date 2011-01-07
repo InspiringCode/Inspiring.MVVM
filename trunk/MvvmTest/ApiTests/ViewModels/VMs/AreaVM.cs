@@ -26,6 +26,6 @@
    }
 
    public sealed class AreaVMDescriptor : VMDescriptor {
-      public VMProperty<string> Caption { get; set; }
+      public IVMProperty<string> Caption { get; set; }
    }
 }

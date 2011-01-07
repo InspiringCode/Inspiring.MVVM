@@ -62,24 +62,24 @@
          }
       }
 
-      public T GetValue<T>(VMProperty<T> property) {
+      public T GetValue<T>(IVMProperty<T> property) {
          return property.Behaviors.GetValueNext<T>(this);
       }
 
-      public T GetValidatedValue<T>(VMProperty<T> property) {
+      public T GetValidatedValue<T>(IVMProperty<T> property) {
          return property.Behaviors.GetValidatedValueNext<T>(this);
       }
 
-      public void SetValue<T>(VMProperty<T> property, T value) {
+      public void SetValue<T>(IVMProperty<T> property, T value) {
          property.Behaviors.SetValueNext<T>(this, value);
       }
 
-      public object GetDisplayValue(VMProperty property) {
-         throw new NotImplementedException();
+      public object GetDisplayValue(IVMProperty property) {
+         return property.Behaviors.GetDisplayValueNext(this);
       }
 
-      public void SetDisplayValue(VMProperty property, object value) {
-         throw new NotImplementedException();
+      public void SetDisplayValue(IVMProperty property, object value) {
+         property.Behaviors.SetDisplayValueNext(this, value);
       }
 
       public ValidationState GetValidationState(IVMProperty forProperty) {
@@ -111,7 +111,7 @@
          _descriptor.Behaviors.UpdateFromSourceNext(this);
       }
 
-      public void UpdateFromSource(VMProperty property) {
+      public void UpdateFromSource(IVMProperty property) {
          _descriptor.Behaviors.UpdateFromSourceNext(this, property);
       }
 
@@ -119,7 +119,7 @@
          _descriptor.Behaviors.UpdateSourceNext(this);
       }
 
-      public void UpdateSource(VMProperty property) {
+      public void UpdateSource(IVMProperty property) {
          _descriptor.Behaviors.UpdateSourceNext(this, property);
       }
 

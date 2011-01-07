@@ -55,8 +55,8 @@
    }
 
    public sealed class SaveDiscardVMDescriptor : VMDescriptor {
-      public VMProperty<ICommand> Save { get; set; }
-      public VMProperty<ICommand> Discard { get; set; }
-      public VMProperty<DataState> State { get; set; }
+      public IVMProperty<ICommand> Save { get; set; }
+      public IVMProperty<ICommand> Discard { get; set; }
+      public IVMProperty<DataState> State { get; set; }
    }
 }

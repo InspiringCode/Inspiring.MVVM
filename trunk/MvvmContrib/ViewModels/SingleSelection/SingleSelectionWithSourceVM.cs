@@ -49,8 +49,8 @@
       /// </param>
       internal static SingleSelectionVMDescriptor<TItemSource, TItemVM> CreateDescriptor(
          VMDescriptorBase itemDescriptor,
-         Func<IVMPropertyBuilder<TSourceObject>, VMProperty<TItemSource>> selectedSourceItemPropertyFactory,
-         Func<IVMPropertyBuilder<TSourceObject>, VMProperty<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory
+         Func<IVMPropertyBuilder<TSourceObject>, IVMProperty<TItemSource>> selectedSourceItemPropertyFactory,
+         Func<IVMPropertyBuilder<TSourceObject>, IVMProperty<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory
       ) {
          return VMDescriptorBuilder
             .OfType<SingleSelectionVMDescriptor<TItemSource, TItemVM>>()
@@ -141,8 +141,8 @@
       /// </param>
       internal static SingleSelectionVMDescriptor<TItemSource> CreateDescriptor(
          SelectionItemVMDescriptor itemDescriptor,
-         Func<IVMPropertyBuilder<TSourceObject>, VMProperty<TItemSource>> selectedSourceItemsPropertyFactory,
-         Func<IVMPropertyBuilder<TSourceObject>, VMProperty<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory
+         Func<IVMPropertyBuilder<TSourceObject>, IVMProperty<TItemSource>> selectedSourceItemsPropertyFactory,
+         Func<IVMPropertyBuilder<TSourceObject>, IVMProperty<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory
       ) {
          return VMDescriptorBuilder
             .OfType<SingleSelectionVMDescriptor<TItemSource>>()

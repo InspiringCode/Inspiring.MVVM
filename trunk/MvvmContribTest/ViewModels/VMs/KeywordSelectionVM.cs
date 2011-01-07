@@ -115,8 +115,8 @@
    }
 
    internal sealed class KeywordSelectionVMDescriptor : VMDescriptor {
-      public VMProperty<IVMCollection<GroupVM>> AllItems { get; set; }
-      public VMProperty<VMCollection<GroupVM>> SelectedItems { get; set; }
-      internal VMProperty<ICollection<Group>> SelectedSourceItems { get; set; }
+      public IVMProperty<IVMCollection<GroupVM>> AllItems { get; set; }
+      public IVMProperty<VMCollection<GroupVM>> SelectedItems { get; set; }
+      internal IVMProperty<ICollection<Group>> SelectedSourceItems { get; set; }
    }
 }

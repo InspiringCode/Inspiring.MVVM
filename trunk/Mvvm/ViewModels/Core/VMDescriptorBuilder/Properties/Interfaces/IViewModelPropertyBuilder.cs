@@ -5,7 +5,7 @@
    using Inspiring.Mvvm.ViewModels.Core;
 
    /// <summary>
-   ///   Provides a fluent interface to create <see cref="VMProperty"/> that 
+   ///   Provides a fluent interface to create <see cref="IVMProperty"/> that 
    ///   hold child view models.
    /// </summary>
    /// <typeparam name="TSourceObject">
@@ -58,7 +58,7 @@
       );
 
       /// <summary>
-      ///   Creates a simple <see cref="VMProperty"/> that holds a child view 
+      ///   Creates a simple <see cref="IVMProperty"/> that holds a child view 
       ///   model that can be get and set.
       /// </summary>
       /// <param name="getter">
@@ -69,28 +69,28 @@
       ///   A delegate that is called each time the property is set to a new VM
       ///   object.
       /// </param>
-      VMProperty<TChildVM> DelegatesTo<TChildVM>(
+      IVMProperty<TChildVM> DelegatesTo<TChildVM>(
          Func<TSourceObject, TChildVM> getter,
          Action<TSourceObject, TChildVM> setter = null
       ) where TChildVM : IViewModel;
 
       /// <summary>
-      ///   Creates a simple <see cref="VMProperty"/> that holds a child view 
+      ///   Creates a simple <see cref="IVMProperty"/> that holds a child view 
       ///   model that can be get and set.
       /// </summary>
       /// <typeparam name="TChildVM">
       ///   The type of the child VM (for example PersonVM).
       /// </typeparam>
-      VMProperty<TChildVM> Of<TChildVM>() where TChildVM : IViewModel;
+      IVMProperty<TChildVM> Of<TChildVM>() where TChildVM : IViewModel;
 
       // TODO: Comment
       [EditorBrowsable(EditorBrowsableState.Never)]
-      VMProperty<TChildVM> Custom<TChildVM>(
+      IVMProperty<TChildVM> Custom<TChildVM>(
          IValueAccessorBehavior<TChildVM> viewModelAccessor
       ) where TChildVM : IViewModel;
 
       //// TODO: Comment
-      VMProperty<TChildVM> Custom<TChildVM, TChildSource>(
+      IVMProperty<TChildVM> Custom<TChildVM, TChildSource>(
          IValueAccessorBehavior<TChildVM> viewModelAccessor
       ) where TChildVM : IViewModel, ICanInitializeFrom<TChildSource>;
 

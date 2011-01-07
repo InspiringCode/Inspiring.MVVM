@@ -158,8 +158,8 @@
       }
 
       private sealed class MovieReviewVMDescriptor : VMDescriptor {
-         public VMProperty<int> Rating { get; set; }
-         public VMProperty<string> Comment { get; set; }
+         public IVMProperty<int> Rating { get; set; }
+         public IVMProperty<string> Comment { get; set; }
       }
    }
 }

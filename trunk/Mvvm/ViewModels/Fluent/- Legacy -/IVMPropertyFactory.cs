@@ -5,7 +5,7 @@
    using Inspiring.Mvvm.Common;
 
    /// <summary>
-   ///   Creates <see cref="VMProperty"/> objects with different underlying
+   ///   Creates <see cref="IVMProperty"/> objects with different underlying
    ///   value sources/stores.
    /// </summary>
    /// <typeparam name="TVM">
@@ -23,7 +23,7 @@
       IConfigurationProvider {
 
       /// <summary>
-      ///   Creates a <see cref="VMProperty"/> that stores its value in the VM.
+      ///   Creates a <see cref="IVMProperty"/> that stores its value in the VM.
       ///   It is similar to a normal get/set property but enhanced with all VM 
       ///   property features.
       /// </summary>
@@ -33,7 +33,7 @@
       ILocalVMPropertyFactory Local { get; }
 
       /// <summary>
-      ///   Creates a <see cref="VMProperty"/> that reads and sets the value of
+      ///   Creates a <see cref="IVMProperty"/> that reads and sets the value of
       ///   standard property declared on the source object.
       /// </summary>
       /// <param name="sourcePropertySelector">
@@ -60,11 +60,11 @@
       IVMPropertyFactoryWithSource<T> Mapped<T>(Expression<Func<TSource, T>> sourcePropertySelector);
 
       /// <summary>
-      ///   Creats a <see cref="VMProperty"/> that calls a delegate when the VM 
+      ///   Creats a <see cref="IVMProperty"/> that calls a delegate when the VM 
       ///   property is read or set.
       /// </summary>
       /// <param name="getter">
-      ///   <para>A delegate that is called by the <see cref="VMProperty"/> to 
+      ///   <para>A delegate that is called by the <see cref="IVMProperty"/> to 
       ///      get its value.</para>
       ///   <para>The VM or some object referenced by it (as defined by the <see
       ///      cref="IVMPropertyBuilderProvider.GetPropertyBuilder"/> method call)
@@ -72,7 +72,7 @@
       ///   <para>Example: 'vm => vm.Person.CalculateFee(vm.CurrentProject)'.</para>
       /// </param>
       /// <param name="setter">
-      ///   <para>A delegate that is called by the <see cref="VMProperty"/> when 
+      ///   <para>A delegate that is called by the <see cref="IVMProperty"/> when 
       ///      its value is set.</para>
       ///   <para>The VM or some object referenced by it (as defined by the <see 
       ///      cref="IVMPropertyFactoryProvider.GetPropertyBuilder"/> method call)
@@ -88,7 +88,7 @@
       IVMPropertyFactoryWithSource<T> Calculated<T>(Func<TSource, T> getter, Action<TSource, T> setter = null);
 
       /// <summary>
-      ///   Creates a local <see cref="VMProperty"/> of type <see cref="IVMCollection"/>
+      ///   Creates a local <see cref="IVMProperty"/> of type <see cref="IVMCollection"/>
       ///   that stores its value in the VM. A collection property ensures that its 
       ///   item VMs are properly initialized (for example its Parent is set).
       /// </summary>
@@ -115,7 +115,7 @@
       //);
 
       /// <summary>
-      ///   Creates a <see cref="VMProperty"/> of type <see cref="ICommand"/>.
+      ///   Creates a <see cref="IVMProperty"/> of type <see cref="ICommand"/>.
       /// </summary>
       /// <param name="execute">
       ///   A delegate that is called when the command is executed.
@@ -124,6 +124,6 @@
       ///   A delegate taht is called to check whether the command can currently
       ///   be executed.
       /// </param>
-      VMProperty<ICommand> Command(Action<TSource> execute, Func<TSource, bool> canExecute = null);
+      IVMProperty<ICommand> Command(Action<TSource> execute, Func<TSource, bool> canExecute = null);
    }
 }

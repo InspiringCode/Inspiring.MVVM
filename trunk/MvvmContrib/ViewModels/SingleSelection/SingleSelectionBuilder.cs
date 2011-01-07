@@ -20,7 +20,7 @@
       /// <summary>
       ///   Caches the property builder.
       /// </summary>
-      internal Func<IVMPropertyBuilder<TSourceObject>, VMProperty<TItemSource>> SelectedSourceItemPropertyFactory {
+      internal Func<IVMPropertyBuilder<TSourceObject>, IVMProperty<TItemSource>> SelectedSourceItemPropertyFactory {
          get;
          set;
       }
@@ -28,7 +28,7 @@
       /// <summary>
       ///   Caches the property builder.
       /// </summary>
-      internal Func<IVMPropertyBuilder<TSourceObject>, VMProperty<IEnumerable<TItemSource>>> AllSourceItemsPropertyFactory {
+      internal Func<IVMPropertyBuilder<TSourceObject>, IVMProperty<IEnumerable<TItemSource>>> AllSourceItemsPropertyFactory {
          get;
          set;
       }
@@ -53,7 +53,7 @@
          return this;
       }
 
-      public VMProperty<SingleSelectionVM<TItemSource, TItemVM>> Of<TItemVM>(
+      public IVMProperty<SingleSelectionVM<TItemSource, TItemVM>> Of<TItemVM>(
          VMDescriptorBase itemDescriptor
       ) where TItemVM : IViewModel, IVMCollectionItem<TItemSource> {
          Contract.Assert(SelectedSourceItemPropertyFactory != null);
@@ -85,7 +85,7 @@
          return property;
       }
 
-      public VMProperty<SingleSelectionVM<TItemSource>> WithCaption(
+      public IVMProperty<SingleSelectionVM<TItemSource>> WithCaption(
          Func<TItemSource, string> captionGetter
       ) {
          Contract.Requires<ArgumentNullException>(captionGetter != null);
@@ -135,7 +135,7 @@
       ///   resolved by asking the <see cref="IServiceLocator"/> of the source
       ///   object for an <see cref="IEnumerable{T}"/>.
       /// </summary>
-      private Func<IVMPropertyBuilder<TSourceObject>, VMProperty<IEnumerable<TItemSource>>> CreateLocatingPropertyFactory() {
+      private Func<IVMPropertyBuilder<TSourceObject>, IVMProperty<IEnumerable<TItemSource>>> CreateLocatingPropertyFactory() {
          return delegate(IVMPropertyBuilder<TSourceObject> factory) {
             return factory.Property.Custom(
                sourceValueAccessor: new LocatingItemSourceBehavior()

@@ -153,11 +153,11 @@ namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
       }
 
       private class ParentVMDescriptor : VMDescriptor {
-         public VMProperty<IVMCollection<ChildVM>> Children { get; set; }
+         public IVMProperty<IVMCollection<ChildVM>> Children { get; set; }
       }
 
       private class ChildVMDescriptor : VMDescriptor {
-         public VMProperty<string> StringProperty { get; set; }
+         public IVMProperty<string> StringProperty { get; set; }
       }
    }
 }

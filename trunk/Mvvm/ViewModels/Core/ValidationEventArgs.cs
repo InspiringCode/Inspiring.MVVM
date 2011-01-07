@@ -8,7 +8,7 @@
       private bool _affectsOtherItems = false;
 
       public ValidationEventArgs(
-         VMProperty property,
+         IVMProperty property,
          object propertyValue,
          IViewModel viewModel
       ) {
@@ -18,7 +18,7 @@
          Errors = new List<string>();
       }
 
-      public VMProperty Property { get; private set; }
+      public IVMProperty Property { get; private set; }
 
       public object PropertyValue { get; private set; }
 

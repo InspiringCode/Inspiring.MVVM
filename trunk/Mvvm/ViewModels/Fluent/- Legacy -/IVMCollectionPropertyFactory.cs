@@ -4,7 +4,7 @@ using Inspiring.Mvvm.Common;
 using Inspiring.Mvvm.ViewModels.Core;
 namespace Inspiring.Mvvm.ViewModels.Fluent {
    /// <summary>
-   ///   Creates <see cref="VMProperty"/> objects of type <see 
+   ///   Creates <see cref="IVMProperty"/> objects of type <see 
    ///   cref="IVMCollection"/> that store their value in the VM.
    /// </summary>
    /// <typeparam name="TVM">
@@ -28,10 +28,10 @@ namespace Inspiring.Mvvm.ViewModels.Fluent {
       ///   Create an extension method on this interface if you want to support
       ///   local properties for you own collection property type.
       /// </remarks>
-      VMProperty<IVMCollection<TItemVM>> Of<TItemVM>(VMDescriptorBase itemDescriptor) where TItemVM : IViewModel;
+      IVMProperty<IVMCollection<TItemVM>> Of<TItemVM>(VMDescriptorBase itemDescriptor) where TItemVM : IViewModel;
 
       /// <summary>
-      ///   Creates a <see cref="VMProperty"/> of type <see cref="IVMCollection"/>
+      ///   Creates a <see cref="IVMProperty"/> of type <see cref="IVMCollection"/>
       ///   whos items are synchronized with a source collection returned by the 
       ///   passed <paramref name="sourceCollectionSelector"/>. A collection property 
       ///   ensures that its item VMs are properly initialized (for example its 
@@ -51,7 +51,7 @@ namespace Inspiring.Mvvm.ViewModels.Fluent {
       );
 
       /// <summary>
-      ///   Creates a <see cref="VMProperty"/> of type <see cref="IVMCollection"/>
+      ///   Creates a <see cref="IVMProperty"/> of type <see cref="IVMCollection"/>
       ///   that is initialized with the items returned by the passed <paramref 
       ///   name="itemsProvider"/>.
       /// </summary>
@@ -60,7 +60,7 @@ namespace Inspiring.Mvvm.ViewModels.Fluent {
       ///   the first time the collection is accessed or when <see 
       ///   cref="VMKernel.UpdateFromSource"/> is called.
       /// </param>
-      VMProperty<IVMCollection<TItemVM>> InitializedBy<TItemVM>(
+      IVMProperty<IVMCollection<TItemVM>> InitializedBy<TItemVM>(
          Func<TSource, IEnumerable<TItemVM>> itemsProvider
       ) where TItemVM : IViewModel;
    }

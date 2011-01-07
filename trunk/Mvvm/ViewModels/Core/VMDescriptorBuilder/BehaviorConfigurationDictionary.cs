@@ -3,14 +3,14 @@
    using System.Collections.Generic;
 
    public sealed class BehaviorConfigurationDictionary {
-      private Dictionary<VMProperty, BehaviorConfiguration> _configurations
-         = new Dictionary<VMProperty, BehaviorConfiguration>();
+      private Dictionary<IVMProperty, BehaviorConfiguration> _configurations
+         = new Dictionary<IVMProperty, BehaviorConfiguration>();
 
-      public BehaviorConfiguration GetConfiguration(VMProperty forProperty) {
+      public BehaviorConfiguration GetConfiguration(IVMProperty forProperty) {
          return _configurations[forProperty];
       }
 
-      public void Add(VMProperty property, BehaviorConfiguration configuration) {
+      public void Add(IVMProperty property, BehaviorConfiguration configuration) {
          _configurations.Add(property, configuration);
       }
 

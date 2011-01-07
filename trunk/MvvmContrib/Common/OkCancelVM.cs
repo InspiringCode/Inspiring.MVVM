@@ -26,7 +26,7 @@
    }
 
    public sealed class OkCancelVMDescriptor : VMDescriptor {
-      public VMProperty<ICommand> Ok { get; set; }
-      public VMProperty<ICommand> Cancel { get; set; }
+      public IVMProperty<ICommand> Ok { get; set; }
+      public IVMProperty<ICommand> Cancel { get; set; }
    }
 }

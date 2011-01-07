@@ -92,29 +92,29 @@
 
       public event PropertyChangedEventHandler PropertyChanged;
 
-      protected internal T GetValue<T>(VMProperty<T> property) {
+      protected internal T GetValue<T>(IVMProperty<T> property) {
          Contract.Requires<ArgumentNullException>(property != null);
-         return property.GetValue(Kernel);
+         return Kernel.GetValue<T>(property);
       }
 
-      protected internal void SetValue<T>(VMProperty<T> property, T value) {
+      protected internal void SetValue<T>(IVMProperty<T> property, T value) {
          Contract.Requires<ArgumentNullException>(property != null);
          property.SetValue(Kernel, value);
       }
 
-      protected internal T GetValidatedValue<T>(VMProperty<T> property) {
+      protected internal T GetValidatedValue<T>(IVMProperty<T> property) {
          Contract.Requires<ArgumentNullException>(property != null);
          return property.Behaviors.GetValidatedValueNext<T>(Kernel); // TODO: Refactor.
       }
 
-      protected internal object GetDisplayValue(VMProperty property) {
+      protected internal object GetDisplayValue(IVMProperty property) {
          Contract.Requires<ArgumentNullException>(property != null);
          return property.GetDisplayValue(Kernel);
       }
 
-      protected internal void SetDisplayValue(VMProperty property, object value) {
+      protected internal void SetDisplayValue(IVMProperty property, object value) {
          Contract.Requires<ArgumentNullException>(property != null);
-         property.SetDisplayValue(Kernel, value);
+         Kernel.SetDisplayValue(property, value);
       }
 
       protected void Revalidate(ValidationScope scope, ValidationMode mode) {
@@ -125,7 +125,7 @@
          Kernel.UpdateFromSource();
       }
 
-      protected void UpdateFromSource(VMProperty property) {
+      protected void UpdateFromSource(IVMProperty property) {
          Kernel.UpdateFromSource(property);
       }
 
@@ -133,7 +133,7 @@
          Kernel.UpdateSource();
       }
 
-      protected void UpdateSource(VMProperty property) {
+      protected void UpdateSource(IVMProperty property) {
          Kernel.UpdateSource(property);
       }
 

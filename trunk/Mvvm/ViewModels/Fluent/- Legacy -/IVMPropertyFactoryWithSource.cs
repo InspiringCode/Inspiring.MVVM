@@ -4,7 +4,7 @@ using Inspiring.Mvvm.ViewModels.Core;
 namespace Inspiring.Mvvm.ViewModels.Fluent {
 
    /// <summary>
-   ///   Creates various <see cref="VMProperty"/> objects that are either mapped
+   ///   Creates various <see cref="IVMProperty"/> objects that are either mapped
    ///   or calculated.
    /// </summary>
    /// <typeparam name="TVM">
@@ -24,12 +24,12 @@ namespace Inspiring.Mvvm.ViewModels.Fluent {
       IConfigurationProvider {
 
       /// <summary>
-      ///   Creates a simple <see cref="VMProperty"/>.
+      ///   Creates a simple <see cref="IVMProperty"/>.
       /// </summary>
-      VMProperty<TSourceValue> Property();
+      IVMProperty<TSourceValue> Property();
 
       /// <summary>
-      ///   <para>Creates a <see cref="VMProperty"/> that holds a child view model.
+      ///   <para>Creates a <see cref="IVMProperty"/> that holds a child view model.
       ///      The child VM is resolved via the service locator of the parent VM 
       ///      and is initialized properly (for example its Parent is set).</para>
       ///   <para><typeparamref name="TChildVM"/> specifies the type of the child
@@ -45,7 +45,7 @@ namespace Inspiring.Mvvm.ViewModels.Fluent {
       ///   is called with the source object returned by the mapped or calculated 
       ///   source.
       /// </typeparam>
-      VMProperty<TChildVM> VM<TChildVM>() where TChildVM : IViewModel, ICanInitializeFrom<TSourceValue>;
+      IVMProperty<TChildVM> VM<TChildVM>() where TChildVM : IViewModel, ICanInitializeFrom<TSourceValue>;
 
       // TODO: Comment me
       [EditorBrowsable(EditorBrowsableState.Never)]

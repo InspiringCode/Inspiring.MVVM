@@ -11,7 +11,7 @@
    public interface IVMPropertyBuilderProvider<TVM> : IHideObjectMembers where TVM : IViewModel {
       /// <summary>
       ///   <para>Returns a <see cref="IVMPropertyBuilder"/> which creates <see
-      ///      cref="VMProperty"/> objects.</para>
+      ///      cref="IVMProperty"/> objects.</para>
       ///   <para>Mapped properties created with the returned factory have to 
       ///      specify the property path relative to the VM. For delegated 
       ///      properties the VM instance is passed to their getter/setter 
@@ -21,7 +21,7 @@
 
       /// <summary>
       ///   Returns a <see cref="IVMPropertyBuilder"/> which creates <see
-      ///   cref="VMProperty"/> objects.
+      ///   cref="IVMProperty"/> objects.
       /// </summary>
       /// <param name="sourceObjectSelector">
       ///   An expression of the form 'x => x.Person' that returns an object

@@ -10,7 +10,7 @@
          _configuration = configuration;
       }
 
-      public void Custom<T>(VMProperty<T> property, VMBehaviorKey behaviorToEnable) {
+      public void Custom<T>(IVMProperty<T> property, VMBehaviorKey behaviorToEnable) {
          throw new NotImplementedException();
          //BehaviorConfiguration config = _configuration.GetConfiguration(property);
          //config.Enable(behaviorToEnable);

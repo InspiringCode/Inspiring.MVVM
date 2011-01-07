@@ -6,10 +6,10 @@
       VMDescriptor
       where TItemVM : IViewModel {
 
-      public VMProperty<IEnumerable<TItemSource>> AllSourceItems { get; set; }
-      public VMProperty<ICollection<TItemSource>> SelectedSourceItems { get; set; }
-      public VMProperty<IVMCollection<TItemVM>> AllItems { get; set; }
-      public VMProperty<IVMCollection<TItemVM>> SelectedItems { get; set; }
+      public IVMProperty<IEnumerable<TItemSource>> AllSourceItems { get; set; }
+      public IVMProperty<ICollection<TItemSource>> SelectedSourceItems { get; set; }
+      public IVMProperty<IVMCollection<TItemVM>> AllItems { get; set; }
+      public IVMProperty<IVMCollection<TItemVM>> SelectedItems { get; set; }
    }
 
    public class MultiSelectionVMDescriptor<TItemSource> :

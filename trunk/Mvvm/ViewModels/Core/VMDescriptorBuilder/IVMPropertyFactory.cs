@@ -1,174 +1,174 @@
-﻿namespace Inspiring.Mvvm.ViewModels {
-   using System;
-   using System.Collections.Generic;
-   using System.Linq.Expressions;
-   using System.Windows.Input;
-   using Inspiring.Mvvm.Common;
+﻿//namespace Inspiring.Mvvm.ViewModels {
+//   using System;
+//   using System.Collections.Generic;
+//   using System.Linq.Expressions;
+//   using System.Windows.Input;
+//   using Inspiring.Mvvm.Common;
 
-   public interface IVMPropertyFactory {
+//   public interface IVMPropertyFactory {
 
-   }
+//   }
 
-   /// <summary>
-   ///   A factory that creates <see cref="VMProperty"/> instances configured 
-   ///   with a certain value source. You can get an instance of this interface
-   ///   by calling 'VMDescriptorBuilder.For&lt;PersonVM&gt;().WithProperties((d, c) => {
-   ///      var p = c.GetPropertyFactory(x => x.Person);
-   ///      [...]
-   ///   })'.
-   /// </summary>
-   /// <remarks>
-   ///   Note that simple instance properties can only be created with the 
-   ///   <see cref="IRootPropertyFactory"/> because it does not make sense on 
-   ///   factories that are created for a certain model source object.
-   /// </remarks>
-   public interface _IVMPropertyFactory<TParentVM, TSource> : IVMPropertyFactory, IHideObjectMembers {
-      /// <summary>
-      ///   Creates a property that returns und updates the value of a normal
-      ///   property of a model object that is wrapped by the view model.
-      /// </summary>
-      /// <param name="sourcePropertySelector">
-      ///   <para>An expression of the form 'x => x.Age' that specifies the 
-      ///      property path of the property whose value should be returned and
-      ///      updated by the returned 'VMProperty'.</para>
-      ///   <para>The first argument of the expression ('x' in the example) is
-      ///      the value of the model property this factory was created for.
-      ///      If this factory was created by 'GetPropertyFactory(x => x.Person)'
-      ///      the first argument would be the value of the 'Person' property of
-      ///      the current 'ViewModel'.</para>
-      /// </param>
-      VMProperty<T> Mapped<T>(Expression<Func<TSource, T>> sourcePropertySelector);
+//   /// <summary>
+//   ///   A factory that creates <see cref="IVMProperty"/> instances configured 
+//   ///   with a certain value source. You can get an instance of this interface
+//   ///   by calling 'VMDescriptorBuilder.For&lt;PersonVM&gt;().WithProperties((d, c) => {
+//   ///      var p = c.GetPropertyFactory(x => x.Person);
+//   ///      [...]
+//   ///   })'.
+//   /// </summary>
+//   /// <remarks>
+//   ///   Note that simple instance properties can only be created with the 
+//   ///   <see cref="IRootPropertyFactory"/> because it does not make sense on 
+//   ///   factories that are created for a certain model source object.
+//   /// </remarks>
+//   public interface _IVMPropertyFactory<TParentVM, TSource> : IVMPropertyFactory, IHideObjectMembers {
+//      /// <summary>
+//      ///   Creates a property that returns und updates the value of a normal
+//      ///   property of a model object that is wrapped by the view model.
+//      /// </summary>
+//      /// <param name="sourcePropertySelector">
+//      ///   <para>An expression of the form 'x => x.Age' that specifies the 
+//      ///      property path of the property whose value should be returned and
+//      ///      updated by the returned 'VMProperty'.</para>
+//      ///   <para>The first argument of the expression ('x' in the example) is
+//      ///      the value of the model property this factory was created for.
+//      ///      If this factory was created by 'GetPropertyFactory(x => x.Person)'
+//      ///      the first argument would be the value of the 'Person' property of
+//      ///      the current 'ViewModel'.</para>
+//      /// </param>
+//      IVMProperty<T> Mapped<T>(Expression<Func<TSource, T>> sourcePropertySelector);
 
-      /// <summary>
-      ///   Creates a property that uses the passed 'getter' and 'setter' 
-      ///   delegates to return and update its value.
-      /// </summary>
-      /// <param name="getter">
-      ///   <para>A delegate that is called by the 'VMProperty' to get its value 
-      ///      which should perform some logic to get the current value of the
-      ///      returned 'VMProperty'. Example: 'x => x.GetFee("Default")'.</para>
-      ///   <para>The first argument of the delegate is the value of the model 
-      ///      property this factory was created for. If this factory was created 
-      ///      by 'GetPropertyFactory(x => x.Person)' the first argument would be 
-      ///      the value of the 'Person' property of the current 'ViewModel'.</para>
-      /// </param>
-      /// <param name="setter">
-      ///   <para>A delegate that is called by the 'VMProperty' to update its 
-      ///      value which should perform perform some logic to update the current 
-      ///      value of the returned 'VMProperty'. Example: 
-      ///      '(x, value) => x.UpdateFee("Default", value)'.</para>
-      ///   <para>The first argument of the delegate is the value of the model 
-      ///      property this factory was created for. If this factory was created 
-      ///      by 'GetPropertyFactory(x => x.Person)' the first argument would be 
-      ///      the value of the 'Person' property of the current 'ViewModel'. The
-      ///      second argument is the new value of the 'VMProperty'.</para>
-      /// </param>
-      VMProperty<T> Calculated<T>(Func<TSource, T> getter, Action<TSource, T> setter = null);
+//      /// <summary>
+//      ///   Creates a property that uses the passed 'getter' and 'setter' 
+//      ///   delegates to return and update its value.
+//      /// </summary>
+//      /// <param name="getter">
+//      ///   <para>A delegate that is called by the 'VMProperty' to get its value 
+//      ///      which should perform some logic to get the current value of the
+//      ///      returned 'VMProperty'. Example: 'x => x.GetFee("Default")'.</para>
+//      ///   <para>The first argument of the delegate is the value of the model 
+//      ///      property this factory was created for. If this factory was created 
+//      ///      by 'GetPropertyFactory(x => x.Person)' the first argument would be 
+//      ///      the value of the 'Person' property of the current 'ViewModel'.</para>
+//      /// </param>
+//      /// <param name="setter">
+//      ///   <para>A delegate that is called by the 'VMProperty' to update its 
+//      ///      value which should perform perform some logic to update the current 
+//      ///      value of the returned 'VMProperty'. Example: 
+//      ///      '(x, value) => x.UpdateFee("Default", value)'.</para>
+//      ///   <para>The first argument of the delegate is the value of the model 
+//      ///      property this factory was created for. If this factory was created 
+//      ///      by 'GetPropertyFactory(x => x.Person)' the first argument would be 
+//      ///      the value of the 'Person' property of the current 'ViewModel'. The
+//      ///      second argument is the new value of the 'VMProperty'.</para>
+//      /// </param>
+//      IVMProperty<T> Calculated<T>(Func<TSource, T> getter, Action<TSource, T> setter = null);
 
-      // TODO: Document me
-      IVMCollectionPropertyFactoryExpression<TParentVM, TItem> MappedCollection<TItem>(
-         Expression<Func<TSource, IEnumerable<TItem>>> sourceCollectionSelector
-      );
+//      // TODO: Document me
+//      IVMCollectionPropertyFactoryExpression<TParentVM, TItem> MappedCollection<TItem>(
+//         Expression<Func<TSource, IEnumerable<TItem>>> sourceCollectionSelector
+//      );
 
-      // TODO: Document me
-      IVMViewModelPropertyFactoryExpression<TVMSource> MappedVM<TVMSource>(
-         Expression<Func<TSource, TVMSource>> viewModelSourceSelector
-      );
+//      // TODO: Document me
+//      IVMViewModelPropertyFactoryExpression<TVMSource> MappedVM<TVMSource>(
+//         Expression<Func<TSource, TVMSource>> viewModelSourceSelector
+//      );
 
-      // TODO: Document me
-      VMProperty<ICommand> Command(Action<TSource> execute, Func<TSource, bool> canExecute = null);
-   }
+//      // TODO: Document me
+//      IVMProperty<ICommand> Command(Action<TSource> execute, Func<TSource, bool> canExecute = null);
+//   }
 
-   /// <summary>
-   ///   A factory that creates <see cref="VMProperty"/> instances configured 
-   ///   with a certain value source. You can get an instance of this interface
-   ///   by calling 'VMDescriptorBuilder.For&lt;PersonVM&gt;().WithProperties((d, c) => {
-   ///      var v = c.GetPropertyFactory();
-   ///      [...]
-   ///   })'.
-   /// </summary>
-   public interface IRootVMPropertyFactory<TVM> : IVMPropertyFactory, IHideObjectMembers {
-      /// <summary>
-      ///   Creates a property that returns und updates the value of a normal
-      ///   property of a model object that is wrapped by the view model.
-      /// </summary>
-      /// <param name="sourcePropertySelector">
-      ///   <para>An expression of the form 'x => x.Person.Age' that specifies 
-      ///      the property path of the property whose value should be returned
-      ///      and updated by the returned 'VMProperty'.</para>
-      ///   <para>The first argument of the expression ('x' in the example) is
-      ///      the current 'ViewModel' for which this property is created. This
-      ///      means that the specified path has to start with a CLR property 
-      ///      ('Person') declared on the view model.</para>
-      /// </param>
-      VMProperty<T> Mapped<T>(Expression<Func<TVM, T>> sourcePropertySelector);
+//   /// <summary>
+//   ///   A factory that creates <see cref="IVMProperty"/> instances configured 
+//   ///   with a certain value source. You can get an instance of this interface
+//   ///   by calling 'VMDescriptorBuilder.For&lt;PersonVM&gt;().WithProperties((d, c) => {
+//   ///      var v = c.GetPropertyFactory();
+//   ///      [...]
+//   ///   })'.
+//   /// </summary>
+//   public interface IRootVMPropertyFactory<TVM> : IVMPropertyFactory, IHideObjectMembers {
+//      /// <summary>
+//      ///   Creates a property that returns und updates the value of a normal
+//      ///   property of a model object that is wrapped by the view model.
+//      /// </summary>
+//      /// <param name="sourcePropertySelector">
+//      ///   <para>An expression of the form 'x => x.Person.Age' that specifies 
+//      ///      the property path of the property whose value should be returned
+//      ///      and updated by the returned 'VMProperty'.</para>
+//      ///   <para>The first argument of the expression ('x' in the example) is
+//      ///      the current 'ViewModel' for which this property is created. This
+//      ///      means that the specified path has to start with a CLR property 
+//      ///      ('Person') declared on the view model.</para>
+//      /// </param>
+//      IVMProperty<T> Mapped<T>(Expression<Func<TVM, T>> sourcePropertySelector);
 
-      /// <summary>
-      ///   Creates a property that uses the passed 'getter' and 'setter' 
-      ///   delegates to return and update its value.
-      /// </summary>
-      /// <param name="getter">
-      ///   <para>A delegate that is called by the 'VMProperty' to get its value.
-      ///      The current 'ViewModel' is passed to the delegate which should
-      ///      perform some logic to get the current value of the returned 
-      ///      'VMProperty'.</para>
-      ///   <para>Example: 'vm => vm.Person.GetFee(vm.CurrentProject)'.</para>
-      /// </param>
-      /// <param name="setter">
-      ///   <para>A delegate that is called by the 'VMProperty' to update its 
-      ///      value. The current 'ViewModel' and the new value is passed
-      ///      to the delegate which should perform some logic to update the 
-      ///      current value of the returned 'VMProperty'.
-      ///   </para>
-      ///   <para>Example: 
-      ///      '(vm, value) => vm.Person.UpdateFee(vm.CurrentProject, value)'.
-      ///   </para>
-      /// </param>
-      VMProperty<T> Calculated<T>(Func<TVM, T> getter, Action<TVM, T> setter = null);
+//      /// <summary>
+//      ///   Creates a property that uses the passed 'getter' and 'setter' 
+//      ///   delegates to return and update its value.
+//      /// </summary>
+//      /// <param name="getter">
+//      ///   <para>A delegate that is called by the 'VMProperty' to get its value.
+//      ///      The current 'ViewModel' is passed to the delegate which should
+//      ///      perform some logic to get the current value of the returned 
+//      ///      'VMProperty'.</para>
+//      ///   <para>Example: 'vm => vm.Person.GetFee(vm.CurrentProject)'.</para>
+//      /// </param>
+//      /// <param name="setter">
+//      ///   <para>A delegate that is called by the 'VMProperty' to update its 
+//      ///      value. The current 'ViewModel' and the new value is passed
+//      ///      to the delegate which should perform some logic to update the 
+//      ///      current value of the returned 'VMProperty'.
+//      ///   </para>
+//      ///   <para>Example: 
+//      ///      '(vm, value) => vm.Person.UpdateFee(vm.CurrentProject, value)'.
+//      ///   </para>
+//      /// </param>
+//      IVMProperty<T> Calculated<T>(Func<TVM, T> getter, Action<TVM, T> setter = null);
 
-      // TODO: Is there a better way? Needed for single selection contrib extension.
-      TProperty Calculated<TProperty, T>(Func<TVM, T> getter, Action<TVM, T> setter = null)
-         where TProperty : VMProperty<T>, new();
+//      // TODO: Is there a better way? Needed for single selection contrib extension.
+//      TProperty Calculated<TProperty, T>(Func<TVM, T> getter, Action<TVM, T> setter = null)
+//         where TProperty : IVMProperty<T>, new();
 
-      /// <summary>
-      ///   Creates a simple property that uses the view model to store its 
-      ///   value. You can think of it as a normal instance property enhanced
-      ///   with all the 'VMProperty' features.
-      /// </summary>
-      VMProperty<TValue> Local<TValue>();
+//      /// <summary>
+//      ///   Creates a simple property that uses the view model to store its 
+//      ///   value. You can think of it as a normal instance property enhanced
+//      ///   with all the 'VMProperty' features.
+//      /// </summary>
+//      IVMProperty<TValue> Local<TValue>();
 
-      // TODO: Document me
-      IVMCollectionPropertyFactoryExpression<TVM, TItem> MappedCollection<TItem>(
-         Expression<Func<TVM, IEnumerable<TItem>>> sourceCollectionSelector
-      );
+//      // TODO: Document me
+//      IVMCollectionPropertyFactoryExpression<TVM, TItem> MappedCollection<TItem>(
+//         Expression<Func<TVM, IEnumerable<TItem>>> sourceCollectionSelector
+//      );
 
-      // TODO: Document me
-      IVMViewModelPropertyFactoryExpression<TVMSource> MappedVM<TVMSource>(
-         Expression<Func<TVM, TVMSource>> viewModelSourceSelector
-      );
+//      // TODO: Document me
+//      IVMViewModelPropertyFactoryExpression<TVMSource> MappedVM<TVMSource>(
+//         Expression<Func<TVM, TVMSource>> viewModelSourceSelector
+//      );
 
-      // TODO: Document me
-      VMProperty<ICommand> Command(Action<TVM> execute, Func<TVM, bool> canExecute = null);
-   }
+//      // TODO: Document me
+//      IVMProperty<ICommand> Command(Action<TVM> execute, Func<TVM, bool> canExecute = null);
+//   }
 
-   public interface IVMCollectionPropertyFactoryExpression<TParentVM, TSourceItem> {
-      VMCollectionProperty<TVM> Of<TVM>(VMDescriptor itemDescriptor) where TVM : IViewModel, ICanInitializeFrom<TSourceItem>;
+//   //public interface IVMCollectionPropertyFactoryExpression<TParentVM, TSourceItem> {
+//   //   VMCollectionProperty<TVM> Of<TVM>(VMDescriptor itemDescriptor) where TVM : IViewModel, ICanInitializeFrom<TSourceItem>;
 
-      VMCollectionProperty<TVM> OfParentAware<TVM>(VMDescriptor itemDescriptor)
-         where TVM : IViewModel, ICanInitializeFrom<SourceWithParent<TParentVM, TSourceItem>>;
-   }
+//   //   VMCollectionProperty<TVM> OfParentAware<TVM>(VMDescriptor itemDescriptor)
+//   //      where TVM : IViewModel, ICanInitializeFrom<SourceWithParent<TParentVM, TSourceItem>>;
+//   //}
 
-   public interface IVMViewModelPropertyFactoryExpression<TVMSource> {
-      VMProperty<TVM> Of<TVM>() where TVM : IViewModel, ICanInitializeFrom<TVMSource>;
-   }
+//   public interface IVMViewModelPropertyFactoryExpression<TVMSource> {
+//      IVMProperty<TVM> Of<TVM>() where TVM : IViewModel, ICanInitializeFrom<TVMSource>;
+//   }
 
-   public class SourceWithParent<TParent, TSource> {
-      public SourceWithParent(TParent parent, TSource source) {
-         Parent = parent;
-         Source = source;
-      }
+//   public class SourceWithParent<TParent, TSource> {
+//      public SourceWithParent(TParent parent, TSource source) {
+//         Parent = parent;
+//         Source = source;
+//      }
 
-      public TParent Parent { get; private set; }
-      public TSource Source { get; private set; }
-   }
-}
+//      public TParent Parent { get; private set; }
+//      public TSource Source { get; private set; }
+//   }
+//}

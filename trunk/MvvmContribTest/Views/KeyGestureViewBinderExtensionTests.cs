@@ -47,7 +47,7 @@
       }
 
       public sealed class TestVMDescriptor : VMDescriptor {
-         public VMProperty<ICommand> ViewModelCommand { get; set; }
+         public IVMProperty<ICommand> ViewModelCommand { get; set; }
       }
    }
 }

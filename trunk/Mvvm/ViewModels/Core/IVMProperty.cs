@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core {
+﻿namespace Inspiring.Mvvm.ViewModels {
 
    public interface IVMProperty<out T> : IVMProperty {
 

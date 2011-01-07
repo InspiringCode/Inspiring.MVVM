@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels {
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
-   using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
@@ -21,7 +20,7 @@
          };
 
          CollectionAssert.AreEquivalent(
-            new VMProperty[] { descriptor.SimpleProperty },
+            new IVMProperty[] { descriptor.SimpleProperty },
             descriptor.Properties.ToArray()
          );
       }
@@ -42,7 +41,7 @@
       }
 
       private class TestDescriptor : VMDescriptor {
-         public VMProperty<string> SimpleProperty { get; set; }
+         public IVMProperty<string> SimpleProperty { get; set; }
       }
    }
 }

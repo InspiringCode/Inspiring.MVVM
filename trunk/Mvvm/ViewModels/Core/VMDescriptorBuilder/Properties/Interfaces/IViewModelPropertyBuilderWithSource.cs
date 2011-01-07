@@ -1,6 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Fluent {
    /// <summary>
-   ///   Provides a fluent interface to create <see cref="VMProperty"/> objects.
+   ///   Provides a fluent interface to create <see cref="IVMProperty"/> objects.
    ///   This interface is returned by <see cref="IViewModelPropertyBuilder"/>.
    /// </summary>
    /// <typeparam name="TSourceValue">
@@ -16,6 +16,6 @@
       ///   cref="ICanInitializeFrom.InitializeFrom"/> is called with the source 
       ///   object just selected.
       /// </typeparam>
-      VMProperty<TChildVM> With<TChildVM>() where TChildVM : IViewModel, ICanInitializeFrom<TSourceValue>;
+      IVMProperty<TChildVM> With<TChildVM>() where TChildVM : IViewModel, ICanInitializeFrom<TSourceValue>;
    }
 }

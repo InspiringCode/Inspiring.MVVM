@@ -158,7 +158,7 @@
       }
 
       private sealed class EmployeeVMDescriptor : VMDescriptor {
-         public VMProperty<IVMCollection<ProjectVM>> Projects { get; set; }
+         public IVMProperty<IVMCollection<ProjectVM>> Projects { get; set; }
       }
 
       private class ValidatorArguments<T> {

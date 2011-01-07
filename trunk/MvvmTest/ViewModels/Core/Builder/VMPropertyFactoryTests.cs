@@ -138,7 +138,7 @@
          Assert.IsFalse(ContainsBehavior<ViewModelWithSourceAcessorBehavior<ProjectVM, Project>>(p));
       }
 
-      private void AssertDefaultPropertyBehaviors(VMProperty p) {
+      private void AssertDefaultPropertyBehaviors(IVMProperty p) {
          Assert.IsTrue(ContainsBehavior<PropertyDescriptorBehavior>(p));
 
          Assert.IsFalse(ContainsBehavior<PropertyValidationBehavior<string>>(p));
@@ -146,13 +146,13 @@
          Assert.IsFalse(ContainsBehavior<RefreshableValueCacheBehavior<string>>(p));
       }
 
-      private void AssertDefaultViewModelBehaviors(VMProperty p) {
+      private void AssertDefaultViewModelBehaviors(IVMProperty p) {
          Assert.IsTrue(ContainsBehavior<DisplayValueAccessorBehavior<ProjectVM>>(p));
          Assert.IsTrue(ContainsBehavior<ParentSetterBehavior<ProjectVM>>(p));
          Assert.IsTrue(ContainsBehavior<PropertyDescriptorBehavior>(p));
       }
 
-      private void AssertDefaultCollectionPropertyBehaviors(VMProperty p) {
+      private void AssertDefaultCollectionPropertyBehaviors(IVMProperty p) {
          Assert.IsTrue(ContainsBehavior<IDisplayValueAccessorBehavior>(p));
          Assert.IsTrue(ContainsBehavior<ValueCacheBehavior<IVMCollection<ProjectVM>>>(p));
          Assert.IsTrue(ContainsBehavior<CollectionFactoryBehavior<ProjectVM>>(p));
@@ -164,7 +164,7 @@
 
       }
 
-      private bool ContainsBehavior<T>(VMProperty property) where T : IBehavior {
+      private bool ContainsBehavior<T>(IVMProperty property) where T : IBehavior {
          var config = Configuration.PropertyConfigurations[property];
          BehaviorChain chain = config.CreateChain();
 
@@ -172,7 +172,7 @@
          return chain.TryGetBehavior<T>(out behavior);
       }
 
-      private bool ContainsCollectionBehavior<T>(VMProperty property) where T : IBehavior {
+      private bool ContainsCollectionBehavior<T>(IVMProperty property) where T : IBehavior {
          var config = Configuration.PropertyConfigurations[property];
          var propertyChain = config.CreateChain();
 

@@ -38,5 +38,7 @@
       ///   Gets the head of the chain of property behaviors.
       /// </summary>
       BehaviorChain Behaviors { get; set; }
+
+      void Initialize(string propertyName);
    }
 }

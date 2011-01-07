@@ -4,7 +4,7 @@
    using Inspiring.Mvvm.ViewModels.Core;
 
    /// <summary>
-   ///   Provides a fluent interface to create collection <see cref="VMProperty"/>
+   ///   Provides a fluent interface to create collection <see cref="IVMProperty"/>
    ///   objects.
    /// </summary>
    /// <typeparam name="TSourceObject">
@@ -14,7 +14,7 @@
    /// </typeparam>
    public interface ICollectionPropertyBuilder<TSourceObject> {
       /// <summary>
-      ///   Creates a <see cref="VMProperty"/> of type <see cref="IVMCollection"/>
+      ///   Creates a <see cref="IVMProperty"/> of type <see cref="IVMCollection"/>
       ///   whos items are synchronized with a source collection returned by the 
       ///   passed <paramref name="sourceCollectionSelector"/>.
       /// </summary>
@@ -32,7 +32,7 @@
       );
 
       /// <summary>
-      ///   Creates a <see cref="VMProperty"/> of type <see cref="IVMCollection"/>
+      ///   Creates a <see cref="IVMProperty"/> of type <see cref="IVMCollection"/>
       ///   that is initialized with the items returned by the passed <paramref 
       ///   name="itemsProvider"/>.
       /// </summary>
@@ -46,7 +46,7 @@
       ) where TItemVM : IViewModel;
 
       /// <summary>
-      ///   Creates a <see cref="VMProperty"/> of type <see cref="IVMCollection"/>.
+      ///   Creates a <see cref="IVMProperty"/> of type <see cref="IVMCollection"/>.
       /// </summary>
       /// <typeparam name="TItemVM">
       ///   The type of the collection item VM (for example PersonVM). A 
@@ -59,7 +59,7 @@
       ///   Specifies the VM descriptor that should be used for the collection 
       ///   items. All items must have the same descriptor.
       /// </param>
-      VMProperty<IVMCollection<TItemVM>> Of<TItemVM>(
+      IVMProperty<IVMCollection<TItemVM>> Of<TItemVM>(
          VMDescriptorBase itemDescriptor
       ) where TItemVM : IViewModel;
    }

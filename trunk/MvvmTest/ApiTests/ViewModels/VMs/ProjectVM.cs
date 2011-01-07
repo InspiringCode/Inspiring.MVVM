@@ -53,7 +53,7 @@
    }
 
    public sealed class ProjectVMDescriptor : VMDescriptor {
-      public VMProperty<string> Title { get; set; }
-      public VMProperty<CustomerVM> Customer { get; set; }
+      public IVMProperty<string> Title { get; set; }
+      public IVMProperty<CustomerVM> Customer { get; set; }
    }
 }

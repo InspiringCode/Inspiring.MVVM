@@ -5,7 +5,7 @@
 
    /// <summary>
    ///   A <see cref="IDisplayValueAccessorBehavior"/> that uses the specified delegates
-   ///   to implement get/set operation of a <see cref="VMProperty"/>.
+   ///   to implement get/set operation of a <see cref="IVMProperty"/>.
    /// </summary>
    internal sealed class CalculatedPropertyAccessor<TVM, TSource, TValue> :
       Behavior,

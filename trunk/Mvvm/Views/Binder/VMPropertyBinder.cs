@@ -20,7 +20,7 @@
       }
 
       public IBindToExpression<T> Property<T>(
-         Expression<Func<TDescriptor, VMProperty<T>>> sourcePropertySelector
+         Expression<Func<TDescriptor, IVMProperty<T>>> sourcePropertySelector
       ) {
          string path = ExpressionService.GetPropertyPathString(sourcePropertySelector);
 

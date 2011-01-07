@@ -8,7 +8,7 @@
       internal _ViewModelValidationArgs(
          IViewModel validationTarget,
          IViewModel changedVM,
-         VMProperty changedProperty
+         IVMProperty changedProperty
       ) {
          Contract.Requires(validationTarget != null);
          Contract.Requires(changedVM != null);
@@ -22,7 +22,7 @@
 
       public IViewModel ValidationTarget { get; private set; }
       public IViewModel ChangedVM { get; private set; }
-      public VMProperty ChangedProperty { get; private set; }
+      public IVMProperty ChangedProperty { get; private set; }
 
       internal List<string> Errors { get; private set; }
 

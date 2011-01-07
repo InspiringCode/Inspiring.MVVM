@@ -73,7 +73,7 @@
       }
 
       public class TaskVMDescriptor : VMDescriptor {
-         public VMProperty<string> Title { get; set; }
+         public IVMProperty<string> Title { get; set; }
       }
    }
 }

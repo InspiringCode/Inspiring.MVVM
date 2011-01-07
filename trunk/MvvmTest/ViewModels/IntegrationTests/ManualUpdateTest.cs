@@ -113,7 +113,7 @@ namespace Inspiring.MvvmTest.ViewModels {
          );
       }
 
-      private void CheckUpdateFromSource<T>(VMProperty<T> property, Action sourceMutator) {
+      private void CheckUpdateFromSource<T>(IVMProperty<T> property, Action sourceMutator) {
          bool called = false;
          T propertyChangedValue = default(T);
          PropertyChangedEventHandler handler = delegate(object sender, PropertyChangedEventArgs args) {
@@ -141,21 +141,21 @@ namespace Inspiring.MvvmTest.ViewModels {
          _vm.PropertyChanged -= handler;
       }
 
-      private void CheckUpdateFromSource<T>(VMCollectionProperty<T> property, Action sourceMutator) where T : IViewModel {
-         var before = _vm.GetValue(property);
-         sourceMutator();
-         _vm.InvokeUpdateFromSource(property);
-         var after = _vm.GetValue(property);
-         CollectionAssert.AreNotEquivalent(
-            before,
-            after,
-            "Expected that property {0} has changed.",
-            property.PropertyName
-         );
-      }
+      //private void CheckUpdateFromSource<T>(VMCollectionProperty<T> property, Action sourceMutator) where T : IViewModel {
+      //   var before = _vm.GetValue(property);
+      //   sourceMutator();
+      //   _vm.InvokeUpdateFromSource(property);
+      //   var after = _vm.GetValue(property);
+      //   CollectionAssert.AreNotEquivalent(
+      //      before,
+      //      after,
+      //      "Expected that property {0} has changed.",
+      //      property.PropertyName
+      //   );
+      //}
 
       private void CheckUpdateSource<T>(
-         VMProperty<T> property,
+         IVMProperty<T> property,
          T newValue,
          Func<T> sourceValueGetter
       ) {
@@ -170,7 +170,7 @@ namespace Inspiring.MvvmTest.ViewModels {
          );
       }
 
-      private void AssertNoChange<T>(VMProperty<T> property, Action testCode) {
+      private void AssertNoChange<T>(IVMProperty<T> property, Action testCode) {
          var before = _vm.GetValue(property);
          testCode();
          var after = _vm.GetValue(property);

@@ -4,7 +4,7 @@
    using Inspiring.Mvvm.Common;
 
    public interface IValidationBuilder<TVM> : IHideObjectMembers where TVM : IViewModel {
-      IValidationBuilder<TVM, TValue> Check<TValue>(VMProperty<TValue> property);
+      IValidationBuilder<TVM, TValue> Check<TValue>(IVMProperty<TValue> property);
       ICollectionValidationBuilder<TItemVM> CheckCollection<TItemVM>(
          IVMProperty<VMCollection<TItemVM>> property
       ) where TItemVM : IViewModel;
@@ -19,7 +19,7 @@
 
    public interface ICollectionValidationBuilder<TItemVM> where TItemVM : IViewModel {
       void Custom(CollectionValidator<TItemVM> validation);
-      ICollectionValidationBuilder<TItemVM, TValue> Check<TValue>(VMProperty<TValue> itemProperty);
+      ICollectionValidationBuilder<TItemVM, TValue> Check<TValue>(IVMProperty<TValue> itemProperty);
    }
 
    public interface ICollectionValidationBuilder<TItemVM, TValue> where TItemVM : IViewModel {

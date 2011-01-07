@@ -272,8 +272,8 @@
             Projects = new VMProperty<IVMCollection<ProjectVM>>();
          }
 
-         public VMProperty<IViewModel> CurrentProject { get; set; }
-         public VMProperty<IVMCollection<ProjectVM>> Projects { get; set; }
+         public IVMProperty<IViewModel> CurrentProject { get; set; }
+         public IVMProperty<IVMCollection<ProjectVM>> Projects { get; set; }
       }
 
       private class ProjectVMDescriptor : VMDescriptor {
@@ -281,7 +281,7 @@
             Customer = new VMProperty<IViewModel>();
          }
 
-         public VMProperty<IViewModel> Customer { get; set; }
+         public IVMProperty<IViewModel> Customer { get; set; }
       }
 
       private class CustomerVMDescriptor : VMDescriptor {
@@ -289,7 +289,7 @@
             Address = new VMProperty<IViewModel>();
          }
 
-         public VMProperty<IViewModel> Address { get; set; }
+         public IVMProperty<IViewModel> Address { get; set; }
       }
 
       private class AddressVMDescriptor : VMDescriptor {

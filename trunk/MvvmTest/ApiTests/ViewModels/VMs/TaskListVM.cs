@@ -31,6 +31,6 @@
    }
 
    public sealed class TaskListVMDescriptor : VMDescriptor {
-      public VMProperty<IVMCollection<TaskVM>> Tasks { get; set; }
+      public IVMProperty<IVMCollection<TaskVM>> Tasks { get; set; }
    }
 }
