@@ -76,5 +76,14 @@
       public void NotifyValidationStateChanged(IVMProperty property) {
          throw new NotImplementedException();
       }
+
+
+      public T GetValue<T>(IVMProperty<T> property) {
+         return (T)GetValue((IVMProperty)property);
+      }
+
+      public T GetValidatedValue<T>(IVMProperty<T> property) {
+         return (T)GetValue((IVMProperty)property);
+      }
    }
 }

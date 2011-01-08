@@ -2,6 +2,10 @@
    using System;
    using Inspiring.Mvvm.ViewModels.Core;
 
+
+   public interface IVMProperty<out T> : IVMProperty {
+   }
+
    public interface IVMProperty {
       /// <summary>
       ///   Gets the name of the VM Property. This is the same as the name
@@ -40,5 +44,7 @@
       BehaviorChain Behaviors { get; set; }
 
       void Initialize(string propertyName);
+
+      //object GetValueAsObject(IBehaviorContext context);
    }
 }

@@ -188,5 +188,14 @@
             .GetNextBehavior<TypeDescriptorBehavior>()
             .PropertyDescriptors;
       }
+
+
+      T IViewModel.GetValue<T>(IVMProperty<T> property) {
+         return GetValue(property);
+      }
+
+      T IViewModel.GetValidatedValue<T>(IVMProperty<T> property) {
+         return GetValidatedValue(property);
+      }
    }
 }

@@ -37,8 +37,10 @@
          }
 
          public override void Validate(ValidationArgs args) {
-            TVM vm = (TVM)args.TargetVM;
-            TValue value = (TValue)args.TargetVM.GetValue(args.TargetProperty);
+            var vm = (TVM)args.TargetVM;
+            var typedTargetProperty = (IVMProperty<TValue>)args.TargetProperty;
+
+            TValue value = args.TargetVM.GetValue(typedTargetProperty);
             _validatorCallback(vm, value, args);
          }
 

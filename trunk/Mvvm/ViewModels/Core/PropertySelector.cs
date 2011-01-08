@@ -21,7 +21,14 @@
          Func<TDescriptor, IVMProperty> propertySelector
       ) where TDescriptor : VMDescriptorBase {
          Contract.Requires(propertySelector != null);
-         return new GenericPropertySelector<TDescriptor>(propertySelector);
+         return new NonGenericPropertySelector<TDescriptor>(propertySelector);
+      }
+
+      public static PropertySelector CreateExactlyTyped<TDescriptor, TValue>(
+         Func<TDescriptor, IVMProperty<TValue>> propertySelector
+      ) where TDescriptor : VMDescriptorBase {
+         Contract.Requires(propertySelector != null);
+         return new GenericPropertySelector<TDescriptor, TValue>(propertySelector);
       }
 
       /// <summary>
@@ -34,11 +41,73 @@
       /// </param>
       public abstract IVMProperty GetProperty(VMDescriptorBase descriptor);
 
+      public abstract object GetPropertyValue(IViewModel viewModel);
+
+      private sealed class NonGenericPropertySelector<TDescriptor> :
+         PropertySelector
+         where TDescriptor : VMDescriptorBase {
+
+         private PropertySelector _genericSelector;
+         private readonly Func<TDescriptor, IVMProperty> _selector;
+
+         public NonGenericPropertySelector(Func<TDescriptor, IVMProperty> selector) {
+            Contract.Requires(selector != null);
+            _selector = selector;
+         }
+
+         public override IVMProperty GetProperty(VMDescriptorBase descriptor) {
+            var concreteDescriptor = (TDescriptor)descriptor;
+            return _selector(concreteDescriptor);
+         }
+
+         /// <remarks>
+         ///   <para>Because we can only get the value of a property if we know its type
+         ///      at COMPILE time, we use a little hack: The first time this method is 
+         ///      called, the descriptor of the passed in view model is used to determine
+         ///      the type of the property. Reflection is then used to create a strongly
+         ///      type selector, to which <see cref="GetPropertyValue"/> operations are
+         ///      delegated.</para>
+         ///   <para>Design trade-off: We could have avoided this hack if we had added
+         ///      a 'GetValueAsObject' method to the <see cref="IVMProperty"/>
+         ///      interface but it was decided to keep the public interface clean.</para>
+         /// </remarks>
+         public override object GetPropertyValue(IViewModel viewModel) {
+            if (_genericSelector == null) {
+               InitializeGenericSelector(viewModel.Descriptor);
+            }
+
+            return _genericSelector.GetPropertyValue(viewModel);
+         }
+
+         /// <param name="arbitraryDescriptor">
+         ///   Because the type of the property selected by this object always
+         ///   has to be the same, any instance can be used for this purpose.
+         /// </param>
+         private void InitializeGenericSelector(VMDescriptorBase arbitraryDescriptor) {
+            IVMProperty property = GetProperty(arbitraryDescriptor);
+            _genericSelector = CreateGenericSelector(property.PropertyType);
+         }
+
+         private PropertySelector CreateGenericSelector(Type propertyType) {
+            Type type = MakeConcreateGenericSelectorType(propertyType);
+            var constructorArgs = new[] { _selector };
+
+            return (PropertySelector)Activator.CreateInstance(type, constructorArgs);
+         }
+
+         private Type MakeConcreateGenericSelectorType(Type propertyType) {
+            var genericSelectorType = typeof(GenericPropertySelector<,>);
+            var typeArguments = new[] { typeof(TDescriptor), propertyType };
+
+            return genericSelectorType.MakeGenericType(typeArguments);
+         }
+      }
+
       /// <summary>
       ///   Encapsulates the generic argument needed to call the 'selector' 
       ///   function.
       /// </summary>
-      private sealed class GenericPropertySelector<TDescriptor> :
+      private sealed class GenericPropertySelector<TDescriptor, TValue> :
          PropertySelector
          where TDescriptor : VMDescriptorBase {
 
@@ -50,8 +119,13 @@
          }
 
          public override IVMProperty GetProperty(VMDescriptorBase descriptor) {
-            TDescriptor concreteDescriptor = (TDescriptor)descriptor;
+            var concreteDescriptor = (TDescriptor)descriptor;
             return _selector(concreteDescriptor);
+         }
+
+         public override object GetPropertyValue(IViewModel viewModel) {
+            var typedProperty = (IVMProperty<TValue>)GetProperty(viewModel.Descriptor);
+            return viewModel.GetValue(typedProperty);
          }
       }
    }

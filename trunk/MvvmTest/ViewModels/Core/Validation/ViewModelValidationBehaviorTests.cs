@@ -1,9 +1,10 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Validation {
+   using System;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
+   using Inspiring.MvvmTest.Stubs;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Moq;
-   using System;
 
    [TestClass]
    public class ViewModelValidationBehaviorTests : TestBase {
@@ -92,7 +93,7 @@
               .Setup(x => x.NotifyValidating(It.IsAny<ValidationArgs>()))
               .Callback<ValidationArgs>(args => args.Errors.Add(expectedError));
          }
-         
+
          private void Validate() {
             ValidationContext.BeginValidation();
             _behavior.Validate(_ctx.Context, ValidationContext.Current);
@@ -153,12 +154,10 @@
             _addressProperty = Mock<IVMProperty>();
             _addressVM = Mock<IViewModel>();
 
-            var mock = new Mock<IViewModel>();
-            mock
-               .Setup(x => x.GetValue(_addressProperty))
-               .Returns(_addressVM);
+            var employeeStub = new ViewModelStub();
+            employeeStub.SetValue(_addressProperty, _addressVM);
 
-            _employeeVM = mock.Object;
+            _employeeVM = employeeStub;
 
             var behavior = new ViewModelValidationBehavior();
          }

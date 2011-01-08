@@ -133,12 +133,12 @@
 
          for (int i = 0; i < properties.Length; i++) {
             IViewModel vm = Steps[i].VM;
-            IVMProperty prop = properties.GetProperty(i, vm.Descriptor);
+            //IVMProperty prop = properties.GetProperty(i, vm.Descriptor);
 
             //IViewModel expectedValue = Steps[i + 1].VM;
             //IEnumerable expectedCollection = Steps[i + 1].ParentCollection;
 
-            object propertyValue = vm.GetValue(prop);
+            object propertyValue = properties.GetValue(i, vm);
 
             if (!PropertyValueMatchesStep(propertyValue, Steps[i + 1])) {
                //if (!Object.ReferenceEquals(expectedValue, propertyValue) &&

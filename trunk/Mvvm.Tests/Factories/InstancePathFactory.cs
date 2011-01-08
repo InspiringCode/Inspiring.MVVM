@@ -68,6 +68,15 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          public void NotifyValidationStateChanged(IVMProperty property) {
             throw new NotImplementedException();
          }
+
+
+         public T GetValue<T>(IVMProperty<T> property) {
+            throw new NotImplementedException();
+         }
+
+         public T GetValidatedValue<T>(IVMProperty<T> property) {
+            throw new NotImplementedException();
+         }
       }
    }
 }

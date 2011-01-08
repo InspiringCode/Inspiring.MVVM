@@ -23,18 +23,18 @@
       public PropertyValidatorBuilder<TVM, TValue> Check<TValue>(
          Func<TDescriptor, IVMProperty<TValue>> propertySelector
       ) {
-         var config = Configuration.SetTargetProperty(PropertySelector.Create(propertySelector));
+         var config = Configuration.SetTargetProperty(PropertySelector.CreateExactlyTyped(propertySelector));
          return new PropertyValidatorBuilder<TVM, TValue>(config);
       }
 
       /// <summary>
       ///   Selects the child VM for which a validator should be defined. <see 
-      ///   cref="CheckVM"/> calls may be chained to select any descendant VM.
+      ///   cref="ValidateDescendant"/> calls may be chained to select any descendant VM.
       /// </summary>
       /// <param name="propertySelector">
       ///   The given function should return a collection VM property.
       /// </param>
-      public ValidatorBuilderBase<ViewModel<TChildDescriptor>, TChildDescriptor> CheckVM<TChildDescriptor>(
+      public ValidatorBuilderBase<ViewModel<TChildDescriptor>, TChildDescriptor> ValidateDescendant<TChildDescriptor>(
          Func<TDescriptor, IVMProperty<ViewModel<TChildDescriptor>>> propertySelector
       ) where TChildDescriptor : VMDescriptorBase {
          var config = Configuration.ExtendTargetPath(PropertySelector.Create(propertySelector));
@@ -43,13 +43,13 @@
 
       /// <summary>
       ///   Selects a child collection for whose items a validator should be 
-      ///   defined. <see cref="CheckVMs"/> may be freely intermixed with <see
-      ///   cref="CheckVM"/> calls to select any descendant VM.
+      ///   defined. <see cref="ValidateDescendant"/> may be freely intermixed with <see
+      ///   cref="ValidateDescendant"/> calls to select any descendant VM.
       /// </summary>
       /// <param name="propertySelector">
       ///   The given function should return a child VM property.
       /// </param>
-      public ValidatorBuilderBase<ViewModel<TChildDescriptor>, TChildDescriptor> CheckVMs<TChildDescriptor>(
+      public ValidatorBuilderBase<ViewModel<TChildDescriptor>, TChildDescriptor> ValidateDescendant<TChildDescriptor>(
          Func<TDescriptor, IVMProperty<IVMCollectionExpression<ViewModel<TChildDescriptor>>>> propertySelector
       ) where TChildDescriptor : VMDescriptorBase {
          var config = Configuration.ExtendTargetPath(PropertySelector.Create(propertySelector));
@@ -82,7 +82,7 @@
       ) where TItemDescriptor : VMDescriptorBase {
          var config = Configuration
             .ExtendTargetPath(PropertySelector.Create(collectionSelector))
-            .SetTargetProperty(PropertySelector.Create(itemPropertySelector));
+            .SetTargetProperty(PropertySelector.CreateExactlyTyped(itemPropertySelector));
 
          return new CollectionPropertyValidatorBuilder<TItemDescriptor, TItemValue>(config);
       }

@@ -108,7 +108,7 @@
       public void MatchStart_WithOnePropertyOnDefaultInstance_DoesNotMatch() {
          var employeeDescriptor = new EmployeeVMDescriptor();
          var properties = new VMPropertyPath()
-            .AddProperty(PropertySelector.Create((EmployeeVMDescriptor d) => d.CurrentProject));
+            .AddProperty(PropertySelector.CreateExactlyTyped((EmployeeVMDescriptor d) => d.CurrentProject));
 
          var path = new InstancePath();
          InstancePathMatch match = path.MatchStart(properties);
@@ -120,7 +120,7 @@
       public void MatchStart_WithOnePropertyOnOneStepPath_DoesNotMatch() {
          var employeeDescriptor = new EmployeeVMDescriptor();
          var properties = new VMPropertyPath()
-            .AddProperty(PropertySelector.Create((EmployeeVMDescriptor d) => d.CurrentProject));
+            .AddProperty(PropertySelector.CreateExactlyTyped((EmployeeVMDescriptor d) => d.CurrentProject));
 
          var employeeVM = new ViewModelStub(employeeDescriptor);
          var path = new InstancePath(employeeVM);
@@ -146,8 +146,8 @@
          var projectDescriptor = new ProjectVMDescriptor();
 
          var properties = new VMPropertyPath()
-            .AddProperty(PropertySelector.Create((EmployeeVMDescriptor d) => d.CurrentProject))
-            .AddProperty(PropertySelector.Create((ProjectVMDescriptor d) => d.Customer));
+            .AddProperty(PropertySelector.CreateExactlyTyped((EmployeeVMDescriptor d) => d.CurrentProject))
+            .AddProperty(PropertySelector.CreateExactlyTyped((ProjectVMDescriptor d) => d.Customer));
 
          var employeeVM = new ViewModelStub(employeeDescriptor);
          var projectVM = new ViewModelStub(projectDescriptor);
@@ -185,8 +185,8 @@
          var projectDescriptor = new ProjectVMDescriptor();
 
          var properties = new VMPropertyPath()
-            .AddProperty(PropertySelector.Create((EmployeeVMDescriptor d) => d.CurrentProject))
-            .AddProperty(PropertySelector.Create((ProjectVMDescriptor d) => d.Customer));
+            .AddProperty(PropertySelector.CreateExactlyTyped((EmployeeVMDescriptor d) => d.CurrentProject))
+            .AddProperty(PropertySelector.CreateExactlyTyped((ProjectVMDescriptor d) => d.Customer));
 
          var employeeVM = new ViewModelStub(employeeDescriptor);
          var projectVM = new ViewModelStub(projectDescriptor);
@@ -212,8 +212,8 @@
          var projectDescriptor = new ProjectVMDescriptor();
 
          var properties = new VMPropertyPath()
-            .AddProperty(PropertySelector.Create((EmployeeVMDescriptor d) => d.Projects))
-            .AddProperty(PropertySelector.Create((ProjectVMDescriptor d) => d.Customer));
+            .AddProperty(PropertySelector.CreateExactlyTyped((EmployeeVMDescriptor d) => d.Projects))
+            .AddProperty(PropertySelector.CreateExactlyTyped((ProjectVMDescriptor d) => d.Customer));
 
          var employeeVM = new ViewModelStub(employeeDescriptor);
          var projectVM = new ViewModelStub(projectDescriptor);
@@ -269,11 +269,11 @@
       private class EmployeeVMDescriptor : VMDescriptor {
          public EmployeeVMDescriptor() {
             CurrentProject = new VMProperty<IViewModel>();
-            Projects = new VMProperty<IVMCollection<ProjectVM>>();
+            Projects = new VMProperty<IVMCollection<IViewModel>>();
          }
 
          public IVMProperty<IViewModel> CurrentProject { get; set; }
-         public IVMProperty<IVMCollection<ProjectVM>> Projects { get; set; }
+         public IVMProperty<IVMCollection<IViewModel>> Projects { get; set; }
       }
 
       private class ProjectVMDescriptor : VMDescriptor {

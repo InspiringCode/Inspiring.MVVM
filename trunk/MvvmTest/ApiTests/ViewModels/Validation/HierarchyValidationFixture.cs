@@ -86,12 +86,19 @@
                c.Check(x => x.Name).Custom((vm, val, args) => {
                   vm.Log.AddCall(Validator.EmployeeName, args);
                });
-               c.CheckVMs(x => x.Projects).Check(x => x.Title).Custom((vm, val, args) => {
-                  ((ProjectVM)vm).Log.AddCall(Validator.ProjectTitle, args);
-               });
-               c.CheckVMs(x => x.Projects).CheckVM(x => x.Customer).Check(x => x.Name).Custom((vm, val, args) => {
-                  ((CustomerVM)vm).Log.AddCall(Validator.CustomerName, args);
-               });
+               c
+                  .ValidateDescendant(x => x.Projects)
+                  .Check(x => x.Title)
+                  .Custom((vm, val, args) => {
+                     ((ProjectVM)vm).Log.AddCall(Validator.ProjectTitle, args);
+                  });
+               c
+                  .ValidateDescendant(x => x.Projects)
+                  .ValidateDescendant(x => x.Customer)
+                  .Check(x => x.Name)
+                  .Custom((vm, val, args) => {
+                     ((CustomerVM)vm).Log.AddCall(Validator.CustomerName, args);
+                  });
             })
             .Build();
 
@@ -127,7 +134,7 @@
                c.Check(x => x.Description).Custom((vm, val, args) => {
                   vm.Log.AddCall(Validator.ProjectDescription, args);
                });
-               c.CheckVM(x => x.Customer).Check(x => x.Address).Custom((vm, val, args) => {
+               c.ValidateDescendant(x => x.Customer).Check(x => x.Address).Custom((vm, val, args) => {
                   ((CustomerVM)vm).Log.AddCall(Validator.CustomerAddress, args);
                });
             })

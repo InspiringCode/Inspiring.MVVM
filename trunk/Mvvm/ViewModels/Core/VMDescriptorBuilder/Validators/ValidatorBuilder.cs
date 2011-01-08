@@ -45,9 +45,9 @@
       ///      for the selected property in an ancestor VM and you DO NOT define 
       ///      any validator for that property in the current VM descriptor.</para>
       /// </summary>
-      public void EnableParentValidation(Func<TDescriptor, IVMProperty> propertySelector) {
+      public void EnableParentValidation<TValue>(Func<TDescriptor, IVMProperty<TValue>> propertySelector) {
          Contract.Requires<ArgumentNullException>(propertySelector != null);
-         Configuration.EnableValidation(PropertySelector.Create(propertySelector));
+         Configuration.EnableValidation(PropertySelector.CreateExactlyTyped(propertySelector));
       }
 
       // TODO: This is all messed up a bit. When should we enable what exactly?

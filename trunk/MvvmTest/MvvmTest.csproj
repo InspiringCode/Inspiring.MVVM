@@ -122,6 +122,7 @@
     <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionValidationBehaviorTest.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\DefaultManualUpdateBehaviorTest.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\ValidationBehaviorTest.cs" />
+    <Compile Include="ViewModels\Core\PropertySelectorTests.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\TypeDescriptorServiceTests.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\VMPropertyDescriptorTests.cs" />
     <Compile Include="ViewModels\Core\Validation\PreValidationValueCacheBehaviorTests.cs" />
