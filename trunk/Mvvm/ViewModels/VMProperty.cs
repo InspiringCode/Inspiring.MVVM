@@ -69,13 +69,13 @@
       }
 
 
-      object IVMProperty.GetDisplayValue(IBehaviorContext context) {
-         return GetDisplayValue(context);
-      }
+      //object IVMProperty.GetDisplayValue(IBehaviorContext context) {
+      //   return GetDisplayValue(context);
+      //}
 
-      void IVMProperty.SetValue(IBehaviorContext context, object value) {
-         SetValueCore(context, value);
-      }
+      //void IVMProperty.SetValue(IBehaviorContext context, object value) {
+      //   SetValueCore(context, value);
+      //}
 
       internal object GetDisplayValue(IBehaviorContext context) {
          Contract.Requires(context != null);

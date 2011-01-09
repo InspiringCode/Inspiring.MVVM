@@ -10,8 +10,12 @@
 
       T GetValidatedValue<T>(IVMProperty<T> property);
 
-      object GetValue(IVMProperty property);
-      void SetValue(IVMProperty property, object value);
+      object GetDisplayValue(IVMProperty property);
+
+      void SetDisplayValue(IVMProperty property, object value);
+
+      //object GetValue(IVMProperty property);
+      //void SetValue(IVMProperty property, object value);
 
       IBehaviorContext GetContext();
 

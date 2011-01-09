@@ -30,13 +30,13 @@
       /// </remarks>
       object GetValue(IBehaviorContext context);
 
-      object GetDisplayValue(IBehaviorContext context);
+      //object GetDisplayValue(IBehaviorContext context);
 
-      /// <summary>
-      ///   Sets the value of this property on the given view model (specified
-      ///   by the <paramref name="context"/> parameter).
-      /// </summary>
-      void SetValue(IBehaviorContext context, object value);
+      ///// <summary>
+      /////   Sets the value of this property on the given view model (specified
+      /////   by the <paramref name="context"/> parameter).
+      ///// </summary>
+      //void SetValue(IBehaviorContext context, object value);
 
       /// <summary>
       ///   Gets the head of the chain of property behaviors.

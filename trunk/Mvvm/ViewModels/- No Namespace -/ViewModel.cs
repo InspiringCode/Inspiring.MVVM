@@ -99,7 +99,7 @@
 
       protected internal void SetValue<T>(IVMProperty<T> property, T value) {
          Contract.Requires<ArgumentNullException>(property != null);
-         property.SetValue(Kernel, value);
+         Kernel.SetValue(property, value);
       }
 
       protected internal T GetValidatedValue<T>(IVMProperty<T> property) {
@@ -109,7 +109,7 @@
 
       protected internal object GetDisplayValue(IVMProperty property) {
          Contract.Requires<ArgumentNullException>(property != null);
-         return property.GetDisplayValue(Kernel);
+         return Kernel.GetDisplayValue(property);
       }
 
       protected internal void SetDisplayValue(IVMProperty property, object value) {
@@ -138,13 +138,14 @@
       }
 
 
-      object IViewModel.GetValue(IVMProperty property) {
-         return property.GetValue(Kernel);
-      }
+      //object IViewModel.GetValue(IVMProperty property) {
+      //   return property.GetValue(Kernel);
+      //}
 
-      void IViewModel.SetValue(IVMProperty property, object value) {
-         property.SetValue(Kernel, value);
-      }
+      //void IViewModel.SetValue(IVMProperty property, object value) {
+
+      //   property.SetValue(Kernel, value);
+      //}
 
       public IBehaviorContext GetContext() {
          return Kernel;
@@ -196,6 +197,15 @@
 
       T IViewModel.GetValidatedValue<T>(IVMProperty<T> property) {
          return GetValidatedValue(property);
+      }
+
+      object IViewModel.GetDisplayValue(IVMProperty property) {
+         return GetDisplayValue(property);
+      }
+
+
+      void IViewModel.SetDisplayValue(IVMProperty property, object value) {
+         SetDisplayValue(property, value);
       }
    }
 }

@@ -50,8 +50,8 @@ namespace Inspiring.Mvvm.ViewModels.Core {
       public void Revalidate(IBehaviorContext context, ValidationContext validationContext, ValidationMode mode) {
          switch (mode) {
             case ValidationMode.CommitValidValues:
-               object displayValue = _property.GetDisplayValue(context);
-               _property.SetValue(context, displayValue);
+               object displayValue = _property.Behaviors.GetDisplayValueNext(context); // TODO: Is this clean?
+               _property.Behaviors.SetDisplayValueNext(context, displayValue);   // TODO: Is this clean?
                break;
             case ValidationMode.DiscardInvalidValues:
                Validate(context, validationContext);

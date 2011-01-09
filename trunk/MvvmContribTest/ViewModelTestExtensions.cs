@@ -7,7 +7,7 @@
          IVMProperty property,
          object value
       ) {
-         viewModel.SetValue(property, value);
+         viewModel.SetDisplayValue(property, value);
       }
    }
 }

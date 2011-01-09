@@ -85,5 +85,14 @@
       public T GetValidatedValue<T>(IVMProperty<T> property) {
          return (T)GetValue((IVMProperty)property);
       }
+
+      public object GetDisplayValue(IVMProperty property) {
+         return GetValue(property);
+      }
+
+
+      public void SetDisplayValue(IVMProperty property, object value) {
+         SetValue(property, value);
+      }
    }
 }
