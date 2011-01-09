@@ -6,13 +6,13 @@
       VMKernel Kernel { get; }
       VMDescriptorBase Descriptor { get; set; }
 
-      T GetValue<T>(IVMProperty<T> property);
+      //T GetValue<T>(IVMProperty<T> property);
 
-      T GetValidatedValue<T>(IVMProperty<T> property);
+      //T GetValidatedValue<T>(IVMProperty<T> property);
 
-      object GetDisplayValue(IVMProperty property);
+      //object GetDisplayValue(IVMProperty property);
 
-      void SetDisplayValue(IVMProperty property, object value);
+      //void SetDisplayValue(IVMProperty property, object value);
 
       //object GetValue(IVMProperty property);
       //void SetValue(IVMProperty property, object value);

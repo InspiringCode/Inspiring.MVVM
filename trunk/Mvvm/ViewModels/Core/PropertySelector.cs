@@ -125,7 +125,7 @@
 
          public override object GetPropertyValue(IViewModel viewModel) {
             var typedProperty = (IVMProperty<TValue>)GetProperty(viewModel.Descriptor);
-            return viewModel.GetValue(typedProperty);
+            return viewModel.Kernel.GetValue(typedProperty);
          }
       }
    }

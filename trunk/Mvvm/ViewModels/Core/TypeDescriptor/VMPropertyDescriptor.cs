@@ -23,12 +23,12 @@
 
       public override object GetValue(object component) {
          IViewModel vm = CastComponent(component);
-         return vm.GetDisplayValue(_property);
+         return vm.Kernel.GetDisplayValue(_property);
       }
 
       public override void SetValue(object component, object value) {
          IViewModel vm = CastComponent(component);
-         vm.SetDisplayValue(_property, value);
+         vm.Kernel.SetDisplayValue(_property, value);
       }
 
       public void RaiseValueChanged(IViewModel vm) {

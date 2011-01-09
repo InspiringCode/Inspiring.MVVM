@@ -40,7 +40,7 @@
             var vm = (TVM)args.TargetVM;
             var typedTargetProperty = (IVMProperty<TValue>)args.TargetProperty;
 
-            TValue value = args.TargetVM.GetValue(typedTargetProperty);
+            TValue value = args.TargetVM.Kernel.GetValue(typedTargetProperty);
             _validatorCallback(vm, value, args);
          }
 

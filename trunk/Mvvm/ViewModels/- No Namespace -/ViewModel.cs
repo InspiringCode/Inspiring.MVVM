@@ -191,21 +191,21 @@
       }
 
 
-      T IViewModel.GetValue<T>(IVMProperty<T> property) {
-         return GetValue(property);
-      }
+      //T IViewModel.GetValue<T>(IVMProperty<T> property) {
+      //   return GetValue(property);
+      //}
 
-      T IViewModel.GetValidatedValue<T>(IVMProperty<T> property) {
-         return GetValidatedValue(property);
-      }
+      //T IViewModel.GetValidatedValue<T>(IVMProperty<T> property) {
+      //   return GetValidatedValue(property);
+      //}
 
-      object IViewModel.GetDisplayValue(IVMProperty property) {
-         return GetDisplayValue(property);
-      }
+      //object IViewModel.GetDisplayValue(IVMProperty property) {
+      //   return GetDisplayValue(property);
+      //}
 
 
-      void IViewModel.SetDisplayValue(IVMProperty property, object value) {
-         SetDisplayValue(property, value);
-      }
+      //void IViewModel.SetDisplayValue(IVMProperty property, object value) {
+      //   SetDisplayValue(property, value);
+      //}
    }
 }
