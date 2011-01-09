@@ -3,7 +3,7 @@
 //   using System.Collections.Generic;
 //   using System.Linq.Expressions;
 //   using Inspiring.Mvvm.ViewModels.Core;
-//   using Inspiring.Mvvm.ViewModels.Fluent;
+//   using Inspiring.Mvvm.ViewModels.Core;
 
 //   internal sealed class SingleSelectionPropertyBuilder<TParentVM> :
 //      ISingleSelectionPropertyBuilder<TParentVM>

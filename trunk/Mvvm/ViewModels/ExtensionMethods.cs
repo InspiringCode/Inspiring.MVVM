@@ -2,6 +2,22 @@
    using Inspiring.Mvvm.ViewModels.Core;
 
    public static class ExtensionMethods {
+      /// <summary>
+      ///   Initializes the behavior chain for the given VM descriptor and 
+      ///   optionally VM property.
+      /// </summary>
+      public static void Initialize(
+         this BehaviorChain chain,
+         VMDescriptorBase descriptor,
+         IVMProperty property = null
+      ) {
+         var context = new BehaviorInitializationContext(descriptor, property);
+
+         chain.TryCall<IBehaviorInitializationBehavior>(x =>
+            x.Initialize(context)
+         );
+      }
+
       public static void InitializeNext(this Behavior behavior, BehaviorInitializationContext context) {
          IBehaviorInitializationBehavior next;
          if (behavior.TryGetBehavior(out next)) {

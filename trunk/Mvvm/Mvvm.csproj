@@ -64,9 +64,6 @@
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="StructureMap">
-      <HintPath>..\Libs\StructureMap\StructureMap.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml" />
@@ -106,8 +103,8 @@
     <Compile Include="ViewModels\- No Namespace -\ViewModel.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMDescriptorBuilder.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\ICollectionFactoryBehavior.cs" />
-    <Compile Include="ViewModels\Core\BehaviorInterfaces\CollectionBehaviors\IPopulatorCollectionBehavior.cs" />
-    <Compile Include="ViewModels\Core\BehaviorInterfaces\CollectionBehaviors\IModificationCollectionBehavior.cs" />
+    <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IPopulatorCollectionBehavior.cs" />
+    <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IModificationCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IDescendantValidationBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IIsLoadedIndicatorBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IValidatedValueAccessorBehavior.cs" />
@@ -116,17 +113,16 @@
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IValidationStateProviderBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\ViewModelBehaviors\IManualUpdateCoordinatorBehavior.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorChain.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\BehaviorChainConfiguration.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\BehaviorChainConfigurationCollection.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\BehaviorChainTemplate.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\BehaviorExtensionMethods.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Configuration\BehaviorChainConfiguration.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Configuration\BehaviorChainConfigurationCollection.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Configuration\BehaviorChainTemplate.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Factories\CollectionBehaviorFactory.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Factories\IBehaviorFactoryInvoker.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Factories\ViewModelPropertyBehaviorFactory.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Keys\BehaviorChainTemplateKey.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Keys\BehaviorChainTemplateKeys.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\BehaviorChainTemplateRegistry.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\BehaviorChainTemplateRegistry.DefaultTemplates.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Configuration\BehaviorChainTemplateRegistry.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Configuration\BehaviorChainTemplateRegistry.DefaultTemplates.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Keys\BehaviorKeys.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Factories\PropertyBehaviorFactory.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Factories\ViewModelBehaviorFactory.cs" />
@@ -134,9 +130,9 @@
     <Compile Include="ViewModels\Core\Behaviors\Keys\BehaviorKey.cs" />
     <Compile Include="ViewModels\Core\Behaviors\InitializableBehavior.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Keys\CollectionBehaviorKeys.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\VMDescriptorConfiguration.cs" />
-    <Compile Include="ViewModels\Core\IViewModel.cs" />
-    <Compile Include="ViewModels\Core\IVMDescriptorBuilder.cs" />
+    <Compile Include="ViewModels\Core\Collections\IVMCollectionExpression.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\VMDescriptorConfiguration.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptor\IVMDescriptorBuilder.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\CacheBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionBehaviors\DelegatePopulatorCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\ParentSetterBehavior.cs" />
@@ -154,14 +150,6 @@
     <Compile Include="ViewModels\Core\PropertyTypeHelper.cs" />
     <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\DescendantValidationBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\RevalidationQueue.cs" />
-    <Compile Include="ViewModels\Core\VMDescriptorBuilder\BehaviorConfigurationBuilder.cs" />
-    <Compile Include="ViewModels\Core\VMDescriptorBuilder\BehaviorConfigurationDictionary.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\- Legacy -\BehaviorConfiguration.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\- Legacy -\BehaviorConfigurationFactory.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\- Legacy -\ConstantBehaviorFactory.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\- Legacy -\DefaultBehaviorFactory.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\- Legacy -\IBehaviorConfigurationExpression.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\- Legacy -\VMBehaviorKey.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Behaviors\Interfaces\ISinglePropertyBehaviorBuilder.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Behaviors\Interfaces\IVMBehaviorBuilder.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Behaviors\ViewModelBehaviorBuilder.cs" />
@@ -171,8 +159,6 @@
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\Interfaces\IPopulatedCollectionPropertyBuilder.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\VMPropertyBuilder.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\VMPropertyFactory.cs" />
-    <Compile Include="ViewModels\Core\CollectionModificationController.cs" />
-    <Compile Include="ViewModels\Core\VMDescriptorBuilder\CollectionValidationBuilder.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\ChangeNotifierCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\DescriptorSetterCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\ParentSetterCollectionBehavior.cs" />
@@ -186,8 +172,7 @@
     <Compile Include="ViewModels\Core\Validation\CollectionBehaviors\CollectionValidatorBehavior.cs" />
     <Compile Include="ViewModels\Core\Common\ChangeArgs.cs" />
     <Compile Include="ViewModels\Core\Common\InstancePath.cs" />
-    <Compile Include="ViewModels\Core\Common\ValidationContext.cs" />
-    <Compile Include="ViewModels\Core\Common\IInitializationPropertyBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\IBehaviorInitializationBehavior.cs" />
     <Compile Include="ViewModels\Core\Common\BehaviorInitializationContext.cs" />
     <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\DiscardingRevalidationBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\PreValidationValueCacheBehavior.cs" />
@@ -195,16 +180,10 @@
     <Compile Include="ViewModels\Core\Validation\ValidationContext.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationError.cs" />
     <Compile Include="ViewModels\Core\Common\VMPropertyPath.cs" />
-    <Compile Include="ViewModels\Core\IBehaviorConfigurationDictionaryProvider.cs" />
-    <Compile Include="ViewModels\Core\IBindableCollection.cs" />
-    <Compile Include="ViewModels\Core\IVMProperty.cs" />
-    <Compile Include="ViewModels\Core\ISupportsValidation.cs" />
     <Compile Include="ViewModels\Core\- Todo -\ItemCreationController.cs" />
-    <Compile Include="ViewModels\Core\IValidationBuilder.cs" />
     <Compile Include="ViewModels\Core\Kernel\VMKernel.cs" />
     <Compile Include="ViewModels\Core\Collections\PropertyBehaviors\CollectionFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\PropertyBehaviors\CollectionPopulatorBehavior.cs" />
-    <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\CollectionValidationBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\DefaultManualUpdateBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\DelegateCommandBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\IMutabilityCheckerBehavior.cs" />
@@ -214,7 +193,6 @@
     <Compile Include="ViewModels\Core\TypeDescriptor\SimplePropertyDescriptor.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\PropertyDescriptorBehavior.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\TypeDescriptorBehavior.cs" />
-    <Compile Include="ViewModels\Core\ValidationEventArgs.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationArgs.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationErrorCollection.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationStage.cs" />
@@ -225,8 +203,6 @@
     <Compile Include="ViewModels\Core\Validation\ViewModelValidationArgs.cs" />
     <Compile Include="ViewModels\Core\ViewModelBehaviors\IViewModelBehaviorContext.cs" />
     <Compile Include="ViewModels\Core\ViewModelBehaviors\ViewModelBehavior.cs" />
-    <Compile Include="ViewModels\Core\ViewModelExtensibility.cs" />
-    <Compile Include="ViewModels\Core\VMDescriptorBaseExtensionMethods.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Validators\CollectionPropertyValidatorBuilder.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Validators\CollectionValidatorBuilder.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Validators\PropertyValidatorBuilder.cs" />
@@ -235,17 +211,11 @@
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Validators\ValidatorConfiguration.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\VMDescriptorBuilder.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\VMPropertyBuilderProvider.cs" />
-    <Compile Include="ViewModels\Core\VMPropertyExtensionMethods.cs" />
     <Compile Include="ViewModels\ExtensionMethods.cs" />
     <Compile Include="ViewModels\Core\VMDescriptor\VMDescriptorBase.cs" />
     <Compile Include="ViewModels\Core\VMDescriptor\VMPropertyCollection.cs" />
     <Compile Include="ViewModels\Core\- Todo -\ICreatableItem.cs" />
-    <Compile Include="ViewModels\Fluent\- Legacy -\IConfigurationProvider.cs" />
-    <Compile Include="ViewModels\Fluent\- Legacy -\ILocalVMPropertyFactory.cs" />
-    <Compile Include="ViewModels\Fluent\- Legacy -\IVMCollectionPropertyFactory.cs" />
-    <Compile Include="ViewModels\Fluent\- Legacy -\IVMCollectionPropertyFactoryWithSource.cs" />
-    <Compile Include="ViewModels\Fluent\- Legacy -\IVMPropertyFactory.cs" />
-    <Compile Include="ViewModels\Fluent\- Legacy -\IVMPropertyFactoryWithSource.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\IConfigurationProvider.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\Interfaces\ICollectionPropertyBuilder.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\Interfaces\ICollectionPropertyBuilderWithSource.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\Interfaces\IVMPropertyBuilder.cs" />
@@ -254,15 +224,10 @@
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\Interfaces\IViewModelPropertyBuilderWithSource.cs" />
     <Compile Include="ViewModels\IHasSourceObject.cs" />
     <Compile Include="ViewModels\IViewModel.cs" />
-    <Compile Include="ViewModels\IVMContext.cs" />
     <Compile Include="ViewModels\- No Namespace -\IVMProperty.cs" />
-    <Compile Include="ViewModels\LegacyPropertyFactoryMethodExtensions.cs" />
-    <Compile Include="ViewModels\StandardBehaviors.cs" />
     <Compile Include="ViewModels\StandardValidations.cs" />
-    <Compile Include="ViewModels\ViewModelValidationArgs.cs" />
-    <Compile Include="ViewModels\VMCollectionProperty.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\- Legacy -\Behavior.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\- Legacy -\IBehavior.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Behavior.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\IBehavior.cs" />
     <Compile Include="ViewModels\Core\DynamicFields\FieldDefinition.cs" />
     <Compile Include="ViewModels\Core\DynamicFields\FieldDefinitionCollection.cs" />
     <Compile Include="ViewModels\Core\DynamicFields\FieldDefinitionGroup.cs" />
@@ -279,7 +244,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\- Legacy -\IBehaviorContext.cs" />
     <Compile Include="ViewModels\ICanInitializeFrom.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\AllowInvalidDisplayValuesBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\DisplayValueValidationBehavior.cs" />
@@ -297,14 +261,10 @@
     <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\DisplayValueAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\ValidationBehavior.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\VMPropertyDescriptor.cs" />
-    <Compile Include="ViewModels\Core\ChangeValueRequest.cs" />
     <Compile Include="ViewModels\IVMValueConverter.cs" />
-    <Compile Include="ViewModels\Core\VMDescriptorBuilder\IVMBehaviorConfigurator.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\IVMPropertyBuilderProvider.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Dependencies\Interfaces\IVMDependencyConfigurator.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\IVMPropertyFactory.cs" />
-    <Compile Include="ViewModels\ViewModel.cs" />
-    <Compile Include="ViewModels\VMCollection.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMDescriptor.cs" />
     <Compile Include="ViewModels\VMProperty.cs" />
     <Compile Include="Views\Binder\BinderBuildStep.cs" />
@@ -336,10 +296,12 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ViewModels\Core\BehaviorInterfaces\CollectionBehaviors\" />
+    <Folder Include="ViewModels\Core\Behaviors\- Legacy -\" />
+    <Folder Include="ViewModels\Fluent\- Legacy -\" />
     <Folder Include="Views\TestDoubles\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ViewModels\Core\Behaviors\- Diagram -.cd" />
     <None Include="Views\- Diagrams -\ViewBinder.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

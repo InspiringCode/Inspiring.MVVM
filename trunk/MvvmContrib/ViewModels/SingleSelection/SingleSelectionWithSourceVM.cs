@@ -2,7 +2,7 @@
    using System;
    using System.Collections.Generic;
    using System.Linq;
-   using Inspiring.Mvvm.ViewModels.Fluent;
+   using Inspiring.Mvvm.ViewModels.Core;
 
    public sealed class SingleSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM> :
       SingleSelectionVM<TItemSource, TItemVM>,

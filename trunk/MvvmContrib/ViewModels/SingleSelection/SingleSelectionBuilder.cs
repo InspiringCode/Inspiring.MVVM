@@ -3,7 +3,6 @@
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.ViewModels.Core;
-   using Inspiring.Mvvm.ViewModels.Fluent;
 
    public class SingleSelectionBuilder<TSourceObject, TItemSource> {
       private IVMPropertyBuilder<TSourceObject> _sourceObjectPropertyBuilder;

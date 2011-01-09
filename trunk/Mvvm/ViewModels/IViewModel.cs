@@ -1,6 +1,11 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using Inspiring.Mvvm.ViewModels.Core;
 
+
+   public interface IViewModel<in TDescriptor> : IViewModel where TDescriptor : VMDescriptorBase {
+
+   }
+
    //[ContractClass(typeof(IViewModelContract))]
    public interface IViewModel {
       VMKernel Kernel { get; }

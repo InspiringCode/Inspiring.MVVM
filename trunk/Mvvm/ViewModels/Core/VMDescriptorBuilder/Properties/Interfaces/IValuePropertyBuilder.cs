@@ -1,8 +1,7 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Fluent {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.ComponentModel;
    using System.Linq.Expressions;
-   using Inspiring.Mvvm.ViewModels.Core;
 
    /// <summary>
    ///   Provides a fluent interface to create <see cref="IVMProperty"/> that 

@@ -3,7 +3,7 @@
 //   using System.Linq;
 //   using System.Linq.Expressions;
 //   using Inspiring.Mvvm.ViewModels.Core;
-//   using Inspiring.Mvvm.ViewModels.Fluent;
+//   using Inspiring.Mvvm.ViewModels.Core;
 
 //   public interface IEnumSelectionPropertyBuilder<TParentVM> where TParentVM : IViewModel {
 //      SingleSelectionProperty<TEnum> Mapped<TEnum>(

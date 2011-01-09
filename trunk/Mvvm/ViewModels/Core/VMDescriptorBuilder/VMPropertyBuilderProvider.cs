@@ -3,7 +3,6 @@
    using System.Diagnostics.Contracts;
    using System.Linq.Expressions;
    using Inspiring.Mvvm.Common;
-   using Inspiring.Mvvm.ViewModels.Fluent;
 
    internal sealed class VMPropertyBuilderProvider<TVM> :
       IVMPropertyBuilderProvider<TVM>

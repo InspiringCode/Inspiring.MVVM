@@ -1,6 +1,5 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Fluent {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using Inspiring.Mvvm.Common;
-   using Inspiring.Mvvm.ViewModels.Core;
 
    /// <summary>
    ///   Provides a fluent interface to create collection <see cref="IVMProperty"/>

@@ -4,7 +4,7 @@
    using System.Diagnostics.Contracts;
    using System.Linq;
    using System.Linq.Expressions;
-   using Inspiring.Mvvm.ViewModels.Fluent;
+   using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.Mvvm.ViewModels.SingleSelection;
 
    public static class SelectionBuilderExtensions {

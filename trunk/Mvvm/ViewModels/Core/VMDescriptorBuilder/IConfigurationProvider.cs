@@ -1,6 +1,5 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Fluent {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System.ComponentModel;
-   using Inspiring.Mvvm.ViewModels.Core;
 
    // TODO: Comment me
    public interface IConfigurationProvider {

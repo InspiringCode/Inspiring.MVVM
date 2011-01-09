@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Fluent {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Windows.Input;
    using Inspiring.Mvvm.Common;

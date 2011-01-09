@@ -4,7 +4,7 @@
    using System.Linq;
    using Inspiring.Mvvm;
    using Inspiring.Mvvm.ViewModels.Core;
-   using Inspiring.Mvvm.ViewModels.Fluent;
+   using Inspiring.Mvvm.ViewModels.Core;
 
    public abstract class MultiSelectionVM<TItemSource, TItemVM> :
       ViewModel<MultiSelectionVMDescriptor<TItemSource, TItemVM>>

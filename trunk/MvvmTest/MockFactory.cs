@@ -1,7 +1,5 @@
 ﻿namespace Inspiring.MvvmTest {
-   using System;
    using Inspiring.Mvvm.Screens;
-   using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.Mvvm.Views;
    using Moq;
@@ -47,14 +45,6 @@
          var mock = new Mock<IBehaviorFactory>();
          mock.Setup(x => x.Create<TValue>()).Returns(behavior);
          return mock;
-      }
-
-      public static IVMProperty<T> MockProperty<T>(BehaviorConfiguration config, VMDescriptor descriptor) {
-         IVMProperty<T> property = new VMProperty<T>();
-         property.Initialize("Test");
-         throw new NotImplementedException();
-         //property.ConfigureBehaviors(config, descriptor);
-         return property;
       }
    }
 }

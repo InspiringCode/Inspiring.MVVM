@@ -2,7 +2,6 @@
    using System;
    using System.Linq.Expressions;
    using Inspiring.Mvvm.Common;
-   using Inspiring.Mvvm.ViewModels.Fluent;
 
    /// <summary>
    ///   A provider that returns <see cref="IVMPropertyBuilder"/> objects. Different

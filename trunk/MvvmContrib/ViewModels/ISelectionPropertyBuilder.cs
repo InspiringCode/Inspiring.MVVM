@@ -3,7 +3,7 @@
 //   using System.Collections.Generic;
 //   using System.Linq.Expressions;
 //   using Inspiring.Mvvm.ViewModels.Core;
-//   using Inspiring.Mvvm.ViewModels.Fluent;
+//   using Inspiring.Mvvm.ViewModels.Core;
 
 //   public interface ISingleSelectionPropertyBuilder<TParentVM> where TParentVM : IViewModel {
 //      ISingleSelectionPropertyBuilder<TParentVM, TSourceItem> WithItems<TSourceItem>(

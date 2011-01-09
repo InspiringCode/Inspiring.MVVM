@@ -119,7 +119,6 @@
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\CollectionSynchronizerBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\CollectionParentSetterBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Collections\VMCollectionTestBase.cs" />
-    <Compile Include="ViewModels\Core\PropertyBehaviors\CollectionValidationBehaviorTest.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\DefaultManualUpdateBehaviorTest.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\ValidationBehaviorTest.cs" />
     <Compile Include="ViewModels\Core\PropertySelectorTests.cs" />
@@ -163,7 +162,6 @@
     <Compile Include="ViewModels\CommandPropertyTest.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\PropagateVMContextBehaviorTest.cs" />
     <Compile Include="ViewModels\Behaviors\VMPropertyTest.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\BehaviorConfigurationTest.cs" />
     <Compile Include="ViewModels\Core\Builder\VMPropertyFactoryTest.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\ViewModelFactoryBehaviorTests.cs" />
     <Compile Include="ViewModels\IntegrationTests\ManualUpdateTest.cs" />

@@ -6,7 +6,6 @@
    using System.Windows.Input;
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.Screens;
-   using Inspiring.Mvvm.ViewModels.Fluent;
 
    internal sealed class VMPropertyBuilder<TVM, TSourceObject> :
       ConfigurationProvider,
@@ -301,7 +300,7 @@
       }
 
 
-      IVMProperty<TChildVM> IViewModelPropertyBuilder<TSourceObject>.Custom<TChildVM>(IValueAccessorBehavior<TChildVM> viewModelAccessor) {
+      public IVMProperty<TChildVM> Custom<TChildVM>(IValueAccessorBehavior<TChildVM> viewModelAccessor) where TChildVM : IViewModel {
          return Factory.CreateViewModelProperty(
             viewModelAccessor: viewModelAccessor,
             sourceAccessor: GetSourceObjectAccessor(),
@@ -310,9 +309,9 @@
          );
       }
 
-      IVMProperty<TChildVM> IViewModelPropertyBuilder<TSourceObject>.Custom<TChildVM, TChildSource>(
+      public IVMProperty<TChildVM> Custom<TChildVM, TChildSource>(
          IValueAccessorBehavior<TChildVM> viewModelAccessor
-      ) {
+      ) where TChildVM : IViewModel, ICanInitializeFrom<TChildSource> {
          return Factory.CreateViewModelProperty(
             viewModelAccessor: viewModelAccessor,
             sourceAccessor: GetSourceObjectAccessor(),

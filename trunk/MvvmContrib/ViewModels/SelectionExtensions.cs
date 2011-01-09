@@ -1,4 +1,4 @@
-﻿//using Inspiring.Mvvm.ViewModels.Fluent;
+﻿//using Inspiring.Mvvm.ViewModels.Core;
 //namespace Inspiring.Mvvm.ViewModels {
 
 //   public static class SelectionExtensions {

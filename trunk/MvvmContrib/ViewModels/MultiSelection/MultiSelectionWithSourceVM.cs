@@ -2,7 +2,6 @@
    using System;
    using System.Collections.Generic;
    using Inspiring.Mvvm.ViewModels.Core;
-   using Inspiring.Mvvm.ViewModels.Fluent;
 
    public sealed class MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM> :
       MultiSelectionVM<TItemSource, TItemVM>,

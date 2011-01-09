@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Fluent {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    /// <summary>
    ///   Provides a fluent interface to create <see cref="IVMProperty"/> objects.
    ///   This interface is returned by <see cref="IViewModelPropertyBuilder"/>.

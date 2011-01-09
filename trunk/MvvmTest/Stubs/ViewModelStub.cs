@@ -42,10 +42,6 @@
          throw new NotImplementedException();
       }
 
-      public event EventHandler<ValidationEventArgs> Validating;
-
-      public event EventHandler<ValidationEventArgs> Validated;
-
       public void InvokeValidate(IViewModel changedVM, IVMProperty changedProperty) {
          throw new NotImplementedException();
       }

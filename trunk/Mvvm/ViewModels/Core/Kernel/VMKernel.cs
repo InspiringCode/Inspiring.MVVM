@@ -83,7 +83,7 @@
       }
 
       public ValidationState GetValidationState(IVMProperty forProperty) {
-         return forProperty.GetValidationState(this);
+         return forProperty.Behaviors.GetValidationStateNext(this);
       }
 
       public ValidationState GetValidationState(ValidationStateScope scope = ValidationStateScope.All) {
@@ -147,13 +147,21 @@
          }
 
          foreach (IVMProperty property in _descriptor.Properties) {
-            property.Revalidate(this, validationContext, mode);
+            Revalidate(property, validationContext, mode);
          }
 
          _descriptor
             .Behaviors
             .GetNextBehavior<ViewModelValidationBehavior>()
             .Validate(this, validationContext);
+      }
+
+      private void Revalidate(
+         IVMProperty property,
+         ValidationContext validationContext,
+         ValidationMode mode
+      ) {
+         property.Behaviors.RevalidateNext(this, validationContext, mode);
       }
 
       private void NotifyChange(ChangeArgs args, InstancePath changedPath) {
@@ -213,12 +221,12 @@
       }
 
       private void UpdateValidationState() {
-         _viewModelValidationState = _descriptor.GetValidationState(this);
+         _viewModelValidationState = _descriptor.Behaviors.GetValidationStateNext(this);
 
          _propertiesValidationState = ValidationState.Join(
             _descriptor
                .Properties
-               .Select(x => x.GetValidationState(this))
+               .Select(x => GetValidationState(x))
                .ToArray()
          );
 

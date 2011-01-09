@@ -10,6 +10,7 @@
    /// </summary>
    public class VMCollection<TItemVM> :
       BindingList<TItemVM>,
+      ITypedList,
       IVMCollection<TItemVM>,
       IVMCollectionExpression<TItemVM>
       where TItemVM : IViewModel {
@@ -125,6 +126,18 @@
       private void ObjectInvariant() {
          Contract.Invariant(Behaviors != null);
          Contract.Invariant(Owner != null);
+      }
+
+      public PropertyDescriptorCollection GetItemProperties(PropertyDescriptor[] listAccessors) {
+         // TODO!
+         // return ItemDescriptor.GetService<TypeDescriptorService>().PropertyDescriptors;
+         throw new NotImplementedException();
+      }
+
+      public string GetListName(PropertyDescriptor[] listAccessors) {
+         // This method is used only in the design-time framework and by the 
+         // obsolete DataGrid control.
+         return GetType().Name;
       }
    }
 }

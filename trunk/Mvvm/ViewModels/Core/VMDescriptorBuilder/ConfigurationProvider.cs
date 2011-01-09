@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System.ComponentModel;
    using System.Diagnostics.Contracts;
-   using Inspiring.Mvvm.ViewModels.Fluent;
 
    public abstract class ConfigurationProvider : IConfigurationProvider {
       public ConfigurationProvider(VMDescriptorConfiguration configuration) {
