@@ -179,7 +179,7 @@
 
          config.Enable(
             CollectionBehaviorKeys.DescriptorSetter,
-            new DescriptorSetterCollectionBehavior<TItemVM>(itemDescriptor)
+            new ItemDescriptorCollectionBehavior<TItemVM>(itemDescriptor)
          );
 
          return config;

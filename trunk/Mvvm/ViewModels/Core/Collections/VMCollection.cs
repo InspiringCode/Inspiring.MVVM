@@ -129,9 +129,14 @@
       }
 
       public PropertyDescriptorCollection GetItemProperties(PropertyDescriptor[] listAccessors) {
-         // TODO!
-         // return ItemDescriptor.GetService<TypeDescriptorService>().PropertyDescriptors;
-         throw new NotImplementedException();
+         var itemDescriptor = Behaviors
+            .GetNextBehavior<IItemDescriptorProviderCollectionBehavior>()
+            .ItemDescriptor;
+
+         return itemDescriptor
+            .Behaviors
+            .GetNextBehavior<TypeDescriptorBehavior>() // TODO: Maybe define interface for it?
+            .PropertyDescriptors;
       }
 
       public string GetListName(PropertyDescriptor[] listAccessors) {

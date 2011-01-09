@@ -133,5 +133,21 @@ namespace Inspiring.MvvmTest.ViewModels.__No_Namespace__ {
 
          CollectionAssert.AreEqual(new IViewModel[] { item1, item0 }, collection);
       }
+
+      [TestMethod]
+      public void GetItemProperties_ReturnsPropertyDescriptorCollection() {
+         var itemTypeDescriptorBehavior = new TypeDescriptorBehavior();
+
+         var itemDescriptor = new VMDescriptor();
+         itemDescriptor.Behaviors.Successor = itemTypeDescriptorBehavior;
+         itemDescriptor.Behaviors.Initialize(itemDescriptor);
+
+         var collectionBehaviors = new BehaviorChain();
+         collectionBehaviors.Successor = new ItemDescriptorCollectionBehavior<IViewModel>(itemDescriptor);
+
+         var collection = new VMCollection<IViewModel>(collectionBehaviors, Mock<IViewModel>());
+
+         Assert.AreSame(itemTypeDescriptorBehavior.PropertyDescriptors, collection.GetItemProperties(null));
+      }
    }
 }

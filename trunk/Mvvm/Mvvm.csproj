@@ -103,6 +103,7 @@
     <Compile Include="ViewModels\- No Namespace -\ViewModel.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMDescriptorBuilder.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\ICollectionFactoryBehavior.cs" />
+    <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IItemDescriptorProviderCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IPopulatorCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IModificationCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IDescendantValidationBehavior.cs" />
@@ -164,7 +165,7 @@
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\ParentSetterCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\SynchronizerCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\PopulatorCollectionBehavior.cs" />
-    <Compile Include="ViewModels\Core\Collections\IVMCollection.cs" />
+    <Compile Include="ViewModels\- No Namespace -\IVMCollection.cs" />
     <Compile Include="ViewModels\Core\Collections\VMCollection.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\Legacy\DisplayValueBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\PropertyBehaviors\RefreshableValueCacheBehavior.cs" />

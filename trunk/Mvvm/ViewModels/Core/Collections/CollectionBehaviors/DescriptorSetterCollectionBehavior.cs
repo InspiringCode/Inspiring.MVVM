@@ -1,16 +1,21 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System.Diagnostics.Contracts;
 
-   internal sealed class DescriptorSetterCollectionBehavior<TItemVM> :
+   internal sealed class ItemDescriptorCollectionBehavior<TItemVM> :
       Behavior,
-      IModificationCollectionBehavior<TItemVM>
+      IModificationCollectionBehavior<TItemVM>,
+      IItemDescriptorProviderCollectionBehavior
       where TItemVM : IViewModel {
 
       private VMDescriptorBase _itemDescriptor;
 
-      public DescriptorSetterCollectionBehavior(VMDescriptorBase itemDescriptor) {
+      public ItemDescriptorCollectionBehavior(VMDescriptorBase itemDescriptor) {
          Contract.Requires(itemDescriptor != null);
          _itemDescriptor = itemDescriptor;
+      }
+
+      public VMDescriptorBase ItemDescriptor {
+         get { return _itemDescriptor; }
       }
 
       public void ItemInserted(IBehaviorContext context, IVMCollection<TItemVM> collection, TItemVM item, int index) {

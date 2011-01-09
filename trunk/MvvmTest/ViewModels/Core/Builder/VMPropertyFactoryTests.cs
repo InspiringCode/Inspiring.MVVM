@@ -158,7 +158,7 @@
          Assert.IsTrue(ContainsBehavior<CollectionFactoryBehavior<ProjectVM>>(p));
          Assert.IsTrue(ContainsBehavior<PropertyDescriptorBehavior>(p));
 
-         Assert.IsTrue(ContainsCollectionBehavior<DescriptorSetterCollectionBehavior<ProjectVM>>(p));
+         Assert.IsTrue(ContainsCollectionBehavior<ItemDescriptorCollectionBehavior<ProjectVM>>(p));
          Assert.IsTrue(ContainsCollectionBehavior<ParentSetterCollectionBehavior<ProjectVM>>(p));
          Assert.IsTrue(ContainsCollectionBehavior<ChangeNotifierCollectionBehavior<ProjectVM>>(p));
 

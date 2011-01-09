@@ -2,6 +2,9 @@
    using System;
    using System.Diagnostics.Contracts;
 
+   // TODO: Allow a user to write his own FactoryBehavior and replace it by configuration.
+   //       This is currently not possible because ctor call is hardcoded.
+
    /// <inheritdoc />
    public sealed class CollectionFactoryBehavior<TItemVM> :
       Behavior,

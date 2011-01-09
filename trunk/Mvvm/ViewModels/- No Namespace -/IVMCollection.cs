@@ -1,5 +1,6 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core {
+﻿namespace Inspiring.Mvvm.ViewModels {
    using System.Collections.Generic;
+   using Inspiring.Mvvm.ViewModels.Core;
 
    /// <summary>
    ///   An interface that should be implemented by collection classes that are
