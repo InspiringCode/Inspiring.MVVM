@@ -9,7 +9,7 @@
       public static void Initialize(
          this BehaviorChain chain,
          VMDescriptorBase descriptor,
-         IVMProperty property = null
+         IVMPropertyDescriptor property = null
       ) {
          var context = new BehaviorInitializationContext(descriptor, property);
 
@@ -196,7 +196,7 @@
       public static void UpdateFromSourceNext(
          this Behavior behavior,
          IBehaviorContext context,
-         IVMProperty property
+         IVMPropertyDescriptor property
       ) {
          IManualUpdateCoordinatorBehavior next;
          if (behavior.TryGetBehavior(out next)) {
@@ -217,7 +217,7 @@
       public static void UpdateSourceNext(
          this Behavior behavior,
          IBehaviorContext context,
-         IVMProperty property
+         IVMPropertyDescriptor property
       ) {
          IManualUpdateCoordinatorBehavior next;
          if (behavior.TryGetBehavior(out next)) {

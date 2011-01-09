@@ -23,6 +23,6 @@
    }
 
    public sealed class StateVMDescriptor : VMDescriptor {
-      public IVMProperty<string> Caption { get; set; }
+      public IVMPropertyDescriptor<string> Caption { get; set; }
    }
 }

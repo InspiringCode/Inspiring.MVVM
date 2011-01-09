@@ -6,10 +6,10 @@
       VMDescriptor
       where TItemVM : IViewModel {
 
-      public IVMProperty<IEnumerable<TItemSource>> AllSourceItems { get; set; }
-      public IVMProperty<TItemSource> SelectedSourceItem { get; set; }
-      public IVMProperty<IVMCollection<TItemVM>> AllItems { get; set; }
-      public IVMProperty<TItemVM> SelectedItem { get; set; }
+      public IVMPropertyDescriptor<IEnumerable<TItemSource>> AllSourceItems { get; set; }
+      public IVMPropertyDescriptor<TItemSource> SelectedSourceItem { get; set; }
+      public IVMPropertyDescriptor<IVMCollection<TItemVM>> AllItems { get; set; }
+      public IVMPropertyDescriptor<TItemVM> SelectedItem { get; set; }
    }
 
    public class SingleSelectionVMDescriptor<TItemSource> :

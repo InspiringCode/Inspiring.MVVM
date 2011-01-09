@@ -12,7 +12,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
       private static readonly FieldDefinitionGroup ValidationErrorGroup = new FieldDefinitionGroup();
 
       private FieldDefinition<ValidationState> _validationStateField;
-      private IVMProperty _property;
+      private IVMPropertyDescriptor _property;
 
       public void Initialize(BehaviorInitializationContext context) {
          _property = context.Property;

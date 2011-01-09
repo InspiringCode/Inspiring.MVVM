@@ -22,12 +22,12 @@
 
       private class EmployeeVMDescriptor : VMDescriptor {
          public EmployeeVMDescriptor() {
-            Salary = new VMProperty<int>();
+            Salary = new VMPropertyDescriptor<int>();
             Salary.Behaviors.Successor = new InstancePropertyBehavior<int>();
             Salary.Behaviors.Initialize(this, Salary);
          }
 
-         public IVMProperty<int> Salary { get; set; }
+         public IVMPropertyDescriptor<int> Salary { get; set; }
       }
    }
 }

@@ -3,10 +3,10 @@
    using Inspiring.Mvvm.ViewModels.Core;
 
 
-   public interface IVMProperty<out T> : IVMProperty {
+   public interface IVMPropertyDescriptor<out T> : IVMPropertyDescriptor {
    }
 
-   public interface IVMProperty {
+   public interface IVMPropertyDescriptor {
       /// <summary>
       ///   Gets the name of the VM Property. This is the same as the name
       ///   of the <see cref="VMDescriptor"/> CLR property that defines the

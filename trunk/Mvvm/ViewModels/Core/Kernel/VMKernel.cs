@@ -62,27 +62,27 @@
          }
       }
 
-      public T GetValue<T>(IVMProperty<T> property) {
+      public T GetValue<T>(IVMPropertyDescriptor<T> property) {
          return property.Behaviors.GetValueNext<T>(this);
       }
 
-      public T GetValidatedValue<T>(IVMProperty<T> property) {
+      public T GetValidatedValue<T>(IVMPropertyDescriptor<T> property) {
          return property.Behaviors.GetValidatedValueNext<T>(this);
       }
 
-      public void SetValue<T>(IVMProperty<T> property, T value) {
+      public void SetValue<T>(IVMPropertyDescriptor<T> property, T value) {
          property.Behaviors.SetValueNext<T>(this, value);
       }
 
-      public object GetDisplayValue(IVMProperty property) {
+      public object GetDisplayValue(IVMPropertyDescriptor property) {
          return property.Behaviors.GetDisplayValueNext(this);
       }
 
-      public void SetDisplayValue(IVMProperty property, object value) {
+      public void SetDisplayValue(IVMPropertyDescriptor property, object value) {
          property.Behaviors.SetDisplayValueNext(this, value);
       }
 
-      public ValidationState GetValidationState(IVMProperty forProperty) {
+      public ValidationState GetValidationState(IVMPropertyDescriptor forProperty) {
          return forProperty.Behaviors.GetValidationStateNext(this);
       }
 
@@ -103,7 +103,7 @@
          }
       }
 
-      public IVMProperty GetProperty(string propertyName) {
+      public IVMPropertyDescriptor GetProperty(string propertyName) {
          return _descriptor.Properties[propertyName];
       }
 
@@ -111,7 +111,7 @@
          _descriptor.Behaviors.UpdateFromSourceNext(this);
       }
 
-      public void UpdateFromSource(IVMProperty property) {
+      public void UpdateFromSource(IVMPropertyDescriptor property) {
          _descriptor.Behaviors.UpdateFromSourceNext(this, property);
       }
 
@@ -119,7 +119,7 @@
          _descriptor.Behaviors.UpdateSourceNext(this);
       }
 
-      public void UpdateSource(IVMProperty property) {
+      public void UpdateSource(IVMPropertyDescriptor property) {
          _descriptor.Behaviors.UpdateSourceNext(this, property);
       }
 
@@ -139,14 +139,14 @@
          }
 
          if (scope == ValidationScope.FullSubtree) {
-            foreach (IVMProperty property in _descriptor.Properties) {
+            foreach (IVMPropertyDescriptor property in _descriptor.Properties) {
                property
                   .Behaviors
                   .RevalidateDescendantsNext(this, validationContext, scope, mode);
             }
          }
 
-         foreach (IVMProperty property in _descriptor.Properties) {
+         foreach (IVMPropertyDescriptor property in _descriptor.Properties) {
             Revalidate(property, validationContext, mode);
          }
 
@@ -157,7 +157,7 @@
       }
 
       private void Revalidate(
-         IVMProperty property,
+         IVMPropertyDescriptor property,
          ValidationContext validationContext,
          ValidationMode mode
       ) {

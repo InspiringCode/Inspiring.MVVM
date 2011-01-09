@@ -5,19 +5,19 @@
    using System.Diagnostics.Contracts;
 
    public sealed class VMPropertyCollection :
-      IEnumerable<IVMProperty> {
+      IEnumerable<IVMPropertyDescriptor> {
 
-      private IVMProperty[] _properties;
+      private IVMPropertyDescriptor[] _properties;
 
-      public VMPropertyCollection(IVMProperty[] properties) {
+      public VMPropertyCollection(IVMPropertyDescriptor[] properties) {
          Contract.Requires<ArgumentNullException>(properties != null);
 
          _properties = properties;
       }
 
-      public IVMProperty this[string propertyName] {
+      public IVMPropertyDescriptor this[string propertyName] {
          get {
-            IVMProperty property;
+            IVMPropertyDescriptor property;
             bool found = TryGetProperty(propertyName, out property);
 
             if (!found) {
@@ -30,15 +30,15 @@
          }
       }
 
-      public bool TryGetProperty(string propertyName, out IVMProperty property) {
+      public bool TryGetProperty(string propertyName, out IVMPropertyDescriptor property) {
          Contract.Requires<ArgumentNullException>(propertyName != null);
 
          property = Array.Find(_properties, p => p.PropertyName == propertyName);
          return property != null;
       }
 
-      public IEnumerator<IVMProperty> GetEnumerator() {
-         IEnumerable<IVMProperty> typed = _properties;
+      public IEnumerator<IVMPropertyDescriptor> GetEnumerator() {
+         IEnumerable<IVMPropertyDescriptor> typed = _properties;
          return typed.GetEnumerator();
       }
 

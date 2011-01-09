@@ -5,7 +5,7 @@
       IBehaviorInitializationBehavior,
       IManualUpdateBehavior {
 
-      private IVMProperty _property;
+      private IVMPropertyDescriptor _property;
 
       public void Initialize(BehaviorInitializationContext context) {
          _property = context.Property;

@@ -2,7 +2,7 @@
    using Inspiring.Mvvm.Common;
 
    /// <summary>
-   ///   Provides a fluent interface to create collection <see cref="IVMProperty"/>
+   ///   Provides a fluent interface to create collection <see cref="IVMPropertyDescriptor"/>
    ///   objects. This interface is returned by <see cref="ICollectionPropertyBuilder"/>.
    /// </summary>
    /// <typeparam name="TItemSource">
@@ -25,7 +25,7 @@
       ///   Specifies the VM descriptor that should be used for the collection 
       ///   items. All items must have the same descriptor.
       /// </param>
-      IVMProperty<IVMCollection<TItemVM>> With<TItemVM>(VMDescriptorBase itemDescriptor)
+      IVMPropertyDescriptor<IVMCollection<TItemVM>> With<TItemVM>(VMDescriptorBase itemDescriptor)
          where TItemVM : IViewModel, IVMCollectionItem<TItemSource>;
    }
 }

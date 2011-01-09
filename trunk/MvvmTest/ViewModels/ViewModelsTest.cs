@@ -84,12 +84,12 @@ namespace Inspiring.MvvmTest.ViewModels {
       }
 
       private class PersonVMDescriptor : VMDescriptor {
-         public IVMProperty<string> Name { get; set; }
-         public IVMProperty<string> FirstName { get; set; }
-         public IVMProperty<string> LastName { get; set; }
-         public IVMProperty<DateTime> BirthDate { get; set; }
-         public IVMProperty<decimal> Salary { get; set; }
-         public IVMProperty<bool> IsSelected { get; set; }
+         public IVMPropertyDescriptor<string> Name { get; set; }
+         public IVMPropertyDescriptor<string> FirstName { get; set; }
+         public IVMPropertyDescriptor<string> LastName { get; set; }
+         public IVMPropertyDescriptor<DateTime> BirthDate { get; set; }
+         public IVMPropertyDescriptor<decimal> Salary { get; set; }
+         public IVMPropertyDescriptor<bool> IsSelected { get; set; }
       }
 
       private class Person {

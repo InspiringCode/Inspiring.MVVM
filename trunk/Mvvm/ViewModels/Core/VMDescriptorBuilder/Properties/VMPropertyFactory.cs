@@ -6,7 +6,7 @@
          : base(configuration) {
       }
 
-      public IVMProperty<T> CreateProperty<T>(IValueAccessorBehavior<T> sourceValueAccessor, bool supportsManualUpdate) {
+      public IVMPropertyDescriptor<T> CreateProperty<T>(IValueAccessorBehavior<T> sourceValueAccessor, bool supportsManualUpdate) {
          BehaviorChainConfiguration config = GetPropertyConfiguration<T>(BehaviorChainTemplateKeys.Property);
          config.Enable(BehaviorKeys.SourceAccessor, sourceValueAccessor);
 
@@ -94,7 +94,7 @@
       //   return CreateProperty<TChildVM>(config);
       //}
 
-      public IVMProperty<TChildVM> CreateViewModelProperty<TChildVM>(
+      public IVMPropertyDescriptor<TChildVM> CreateViewModelProperty<TChildVM>(
          IValueAccessorBehavior<TChildVM> viewModelAccessor,
          IBehavior sourceAccessor = null,
          IBehavior manualUpdateBehavior = null,
@@ -150,7 +150,7 @@
          return config;
       }
 
-      public IVMProperty<IVMCollection<TItemVM>> CreateCollectionProperty<TItemVM>(
+      public IVMPropertyDescriptor<IVMCollection<TItemVM>> CreateCollectionProperty<TItemVM>(
          BehaviorChainConfiguration collectionConfiguration,
          bool isPopulatable
       ) where TItemVM : IViewModel {
@@ -191,8 +191,8 @@
          return template.CreateConfiguration(invoker);
       }
 
-      internal IVMProperty<TValue> CreateProperty<TValue>(BehaviorChainConfiguration config) {
-         var property = new VMProperty<TValue>();
+      internal IVMPropertyDescriptor<TValue> CreateProperty<TValue>(BehaviorChainConfiguration config) {
+         var property = new VMPropertyDescriptor<TValue>();
 
          Configuration
            .PropertyConfigurations

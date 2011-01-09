@@ -82,7 +82,7 @@
 
       string IDataErrorInfo.this[string columnName] {
          get {
-            IVMProperty property = Kernel.GetProperty(propertyName: columnName);
+            IVMPropertyDescriptor property = Kernel.GetProperty(propertyName: columnName);
             ValidationState state = Kernel.GetValidationState(property);
             return state.IsValid ?
                null :
@@ -92,27 +92,27 @@
 
       public event PropertyChangedEventHandler PropertyChanged;
 
-      protected internal T GetValue<T>(IVMProperty<T> property) {
+      protected internal T GetValue<T>(IVMPropertyDescriptor<T> property) {
          Contract.Requires<ArgumentNullException>(property != null);
          return Kernel.GetValue<T>(property);
       }
 
-      protected internal void SetValue<T>(IVMProperty<T> property, T value) {
+      protected internal void SetValue<T>(IVMPropertyDescriptor<T> property, T value) {
          Contract.Requires<ArgumentNullException>(property != null);
          Kernel.SetValue(property, value);
       }
 
-      protected internal T GetValidatedValue<T>(IVMProperty<T> property) {
+      protected internal T GetValidatedValue<T>(IVMPropertyDescriptor<T> property) {
          Contract.Requires<ArgumentNullException>(property != null);
          return property.Behaviors.GetValidatedValueNext<T>(Kernel); // TODO: Refactor.
       }
 
-      protected internal object GetDisplayValue(IVMProperty property) {
+      protected internal object GetDisplayValue(IVMPropertyDescriptor property) {
          Contract.Requires<ArgumentNullException>(property != null);
          return Kernel.GetDisplayValue(property);
       }
 
-      protected internal void SetDisplayValue(IVMProperty property, object value) {
+      protected internal void SetDisplayValue(IVMPropertyDescriptor property, object value) {
          Contract.Requires<ArgumentNullException>(property != null);
          Kernel.SetDisplayValue(property, value);
       }
@@ -125,7 +125,7 @@
          Kernel.UpdateFromSource();
       }
 
-      protected void UpdateFromSource(IVMProperty property) {
+      protected void UpdateFromSource(IVMPropertyDescriptor property) {
          Kernel.UpdateFromSource(property);
       }
 
@@ -133,7 +133,7 @@
          Kernel.UpdateSource();
       }
 
-      protected void UpdateSource(IVMProperty property) {
+      protected void UpdateSource(IVMPropertyDescriptor property) {
          Kernel.UpdateSource(property);
       }
 
@@ -151,19 +151,19 @@
          return Kernel;
       }
 
-      void IViewModel.NotifyPropertyChanged(IVMProperty property) {
+      void IViewModel.NotifyPropertyChanged(IVMPropertyDescriptor property) {
          OnPropertyChanged(property);
       }
 
-      void IViewModel.NotifyValidationStateChanged(IVMProperty property) {
+      void IViewModel.NotifyValidationStateChanged(IVMPropertyDescriptor property) {
          OnValidationStateChanged(property);
       }
 
-      protected virtual void OnPropertyChanged(IVMProperty property) {
+      protected virtual void OnPropertyChanged(IVMPropertyDescriptor property) {
          OnPropertyChanged(property.PropertyName);
       }
 
-      protected virtual void OnValidationStateChanged(IVMProperty property) {
+      protected virtual void OnValidationStateChanged(IVMPropertyDescriptor property) {
          if (property != null) {
             OnPropertyChanged("Item[]");
          } else {

@@ -2,7 +2,7 @@
    using System;
 
    internal sealed class RefreshableValueCacheBehavior<TValue> : ValueCacheBehavior<TValue>, IManualUpdateBehavior {
-      private IVMProperty _property;
+      private IVMPropertyDescriptor _property;
 
       public RefreshableValueCacheBehavior() {
          throw new NotImplementedException("Redesign this, propably inherit from CacheBehavior");

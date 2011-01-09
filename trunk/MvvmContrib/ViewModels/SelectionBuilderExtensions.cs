@@ -40,7 +40,7 @@
          return builder;
       }
 
-      public static IVMProperty<SingleSelectionVM<TEnum>> EnumSelection<TSourceObject, TEnum>(
+      public static IVMPropertyDescriptor<SingleSelectionVM<TEnum>> EnumSelection<TSourceObject, TEnum>(
          this IVMPropertyBuilder<TSourceObject> sourceObjectPropertyFactory,
          Expression<Func<TSourceObject, TEnum>> selectedSourceItemSelector
       ) {

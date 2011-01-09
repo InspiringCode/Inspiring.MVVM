@@ -13,7 +13,7 @@
       ///   Selects the property which should be configured.
       /// </param>
       ISinglePropertyBehaviorBuilder<TVM, TValue> For<TValue>(
-         Func<TDescriptor, IVMProperty<TValue>> propertySelector
+         Func<TDescriptor, IVMPropertyDescriptor<TValue>> propertySelector
       );
    }
 }

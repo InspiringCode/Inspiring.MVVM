@@ -45,7 +45,7 @@
       ///      for the selected property in an ancestor VM and you DO NOT define 
       ///      any validator for that property in the current VM descriptor.</para>
       /// </summary>
-      public void EnableParentValidation<TValue>(Func<TDescriptor, IVMProperty<TValue>> propertySelector) {
+      public void EnableParentValidation<TValue>(Func<TDescriptor, IVMPropertyDescriptor<TValue>> propertySelector) {
          Contract.Requires<ArgumentNullException>(propertySelector != null);
          Configuration.EnableValidation(PropertySelector.CreateExactlyTyped(propertySelector));
       }
@@ -98,7 +98,7 @@
          public void EnableValidation(PropertySelector forProperty) {
             Contract.Requires(forProperty != null);
 
-            IVMProperty p = forProperty.GetProperty(_descriptor);
+            IVMPropertyDescriptor p = forProperty.GetProperty(_descriptor);
             Contract.Assert(p != null);
 
             EnableValidation(p);
@@ -108,7 +108,7 @@
          ///   Enables the validation behaviors for the given property and the
          ///   VM descriptor.
          /// </summary>
-         private void EnableValidation(IVMProperty forProperty) {
+         private void EnableValidation(IVMPropertyDescriptor forProperty) {
             EnableViewModelValidation();
 
             _descriptorConfiguration

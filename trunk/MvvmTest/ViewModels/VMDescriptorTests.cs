@@ -16,11 +16,11 @@
       [TestMethod]
       public void Properties_SimpleProperty_ReturnsCollection() {
          var descriptor = new TestDescriptor() {
-            SimpleProperty = new VMProperty<string>()
+            SimpleProperty = new VMPropertyDescriptor<string>()
          };
 
          CollectionAssert.AreEquivalent(
-            new IVMProperty[] { descriptor.SimpleProperty },
+            new IVMPropertyDescriptor[] { descriptor.SimpleProperty },
             descriptor.Properties.ToArray()
          );
       }
@@ -28,7 +28,7 @@
       [TestMethod]
       public void InitializePropertyNames_SimpleProperty_PropertyNameIsAssigned() {
          var descriptor = new TestDescriptor() {
-            SimpleProperty = new VMProperty<string>()
+            SimpleProperty = new VMPropertyDescriptor<string>()
          };
 
          descriptor.InitializePropertyNames();
@@ -41,7 +41,7 @@
       }
 
       private class TestDescriptor : VMDescriptor {
-         public IVMProperty<string> SimpleProperty { get; set; }
+         public IVMPropertyDescriptor<string> SimpleProperty { get; set; }
       }
    }
 }

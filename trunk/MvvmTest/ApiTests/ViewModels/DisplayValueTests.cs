@@ -161,7 +161,7 @@
       }
 
       public sealed class MovieReviewVMDescriptor : VMDescriptor {
-         public IVMProperty<Nullable<int>> Rating { get; set; }
+         public IVMPropertyDescriptor<Nullable<int>> Rating { get; set; }
       }
    }
 }

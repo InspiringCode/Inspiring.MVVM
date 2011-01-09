@@ -6,26 +6,26 @@
       IBehaviorInitializationBehavior,
       IManualUpdateCoordinatorBehavior {
 
-      public IEnumerable<IVMProperty> UpdateFromSourceProperties {
+      public IEnumerable<IVMPropertyDescriptor> UpdateFromSourceProperties {
          get;
          set;
       }
 
-      public IEnumerable<IVMProperty> UpdateSourceProperties {
+      public IEnumerable<IVMPropertyDescriptor> UpdateSourceProperties {
          get;
          set;
       }
 
       public void UpdateFromSource(IBehaviorContext context) {
          RequireInitialized();
-         foreach (IVMProperty property in UpdateFromSourceProperties) {
+         foreach (IVMPropertyDescriptor property in UpdateFromSourceProperties) {
             UpdateFromSource(context, property);
          }
 
          this.UpdateFromSourceNext(context);
       }
 
-      public void UpdateFromSource(IBehaviorContext context, IVMProperty property) {
+      public void UpdateFromSource(IBehaviorContext context, IVMPropertyDescriptor property) {
          RequireInitialized();
          property.Behaviors.UpdatePropertyFromSourceNext(context);
 
@@ -34,14 +34,14 @@
 
       public void UpdateSource(IBehaviorContext context) {
          RequireInitialized();
-         foreach (IVMProperty property in UpdateSourceProperties) {
+         foreach (IVMPropertyDescriptor property in UpdateSourceProperties) {
             UpdateSource(context, property);
          }
 
          this.UpdateSourceNext(context);
       }
 
-      public void UpdateSource(IBehaviorContext context, IVMProperty property) {
+      public void UpdateSource(IBehaviorContext context, IVMPropertyDescriptor property) {
          RequireInitialized();
          property.Behaviors.UpdatePropertySourceNext(context);
 

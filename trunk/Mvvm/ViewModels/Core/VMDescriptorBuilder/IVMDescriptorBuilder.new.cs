@@ -13,11 +13,11 @@
       ///   Configures or overrides the VM properties and their mappings (required).
       /// </summary>
       /// <param name="propertyConfigurator">
-      ///   A delegate that should assign <see cref="IVMProperty"/> instances to
+      ///   A delegate that should assign <see cref="IVMPropertyDescriptor"/> instances to
       ///   all properties of the <see cref="VMDescriptor"/> passed to the 
       ///   delegate (or override some of them). Use the passed in <see 
       ///   cref="IVMPropertyBuilderProvider"/> to get a <see 
-      ///   cref="IVMPropertyBuilder"/> with which <see cref="IVMProperty"/>
+      ///   cref="IVMPropertyBuilder"/> with which <see cref="IVMPropertyDescriptor"/>
       ///   objects can be created and configured.
       /// </param>
       IVMDescriptorBuilderWithProperties<TDescriptor, TVM> WithProperties(Action<TDescriptor, IVMPropertyBuilderProvider<TVM>> propertyConfigurator);

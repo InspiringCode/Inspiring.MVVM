@@ -29,6 +29,6 @@
    }
 
    public sealed class CustomerVMDescriptor : VMDescriptor {
-      public IVMProperty<string> Title { get; set; }
+      public IVMPropertyDescriptor<string> Title { get; set; }
    }
 }

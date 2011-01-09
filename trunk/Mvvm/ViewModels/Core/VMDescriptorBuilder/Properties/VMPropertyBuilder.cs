@@ -47,7 +47,7 @@
       private VMPropertyFactory<TVM> Factory { get; set; }
 
       /// <inheritdoc />
-      IVMProperty<T> IValuePropertyBuilder<TSourceObject>.MapsTo<T>(
+      IVMPropertyDescriptor<T> IValuePropertyBuilder<TSourceObject>.MapsTo<T>(
          Expression<Func<TSourceObject, T>> sourcePropertySelector
       ) {
          var path = PropertyPath.Concat(
@@ -62,7 +62,7 @@
       }
 
       /// <inheritdoc />
-      IVMProperty<T> IValuePropertyBuilder<TSourceObject>.DelegatesTo<T>(
+      IVMPropertyDescriptor<T> IValuePropertyBuilder<TSourceObject>.DelegatesTo<T>(
          Func<TSourceObject, T> getter,
          Action<TSourceObject, T> setter
       ) {
@@ -76,7 +76,7 @@
       }
 
       /// <inheritdoc />
-      IVMProperty<T> IValuePropertyBuilder<TSourceObject>.Of<T>() {
+      IVMPropertyDescriptor<T> IValuePropertyBuilder<TSourceObject>.Of<T>() {
          return Factory.CreateProperty(
             sourceValueAccessor: new InstancePropertyBehavior<T>(),
             supportsManualUpdate: false
@@ -116,7 +116,7 @@
       }
 
       /// <inheritdoc />
-      IVMProperty<TChildVM> IViewModelPropertyBuilder<TSourceObject>.DelegatesTo<TChildVM>(
+      IVMPropertyDescriptor<TChildVM> IViewModelPropertyBuilder<TSourceObject>.DelegatesTo<TChildVM>(
          Func<TSourceObject, TChildVM> getter,
          Action<TSourceObject, TChildVM> setter
       ) {
@@ -131,7 +131,7 @@
       }
 
       /// <inheritdoc />
-      IVMProperty<TChildVM> IViewModelPropertyBuilder<TSourceObject>.Of<TChildVM>() {
+      IVMPropertyDescriptor<TChildVM> IViewModelPropertyBuilder<TSourceObject>.Of<TChildVM>() {
          return Factory.CreateViewModelProperty(
             viewModelAccessor: new InstancePropertyBehavior<TChildVM>(),
             needsViewModelFactory: false,
@@ -169,7 +169,7 @@
       }
 
       /// <inheritdoc />
-      IVMProperty<IVMCollection<TItemVM>> ICollectionPropertyBuilder<TSourceObject>.Of<TItemVM>(
+      IVMPropertyDescriptor<IVMCollection<TItemVM>> ICollectionPropertyBuilder<TSourceObject>.Of<TItemVM>(
          VMDescriptorBase itemDescriptor
       ) {
          return Factory.CreateCollectionProperty<TItemVM>(
@@ -179,7 +179,7 @@
       }
 
       /// <inheritdoc />
-      IVMProperty<ICommand> IVMPropertyBuilder<TSourceObject>.Command(
+      IVMPropertyDescriptor<ICommand> IVMPropertyBuilder<TSourceObject>.Command(
          Action<TSourceObject> execute,
          Func<TSourceObject, bool> canExecute
       ) {
@@ -217,7 +217,7 @@
 
          private VMPropertyFactory<TVM> Factory { get; set; }
 
-         IVMProperty<IVMCollection<TItemVM>> ICollectionPropertyBuilderWithSource<TItemSource>.With<TItemVM>(
+         IVMPropertyDescriptor<IVMCollection<TItemVM>> ICollectionPropertyBuilderWithSource<TItemSource>.With<TItemVM>(
             VMDescriptorBase itemDescriptor
          ) {
             var collectionConfiguration = Factory.GetCollectionConfiguration<TItemVM>(itemDescriptor);
@@ -253,7 +253,7 @@
 
          private VMPropertyFactory<TVM> Factory { get; set; }
 
-         IVMProperty<TChildVM> IViewModelPropertyBuilderWithSource<TSourceValue>.With<TChildVM>() {
+         IVMPropertyDescriptor<TChildVM> IViewModelPropertyBuilderWithSource<TSourceValue>.With<TChildVM>() {
             return Factory.CreateViewModelProperty(
                viewModelAccessor: new ViewModelWithSourceAcessorBehavior<TChildVM, TSourceValue>(),
                manualUpdateBehavior: new ManualUpdateViewModelPropertyBehavior<TChildVM, TSourceValue>(),
@@ -286,7 +286,7 @@
 
          private VMPropertyFactory<TVM> Factory { get; set; }
 
-         public IVMProperty<IVMCollection<TItemVM>> With(VMDescriptorBase itemDescriptor) {
+         public IVMPropertyDescriptor<IVMCollection<TItemVM>> With(VMDescriptorBase itemDescriptor) {
             var collectionConfiguration = Factory.GetCollectionConfiguration<TItemVM>(itemDescriptor);
 
             collectionConfiguration.Enable(CollectionBehaviorKeys.SourceAccessor, _sourceObjectAccessor);
@@ -300,7 +300,7 @@
       }
 
 
-      public IVMProperty<TChildVM> Custom<TChildVM>(IValueAccessorBehavior<TChildVM> viewModelAccessor) where TChildVM : IViewModel {
+      public IVMPropertyDescriptor<TChildVM> Custom<TChildVM>(IValueAccessorBehavior<TChildVM> viewModelAccessor) where TChildVM : IViewModel {
          return Factory.CreateViewModelProperty(
             viewModelAccessor: viewModelAccessor,
             sourceAccessor: GetSourceObjectAccessor(),
@@ -309,7 +309,7 @@
          );
       }
 
-      public IVMProperty<TChildVM> Custom<TChildVM, TChildSource>(
+      public IVMPropertyDescriptor<TChildVM> Custom<TChildVM, TChildSource>(
          IValueAccessorBehavior<TChildVM> viewModelAccessor
       ) where TChildVM : IViewModel, ICanInitializeFrom<TChildSource> {
          return Factory.CreateViewModelProperty(
@@ -321,7 +321,7 @@
          );
       }
 
-      IVMProperty<T> IValuePropertyBuilder<TSourceObject>.Custom<T>(IValueAccessorBehavior<T> sourceValueAccessor) {
+      IVMPropertyDescriptor<T> IValuePropertyBuilder<TSourceObject>.Custom<T>(IValueAccessorBehavior<T> sourceValueAccessor) {
          return Factory.CreateProperty(sourceValueAccessor, supportsManualUpdate: true);
       }
    }

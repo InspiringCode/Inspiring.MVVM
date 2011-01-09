@@ -4,7 +4,7 @@
    using System.Linq;
 
    /// <summary>
-   ///   A view model behavior that caches all <see cref="VMPropertyDescriptor"/> 
+   ///   A view model behavior that caches all <see cref="TypeDescriptorPropertyDescriptor"/> 
    ///   objects of a <see cref="VMDescriptorBase"/> object.
    /// </summary>
    public sealed class TypeDescriptorBehavior : 
@@ -39,7 +39,7 @@
          Contract.Assert(_vmDescriptor != null, "Behavior is not initalized.");
       }
 
-      private static VMPropertyDescriptor GetDescriptor(IVMProperty property) {
+      private static TypeDescriptorPropertyDescriptor GetDescriptor(IVMPropertyDescriptor property) {
          return property
             .Behaviors
             .GetNextBehavior<PropertyDescriptorBehavior>()

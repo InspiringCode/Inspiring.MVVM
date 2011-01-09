@@ -25,7 +25,7 @@
       internal ChangeArgs(
          ChangeType changeType,
          IViewModel changedVM,
-         IVMProperty changedProperty
+         IVMPropertyDescriptor changedProperty
       ) {
          Contract.Requires(
             changeType == ChangeType.PropertyChanged || 
@@ -43,7 +43,7 @@
 
       public IViewModel ChangedVM { get; private set; }
 
-      public IVMProperty ChangedProperty { get; private set; }
+      public IVMPropertyDescriptor ChangedProperty { get; private set; }
 
       public override bool Equals(object obj) {
          ChangeArgs other = obj as ChangeArgs;

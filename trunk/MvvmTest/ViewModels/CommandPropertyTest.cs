@@ -106,8 +106,8 @@ namespace Inspiring.MvvmTest.ViewModels {
       }
 
       private class CommandVMDescriptor : VMDescriptor {
-         public IVMProperty<ICommand> ViewModelCommand { get; set; }
-         public IVMProperty<ICommand> ModelCommand { get; set; }
+         public IVMPropertyDescriptor<ICommand> ViewModelCommand { get; set; }
+         public IVMPropertyDescriptor<ICommand> ModelCommand { get; set; }
       }
 
       private class Model {

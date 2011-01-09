@@ -76,9 +76,9 @@
       }
 
       internal sealed class UserVMDescriptor : VMDescriptor {
-         public IVMProperty<string> Name { get; set; }
-         public IVMProperty<MultiSelectionVM<Group>> Groups { get; set; }
-         public IVMProperty<SingleSelectionVM<Department>> Department { get; set; }
+         public IVMPropertyDescriptor<string> Name { get; set; }
+         public IVMPropertyDescriptor<MultiSelectionVM<Group>> Groups { get; set; }
+         public IVMPropertyDescriptor<SingleSelectionVM<Department>> Department { get; set; }
       }
    }
 }

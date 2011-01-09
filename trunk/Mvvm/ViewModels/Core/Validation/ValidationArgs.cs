@@ -35,17 +35,17 @@
       private readonly ValidationContext _validationContext;
       private readonly ValidationState _validationState;
       private readonly InstancePath _targetPath;
-      private readonly IVMProperty _targetProperty;
+      private readonly IVMPropertyDescriptor _targetProperty;
       private readonly InstancePath _changedPath;
-      private readonly IVMProperty _changedProperty;
+      private readonly IVMPropertyDescriptor _changedProperty;
 
       private ValidationArgs(
          ValidationType validationType,
          ValidationContext validationContext,
          ValidationState validationState,
          InstancePath changedPath,
-         IVMProperty changedProperty,
-         IVMProperty targetProperty,
+         IVMPropertyDescriptor changedProperty,
+         IVMPropertyDescriptor targetProperty,
          InstancePath targetPath
       ) {
          Contract.Requires(validationState != null);
@@ -98,7 +98,7 @@
       ///   Gets the property that should be validated. This property is only valid 
       ///   for property validations.
       /// </summary>
-      public IVMProperty TargetProperty {
+      public IVMPropertyDescriptor TargetProperty {
          get { return _targetProperty; }
       }
 
@@ -128,7 +128,7 @@
       ///   Gets the property that has changed (if any). This property is only 
       ///   valid for view model validations.
       /// </summary>
-      public IVMProperty ChangedProperty {
+      public IVMPropertyDescriptor ChangedProperty {
          get { return _changedProperty; }
       }
 
@@ -217,7 +217,7 @@
          ValidationContext validationContext,
          ValidationState validationState,
          InstancePath changedPath,
-         IVMProperty changedProperty
+         IVMPropertyDescriptor changedProperty
       ) {
          Contract.Requires(validationContext != null);
          Contract.Requires(validationState != null);
@@ -264,7 +264,7 @@
          ValidationContext validationContext,
          ValidationState validationState,
          IViewModel viewModel,
-         IVMProperty property
+         IVMPropertyDescriptor property
       ) {
          Contract.Requires(validationContext != null);
          Contract.Requires(validationState != null);
@@ -307,7 +307,7 @@
          ValidationContext validationContext,
          ValidationState validationState,
          IViewModel viewModel,
-         IVMProperty property
+         IVMPropertyDescriptor property
       ) {
          Contract.Requires(validationState != null);
          Contract.Requires(viewModel != null);

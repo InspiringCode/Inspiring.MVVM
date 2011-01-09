@@ -6,7 +6,7 @@
       IBehaviorInitializationBehavior,
       IValueAccessorBehavior<TValue> {
 
-      private IVMProperty _property;
+      private IVMPropertyDescriptor _property;
 
       public TValue GetValue(IBehaviorContext vm) {
          RequireInitialized();

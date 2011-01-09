@@ -2,7 +2,7 @@
 
    /// <summary>
    ///   An <see cref="IDisplayValueAccessorBehavior"/> that implements the get/set 
-   ///   operation of a <see cref="IVMProperty"/> by using a dynamic field (see 
+   ///   operation of a <see cref="IVMPropertyDescriptor"/> by using a dynamic field (see 
    ///   <see cref="FieldDefinition"/>) as a backing store for the property target.
    /// </summary>
    public sealed class InstancePropertyBehavior<TValue> :

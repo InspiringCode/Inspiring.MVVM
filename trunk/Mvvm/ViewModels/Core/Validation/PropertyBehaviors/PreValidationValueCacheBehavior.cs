@@ -8,7 +8,7 @@
       IHandlePropertyChangedBehavior {
 
       private static readonly FieldDefinitionGroup ValueCacheGroup = new FieldDefinitionGroup();
-      private IVMProperty _property;
+      private IVMPropertyDescriptor _property;
 
       public override void Initialize(BehaviorInitializationContext context) {
          _property = context.Property;

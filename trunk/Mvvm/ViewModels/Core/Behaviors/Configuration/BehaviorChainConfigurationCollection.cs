@@ -8,8 +8,8 @@
    ///   of a VM descriptor.
    /// </summary>
    public sealed class BehaviorChainConfigurationCollection {
-      private readonly Dictionary<IVMProperty, BehaviorChainConfiguration> _propertyConfigurations
-         = new Dictionary<IVMProperty, BehaviorChainConfiguration>();
+      private readonly Dictionary<IVMPropertyDescriptor, BehaviorChainConfiguration> _propertyConfigurations
+         = new Dictionary<IVMPropertyDescriptor, BehaviorChainConfiguration>();
 
       /// <summary>
       ///   Gets the <see cref="BehaviorChainConfiguration"/> for the given 
@@ -19,7 +19,7 @@
       ///   The collection does not contain a configuration for the given property.
       ///   Make sure <see cref="RegisterProperty"/> was called.
       /// </exception>
-      public BehaviorChainConfiguration this[IVMProperty forProperty] {
+      public BehaviorChainConfiguration this[IVMPropertyDescriptor forProperty] {
          get {
             Contract.Requires<ArgumentNullException>(forProperty != null);
             Contract.Ensures(Contract.Result<BehaviorChainConfiguration>() != null);
@@ -33,7 +33,7 @@
       ///   <paramref name="property"/>.
       /// </summary>
       public void RegisterProperty<TValue>(
-         IVMProperty<TValue> property,
+         IVMPropertyDescriptor<TValue> property,
          BehaviorChainConfiguration configuration
       ) {
          Contract.Requires<ArgumentNullException>(property != null);
@@ -75,13 +75,13 @@
       /// <summary>
       ///   Creates concrete <see cref="BehaviorChain"/> objects for each registered
       ///   <see cref="BehaviorChainConfiguration"/> and assigns it to the <see 
-      ///   cref="IVMProperty.Behaviors"/> property of the <see cref="IVMProperty"/>
+      ///   cref="IVMPropertyDescriptor.Behaviors"/> property of the <see cref="IVMPropertyDescriptor"/>
       ///   object for which the <see cref="BehaviorChainConfiguration"/> was
       ///   registered.
       /// </summary>
       internal void ApplyToProperties(VMDescriptorBase parentDescriptor) {
          foreach (var pair in _propertyConfigurations) {
-            IVMProperty property = pair.Key;
+            IVMPropertyDescriptor property = pair.Key;
             BehaviorChainConfiguration config = pair.Value;
 
             var chain = config.CreateChain();

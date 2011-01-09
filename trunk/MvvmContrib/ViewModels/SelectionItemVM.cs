@@ -30,6 +30,6 @@
    }
 
    public class SelectionItemVMDescriptor : VMDescriptor {
-      public IVMProperty<string> Caption { get; set; }
+      public IVMPropertyDescriptor<string> Caption { get; set; }
    }
 }

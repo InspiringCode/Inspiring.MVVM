@@ -47,7 +47,7 @@
       }
 
       public sealed class EmployeeVMDescriptor : VMDescriptor {
-         public IVMProperty<string> Name { get; set; }
+         public IVMPropertyDescriptor<string> Name { get; set; }
       }
    }
 }

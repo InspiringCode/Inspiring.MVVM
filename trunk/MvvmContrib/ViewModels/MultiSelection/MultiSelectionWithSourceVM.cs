@@ -48,8 +48,8 @@
       /// </param>
       internal static MultiSelectionVMDescriptor<TItemSource, TItemVM> CreateDescriptor(
          VMDescriptorBase itemDescriptor,
-         Func<IVMPropertyBuilder<TSourceObject>, IVMProperty<ICollection<TItemSource>>> selectedSourceItemsPropertyFactory,
-         Func<IVMPropertyBuilder<TSourceObject>, IVMProperty<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory
+         Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<ICollection<TItemSource>>> selectedSourceItemsPropertyFactory,
+         Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory
       ) {
          return VMDescriptorBuilder
             .OfType<MultiSelectionVMDescriptor<TItemSource, TItemVM>>()
@@ -139,8 +139,8 @@
       /// </param>
       internal static MultiSelectionVMDescriptor<TItemSource> CreateDescriptor(
          SelectionItemVMDescriptor itemDescriptor,
-         Func<IVMPropertyBuilder<TSourceObject>, IVMProperty<ICollection<TItemSource>>> selectedSourceItemsPropertyFactory,
-         Func<IVMPropertyBuilder<TSourceObject>, IVMProperty<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory
+         Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<ICollection<TItemSource>>> selectedSourceItemsPropertyFactory,
+         Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory
       ) {
          return VMDescriptorBuilder
             .OfType<MultiSelectionVMDescriptor<TItemSource>>()

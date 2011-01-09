@@ -17,7 +17,7 @@
          _descriptor = descriptor;
       }
 
-      public ISinglePropertyBehaviorBuilder<TVM, TValue> For<TValue>(Func<TDescriptor, IVMProperty<TValue>> propertySelector) {
+      public ISinglePropertyBehaviorBuilder<TVM, TValue> For<TValue>(Func<TDescriptor, IVMPropertyDescriptor<TValue>> propertySelector) {
          var property = propertySelector(_descriptor);
          var propertyConfiguration = Configuration.PropertyConfigurations[property];
          return new SinglePropertyBehaviorBuilder<TValue>(Configuration, propertyConfiguration);

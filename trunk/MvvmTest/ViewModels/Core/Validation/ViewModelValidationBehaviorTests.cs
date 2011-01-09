@@ -141,7 +141,7 @@
 
          private IViewModel _employeeVM;
          private IViewModel _addressVM;
-         private IVMProperty<IViewModel> _addressProperty;
+         private IVMPropertyDescriptor<IViewModel> _addressProperty;
 
          private ViewModelValidationBehavior _behavior;
 
@@ -150,7 +150,7 @@
             _validator = new ValidatorSpy();
             _behavior = new ViewModelValidationBehavior();
 
-            _addressProperty = new VMProperty<IViewModel>();
+            _addressProperty = new VMPropertyDescriptor<IViewModel>();
             _addressProperty.Behaviors.Successor = new InstancePropertyBehavior<IViewModel>();
             _addressVM = Mock<IViewModel>();
 
@@ -180,14 +180,14 @@
 
          [TestMethod]
          public void OnValidating_ViewModelArgs_RootPropertyValidatorIsNotInvoked() {
-            AddPropertyValidatorSpy(Mock<IVMProperty>());
+            AddPropertyValidatorSpy(Mock<IVMPropertyDescriptor>());
             InvokeOnValidating(withArgs: CreateViewModelValidationArgs());
             Assert.AreEqual(0, _validator.InvocationCount);
          }
 
          [TestMethod]
          public void OnValidating_PropertyArgs_RootPropertyValidatorIsInvoked() {
-            var targetProperty = Mock<IVMProperty>();
+            var targetProperty = Mock<IVMPropertyDescriptor>();
             AddPropertyValidatorSpy(forProperty: targetProperty);
             InvokeOnValidating(withArgs: CreatePropertyValidationArgs(targetProperty));
             Assert.AreEqual(1, _validator.InvocationCount);
@@ -196,7 +196,7 @@
          [TestMethod]
          public void OnValidating_PropertyArgs_RootViewModelValidatorIsNotInvoked() {
             AddViewModelValidatorSpy();
-            InvokeOnValidating(withArgs: CreatePropertyValidationArgs(Mock<IVMProperty>()));
+            InvokeOnValidating(withArgs: CreatePropertyValidationArgs(Mock<IVMPropertyDescriptor>()));
             Assert.AreEqual(0, _validator.InvocationCount);
          }
 
@@ -240,7 +240,7 @@
             );
          }
 
-         private static ValidationArgs CreatePropertyValidationArgs(IVMProperty targetProperty, IViewModel changedVM = null) {
+         private static ValidationArgs CreatePropertyValidationArgs(IVMPropertyDescriptor targetProperty, IViewModel changedVM = null) {
             ValidationContext.BeginValidation();
             return ValidationArgs.CreatePropertyValidationArgs(
                ValidationContext.Current, // TODO
@@ -254,7 +254,7 @@
             _behavior.AddValidator(_validator, ValidationType.ViewModel, path ?? VMPropertyPath.Empty, null);
          }
 
-         private void AddPropertyValidatorSpy(IVMProperty forProperty, VMPropertyPath path = null) {
+         private void AddPropertyValidatorSpy(IVMPropertyDescriptor forProperty, VMPropertyPath path = null) {
             _behavior.AddValidator(_validator, ValidationType.PropertyValue, path ?? VMPropertyPath.Empty, PropertySelector.Create<VMDescriptorBase>(x => forProperty));
             //_behavior.AddValidator(_validator, ValidationType.PropertyValue, path ?? VMPropertyPath.Empty, forProperty);
          }
@@ -281,7 +281,7 @@
 
          var targetVM = Mock<IViewModel>();
          var changedVM = Mock<IViewModel>();
-         var changedProperty = Mock<IVMProperty>();
+         var changedProperty = Mock<IVMPropertyDescriptor>();
 
          var behavior = new ViewModelValidationBehavior();
          behavior.Initialize(ctx.InitializationContext);

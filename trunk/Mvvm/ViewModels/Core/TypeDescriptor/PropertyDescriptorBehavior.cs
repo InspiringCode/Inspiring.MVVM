@@ -6,14 +6,14 @@
       IBehaviorInitializationBehavior,
       IHandlePropertyChangedBehavior {
 
-      private IVMProperty _property;
-      private VMPropertyDescriptor _descriptor;
+      private IVMPropertyDescriptor _property;
+      private TypeDescriptorPropertyDescriptor _descriptor;
 
-      public VMPropertyDescriptor PropertyDescriptor {
+      public TypeDescriptorPropertyDescriptor PropertyDescriptor {
          get {
             if (_descriptor == null) {
                AssertInitialized();
-               _descriptor = new VMPropertyDescriptor(_property);
+               _descriptor = new TypeDescriptorPropertyDescriptor(_property);
             }
 
             return _descriptor;
@@ -31,7 +31,7 @@
          if (_descriptor != null) {
             _descriptor.RaiseValueChanged(context.VM);
          }
-         
+
          IHandlePropertyChangedBehavior next;
          if (TryGetBehavior(out next)) {
             next.HandlePropertyChanged(context);

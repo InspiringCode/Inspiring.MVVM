@@ -278,34 +278,34 @@
          //         .Build();
          //}
          public EmployeeVMDescriptor() {
-            CurrentProject = new VMProperty<IViewModel>();
+            CurrentProject = new VMPropertyDescriptor<IViewModel>();
             CurrentProject.Behaviors.Successor = new InstancePropertyBehavior<IViewModel>();
             CurrentProject.Behaviors.Initialize(this, CurrentProject);
-            Projects = new VMProperty<IVMCollection<IViewModel>>();
+            Projects = new VMPropertyDescriptor<IVMCollection<IViewModel>>();
             Projects.Behaviors.Successor = new InstancePropertyBehavior<IVMCollection<IViewModel>>();
             Projects.Behaviors.Initialize(this, Projects);
          }
 
-         public IVMProperty<IViewModel> CurrentProject { get; set; }
-         public IVMProperty<IVMCollection<IViewModel>> Projects { get; set; }
+         public IVMPropertyDescriptor<IViewModel> CurrentProject { get; set; }
+         public IVMPropertyDescriptor<IVMCollection<IViewModel>> Projects { get; set; }
       }
 
       private class ProjectVMDescriptor : VMDescriptor {
          public ProjectVMDescriptor() {
-            Customer = new VMProperty<IViewModel>();
+            Customer = new VMPropertyDescriptor<IViewModel>();
             Customer.Behaviors.Successor = new InstancePropertyBehavior<IViewModel>();
             Customer.Behaviors.Initialize(this, Customer);
          }
 
-         public IVMProperty<IViewModel> Customer { get; set; }
+         public IVMPropertyDescriptor<IViewModel> Customer { get; set; }
       }
 
       private class CustomerVMDescriptor : VMDescriptor {
          public CustomerVMDescriptor() {
-            Address = new VMProperty<IViewModel>();
+            Address = new VMPropertyDescriptor<IViewModel>();
          }
 
-         public IVMProperty<IViewModel> Address { get; set; }
+         public IVMPropertyDescriptor<IViewModel> Address { get; set; }
       }
 
       private class AddressVMDescriptor : VMDescriptor {

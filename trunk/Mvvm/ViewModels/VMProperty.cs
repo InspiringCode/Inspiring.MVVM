@@ -3,15 +3,15 @@
    using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.ViewModels.Core;
 
-   public abstract class VMProperty : IVMProperty {
-      internal VMProperty(Type propertyType) {
+   public abstract class VMPropertyDescriptor : IVMPropertyDescriptor {
+      internal VMPropertyDescriptor(Type propertyType) {
          Contract.Requires(propertyType != null);
 
          Behaviors = new BehaviorChain();
          PropertyType = propertyType;
       }
 
-      internal VMProperty(Type propertyType, string propertyName)
+      internal VMPropertyDescriptor(Type propertyType, string propertyName)
          : this(propertyType) {
          Contract.Requires(propertyName != null);
 
@@ -64,7 +64,7 @@
       //}
 
 
-      object IVMProperty.GetValue(IBehaviorContext context) {
+      object IVMPropertyDescriptor.GetValue(IBehaviorContext context) {
          return GetValueCore(context);
       }
 
@@ -100,9 +100,9 @@
 
    }
 
-   public class VMProperty<T> : VMProperty, IVMProperty<T> {
+   public class VMPropertyDescriptor<T> : VMPropertyDescriptor, IVMPropertyDescriptor<T> {
 
-      public VMProperty()
+      public VMPropertyDescriptor()
          : base(typeof(T)) {
       }
 

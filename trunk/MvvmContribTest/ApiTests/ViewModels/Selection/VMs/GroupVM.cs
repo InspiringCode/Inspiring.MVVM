@@ -33,6 +33,6 @@
    }
 
    public sealed class GroupVMDescriptor : VMDescriptor {
-      public IVMProperty<string> Name { get; set; }
+      public IVMPropertyDescriptor<string> Name { get; set; }
    }
 }

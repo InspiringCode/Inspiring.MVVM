@@ -6,7 +6,7 @@
 
    /// <summary>
    ///   A <see cref="IDisplayValueAccessorBehavior"/> that implements the get/set 
-   ///   operation of a <see cref="IVMProperty"/> by using a CLR property defined 
+   ///   operation of a <see cref="IVMPropertyDescriptor"/> by using a CLR property defined 
    ///   on a the view model or an object referenced by it.
    /// </summary>
    internal sealed class MappedPropertyAccessor<TVM, TValue> :
@@ -14,7 +14,7 @@
       IValueAccessorBehavior<TValue>
       where TVM : IViewModel {
 
-      private IVMProperty<TValue> _property;
+      private IVMPropertyDescriptor<TValue> _property;
       private PropertyPath<TVM, TValue> _path;
 
       public MappedPropertyAccessor(PropertyPath<TVM, TValue> path) {

@@ -44,7 +44,7 @@
       }
 
       public ViewModelBehaviorBuilder<TVM, TDescriptor> OverrideUpdateFromSourceProperties(
-         params Func<TDescriptor, IVMProperty>[] orderedProperties
+         params Func<TDescriptor, IVMPropertyDescriptor>[] orderedProperties
       ) {
          return Configure(
             BehaviorKeys.ManualUpdateCoordinator,
@@ -57,7 +57,7 @@
       }
 
       public ViewModelBehaviorBuilder<TVM, TDescriptor> OverrideUpdateSourceProperties(
-          params Func<TDescriptor, IVMProperty>[] orderedProperties
+          params Func<TDescriptor, IVMPropertyDescriptor>[] orderedProperties
        ) {
          return Configure(
             BehaviorKeys.ManualUpdateCoordinator,

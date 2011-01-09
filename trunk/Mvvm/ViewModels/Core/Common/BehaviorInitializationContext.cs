@@ -4,7 +4,7 @@
    public sealed class BehaviorInitializationContext {
       public BehaviorInitializationContext(
          VMDescriptorBase descriptor,
-         IVMProperty property = null
+         IVMPropertyDescriptor property = null
       ) {
          Contract.Requires(descriptor != null);
 
@@ -17,7 +17,7 @@
 
       public VMDescriptorBase Descriptor { get; private set; }
 
-      public IVMProperty Property { get; private set; }
+      public IVMPropertyDescriptor Property { get; private set; }
 
       [ContractInvariantMethod]
       private void ObjectInvariant() {

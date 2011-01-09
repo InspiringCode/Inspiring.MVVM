@@ -6,7 +6,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
       IBehaviorInitializationBehavior,
       IManualUpdateBehavior {
 
-      private IVMProperty<TValue> _property;
+      private IVMPropertyDescriptor<TValue> _property;
 
       public void UpdatePropertyFromSource(IBehaviorContext vm) {
          throw new NotImplementedException("TODO2");
@@ -18,7 +18,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
       }
 
       public void Initialize(BehaviorInitializationContext context) {
-         _property = (IVMProperty<TValue>)context.Property;
+         _property = (IVMPropertyDescriptor<TValue>)context.Property;
          this.InitializeNext(context);
       }
    }

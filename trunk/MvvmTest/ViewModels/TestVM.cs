@@ -61,11 +61,11 @@
       //   set { SetValue(Descriptor.MappedParentedCollectionProperty, value); }
       //}
 
-      public void InvokeUpdateFromSource(IVMProperty property) {
+      public void InvokeUpdateFromSource(IVMPropertyDescriptor property) {
          //UpdateFromSource(property);
       }
 
-      public void InvokeUpdateSource(IVMProperty property) {
+      public void InvokeUpdateSource(IVMPropertyDescriptor property) {
          //UpdateSource(property);
       }
 
@@ -83,11 +83,11 @@
    }
 
    internal sealed class TestVMDescriptor : VMDescriptor {
-      public IVMProperty<int> CalculatedMutableProperty { get; set; }
-      public IVMProperty<string> MappedMutableProperty { get; set; }
-      public IVMProperty<decimal> LocalProperty { get; set; }
-      public IVMProperty<ChildVM> MappedVMProperty { get; set; }
-      public IVMProperty<IVMCollection<ChildVM>> MappedCollectionProperty { get; set; }
+      public IVMPropertyDescriptor<int> CalculatedMutableProperty { get; set; }
+      public IVMPropertyDescriptor<string> MappedMutableProperty { get; set; }
+      public IVMPropertyDescriptor<decimal> LocalProperty { get; set; }
+      public IVMPropertyDescriptor<ChildVM> MappedVMProperty { get; set; }
+      public IVMPropertyDescriptor<IVMCollection<ChildVM>> MappedCollectionProperty { get; set; }
       //public IVMProperty<IVMCollection<ParentedChildVM>> MappedParentedCollectionProperty { get; set; }
    }
 
@@ -152,7 +152,7 @@
    }
 
    internal sealed class ChildVMDescriptor : VMDescriptor {
-      public IVMProperty<string> MappedMutableProperty { get; set; }
+      public IVMPropertyDescriptor<string> MappedMutableProperty { get; set; }
    }
 
    //internal sealed class ParentedChildVM :

@@ -188,20 +188,20 @@
       }
 
       public sealed class EmployeeVMDescriptor : VMDescriptor {
-         public IVMProperty<string> Name { get; set; }
-         public IVMProperty<IVMCollection<ProjectVM>> Projects { get; set; }
+         public IVMPropertyDescriptor<string> Name { get; set; }
+         public IVMPropertyDescriptor<IVMCollection<ProjectVM>> Projects { get; set; }
       }
 
       public sealed class ProjectVMDescriptor : VMDescriptor {
-         public IVMProperty<string> Title { get; set; }
-         public IVMProperty<string> Description { get; set; }
-         public IVMProperty<CustomerVM> Customer { get; set; }
+         public IVMPropertyDescriptor<string> Title { get; set; }
+         public IVMPropertyDescriptor<string> Description { get; set; }
+         public IVMPropertyDescriptor<CustomerVM> Customer { get; set; }
       }
 
       public sealed class CustomerVMDescriptor : VMDescriptor {
-         public IVMProperty<string> Name { get; set; }
-         public IVMProperty<string> Address { get; set; }
-         public IVMProperty<int> PostalCode { get; set; }
+         public IVMPropertyDescriptor<string> Name { get; set; }
+         public IVMPropertyDescriptor<string> Address { get; set; }
+         public IVMPropertyDescriptor<int> PostalCode { get; set; }
       }
    }
 }

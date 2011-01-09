@@ -8,8 +8,8 @@ using Moq;
 
 namespace Inspiring.MvvmTest.ViewModels.Core.TypeDescriptor {
    [TestClass]
-   public class VMPropertyDescriptorTests {
-      private IVMProperty _property;
+   public class TypeDescriptorPropertyDescriptorTests {
+      private IVMPropertyDescriptor _property;
       private PropertyDescriptor _descriptor;
       private IViewModel _vm;
 
@@ -17,7 +17,7 @@ namespace Inspiring.MvvmTest.ViewModels.Core.TypeDescriptor {
       public void Setup() {
          _property = new VMPropertyBaseStub(typeof(object), "Test");
 
-         _descriptor = new VMPropertyDescriptor(_property);
+         _descriptor = new TypeDescriptorPropertyDescriptor(_property);
          _vm = new ViewModelStub();
       }
 

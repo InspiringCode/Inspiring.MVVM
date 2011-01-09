@@ -24,7 +24,7 @@ namespace Inspiring.MvvmTest.ViewModels.Core {
 
       [TestMethod]
       public void Properties_Get_ReturnsDiscoveredProperties() {
-         var propertiesToReturn = new VMPropertyCollection(new IVMProperty[0]);
+         var propertiesToReturn = new VMPropertyCollection(new IVMPropertyDescriptor[0]);
          var descriptor = new TestVMDescriptor(propertiesToReturn);
 
          var returnedProperties = descriptor.Properties;
@@ -43,7 +43,7 @@ namespace Inspiring.MvvmTest.ViewModels.Core {
 
       private class TestVMDescriptor : VMDescriptorBase {
          public TestVMDescriptor() {
-            PropertiesToReturn = new VMPropertyCollection(new IVMProperty[0]);
+            PropertiesToReturn = new VMPropertyCollection(new IVMPropertyDescriptor[0]);
          }
 
          public TestVMDescriptor(VMPropertyCollection propertiesToReturn) {

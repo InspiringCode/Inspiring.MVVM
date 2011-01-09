@@ -102,8 +102,8 @@
       }
 
       public sealed class TaskListVMDescriptor : VMDescriptor {
-         public IVMProperty<ICommand> RootCommand { get; set; }
-         public IVMProperty<ICommand> RelativeCommand { get; set; }
+         public IVMPropertyDescriptor<ICommand> RootCommand { get; set; }
+         public IVMPropertyDescriptor<ICommand> RelativeCommand { get; set; }
       }
    }
 }

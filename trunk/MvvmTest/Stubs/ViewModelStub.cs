@@ -6,7 +6,7 @@
    using Inspiring.Mvvm.ViewModels.Core;
 
    public class ViewModelStub : IViewModel {
-      private Dictionary<IVMProperty, object> _fakeValues;
+      private Dictionary<IVMPropertyDescriptor, object> _fakeValues;
       private IBehaviorContext _context;
 
       public ViewModelStub()
@@ -15,7 +15,7 @@
       }
 
       public ViewModelStub(VMDescriptorBase descriptor) {
-         _fakeValues = new Dictionary<IVMProperty, object>();
+         _fakeValues = new Dictionary<IVMPropertyDescriptor, object>();
          Descriptor = descriptor;
          Kernel = new VMKernel(this, Descriptor, ServiceLocator.Current);
          _context = Kernel;
@@ -32,11 +32,11 @@
 
 
 
-      public object GetValue(IVMProperty property) {
+      public object GetValue(IVMPropertyDescriptor property) {
          return _fakeValues[property];
       }
 
-      public void SetValue<T>(IVMProperty<T> property, T value) {
+      public void SetValue<T>(IVMPropertyDescriptor<T> property, T value) {
          property.Behaviors.SetValueNext(_context, value);
          _fakeValues[property] = value;
       }
@@ -49,7 +49,7 @@
          throw new NotImplementedException();
       }
 
-      public void InvokeValidate(IViewModel changedVM, IVMProperty changedProperty) {
+      public void InvokeValidate(IViewModel changedVM, IVMPropertyDescriptor changedProperty) {
          throw new NotImplementedException();
       }
 
@@ -72,29 +72,29 @@
       }
 
 
-      public void NotifyPropertyChanged(IVMProperty property) {
+      public void NotifyPropertyChanged(IVMPropertyDescriptor property) {
          throw new NotImplementedException();
       }
 
-      public void NotifyValidationStateChanged(IVMProperty property) {
+      public void NotifyValidationStateChanged(IVMPropertyDescriptor property) {
          throw new NotImplementedException();
       }
 
 
-      public T GetValue<T>(IVMProperty<T> property) {
-         return (T)GetValue((IVMProperty)property);
+      public T GetValue<T>(IVMPropertyDescriptor<T> property) {
+         return (T)GetValue((IVMPropertyDescriptor)property);
       }
 
-      public T GetValidatedValue<T>(IVMProperty<T> property) {
-         return (T)GetValue((IVMProperty)property);
+      public T GetValidatedValue<T>(IVMPropertyDescriptor<T> property) {
+         return (T)GetValue((IVMPropertyDescriptor)property);
       }
 
-      public object GetDisplayValue(IVMProperty property) {
+      public object GetDisplayValue(IVMPropertyDescriptor property) {
          return GetValue(property);
       }
 
 
-      public void SetDisplayValue(IVMProperty property, object value) {
+      public void SetDisplayValue(IVMPropertyDescriptor property, object value) {
          Kernel.SetDisplayValue(property, value);
       }
    }

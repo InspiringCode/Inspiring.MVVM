@@ -101,8 +101,8 @@
       }
 
       private class CompanyVMDescriptor : VMDescriptor {
-         public IVMProperty<IVMCollection<PersonVM>> Employees { get; set; }
-         public IVMProperty<IVMCollection<PersonVM>> Customers { get; set; }
+         public IVMPropertyDescriptor<IVMCollection<PersonVM>> Employees { get; set; }
+         public IVMPropertyDescriptor<IVMCollection<PersonVM>> Customers { get; set; }
       }
 
       private class PersonVM : ViewModel<PersonVMDescriptor>, IVMCollectionItem<Person> {
@@ -143,10 +143,10 @@
       }
 
       private class PersonVMDescriptor : VMDescriptor {
-         public IVMProperty<string> Name { get; set; }
-         public IVMProperty<DateTime> BirthDate { get; set; }
-         public IVMProperty<decimal> Salary { get; set; }
-         public IVMProperty<bool> IsSelected { get; set; }
+         public IVMPropertyDescriptor<string> Name { get; set; }
+         public IVMPropertyDescriptor<DateTime> BirthDate { get; set; }
+         public IVMPropertyDescriptor<decimal> Salary { get; set; }
+         public IVMPropertyDescriptor<bool> IsSelected { get; set; }
       }
       private class Person {
          public string FirstName { get; set; }

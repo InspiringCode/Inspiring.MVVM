@@ -7,10 +7,10 @@
    ///   the WPF binding infrastructure to bind to VM properties even if no CLR
    ///   wrapper is defined on the ViewModel class.
    /// </summary>
-   internal class VMPropertyDescriptor : SimplePropertyDescriptor {
-      private IVMProperty _property;
+   internal class TypeDescriptorPropertyDescriptor : SimplePropertyDescriptor {
+      private IVMPropertyDescriptor _property;
 
-      public VMPropertyDescriptor(IVMProperty property)
+      public TypeDescriptorPropertyDescriptor(IVMPropertyDescriptor property)
          : base(
             property.PropertyName,
             property.PropertyType,

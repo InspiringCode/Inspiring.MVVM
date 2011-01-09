@@ -24,8 +24,8 @@
 
       IBehaviorContext GetContext();
 
-      void NotifyPropertyChanged(IVMProperty property);
-      void NotifyValidationStateChanged(IVMProperty property);
+      void NotifyPropertyChanged(IVMPropertyDescriptor property);
+      void NotifyValidationStateChanged(IVMPropertyDescriptor property);
    }
 
    namespace Contracts {

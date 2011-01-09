@@ -83,7 +83,7 @@
          IBehaviorContext context,
          ValidationContext validationContext,
          InstancePath changedPath,
-         IVMProperty changedProperty = null
+         IVMPropertyDescriptor changedProperty = null
       ) {
          ValidationState newState = new ValidationState();
 
@@ -166,7 +166,7 @@
             }
 
             if (TargetProperty != null) {
-               IVMProperty targetProperty = TargetProperty.GetProperty(args.TargetVM.Descriptor);
+               IVMPropertyDescriptor targetProperty = TargetProperty.GetProperty(args.TargetVM.Descriptor);
 
                if (args.TargetProperty != targetProperty) {
                   return;

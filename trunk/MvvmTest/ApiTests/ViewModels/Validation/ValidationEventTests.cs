@@ -86,7 +86,7 @@
       }
 
       public sealed class TaskVMDescriptor : VMDescriptor {
-         public IVMProperty<string> Title { get; set; }
+         public IVMPropertyDescriptor<string> Title { get; set; }
       }
    }
 }
