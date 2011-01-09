@@ -14,7 +14,7 @@
          .Build();
 
       public DepartmentVM()
-         : base() {
+         : base(ClassDescriptor) {
       }
 
       public Department DepartmentSource { get; private set; }

@@ -110,7 +110,6 @@
     <Compile Include="ViewModels\Core\Behaviors\PropertyBehaviors\RefreshableValueCacheBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Behaviors\PropertyBehaviors\ValueCacheBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\BehaviorTestBase.cs" />
-    <Compile Include="ViewModels\Core\Builder\BehaviorsTest.cs" />
     <Compile Include="ViewModels\Core\Builder\VMPropertyFactoryTests.cs" />
     <Compile Include="ViewModels\Core\Collections\AddNewHelperTests.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\CollectionChangeNotificationBehaviorTests.cs" />
@@ -164,7 +163,6 @@
     <Compile Include="ViewModels\Behaviors\VMPropertyTest.cs" />
     <Compile Include="ViewModels\Core\Builder\VMPropertyFactoryTest.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\ViewModelFactoryBehaviorTests.cs" />
-    <Compile Include="ViewModels\IntegrationTests\ManualUpdateTest.cs" />
     <Compile Include="ViewModels\PersonVM.cs" />
     <Compile Include="ViewModels\TypeDescriptorTest.cs" />
     <Compile Include="ViewModels\ViewModelsTest.cs" />

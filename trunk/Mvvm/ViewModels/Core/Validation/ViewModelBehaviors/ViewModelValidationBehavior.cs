@@ -6,7 +6,8 @@
    // TODO: Make me internal please!
    public sealed class ViewModelValidationBehavior :
       ViewModelBehavior,
-      IBehaviorInitializationBehavior {
+      IBehaviorInitializationBehavior,
+      IValidationStateProviderBehavior {
 
       private FieldDefinition<ValidationState> _validationStateField;
 
@@ -174,6 +175,10 @@
 
             Validator.Validate(args);
          }
+      }
+
+      ValidationState IValidationStateProviderBehavior.GetDescendantsValidationState(IBehaviorContext context) {
+         throw new NotImplementedException(); // TODO: Improve interface please (split in two)!
       }
    }
 }

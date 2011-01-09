@@ -16,22 +16,22 @@
          .WithProperties((d, c) => {
             var h = c.GetPropertyBuilder(x => x.DialogActionHandler);
 
-               d.Save = h.Command(x => x.Save(), x => x.CanSave());
-               d.Discard = h.Command(x => x.Discard(), x => x.CanDiscard());
-               d.State = h.Property.DelegatesTo(x => {
-                  if (!x.IsValid) {
-                     return DataState.Invalid;
-                  } else {
-                     return x.HasChanges ? DataState.Changed : DataState.Unchanged;
-                  }
-               });
+            d.Save = h.Command(x => x.Save(), x => x.CanSave());
+            d.Discard = h.Command(x => x.Discard(), x => x.CanDiscard());
+            d.State = h.Property.DelegatesTo(x => {
+               if (!x.IsValid) {
+                  return DataState.Invalid;
+               } else {
+                  return x.HasChanges ? DataState.Changed : DataState.Unchanged;
+               }
+            });
          })
          .Build();
 
       private EventHandler _requerySuggestedHandler;
 
       public SaveDiscardVM()
-         : base() {
+         : base(ClassDescriptor) {
       }
 
       public DataState State {

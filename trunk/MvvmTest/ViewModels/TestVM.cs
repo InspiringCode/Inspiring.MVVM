@@ -22,7 +22,7 @@
          .Build();
 
       public TestVM()
-         : base() {
+         : base(ClassDescriptor) {
       }
 
       public ValidationResult ViewModelValidationResult { get; set; }
@@ -112,7 +112,7 @@
          .Build();
 
       public ChildVM()
-         : base() {
+         : base(ClassDescriptor) {
       }
 
       public void InitializeFrom(ChildVMSource source) {

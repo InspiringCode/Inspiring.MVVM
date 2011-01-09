@@ -41,8 +41,9 @@
          Behavior.ItemsCleared(BehaviorContext, Collection, previousItems);
       }
 
-      protected static IViewModel CreateItem() {
+      protected IViewModel CreateItem() {
          var item = new ViewModelStub();
+         item.OverrideContext(BehaviorContext);
          item.Kernel.Parent = new ViewModelStub();
          return item;
       }

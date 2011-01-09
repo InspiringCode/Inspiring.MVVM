@@ -16,6 +16,6 @@
       ///   cref="ICanInitializeFrom.InitializeFrom"/> is called with the source 
       ///   object just selected.
       /// </typeparam>
-      IVMProperty<TChildVM> With<TChildVM>() where TChildVM : IViewModel, ICanInitializeFrom<TSourceValue>;
+      IVMProperty<TChildVM> With<TChildVM>() where TChildVM : IViewModel, ICanInitializeFrom<TSourceValue>, IVMCollectionItem<TSourceValue>; // TODO: Interface!
    }
 }

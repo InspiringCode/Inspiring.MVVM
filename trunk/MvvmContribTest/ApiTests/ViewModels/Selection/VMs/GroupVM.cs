@@ -14,7 +14,7 @@
          .Build();
 
       public GroupVM()
-         : base() {
+         : base(ClassDescriptor) {
       }
 
       public Group GroupSource { get; private set; }

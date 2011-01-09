@@ -26,7 +26,7 @@
       private IEnumerable<Group> _allSourceItems;
 
       public KeywordSelectionVM()
-         : base() {
+         : base(ClassDescriptor) {
       }
 
       public User Document { get; private set; }

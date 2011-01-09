@@ -267,9 +267,23 @@
       }
 
       private class EmployeeVMDescriptor : VMDescriptor {
+         //   public static EmployeeVMDescriptor Create() {
+         //      return VMDescriptorBuilder
+         //         .OfType<EmployeeVMDescriptor>()
+         //         .For<IViewModel>()
+         //         .WithProperties((d, b) => {
+         //            var v = b.GetPropertyBuilder();
+         //            d.CurrentProject = v.Collection.Of<IViewModel>(
+         //         })
+         //         .Build();
+         //}
          public EmployeeVMDescriptor() {
             CurrentProject = new VMProperty<IViewModel>();
+            CurrentProject.Behaviors.Successor = new InstancePropertyBehavior<IViewModel>();
+            CurrentProject.Behaviors.Initialize(this, CurrentProject);
             Projects = new VMProperty<IVMCollection<IViewModel>>();
+            Projects.Behaviors.Successor = new InstancePropertyBehavior<IVMCollection<IViewModel>>();
+            Projects.Behaviors.Initialize(this, Projects);
          }
 
          public IVMProperty<IViewModel> CurrentProject { get; set; }
@@ -279,6 +293,8 @@
       private class ProjectVMDescriptor : VMDescriptor {
          public ProjectVMDescriptor() {
             Customer = new VMProperty<IViewModel>();
+            Customer.Behaviors.Successor = new InstancePropertyBehavior<IViewModel>();
+            Customer.Behaviors.Initialize(this, Customer);
          }
 
          public IVMProperty<IViewModel> Customer { get; set; }

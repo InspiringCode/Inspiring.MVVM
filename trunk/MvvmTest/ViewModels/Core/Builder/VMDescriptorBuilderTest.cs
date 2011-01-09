@@ -93,7 +93,7 @@
             .Build();
 
          public CompanyVM(Company company)
-            : base() {
+            : base(ClassDescriptor) {
             Company = company;
          }
 
@@ -128,7 +128,7 @@
             })
             .Build();
          public PersonVM()
-            : base() {
+            : base(ClassDescriptor) {
 
          }
          public Person Person { get; set; }

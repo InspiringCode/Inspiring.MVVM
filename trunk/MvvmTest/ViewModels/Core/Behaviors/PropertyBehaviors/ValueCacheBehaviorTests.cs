@@ -1,5 +1,4 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Behaviors.PropertyBehaviors {
-   using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Moq;
@@ -43,13 +42,13 @@
       }
 
       [TestMethod]
-      public void SetValue_DoesNotUpdateSource() {
+      public void SetValue_UpdatesSource() {
          Behavior.SetValue(Context, ArbitraryString);
 
          SourceAccessorMock.Verify(
             x => x.SetValue(It.IsAny<IBehaviorContext>(), It.IsAny<string>()),
-            Times.Never(),
-            "SetValue should not update the source value."
+            Times.Once(),
+            "SetValue should update the source value."
          );
       }
 

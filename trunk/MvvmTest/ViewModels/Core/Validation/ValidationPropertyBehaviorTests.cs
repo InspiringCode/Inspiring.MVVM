@@ -1,9 +1,9 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Validation {
    using System.Linq;
+   using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Moq;
-   using Inspiring.Mvvm.ViewModels;
 
    [TestClass]
    public class ValidationPropertyBehaviorTests : TestBase {
@@ -14,6 +14,7 @@
       public void Setup() {
          _ctx = new ContextTestHelper();
          _behavior = new PropertyValidationBehavior<string>();
+         _behavior.Successor = new InstancePropertyBehavior<string>();
          _behavior.Initialize(_ctx.InitializationContext);
       }
 

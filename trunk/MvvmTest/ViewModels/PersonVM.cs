@@ -18,7 +18,7 @@
                d.Salary = p.Property.DelegatesTo(x => x.Salary, (x, val) => x.Salary = val);
                d.Name = p.Property.DelegatesTo(x => String.Format("{0} {1}", x.FirstName, x.LastName));
                d.IsSelected = v.Property.Of<bool>();
-               d.Projects = p.Collection.Wraps(x => x.Projects).With<ProjectVM>(PersonVM.ClassDescriptor);
+               d.Projects = p.Collection.Wraps(x => x.Projects).With<ProjectVM>(ProjectVM.ClassDescriptor);
                d.CurrentProject = v.Property.Of<ProjectVM>();
             })
          //.WithValidators(c => {
@@ -30,7 +30,7 @@
             .Build();
 
       public PersonVM()
-         : base() {
+         : base(ClassDescriptor) {
       }
 
       public PersonVM(Person person)
@@ -76,7 +76,7 @@
             .Build();
 
       public ProjectVM()
-         : base() {
+         : base(ClassDescriptor) {
       }
 
       public ProjectVM(Project project)

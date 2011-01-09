@@ -195,12 +195,10 @@
     <Compile Include="ViewModels\Core\TypeDescriptor\TypeDescriptorBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationArgs.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationErrorCollection.cs" />
-    <Compile Include="ViewModels\Core\Validation\ValidationStage.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationState.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationType.cs" />
     <Compile Include="ViewModels\Core\Validation\ViewModelBehaviors\ViewModelValidationBehavior.cs" />
-    <Compile Include="ViewModels\Core\Validation\ViewModelValidator.cs" />
-    <Compile Include="ViewModels\Core\Validation\ViewModelValidationArgs.cs" />
+    <Compile Include="ViewModels\Core\Validation\Validator.cs" />
     <Compile Include="ViewModels\Core\ViewModelBehaviors\IViewModelBehaviorContext.cs" />
     <Compile Include="ViewModels\Core\ViewModelBehaviors\ViewModelBehavior.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Validators\CollectionPropertyValidatorBuilder.cs" />
@@ -297,8 +295,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModels\Core\BehaviorInterfaces\CollectionBehaviors\" />
-    <Folder Include="ViewModels\Core\Behaviors\- Legacy -\" />
-    <Folder Include="ViewModels\Fluent\- Legacy -\" />
     <Folder Include="Views\TestDoubles\" />
   </ItemGroup>
   <ItemGroup>

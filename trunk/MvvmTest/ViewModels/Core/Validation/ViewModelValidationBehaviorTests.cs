@@ -1,5 +1,4 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Validation {
-   using System;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.MvvmTest.Stubs;
@@ -142,7 +141,7 @@
 
          private IViewModel _employeeVM;
          private IViewModel _addressVM;
-         private IVMProperty _addressProperty;
+         private IVMProperty<IViewModel> _addressProperty;
 
          private ViewModelValidationBehavior _behavior;
 
@@ -151,10 +150,12 @@
             _validator = new ValidatorSpy();
             _behavior = new ViewModelValidationBehavior();
 
-            _addressProperty = Mock<IVMProperty>();
+            _addressProperty = new VMProperty<IViewModel>();
+            _addressProperty.Behaviors.Successor = new InstancePropertyBehavior<IViewModel>();
             _addressVM = Mock<IViewModel>();
 
             var employeeStub = new ViewModelStub();
+            _addressProperty.Behaviors.Initialize(employeeStub.Descriptor, _addressProperty);
             employeeStub.SetValue(_addressProperty, _addressVM);
 
             _employeeVM = employeeStub;
@@ -202,8 +203,7 @@
 
          [TestMethod]
          public void OnValidating_ChildValidator_GetsCalled() {
-            Assert.Fail("Fix me!");
-            //AddViewModelValidatorSpy(new VMPropertyPath(_addressProperty));
+            AddViewModelValidatorSpy(new VMPropertyPath().AddProperty(PropertySelector.Create<VMDescriptorBase>(x => _addressProperty))); // TODO
 
             InvokeOnValidating(
                withArgs: CreateViewModelValidationArgs(
@@ -217,10 +217,9 @@
 
          [TestMethod]
          public void OnValidating_ChildValidator_GetsNotCalled() {
-            Assert.Fail("Fix me!");
-            //AddViewModelValidatorSpy(new VMPropertyPath(_addressProperty));
+            AddViewModelValidatorSpy(new VMPropertyPath().AddProperty(PropertySelector.Create<VMDescriptorBase>(x => _addressProperty))); // TODO
 
-            var anotherVM = Mock<IViewModel>();
+            var anotherVM = new ViewModelStub();
 
             InvokeOnValidating(
                withArgs: CreateViewModelValidationArgs(
@@ -256,7 +255,7 @@
          }
 
          private void AddPropertyValidatorSpy(IVMProperty forProperty, VMPropertyPath path = null) {
-            throw new NotImplementedException();
+            _behavior.AddValidator(_validator, ValidationType.PropertyValue, path ?? VMPropertyPath.Empty, PropertySelector.Create<VMDescriptorBase>(x => forProperty));
             //_behavior.AddValidator(_validator, ValidationType.PropertyValue, path ?? VMPropertyPath.Empty, forProperty);
          }
 

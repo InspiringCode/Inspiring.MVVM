@@ -5,7 +5,7 @@
       public static readonly EmployeeVMDescriptor ClassDescriptor = new EmployeeVMDescriptor();
 
       public EmployeeVM()
-         : base() {
+         : base(ClassDescriptor) {
 
       }
    }

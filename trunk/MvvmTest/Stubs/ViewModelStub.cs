@@ -7,6 +7,7 @@
 
    public class ViewModelStub : IViewModel {
       private Dictionary<IVMProperty, object> _fakeValues;
+      private IBehaviorContext _context;
 
       public ViewModelStub()
          : this(new VMDescriptorStub()) {
@@ -17,6 +18,11 @@
          _fakeValues = new Dictionary<IVMProperty, object>();
          Descriptor = descriptor;
          Kernel = new VMKernel(this, Descriptor, ServiceLocator.Current);
+         _context = Kernel;
+      }
+
+      public void OverrideContext(IBehaviorContext context) {
+         _context = context;
       }
 
       public VMKernel Kernel {
@@ -30,7 +36,8 @@
          return _fakeValues[property];
       }
 
-      public void SetValue(IVMProperty property, object value) {
+      public void SetValue<T>(IVMProperty<T> property, T value) {
+         property.Behaviors.SetValueNext(_context, value);
          _fakeValues[property] = value;
       }
 
@@ -50,7 +57,7 @@
 
 
       public IBehaviorContext GetContext() {
-         return Kernel;
+         return _context;
       }
 
 
@@ -88,7 +95,7 @@
 
 
       public void SetDisplayValue(IVMProperty property, object value) {
-         SetValue(property, value);
+         Kernel.SetDisplayValue(property, value);
       }
    }
 }
