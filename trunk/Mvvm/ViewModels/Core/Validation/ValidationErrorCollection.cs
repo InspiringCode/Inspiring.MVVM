@@ -32,6 +32,12 @@
          _errors.Add(error);
       }
 
+      public void Add(string errorMessage) {
+         Contract.Requires<ArgumentNullException>(errorMessage != null);
+         
+         _errors.Add(new ValidationError(errorMessage));
+      }
+
       /// <summary>
       ///   Two <see cref="ValidationErrorCollection"/>s are equal, if their 
       ///   <see cref="ValidationError"/>s are equal and were added in the same
