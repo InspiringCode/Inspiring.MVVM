@@ -190,6 +190,9 @@
             .PropertyDescriptors;
       }
 
+      public ValidationState GetValidationState(ValidationStateScope scope) {
+         return Kernel.GetValidationState(scope);
+      }
 
       //T IViewModel.GetValue<T>(IVMProperty<T> property) {
       //   return GetValue(property);
