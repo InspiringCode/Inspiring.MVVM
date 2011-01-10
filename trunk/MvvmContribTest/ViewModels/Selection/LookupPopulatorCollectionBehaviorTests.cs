@@ -86,7 +86,7 @@
       public class EmployeeVMDescriptor : VMDescriptor {
       }
 
-      public class ProjectVM : ViewModel<ProjectVMDescriptor>, IVMCollectionItem<Project> {
+      public class ProjectVM : ViewModel<ProjectVMDescriptor>, IHasSourceObject<Project> {
          public ProjectVM(Project source) {
             Source = source;
          }

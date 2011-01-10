@@ -6,7 +6,7 @@
    public sealed class MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM> :
       MultiSelectionVM<TItemSource, TItemVM>,
       ICanInitializeFrom<TSourceObject>
-      where TItemVM : IViewModel, IVMCollectionItem<TItemSource> {
+      where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
       /// <param name="descriptor">
       ///   Use <see cref="CreateDescriptor"/> to create one.

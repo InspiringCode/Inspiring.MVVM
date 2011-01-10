@@ -1,7 +1,7 @@
 ﻿namespace Inspiring.MvvmContribTest.ApiTests.ViewModels {
    using Inspiring.Mvvm.ViewModels;
 
-   internal sealed class DepartmentVM : ViewModel<DepartmentVMDescriptor>, IVMCollectionItem<Department> {
+   internal sealed class DepartmentVM : ViewModel<DepartmentVMDescriptor>, IHasSourceObject<Department> {
       public static readonly DepartmentVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<DepartmentVMDescriptor>()
          .For<DepartmentVM>()
@@ -27,7 +27,7 @@
          DepartmentSource = source;
       }
 
-      Department IVMCollectionItem<Department>.Source {
+      Department IHasSourceObject<Department>.Source {
          get { return DepartmentSource; }
       }
    }

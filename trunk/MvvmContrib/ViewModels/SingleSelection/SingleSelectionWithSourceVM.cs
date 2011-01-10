@@ -7,7 +7,7 @@
    public sealed class SingleSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM> :
       SingleSelectionVM<TItemSource, TItemVM>,
       ICanInitializeFrom<TSourceObject>
-      where TItemVM : IViewModel, IVMCollectionItem<TItemSource> {
+      where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
       /// <param name="descriptor">
       ///   Use <see cref="CreateDescriptor"/> to create one.

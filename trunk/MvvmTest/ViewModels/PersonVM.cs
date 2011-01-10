@@ -58,7 +58,7 @@
       public IVMPropertyDescriptor<IVMCollection<ProjectVM>> Projects { get; set; }
    }
 
-   public class ProjectVM : ViewModel<ProjectVMDescriptor>, IVMCollectionItem<Project> {
+   public class ProjectVM : ViewModel<ProjectVMDescriptor>, IHasSourceObject<Project> {
       public static readonly ProjectVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<ProjectVMDescriptor>()
             .For<ProjectVM>()
@@ -86,7 +86,7 @@
 
       public Project Project { get; set; }
 
-      Project IVMCollectionItem<Project>.Source {
+      Project IHasSourceObject<Project>.Source {
          get { return Project; }
       }
 

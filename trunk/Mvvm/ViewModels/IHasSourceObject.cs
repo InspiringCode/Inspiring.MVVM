@@ -1,6 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
 
-   public interface IVMCollectionItem<TItemSource> : ICanInitializeFrom<TItemSource> {
+   public interface IHasSourceObject<TItemSource> : ICanInitializeFrom<TItemSource> {
       TItemSource Source { get; }
    }
 }

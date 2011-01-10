@@ -116,7 +116,7 @@ namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
          }
       }
 
-      private class ChildVM : ViewModel<ChildVMDescriptor>, ICanInitializeFrom<string>, IVMCollectionItem<string> {
+      private class ChildVM : ViewModel<ChildVMDescriptor>, ICanInitializeFrom<string>, IHasSourceObject<string> {
          public static readonly ChildVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<ChildVMDescriptor>()
             .For<ChildVM>()

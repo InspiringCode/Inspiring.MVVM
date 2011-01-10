@@ -3,7 +3,7 @@
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
 using Inspiring.Mvvm.ViewModels.Core;
 
-   public class TaskVM : ViewModel<TaskVMDescriptor>, IVMCollectionItem<Task> {
+   public class TaskVM : ViewModel<TaskVMDescriptor>, IHasSourceObject<Task> {
       public static readonly TaskVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<TaskVMDescriptor>()
          .For<TaskVM>()
@@ -45,7 +45,7 @@ using Inspiring.Mvvm.ViewModels.Core;
          set { SetValue(Descriptor.Description, value); }
       }
 
-      Task IVMCollectionItem<Task>.Source {
+      Task IHasSourceObject<Task>.Source {
          get { return SourceTask; }
       }
 

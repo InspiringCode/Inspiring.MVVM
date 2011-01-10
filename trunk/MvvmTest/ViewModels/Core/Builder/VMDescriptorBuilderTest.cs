@@ -105,7 +105,7 @@
          public IVMPropertyDescriptor<IVMCollection<PersonVM>> Customers { get; set; }
       }
 
-      private class PersonVM : ViewModel<PersonVMDescriptor>, IVMCollectionItem<Person> {
+      private class PersonVM : ViewModel<PersonVMDescriptor>, IHasSourceObject<Person> {
          public static readonly PersonVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<PersonVMDescriptor>()
             .For<PersonVM>()
@@ -133,7 +133,7 @@
          }
          public Person Person { get; set; }
 
-         Person IVMCollectionItem<Person>.Source {
+         Person IHasSourceObject<Person>.Source {
             get { return Person; }
          }
 

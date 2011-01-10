@@ -201,10 +201,10 @@
          public Employee SourcePerson { get; private set; }
       }
 
-      private class ProjectVM : ViewModelStub, IVMCollectionItem<Project> {
+      private class ProjectVM : ViewModelStub, IHasSourceObject<Project> {
          public Project SourceProject { get; private set; }
 
-         Project IVMCollectionItem<Project>.Source {
+         Project IHasSourceObject<Project>.Source {
             get { return SourceProject; }
          }
 

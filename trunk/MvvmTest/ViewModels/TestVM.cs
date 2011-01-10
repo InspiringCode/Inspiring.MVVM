@@ -95,7 +95,7 @@
    internal sealed class ChildVM :
       ViewModel<ChildVMDescriptor>,
       ICanInitializeFrom<ChildVMSource>,
-      IVMCollectionItem<ChildVMSource> {
+      IHasSourceObject<ChildVMSource> {
 
       public static readonly ChildVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<ChildVMDescriptor>()

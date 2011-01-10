@@ -6,7 +6,7 @@
    internal sealed class SynchronizerCollectionBehavior<TItemVM, TItemSource> :
       Behavior,
       IModificationCollectionBehavior<TItemVM>
-      where TItemVM : IViewModel, IVMCollectionItem<TItemSource> {
+      where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
       public void ItemInserted(
          IBehaviorContext context,

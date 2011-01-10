@@ -2,7 +2,7 @@
 
    internal sealed class ViewModelWithSourceAcessorBehavior<TVM, TSource> :
       Behavior, IValueAccessorBehavior<TVM>
-      where TVM : IViewModel, ICanInitializeFrom<TSource>, IVMCollectionItem<TSource> {
+      where TVM : IViewModel, ICanInitializeFrom<TSource>, IHasSourceObject<TSource> {
 
       public TVM GetValue(IBehaviorContext context) {
          var factory = GetNextBehavior<IViewModelFactoryBehavior<TVM>>();

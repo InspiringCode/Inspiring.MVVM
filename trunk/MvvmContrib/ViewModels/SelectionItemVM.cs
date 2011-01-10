@@ -3,7 +3,7 @@
 
    public class SelectionItemVM<TSourceItem> :
       ViewModel<SelectionItemVMDescriptor>,
-      IVMCollectionItem<TSourceItem>,
+      IHasSourceObject<TSourceItem>,
       IComparable<SelectionItemVM<TSourceItem>> {
 
       // The descriptor is set by the collection

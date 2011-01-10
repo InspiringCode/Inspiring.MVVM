@@ -54,7 +54,7 @@
 
       public IVMPropertyDescriptor<SingleSelectionVM<TItemSource, TItemVM>> Of<TItemVM>(
          VMDescriptorBase itemDescriptor
-      ) where TItemVM : IViewModel, IVMCollectionItem<TItemSource> {
+      ) where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
          Contract.Assert(SelectedSourceItemPropertyFactory != null);
 
          var allSourceItemsPropertyFactory =
@@ -145,7 +145,7 @@
       private class SingleSelectionFactory<TItemVM> :
          Behavior,
          IValueAccessorBehavior<SingleSelectionVM<TItemSource, TItemVM>>
-         where TItemVM : IViewModel, IVMCollectionItem<TItemSource> {
+         where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
          private SingleSelectionVMDescriptor<TItemSource, TItemVM> _descriptor;
          private Func<TItemSource, bool> _filter;

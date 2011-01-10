@@ -26,7 +26,7 @@
       public class ItemSource {
       }
 
-      public class ItemVM : ViewModelStub, IVMCollectionItem<ItemSource> {
+      public class ItemVM : ViewModelStub, IHasSourceObject<ItemSource> {
          public void InitializeFrom(ItemSource source) {
             Source = source;
          }

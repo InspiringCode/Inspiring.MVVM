@@ -55,7 +55,7 @@
 
       public IVMPropertyDescriptor<MultiSelectionVM<TItemSource, TItemVM>> Of<TItemVM>(
          VMDescriptorBase itemDescriptor
-      ) where TItemVM : IViewModel, IVMCollectionItem<TItemSource> {
+      ) where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
          Contract.Assert(SelectedSourceItemsPropertyFactory != null);
 
          var allSourceItemsPropertyFactory =
@@ -146,7 +146,7 @@
       private class MultSelectionAccessor<TItemVM> :
          Behavior,
          IValueAccessorBehavior<MultiSelectionVM<TItemSource, TItemVM>>
-         where TItemVM : IViewModel, IVMCollectionItem<TItemSource> {
+         where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
          private MultiSelectionVMDescriptor<TItemSource, TItemVM> _descriptor;
          private Func<TItemSource, bool> _filter;

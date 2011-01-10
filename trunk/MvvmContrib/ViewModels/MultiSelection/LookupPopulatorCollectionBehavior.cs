@@ -9,7 +9,7 @@
       Behavior,
       IPopulatorCollectionBehavior<TItemVM>
       where TVM : IViewModel
-      where TItemVM : IViewModel, IVMCollectionItem<TItemSource> {
+      where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
       private Func<TVM, IEnumerable<TItemVM>> _lookupSourceProvider;
 

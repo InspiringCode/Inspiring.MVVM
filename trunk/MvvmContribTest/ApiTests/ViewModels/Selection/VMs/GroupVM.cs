@@ -1,7 +1,7 @@
 ﻿namespace Inspiring.MvvmContribTest.ApiTests.ViewModels {
    using Inspiring.Mvvm.ViewModels;
 
-   internal sealed class GroupVM : ViewModel<GroupVMDescriptor>, ICanInitializeFrom<Group>, IVMCollectionItem<Group> {
+   internal sealed class GroupVM : ViewModel<GroupVMDescriptor>, ICanInitializeFrom<Group>, IHasSourceObject<Group> {
       public static readonly GroupVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<GroupVMDescriptor>()
          .For<GroupVM>()
@@ -27,7 +27,7 @@
          GroupSource = source;
       }
 
-      Group IVMCollectionItem<Group>.Source {
+      Group IHasSourceObject<Group>.Source {
          get { return GroupSource; }
       }
    }

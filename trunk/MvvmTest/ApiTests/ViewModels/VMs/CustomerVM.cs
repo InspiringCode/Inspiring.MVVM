@@ -2,7 +2,7 @@
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
 
-   public sealed class CustomerVM : ViewModel<CustomerVMDescriptor>, ICanInitializeFrom<Customer>, IVMCollectionItem<Customer> {
+   public sealed class CustomerVM : ViewModel<CustomerVMDescriptor>, ICanInitializeFrom<Customer>, IHasSourceObject<Customer> {
       public static readonly CustomerVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<CustomerVMDescriptor>()
          .For<CustomerVM>()
