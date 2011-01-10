@@ -4,7 +4,7 @@
    using Inspiring.Mvvm.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Inspiring.Mvvm.ViewModels.Core;
-   using Inspiring.Mvvm.ViewModels.SingleSelection;
+   using Inspiring.Mvvm.ViewModels;
 
    [TestClass]
    public class EnumSelectionTest {

@@ -5,7 +5,7 @@
    using System.Linq;
    using System.Linq.Expressions;
    using Inspiring.Mvvm.ViewModels.Core;
-   using Inspiring.Mvvm.ViewModels.SingleSelection;
+   using Inspiring.Mvvm.ViewModels;
 
    public static class SelectionBuilderExtensions {
       public static MultiSelectionBuilder<TSourceObject, TItemSource> MultiSelection<TSourceObject, TItemSource>(

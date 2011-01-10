@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.SingleSelection {
+﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
    using System.Collections.Generic;
    using System.Linq;

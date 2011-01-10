@@ -1,7 +1,7 @@
 ﻿namespace Inspiring.MvvmContribTest.ApiTests.ViewModels {
    using Inspiring.Mvvm;
    using Inspiring.Mvvm.ViewModels;
-   using Inspiring.Mvvm.ViewModels.SingleSelection;
+   using Inspiring.Mvvm.ViewModels;
 
    internal sealed class UserVM : ViewModel<UserVMDescriptor>, ICanInitializeFrom<User> {
       public UserVM(UserVMDescriptor descriptor, IServiceLocator serviceLocator = null)
