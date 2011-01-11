@@ -206,6 +206,7 @@
 
          Project IHasSourceObject<Project>.Source {
             get { return SourceProject; }
+            set { SourceProject = value; }
          }
 
          public void InitializeFrom(Project source) {

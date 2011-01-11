@@ -1,9 +1,8 @@
 ﻿namespace Inspiring.MvvmContribTest.ApiTests.ViewModels {
    using Inspiring.Mvvm;
    using Inspiring.Mvvm.ViewModels;
-   using Inspiring.Mvvm.ViewModels;
 
-   internal sealed class UserVM : ViewModel<UserVMDescriptor>, ICanInitializeFrom<User> {
+   internal sealed class UserVM : ViewModel<UserVMDescriptor>, IHasSourceObject<User> {
       public UserVM(UserVMDescriptor descriptor, IServiceLocator serviceLocator = null)
          : base(descriptor, serviceLocator) {
       }
@@ -28,6 +27,11 @@
 
       public void UpdateGroupsFromSource() {
          CopyFromSource(Descriptor.Groups);
+      }
+
+      User IHasSourceObject<User>.Source {
+         get { return UserSource; }
+         set { UserSource = value; }
       }
    }
 

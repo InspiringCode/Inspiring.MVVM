@@ -3,9 +3,8 @@
    using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
-   using Inspiring.Mvvm.ViewModels.Core;
 
-   internal sealed class KeywordSelectionVM : ViewModel<KeywordSelectionVMDescriptor>, ICanInitializeFrom<User> {
+   internal sealed class KeywordSelectionVM : ViewModel<KeywordSelectionVMDescriptor>, IHasSourceObject<User> {
       public static readonly KeywordSelectionVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<KeywordSelectionVMDescriptor>()
          .For<KeywordSelectionVM>()
@@ -112,6 +111,11 @@
       //      _selectedSourceItems.Clear();
       //   }
       //}
+
+      User IHasSourceObject<User>.Source {
+         get { return Document; }
+         set { Document = value; }
+      }
    }
 
    internal sealed class KeywordSelectionVMDescriptor : VMDescriptor {

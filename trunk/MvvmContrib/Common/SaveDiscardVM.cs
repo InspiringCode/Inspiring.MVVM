@@ -9,7 +9,7 @@
       Changed
    }
 
-   public sealed class SaveDiscardVM : ViewModel<SaveDiscardVMDescriptor>, ICanInitializeFrom<ISaveDiscardHandler> {
+   public sealed class SaveDiscardVM : ViewModel<SaveDiscardVMDescriptor>, IHasSourceObject<ISaveDiscardHandler> {
       public static readonly SaveDiscardVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<SaveDiscardVMDescriptor>()
          .For<SaveDiscardVM>()
@@ -51,6 +51,11 @@
          });
 
          CommandManager.RequerySuggested += _requerySuggestedHandler;
+      }
+
+      ISaveDiscardHandler IHasSourceObject<ISaveDiscardHandler>.Source {
+         get { return DialogActionHandler; }
+         set { DialogActionHandler = value; }
       }
    }
 

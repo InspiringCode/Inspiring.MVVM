@@ -10,7 +10,7 @@
       public SelectionItemVM() {
       }
 
-      public TSourceItem Source { get; private set; }
+      public TSourceItem Source { get; set; }
 
       public string Caption {
          get { return GetValue(Descriptor.Caption); }

@@ -6,7 +6,7 @@
 
    public sealed class SingleSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM> :
       SingleSelectionVM<TItemSource, TItemVM>,
-      ICanInitializeFrom<TSourceObject>
+      IHasSourceObject<TSourceObject>
       where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
       /// <param name="descriptor">
@@ -17,6 +17,11 @@
          IServiceLocator serviceLocator
       )
          : base(descriptor, serviceLocator) {
+      }
+
+      TSourceObject IHasSourceObject<TSourceObject>.Source {
+         get { return SourceObject; }
+         set { SourceObject = value; }
       }
 
       /// <summary>

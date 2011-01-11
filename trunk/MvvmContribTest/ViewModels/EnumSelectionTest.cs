@@ -3,8 +3,6 @@
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
-   using Inspiring.Mvvm.ViewModels.Core;
-   using Inspiring.Mvvm.ViewModels;
 
    [TestClass]
    public class EnumSelectionTest {
@@ -77,15 +75,15 @@
          return (string)TypeDescriptor.GetProperties(item)["Caption"].GetValue(item);
       }
 
-      private sealed class PersonVM : ViewModel<PersonVMDescriptor>, ICanInitializeFrom<Person> {
+      private sealed class PersonVM : ViewModel<PersonVMDescriptor>, IHasSourceObject<Person> {
          public static readonly PersonVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<PersonVMDescriptor>()
             .For<PersonVM>()
             .WithProperties((d, c) => {
                var vm = c.GetPropertyBuilder();
                var p = c.GetPropertyBuilder(x => x.Person);
-                              
-                d.Status = p.EnumSelection(x => x.CurrentStatus);
+
+               d.Status = p.EnumSelection(x => x.CurrentStatus);
             })
             .Build();
 
@@ -101,6 +99,11 @@
 
          public void InitializeFrom(Person source) {
             Person = source;
+         }
+
+         Person IHasSourceObject<Person>.Source {
+            get { return Person; }
+            set { Person = value; }
          }
       }
 

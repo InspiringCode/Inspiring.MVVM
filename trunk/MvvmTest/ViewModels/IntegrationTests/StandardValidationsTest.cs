@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using Inspiring.Mvvm.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Inspiring.Mvvm.ViewModels.Core;
 
 namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
    [TestClass]
@@ -116,7 +115,7 @@ namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
          }
       }
 
-      private class ChildVM : ViewModel<ChildVMDescriptor>, ICanInitializeFrom<string>, IHasSourceObject<string> {
+      private class ChildVM : ViewModel<ChildVMDescriptor>, IHasSourceObject<string> {
          public static readonly ChildVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<ChildVMDescriptor>()
             .For<ChildVM>()
@@ -145,6 +144,7 @@ namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
 
          public string Source {
             get { return StringProperty; }
+            set { StringProperty = value; }
          }
 
          public bool IsValid {

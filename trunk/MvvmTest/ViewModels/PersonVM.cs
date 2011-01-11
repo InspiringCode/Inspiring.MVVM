@@ -2,9 +2,8 @@
    using System;
    using System.Collections.Generic;
    using Inspiring.Mvvm.ViewModels;
-   using Inspiring.Mvvm.ViewModels.Core;
 
-   public class PersonVM : ViewModel<PersonVMDescriptor>, ICanInitializeFrom<Person> {
+   public class PersonVM : ViewModel<PersonVMDescriptor>, IHasSourceObject<Person> {
       public static readonly PersonVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<PersonVMDescriptor>()
             .For<PersonVM>()
@@ -44,6 +43,11 @@
 
       public void InitializeFrom(Person source) {
          Person = source;
+      }
+
+      Person IHasSourceObject<Person>.Source {
+         get { return Person; }
+         set { Person = value; }
       }
    }
 
@@ -88,6 +92,7 @@
 
       Project IHasSourceObject<Project>.Source {
          get { return Project; }
+         set { Project = value; }
       }
 
       public void InitializeFrom(Project source) {

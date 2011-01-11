@@ -4,7 +4,7 @@
    public sealed class ManualUpdateViewModelPropertyBehavior<TChildVM, TChildSource> :
       Behavior,
       IManualUpdateBehavior
-      where TChildVM : IViewModel, ICanInitializeFrom<TChildSource> {
+      where TChildVM : IViewModel, IHasSourceObject<TChildSource> {
 
       public void UpdatePropertyFromSource(IBehaviorContext context) {
          // Refreshes the source value cache if this is a disconnected property.
@@ -13,7 +13,7 @@
          TChildSource sourceValue = this.GetValueNext<TChildSource>(context);
          TChildVM vm = this.GetValueNext<TChildVM>(context);
 
-         vm.InitializeFrom(sourceValue);
+         vm.Source = sourceValue;
          vm.Kernel.UpdateFromSource();
       }
 

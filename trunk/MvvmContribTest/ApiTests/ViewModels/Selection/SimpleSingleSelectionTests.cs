@@ -2,7 +2,6 @@
    using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
-   using Inspiring.Mvvm.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
@@ -42,7 +41,7 @@
          Assert.AreEqual(department.Name, groupVM.Caption);
       }
 
-      internal sealed class UserVM : ViewModel<UserVMDescriptor>, ICanInitializeFrom<User> {
+      internal sealed class UserVM : ViewModel<UserVMDescriptor>, IHasSourceObject<User> {
          public static UserVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<UserVMDescriptor>()
             .For<UserVM>()
@@ -79,6 +78,11 @@
 
          public SingleSelectionVM<Department> Department {
             get { return GetValue(Descriptor.Department); }
+         }
+
+         User IHasSourceObject<User>.Source {
+            get { return UserSource; }
+            set { UserSource = value; }
          }
       }
 

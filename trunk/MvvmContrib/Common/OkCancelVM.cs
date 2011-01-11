@@ -2,7 +2,7 @@
    using System.Windows.Input;
    using Inspiring.Mvvm.ViewModels;
 
-   public sealed class OkCancelVM : ViewModel<OkCancelVMDescriptor>, ICanInitializeFrom<IOkCancelHandler> {
+   public sealed class OkCancelVM : ViewModel<OkCancelVMDescriptor>, IHasSourceObject<IOkCancelHandler> {
       public static readonly OkCancelVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<OkCancelVMDescriptor>()
          .For<OkCancelVM>()
@@ -22,6 +22,11 @@
 
       public void InitializeFrom(IOkCancelHandler handler) {
          DialogActionHandler = handler;
+      }
+
+      IOkCancelHandler IHasSourceObject<IOkCancelHandler>.Source {
+         get { return DialogActionHandler; }
+         set { DialogActionHandler = value; }
       }
    }
 

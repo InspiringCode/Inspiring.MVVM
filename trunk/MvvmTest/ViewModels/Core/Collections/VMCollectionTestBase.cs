@@ -31,7 +31,7 @@
             Source = source;
          }
 
-         public ItemSource Source { get; private set; }
+         public ItemSource Source { get; set; }
       }
    }
 }

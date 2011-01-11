@@ -2,7 +2,7 @@
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
 
-   public sealed class AreaVM : ViewModel<AreaVMDescriptor>, ICanInitializeFrom<Area> {
+   public sealed class AreaVM : ViewModel<AreaVMDescriptor>, IHasSourceObject<Area> {
       public static readonly AreaVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<AreaVMDescriptor>()
          .For<AreaVM>()
@@ -22,6 +22,11 @@
 
       public void InitializeFrom(Area source) {
          Area = source;
+      }
+
+      Area IHasSourceObject<Area>.Source {
+         get { return Area; }
+         set { Area = value; }
       }
    }
 

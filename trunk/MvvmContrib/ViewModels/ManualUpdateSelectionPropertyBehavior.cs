@@ -13,8 +13,8 @@
          TChildSource sourceValue = this.GetValueNext<TChildSource>(context);
          TChildVM vm = this.GetValueNext<TChildVM>(context);
 
-         var initializableVM = (ICanInitializeFrom<TChildSource>)vm;
-         initializableVM.InitializeFrom(sourceValue);
+         var initializableVM = (IHasSourceObject<TChildSource>)vm;
+         initializableVM.Source = sourceValue;
 
          vm.Kernel.UpdateFromSource();
       }

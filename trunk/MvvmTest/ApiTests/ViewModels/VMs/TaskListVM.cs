@@ -1,10 +1,9 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels {
    using System.Collections.Generic;
    using Inspiring.Mvvm.ViewModels;
-   using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
 
-   public sealed class TaskListVM : ViewModel<TaskListVMDescriptor>, ICanInitializeFrom<IEnumerable<Task>> {
+   public sealed class TaskListVM : ViewModel<TaskListVMDescriptor>, IHasSourceObject<IEnumerable<Task>> {
       public static readonly TaskListVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<TaskListVMDescriptor>()
          .For<TaskListVM>()
@@ -27,6 +26,11 @@
 
       public void InitializeFrom(IEnumerable<Task> source) {
          TasksSource = source;
+      }
+
+      IEnumerable<Task> IHasSourceObject<IEnumerable<Task>>.Source {
+         get { return TasksSource; }
+         set { TasksSource = value; }
       }
    }
 

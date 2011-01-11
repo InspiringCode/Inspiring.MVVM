@@ -4,7 +4,7 @@
    internal sealed class PopulatorCollectionBehavior<TItemVM, TItemSource> :
       Behavior,
       IPopulatorCollectionBehavior<TItemVM>
-      where TItemVM : IViewModel, ICanInitializeFrom<TItemSource> {
+      where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
       public void Repopulate(IBehaviorContext context, IVMCollection<TItemVM> collection) {
          var sourceAccessor = GetNextBehavior<IValueAccessorBehavior<IEnumerable<TItemSource>>>();
@@ -19,7 +19,7 @@
 
             foreach (TItemSource itemSource in sourceItems) {
                TItemVM vm = vmFactory.CreateInstance(context);
-               vm.InitializeFrom(itemSource);
+               vm.Source = itemSource;
                collection.Add(vm);
             }
          } finally {

@@ -29,6 +29,7 @@
 
       Department IHasSourceObject<Department>.Source {
          get { return DepartmentSource; }
+         set { DepartmentSource = value; }
       }
    }
 

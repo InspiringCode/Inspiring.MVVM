@@ -135,6 +135,7 @@
 
          Person IHasSourceObject<Person>.Source {
             get { return Person; }
+            set { Person = value; }
          }
 
          public void InitializeFrom(Person source) {

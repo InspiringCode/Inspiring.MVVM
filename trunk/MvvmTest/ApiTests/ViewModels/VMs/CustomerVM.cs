@@ -2,7 +2,7 @@
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
 
-   public sealed class CustomerVM : ViewModel<CustomerVMDescriptor>, ICanInitializeFrom<Customer>, IHasSourceObject<Customer> {
+   public sealed class CustomerVM : ViewModel<CustomerVMDescriptor>, IHasSourceObject<Customer> {
       public static readonly CustomerVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<CustomerVMDescriptor>()
          .For<CustomerVM>()
@@ -25,6 +25,11 @@
 
       public Customer Source {
          get { return CustomerSource; }
+      }
+
+      Customer IHasSourceObject<Customer>.Source {
+         get { return CustomerSource; }
+         set { CustomerSource = value; }
       }
    }
 

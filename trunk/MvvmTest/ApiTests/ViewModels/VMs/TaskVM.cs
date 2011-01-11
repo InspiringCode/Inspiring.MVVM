@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels {
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
-using Inspiring.Mvvm.ViewModels.Core;
 
    public class TaskVM : ViewModel<TaskVMDescriptor>, IHasSourceObject<Task> {
       public static readonly TaskVMDescriptor ClassDescriptor = VMDescriptorBuilder
@@ -47,6 +46,7 @@ using Inspiring.Mvvm.ViewModels.Core;
 
       Task IHasSourceObject<Task>.Source {
          get { return SourceTask; }
+         set { SourceTask = value; }
       }
 
       public void InitializeFrom(Task source) {

@@ -91,7 +91,7 @@
       //// TODO: Comment
       IVMPropertyDescriptor<TChildVM> Custom<TChildVM, TChildSource>(
          IValueAccessorBehavior<TChildVM> viewModelAccessor
-      ) where TChildVM : IViewModel, ICanInitializeFrom<TChildSource>;
+      ) where TChildVM : IViewModel, IHasSourceObject<TChildSource>;
 
       //// TODO: Comment
       //[EditorBrowsable(EditorBrowsableState.Never)]

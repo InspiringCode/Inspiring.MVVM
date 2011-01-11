@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels {
    using System.Collections.Generic;
    using Inspiring.Mvvm.ViewModels;
-   using Inspiring.Mvvm.ViewModels.Core;
 
    internal sealed class TestVM : ViewModel<TestVMDescriptor> {
       public static readonly new TestVMDescriptor ClassDescriptor = VMDescriptorBuilder
@@ -94,7 +93,6 @@
 
    internal sealed class ChildVM :
       ViewModel<ChildVMDescriptor>,
-      ICanInitializeFrom<ChildVMSource>,
       IHasSourceObject<ChildVMSource> {
 
       public static readonly ChildVMDescriptor ClassDescriptor = VMDescriptorBuilder
@@ -119,7 +117,7 @@
          Source = source;
       }
 
-      public ChildVMSource Source { get; private set; }
+      public ChildVMSource Source { get; set; }
 
 
       public ValidationResult ViewModelValidationResult { get; set; }

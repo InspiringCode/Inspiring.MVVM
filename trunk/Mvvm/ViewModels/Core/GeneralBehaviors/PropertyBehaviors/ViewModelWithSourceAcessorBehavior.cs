@@ -2,7 +2,7 @@
 
    internal sealed class ViewModelWithSourceAcessorBehavior<TVM, TSource> :
       Behavior, IValueAccessorBehavior<TVM>
-      where TVM : IViewModel, ICanInitializeFrom<TSource>, IHasSourceObject<TSource> {
+      where TVM : IViewModel, IHasSourceObject<TSource> {
 
       public TVM GetValue(IBehaviorContext context) {
          var factory = GetNextBehavior<IViewModelFactoryBehavior<TVM>>();
@@ -10,7 +10,7 @@
          TVM instance = factory.CreateInstance(context);
 
          TSource sourceValue = this.GetValueNext<TSource>(context);
-         instance.InitializeFrom(sourceValue);
+         instance.Source = sourceValue;
 
          return instance;
       }

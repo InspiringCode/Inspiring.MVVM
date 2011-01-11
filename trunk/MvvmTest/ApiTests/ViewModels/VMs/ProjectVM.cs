@@ -3,7 +3,7 @@
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
 
-   public sealed class ProjectVM : ViewModel<ProjectVMDescriptor>, ICanInitializeFrom<Project> {
+   public sealed class ProjectVM : ViewModel<ProjectVMDescriptor>, IHasSourceObject<Project> {
       public static readonly ProjectVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<ProjectVMDescriptor>()
          .For<ProjectVM>()
@@ -49,6 +49,11 @@
 
       public void Revalidate() {
          Kernel.Revalidate(ValidationScope.SelfOnly, ValidationMode.DiscardInvalidValues);
+      }
+
+      Project IHasSourceObject<Project>.Source {
+         get { return ProjectSource; }
+         set { ProjectSource = value; }
       }
    }
 

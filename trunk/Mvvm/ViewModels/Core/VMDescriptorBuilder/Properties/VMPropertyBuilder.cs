@@ -311,7 +311,7 @@
 
       public IVMPropertyDescriptor<TChildVM> Custom<TChildVM, TChildSource>(
          IValueAccessorBehavior<TChildVM> viewModelAccessor
-      ) where TChildVM : IViewModel, ICanInitializeFrom<TChildSource> {
+      ) where TChildVM : IViewModel, IHasSourceObject<TChildSource> {
          return Factory.CreateViewModelProperty(
             viewModelAccessor: viewModelAccessor,
             sourceAccessor: GetSourceObjectAccessor(),
