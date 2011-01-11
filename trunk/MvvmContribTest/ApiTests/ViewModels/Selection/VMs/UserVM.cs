@@ -27,7 +27,7 @@
       }
 
       public void UpdateGroupsFromSource() {
-         UpdateFromSource(Descriptor.Groups);
+         CopyFromSource(Descriptor.Groups);
       }
    }
 

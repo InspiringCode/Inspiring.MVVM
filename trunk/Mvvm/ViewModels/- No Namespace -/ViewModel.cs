@@ -121,20 +121,40 @@
          Kernel.Revalidate(scope, mode);
       }
 
+      protected void CopyFromSource() {
+         Kernel.UpdateFromSource();
+      }
+
+      protected void CopyFromSource(IVMPropertyDescriptor property) {
+         Kernel.UpdateFromSource(property);
+      }
+
+      protected void CopyToSource() {
+         Kernel.UpdateSource();
+      }
+
+      protected void CopyToSource(IVMPropertyDescriptor property) {
+         Kernel.UpdateSource(property);
+      }
+
+      [Obsolete("Use Refresh")]
       protected void UpdateFromSource() {
          Kernel.UpdateFromSource();
       }
 
+      [Obsolete("Use Refresh")]
       protected void UpdateFromSource(IVMPropertyDescriptor property) {
          Kernel.UpdateFromSource(property);
       }
 
-      protected void UpdateSource() {
-         Kernel.UpdateSource();
+      protected void Refresh(RefreshScope scope) {
+         Console.WriteLine("Refresh is not correctly implemented yet. Strange behavior may be observed!");
+         UpdateFromSource();
       }
 
-      protected void UpdateSource(IVMPropertyDescriptor property) {
-         Kernel.UpdateSource(property);
+      protected void Refresh(IVMPropertyDescriptor property, RefreshScope scope) {
+         Console.WriteLine("Refresh is not correctly implemented yet. Strange behavior may be observed!");
+         UpdateFromSource(property);
       }
 
 

@@ -120,6 +120,7 @@
     <Compile Include="Screens\ScreenConductor.cs" />
     <Compile Include="Screens\ScreenFactory.cs" />
     <Compile Include="ServiceLocator.cs" />
+    <Compile Include="ViewModels\- No Namespace -\RefreshScope.cs" />
     <Compile Include="ViewModels\- No Namespace -\Validation\ValidationMode.cs" />
     <Compile Include="ViewModels\- No Namespace -\Validation\ValidationScope.cs" />
     <Compile Include="ViewModels\- No Namespace -\Validation\ValidationStateScope.cs" />
