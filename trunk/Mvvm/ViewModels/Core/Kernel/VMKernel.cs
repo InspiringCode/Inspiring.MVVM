@@ -150,10 +150,11 @@
             Revalidate(property, validationContext, mode);
          }
 
-         _descriptor
-            .Behaviors
-            .GetNextBehavior<ViewModelValidationBehavior>()
-            .Validate(this, validationContext);
+         ViewModelValidationBehavior behavior;
+
+         if (_descriptor.Behaviors.TryGetBehavior(out behavior)) {
+            behavior.Validate(this, validationContext);
+         }
       }
 
       private void Revalidate(
