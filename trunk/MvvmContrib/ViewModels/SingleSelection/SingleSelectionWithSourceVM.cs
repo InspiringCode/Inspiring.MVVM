@@ -155,9 +155,11 @@
                d.SelectedSourceItem = selectedSourceItemsPropertyFactory(source);
                d.AllItems = v.Collection.Wraps(vm => vm.GetActiveSourceItems()).With<SelectionItemVM<TItemSource>>(itemDescriptor);
                d.SelectedItem = v.VM.DelegatesTo(
-                   vm => vm.AllItems.Single(i => Object.Equals(i.Source, vm.SelectedSourceItem)),
-                   (vm, value) => vm.SelectedSourceItem = value.Source
-                );
+                 vm => vm.SelectedSourceItem != null ?
+                    vm.AllItems.Single(i => Object.Equals(i.Source, vm.SelectedSourceItem)) :
+                    default(SelectionItemVM<TItemSource>),
+                 (vm, value) => vm.SelectedSourceItem = value.Source
+              );
             })
             .WithViewModelBehaviors(b => {
                b.OverrideUpdateFromSourceProperties(
