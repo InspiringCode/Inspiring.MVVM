@@ -319,8 +319,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModels\Core\BehaviorInterfaces\CollectionBehaviors\" />
-    <Folder Include="ViewModels\Core\Kernel\" />
-    <Folder Include="ViewModels\Core\ViewModelBehaviors\" />
     <Folder Include="Views\TestDoubles\" />
   </ItemGroup>
   <ItemGroup>
