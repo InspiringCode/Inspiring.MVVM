@@ -76,6 +76,42 @@
       //   });
       //}
 
+      // TODO: Test me.
+      public static void IsUnique<TItemDescriptor, T>(
+         this CollectionPropertyValidatorBuilder<TItemDescriptor, T> builder,
+         string errorMessage
+      ) where TItemDescriptor : VMDescriptorBase {
+         builder.Custom<ViewModel<TItemDescriptor>>((item, items, property, args) => {
+            bool isUnique = true;
+            T itemPropertyValue = item.GetValue(property);
+
+            foreach (ViewModel<TItemDescriptor> i in items) {
+               if (!Object.ReferenceEquals(i, item)) {
+                  if (Object.Equals(i.GetValue(property), itemPropertyValue)) {
+                     isUnique = false;
+                     args.RevalidationQueue.Add(i);
+                  }
+
+                  if (!((IViewModel)i).Kernel.GetValidationState(ValidationStateScope.Self).IsValid) {
+                     args.RevalidationQueue.Add(i);
+                  }
+               }
+            }
+
+            if (!isUnique) {
+               args.Errors.Add(new ValidationError(errorMessage));
+            }
+         });
+
+         //builder.Custom((value, values, args) => {
+         //   if (values.Count(val => String.Equals(val, value, comparisonType)) > 1) {
+         //      args.Errors.Add(new ValidationError(errorMessage));
+         //   }
+
+         //   // TODO: Affects other items!!!
+         //});
+      }
+
       public static void IsUnique<TItemDescriptor>(
          this CollectionPropertyValidatorBuilder<TItemDescriptor, string> builder,
          StringComparison comparisonType,
