@@ -139,7 +139,7 @@
          }
 
          if (scope == ValidationScope.FullSubtree) {
-            foreach (IVMPropertyDescriptor property in _descriptor.Properties) {
+            foreach (IVMPropertyDescriptor property in _descriptor.Properties.Where(x => x != null)) {
                property
                   .Behaviors
                   .RevalidateDescendantsNext(this, validationContext, scope, mode);
