@@ -47,6 +47,11 @@
          get { return GetValue(Descriptor.SelectedItems); }
       }
 
+      public object SelectedItemsDisplayValue {
+         get { return GetDisplayValue(Descriptor.SelectedItems); }
+         set { SetDisplayValue(Descriptor.SelectedItems, value); }
+      }
+
       /// <summary>
       ///   Returns all source items for which the <see cref="ActiveItemFilter"/>
       ///   returns true or that are currently contained by selected items collection
