@@ -171,6 +171,7 @@
     <Compile Include="ViewModels\VMCollectionPropertyTest.cs" />
     <Compile Include="ViewModels\Core\Builder\VMDescriptorBuilderTest.cs" />
     <Compile Include="ViewModels\VMCollectionTest.cs" />
+    <Compile Include="ViewModels\VMCollectionWithCustomValidationTests.cs" />
     <Compile Include="ViewModels\VMDescriptorTests.cs" />
     <Compile Include="Views\CustomPropertyDescriptorTest.cs" />
     <Compile Include="Views\PersonView.xaml.cs">
