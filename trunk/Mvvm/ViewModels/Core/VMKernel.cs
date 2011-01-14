@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Collections;
    using System.Diagnostics.Contracts;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
@@ -139,7 +138,7 @@
          }
 
          if (scope == ValidationScope.FullSubtree) {
-            foreach (IVMPropertyDescriptor property in _descriptor.Properties.Where(x => x != null)) {
+            foreach (IVMPropertyDescriptor property in _descriptor.Properties) {
                property
                   .Behaviors
                   .RevalidateDescendantsNext(this, validationContext, scope, mode);

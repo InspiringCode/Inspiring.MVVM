@@ -32,7 +32,8 @@
 
       protected override VMPropertyCollection DiscoverProperties() {
          IEnumerable<IVMPropertyDescriptor> properties = GetVMPropertyDefinitions()
-            .Select(GetVMProperty);
+            .Select(GetVMProperty)
+            .Where(x => x != null);
 
          return new VMPropertyCollection(properties.ToArray());
       }
