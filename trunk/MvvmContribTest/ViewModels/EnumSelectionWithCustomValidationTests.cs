@@ -6,12 +6,14 @@
    public class EnumSelectionWithCustomValidationTests {
 
       /// <summary>
-      /// This integration test was written to reproduce a StackOverflowException.
+      /// This integration test was written to reproduce a InvalidOperationException - Sequence contains no matching elements.
+      /// The error occured when mapping a EnumSelection and the enum property wasn't assigned with the enum default value.
+      /// When the first value of the enum was inserted a validation of the selectedItem couldn't find the value in the collection.
       /// </summary>
       [TestMethod]
-      public void AccessSingleSelectionVM_withViewModelValidationThatAccessesAllItems_doesNotThrowStackOverflowException() {
+      public void AccessSingleSelectionVM_withViewModelValidationThatAccessesSelectedItem_doesNotThrowStackOverflowException() {
          DomainObjectVM viewModel = new DomainObjectVM();
-         viewModel.PropertyOfEnumerationType = Enumeration.Value1;
+         viewModel.PropertyOfEnumerationType = Enumeration.Value2;
 
          viewModel.Enumeration.Equals(null);
       }
@@ -28,7 +30,7 @@
             })
             .WithValidators(b => {
                b.CheckViewModel((vm, args) => {
-                  vm.GetValue(vm.Descriptor.PropertyOfEnumerationType).AllItems.Equals(null);
+                  vm.GetValue(vm.Descriptor.PropertyOfEnumerationType).SelectedItem.Equals(null);
                });
             })
             .Build();
