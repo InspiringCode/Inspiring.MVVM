@@ -12,7 +12,7 @@
          IScreenFactory<TScreen> screen,
          IScreen parent = null,
          string title = null
-      ) where TScreen : ScreenBase;
+      ) where TScreen : IScreen;
    }
 
    public class DialogScreenResult {

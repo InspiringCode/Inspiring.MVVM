@@ -102,6 +102,10 @@
          bool IScreenLifecycle.RequestClose() {
             throw new NotImplementedException();
          }
+
+         public ScreenLifecycleCollection<IScreenLifecycle> Children {
+            get { throw new NotImplementedException(); }
+         }
       }
 
       //private class SubjectScreen : SimpleScreen, IScreen<string> {

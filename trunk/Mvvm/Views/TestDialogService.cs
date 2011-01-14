@@ -4,7 +4,7 @@
    using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.Screens;
 
-   public class TestDialogService<TScreen> : IDialogService where TScreen : ScreenBase {
+   public class TestDialogService<TScreen> : IDialogService where TScreen : IScreen {
       private Stack<Func<TScreen, DialogScreenResult>> _actions =
          new Stack<Func<TScreen, DialogScreenResult>>();
 
@@ -26,8 +26,8 @@
          IScreenFactory<T> screen,
          IScreen parent,
          string title = null
-      ) where T : ScreenBase {
-         ScreenBase s = screen.Create(x => { });
+      ) where T : IScreen {
+         IScreen s = screen.Create(x => { });
          s.Children.Add(new DialogLifecycle());
 
          var action = _actions.Pop();

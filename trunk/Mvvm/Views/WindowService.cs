@@ -9,7 +9,7 @@
    public class WindowService : IWindowService, IDialogService {
       public virtual Window CreateWindow<TScreen>(
          IScreenFactory<TScreen> forScreen
-      ) where TScreen : ScreenBase {
+      ) where TScreen : IScreen {
          Window window = CreateWindow();
          ConfigureWindow(window, forScreen);
          return window;
@@ -18,14 +18,14 @@
       public void ConfigureWindow<TScreen>(
          Window window,
          IScreenFactory<TScreen> forScreen
-      ) where TScreen : ScreenBase {
-         ScreenBase s = forScreen.Create(x => { });
+      ) where TScreen : IScreen {
+         IScreen s = forScreen.Create(x => { });
          ConfigureWindow(window, s, new WindowCloseHandler(s));
       }
 
       protected virtual void ConfigureWindow(
          Window window,
-         ScreenBase forScreen,
+         IScreen forScreen,
          WindowCloseHandler closeHandler
       ) {
          // Save the window for later
@@ -50,8 +50,8 @@
          Window dialogWindow,
          IScreenFactory<TScreen> screen,
          IScreen parent = null
-      ) where TScreen : ScreenBase {
-         ScreenBase s = screen.Create(x => { });
+      ) where TScreen : IScreen {
+         IScreen s = screen.Create(x => { });
          s.Children.Add(new DialogLifecycle());
          ConfigureWindow(dialogWindow, s, new DialogCloseHandler(s));
 
@@ -71,7 +71,7 @@
          IScreenFactory<TScreen> screen,
          IScreen parent = null,
          string title = null
-      ) where TScreen : ScreenBase {
+      ) where TScreen : IScreen {
 
 
          Window dialogWindow = CreateDialogWindow();
@@ -174,10 +174,10 @@
       }
 
       protected class DialogCloseHandler : WindowCloseHandler {
-         private ScreenBase _dialog;
+         private IScreen _dialog;
          private bool _closeIsUserRequested = true;
 
-         public DialogCloseHandler(ScreenBase dialog)
+         public DialogCloseHandler(IScreen dialog)
             : base(dialog) {
             _dialog = dialog;
          }

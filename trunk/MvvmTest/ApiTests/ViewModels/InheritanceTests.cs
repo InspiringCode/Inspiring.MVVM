@@ -1,12 +1,47 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels {
    using Inspiring.Mvvm.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
+   using Inspiring.Mvvm.Views;
 
    [TestClass]
    public class InheritanceTests {
-      [TestMethod]
       public void TestMethod1() {
+         EmployeeListView view = null;
+         ViewBinder.BindVM(view, b => {
+            b.Collection<EmployeeVMDescriptor>(x => x.Employees);
+         });
 
+         EmployeeView employeeView = null;
+
+         ViewBinder.BindVM<EmployeeVMDescriptor>(employeeView, b => {
+            b.Property(x => x.PersonalNumber);
+         });
+      }
+
+      public class EmployeeListView : IView<EmployeeListVM> {
+         public EmployeeListVM Model {
+            get;
+            set;
+         }
+      }
+
+      public class EmployeeView : IView<EmployeeVM> {
+         public EmployeeVM Model {
+            get;
+            set;
+         }
+      }
+
+      public class EmployeeListVM : ViewModel<EmployeeListVMDescriptor> {
+         public static readonly PersonVMDescriptor ClassDescriptor = VMDescriptorBuilder
+            .OfType<EmployeeListVMDescriptor>()
+            .For<EmployeeListVM>()
+            .WithProperties((d, b) => {
+               var v = b.GetPropertyBuilder();
+
+               d.Employees = v.Collection.Of<EmployeeVM>(EmployeeVM.ClassDescriptor);
+            })
+            .Build();
       }
 
       public class PersonVM : ViewModel<PersonVMDescriptor> {
@@ -62,6 +97,10 @@
 
       public sealed class EmployeeVMDescriptor : PersonVMDescriptor {
          public IVMPropertyDescriptor<decimal> PersonalNumber { get; set; }
+      }
+
+      public sealed class EmployeeListVMDescriptor : PersonVMDescriptor {
+         public IVMPropertyDescriptor<IVMCollection<EmployeeVM>> Employees { get; set; }
       }
    }
 }

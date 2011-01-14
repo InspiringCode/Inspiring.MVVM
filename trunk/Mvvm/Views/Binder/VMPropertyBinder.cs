@@ -41,7 +41,7 @@
 
 
       public IBindCollectionExpression<TItemDescriptor> Collection<TItemDescriptor>(
-         Expression<Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<ViewModel<TItemDescriptor>>>>> collectionPropertySelector
+         Expression<Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModel<TItemDescriptor>>>>> collectionPropertySelector
       ) where TItemDescriptor : VMDescriptor {
          string path = ExpressionService.GetPropertyPathString(collectionPropertySelector);
 
@@ -52,7 +52,7 @@
       }
 
       public void VM<TChildDescriptor>(
-         Expression<Func<TDescriptor, IVMPropertyDescriptor<ViewModel<TChildDescriptor>>>> viewModelPropertySelector,
+         Expression<Func<TDescriptor, IVMPropertyDescriptor<IViewModel<TChildDescriptor>>>> viewModelPropertySelector,
          Action<IVMBinder<TChildDescriptor>> viewModelBinder
       ) where TChildDescriptor : VMDescriptor {
          string path = ExpressionService.GetPropertyPathString(viewModelPropertySelector);
