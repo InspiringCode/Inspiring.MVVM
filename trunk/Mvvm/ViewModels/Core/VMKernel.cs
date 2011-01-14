@@ -37,7 +37,7 @@
          get { return _vm; }
       }
 
-      internal IEnumerable OwnerCollection { get; set; }
+      internal IVMCollection OwnerCollection { get; set; }
 
       FieldValueHolder IBehaviorContext.FieldValues {
          get {

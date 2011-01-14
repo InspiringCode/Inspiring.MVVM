@@ -119,16 +119,20 @@
          ChangeArgs args,
          InstancePath changedPath
       ) {
-         ValidationContext.BeginValidation();
+         IVMCollection ownerCollection = args.ChangedVM.Kernel.OwnerCollection;
 
-         Validate(
-            context,
-            ValidationContext.Current,
-            changedPath: changedPath,
-            changedProperty: args.ChangedProperty
-         );
+         if (ownerCollection == null || !ownerCollection.IsPopulating) {
+            ValidationContext.BeginValidation();
 
-         ValidationContext.CompleteValidation(ValidationMode.CommitValidValues);
+            Validate(
+               context,
+               ValidationContext.Current,
+               changedPath: changedPath,
+               changedProperty: args.ChangedProperty
+            );
+
+            ValidationContext.CompleteValidation(ValidationMode.CommitValidValues);
+         }
 
          base.OnChanged(context, args, changedPath);
       }

@@ -279,8 +279,8 @@
       public void OnChanged_InvokesNotifyValidatingOnContext() {
          var ctx = new ViewModelBehaviorContextHelper();
 
-         var targetVM = Mock<IViewModel>();
-         var changedVM = Mock<IViewModel>();
+         var targetVM = new ViewModelStub();
+         var changedVM = new ViewModelStub();
          var changedProperty = Mock<IVMPropertyDescriptor>();
 
          var behavior = new ViewModelValidationBehavior();

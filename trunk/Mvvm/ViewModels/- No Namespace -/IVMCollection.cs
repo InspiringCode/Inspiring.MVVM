@@ -2,12 +2,7 @@
    using System.Collections.Generic;
    using Inspiring.Mvvm.ViewModels.Core;
 
-   /// <summary>
-   ///   An interface that should be implemented by collection classes that are
-   ///   be used in VMs to hold a collection of child VMs. This interface is
-   ///   especially required by the predefined collection behaviors.
-   /// </summary>
-   public interface IVMCollection<TItemVM> : IList<TItemVM>, IVMCollectionExpression<TItemVM> {
+   public interface IVMCollection {
       // TODO: Comment.
       BehaviorChain Behaviors { get; }
 
@@ -30,5 +25,13 @@
       ///   of all items.
       /// </summary>
       IViewModel Owner { get; }
+   }
+
+   /// <summary>
+   ///   An interface that should be implemented by collection classes that are
+   ///   be used in VMs to hold a collection of child VMs. This interface is
+   ///   especially required by the predefined collection behaviors.
+   /// </summary>
+   public interface IVMCollection<TItemVM> : IVMCollection, IList<TItemVM>, IVMCollectionExpression<TItemVM> {
    }
 }
