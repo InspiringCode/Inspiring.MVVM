@@ -3,13 +3,29 @@
 
    internal sealed class CollectionPopulatorBehavior<TItemVM> :
       Behavior,
+      IBehaviorInitializationBehavior,
       IValueAccessorBehavior<IVMCollection<TItemVM>>,
       IMutabilityCheckerBehavior
       where TItemVM : IViewModel {
 
+      private static readonly FieldDefinitionGroup IsPopulatedGroup = new FieldDefinitionGroup();
+
+      private FieldDefinition<bool> _isPopulatedField;
+
+      public void Initialize(BehaviorInitializationContext context) {
+         _isPopulatedField = context.Fields.DefineField<bool>(IsPopulatedGroup);
+         this.InitializeNext(context);
+      }
+
       public IVMCollection<TItemVM> GetValue(IBehaviorContext context) {
-         var coll = CreateCollection(context);
-         Repopulate(context, coll);
+
+         var coll = this.GetValueNext<IVMCollection<TItemVM>>(context);
+       
+         if (!context.FieldValues.GetValueOrDefault(_isPopulatedField)) {
+            context.FieldValues.SetValue(_isPopulatedField, true);
+            Repopulate(context, coll);
+         }
+
          return coll;
       }
 
@@ -29,10 +45,6 @@
             .GetNextBehavior<IPopulatorCollectionBehavior<TItemVM>>();
 
          behavior.Repopulate(context, collection);
-      }
-
-      private IVMCollection<TItemVM> CreateCollection(IBehaviorContext context) {
-         return this.GetValueNext<IVMCollection<TItemVM>>(context);
       }
    }
 }
