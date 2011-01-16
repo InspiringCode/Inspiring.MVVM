@@ -25,25 +25,19 @@
       <Code Language="csharp"><![CDATA[   using Inspiring.Mvvm;
    using Inspiring.Mvvm.ViewModels;
 
-   public sealed class $sourceObject$VM : ViewModel<$sourceObject$VMDescriptor>, ICanInitializeFrom<$sourceObject$> {
+   public sealed class $sourceObject$VM : ViewModel<$sourceObject$VMDescriptor> {
       public static readonly $sourceObject$VMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<$sourceObject$VMDescriptor>()
 		 .For<$sourceObject$VM>()
-         .WithProperties((d, c) => {
-			var v = c.GetPropertyBuilder();
+         .WithProperties((d, b) => {
+			var v = b.GetPropertyBuilder();
 
             
          })
          .Build();
 
-      public $sourceObject$VM(IServiceLocator serviceLocator)
-         : base(ClassDescriptor, serviceLocator) {
-      }
-
-      public $sourceObject$ $sourceObject$ { get; private set; }
-
-      public void InitializeFrom($sourceObject$ source) {
-         $sourceObject$ = source;
+      public $sourceObject$VM()
+         : base(ClassDescriptor) {
       }
    }
 

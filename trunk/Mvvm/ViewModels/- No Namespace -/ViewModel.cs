@@ -214,6 +214,10 @@
          return Kernel.GetValidationState(scope);
       }
 
+      protected void Load(IVMPropertyDescriptor property) {
+         GetDisplayValue(property);
+      }
+
       //T IViewModel.GetValue<T>(IVMProperty<T> property) {
       //   return GetValue(property);
       //}
