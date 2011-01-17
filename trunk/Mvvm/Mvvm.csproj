@@ -109,6 +109,7 @@
     <Compile Include="Screens\IScreen.cs" />
     <Compile Include="Screens\IScreenFactory.cs" />
     <Compile Include="Screens\IScreenLifecycle.cs" />
+    <Compile Include="Screens\IViewModelScreen.cs" />
     <Compile Include="Screens\ScreenCreationBehavior.cs" />
     <Compile Include="Screens\ScreenCreationBehaviorAttribute.cs" />
     <Compile Include="Screens\ScreenExtensions.cs" />
@@ -156,6 +157,7 @@
     <Compile Include="ViewModels\Core\Behaviors\InitializableBehavior.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Keys\CollectionBehaviorKeys.cs" />
     <Compile Include="ViewModels\Core\Collections\IVMCollectionExpression.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\ChildScreenBehavior.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\VMDescriptorConfiguration.cs" />
     <Compile Include="ViewModels\Core\VMDescriptor\IVMDescriptorBuilder.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\CacheBehavior.cs" />

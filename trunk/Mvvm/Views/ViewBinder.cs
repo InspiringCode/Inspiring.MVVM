@@ -24,6 +24,14 @@
          binder.Execute();
       }
 
+      public static void BindVM<TDescriptor>(
+         Action<IVMBinder<TDescriptor>> bindingConfigurator
+      ) where TDescriptor : VMDescriptor {
+         VMPropertyBinder<TDescriptor> binder = new VMPropertyBinder<TDescriptor>();
+         bindingConfigurator(binder);
+         binder.Execute();
+      }
+
       public static void BindScreen<TScreen>(
          IView<TScreen> screen,
          Action<IScreenBinder<TScreen>> bindingConfigurator
@@ -56,6 +64,10 @@
 
       IBindCollectionExpression<TItemDescriptor> Collection<TItemDescriptor>(
          Expression<Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModel<TItemDescriptor>>>>> collectionPropertySelector
+      ) where TItemDescriptor : VMDescriptor;
+
+      IBindCollectionExpression<TItemDescriptor> CollectionManual<TItemDescriptor>(
+         Expression<Func<TDescriptor, IVMPropertyDescriptor<object>>> collectionPropertySelector
       ) where TItemDescriptor : VMDescriptor;
 
       void VM<TChildDescriptor>(

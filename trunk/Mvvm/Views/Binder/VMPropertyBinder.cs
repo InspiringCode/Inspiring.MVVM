@@ -66,6 +66,18 @@
          context.ExtendPropertyPath(_pathPrefix);
          return context;
       }
+
+
+      public IBindCollectionExpression<TItemDescriptor> CollectionManual<TItemDescriptor>(
+         Expression<Func<TDescriptor, IVMPropertyDescriptor<object>>> collectionPropertySelector
+      ) where TItemDescriptor : VMDescriptor {
+         string path = ExpressionService.GetPropertyPathString(collectionPropertySelector);
+
+         BinderContext context = QueueBuilderExecution();
+         context.ExtendPropertyPath(path);
+
+         return new VMCollectionBinder<TItemDescriptor>(context);
+      }
    }
 
    public class VMCollectionBinder<TItemDescriptor> : PropertyBinderExpression<VMCollection<ViewModel<TItemDescriptor>>>, IBindCollectionExpression<TItemDescriptor>

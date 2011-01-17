@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.Screens {
    using System;
+   using System.Diagnostics.Contracts;
    using System.Linq.Expressions;
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.ViewModels;
@@ -10,7 +11,7 @@
 
    public class ScreenBase<TDescriptor> :
       ViewModel<TDescriptor>,
-      IScreen
+      IViewModelScreen
       where TDescriptor : VMDescriptorBase {
 
       public ScreenBase(IServiceLocator serviceLocator = null)
@@ -54,6 +55,34 @@
       }
 
       protected virtual void OnClose() {
+      }
+
+      protected void OpenChildScreen<T>(
+         IVMPropertyDescriptor<IScreen> screenProperty,
+         IScreenFactory<T> childScreen
+      ) where T : IScreen {
+         Contract.Requires<ArgumentNullException>(screenProperty != null);
+         Contract.Requires<ArgumentNullException>(childScreen != null);
+
+         T screen = Children.AddNew(childScreen);
+         SetDisplayValue(screenProperty, screen);
+      }
+
+      protected bool CloseChildScreen(IVMPropertyDescriptor<IScreen> screenProperty) {
+         Contract.Requires<ArgumentNullException>(screenProperty != null);
+
+         var screen = (IScreen)GetDisplayValue(screenProperty);
+
+         if (screen == null) {
+            return true;
+         }
+
+         if (screen.RequestClose()) {
+            screen.Close();
+            return true;
+         }
+
+         return false;
       }
 
       // TODO: Required, senseful?
