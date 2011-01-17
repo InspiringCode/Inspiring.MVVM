@@ -18,6 +18,8 @@
       ///   The current VM is revalidated and all children, for which the 
       ///   current VM defines validators.
       /// </summary>
-      SelfAndValidatedChildren
+      SelfAndValidatedChildren,
+
+      SelfAndLoadedDescendants
    }
 }

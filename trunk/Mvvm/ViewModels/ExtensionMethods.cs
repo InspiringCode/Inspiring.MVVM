@@ -279,5 +279,25 @@
             next.IsLoaded(context) :
             true;
       }
+
+      public static void RefreshNext(
+         this Behavior behavior,
+         IBehaviorContext context
+      ) {
+         IRefreshBehavior next;
+         if (behavior.TryGetBehavior(out next)) {
+            next.Refresh(context);
+         }
+      }
+
+      public static void PopulateNext(
+         this Behavior behavior,
+         IBehaviorContext context
+      ) {
+         IPopulationBehavior next;
+         if (behavior.TryGetBehavior(out next)) {
+            next.Populate(context);
+         }
+      }
    }
 }

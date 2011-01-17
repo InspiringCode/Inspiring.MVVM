@@ -8,10 +8,10 @@
       public void UpdatePropertyFromSource(IBehaviorContext context) {
          this.UpdatePropertyFromSourceNext(context);
 
-         var collection = this.GetValueNext<IVMCollection<TItemVM>>(context);
+         //var collection = this.GetValueNext<IVMCollection<TItemVM>>(context);
          var repopulationBehavior = this.GetNextBehavior<CollectionPopulatorBehavior<TItemVM>>();
 
-         repopulationBehavior.Repopulate(context, collection);
+         repopulationBehavior.Populate(context);
       }
 
       public void UpdatePropertySource(IBehaviorContext context) {

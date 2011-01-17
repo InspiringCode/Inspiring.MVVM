@@ -49,5 +49,7 @@
       public static readonly BehaviorKey ManualUpdateCoordinator = new BehaviorKey("ManualUpdateCoordinator");
 
       public static readonly BehaviorKey IsLoadedIndicator = new BehaviorKey("IsLoadedIndicator");
+
+      public static readonly BehaviorKey RefreshBehavior = new BehaviorKey("RefreshBehavior");
    }
 }

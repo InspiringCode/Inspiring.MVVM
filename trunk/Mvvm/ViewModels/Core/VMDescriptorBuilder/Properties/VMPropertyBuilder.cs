@@ -57,7 +57,8 @@
 
          return Factory.CreateProperty(
             sourceValueAccessor: new MappedPropertyAccessor<TVM, T>(path),
-            supportsManualUpdate: true
+            supportsManualUpdate: true,
+            includeRefreshBehavior: true
          );
       }
 
@@ -72,14 +73,19 @@
             setter
          );
 
-         return Factory.CreateProperty(sourceValueAccessor, supportsManualUpdate: true);
+         return Factory.CreateProperty(
+            sourceValueAccessor,
+            supportsManualUpdate: true,
+            includeRefreshBehavior: true
+         );
       }
 
       /// <inheritdoc />
       IVMPropertyDescriptor<T> IValuePropertyBuilder<TSourceObject>.Of<T>() {
          return Factory.CreateProperty(
             sourceValueAccessor: new InstancePropertyBehavior<T>(),
-            supportsManualUpdate: false
+            supportsManualUpdate: false,
+            includeRefreshBehavior: false
          );
       }
 
@@ -126,7 +132,8 @@
                getter,
                setter
             ),
-            cachesValue: true
+            cachesValue: true,
+            refreshBehavior: new RefreshBehavior.ViewModelProperty<TChildVM>()
          );
       }
 
@@ -135,7 +142,8 @@
          return Factory.CreateViewModelProperty(
             viewModelAccessor: new InstancePropertyBehavior<TChildVM>(),
             needsViewModelFactory: false,
-            cachesValue: false
+            cachesValue: false,
+            refreshBehavior: new RefreshBehavior.ViewModelInstanceProperty<TChildVM>()
          );
       }
 
@@ -174,7 +182,8 @@
       ) {
          return Factory.CreateCollectionProperty<TItemVM>(
             Factory.GetCollectionConfiguration<TItemVM>(itemDescriptor),
-            isPopulatable: false
+            isPopulatable: false,
+            refreshBehavior: new RefreshBehavior.CollectionInstanceProperty<TItemVM>()
          );
       }
 
@@ -232,7 +241,8 @@
 
             return Factory.CreateCollectionProperty<TItemVM>(
                collectionConfiguration,
-               isPopulatable: true
+               isPopulatable: true,
+               refreshBehavior: new RefreshBehavior.PopulatedCollectionProperty<TItemVM>()
             );
          }
       }
@@ -259,7 +269,8 @@
                manualUpdateBehavior: new ManualUpdateViewModelPropertyBehavior<TChildVM, TSourceValue>(),
                sourceAccessor: _sourceValueAccessor,
                needsViewModelFactory: true,
-               cachesValue: true
+               cachesValue: true,
+               refreshBehavior: new RefreshBehavior.ViewModelProperty<TChildVM>()
             );
          }
       }
@@ -294,7 +305,8 @@
 
             return Factory.CreateCollectionProperty<TItemVM>(
                collectionConfiguration,
-               isPopulatable: true
+               isPopulatable: true,
+               refreshBehavior: new RefreshBehavior.PopulatedCollectionProperty<TItemVM>()
             );
          }
       }
@@ -305,7 +317,8 @@
             viewModelAccessor: viewModelAccessor,
             sourceAccessor: GetSourceObjectAccessor(),
             needsViewModelFactory: true,
-            cachesValue: true
+            cachesValue: true,
+            refreshBehavior: new RefreshBehavior.ViewModelProperty<TChildVM>()
          );
       }
 
@@ -317,12 +330,17 @@
             sourceAccessor: GetSourceObjectAccessor(),
             manualUpdateBehavior: new ManualUpdateViewModelPropertyBehavior<TChildVM, TChildSource>(),
             needsViewModelFactory: true,
-            cachesValue: true
+            cachesValue: true,
+            refreshBehavior: new RefreshBehavior.ViewModelProperty<TChildVM>()
          );
       }
 
       IVMPropertyDescriptor<T> IValuePropertyBuilder<TSourceObject>.Custom<T>(IValueAccessorBehavior<T> sourceValueAccessor) {
-         return Factory.CreateProperty(sourceValueAccessor, supportsManualUpdate: true);
+         return Factory.CreateProperty(
+            sourceValueAccessor,
+            supportsManualUpdate: true,
+            includeRefreshBehavior: true
+         );
       }
    }
 }

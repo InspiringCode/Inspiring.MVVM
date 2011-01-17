@@ -6,12 +6,16 @@
          : base(configuration) {
       }
 
-      public IVMPropertyDescriptor<T> CreateProperty<T>(IValueAccessorBehavior<T> sourceValueAccessor, bool supportsManualUpdate) {
+      public IVMPropertyDescriptor<T> CreateProperty<T>(IValueAccessorBehavior<T> sourceValueAccessor, bool supportsManualUpdate, bool includeRefreshBehavior) {
          BehaviorChainConfiguration config = GetPropertyConfiguration<T>(BehaviorChainTemplateKeys.Property);
          config.Enable(BehaviorKeys.SourceAccessor, sourceValueAccessor);
 
          if (supportsManualUpdate) {
             config.Enable(BehaviorKeys.ManualUpdateBehavior);
+         }
+
+         if (includeRefreshBehavior) {
+            config.Enable(BehaviorKeys.RefreshBehavior, new RefreshBehavior.SimpleProperty<T>());
          }
 
          return CreateProperty<T>(config);
@@ -98,6 +102,7 @@
          IValueAccessorBehavior<TChildVM> viewModelAccessor,
          IBehavior sourceAccessor = null,
          IBehavior manualUpdateBehavior = null,
+         IBehavior refreshBehavior = null,
          bool needsViewModelFactory = false,
          bool cachesValue = false
       ) where TChildVM : IViewModel {
@@ -119,6 +124,10 @@
 
          if (manualUpdateBehavior != null) {
             config.Enable(BehaviorKeys.ManualUpdateBehavior, manualUpdateBehavior);
+         }
+
+         if (refreshBehavior != null) {
+            config.Enable(BehaviorKeys.RefreshBehavior, refreshBehavior);
          }
 
          return CreateProperty<TChildVM>(config);
@@ -150,9 +159,10 @@
          return config;
       }
 
-      public IVMPropertyDescriptor<IVMCollection<TItemVM>> CreateCollectionProperty<TItemVM>(
+      internal IVMPropertyDescriptor<IVMCollection<TItemVM>> CreateCollectionProperty<TItemVM>(
          BehaviorChainConfiguration collectionConfiguration,
-         bool isPopulatable
+         bool isPopulatable,
+         IRefreshBehavior refreshBehavior = null
       ) where TItemVM : IViewModel {
          var config = GetPropertyConfiguration<IVMCollection<TItemVM>>(BehaviorChainTemplateKeys.CollectionProperty);
 
@@ -160,6 +170,11 @@
             //config.Enable(BehaviorKeys.CollectionInstanceCache);
             config.Enable(BehaviorKeys.ManualUpdateBehavior, new ManualUpdateCollectionPropertyBehavior<TItemVM>());
             config.Enable(BehaviorKeys.CollectionPopulator, new CollectionPopulatorBehavior<TItemVM>());
+         }
+
+
+         if (refreshBehavior != null) {
+            config.Enable(BehaviorKeys.RefreshBehavior, refreshBehavior);
          }
 
          config.Enable(

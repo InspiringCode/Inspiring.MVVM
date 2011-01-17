@@ -147,14 +147,14 @@
          Kernel.UpdateFromSource(property);
       }
 
-      protected void Refresh(RefreshScope scope) {
-         Console.WriteLine("Refresh is not correctly implemented yet. Strange behavior may be observed!");
-         UpdateFromSource();
+      protected void Refresh() {
+         //Console.WriteLine("Refresh is not correctly implemented yet. Strange behavior may be observed!");
+         Kernel.Refresh();
       }
 
-      protected void Refresh(IVMPropertyDescriptor property, RefreshScope scope) {
-         Console.WriteLine("Refresh is not correctly implemented yet. Strange behavior may be observed!");
-         UpdateFromSource(property);
+      protected void Refresh(IVMPropertyDescriptor property) {
+         //Console.WriteLine("Refresh is not correctly implemented yet. Strange behavior may be observed!");
+         Kernel.Refresh(property);
       }
 
 

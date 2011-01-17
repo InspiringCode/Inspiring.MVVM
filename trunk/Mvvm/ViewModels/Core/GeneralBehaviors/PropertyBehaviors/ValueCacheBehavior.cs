@@ -25,6 +25,10 @@
          return base.HasCachedValue(context);
       }
 
+      public new void ClearCache(IBehaviorContext context) {
+         base.ClearCache(context);
+      }
+
       protected override FieldDefinitionGroup GetFieldGroup() {
          return ValueCacheGroup;
       }

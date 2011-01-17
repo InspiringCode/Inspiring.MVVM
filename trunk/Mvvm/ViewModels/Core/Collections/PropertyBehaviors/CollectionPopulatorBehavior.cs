@@ -5,6 +5,7 @@
       Behavior,
       IBehaviorInitializationBehavior,
       IValueAccessorBehavior<IVMCollection<TItemVM>>,
+      IPopulationBehavior,
       IMutabilityCheckerBehavior
       where TItemVM : IViewModel {
 
@@ -18,9 +19,8 @@
       }
 
       public IVMCollection<TItemVM> GetValue(IBehaviorContext context) {
-
          var coll = this.GetValueNext<IVMCollection<TItemVM>>(context);
-       
+
          if (!context.FieldValues.GetValueOrDefault(_isPopulatedField)) {
             context.FieldValues.SetValue(_isPopulatedField, true);
             Repopulate(context, coll);
@@ -39,12 +39,20 @@
          return false;
       }
 
-      public void Repopulate(IBehaviorContext context, IVMCollection<TItemVM> collection) {
+      public void Populate(IBehaviorContext context) {
+         var collection = this.GetValueNext<IVMCollection<TItemVM>>(context);
+         Repopulate(context, collection);
+
+      }
+
+      private void Repopulate(IBehaviorContext context, IVMCollection<TItemVM> collection) {
          var behavior = collection
             .Behaviors
             .GetNextBehavior<IPopulatorCollectionBehavior<TItemVM>>();
 
          behavior.Repopulate(context, collection);
+
+         this.PopulateNext(context);
       }
    }
 }

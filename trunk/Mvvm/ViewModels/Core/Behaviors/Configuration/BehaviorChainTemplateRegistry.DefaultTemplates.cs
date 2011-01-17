@@ -29,6 +29,7 @@
             new BehaviorChainTemplate(PropertyBehaviorFactory.Instance)
                .Append(BehaviorKeys.InvalidDisplayValueCache, DefaultBehaviorState.Disabled)
                .Append(BehaviorKeys.DisplayValueAccessor)
+               .Append(BehaviorKeys.RefreshBehavior, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(BehaviorKeys.ManualUpdateBehavior, DefaultBehaviorState.Disabled)
                .Append(BehaviorKeys.PreValidationValueCache, DefaultBehaviorState.Disabled)
                .Append(BehaviorKeys.Validator, DefaultBehaviorState.Disabled)
@@ -45,6 +46,7 @@
             BehaviorChainTemplateKeys.CollectionProperty,
             new BehaviorChainTemplate(PropertyBehaviorFactory.Instance)
                .Append(BehaviorKeys.DisplayValueAccessor)
+               .Append(BehaviorKeys.RefreshBehavior, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(BehaviorKeys.ManualUpdateBehavior, DefaultBehaviorState.DisabledWithoutFactory)
 
                // TODO: Rethink these two behaviors.
@@ -78,6 +80,7 @@
             new BehaviorChainTemplate(ViewModelPropertyBehaviorFactory.Instance)
                .Append(BehaviorKeys.DisplayValueAccessor)
             // TODO: Rethink.
+               .Append(BehaviorKeys.RefreshBehavior, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(BehaviorKeys.ManualUpdateBehavior, DefaultBehaviorState.DisabledWithoutFactory)
 
                .Append(BehaviorKeys.ParentSetter)

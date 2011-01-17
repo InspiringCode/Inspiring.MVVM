@@ -122,6 +122,32 @@
          _descriptor.Behaviors.UpdateSourceNext(this, property);
       }
 
+      public void Refresh() {
+         foreach (IVMPropertyDescriptor property in _descriptor.Properties) {
+            Refresh(property);
+         }
+
+         PerformViewModelValidations();
+      }
+
+      public void Refresh(IVMPropertyDescriptor property) {
+         property.Behaviors.RefreshNext(this);
+      }
+
+      private void PerformViewModelValidations() {
+         ValidationContext.BeginValidation();
+         PerformViewModelValidations(ValidationContext.Current);
+         ValidationContext.CompleteValidation(ValidationMode.CommitValidValues);
+      }
+
+      private void PerformViewModelValidations(ValidationContext validationContext) {
+         ViewModelValidationBehavior behavior;
+
+         if (_descriptor.Behaviors.TryGetBehavior(out behavior)) {
+            behavior.Validate(this, ValidationContext.Current);
+         }
+      }
+
       public void Revalidate(ValidationScope scope, ValidationMode mode) {
          ValidationContext.BeginValidation();
          Revalidate(ValidationContext.Current, scope, mode);
@@ -137,11 +163,11 @@
             throw new NotImplementedException("Still TODO");
          }
 
-         if (scope == ValidationScope.FullSubtree) {
+         if (scope == ValidationScope.FullSubtree || scope == ValidationScope.SelfAndLoadedDescendants) { // TODO Only loaded descendants
             foreach (IVMPropertyDescriptor property in _descriptor.Properties) {
                property
                   .Behaviors
-                  .RevalidateDescendantsNext(this, validationContext, scope, mode);
+                  .RevalidateDescendantsNext(this, validationContext, ValidationScope.FullSubtree, mode);
             }
          }
 
@@ -149,11 +175,16 @@
             Revalidate(property, validationContext, mode);
          }
 
-         ViewModelValidationBehavior behavior;
+         PerformViewModelValidations(validationContext);
+      }
 
-         if (_descriptor.Behaviors.TryGetBehavior(out behavior)) {
-            behavior.Validate(this, validationContext);
-         }
+      public void Revalidate(
+         IVMPropertyDescriptor property,
+         ValidationMode mode
+      ) {
+         ValidationContext.BeginValidation();
+         Revalidate(property, ValidationContext.Current, mode);
+         ValidationContext.CompleteValidation(mode);
       }
 
       private void Revalidate(

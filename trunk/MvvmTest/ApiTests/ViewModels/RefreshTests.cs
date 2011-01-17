@@ -30,14 +30,14 @@
       }
 
       [TestMethod]
-      public void Refresh_OfWrappingVM_UpdatesSourceAndRefreshesVM() {
+      public void Refresh_OfWrappingVM_RecreatesAndValidatesVM() {
          var newSource = new ChildSourceObject();
          VM.PreloadDescendants();
          VM.WrappingVMSource = newSource;
          VM.Refresh(TestVM.ClassDescriptor.WrappingVM);
 
          Assert.AreSame(newSource, VM.WrappingVM.Source, "Source of VM was not updated.");
-         Assert.IsTrue(VM.WrappingVM.WasRefreshed, "VM was not refreshed.");
+         Assert.IsTrue(VM.WrappingVM.WasValidated, "VM was not refreshed.");
       }
 
       [TestMethod]
@@ -75,7 +75,7 @@
       public void Refresh_OfPopulatedColletion_RepopulatesAndValidatesItems() {
          var item = new ChildVM();
          VM.PreloadDescendants();
-         VM.PopulatedColletion.Add(item);
+         VM.PopulatedCollectionPopulationResult = new[] { item };
          VM.Refresh(TestVM.ClassDescriptor.PopulatedCollection);
 
          Assert.IsTrue(VM.PopulatedCollectionWasRepopulated, "Collection was not repopulated.");
@@ -151,7 +151,7 @@
                   .Collection
                   .PopulatedWith(vm => {
                      vm.PopulatedCollectionWasRepopulated = true;
-                     return new ChildVM[] { };
+                     return vm.PopulatedCollectionPopulationResult;
                   })
                   .With(ChildVM.ClassDescriptor);
 
@@ -177,12 +177,15 @@
          public TestVM()
             : base(ClassDescriptor) {
 
+            PopulatedCollectionPopulationResult = new[] { new ChildVM() };
+
             WrappingVMSource = new ChildSourceObject();
             WrappingCollectionSource = new List<ChildSourceObject>();
 
             SetValue(Descriptor.LocalVM, new ChildVM());
          }
 
+         public IEnumerable<ChildVM> PopulatedCollectionPopulationResult { get; set; }
 
          // FLAGS
 
@@ -238,8 +241,8 @@
 
          // METHODS
 
-         public void Refresh(IVMPropertyDescriptor property) {
-            base.Refresh(property, RefreshScope.SelfOnly);
+         public new void Refresh(IVMPropertyDescriptor property) {
+            base.Refresh(property);
          }
 
          public void PreloadDescendants() {
@@ -255,8 +258,8 @@
             PopulatedCollectionWasRepopulated = false;
          }
 
-         public void Refresh() {
-            base.Refresh(RefreshScope.SelfOnly);
+         public new void Refresh() {
+            base.Refresh();
          }
 
          public bool IsLoaded(IVMPropertyDescriptor property) {
@@ -282,7 +285,7 @@
             .For<ChildVM>()
             .WithProperties((d, b) => {
                var v = b.GetPropertyBuilder();
-               d.Property = v.Property.Of<string>();
+               d.Property = v.Property.MapsTo(x => x.PropertySource);
             })
             .WithValidators(b => {
                b.Check(x => x.Property).Custom((vm, value, args) => {
@@ -297,11 +300,11 @@
 
          public ChildSourceObject Source { get; set; }
 
-
          public bool WasValidated { get; set; }
 
          public bool WasRefreshed { get; set; }
 
+         private string PropertySource { get; set; }
 
          public void ResetFlags() {
             WasValidated = false;
