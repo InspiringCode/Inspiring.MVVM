@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
    using System.ComponentModel;
+   using System.Diagnostics;
    using System.Diagnostics.Contracts;
    using System.Linq;
    using Inspiring.Mvvm;
@@ -82,6 +83,13 @@
 
       string IDataErrorInfo.this[string columnName] {
          get {
+            // HACK: Validation problem with DevExpress.
+            if (columnName.Contains('.')) {
+               // TODO
+               Debug.WriteLine("Validation of dotted paths not yet supported."); // TODO
+               return null;
+            }
+
             IVMPropertyDescriptor property = Kernel.GetProperty(propertyName: columnName);
             ValidationState state = Kernel.GetValidationState(property);
             return state.IsValid ?

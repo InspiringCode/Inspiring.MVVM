@@ -160,8 +160,9 @@
 
 
       protected Window GetAssociatedWindow(IScreen ofScreen) {
+         // TODO: Can be generalize this logic (traversing of hierarchy)?
          for (IScreenLifecycle s = ofScreen; s != null; s = s.Parent) {
-            ParentScreenLifecycle p = s as ParentScreenLifecycle;
+            IScreen p = s as IScreen;
             if (p != null && p.Children.Contains<WindowLifecycle>()) {
                return p
                   .Children
