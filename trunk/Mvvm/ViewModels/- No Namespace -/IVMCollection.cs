@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System.Collections.Generic;
    using Inspiring.Mvvm.ViewModels.Core;
+   using System.Collections;
 
    public interface IVMCollection {
       // TODO: Comment.
@@ -32,6 +33,10 @@
    ///   be used in VMs to hold a collection of child VMs. This interface is
    ///   especially required by the predefined collection behaviors.
    /// </summary>
-   public interface IVMCollection<TItemVM> : IVMCollection, IList<TItemVM>, IVMCollectionExpression<TItemVM> {
+   public interface IVMCollection<TItemVM> : IVMCollection, IList<TItemVM>, IList, IVMCollectionExpression<TItemVM> {
+      int Count { get; }
+      void Clear();
+      void RemoveAt(int index);
+      TItemVM this[int index] { get; set; }
    }
 }
