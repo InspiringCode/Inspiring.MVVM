@@ -9,12 +9,12 @@
    /// <summary>
    /// Provides services for parsing expression trees.
    /// </summary>
-   internal static class ExpressionService {
+   public static class ExpressionService {
       /// <summary>
       ///   Converts an expression tree of the form 'x => x.Address.City' to 
       ///   a PropertyInfo list of the form { Address, City }.
       /// </summary>
-      public static PropertyInfo[] GetProperties<TObject, TProperty>(
+      internal static PropertyInfo[] GetProperties<TObject, TProperty>(
          Expression<Func<TObject, TProperty>> propertyPathSelector
       ) {
          Contract.Requires(propertyPathSelector != null);
@@ -69,7 +69,7 @@
       ///   string that contains the property names separated by dots (e.g.
       ///   'Address.City'.
       /// </summary>
-      public static string GetPropertyPathString<TObject, TProperty>(
+      internal static string GetPropertyPathString<TObject, TProperty>(
          Expression<Func<TObject, TProperty>> propertyPathSelector
       ) {
          IEnumerable<PropertyInfo> properties = GetProperties(propertyPathSelector);
@@ -97,7 +97,7 @@
          return propertyPath.Single().Name;
       }
 
-      public static string GetPropertyName<TProperty>(Expression<Func<TProperty>> propertySelector) {
+      internal static string GetPropertyName<TProperty>(Expression<Func<TProperty>> propertySelector) {
          Contract.Requires<ArgumentNullException>(propertySelector != null);
 
          UnaryExpression unary = propertySelector.Body as UnaryExpression;
