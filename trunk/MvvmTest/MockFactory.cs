@@ -6,7 +6,7 @@
 
    internal sealed class MockObjectFactory {
       public static Mock<IScreenFactory<TScreen>> MockScreenFactory<TScreen, TSubject>(TScreen screen, TSubject subject)
-      where TScreen : IScreen {
+      where TScreen : IScreenBase {
          //var factory = new Mock<IScreenFactory<TScreen>>();
          //factory
          //   .Setup(x => x.Create(It.IsAny<IScreenInitializer>()))
@@ -17,7 +17,7 @@
       }
 
       public static Mock<IScreenFactory<TScreen>> MockScreenFactory<TScreen>(TScreen screen)
-         where TScreen : IScreen {
+         where TScreen : IScreenBase {
          //var factory = new Mock<IScreenFactory<TScreen>>();
          //factory
          //   .Setup(x => x.Create(It.IsAny<IScreenInitializer>()))
@@ -27,8 +27,8 @@
          return null;
       }
 
-      public static IScreen MockScreen() {
-         var mock = new Mock<IScreen>();
+      public static IScreenBase MockScreen() {
+         var mock = new Mock<IScreenBase>();
          mock.Setup(x => x.RequestClose()).Returns(true);
          return mock.Object;
       }

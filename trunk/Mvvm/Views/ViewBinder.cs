@@ -35,7 +35,7 @@
       public static void BindScreen<TScreen>(
          IView<TScreen> screen,
          Action<IScreenBinder<TScreen>> bindingConfigurator
-      ) where TScreen : IScreen {
+      ) where TScreen : IScreenBase {
          if (DesignerProperties.GetIsInDesignMode((DependencyObject)screen)) {
             return;
          }
@@ -56,7 +56,7 @@
          Expression<Func<TScreen, IViewModel>> viewModelSelector
       );
 
-      IBindToExpression<IScreen> BindChildScreen(Expression<Func<TScreen, IScreen>> screenSelector);
+      IBindToExpression<IScreenBase> BindChildScreen(Expression<Func<TScreen, IScreenBase>> screenSelector);
    }
 
    public interface IVMBinder<TDescriptor> {
@@ -95,7 +95,7 @@
       void To(DependencyObject itemsControl, Action<IVMBinder<TDescriptor>> itemBinder);
    }
 
-   public class ScreenBinder<TScreen> : BinderRootExpression, IScreenBinder<TScreen> where TScreen : IScreen {
+   public class ScreenBinder<TScreen> : BinderRootExpression, IScreenBinder<TScreen> where TScreen : IScreenBase {
       public ScreenBinder() {
          // TODO: Does this config apply to all queued executions?
          BinderBuildStepRegistry.AddVMPropertyBuildSteps(this);
@@ -108,14 +108,14 @@
          binder.Execute();
       }
 
-      public IBindToExpression<IScreen> BindChildScreen(Expression<Func<TScreen, IScreen>> screenSelector) {
+      public IBindToExpression<IScreenBase> BindChildScreen(Expression<Func<TScreen, IScreenBase>> screenSelector) {
          BinderContext context = QueueBuilderExecution();
-         context.SourcePropertyType = typeof(IScreen); // TODO: Clean up how types are assigned, also check if IBindToExpression has to be generic...
+         context.SourcePropertyType = typeof(IScreenBase); // TODO: Clean up how types are assigned, also check if IBindToExpression has to be generic...
          context.ExtendPropertyPath(
             ExpressionService.GetPropertyPathString(screenSelector)
          );
 
-         return new PropertyBinderExpression<IScreen>(context);
+         return new PropertyBinderExpression<IScreenBase>(context);
       }
 
       public IBindToExpression<IViewModel> BindVM(Expression<Func<TScreen, IViewModel>> viewModelSelector) {

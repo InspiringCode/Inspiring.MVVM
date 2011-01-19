@@ -2,7 +2,7 @@
    // TODO: Save dialog
    public interface IDialogService {
       bool OpenFile(
-         IScreen parent,
+         IScreenBase parent,
          out string fileName,
          string filter = null,
          string initialDirectory = null
@@ -10,9 +10,9 @@
 
       DialogScreenResult Open<TScreen>(
          IScreenFactory<TScreen> screen,
-         IScreen parent = null,
+         IScreenBase parent = null,
          string title = null
-      ) where TScreen : IScreen;
+      ) where TScreen : IScreenBase;
    }
 
    public class DialogScreenResult {

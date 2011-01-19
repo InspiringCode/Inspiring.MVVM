@@ -9,7 +9,7 @@
    public class WindowService : IWindowService, IDialogService {
       public virtual Window CreateWindow<TScreen>(
          IScreenFactory<TScreen> forScreen
-      ) where TScreen : IScreen {
+      ) where TScreen : IScreenBase {
          Window window = CreateWindow();
          ConfigureWindow(window, forScreen);
          return window;
@@ -18,14 +18,14 @@
       public void ConfigureWindow<TScreen>(
          Window window,
          IScreenFactory<TScreen> forScreen
-      ) where TScreen : IScreen {
-         IScreen s = forScreen.Create(x => { });
+      ) where TScreen : IScreenBase {
+         IScreenBase s = forScreen.Create(x => { });
          ConfigureWindow(window, s, new WindowCloseHandler(s));
       }
 
       protected virtual void ConfigureWindow(
          Window window,
-         IScreen forScreen,
+         IScreenBase forScreen,
          WindowCloseHandler closeHandler
       ) {
          // Save the window for later
@@ -33,7 +33,7 @@
             AssociatedWindow = window
          });
 
-         IScreen screen = forScreen;
+         IScreenBase screen = forScreen;
          screen.Activate();
 
          // TryInitialize succeeds if the window implements 'IView<TScreen>'.
@@ -49,9 +49,9 @@
       public DialogScreenResult Open<TScreen>(
          Window dialogWindow,
          IScreenFactory<TScreen> screen,
-         IScreen parent = null
-      ) where TScreen : IScreen {
-         IScreen s = screen.Create(x => { });
+         IScreenBase parent = null
+      ) where TScreen : IScreenBase {
+         IScreenBase s = screen.Create(x => { });
          s.Children.Add(new DialogLifecycle());
          ConfigureWindow(dialogWindow, s, new DialogCloseHandler(s));
 
@@ -69,9 +69,9 @@
 
       public DialogScreenResult Open<TScreen>(
          IScreenFactory<TScreen> screen,
-         IScreen parent = null,
+         IScreenBase parent = null,
          string title = null
-      ) where TScreen : IScreen {
+      ) where TScreen : IScreenBase {
 
 
          Window dialogWindow = CreateDialogWindow();
@@ -84,7 +84,7 @@
       }
 
       public bool OpenFile(
-         IScreen parent,
+         IScreenBase parent,
          out string fileName,
          string filter = null,
          string initialDirectory = null
@@ -119,7 +119,7 @@
          return CreateWindow();
       }
 
-      protected void AttachWindowCloseHandlers(Window window, IScreen screen) {
+      protected void AttachWindowCloseHandlers(Window window, IScreenBase screen) {
          window.Closing += delegate(object sender, CancelEventArgs e) {
             e.Cancel = !screen.RequestClose();
          };
@@ -141,7 +141,7 @@
          };
 
 
-         IScreen s = screen;
+         IScreenBase s = screen;
 
          window.Closing += delegate(object sender, CancelEventArgs e) {
             dl.WindowResult = ((Window)sender).DialogResult;
@@ -159,10 +159,10 @@
 
 
 
-      protected Window GetAssociatedWindow(IScreen ofScreen) {
+      protected Window GetAssociatedWindow(IScreenBase ofScreen) {
          // TODO: Can be generalize this logic (traversing of hierarchy)?
          for (IScreenLifecycle s = ofScreen; s != null; s = s.Parent) {
-            IScreen p = s as IScreen;
+            IScreenBase p = s as IScreenBase;
             if (p != null && p.Children.Contains<WindowLifecycle>()) {
                return p
                   .Children
@@ -175,10 +175,10 @@
       }
 
       protected class DialogCloseHandler : WindowCloseHandler {
-         private IScreen _dialog;
+         private IScreenBase _dialog;
          private bool _closeIsUserRequested = true;
 
-         public DialogCloseHandler(IScreen dialog)
+         public DialogCloseHandler(IScreenBase dialog)
             : base(dialog) {
             _dialog = dialog;
          }
@@ -213,9 +213,9 @@
       }
 
       protected class WindowCloseHandler {
-         private IScreen _screen;
+         private IScreenBase _screen;
 
-         public WindowCloseHandler(IScreen screen) {
+         public WindowCloseHandler(IScreenBase screen) {
             _screen = screen;
          }
          public virtual void AttachTo(Window window) {

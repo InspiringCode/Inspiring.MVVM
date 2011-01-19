@@ -9,10 +9,10 @@
 
       public event EventHandler CloseWindow;
 
-      public static DialogLifecycle GetDialogLifecycle(IScreen forScreen) {
+      public static DialogLifecycle GetDialogLifecycle(IScreenBase forScreen) {
          // TODO: Is this the best semantic?
          for (IScreenLifecycle s = forScreen; s != null; s = s.Parent) {
-            IScreen scr = s as IScreen;
+            IScreenBase scr = s as IScreenBase;
             if (scr != null && scr.Children.Contains<DialogLifecycle>()) {
                return scr.Children.Expose<DialogLifecycle>();
             }

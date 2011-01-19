@@ -22,7 +22,7 @@
       }
 
       public TScreen AddNew<TScreen>(IScreenFactory<TScreen> screen)
-         where TScreen : T, IScreen {
+         where TScreen : T, IScreenBase {
          return screen.Create(s => {
             Add(s);
          });

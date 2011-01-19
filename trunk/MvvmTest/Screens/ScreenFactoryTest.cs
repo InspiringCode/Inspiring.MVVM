@@ -64,7 +64,7 @@
          public string Dependency { get; private set; }
       }
 
-      private class SimpleScreen : IScreen {
+      private class SimpleScreen : IScreenBase {
          public string Title {
             get { throw new NotImplementedException(); }
          }

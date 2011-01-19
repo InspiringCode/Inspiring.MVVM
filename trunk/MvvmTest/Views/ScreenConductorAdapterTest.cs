@@ -11,10 +11,10 @@
 
    [TestClass]
    public class ScreenConductorAdapterTest {
-      private IScreen _firstScreen;
-      private IScreen _secondScreen;
-      private IScreenFactory<IScreen> _firstFactory;
-      private IScreenFactory<IScreen> _secondFactory;
+      private IScreenBase _firstScreen;
+      private IScreenBase _secondScreen;
+      private IScreenFactory<IScreenBase> _firstFactory;
+      private IScreenFactory<IScreenBase> _secondFactory;
       private object _firstView;
       private object _secondView;
 

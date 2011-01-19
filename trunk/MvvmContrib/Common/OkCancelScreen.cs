@@ -3,7 +3,7 @@
    using Inspiring.Mvvm.Screens;
 
    public sealed class OkCancelScreen : ScreenBase, INeedsInitialization<OkCancelScreenSubject> {
-      public IScreen Content { get; internal set; }
+      public IScreenBase Content { get; internal set; }
 
       public OkCancelVM VM { get; internal set; }
 
@@ -20,7 +20,7 @@
 
       public static OkCancelScreenSubject For<TScreen>(
          IScreenFactory<TScreen> content
-      ) where TScreen : IScreen, IOkCancelHandler {
+      ) where TScreen : IScreenBase, IOkCancelHandler {
          return new OkCancelScreenSubject {
             InitializeOkCancelScreen = dialogScreen => {
                TScreen contentScreen = dialogScreen.Children.AddNew(content);

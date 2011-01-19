@@ -5,21 +5,21 @@
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.ViewModels;
 
-   public class ScreenBase : ParentScreenLifecycle, IScreen {
+   public class ScreenBase : ParentScreenLifecycle, IScreenBase {
 
    }
 
-   public class ScreenBase<TDescriptor> :
+   public class ViewModelScreenBase<TDescriptor> :
       ViewModel<TDescriptor>,
-      IViewModelScreen
+      IViewModelScreenBase
       where TDescriptor : VMDescriptorBase {
 
-      public ScreenBase(IServiceLocator serviceLocator = null)
+      public ViewModelScreenBase(IServiceLocator serviceLocator = null)
          : base(serviceLocator) {
          Children = new ScreenLifecycleCollection<IScreenLifecycle>(this);
       }
 
-      public ScreenBase(TDescriptor descriptor, IServiceLocator serviceLocator = null)
+      public ViewModelScreenBase(TDescriptor descriptor, IServiceLocator serviceLocator = null)
          : base(descriptor, serviceLocator) {
          Children = new ScreenLifecycleCollection<IScreenLifecycle>(this);
       }
@@ -58,9 +58,9 @@
       }
 
       protected void OpenChildScreen<T>(
-         IVMPropertyDescriptor<IScreen> screenProperty,
+         IVMPropertyDescriptor<IScreenBase> screenProperty,
          IScreenFactory<T> childScreen
-      ) where T : IScreen {
+      ) where T : IScreenBase {
          Contract.Requires<ArgumentNullException>(screenProperty != null);
          Contract.Requires<ArgumentNullException>(childScreen != null);
 
@@ -68,10 +68,10 @@
          SetDisplayValue(screenProperty, screen);
       }
 
-      protected bool CloseChildScreen(IVMPropertyDescriptor<IScreen> screenProperty) {
+      protected bool CloseChildScreen(IVMPropertyDescriptor<IScreenBase> screenProperty) {
          Contract.Requires<ArgumentNullException>(screenProperty != null);
 
-         var screen = (IScreen)GetDisplayValue(screenProperty);
+         var screen = (IScreenBase)GetDisplayValue(screenProperty);
 
          if (screen == null) {
             return true;

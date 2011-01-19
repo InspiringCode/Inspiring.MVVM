@@ -3,7 +3,7 @@
    using System.Linq;
 
    public static partial class ScreenFactory {
-      public static IScreenFactory<TScreen> For<TScreen>(IServiceLocator resolveWith = null) where TScreen : IScreen {
+      public static IScreenFactory<TScreen> For<TScreen>(IServiceLocator resolveWith = null) where TScreen : IScreenBase {
          return new Factory<TScreen>(resolveWith);
       }
 
@@ -18,7 +18,7 @@
             _subject = subject;
          }
 
-         public IScreenFactory<TScreen> For<TScreen>(IServiceLocator resolveWith = null) where TScreen : IScreen {
+         public IScreenFactory<TScreen> For<TScreen>(IServiceLocator resolveWith = null) where TScreen : IScreenBase {
             return new Factory<TScreen, TSubject>(_subject, resolveWith);
          }
       }
@@ -48,7 +48,7 @@
             .ForEach(initializer);
       }
 
-      private class Factory<TScreen> : IScreenFactory<TScreen> where TScreen : IScreen {
+      private class Factory<TScreen> : IScreenFactory<TScreen> where TScreen : IScreenBase {
          private IServiceLocator _resolveWith;
 
          public Factory(IServiceLocator resolveWith) {
@@ -74,7 +74,7 @@
          }
       }
 
-      private class Factory<TScreen, TSubject> : IScreenFactory<TScreen> where TScreen : IScreen {
+      private class Factory<TScreen, TSubject> : IScreenFactory<TScreen> where TScreen : IScreenBase {
          private TSubject _subject;
          private IServiceLocator _resolveWith;
 

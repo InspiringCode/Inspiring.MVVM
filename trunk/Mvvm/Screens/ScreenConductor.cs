@@ -5,14 +5,14 @@
    using System.Linq;
 
    public class ScreenConductor : ScreenBase {
-      private IScreen _activeScreen;
-      private ScreenLifecycleCollection<IScreen> _screens;
+      private IScreenBase _activeScreen;
+      private ScreenLifecycleCollection<IScreenBase> _screens;
 
       public ScreenConductor() {
-         _screens = new ScreenLifecycleCollection<IScreen>(this);
+         _screens = new ScreenLifecycleCollection<IScreenBase>(this);
       }
 
-      public IScreen ActiveScreen {
+      public IScreenBase ActiveScreen {
          get { return _activeScreen; }
          set {
             if (value != _activeScreen) {
@@ -31,12 +31,12 @@
          }
       }
 
-      public IEnumerable<IScreen> Screens {
+      public IEnumerable<IScreenBase> Screens {
          get { return _screens.Items; }
       }
 
       public void OpenScreen<TScreen>(IScreenFactory<TScreen> screen)
-         where TScreen : class, IScreen {
+         where TScreen : class, IScreenBase {
 
          var creationBehavior = GetCreationBehavior(typeof(TScreen));
 
@@ -54,13 +54,13 @@
          }
       }
 
-      public bool CloseScreen(IScreen screen) {
+      public bool CloseScreen(IScreenBase screen) {
          if (!_screens.Items.Contains(screen)) {
             throw new ArgumentException(ExceptionTexts.ScreenNotContainedByConductor);
          }
 
          if (screen.RequestClose()) {
-            IScreen next = ChooseNextScreen(screen);
+            IScreenBase next = ChooseNextScreen(screen);
             ActiveScreen = next;
             screen.Close();
             _screens.Items.Remove(screen);
@@ -70,7 +70,7 @@
          return false;
       }
 
-      protected virtual IScreen ChooseNextScreen(IScreen screen) {
+      protected virtual IScreenBase ChooseNextScreen(IScreenBase screen) {
          if (_screens.Items.Count == 1) {
             return null;
          }

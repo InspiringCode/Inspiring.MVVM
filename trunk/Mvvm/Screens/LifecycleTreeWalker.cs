@@ -18,14 +18,14 @@
       }
 
       public static IEnumerable<IScreenLifecycle> GetChildren(IScreenLifecycle handler) {
-         IScreen parent = handler as IScreen;
+         IScreenBase parent = handler as IScreenBase;
          return parent != null ?
             parent.Children.Items :
             Enumerable.Empty<IScreenLifecycle>();
       }
 
       public static IEnumerable<IScreenLifecycle> GetSelfAndChildren(IScreenLifecycle handler) {
-         IScreen parent = handler as IScreen;
+         IScreenBase parent = handler as IScreenBase;
 
          if (parent == null) {
             return Enumerable.Empty<IScreenLifecycle>();

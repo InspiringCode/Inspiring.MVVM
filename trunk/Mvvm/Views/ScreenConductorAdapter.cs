@@ -14,7 +14,7 @@
          ExpressionService.GetPropertyName((ScreenConductor x) => x.ActiveScreen);
 
       private ScreenConductor _screens;
-      private Dictionary<IScreen, object> _screenViews = new Dictionary<IScreen, object>();
+      private Dictionary<IScreenBase, object> _screenViews = new Dictionary<IScreenBase, object>();
       private IList _views;
       private object _activeView;
 
@@ -49,7 +49,7 @@
       }
 
       public bool CloseView(object view) {
-         IScreen screen = ScreenFor(view);
+         IScreenBase screen = ScreenFor(view);
          return _screens.CloseScreen(screen);
       }
 
@@ -66,7 +66,7 @@
          _views.Remove(view);
       }
 
-      protected virtual object CreateView(IScreen forScreen) {
+      protected virtual object CreateView(IScreenBase forScreen) {
          return ViewFactory.CreateView(forScreen);
       }
 
@@ -78,14 +78,14 @@
       }
 
       private void HandleScreensChanged(object sender, NotifyCollectionChangedEventArgs e) {
-         IScreen s;
+         IScreenBase s;
          switch (e.Action) {
             case NotifyCollectionChangedAction.Add:
-               s = e.NewItems.Cast<IScreen>().Single();
+               s = e.NewItems.Cast<IScreenBase>().Single();
                AddScreen(s);
                break;
             case NotifyCollectionChangedAction.Remove:
-               s = e.OldItems.Cast<IScreen>().Single();
+               s = e.OldItems.Cast<IScreenBase>().Single();
                RemoveScreen(s);
                break;
             default:
@@ -95,25 +95,25 @@
          }
       }
 
-      private void AddScreen(IScreen screen) {
+      private void AddScreen(IScreenBase screen) {
          object view = CreateView(forScreen: screen);
          _screenViews.Add(screen, view);
          OnViewAdded(view);
       }
 
-      private void RemoveScreen(IScreen screen) {
+      private void RemoveScreen(IScreenBase screen) {
          object view = ViewFor(screen);
          _screenViews.Remove(screen);
          OnViewRemoved(view);
       }
 
-      private object ViewFor(IScreen screen) {
+      private object ViewFor(IScreenBase screen) {
          return screen != null ?
             _screenViews[screen] :
             null;
       }
 
-      private IScreen ScreenFor(object view) {
+      private IScreenBase ScreenFor(object view) {
          return _screenViews.SingleOrDefault(x => x.Value == view).Key;
       }
    }

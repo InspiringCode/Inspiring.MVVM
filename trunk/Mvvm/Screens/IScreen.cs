@@ -1,5 +1,5 @@
 ﻿namespace Inspiring.Mvvm.Screens {
-   public interface IScreen : IScreenLifecycle {
+   public interface IScreenBase : IScreenLifecycle {
       ScreenLifecycleCollection<IScreenLifecycle> Children { get; }
    }
 }
