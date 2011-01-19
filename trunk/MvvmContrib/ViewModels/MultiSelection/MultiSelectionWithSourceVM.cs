@@ -105,7 +105,8 @@
    }
 
    public sealed class MultiSelectionWithSourceVM<TSourceObject, TItemSource> :
-      MultiSelectionVM<TItemSource> {
+      MultiSelectionVM<TItemSource>,
+      IHasSourceObject<TSourceObject> {
 
       public MultiSelectionWithSourceVM(
          MultiSelectionVMDescriptor<TItemSource> descriptor,
@@ -119,11 +120,11 @@
       ///   view model that holds the <see cref="MultiSelectionWithSourceVM"/> (the parent
       ///   VM is simply forwarded with this property).
       /// </summary>
-      internal TSourceObject SourceObject { get; set; }
+      public TSourceObject Source { get; set; }
 
       /// <inheritdoc />
       public void InitializeFrom(TSourceObject source) {
-         SourceObject = source;
+         Source = source;
       }
 
       /// <summary>
@@ -152,7 +153,7 @@
             .For<MultiSelectionWithSourceVM<TSourceObject, TItemSource>>()
             .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
-               var source = c.GetPropertyBuilder(x => x.SourceObject);
+               var source = c.GetPropertyBuilder(x => x.Source);
 
                d.AllSourceItems = allSourceItemsPropertyFactory(source);
                d.SelectedSourceItems = selectedSourceItemsPropertyFactory(source);

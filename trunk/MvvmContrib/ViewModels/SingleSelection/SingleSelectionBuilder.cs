@@ -122,7 +122,7 @@
             .PropertyConfigurations[property]
             .Enable(
                BehaviorKeys.ManualUpdateBehavior,
-               new ManualUpdateSelectionPropertyBehavior<SingleSelectionVM<TItemSource, SelectionItemVM<TItemSource>>, TSourceObject>()
+               new ManualUpdateSelectionPropertyBehavior<SingleSelectionVM<TItemSource>, TSourceObject>()
             );
 
          return property;

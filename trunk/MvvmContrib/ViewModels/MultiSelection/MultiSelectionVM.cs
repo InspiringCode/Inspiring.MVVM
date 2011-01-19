@@ -3,8 +3,6 @@
    using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm;
-   using Inspiring.Mvvm.ViewModels.Core;
-   using Inspiring.Mvvm.ViewModels.Core;
 
    public abstract class MultiSelectionVM<TItemSource, TItemVM> :
       ViewModel<MultiSelectionVMDescriptor<TItemSource, TItemVM>>
@@ -60,6 +58,10 @@
       internal IEnumerable<TItemSource> GetActiveSourceItems() {
          IEnumerable<TItemSource> allSourceItems = GetValue(Descriptor.AllSourceItems);
          IEnumerable<TItemSource> selectedSourceItems = GetValue(Descriptor.SelectedSourceItems);
+
+         if (allSourceItems == null) {
+            return new TItemSource[0];
+         }
 
          if (ActiveItemFilter == null) {
             return allSourceItems;

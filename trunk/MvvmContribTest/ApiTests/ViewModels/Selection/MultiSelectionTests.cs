@@ -172,6 +172,12 @@
          Assert.IsTrue(eventSequence.EndsWith("|ListChanged|PropertyChanged|")); // TODO: Investigate why so many events are raised.
       }
 
+      [TestMethod]
+      public void UpdateFromSource() {
+         UserVM vm = CreateUserVMWithItems();
+         vm.UpdateGroupsFromSource();
+      }
+
       /// <summary>
       ///   Asserts that the source groups of the 'AllItems' property of the
       ///   selection VM are equal to the given source items.

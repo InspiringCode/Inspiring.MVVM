@@ -56,6 +56,10 @@
          IEnumerable<TItemSource> allSourceItems = AllSourceItems;
          TItemSource selectedSourceItem = GetValue(Descriptor.SelectedSourceItem);
 
+         if (allSourceItems == null) {
+            return new TItemSource[0];
+         }
+
          if (ActiveItemFilter == null) {
             return allSourceItems;
          }

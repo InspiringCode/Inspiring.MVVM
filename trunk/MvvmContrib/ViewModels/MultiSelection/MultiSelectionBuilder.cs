@@ -3,7 +3,6 @@
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.ViewModels.Core;
-   using Inspiring.Mvvm.ViewModels.Core;
 
    public class MultiSelectionBuilder<TSourceObject, TItemSource> {
       private IVMPropertyBuilder<TSourceObject> _sourceObjectPropertyBuilder;
@@ -123,7 +122,7 @@
             .PropertyConfigurations[property]
             .Enable(
                BehaviorKeys.ManualUpdateBehavior,
-               new ManualUpdateSelectionPropertyBehavior<MultiSelectionVM<TItemSource, SelectionItemVM<TItemSource>>, TSourceObject>()
+               new ManualUpdateSelectionPropertyBehavior<MultiSelectionVM<TItemSource>, TSourceObject>()
             );
 
          return property;

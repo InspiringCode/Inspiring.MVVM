@@ -107,7 +107,8 @@
    }
 
    public sealed class SingleSelectionWithSourceVM<TSourceObject, TItemSource> :
-      SingleSelectionVM<TItemSource> {
+      SingleSelectionVM<TItemSource>,
+      IHasSourceObject<TSourceObject> {
 
       public SingleSelectionWithSourceVM(
          SingleSelectionVMDescriptor<TItemSource> descriptor,
@@ -121,11 +122,11 @@
       ///   view model that holds the <see cref="SingleSelectionWithSourceVM"/> (the parent
       ///   VM is simply forwarded with this property).
       /// </summary>
-      private TSourceObject SourceObject { get; set; }
+      public TSourceObject Source { get; set; }
 
       /// <inheritdoc />
       public void InitializeFrom(TSourceObject source) {
-         SourceObject = source;
+         Source = source;
       }
 
       /// <summary>
@@ -154,7 +155,7 @@
             .For<SingleSelectionWithSourceVM<TSourceObject, TItemSource>>()
             .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
-               var source = c.GetPropertyBuilder(x => x.SourceObject);
+               var source = c.GetPropertyBuilder(x => x.Source);
 
                d.AllSourceItems = allSourceItemsPropertyFactory(source);
                d.SelectedSourceItem = selectedSourceItemsPropertyFactory(source);

@@ -41,6 +41,12 @@
          Assert.AreEqual(department.Name, groupVM.Caption);
       }
 
+      [TestMethod]
+      public void UpdateFromSource() {
+         UserVM vm = new UserVM();
+         vm.UpdateFromSource(UserVM.ClassDescriptor.Department);
+      }
+
       internal sealed class UserVM : ViewModel<UserVMDescriptor>, IHasSourceObject<User> {
          public static UserVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<UserVMDescriptor>()
@@ -83,6 +89,10 @@
          User IHasSourceObject<User>.Source {
             get { return UserSource; }
             set { UserSource = value; }
+         }
+
+         public new void UpdateFromSource(IVMPropertyDescriptor property) {
+            base.UpdateFromSource(property);
          }
       }
 
