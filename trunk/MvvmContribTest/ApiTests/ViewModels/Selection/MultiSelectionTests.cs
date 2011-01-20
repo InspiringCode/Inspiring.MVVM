@@ -8,6 +8,7 @@
    using Inspiring.MvvmTest.Stubs;
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
+   using System.Collections;
 
    [TestClass]
    public class MultiSelectionTests : TestBase {
@@ -121,7 +122,7 @@
       public void ClearSelectedItems_ModifiesSourceCollection() {
          UserVM vm = CreateUserVMWithItems();
 
-         var selectedItems = new List<GroupVM>(vm.Groups.SelectedItems);
+         var selectedItems = new List<object>(vm.Groups.SelectedItems);
          selectedItems.Clear();
          SetSelectedItems(vm, selectedItems);
 
@@ -193,8 +194,8 @@
       ///   Asserts that the 'SelectedItems' collection of the selection VM contains
       ///   the given group VMs.
       /// </summary>
-      private void AssertSelectedItemsAreEqual(UserVM vm, ICollection<GroupVM> expectedSelectedItems) {
-         var expected = expectedSelectedItems.ToArray();
+      private void AssertSelectedItemsAreEqual(UserVM vm, IEnumerable expectedSelectedItems) {
+         var expected = expectedSelectedItems.Cast<object>().ToArray();
          var actual = vm.Groups.SelectedItems.ToArray();
 
          CollectionAssert.AreEqual(expected, actual);
@@ -204,14 +205,14 @@
       ///   Asserts that the 'Groups' property of the 'User' source object contains
       ///   the same groups as the source groups of the given group VMs.
       /// </summary>
-      private void AssertSelectedSourceItemsAreEqual(UserVM vm, ICollection<GroupVM> expectedSelectedItems) {
-         var expected = expectedSelectedItems.Select(x => x.GroupSource).ToArray();
+      private void AssertSelectedSourceItemsAreEqual(UserVM vm, IEnumerable expectedSelectedItems) {
+         var expected = expectedSelectedItems.Cast<GroupVM>().Select(x => x.GroupSource).ToArray();
          var actual = vm.UserSource.Groups.ToArray();
 
          CollectionAssert.AreEqual(expected, actual);
       }
 
-      private void SetSelectedItems(UserVM vm, IEnumerable<GroupVM> selectedItems) {
+      private void SetSelectedItems(UserVM vm, IEnumerable selectedItems) {
          // HACK: Refactor descriptor concept?
          IViewModel selection = vm.Groups;
          var selectionDescriptor = (MultiSelectionVMDescriptor<Group, GroupVM>)selection.Descriptor;

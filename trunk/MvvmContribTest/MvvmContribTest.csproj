@@ -79,6 +79,7 @@
     <Compile Include="ViewModels\EnumSelectionWithCustomValidationTests.cs" />
     <Compile Include="ViewModels\Selection\LookupPopulatorCollectionBehaviorTests.cs" />
     <Compile Include="ApiTests\ViewModels\Selection\VMs\UserVM.cs" />
+    <Compile Include="ViewModels\Selection\SettableListDisplayValueBehaviorTests.cs" />
     <Compile Include="ViewModels\VMs\KeywordSelectionVM.cs" />
     <Compile Include="ApiTests\ViewModels\Selection\VMs\GroupVM.cs" />
     <Compile Include="ApiTests\ViewModels\Selection\Domain\User.cs" />

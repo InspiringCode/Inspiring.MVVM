@@ -11,6 +11,7 @@
    public class TestBase {
       public const string ArbitraryString = "Arbitrary string!";
       public const string AnotherArbitraryString = "Another arbitrary string!";
+      public const int ArbitraryInt = 42;
 
       protected static T Mock<T>() where T : class {
          return new Mock<T>().Object;
