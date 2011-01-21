@@ -50,6 +50,10 @@
          }
       }
 
+      public void Remove(T handler) {
+         Items.Remove(handler);
+      }
+
       internal void ActivateAll(Action parentCallback = null) {
          Invoke("Activate", h => h.Activate(), parentCallback);
       }

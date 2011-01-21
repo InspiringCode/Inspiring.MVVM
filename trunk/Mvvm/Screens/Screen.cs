@@ -79,6 +79,7 @@
 
          if (screen.RequestClose()) {
             screen.Close();
+            Children.Remove(screen);
             return true;
          }
 
