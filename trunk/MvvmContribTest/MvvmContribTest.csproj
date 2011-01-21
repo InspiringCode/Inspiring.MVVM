@@ -77,6 +77,7 @@
     <Compile Include="Screens\ApplicationCommandManagerTest.cs" />
     <Compile Include="Screens\FindScreenTest.cs" />
     <Compile Include="ViewModels\EnumSelectionWithCustomValidationTests.cs" />
+    <Compile Include="ViewModels\ReverseOneToManyCollectionTests.cs" />
     <Compile Include="ViewModels\Selection\LookupPopulatorCollectionBehaviorTests.cs" />
     <Compile Include="ApiTests\ViewModels\Selection\VMs\UserVM.cs" />
     <Compile Include="ViewModels\Selection\SettableListDisplayValueBehaviorTests.cs" />

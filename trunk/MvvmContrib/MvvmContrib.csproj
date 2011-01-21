@@ -119,6 +119,7 @@
     <Compile Include="ViewModels\MultiSelection\MultiSelectionBuilder.cs" />
     <Compile Include="ViewModels\MultiSelection\MultiSelectionVMDescriptor.cs" />
     <Compile Include="ViewModels\MultiSelection\MultiSelectionWithSourceVM.cs" />
+    <Compile Include="ViewModels\ReverseManyToManyCollection.cs" />
     <Compile Include="ViewModels\SelectionBuilderExtensions.cs" />
     <Compile Include="ViewModels\SelectionExtensions.cs" />
     <Compile Include="ViewModels\SelectionItemVM.cs" />
