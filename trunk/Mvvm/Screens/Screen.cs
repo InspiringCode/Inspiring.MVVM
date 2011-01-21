@@ -66,6 +66,7 @@
 
          T screen = Children.AddNew(childScreen);
          SetDisplayValue(screenProperty, screen);
+         screen.Activate();
       }
 
       protected bool CloseChildScreen(IVMPropertyDescriptor<IScreenBase> screenProperty) {
@@ -78,6 +79,7 @@
          }
 
          if (screen.RequestClose()) {
+            screen.Deactivate();
             screen.Close();
             Children.Remove(screen);
             return true;
