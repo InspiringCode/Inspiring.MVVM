@@ -11,10 +11,7 @@
          TItemVM item,
          int index
       ) {
-         // Set the parent first so that validation and change notification can
-         // propagate properly.
-         item.Kernel.Parent = collection.Owner;
-         item.Kernel.OwnerCollection = collection;
+         HandleItemInserted(item, collection);
          this.ItemInsertedNext(context, collection, item, index);
       }
 
@@ -24,11 +21,8 @@
          TItemVM item,
          int index
       ) {
-         // Clear the parent last so that validation and change notification can
-         // propagate properly.
          this.ItemRemovedNext(context, collection, item, index);
-         item.Kernel.Parent = null;
-         item.Kernel.OwnerCollection = null;
+         HandleItemRemoved(item, collection);
       }
 
       public void ItemSet(
@@ -38,11 +32,9 @@
          TItemVM item,
          int index
       ) {
-         item.Kernel.Parent = collection.Owner;
-         item.Kernel.OwnerCollection = collection;
+         HandleItemInserted(item, collection);
          this.ItemSetNext(context, collection, previousItem, item, index);
-         previousItem.Kernel.Parent = null;
-         previousItem.Kernel.OwnerCollection = null;
+         HandleItemRemoved(previousItem, collection);
       }
 
       public void ItemsCleared(
@@ -53,6 +45,23 @@
          this.ItemsClearedNext(context, collection, previousItems);
 
          foreach (TItemVM item in previousItems) {
+            HandleItemRemoved(item, collection);
+         }
+      }
+
+      private void HandleItemInserted(TItemVM item, IVMCollection<TItemVM> collection) {
+         if (item.Kernel.OwnerCollection == null) {
+            // Set the parent first so that validation and change notification can
+            // propagate properly.
+            item.Kernel.Parent = collection.Owner;
+            item.Kernel.OwnerCollection = collection;
+         }
+      }
+
+      private void HandleItemRemoved(TItemVM item, IVMCollection<TItemVM> collection) {
+         if (item.Kernel.OwnerCollection == collection) {
+            // Clear the parent last so that validation and change notification can
+            // propagate properly.
             item.Kernel.Parent = null;
             item.Kernel.OwnerCollection = null;
          }
