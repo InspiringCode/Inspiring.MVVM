@@ -167,7 +167,7 @@
             foreach (IVMPropertyDescriptor property in _descriptor.Properties) {
                property
                   .Behaviors
-                  .RevalidateDescendantsNext(this, validationContext, ValidationScope.FullSubtree, mode);
+                  .RevalidateDescendantsNext(this, validationContext, scope, mode);
             }
          }
 

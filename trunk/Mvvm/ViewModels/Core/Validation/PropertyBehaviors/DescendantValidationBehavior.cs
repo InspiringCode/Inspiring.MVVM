@@ -25,6 +25,11 @@
          ValidationScope scope,
          ValidationMode mode
       ) {
+         if (scope == ValidationScope.SelfAndLoadedDescendants && !this.IsLoadedNext(context)) {
+            this.RevalidateDescendantsNext(context, validationContext, scope, mode);
+            return;
+         }
+
          if (_isViewModelProperty) {
             var childVM = (IViewModel)this.GetValueNext<TValue>(context); // TODO: What stage?
             if (childVM != null) {
@@ -41,6 +46,8 @@
                }
             }
          }
+
+         this.RevalidateDescendantsNext(context, validationContext, scope, mode); // TODO: There is some duplication!
       }
 
       public ValidationState GetValidationState(IBehaviorContext context) {

@@ -102,27 +102,28 @@
       }
 
       [TestMethod]
-      public void Refresh_DoesNotLoadWrappingVM() {
+      public void Refresh_DoesNotLoadDescendantsOfWrappingVM() {
          VM.Refresh();
-         Assert.IsFalse(VM.IsLoaded(TestVM.ClassDescriptor.WrappingVM));
+         Assert.IsFalse(VM.WrappingVM.DescendantsWereLoaded);
       }
 
       [TestMethod]
-      public void Refresh_DoesNotLoadDelegatedVM() {
+      public void Refresh_DoesNotLoadDescendantsOfDelegatedVM() {
          VM.Refresh();
-         Assert.IsFalse(VM.IsLoaded(TestVM.ClassDescriptor.DelegatedVM));
+         Assert.IsFalse(VM.DelegatedVM.DescendantsWereLoaded);
       }
 
       [TestMethod]
-      public void Refresh_DoesNotLoadWrappingCollection() {
+      public void Refresh_DoesNotLoadDescendantsOfWrappingCollection() {
+         VM.WrappingCollectionSource.Add(new ChildSourceObject());
          VM.Refresh();
-         Assert.IsFalse(VM.IsLoaded(TestVM.ClassDescriptor.WrappingCollection));
+         Assert.IsFalse(VM.WrappingColletion.First().DescendantsWereLoaded);
       }
 
       [TestMethod]
-      public void Refresh_DoesNotLoadPopulatedCollection() {
+      public void Refresh_DoesNotLoadDescendantsOfPopulatedCollection() {
          VM.Refresh();
-         Assert.IsFalse(VM.IsLoaded(TestVM.ClassDescriptor.PopulatedCollection));
+         Assert.IsFalse(VM.PopulatedColletion.First().DescendantsWereLoaded);
       }
 
       public sealed class TestVM : ViewModel<TestVMDescriptor> {
@@ -262,10 +263,6 @@
             base.Refresh();
          }
 
-         public bool IsLoaded(IVMPropertyDescriptor property) {
-            return property.Behaviors.IsLoadedNext(GetContext());
-         }
-
          protected override void OnPropertyChanged(IVMPropertyDescriptor property) {
             base.OnPropertyChanged(property);
 
@@ -286,6 +283,7 @@
             .WithProperties((d, b) => {
                var v = b.GetPropertyBuilder();
                d.Property = v.Property.MapsTo(x => x.PropertySource);
+               d.DescendantVM = v.VM.DelegatesTo(vm => new ChildVM());
             })
             .WithValidators(b => {
                b.Check(x => x.Property).Custom((vm, value, args) => {
@@ -303,6 +301,12 @@
          public bool WasValidated { get; set; }
 
          public bool WasRefreshed { get; set; }
+
+         public bool DescendantsWereLoaded {
+            get {
+               return Descriptor.DescendantVM.Behaviors.IsLoadedNext(GetContext());
+            }
+         }
 
          private string PropertySource { get; set; }
 
@@ -335,6 +339,7 @@
 
       public sealed class ChildVMDescriptor : VMDescriptor {
          public IVMPropertyDescriptor<string> Property { get; set; }
+         public IVMPropertyDescriptor<ChildVM> DescendantVM { get; set; }
       }
 
       public class ChildSourceObject {

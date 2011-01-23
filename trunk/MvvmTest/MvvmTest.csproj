@@ -70,6 +70,7 @@
     <Compile Include="ApiTests\ViewModels\Domain\RichText.cs" />
     <Compile Include="ApiTests\ViewModels\Domain\Task.cs" />
     <Compile Include="ApiTests\ViewModels\Domain\TaskRepository.cs" />
+    <Compile Include="ApiTests\ViewModels\PropertyDependencyTests.cs" />
     <Compile Include="ApiTests\ViewModels\RefreshTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\CollectionValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\GeneralValidationTests.cs" />
