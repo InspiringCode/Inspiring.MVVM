@@ -36,6 +36,10 @@
          set { Kernel.Parent = value; }
       }
 
+      public bool IsValid {
+         get { return Kernel.IsValid; }
+      }
+
       VMKernel IViewModel.Kernel {
          get { return Kernel; }
       }

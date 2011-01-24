@@ -9,6 +9,7 @@
       private readonly VMDescriptorBase _descriptor;
       private FieldValueHolder _fieldValues;
 
+      private bool _isValid = true;
       private ValidationState _viewModelValidationState = ValidationState.Valid;
       private ValidationState _propertiesValidationState = ValidationState.Valid;
       private ValidationState _selfOnlyValidationState = ValidationState.Valid;
@@ -30,6 +31,10 @@
       public IServiceLocator ServiceLocator {
          get;
          private set;
+      }
+
+      public bool IsValid {
+         get { return _isValid; }
       }
 
       IViewModel IBehaviorContext.VM {
@@ -144,7 +149,7 @@
          ViewModelValidationBehavior behavior;
 
          if (_descriptor.Behaviors.TryGetBehavior(out behavior)) {
-            behavior.Validate(this, ValidationContext.Current);
+            behavior.Validate(this, validationContext);
          }
       }
 
@@ -286,6 +291,8 @@
             _selfOnlyValidationState,
             _descendantsOnlyValidationState
          );
+
+         _isValid = _validationState.IsValid;
       }
    }
 }
