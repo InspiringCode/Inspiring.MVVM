@@ -15,6 +15,10 @@
          })
          .WithValidators(b => {
             b.EnableParentValidation();
+            b.Check(x => x.Title).Custom((vm, val, args) => {
+               args.Errors.Add("Error");
+               vm.WasValidated = true;
+            });
          })
          .Build();
 
@@ -28,6 +32,8 @@
       }
 
       public Project ProjectSource { get; private set; }
+
+      public bool WasValidated { get; set; }
 
       public CustomerVM Customer {
          get { return GetValue(Descriptor.Customer); }

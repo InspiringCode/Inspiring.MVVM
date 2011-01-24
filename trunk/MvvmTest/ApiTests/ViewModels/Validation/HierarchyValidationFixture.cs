@@ -45,11 +45,22 @@
          private List<Validator> _expectedCalls = new List<Validator>();
          private Dictionary<Validator, ValidationArgs> _actualCalls = new Dictionary<Validator, ValidationArgs>();
 
+         public ValidationLog() {
+            IsEnabled = false;
+         }
+
+         public bool IsEnabled { get; set; }
+
          public void ExpectCalls(params Validator[] toValidators) {
+            IsEnabled = true;
             _expectedCalls.AddRange(toValidators);
          }
 
          public void AddCall(Validator validator, ValidationArgs args) {
+            if (!IsEnabled) {
+               return;
+            }
+
             Assert.IsTrue(
                _expectedCalls.Contains(validator),
                "Did not expect a call to validator {0}.",

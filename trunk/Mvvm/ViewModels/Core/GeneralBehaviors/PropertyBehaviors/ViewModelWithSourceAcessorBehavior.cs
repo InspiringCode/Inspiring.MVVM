@@ -12,6 +12,9 @@
          TSource sourceValue = this.GetValueNext<TSource>(context);
          instance.Source = sourceValue;
 
+         // TODO: This and same line in DelegatesTo (PropertyBuilder) is a hack!
+         instance.Kernel.Revalidate(ValidationScope.SelfAndLoadedDescendants, ValidationMode.CommitValidValues);
+
          return instance;
       }
 

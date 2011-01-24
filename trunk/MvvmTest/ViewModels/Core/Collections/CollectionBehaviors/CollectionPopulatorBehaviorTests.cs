@@ -3,6 +3,7 @@ using Inspiring.Mvvm.ViewModels.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Sequences;
+using System.Linq;
 
 namespace Inspiring.MvvmTest.ViewModels.Core.Collections {
    [TestClass]
@@ -20,6 +21,7 @@ namespace Inspiring.MvvmTest.ViewModels.Core.Collections {
          populator.Successor.Successor = sourceAccessor;
 
          var collectionMock = new Mock<IVMCollection<ItemVM>>();
+         collectionMock.Setup(x => x.GetEnumerator()).Returns(Enumerable.Empty<ItemVM>().GetEnumerator());
 
          using (Sequence.Create()) {
             collectionMock.SetupSet(x => x.IsPopulating = true).InSequence();

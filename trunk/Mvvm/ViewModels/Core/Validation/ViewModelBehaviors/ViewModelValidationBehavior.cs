@@ -124,12 +124,32 @@
          if (ownerCollection == null || !ownerCollection.IsPopulating) {
             ValidationContext.BeginValidation();
 
-            Validate(
-               context,
-               ValidationContext.Current,
-               changedPath: changedPath,
-               changedProperty: args.ChangedProperty
-            );
+            bool collectionChange =
+               args.ChangeType == ChangeType.AddedToCollection ||
+               args.ChangeType == ChangeType.RemovedFromCollection;
+
+            bool isInitialValidationLevel = changedPath.Length == 1;
+
+            if (collectionChange && isInitialValidationLevel) {
+               args.ChangedVM.Kernel.Revalidate(
+                  ValidationContext.Current,
+                  ValidationScope.SelfAndLoadedDescendants,
+                  ValidationMode.CommitValidValues
+               );
+            } else {
+               // If an item was removed or added to an collection it is enough to
+               // call 'Revalidate' on that item, because the blow statement would
+               // only perform a view model validation (because 'ChangedProperty'
+               // is always null) and 'Revalidate' performs a view model validation
+               // too.
+
+               Validate(
+                  context,
+                  ValidationContext.Current,
+                  changedPath: changedPath,
+                  changedProperty: args.ChangedProperty
+               );
+            }
 
             ValidationContext.CompleteValidation(ValidationMode.CommitValidValues);
          }

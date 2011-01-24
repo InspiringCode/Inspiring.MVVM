@@ -8,14 +8,12 @@
    public class ParentValidationTests : HierarchyValidationFixture {
       [TestMethod]
       public void PropertyValidatorDefinedForCollectionItems_ThatMatches_IsCalledWithCorrectArguments() {
-         Log.ExpectCalls(Validator.ProjectTitle, Validator.ProjectDescription);
-         
          EmployeeVM emp = CreateEmployeeVM();
          ProjectVM project = CreateProjectVM();
          emp.Projects.Add(project);
 
+         Log.ExpectCalls(Validator.ProjectTitle, Validator.ProjectDescription);
          project.Revalidate();
-
          Log.VerifyCalls();
 
          ValidationArgs args = Log.GetArgs(Validator.ProjectTitle);
@@ -29,14 +27,12 @@
 
       [TestMethod]
       public void PropertyValidatorDefinedForChildVM_ThatMatches_IsCalledWithCorrectArguments() {
-         Log.ExpectCalls(Validator.CustomerAddress, Validator.CustomerPostalCode);
-
          ProjectVM project = CreateProjectVM();
          CustomerVM customer = CreateCustomerVM();
          project.Customer = customer;
 
+         Log.ExpectCalls(Validator.CustomerAddress, Validator.CustomerPostalCode);
          customer.Revalidate();
-
          Log.VerifyCalls();
 
          ValidationArgs args = Log.GetArgs(Validator.CustomerAddress);
@@ -50,8 +46,6 @@
 
       [TestMethod]
       public void PropertyValidatorDefinedForGrandchildVM_ThatMatches_IsCalledWithCorrectArguments() {
-         Log.ExpectCalls(Validator.CustomerName, Validator.CustomerAddress, Validator.CustomerPostalCode);
-
          EmployeeVM employee = CreateEmployeeVM();
          ProjectVM project = CreateProjectVM();
          CustomerVM customer = CreateCustomerVM();
@@ -59,8 +53,8 @@
          employee.Projects.Add(project);
          employee.Projects.Add(CreateProjectVM());
 
+         Log.ExpectCalls(Validator.CustomerName, Validator.CustomerAddress, Validator.CustomerPostalCode);
          customer.Revalidate();
-
          Log.VerifyCalls();
 
          ValidationArgs args = Log.GetArgs(Validator.CustomerName);

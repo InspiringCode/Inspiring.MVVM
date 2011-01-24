@@ -129,7 +129,16 @@
          return Factory.CreateViewModelProperty(
             viewModelAccessor: new CalculatedPropertyAccessor<TVM, TSourceObject, TChildVM>(
                _sourceObjectPath,
-               getter,
+               sourceObject => {
+                  // TODO: This and same line in ViewModelWithSourceAccessorBehavior is a hack!
+                  TChildVM result = getter(sourceObject);
+                  
+                  if (result != null) {
+                     result.Kernel.Revalidate(ValidationScope.SelfAndLoadedDescendants, ValidationMode.CommitValidValues);
+                  }
+                  
+                  return result;
+               },
                setter
             ),
             cachesValue: true,

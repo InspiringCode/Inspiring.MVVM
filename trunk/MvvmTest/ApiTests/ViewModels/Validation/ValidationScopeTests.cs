@@ -1,6 +1,6 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Validation {
-   using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Inspiring.Mvvm.ViewModels;
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
    public class ValidationScopeTests : HierarchyValidationFixture {
@@ -41,10 +41,10 @@
          employee.Projects.Add(project);
 
          Log.ExpectCalls(
-            Validator.EmployeeName, 
+            Validator.EmployeeName,
             Validator.ProjectDescription,
             Validator.ProjectTitle,
-            Validator.CustomerAddress, 
+            Validator.CustomerAddress,
             Validator.CustomerName,
             Validator.CustomerPostalCode
          );
@@ -69,12 +69,14 @@
 
       private EmployeeVM CreateViewModelHierarchy() {
          var emp = CreateEmployeeVM();
+
          var project1 = CreateProjectVM();
          var project2 = CreateProjectVM();
          project1.Customer = CreateCustomerVM();
          project2.Customer = CreateCustomerVM();
          emp.Projects.Add(project1);
          emp.Projects.Add(project2);
+
          return emp;
       }
    }

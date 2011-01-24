@@ -73,6 +73,7 @@
     <Compile Include="ApiTests\ViewModels\PropertyDependencyTests.cs" />
     <Compile Include="ApiTests\ViewModels\RefreshTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\CollectionValidationTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\DescendantValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\GeneralValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\TypeDescriptorTests.cs" />
     <Compile Include="ApiTests\ViewModels\AccessPropertyTests.cs" />
