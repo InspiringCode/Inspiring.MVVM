@@ -40,9 +40,10 @@
       }
 
       public void Populate(IBehaviorContext context) {
-         var collection = this.GetValueNext<IVMCollection<TItemVM>>(context);
-         Repopulate(context, collection);
+         context.FieldValues.SetValue(_isPopulatedField, true);
 
+         var coll = this.GetValueNext<IVMCollection<TItemVM>>(context);
+         Repopulate(context, coll);
       }
 
       private void Repopulate(IBehaviorContext context, IVMCollection<TItemVM> collection) {

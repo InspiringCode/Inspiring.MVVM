@@ -208,7 +208,16 @@
                );
          }
 
-         if (args.ChangeType == ChangeType.ValidationStateChanged) {
+         bool validationStateChanged = args.ChangeType == ChangeType.ValidationStateChanged;
+         bool collectionChanged =
+            args.ChangeType == ChangeType.AddedToCollection ||
+            args.ChangeType == ChangeType.RemovedFromCollection;
+
+         bool viewModelPropertyChanged = args.ChangedProperty != null ?
+            PropertyTypeHelper.IsViewModel(args.ChangedProperty.PropertyType) :
+            false;
+
+         if (validationStateChanged || collectionChanged || viewModelPropertyChanged) {
             UpdateValidationState();
          }
 

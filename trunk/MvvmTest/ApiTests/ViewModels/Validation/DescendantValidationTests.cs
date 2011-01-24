@@ -4,6 +4,7 @@
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
+   using System.Diagnostics.Contracts;
 
    [TestClass]
    public class DescendantValidationTests {
@@ -41,6 +42,42 @@
          vm.DelegatedCurrentProjectSource = new ProjectVM();
 
          Assert.IsTrue(vm.CurrentProjectDelegated.WasValidated);
+      }
+
+      [TestMethod]
+      public void GetValidationState_Children_AfterInvalidChildWasAdded_ReturnsError() {
+         ProjectVM childItem = new ProjectVM();
+         childItem.Source = new Project("Project 1");
+         childItem.Revalidate();
+         
+         var itemBeforeAdditionState = childItem.GetValidationState(ValidationStateScope.All);
+         Contract.Assert(!itemBeforeAdditionState.IsValid);
+
+         EmployeeVM vm = new EmployeeVM();
+         var parentBeforeAdditionState = vm.GetValidationState(ValidationStateScope.All);
+         Contract.Assert(parentBeforeAdditionState.IsValid);
+
+         vm.ProjectsWrapped.Add(childItem);
+
+         Assert.IsFalse(vm.GetValidationState(ValidationStateScope.Descendants).IsValid);
+      }
+
+      [TestMethod]
+      public void GetValidationState_Children_AfterInvalidChildWasAssigned_ReturnsError() {
+         ProjectVM childItem = new ProjectVM();
+         childItem.Source = new Project("Project 1");
+         childItem.Revalidate();
+
+         var itemBeforeAdditionState = childItem.GetValidationState(ValidationStateScope.All);
+         Contract.Assert(!itemBeforeAdditionState.IsValid);
+
+         EmployeeVM vm = new EmployeeVM();
+         var parentBeforeAdditionState = vm.GetValidationState(ValidationStateScope.All);
+         Contract.Assert(parentBeforeAdditionState.IsValid);
+
+         vm.CurrentProjectWrapped = childItem;
+
+         Assert.IsFalse(vm.GetValidationState(ValidationStateScope.Descendants).IsValid);
       }
 
       private sealed class EmployeeVM : ViewModel<EmployeeVMDescriptor> {
@@ -127,6 +164,10 @@
          public Project Source { get; set; }
 
          public bool WasValidated { get; set; }
+
+         public void Revalidate() {
+            base.Revalidate(ValidationScope.FullSubtree, ValidationMode.DiscardInvalidValues);
+         }
       }
 
       private sealed class ProjectVMDescriptor : VMDescriptor {
