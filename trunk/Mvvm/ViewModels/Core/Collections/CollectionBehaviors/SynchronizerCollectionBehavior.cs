@@ -52,9 +52,8 @@
             if (listSource != null) {
                bool listSourceHasChanged = !Object.ReferenceEquals(listSource[index], item.Source);
                ThrowOutOfSyncExceptionIf(listSourceHasChanged);
-            }
-
-            if (collectionSource != null) {
+               listSource.RemoveAt(index);
+            } else if (collectionSource != null) {
                bool itemWasFound = collectionSource.Remove(item.Source);
                bool listSourceHasChanged = collectionSource.Count != collection.Count;
 
