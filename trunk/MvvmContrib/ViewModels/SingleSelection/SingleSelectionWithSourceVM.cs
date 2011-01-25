@@ -85,6 +85,9 @@
                   x => x.SelectedSourceItem
                );
             })
+            .WithValidators(b => {
+               b.EnableParentValidation(x => x.SelectedItem);
+            })
             //.WithBehaviors(c => {
             //   // This behavior ensures, that the 'SelectedItems' collection returns the same
             //   // VM instances (for the same source items) as the 'AllItems' collection.
@@ -177,6 +180,9 @@
                b.OverrideUpdateSourceProperties(
                   x => x.SelectedSourceItem
                );
+            })
+            .WithValidators(b => {
+               b.EnableParentValidation(x => x.SelectedItem);
             })
             //.WithBehaviors(c => {
             //   // This behavior ensures, that the 'SelectedItems' collection returns the same

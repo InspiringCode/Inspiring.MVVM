@@ -89,6 +89,9 @@
                   vm.OnPropertyChanged("SelectedItems"); // HACK!
                });
             })
+            .WithValidators(b => {
+               b.EnableParentValidation(x => x.SelectedItems);
+            })
             .WithViewModelBehaviors(b => {
                b.OverrideUpdateFromSourceProperties(
                   x => x.AllSourceItems,
@@ -180,6 +183,9 @@
                c.For(x => x.SelectedItems).AddChangeHandler((vm, args, path) => {
                   vm.OnPropertyChanged("SelectedItems"); // HACK!
                });
+            })
+            .WithValidators(b => {
+               b.EnableParentValidation(x => x.SelectedItems);
             })
             .WithViewModelBehaviors(b => {
                b.OverrideUpdateFromSourceProperties(
