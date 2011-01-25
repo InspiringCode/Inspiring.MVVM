@@ -10,7 +10,7 @@
 
       protected abstract void RegisterTypeIfMissing<TFrom, TTo>(bool registerAsSingleton) where TTo : TFrom;
 
-      protected abstract Window CreateShellWindow(IWindowService windowService);
+      protected abstract Window CreateAndShowShellWindow(IWindowService windowService);
 
       /// <summary>
       ///   A hook method you can override to show a custom login dialog. Return true
@@ -27,6 +27,10 @@
          ServiceLocator.SetServiceLocator(GetServiceLocator());
          AddDefaultRegistrations();
 
+         OnStartupCore();
+      }
+
+      protected virtual void OnStartupCore() {
          bool loginSuccessful;
 
          try {
@@ -36,9 +40,10 @@
             loginSuccessful = Login(windowService);
 
             if (loginSuccessful) {
-               Window shellWindow = CreateShellWindow(windowService);
-               MainWindow = shellWindow;
-               shellWindow.Show();
+               Window shellWindow = CreateAndShowShellWindow(windowService);
+               if (shellWindow != null) {
+                  MainWindow = shellWindow;
+               }
             }
          } finally {
             ShutdownMode = ShutdownMode.OnLastWindowClose;

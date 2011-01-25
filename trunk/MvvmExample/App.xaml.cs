@@ -31,8 +31,10 @@
          }
       }
 
-      protected override Window CreateShellWindow(IWindowService windowService) {
-         return windowService.CreateWindow(ScreenFactory.For<ShellScreen>());
+      protected override Window CreateAndShowShellWindow(IWindowService windowService) {
+         Window window = windowService.CreateWindow(ScreenFactory.For<ShellScreen>());
+         window.Show();
+         return window;
       }
 
       protected override bool Login(IWindowService windowService) {
