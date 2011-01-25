@@ -11,9 +11,14 @@
       private IVMPropertyDescriptor _property;
 
       public TypeDescriptorPropertyDescriptor(IVMPropertyDescriptor property)
+         // We have to use Object as type because we describe the 'DisplayValue'
+         // of the property, which is of type object. This is necessary to allow
+         // the view model to make type conversions. If we would return the real
+         // type of the property, the .NET Binding system would try to do the
+         // conversion.
          : base(
             property.PropertyName,
-            property.PropertyType,
+            propertyType: typeof(object),
             componentType: typeof(IViewModel)
          ) {
          Contract.Requires(property != null);

@@ -29,8 +29,8 @@
             .ToArray();
 
          var expected = new PropertyDescriptorCO[] { 
-            new PropertyDescriptorCO("Rating", typeof(int)),
-            new PropertyDescriptorCO("Comment", typeof(string))
+            new PropertyDescriptorCO("Rating", typeof(object)),
+            new PropertyDescriptorCO("Comment", typeof(object))
          };
 
          CollectionAssert.AreEquivalent(expected, actual);
