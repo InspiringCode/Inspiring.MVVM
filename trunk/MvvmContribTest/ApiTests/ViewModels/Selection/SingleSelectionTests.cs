@@ -64,6 +64,16 @@
          Assert.AreSame(newDepartment.DepartmentSource, vm.UserSource.Department);
       }
 
+      [TestMethod]
+      public void SetSelectedItem_ToNull_SetsSourcePropertyToNull() {
+         var vm = CreateUserVMWithItems();
+         vm.Department.SelectedItem = vm.Department.AllItems.First();
+
+         vm.Department.SelectedItem = null;
+
+         Assert.IsNull(vm.UserSource.Department);         
+      }
+
       /// <summary>
       ///   Asserts that the source departments of the 'AllItems' property of the
       ///   selection VM are equal to the given source items.

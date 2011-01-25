@@ -71,7 +71,7 @@
                   vm => vm.SelectedSourceItem != null ?
                      vm.AllItems.Single(i => Object.Equals(i.Source, vm.SelectedSourceItem)) :
                      default(TItemVM),
-                  (vm, value) => vm.SelectedSourceItem = value.Source
+                     (vm, value) => vm.SelectedSourceItem = value != null ? value.Source : default(TItemSource)
                );
             })
             .WithViewModelBehaviors(b => {
@@ -164,7 +164,7 @@
                  vm => vm.SelectedSourceItem != null ?
                     vm.AllItems.Single(i => Object.Equals(i.Source, vm.SelectedSourceItem)) :
                     default(SelectionItemVM<TItemSource>),
-                 (vm, value) => vm.SelectedSourceItem = value.Source
+                 (vm, value) => vm.SelectedSourceItem = value != null ? value.Source : default(TItemSource)
               );
             })
             .WithViewModelBehaviors(b => {
