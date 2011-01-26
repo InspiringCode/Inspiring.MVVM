@@ -41,6 +41,10 @@
 
                d.Employees = v.Collection.Of<EmployeeVM>(EmployeeVM.ClassDescriptor);
             })
+            .WithValidators(b => {
+               b.CheckCollection<EmployeeVMDescriptor, string>(x => x.Employees, x => x.FirstName)
+                  .IsUnique("Not unique");
+            })
             .Build();
       }
 

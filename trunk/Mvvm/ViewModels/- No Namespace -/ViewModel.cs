@@ -198,6 +198,7 @@
       protected virtual void OnValidationStateChanged(IVMPropertyDescriptor property) {
          if (property != null) {
             OnPropertyChanged("Item[]");
+            OnPropertyChanged(property.PropertyName);
          } else {
             OnPropertyChanged("Error");
          }

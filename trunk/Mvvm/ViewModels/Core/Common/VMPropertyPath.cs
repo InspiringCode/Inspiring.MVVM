@@ -43,5 +43,21 @@
          Contract.Requires<IndexOutOfRangeException>(0 <= index && index < Length);
          return _properties[index].GetPropertyValue(viewModel);
       }
+
+      // TODO: Clean me up!
+      public bool IsLoaded(IViewModel rootVM) {
+         IViewModel viewModel = rootVM;
+         foreach (PropertySelector selector in _properties) {
+            IVMPropertyDescriptor property = selector.GetProperty(viewModel.Descriptor);
+            if (!viewModel.Kernel.IsLoaded(property)) {
+               return false;
+            }
+            viewModel = selector.GetPropertyValue(viewModel) as IViewModel;
+            if (viewModel == null) {
+               break;
+            }
+         }
+         return true;
+      }
    }
 }

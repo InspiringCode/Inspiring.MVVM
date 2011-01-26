@@ -9,6 +9,7 @@
       private readonly VMDescriptorBase _descriptor;
       private FieldValueHolder _fieldValues;
 
+      private bool _validationStateIsCurrent = false;
       private bool _isValid = true;
       private ValidationState _viewModelValidationState = ValidationState.Valid;
       private ValidationState _propertiesValidationState = ValidationState.Valid;
@@ -34,7 +35,12 @@
       }
 
       public bool IsValid {
-         get { return _isValid; }
+         get {
+            if (!_validationStateIsCurrent) {
+               UpdateValidationState();
+            }
+            return _isValid;
+         }
       }
 
       IViewModel IBehaviorContext.VM {
@@ -66,6 +72,11 @@
          }
       }
 
+      public bool IsLoaded(IVMPropertyDescriptor property) {
+         Contract.Requires<ArgumentNullException>(property != null);
+         return property.Behaviors.IsLoadedNext(this);
+      }
+
       public T GetValue<T>(IVMPropertyDescriptor<T> property) {
          return property.Behaviors.GetValueNext<T>(this);
       }
@@ -91,6 +102,9 @@
       }
 
       public ValidationState GetValidationState(ValidationStateScope scope = ValidationStateScope.All) {
+         if (!_validationStateIsCurrent) {
+            UpdateValidationState();
+         }
          switch (scope) {
             case ValidationStateScope.All:
                return _validationState;
@@ -223,7 +237,8 @@
             false;
 
          if (validationStateChanged || collectionChanged || viewModelPropertyChanged) {
-            UpdateValidationState();
+            _validationStateIsCurrent = false;
+            //UpdateValidationState();
          }
 
          ViewModelBehavior behavior;
@@ -293,6 +308,7 @@
          );
 
          _isValid = _validationState.IsValid;
+         _validationStateIsCurrent = true;
       }
    }
 }

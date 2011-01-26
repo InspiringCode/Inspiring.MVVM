@@ -95,6 +95,10 @@
             return false;
          }
 
+         if (!properties.IsLoaded(RootVM)) {
+            return false;
+         }
+
          return MatchStartCore(properties);
       }
 

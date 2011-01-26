@@ -35,7 +35,7 @@
       ///   The given function should return a collection VM property.
       /// </param>
       public ValidatorBuilderBase<ViewModel<TChildDescriptor>, TChildDescriptor> ValidateDescendant<TChildDescriptor>(
-         Func<TDescriptor, IVMPropertyDescriptor<ViewModel<TChildDescriptor>>> propertySelector
+         Func<TDescriptor, IVMPropertyDescriptor<IViewModel<TChildDescriptor>>> propertySelector
       ) where TChildDescriptor : VMDescriptorBase {
          var config = Configuration.ExtendTargetPath(PropertySelector.Create(propertySelector));
          return new ValidatorBuilderBase<ViewModel<TChildDescriptor>, TChildDescriptor>(config);
@@ -50,7 +50,7 @@
       ///   The given function should return a child VM property.
       /// </param>
       public ValidatorBuilderBase<ViewModel<TChildDescriptor>, TChildDescriptor> ValidateDescendant<TChildDescriptor>(
-         Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<ViewModel<TChildDescriptor>>>> propertySelector
+         Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModel<TChildDescriptor>>>> propertySelector
       ) where TChildDescriptor : VMDescriptorBase {
          var config = Configuration.ExtendTargetPath(PropertySelector.Create(propertySelector));
          return new ValidatorBuilderBase<ViewModel<TChildDescriptor>, TChildDescriptor>(config);
@@ -77,7 +77,7 @@
       ///      the collection is unique).</para>
       /// </param>
       public CollectionPropertyValidatorBuilder<TItemDescriptor, TItemValue> CheckCollection<TItemDescriptor, TItemValue>(
-         Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<ViewModel<TItemDescriptor>>>> collectionSelector,
+         Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModel<TItemDescriptor>>>> collectionSelector,
          Func<TItemDescriptor, IVMPropertyDescriptor<TItemValue>> itemPropertySelector
       ) where TItemDescriptor : VMDescriptorBase {
          var config = Configuration
