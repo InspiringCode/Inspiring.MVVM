@@ -29,7 +29,7 @@
       /// </param>
       public void Custom<TItemVM>(
          Action<TItemVM, IEnumerable<TItemVM>, IVMPropertyDescriptor<TItemValue>, ValidationArgs> validator
-       ) where TItemVM : ViewModel<TItemDescriptor> {
+       ) where TItemVM : IViewModel<TItemDescriptor> {
          Contract.Requires<ArgumentNullException>(validator != null);
          _configuration.AddPropertyValidator(new DelegateValidator<TItemVM>(validator));
       }

@@ -34,11 +34,11 @@
       /// <param name="propertySelector">
       ///   The given function should return a collection VM property.
       /// </param>
-      public ValidatorBuilderBase<ViewModel<TChildDescriptor>, TChildDescriptor> ValidateDescendant<TChildDescriptor>(
+      public ValidatorBuilderBase<IViewModel<TChildDescriptor>, TChildDescriptor> ValidateDescendant<TChildDescriptor>(
          Func<TDescriptor, IVMPropertyDescriptor<IViewModel<TChildDescriptor>>> propertySelector
       ) where TChildDescriptor : VMDescriptorBase {
          var config = Configuration.ExtendTargetPath(PropertySelector.Create(propertySelector));
-         return new ValidatorBuilderBase<ViewModel<TChildDescriptor>, TChildDescriptor>(config);
+         return new ValidatorBuilderBase<IViewModel<TChildDescriptor>, TChildDescriptor>(config);
       }
 
       /// <summary>
@@ -49,11 +49,11 @@
       /// <param name="propertySelector">
       ///   The given function should return a child VM property.
       /// </param>
-      public ValidatorBuilderBase<ViewModel<TChildDescriptor>, TChildDescriptor> ValidateDescendant<TChildDescriptor>(
+      public ValidatorBuilderBase<IViewModel<TChildDescriptor>, TChildDescriptor> ValidateDescendant<TChildDescriptor>(
          Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModel<TChildDescriptor>>>> propertySelector
       ) where TChildDescriptor : VMDescriptorBase {
          var config = Configuration.ExtendTargetPath(PropertySelector.Create(propertySelector));
-         return new ValidatorBuilderBase<ViewModel<TChildDescriptor>, TChildDescriptor>(config);
+         return new ValidatorBuilderBase<IViewModel<TChildDescriptor>, TChildDescriptor>(config);
       }
 
       /// <summary>

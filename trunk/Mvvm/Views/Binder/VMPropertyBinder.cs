@@ -80,7 +80,7 @@
       }
    }
 
-   public class VMCollectionBinder<TItemDescriptor> : PropertyBinderExpression<VMCollection<ViewModel<TItemDescriptor>>>, IBindCollectionExpression<TItemDescriptor>
+   public class VMCollectionBinder<TItemDescriptor> : PropertyBinderExpression<VMCollection<IViewModel<TItemDescriptor>>>, IBindCollectionExpression<TItemDescriptor>
       where TItemDescriptor : VMDescriptor {
 
       public VMCollectionBinder(BinderContext context)

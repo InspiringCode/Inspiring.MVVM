@@ -81,13 +81,13 @@
          this CollectionPropertyValidatorBuilder<TItemDescriptor, T> builder,
          string errorMessage
       ) where TItemDescriptor : VMDescriptorBase {
-         builder.Custom<ViewModel<TItemDescriptor>>((item, items, property, args) => {
+         builder.Custom<IViewModel<TItemDescriptor>>((item, items, property, args) => {
             bool isUnique = true;
-            T itemPropertyValue = item.GetValue(property);
+            T itemPropertyValue = item.Kernel.GetValue(property);
 
-            foreach (ViewModel<TItemDescriptor> i in items) {
+            foreach (IViewModel<TItemDescriptor> i in items) {
                if (!Object.ReferenceEquals(i, item)) {
-                  if (Object.Equals(i.GetValue(property), itemPropertyValue)) {
+                  if (Object.Equals(i.Kernel.GetValue(property), itemPropertyValue)) {
                      isUnique = false;
                      args.RevalidationQueue.Add(i);
                   }
@@ -117,13 +117,13 @@
          StringComparison comparisonType,
          string errorMessage
       ) where TItemDescriptor : VMDescriptorBase {
-         builder.Custom<ViewModel<TItemDescriptor>>((item, items, property, args) => {
+         builder.Custom<IViewModel<TItemDescriptor>>((item, items, property, args) => {
             bool isUnique = true;
-            string itemPropertyValue = item.GetValue(property);
+            string itemPropertyValue = item.Kernel.GetValue(property);
 
-            foreach (ViewModel<TItemDescriptor> i in items) {
+            foreach (IViewModel<TItemDescriptor> i in items) {
                if (!Object.ReferenceEquals(i, item)) {
-                  if (String.Equals(i.GetValue(property), itemPropertyValue, comparisonType)) {
+                  if (String.Equals(i.Kernel.GetValue(property), itemPropertyValue, comparisonType)) {
                      isUnique = false;
                      args.RevalidationQueue.Add(i);
                   }

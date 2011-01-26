@@ -6,16 +6,22 @@
    [TestClass]
    public class InheritanceTests {
       public void TestMethod1() {
-         EmployeeListView view = null;
-         ViewBinder.BindVM(view, b => {
-            b.Collection<EmployeeVMDescriptor>(x => x.Employees);
-         });
+         //EmployeeListView view = null;
+         //ViewBinder.BindVM(view, b => {
+         //   b.Collection<EmployeeVMDescriptor>(x => x.Employees);
+         //});
 
-         EmployeeView employeeView = null;
+         //EmployeeView employeeView = null;
 
-         ViewBinder.BindVM<EmployeeVMDescriptor>(employeeView, b => {
-            b.Property(x => x.PersonalNumber);
-         });
+         //ViewBinder.BindVM<EmployeeVMDescriptor>(employeeView, b => {
+         //   b.Property(x => x.PersonalNumber);
+         //});
+      }
+
+      [TestMethod]
+      public void CollectionValidation_DefinedForDerivedItem_Success() {
+         var listVM = new EmployeeListVM();
+         listVM.Initialize();
       }
 
       public class EmployeeListView : IView<EmployeeListVM> {
@@ -33,7 +39,7 @@
       }
 
       public class EmployeeListVM : ViewModel<EmployeeListVMDescriptor> {
-         public static readonly PersonVMDescriptor ClassDescriptor = VMDescriptorBuilder
+         public static readonly EmployeeListVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<EmployeeListVMDescriptor>()
             .For<EmployeeListVM>()
             .WithProperties((d, b) => {
@@ -46,6 +52,19 @@
                   .IsUnique("Not unique");
             })
             .Build();
+
+         public EmployeeListVM()
+            : base(ClassDescriptor) {
+         }
+
+         private IVMCollection<EmployeeVM> Employees {
+            get { return GetValue(Descriptor.Employees); }
+         }
+
+         public void Initialize() {
+            Employees.Add(new EmployeeVM());
+            Revalidate(ValidationScope.FullSubtree, ValidationMode.DiscardInvalidValues);
+         }
       }
 
       public class PersonVM : ViewModel<PersonVMDescriptor> {
@@ -78,6 +97,9 @@
                var v = b.GetPropertyBuilder();
 
                d.PersonalNumber = v.Property.Of<decimal>();
+            })
+            .WithValidators(b => {
+               b.EnableParentValidation();
             })
             .Build();
 
