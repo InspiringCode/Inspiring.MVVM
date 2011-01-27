@@ -43,9 +43,9 @@
                      }
 
                      foreach (ProjectVM p in selectedItems) {
-                        if (!p.Equals(vm)) {
+                        //if (!p.Equals(vm)) {
                            args.RevalidationQueue.Add(p);
-                        }
+                        //}
                      }
                   });
             })

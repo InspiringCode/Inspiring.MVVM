@@ -23,19 +23,23 @@
       public static void BeginValidation() {
          Contract.Assert(_level == 0 || Current != null);
          _level++;
-         _current = new ValidationContext();
+
+         if (_current == null) {
+            _current = new ValidationContext();
+         }
       }
 
       public RevalidationQueue RevalidationQueue { get; set; }
 
       public static void CompleteValidation(ValidationMode validationMode) {
          Contract.Requires<InvalidOperationException>(Current != null);
-         _level--;
-
-         if (_level == 0) {
+         
+         if ((_level - 1) == 0) {
             Current.RevalidationQueue.Revalidate(Current, validationMode);
             _current = null;
          }
+
+         _level--;
       }
    }
 }
