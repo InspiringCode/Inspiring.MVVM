@@ -14,6 +14,20 @@
          ConfigureWindow(window, forScreen);
          return window;
       }
+      public virtual Window CreateDialogWindow<TScreen>(
+         IScreenFactory<TScreen> forScreen
+      ) where TScreen : IScreenBase {
+         Window window = CreateDialogWindow();
+         ConfigureDialogWindow(window, forScreen);
+         return window;
+      }
+      public virtual Window CreateShellWindow<TScreen>(
+         IScreenFactory<TScreen> forScreen
+      ) where TScreen : IScreenBase {
+         Window window = CreateShellWindow();
+         ConfigureWindow(window, forScreen);
+         return window;
+      }
 
       public void ConfigureWindow<TScreen>(
          Window window,
@@ -21,6 +35,14 @@
       ) where TScreen : IScreenBase {
          IScreenBase s = forScreen.Create(x => { });
          ConfigureWindow(window, s, new WindowCloseHandler(s));
+      }
+
+      public void ConfigureDialogWindow<TScreen>(
+         Window window,
+         IScreenFactory<TScreen> forScreen
+      ) where TScreen : IScreenBase {
+         IScreenBase s = forScreen.Create(x => { });
+         ConfigureWindow(window, s, new DialogCloseHandler(s));
       }
 
       protected virtual void ConfigureWindow(
@@ -46,7 +68,7 @@
       }
 
       // TODO: Refactor the whole WindowService/DialogService stuff...
-      public DialogScreenResult Open<TScreen>(
+      public DialogScreenResult ShowDialog<TScreen>(
          Window dialogWindow,
          IScreenFactory<TScreen> screen,
          IScreenBase parent = null
@@ -67,7 +89,7 @@
          return dl.ScreenResult ?? new DialogScreenResult(false);
       }
 
-      public DialogScreenResult Open<TScreen>(
+      public DialogScreenResult ShowDialog<TScreen>(
          IScreenFactory<TScreen> screen,
          IScreenBase parent = null,
          string title = null
@@ -80,10 +102,10 @@
             dialogWindow.Title = title;
          }
 
-         return Open(dialogWindow, screen, parent);
+         return ShowDialog(dialogWindow, screen, parent);
       }
 
-      public bool OpenFile(
+      public bool ShowOpenFileDialog(
          IScreenBase parent,
          out string fileName,
          string filter = null,
@@ -116,6 +138,10 @@
       }
 
       protected virtual Window CreateDialogWindow() {
+         return CreateWindow();
+      }
+
+      protected virtual Window CreateShellWindow() {
          return CreateWindow();
       }
 
@@ -156,8 +182,6 @@
             s.Close();
          };
       }
-
-
 
       protected Window GetAssociatedWindow(IScreenBase ofScreen) {
          // TODO: Can be generalize this logic (traversing of hierarchy)?

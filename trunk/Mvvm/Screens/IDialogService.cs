@@ -1,14 +1,14 @@
 ﻿namespace Inspiring.Mvvm.Screens {
    // TODO: Save dialog
    public interface IDialogService {
-      bool OpenFile(
+      bool ShowOpenFileDialog(
          IScreenBase parent,
          out string fileName,
          string filter = null,
          string initialDirectory = null
       );
 
-      DialogScreenResult Open<TScreen>(
+      DialogScreenResult ShowDialog<TScreen>(
          IScreenFactory<TScreen> screen,
          IScreenBase parent = null,
          string title = null

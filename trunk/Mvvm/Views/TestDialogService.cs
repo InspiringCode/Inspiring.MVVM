@@ -13,7 +13,7 @@
          _actions.Push(action);
       }
 
-      public bool OpenFile(
+      public bool ShowOpenFileDialog(
          IScreenBase parent,
          out string fileName,
          string filter = null,
@@ -22,7 +22,7 @@
          throw new NotImplementedException();
       }
 
-      public DialogScreenResult Open<T>(
+      public DialogScreenResult ShowDialog<T>(
          IScreenFactory<T> screen,
          IScreenBase parent,
          string title = null
