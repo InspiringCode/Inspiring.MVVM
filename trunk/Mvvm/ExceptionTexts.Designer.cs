@@ -385,7 +385,7 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This operation can only be called for screens that were shown using &apos;IDialogService.Show&apos; method..
+        ///   Looks up a localized string similar to This operation can only be called for screens that were created using &apos;IDialogService.ShowDialog&apos; or &apos;IWindowService.CreateDialogWindow&apos; method..
         /// </summary>
         internal static string ScreenIsNoDialog {
             get {

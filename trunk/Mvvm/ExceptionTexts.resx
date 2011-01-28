@@ -214,7 +214,7 @@
     <value>The given 'screen' (or one of its parents) is not associated with a 'Window'. Make sure you only call this operation for screens that are currently shown.</value>
   </data>
   <data name="ScreenIsNoDialog" xml:space="preserve">
-    <value>This operation can only be called for screens that were shown using 'IDialogService.Show' method.</value>
+    <value>This operation can only be called for screens that were created using 'IDialogService.ShowDialog' or 'IWindowService.CreateDialogWindow' method.</value>
   </data>
   <data name="WindowDialogResultNotAssigned" xml:space="preserve">
     <value>The 'Window.DialogResult' property was not assigned yet by the view. Make sure you call this method only in 'OnRequestClose' and 'OnClose'.</value>

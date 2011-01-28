@@ -42,6 +42,7 @@
          IScreenFactory<TScreen> forScreen
       ) where TScreen : IScreenBase {
          IScreenBase s = forScreen.Create(x => { });
+         s.Children.Add(new DialogLifecycle());
          ConfigureWindow(window, s, new DialogCloseHandler(s));
       }
 
