@@ -37,6 +37,16 @@
          set;
       }
 
+      internal bool ValidationIsEnabled {
+         get;
+         private set;
+      }
+
+      public MultiSelectionBuilder<TSourceObject, TItemSource> EnableValidations() {
+         ValidationIsEnabled = true;
+         return this;
+      }
+
       public MultiSelectionBuilder<TSourceObject, TItemSource> WithFilter(Func<TItemSource, bool> filter) {
          Filter = filter;
          return this;
@@ -66,7 +76,8 @@
          var descriptor = MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>.CreateDescriptor(
             itemDescriptor,
             SelectedSourceItemsPropertyFactory,
-            allSourceItemsPropertyFactory
+            allSourceItemsPropertyFactory,
+            ValidationIsEnabled
          );
 
          var property = _sourceObjectPropertyBuilder.VM.Custom(
@@ -110,7 +121,8 @@
          var descriptor = MultiSelectionWithSourceVM<TSourceObject, TItemSource>.CreateDescriptor(
             itemDescriptor,
             SelectedSourceItemsPropertyFactory,
-            allSourceItemsPropertyFactory
+            allSourceItemsPropertyFactory,
+            ValidationIsEnabled
          );
 
          var property = _sourceObjectPropertyBuilder.VM.Custom(

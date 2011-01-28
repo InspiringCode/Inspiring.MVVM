@@ -22,31 +22,6 @@
             return new Factory<TScreen, TSubject>(_subject, resolveWith);
          }
       }
-   }
-
-   partial class ScreenFactory {
-      private static void Initialize(
-         IScreenLifecycle handler,
-         Action<IScreenLifecycle> initializer
-      ) {
-         Initialize(handler, initializer, InvocationOrder.First);
-         Initialize(handler, initializer, InvocationOrder.BeforeParent);
-         Initialize(handler, initializer, InvocationOrder.Parent);
-         Initialize(handler, initializer, InvocationOrder.AfterParent);
-         Initialize(handler, initializer, InvocationOrder.Last);
-      }
-
-      private static void Initialize(
-         IScreenLifecycle handler,
-         Action<IScreenLifecycle> initializer,
-         InvocationOrder order
-      ) {
-         // TODO: Handling for multiple Initialize methods...
-         LifecycleTreeWalker
-            .GetSelfAndChildren(handler) // instead of GetDescendants. HACK: Rethink initialization logic!
-            .Where(c => InvocationOrderAttribute.GetOrder(c, "Initialize") == order)
-            .ForEach(initializer);
-      }
 
       private class Factory<TScreen> : IScreenFactory<TScreen> where TScreen : IScreenBase {
          private IServiceLocator _resolveWith;
@@ -62,14 +37,7 @@
                initializationCallback(screen);
             }
 
-
-            Initialize(screen, s => {
-               INeedsInitialization needsInitialization = s as INeedsInitialization;
-               if (needsInitialization != null) {
-                  needsInitialization.Initialize();
-               }
-            });
-
+            ScreenInitializer.Initialize(screen);
             return screen;
          }
       }
@@ -90,17 +58,7 @@
                initializationCallback(screen);
             }
 
-            Initialize(screen, s => {
-               INeedsInitialization<TSubject> needsTypedInitialization = s as INeedsInitialization<TSubject>;
-               INeedsInitialization needsInitialization = s as INeedsInitialization;
-
-               if (needsTypedInitialization != null) {
-                  needsTypedInitialization.Initialize(_subject);
-               } else if (needsInitialization != null) {
-                  needsInitialization.Initialize();
-               }
-            });
-
+            ScreenInitializer.Initialize(screen, _subject);
             return screen;
          }
       }

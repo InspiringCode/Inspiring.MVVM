@@ -54,9 +54,10 @@
       internal static MultiSelectionVMDescriptor<TItemSource, TItemVM> CreateDescriptor(
          VMDescriptorBase itemDescriptor,
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<ICollection<TItemSource>>> selectedSourceItemsPropertyFactory,
-         Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory
+         Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory,
+         bool enableValidation
       ) {
-         return VMDescriptorBuilder
+         var builder = VMDescriptorBuilder
             .OfType<MultiSelectionVMDescriptor<TItemSource, TItemVM>>()
             .For<MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>>()
             .WithProperties((d, c) => {
@@ -88,22 +89,26 @@
                c.For(x => x.SelectedItems).AddChangeHandler((vm, args, path) => {
                   vm.OnPropertyChanged("SelectedItems"); // HACK!
                });
-            })
-            .WithValidators(b => {
+            });
+
+         if (enableValidation) {
+            builder = builder.WithValidators(b => {
                b.EnableParentValidation(x => x.SelectedItems);
-            })
-            .WithViewModelBehaviors(b => {
-               b.OverrideUpdateFromSourceProperties(
-                  x => x.AllSourceItems,
-                  x => x.SelectedSourceItems,
-                  x => x.AllItems,
-                  x => x.SelectedItems
-               );
-               b.OverrideUpdateSourceProperties(
-                  x => x.SelectedSourceItems
-               );
-            })
-            .Build();
+            });
+         }
+
+         return builder.WithViewModelBehaviors(b => {
+            b.OverrideUpdateFromSourceProperties(
+               x => x.AllSourceItems,
+               x => x.SelectedSourceItems,
+               x => x.AllItems,
+               x => x.SelectedItems
+            );
+            b.OverrideUpdateSourceProperties(
+               x => x.SelectedSourceItems
+            );
+         })
+         .Build();
       }
    }
 
@@ -149,9 +154,10 @@
       internal static MultiSelectionVMDescriptor<TItemSource> CreateDescriptor(
          SelectionItemVMDescriptor itemDescriptor,
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<ICollection<TItemSource>>> selectedSourceItemsPropertyFactory,
-         Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory
+         Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory,
+         bool enableValidation
       ) {
-         return VMDescriptorBuilder
+         var builder = VMDescriptorBuilder
             .OfType<MultiSelectionVMDescriptor<TItemSource>>()
             .For<MultiSelectionWithSourceVM<TSourceObject, TItemSource>>()
             .WithProperties((d, c) => {
@@ -183,22 +189,26 @@
                c.For(x => x.SelectedItems).AddChangeHandler((vm, args, path) => {
                   vm.OnPropertyChanged("SelectedItems"); // HACK!
                });
-            })
-            .WithValidators(b => {
+            });
+
+         if (enableValidation) {
+            builder = builder.WithValidators(b => {
                b.EnableParentValidation(x => x.SelectedItems);
-            })
-            .WithViewModelBehaviors(b => {
-               b.OverrideUpdateFromSourceProperties(
-                  x => x.AllSourceItems,
-                  x => x.SelectedSourceItems,
-                  x => x.AllItems,
-                  x => x.SelectedItems
-               );
-               b.OverrideUpdateSourceProperties(
-                  x => x.SelectedSourceItems // TODO: Is this enough? Rethink disconnected SelectionVMs...
-               );
-            })
-            .Build();
+            });
+         }
+
+         return builder.WithViewModelBehaviors(b => {
+            b.OverrideUpdateFromSourceProperties(
+               x => x.AllSourceItems,
+               x => x.SelectedSourceItems,
+               x => x.AllItems,
+               x => x.SelectedItems
+            );
+            b.OverrideUpdateSourceProperties(
+               x => x.SelectedSourceItems // TODO: Is this enough? Rethink disconnected SelectionVMs...
+            );
+         })
+         .Build();
       }
    }
 }

@@ -37,6 +37,16 @@
          set;
       }
 
+      internal bool ValidationIsEnabled {
+         get;
+         private set;
+      }
+
+      public SingleSelectionBuilder<TSourceObject, TItemSource> EnableValidations() {
+         ValidationIsEnabled = true;
+         return this;
+      }
+
       public SingleSelectionBuilder<TSourceObject, TItemSource> WithFilter(Func<TItemSource, bool> filter) {
          Filter = filter;
          return this;
@@ -66,7 +76,8 @@
          var descriptor = SingleSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>.CreateDescriptor(
             itemDescriptor,
             SelectedSourceItemPropertyFactory,
-            allSourceItemsPropertyFactory
+            allSourceItemsPropertyFactory,
+            ValidationIsEnabled
          );
 
          var property = _sourceObjectPropertyBuilder.VM.Custom(
@@ -110,7 +121,8 @@
          var descriptor = SingleSelectionWithSourceVM<TSourceObject, TItemSource>.CreateDescriptor(
             itemDescriptor,
             SelectedSourceItemPropertyFactory,
-            allSourceItemsPropertyFactory
+            allSourceItemsPropertyFactory,
+            ValidationIsEnabled
          );
 
          var property = _sourceObjectPropertyBuilder.VM.Custom(

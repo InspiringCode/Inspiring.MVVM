@@ -55,9 +55,10 @@
       internal static SingleSelectionVMDescriptor<TItemSource, TItemVM> CreateDescriptor(
          VMDescriptorBase itemDescriptor,
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<TItemSource>> selectedSourceItemPropertyFactory,
-         Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory
+         Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory,
+         bool enableValidation
       ) {
-         return VMDescriptorBuilder
+         var builder = VMDescriptorBuilder
             .OfType<SingleSelectionVMDescriptor<TItemSource, TItemVM>>()
             .For<SingleSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>>()
             .WithProperties((d, c) => {
@@ -84,28 +85,32 @@
                b.OverrideUpdateSourceProperties(
                   x => x.SelectedSourceItem
                );
-            })
-            .WithValidators(b => {
-               b.EnableParentValidation(x => x.SelectedItem);
-            })
-            //.WithBehaviors(c => {
-            //   // This behavior ensures, that the 'SelectedItems' collection returns the same
-            //   // VM instances (for the same source items) as the 'AllItems' collection.
-            //   c.For(x => x.SelectedItem).CollectionBehaviors.Enable(
-            //      CollectionBehaviorKeys.Populator,
-            //      new LookupPopulatorCollectionBehavior<SingleSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>, TItemVM, TItemSource>(
-            //         SingleSelectionVM => SingleSelectionVM.AllItems
-            //      )
-            //   );
+            });
 
-            //   // This behavior allows a bound comobox to assign a new list to the 'SelectedItems'
-            //   // property every time the selection changes.
-            //   c.For(x => x.SelectedItem).Enable(
-            //      BehaviorKeys.DisplayValueAccessor,
-            //      new SettableListDisplayValueBehavior<TItemVM>()
-            //   );
-            //})
-            .Build();
+         if (enableValidation) {
+            builder = builder.WithValidators(b => {
+               b.EnableParentValidation(x => x.SelectedItem);
+            });
+         }
+         //.WithBehaviors(c => {
+         //   // This behavior ensures, that the 'SelectedItems' collection returns the same
+         //   // VM instances (for the same source items) as the 'AllItems' collection.
+         //   c.For(x => x.SelectedItem).CollectionBehaviors.Enable(
+         //      CollectionBehaviorKeys.Populator,
+         //      new LookupPopulatorCollectionBehavior<SingleSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>, TItemVM, TItemSource>(
+         //         SingleSelectionVM => SingleSelectionVM.AllItems
+         //      )
+         //   );
+
+         //   // This behavior allows a bound comobox to assign a new list to the 'SelectedItems'
+         //   // property every time the selection changes.
+         //   c.For(x => x.SelectedItem).Enable(
+         //      BehaviorKeys.DisplayValueAccessor,
+         //      new SettableListDisplayValueBehavior<TItemVM>()
+         //   );
+         //})
+
+         return builder.Build();
       }
    }
 
@@ -151,9 +156,10 @@
       internal static SingleSelectionVMDescriptor<TItemSource> CreateDescriptor(
          SelectionItemVMDescriptor itemDescriptor,
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<TItemSource>> selectedSourceItemsPropertyFactory,
-         Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory
+         Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory,
+         bool enableValidation
       ) {
-         return VMDescriptorBuilder
+         var builder = VMDescriptorBuilder
             .OfType<SingleSelectionVMDescriptor<TItemSource>>()
             .For<SingleSelectionWithSourceVM<TSourceObject, TItemSource>>()
             .WithProperties((d, c) => {
@@ -180,28 +186,31 @@
                b.OverrideUpdateSourceProperties(
                   x => x.SelectedSourceItem
                );
-            })
-            .WithValidators(b => {
-               b.EnableParentValidation(x => x.SelectedItem);
-            })
-            //.WithBehaviors(c => {
-            //   // This behavior ensures, that the 'SelectedItems' collection returns the same
-            //   // VM instances (for the same source items) as the 'AllItems' collection.
-            //   c.For(x => x.SelectedItem).CollectionBehaviors.Enable(
-            //      CollectionBehaviorKeys.Populator,
-            //      new LookupPopulatorCollectionBehavior<SingleSelectionWithSourceVM<TSourceObject, TItemSource>, SelectionItemVM<TItemSource>, TItemSource>(
-            //         SingleSelectionVM => SingleSelectionVM.AllItems
-            //      )
-            //   );
+            });
 
-            //   // This behavior allows a bound comobox to assign a new list to the 'SelectedItems'
-            //   // property every time the selection changes.
-            //   c.For(x => x.SelectedItem).Enable(
-            //      BehaviorKeys.DisplayValueAccessor,
-            //      new SettableListDisplayValueBehavior<SelectionItemVM<TItemSource>>()
-            //   );
-            //})
-            .Build();
+         if (enableValidation) {
+            builder = builder.WithValidators(b => {
+               b.EnableParentValidation(x => x.SelectedItem);
+            });
+         }
+         //.WithBehaviors(c => {
+         //   // This behavior ensures, that the 'SelectedItems' collection returns the same
+         //   // VM instances (for the same source items) as the 'AllItems' collection.
+         //   c.For(x => x.SelectedItem).CollectionBehaviors.Enable(
+         //      CollectionBehaviorKeys.Populator,
+         //      new LookupPopulatorCollectionBehavior<SingleSelectionWithSourceVM<TSourceObject, TItemSource>, SelectionItemVM<TItemSource>, TItemSource>(
+         //         SingleSelectionVM => SingleSelectionVM.AllItems
+         //      )
+         //   );
+
+         //   // This behavior allows a bound comobox to assign a new list to the 'SelectedItems'
+         //   // property every time the selection changes.
+         //   c.For(x => x.SelectedItem).Enable(
+         //      BehaviorKeys.DisplayValueAccessor,
+         //      new SettableListDisplayValueBehavior<SelectionItemVM<TItemSource>>()
+         //   );
+         //})
+         return builder.Build();
       }
    }
 }
