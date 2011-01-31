@@ -56,7 +56,7 @@
 
       private void AddDefaultRegistrations() {
          RegisterTypeIfMissing<IWindowService, WindowService>(registerAsSingleton: true);
-         RegisterTypeIfMissing<IDialogService, WindowService>(registerAsSingleton: true);
+         RegisterTypeIfMissing<IDialogService, DialogService>(registerAsSingleton: true);
       }
    }
 }

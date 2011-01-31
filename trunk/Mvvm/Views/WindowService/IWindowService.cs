@@ -4,25 +4,29 @@
 
    public interface IWindowService {
       Window CreateWindow<TScreen>(
-         IScreenFactory<TScreen> forScreen
+         IScreenFactory<TScreen> initializeWithScreen
       ) where TScreen : IScreenBase;
 
       Window CreateDialogWindow<TScreen>(
-         IScreenFactory<TScreen> forScreen
+         IScreenFactory<TScreen> initializeWithScreen
       ) where TScreen : IScreenBase;
 
       Window CreateShellWindow<TScreen>(
-         IScreenFactory<TScreen> forScreen
+         IScreenFactory<TScreen> initializeWithScreen
       ) where TScreen : IScreenBase;
 
-      void ConfigureWindow<TScreen>(
+      void InitializeWindow<TScreen>(
          Window window,
          IScreenFactory<TScreen> forScreen
       ) where TScreen : IScreenBase;
 
-      void ConfigureDialogWindow<TScreen>(
+      void InitializeDialogWindow<TScreen>(
          Window window,
          IScreenFactory<TScreen> forScreen
       ) where TScreen : IScreenBase;
+
+      void ShowDialogWindow(IScreenBase screen, IScreenBase parent, string title);
+
+      Window GetAssociatedWindow(IScreenBase screen);
    }
 }

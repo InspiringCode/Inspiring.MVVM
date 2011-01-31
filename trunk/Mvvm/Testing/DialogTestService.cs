@@ -1,10 +1,10 @@
-﻿namespace Inspiring.Mvvm.Views {
+﻿namespace Inspiring.Mvvm.Testing {
    using System;
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.Screens;
 
-   public class TestDialogService<TScreen> : IDialogService where TScreen : IScreenBase {
+   public class DialogTestService<TScreen> : IDialogService where TScreen : IScreenBase {
       private Stack<Func<TScreen, DialogScreenResult>> _actions =
          new Stack<Func<TScreen, DialogScreenResult>>();
 
@@ -35,6 +35,30 @@
 
          var dl = DialogLifecycle.GetDialogLifecycle(s);
          return dl.ScreenResult ?? new DialogScreenResult(false);
+      }
+
+      public void Error(string message, string caption) {
+         throw new NotImplementedException();
+      }
+
+      public void Info(string message, string caption) {
+         throw new NotImplementedException();
+      }
+
+      public void Warning(string message, string caption) {
+         throw new NotImplementedException();
+      }
+
+      public CustomDialogResult YesNo(string message, string caption, CustomDialogResult defaultResult, CustomDialogIcon icon = CustomDialogIcon.Question) {
+         throw new NotImplementedException();
+      }
+
+      public CustomDialogResult YesNoCancel(string message, string caption, CustomDialogResult defaultResult, CustomDialogIcon icon = CustomDialogIcon.Question) {
+         throw new NotImplementedException();
+      }
+
+      public CustomDialogResult OkCancel(string message, string caption, CustomDialogResult defaultResult, CustomDialogIcon icon = CustomDialogIcon.Information) {
+         throw new NotImplementedException();
       }
    }
 }
