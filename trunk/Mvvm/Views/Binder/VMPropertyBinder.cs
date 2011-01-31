@@ -55,7 +55,13 @@
          Expression<Func<TDescriptor, IVMPropertyDescriptor<IViewModel<TChildDescriptor>>>> viewModelPropertySelector,
          Action<IVMBinder<TChildDescriptor>> viewModelBinder
       ) where TChildDescriptor : VMDescriptor {
-         string path = ExpressionService.GetPropertyPathString(viewModelPropertySelector);
+         string path;
+         // HACK: just a quick fix
+         if (String.IsNullOrEmpty(_pathPrefix)) {
+            path = ExpressionService.GetPropertyPathString(viewModelPropertySelector);
+         } else {
+            path = String.Join(".", _pathPrefix, ExpressionService.GetPropertyPathString(viewModelPropertySelector));
+         }
          var binder = new VMPropertyBinder<TChildDescriptor>(pathPrefix: path);
          viewModelBinder(binder);
          binder.Execute();
