@@ -122,9 +122,13 @@
     <Compile Include="Screens\ScreenConductor.cs" />
     <Compile Include="Screens\ScreenFactory.cs" />
     <Compile Include="ServiceLocator.cs" />
-    <Compile Include="Testing\ResponderBase.cs" />
-    <Compile Include="Testing\ResponderSetupBase.cs" />
-    <Compile Include="Testing\StringExpectation.cs" />
+    <Compile Include="Testing\ArgumentValue.cs" />
+    <Compile Include="Testing\Responders\FileDialogResponderSetup.cs" />
+    <Compile Include="Testing\DialogServiceInvocation.cs" />
+    <Compile Include="Testing\Responders\MessageBoxResponderSetup.cs" />
+    <Compile Include="Testing\MessageBoxTestService.new.cs" />
+    <Compile Include="Testing\Responders\ResponderBase.cs" />
+    <Compile Include="Testing\Responders\ShowDialogResponderSetup.cs" />
     <Compile Include="ViewModels\- No Namespace -\RefreshScope.cs" />
     <Compile Include="ViewModels\- No Namespace -\Validation\ValidationMode.cs" />
     <Compile Include="ViewModels\- No Namespace -\Validation\ValidationScope.cs" />
@@ -314,7 +318,6 @@
     <Compile Include="Views\IView.cs" />
     <Compile Include="Views\WindowService\IWindowService.cs" />
     <Compile Include="Views\ScreenConductorAdapter.cs" />
-    <Compile Include="Testing\DialogTestService.cs" />
     <Compile Include="Views\View.cs" />
     <Compile Include="Views\ViewBinder.cs" />
     <Compile Include="Views\ViewFactory.cs" />
@@ -335,6 +338,7 @@
     <Folder Include="Views\TestDoubles\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Testing\- Diagrams -\DialogTestService.cd" />
     <None Include="Views\- Diagrams -\ViewBinder.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
