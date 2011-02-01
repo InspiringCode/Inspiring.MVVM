@@ -4,7 +4,7 @@
    using System.Linq;
 
    internal sealed class DialogServiceInvocation {
-      private List<ArgumentValue> _parameter;
+      private List<ArgumentValue> _parameter = new List<ArgumentValue>();
 
       public DialogServiceInvocation(DialogServiceMethod method) {
          Method = method;

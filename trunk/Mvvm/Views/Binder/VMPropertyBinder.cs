@@ -2,6 +2,7 @@
    using System;
    using System.Linq.Expressions;
    using System.Windows;
+   using System.Windows.Controls;
    using System.Windows.Input;
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.Screens;
@@ -93,11 +94,27 @@
          : base(context) {
       }
 
-      public void To(DependencyObject itemsControl, Action<IVMBinder<TItemDescriptor>> itemBinder) {
+      public void To(DependencyObject itemsControl, Action<IVMCollectionPropertyBinder<TItemDescriptor>> itemBinder) {
          To(itemsControl);
-         VMPropertyBinder<TItemDescriptor> binder = new VMPropertyBinder<TItemDescriptor>();
+         VMCollectionPropertyBinder<TItemDescriptor> binder = new VMCollectionPropertyBinder<TItemDescriptor>(itemsControl);
          itemBinder(binder);
          binder.Execute();
+      }
+   }
+
+   public class VMCollectionPropertyBinder<TDescriptor> :
+      VMPropertyBinder<TDescriptor>,
+      IVMCollectionPropertyBinder<TDescriptor>
+      where TDescriptor : VMDescriptor {
+
+      public VMCollectionPropertyBinder(DependencyObject boundControl, string pathPrefix = null)
+         : base(pathPrefix) {
+         BoundControl = boundControl;
+      }
+
+      public DependencyObject BoundControl {
+         get;
+         private set;
       }
    }
 }

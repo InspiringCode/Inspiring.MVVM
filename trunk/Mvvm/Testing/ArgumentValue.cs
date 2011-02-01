@@ -23,6 +23,10 @@
       }
 
       public virtual bool Matches(ArgumentValue other) {
+         if (!IsSet) {
+            return true;
+         }
+
          return Object.Equals(Value, other.Value);
       }
 

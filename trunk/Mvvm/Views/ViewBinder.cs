@@ -3,6 +3,7 @@
    using System.ComponentModel;
    using System.Linq.Expressions;
    using System.Windows;
+   using System.Windows.Controls;
    using System.Windows.Data;
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.Screens;
@@ -76,6 +77,10 @@
       ) where TChildDescriptor : VMDescriptor;
    }
 
+   public interface IVMCollectionPropertyBinder<TDescriptor> : IVMBinder<TDescriptor> {
+      DependencyObject BoundControl { get; }
+   }
+
    public interface IBindToExpression<T> {
       IOptionsExpression<T> To(DependencyObject target);
    }
@@ -92,7 +97,7 @@
    }
 
    public interface IBindCollectionExpression<TDescriptor> {
-      void To(DependencyObject itemsControl, Action<IVMBinder<TDescriptor>> itemBinder);
+      void To(DependencyObject itemsControl, Action<IVMCollectionPropertyBinder<TDescriptor>> itemBinder);
    }
 
    public class ScreenBinder<TScreen> : BinderRootExpression, IScreenBinder<TScreen> where TScreen : IScreenBase {
