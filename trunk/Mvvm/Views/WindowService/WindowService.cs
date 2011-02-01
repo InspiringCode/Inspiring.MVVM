@@ -27,27 +27,27 @@
          return window;
       }
 
-      public virtual void InitializeWindow<TScreen>(
+      public void InitializeWindow<TScreen>(
          Window window,
          IScreenFactory<TScreen> withScreen
       ) where TScreen : IScreenBase {
          IScreenBase s = withScreen.Create(x => { });
-         InitializeWindowCore(window, s, new WindowCloseHandler(s));
+         InitializeWindowInternal(window, s, new WindowCloseHandler(s));
       }
 
-      public virtual void InitializeDialogWindow<TScreen>(
+      public void InitializeDialogWindow<TScreen>(
          Window window,
          IScreenFactory<TScreen> withScreen
       ) where TScreen : IScreenBase {
          IScreenBase s = withScreen.Create(x => { });
          s.Children.Add(new DialogLifecycle());
-         InitializeWindowCore(window, s, new DialogCloseHandler(s));
+         InitializeWindowInternal(window, s, new DialogCloseHandler(s));
       }
 
       public virtual void ShowDialogWindow(IScreenBase screen, IScreenBase parent, string title) {
          Window dialogWindow = CreateDialogWindow();
 
-         InitializeWindowCore(dialogWindow, screen, new DialogCloseHandler(screen));
+         InitializeWindowInternal(dialogWindow, screen, new DialogCloseHandler(screen));
 
          if (title != null) {
             dialogWindow.Title = title;
@@ -95,7 +95,10 @@
          return CreateWindow();
       }
 
-      private void InitializeWindowCore(
+      protected virtual void InitializeWindowCore(Window window, IScreenBase screen) {
+      }
+
+      private void InitializeWindowInternal(
          Window window,
          IScreenBase forScreen,
          WindowCloseHandler closeHandler
@@ -105,16 +108,17 @@
             AssociatedWindow = window
          });
 
-         IScreenBase screen = forScreen;
-         screen.Activate();
+         forScreen.Activate();
 
          // TryInitialize succeeds if the window implements 'IView<TScreen>'.
-         if (!ViewFactory.TryInitializeView(window, screen)) {
+         if (!ViewFactory.TryInitializeView(window, forScreen)) {
             // Resolve a new view for 'TScreen'.
-            window.Content = ViewFactory.CreateView(screen);
+            window.Content = ViewFactory.CreateView(forScreen);
          }
 
          closeHandler.AttachTo(window);
+
+         InitializeWindowCore(window, forScreen);
       }
 
       private class WindowLifecycle : ScreenLifecycle {
