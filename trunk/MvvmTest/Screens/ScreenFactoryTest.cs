@@ -53,6 +53,21 @@
          //mock.Verify(x => x.Initialize<string>(s, "Test"), Times.Once());
       }
 
+      [TestMethod]
+      public void ScreenFactoriesForConcreteScree_CanBeAssignedToScreenBaseFactoryVariable() {
+         IScreenFactory<TestScreen> concreteFactory = ScreenFactory.For<TestScreen>();
+         IScreenFactory<IScreenBase> factory = concreteFactory;
+
+         IScreenBase screen = factory.Create();
+         Assert.IsInstanceOfType(screen, typeof(TestScreen));
+      }
+
+      private class FirstScreen : ScreenBase {
+      }
+
+      private class SecondScreen : ScreenBase {
+      }
+
       private class TestScreen : ScreenBase {
          public TestScreen() {
          }
