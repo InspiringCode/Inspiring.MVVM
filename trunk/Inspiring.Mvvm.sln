@@ -70,9 +70,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{
 		Tools\Internal\Templates\WPFWindow.zip = Tools\Internal\Templates\WPFWindow.zip
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvmTestability", "MvvmTestability\MvvmTestability.csproj", "{DDE69E0D-5034-4E89-82D2-F80DD3E82729}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 6
+		SccNumberOfProjects = 7
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs17
 		SccLocalPath0 = .
@@ -91,6 +93,9 @@ Global
 		SccProjectUniqueName5 = MvvmContribTest\\MvvmContribTest.csproj
 		SccProjectName5 = MvvmContribTest
 		SccLocalPath5 = MvvmContribTest
+		SccProjectUniqueName6 = MvvmTestability\\MvvmTestability.csproj
+		SccProjectName6 = MvvmTestability
+		SccLocalPath6 = MvvmTestability
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Berghold.Architecture.vsmdi
@@ -154,6 +159,16 @@ Global
 		{D5D740C6-50C5-4B64-BDAA-7F848FD0F4B3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{D5D740C6-50C5-4B64-BDAA-7F848FD0F4B3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D5D740C6-50C5-4B64-BDAA-7F848FD0F4B3}.Release|x86.ActiveCfg = Release|Any CPU
+		{DDE69E0D-5034-4E89-82D2-F80DD3E82729}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDE69E0D-5034-4E89-82D2-F80DD3E82729}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDE69E0D-5034-4E89-82D2-F80DD3E82729}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DDE69E0D-5034-4E89-82D2-F80DD3E82729}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{DDE69E0D-5034-4E89-82D2-F80DD3E82729}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DDE69E0D-5034-4E89-82D2-F80DD3E82729}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDE69E0D-5034-4E89-82D2-F80DD3E82729}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDE69E0D-5034-4E89-82D2-F80DD3E82729}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{DDE69E0D-5034-4E89-82D2-F80DD3E82729}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{DDE69E0D-5034-4E89-82D2-F80DD3E82729}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

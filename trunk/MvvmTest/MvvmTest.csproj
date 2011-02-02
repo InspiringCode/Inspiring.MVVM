@@ -106,6 +106,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiTests\ViewModels\CommandHandlerTests.cs" />
     <Compile Include="ApiTests\ViewModels\InheritanceTests.cs" />
     <Compile Include="ApiTests\ViewModels\InheritanceWithGenericsTests.cs" />
     <Compile Include="ApiTests\ViewModels\LocalPropertyTests.cs" />
@@ -237,6 +238,10 @@
     <Compile Include="WpfTestHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MvvmTestability\MvvmTestability.csproj">
+      <Project>{DDE69E0D-5034-4E89-82D2-F80DD3E82729}</Project>
+      <Name>MvvmTestability</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mvvm\Mvvm.csproj">
       <Project>{B2E313EF-1DB8-423E-AB2E-5767F02BD026}</Project>
       <Name>Mvvm</Name>

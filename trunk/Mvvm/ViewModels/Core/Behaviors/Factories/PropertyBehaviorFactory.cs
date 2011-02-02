@@ -10,7 +10,7 @@
          return new PropertyBehaviorFactoryInvoker<TVM, TValue>();
       }
 
-      public IBehavior Create<TVM, TValue>(BehaviorKey key) where TVM : IViewModel {
+      public virtual IBehavior Create<TVM, TValue>(BehaviorKey key) where TVM : IViewModel {
          if (key == BehaviorKeys.InvalidDisplayValueCache) {
             return new AllowInvalidDisplayValuesBehavior();
          }

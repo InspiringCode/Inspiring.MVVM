@@ -1,10 +1,10 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    public static partial class BehaviorChainTemplateRegistry {
       static BehaviorChainTemplateRegistry() {
-         RegisterDefaultTemplates();
+         ResetToDefaults();
       }
 
-      private static void RegisterDefaultTemplates() {
+      public static void ResetToDefaults() {
          RegisterViewModelTemplate();
          RegisterPropertyTemplate();
          RegisterCollectionPropertyTemplate();

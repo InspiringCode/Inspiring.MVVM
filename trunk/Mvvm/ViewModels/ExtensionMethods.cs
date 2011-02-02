@@ -299,5 +299,27 @@
             next.Populate(context);
          }
       }
+
+      public static void ExecuteNext(
+         this Behavior behavior,
+         IBehaviorContext context,
+         object parameter
+      ) {
+         ICommandExecuteBehavior next;
+         if (behavior.TryGetBehavior(out next)) {
+            next.Execute(context, parameter);
+         }
+      }
+
+      public static bool CanExecuteNext(
+         this Behavior behavior,
+         IBehaviorContext context,
+         object parameter
+      ) {
+         ICommandCanExecuteBehavior next;
+         return behavior.TryGetBehavior(out next) ?
+            next.CanExecute(context, parameter) :
+            true;
+      }
    }
 }
