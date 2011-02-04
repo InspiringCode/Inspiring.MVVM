@@ -1,10 +1,12 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System.Collections.Generic;
 
-   internal sealed class ManualUpdateCoordinatorBehavior :
+   // TODO: Test Refresh order etc.!
+   internal sealed class LoadOrderBehavior :
       InitializableBehavior,
       IBehaviorInitializationBehavior,
-      IManualUpdateCoordinatorBehavior {
+      IManualUpdateCoordinatorBehavior,
+      IRefreshControllerBehavior {
 
       public IEnumerable<IVMPropertyDescriptor> UpdateFromSourceProperties {
          get;
@@ -64,6 +66,20 @@
 
          SetInitialized();
          this.InitializeNext(context);
+      }
+
+      public void Refresh(IBehaviorContext context) {
+         RequireInitialized();
+         foreach (IVMPropertyDescriptor property in UpdateFromSourceProperties) {
+            Refresh(context, property);
+         }
+
+         this.ViewModelRefreshNext(context);
+      }
+
+      public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property) {
+         RequireInitialized();
+         property.Behaviors.RefreshNext(context);
       }
    }
 }

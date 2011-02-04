@@ -134,7 +134,7 @@
                   TChildVM result = getter(sourceObject);
                   
                   if (result != null) {
-                     result.Kernel.Revalidate(ValidationScope.SelfAndLoadedDescendants, ValidationMode.CommitValidValues);
+                     result.Kernel.Revalidate(ValidationScope.SelfOnly, ValidationMode.CommitValidValues);
                   }
                   
                   return result;

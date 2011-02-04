@@ -13,7 +13,7 @@
          instance.Source = sourceValue;
 
          // TODO: This and same line in DelegatesTo (PropertyBuilder) is a hack!
-         instance.Kernel.Revalidate(ValidationScope.SelfAndLoadedDescendants, ValidationMode.CommitValidValues);
+         instance.Kernel.Revalidate(ValidationScope.SelfOnly, ValidationMode.CommitValidValues);
 
          return instance;
       }

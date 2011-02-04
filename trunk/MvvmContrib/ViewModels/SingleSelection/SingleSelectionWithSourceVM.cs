@@ -34,6 +34,7 @@
       /// <inheritdoc />
       public void InitializeFrom(TSourceObject source) {
          SourceObject = source;
+         Kernel.Revalidate(Descriptor.SelectedItem, ValidationMode.DiscardInvalidValues); // TODO: Unify validation on first access handling
       }
 
       /// <summary>
@@ -135,6 +136,7 @@
       /// <inheritdoc />
       public void InitializeFrom(TSourceObject source) {
          Source = source;
+         Kernel.Revalidate(Descriptor.SelectedItem, ValidationMode.DiscardInvalidValues); // TODO: Unify validation on first access handling
       }
 
       /// <summary>

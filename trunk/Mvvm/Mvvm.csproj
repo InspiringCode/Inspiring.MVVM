@@ -140,6 +140,7 @@
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\ICommandExecuteBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IRefreshBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IPopulationBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\ViewModelBehaviors\IRefreshControllerBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IItemDescriptorProviderCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IPopulatorCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IModificationCollectionBehavior.cs" />
@@ -186,7 +187,7 @@
     <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\ViewModelFactoryAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\ViewModelWithSourceAcessorBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\ViewModelBehaviors\ChangeListenerBehavior.cs" />
-    <Compile Include="ViewModels\Core\GeneralBehaviors\ViewModelBehaviors\ManualUpdateCoordinatorBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\ViewModelBehaviors\LoadOrderBehavior.cs" />
     <Compile Include="ViewModels\Core\PropertySelector.cs" />
     <Compile Include="ViewModels\Core\PropertyTypeHelper.cs" />
     <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\DescendantValidationBehavior.cs" />
@@ -250,6 +251,7 @@
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Validators\ValidatorConfiguration.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\VMDescriptorBuilder.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\VMPropertyBuilderProvider.cs" />
+    <Compile Include="ViewModels\DefaultViewModelWithSourceBase.cs" />
     <Compile Include="ViewModels\ExtensionMethods.cs" />
     <Compile Include="ViewModels\Core\VMDescriptor\VMDescriptorBase.cs" />
     <Compile Include="ViewModels\Core\VMDescriptor\VMPropertyCollection.cs" />

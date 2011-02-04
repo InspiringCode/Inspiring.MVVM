@@ -1,10 +1,11 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels {
    using Inspiring.Mvvm.ViewModels;
-   using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Inspiring.Mvvm.Views;
+   using Inspiring.MvvmTest.ViewModels;
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class InheritanceTests {
+   public class InheritanceTests : TestBase {
       public void TestMethod1() {
          //EmployeeListView view = null;
          //ViewBinder.BindVM(view, b => {
@@ -22,6 +23,26 @@
       public void CollectionValidation_DefinedForDerivedItem_Success() {
          var listVM = new EmployeeListVM();
          listVM.Initialize();
+      }
+
+      [TestMethod]
+      public void SubclassOfClassWithGenericDescriptor_CanBeCreated() {
+         var vm = new StateEntryVM();
+         vm.SetValue(x => x.Caption, ArbitraryString);
+         vm.SetValue(x => x.Description, AnotherArbitraryString);
+
+         Assert.AreEqual(ArbitraryString, vm.GetValue(x => x.Caption));
+         Assert.AreEqual(AnotherArbitraryString, vm.GetValue(x => x.Description));
+      }
+
+      [TestMethod]
+      public void AllowAssignmentOfSubClassToBaseClassVariable() {
+         ListOfValueEntryVM<ListOfValueEntryVMDescriptor, State> foo = null;
+         StateEntryVM bar = null;
+
+         // TODO?
+         //foo = bar;
+         //bar = foo;
       }
 
       public class EmployeeListView : IView<EmployeeListVM> {
@@ -127,6 +148,52 @@
 
       public sealed class EmployeeListVMDescriptor : PersonVMDescriptor {
          public IVMPropertyDescriptor<IVMCollection<EmployeeVM>> Employees { get; set; }
+      }
+
+      public class ListOfValueEntryVM<TDescriptor, TSourceObject> :
+         DefaultViewModelWithSourceBase<TDescriptor, TSourceObject>
+         where TDescriptor : ListOfValueEntryVMDescriptor {
+
+         //public static ListOfValueEntryVMDescriptor BaseDescriptor = null;
+         public static ListOfValueEntryVMDescriptor BaseDescriptor = VMDescriptorBuilder
+            .OfType<ListOfValueEntryVMDescriptor>()
+            .For<ListOfValueEntryVM<TDescriptor, TSourceObject>>()
+            .WithProperties((d, b) => {
+               var v = b.GetPropertyBuilder();
+               d.Caption = v.Property.Of<string>();
+            })
+            .Build();
+
+         public ListOfValueEntryVM(TDescriptor descriptor)
+            : base(descriptor) {
+         }
+      }
+
+      public class ListOfValueEntryVMDescriptor : PersonVMDescriptor {
+         public IVMPropertyDescriptor<string> Caption { get; set; }
+      }
+
+      public sealed class StateEntryVM : ListOfValueEntryVM<StateEntryVMDescriptor, State> {
+         public static readonly StateEntryVMDescriptor ClassDescriptor = VMDescriptorBuilder
+            .Inherits(BaseDescriptor)
+            .OfType<StateEntryVMDescriptor>()
+            .For<StateEntryVM>()
+            .WithProperties((d, b) => {
+               var v = b.GetPropertyBuilder();
+               d.Description = v.Property.Of<string>();
+            })
+            .Build();
+
+         public StateEntryVM()
+            : base(ClassDescriptor) {
+         }
+      }
+
+      public sealed class StateEntryVMDescriptor : ListOfValueEntryVMDescriptor {
+         public IVMPropertyDescriptor<string> Description { get; set; }
+      }
+
+      public class State {
       }
    }
 }

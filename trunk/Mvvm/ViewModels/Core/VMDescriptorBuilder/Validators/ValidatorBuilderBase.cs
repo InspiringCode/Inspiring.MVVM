@@ -77,7 +77,7 @@
       ///      the collection is unique).</para>
       /// </param>
       public CollectionPropertyValidatorBuilder<TItemDescriptor, TItemValue> CheckCollection<TItemDescriptor, TItemValue>(
-         Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModel<TItemDescriptor>>>> collectionSelector,
+         Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<TItemDescriptor>>>> collectionSelector,
          Func<TItemDescriptor, IVMPropertyDescriptor<TItemValue>> itemPropertySelector
       ) where TItemDescriptor : VMDescriptorBase {
          var config = Configuration

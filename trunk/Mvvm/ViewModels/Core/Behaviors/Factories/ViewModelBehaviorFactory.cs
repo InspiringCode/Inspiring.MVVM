@@ -16,7 +16,7 @@
          }
 
          if (key == BehaviorKeys.ManualUpdateCoordinator) {
-            return new ManualUpdateCoordinatorBehavior();
+            return new LoadOrderBehavior();
          }
 
          if (key == BehaviorKeys.TypeDescriptor) {

@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System.Collections.Generic;
 
+   // TODO: Split this up (LoadOrder / UpdateController)!
    public interface IManualUpdateCoordinatorBehavior : IBehavior {
       IEnumerable<IVMPropertyDescriptor> UpdateFromSourceProperties { get; set; }
       IEnumerable<IVMPropertyDescriptor> UpdateSourceProperties { get; set; }

@@ -13,7 +13,7 @@
 
    public class ViewBinder {
       public static void BindVM<TDescriptor>(
-         IBindableView<IViewModel<TDescriptor>> view,
+         IBindableView<IViewModelExpression<TDescriptor>> view,
          Action<IVMBinder<TDescriptor>> bindingConfigurator
       ) where TDescriptor : VMDescriptor {
          if (DesignerProperties.GetIsInDesignMode((DependencyObject)view)) {
@@ -49,7 +49,7 @@
 
    public interface IScreenBinder<TScreen> {
       void BindVM<TDescriptor>(
-         Expression<Func<TScreen, IViewModel<TDescriptor>>> viewModelSelector,
+         Expression<Func<TScreen, IViewModelExpression<TDescriptor>>> viewModelSelector,
          Action<IVMBinder<TDescriptor>> bindingConfigurator
       ) where TDescriptor : VMDescriptor;
 
@@ -64,7 +64,7 @@
       IBindToExpression<T> Property<T>(Expression<Func<TDescriptor, IVMPropertyDescriptor<T>>> sourcePropertySelector);
 
       IBindCollectionExpression<TItemDescriptor> Collection<TItemDescriptor>(
-         Expression<Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModel<TItemDescriptor>>>>> collectionPropertySelector
+         Expression<Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<TItemDescriptor>>>>> collectionPropertySelector
       ) where TItemDescriptor : VMDescriptor;
 
       IBindCollectionExpression<TItemDescriptor> CollectionManual<TItemDescriptor>(
@@ -72,7 +72,7 @@
       ) where TItemDescriptor : VMDescriptor;
 
       void VM<TChildDescriptor>(
-         Expression<Func<TDescriptor, IVMPropertyDescriptor<IViewModel<TChildDescriptor>>>> viewModelPropertySelector,
+         Expression<Func<TDescriptor, IVMPropertyDescriptor<IViewModelExpression<TChildDescriptor>>>> viewModelPropertySelector,
          Action<IVMBinder<TChildDescriptor>> viewModelBinder
       ) where TChildDescriptor : VMDescriptor;
    }
@@ -106,7 +106,7 @@
          BinderBuildStepRegistry.AddVMPropertyBuildSteps(this);
       }
 
-      public void BindVM<TDescriptor>(Expression<Func<TScreen, IViewModel<TDescriptor>>> viewModelSelector, Action<IVMBinder<TDescriptor>> bindingConfigurator) where TDescriptor : VMDescriptor {
+      public void BindVM<TDescriptor>(Expression<Func<TScreen, IViewModelExpression<TDescriptor>>> viewModelSelector, Action<IVMBinder<TDescriptor>> bindingConfigurator) where TDescriptor : VMDescriptor {
          string pathPrefix = ExpressionService.GetPropertyPathString(viewModelSelector);
          VMPropertyBinder<TDescriptor> binder = new VMPropertyBinder<TDescriptor>(pathPrefix);
          bindingConfigurator(binder);

@@ -46,7 +46,7 @@
       ///      INSTANCE.</para>
       /// </summary>
       public IVMDescriptorBuilder<TDescriptor, TVM> For<TVM>()
-         where TVM : IViewModel<TDescriptor> {
+         where TVM : IViewModel { // TODO: Better type checking? Sometimes we need in, sometimes we need out?
          return new VMDescriptorBuilder<TDescriptor, TVM>(_baseBuilder);
       }
    }
@@ -63,7 +63,7 @@
       IVMDescriptorBuilder<TDescriptor, TVM>,
       IVMDescriptorBuilderWithProperties<TDescriptor, TVM>
       where TDescriptor : VMDescriptor, new()
-      where TVM : IViewModel<TDescriptor> {
+      where TVM : IViewModel {
 
       private readonly IVMDescriptorBuilder _baseBuilder;
       private Action<TDescriptor, IVMPropertyBuilderProvider<TVM>> _propertyConfigurator;

@@ -2,7 +2,11 @@
    using Inspiring.Mvvm.ViewModels.Core;
 
 
-   public interface IViewModel<in TDescriptor> : IViewModel where TDescriptor : VMDescriptorBase {
+   public interface IViewModel<out TDescriptor> : IViewModel where TDescriptor : VMDescriptorBase {
+
+   }
+
+   public interface IViewModelExpression<in TDescriptor> : IViewModel where TDescriptor : VMDescriptorBase {
 
    }
 

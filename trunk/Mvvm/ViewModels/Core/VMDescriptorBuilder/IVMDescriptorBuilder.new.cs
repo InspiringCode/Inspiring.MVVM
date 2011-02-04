@@ -7,7 +7,7 @@
    /// </summary>
    public interface IVMDescriptorBuilder<TDescriptor, TVM>
       where TDescriptor : VMDescriptor, new()
-      where TVM : IViewModel<TDescriptor> {
+      where TVM : IViewModel {
 
       /// <summary>
       ///   Configures or overrides the VM properties and their mappings (required).
@@ -28,7 +28,7 @@
    /// </summary>
    public interface IVMDescriptorBuilderWithProperties<TDescriptor, TVM>
       where TDescriptor : VMDescriptor, new()
-      where TVM : IViewModel<TDescriptor> {
+      where TVM : IViewModel {
 
       /// <summary>
       ///   Configures dependencies between properties to allow correct change

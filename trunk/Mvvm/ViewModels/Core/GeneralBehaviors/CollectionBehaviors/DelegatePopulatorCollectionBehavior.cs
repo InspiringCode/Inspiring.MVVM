@@ -35,7 +35,7 @@
 
          // TODO: Validation is a bit messy and distributed?
          foreach (TItemVM item in collection) {
-            item.Kernel.Revalidate(ValidationScope.SelfAndLoadedDescendants, ValidationMode.CommitValidValues);
+            item.Kernel.Revalidate(ValidationScope.SelfOnly, ValidationMode.CommitValidValues);
          }
       }
    }

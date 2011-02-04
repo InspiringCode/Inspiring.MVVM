@@ -142,15 +142,13 @@
       }
 
       public void Refresh() {
-         foreach (IVMPropertyDescriptor property in _descriptor.Properties) {
-            Refresh(property);
-         }
+         _descriptor.Behaviors.ViewModelRefreshNext(this);
 
-         PerformViewModelValidations();
+         PerformViewModelValidations(); // TODO: Should this be in the behavior?
       }
 
       public void Refresh(IVMPropertyDescriptor property) {
-         property.Behaviors.RefreshNext(this);
+         _descriptor.Behaviors.ViewModelRefreshNext(this, property);
       }
 
       private void PerformViewModelValidations() {

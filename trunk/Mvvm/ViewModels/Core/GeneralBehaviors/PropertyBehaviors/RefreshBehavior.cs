@@ -24,20 +24,43 @@
       }
 
       internal sealed class ViewModelProperty<TValue> :
-         Behavior,
+         InitializableBehavior,
+         IBehaviorInitializationBehavior,
          IRefreshBehavior
          where TValue : IViewModel {
 
-         public void Refresh(IBehaviorContext context) {
-            GetNextBehavior<ValueCacheBehavior<TValue>>().ClearCache(context);
+         private IVMPropertyDescriptor _property;
 
-            var viewModel = this.GetValueNext<TValue>(context);
-            viewModel.Kernel.Revalidate(
-               ValidationScope.SelfAndLoadedDescendants,
-               ValidationMode.DiscardInvalidValues
-            );
+         public void Refresh(IBehaviorContext context) {
+            // Two cases:
+            //  (1) Validations on the view model property itself:
+            //      We have to load the VM to perform these validations (e.g. a
+            //      HasValue validation).
+            //  (2) The validation of the child VM.
+
+            RequireInitialized();
+
+            // Force recreation
+            GetNextBehavior<ValueCacheBehavior<TValue>>().ClearCache(context);
+            var childVM = this.GetValueNext<TValue>(context);
+
+            if (childVM != null) {
+               childVM.Kernel.Refresh();
+            }
+
+            context.VM.Kernel.Revalidate(_property, ValidationMode.DiscardInvalidValues);
+
+            // The value of the property has changed
+            var changeArgs = new ChangeArgs(ChangeType.PropertyChanged, context.VM, _property);
+            context.NotifyChange(changeArgs);
 
             this.RefreshNext(context);
+         }
+
+         public void Initialize(BehaviorInitializationContext context) {
+            _property = context.Property;
+            SetInitialized();
+            this.InitializeNext(context);
          }
       }
 

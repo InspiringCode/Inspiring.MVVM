@@ -321,5 +321,28 @@
             next.CanExecute(context, parameter) :
             true;
       }
+
+      // TODO: What about naming conflicts between VM Behaviors and Property behaviors?
+      public static void ViewModelRefreshNext(
+         this Behavior behavior,
+         IBehaviorContext context
+      ) {
+         IRefreshControllerBehavior next;
+         if (behavior.TryGetBehavior(out next)) {
+            next.Refresh(context);
+         }
+      }
+
+      // TODO: What about naming conflicts between VM Behaviors and Property behaviors?
+      public static void ViewModelRefreshNext(
+         this Behavior behavior,
+         IBehaviorContext context,
+         IVMPropertyDescriptor property
+      ) {
+         IRefreshControllerBehavior next;
+         if (behavior.TryGetBehavior(out next)) {
+            next.Refresh(context, property);
+         }
+      }
    }
 }

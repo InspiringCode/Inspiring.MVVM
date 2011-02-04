@@ -48,7 +48,7 @@
       ) {
          return Configure(
             BehaviorKeys.ManualUpdateCoordinator,
-            (ManualUpdateCoordinatorBehavior behavior) => {
+            (LoadOrderBehavior behavior) => {
                behavior.UpdateFromSourceProperties = orderedProperties
                   .Select(selector => selector(_descriptor))
                   .ToArray();
@@ -61,7 +61,7 @@
        ) {
          return Configure(
             BehaviorKeys.ManualUpdateCoordinator,
-            (ManualUpdateCoordinatorBehavior behavior) => {
+            (LoadOrderBehavior behavior) => {
                behavior.UpdateSourceProperties = orderedProperties
                   .Select(selector => selector(_descriptor))
                   .ToArray();

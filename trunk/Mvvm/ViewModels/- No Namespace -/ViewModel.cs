@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
    using System.ComponentModel;
-   using System.Diagnostics;
    using System.Diagnostics.Contracts;
    using System.Linq;
    using Inspiring.Mvvm;
@@ -16,6 +15,7 @@
       ViewModelTypeDescriptor,
       IViewModel,
       IViewModel<TDescriptor>,
+      IViewModelExpression<TDescriptor>,
       INotifyPropertyChanged,
       IDataErrorInfo
       where TDescriptor : VMDescriptorBase {
@@ -89,16 +89,24 @@
          get {
             // HACK: Validation problem with DevExpress.
             if (columnName.Contains('.')) {
-               // TODO
-               Debug.WriteLine("Validation of dotted paths not yet supported."); // TODO
-               return null;
-            }
+               string[] parts = columnName.Split('.');
+               Contract.Assert(parts.Length == 2);
 
-            IVMPropertyDescriptor property = Kernel.GetProperty(propertyName: columnName);
-            ValidationState state = Kernel.GetValidationState(property);
-            return state.IsValid ?
-               null :
-               state.Errors.First().Message;
+               IVMPropertyDescriptor property = Kernel.GetProperty(parts[0]);
+               IDataErrorInfo value = (IDataErrorInfo)Kernel.GetDisplayValue(property);
+
+               if (value == null) {
+                  return null;
+               }
+
+               return value[parts[1]];
+            } else {
+               IVMPropertyDescriptor property = Kernel.GetProperty(propertyName: columnName);
+               ValidationState state = Kernel.GetValidationState(property);
+               return state.IsValid ?
+                  null :
+                  state.Errors.First().Message;
+            }
          }
       }
 
@@ -129,7 +137,10 @@
          Kernel.SetDisplayValue(property, value);
       }
 
-      protected void Revalidate(ValidationScope scope, ValidationMode mode) {
+      protected void Revalidate(
+         ValidationScope scope = ValidationScope.SelfOnly,
+         ValidationMode mode = ValidationMode.CommitValidValues
+      ) {
          Kernel.Revalidate(scope, mode);
       }
 
