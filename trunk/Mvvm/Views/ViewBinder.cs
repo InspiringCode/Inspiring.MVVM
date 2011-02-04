@@ -3,7 +3,6 @@
    using System.ComponentModel;
    using System.Linq.Expressions;
    using System.Windows;
-   using System.Windows.Controls;
    using System.Windows.Data;
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.Screens;
@@ -61,6 +60,11 @@
    }
 
    public interface IVMBinder<TDescriptor> {
+      /// <summary>
+      ///   This is a personal and temporar HACK (!!!) for Stefan! Do NOT USE this!
+      /// </summary>
+      string PathPrefix { get; }
+
       IBindToExpression<T> Property<T>(Expression<Func<TDescriptor, IVMPropertyDescriptor<T>>> sourcePropertySelector);
 
       IBindCollectionExpression<TItemDescriptor> Collection<TItemDescriptor>(

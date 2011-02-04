@@ -2,7 +2,6 @@
    using System;
    using System.Linq.Expressions;
    using System.Windows;
-   using System.Windows.Controls;
    using System.Windows.Input;
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.Screens;
@@ -18,6 +17,10 @@
       public VMPropertyBinder(string pathPrefix = null) {
          _pathPrefix = pathPrefix;
          BinderBuildStepRegistry.AddVMPropertyBuildSteps(this);
+      }
+
+      public string PathPrefix {
+         get { return _pathPrefix; }
       }
 
       public IBindToExpression<T> Property<T>(
