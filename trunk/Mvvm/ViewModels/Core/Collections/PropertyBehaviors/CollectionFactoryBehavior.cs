@@ -30,17 +30,6 @@
          private set;
       }
 
-      ///// <inheritdoc />
-      //public IVMCollection<TItemVM> CreateCollection(IBehaviorContext context) {
-      //   if (_collectionBehaviors == null) {
-      //      _collectionBehaviors = CollectionBehaviorConfiguration.CreateChain();
-      //      CollectionBehaviorConfiguration.Seal();
-      //      Seal();
-      //   }
-
-      //   return new VMCollection<TItemVM>(_collectionBehaviors, owner: context.VM);
-      //}
-
       public IVMCollection<TItemVM> GetValue(IBehaviorContext context) {
          if (_collectionBehaviors == null) {
             _collectionBehaviors = CollectionBehaviorConfiguration.CreateChain();

@@ -42,9 +42,5 @@
             return typedFactory.Create<TVM, TItemVM>(behaviorToCreate);
          }
       }
-
-      IBehavior IBehaviorFactory.Create<T>() {
-         throw new NotImplementedException();
-      }
    }
 }

@@ -51,5 +51,11 @@
       public static readonly BehaviorKey IsLoadedIndicator = new BehaviorKey("IsLoadedIndicator");
 
       public static readonly BehaviorKey RefreshBehavior = new BehaviorKey("RefreshBehavior");
+
+      public static readonly BehaviorKey CommandExecutor = new BehaviorKey("CommandExecutor");
+
+      public static readonly BehaviorKey CommandFactory = new BehaviorKey("CommandFactory");
+
+      public static readonly BehaviorKey WaitCursor = new BehaviorKey("WaitCursor");
    }
 }

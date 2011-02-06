@@ -136,11 +136,14 @@
     <Compile Include="ViewModels\- No Namespace -\ViewModel.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMDescriptorBuilder.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\ICollectionFactoryBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\ICommandBehaviorConfigurationBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\ICommandCanExecuteBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\ICommandExecuteBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\ICommandFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IRefreshBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IPopulationBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\ViewModelBehaviors\IRefreshControllerBehavior.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Factories\CommandBehaviorFactory.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IItemDescriptorProviderCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IPopulatorCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IModificationCollectionBehavior.cs" />
@@ -170,7 +173,10 @@
     <Compile Include="ViewModels\Core\Behaviors\InitializableBehavior.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Keys\CollectionBehaviorKeys.cs" />
     <Compile Include="ViewModels\Core\Collections\IVMCollectionExpression.cs" />
+    <Compile Include="ViewModels\Core\Commands\CommandFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\Commands\DelegatingCommandBehavior.cs" />
+    <Compile Include="ViewModels\Core\Commands\ViewModelCommand.cs" />
+    <Compile Include="ViewModels\Core\Commands\WaitCursorBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\RefreshBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\ChildScreenBehavior.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\VMDescriptorConfiguration.cs" />

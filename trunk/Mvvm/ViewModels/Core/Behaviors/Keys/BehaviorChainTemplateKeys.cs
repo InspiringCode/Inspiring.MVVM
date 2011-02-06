@@ -7,5 +7,6 @@
       public static readonly BehaviorChainTemplateKey CommandProperty = new BehaviorChainTemplateKey("CommandProperty");
       public static readonly BehaviorChainTemplateKey ViewModelProperty = new BehaviorChainTemplateKey("ViewModelProperty");
       public static readonly BehaviorChainTemplateKey DefaultCollectionBehaviors = new BehaviorChainTemplateKey("DefaultCollectionBehaviors");
+      public static readonly BehaviorChainTemplateKey CommandBehaviors = new BehaviorChainTemplateKey("CommandBehaviors");
    }
 }

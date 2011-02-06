@@ -33,7 +33,7 @@
 
       [TestMethod]
       public void CanExecute_CustomCommandHandler_IsInvoked() {
-         VM.ExecuteCommand(x => x.PaySalary);
+         VM.CanExecuteCommand(x => x.PaySalary);
          Assert.IsTrue(VM.CustomCanExecuteWasInvoked);
       }
 
@@ -44,18 +44,17 @@
 
       private static void RegisterCustomCommandTemplate() {
          BehaviorChainTemplateRegistry.RegisterTemplate(
-            BehaviorChainTemplateKeys.CommandProperty,
+            BehaviorChainTemplateKeys.CommandBehaviors,
             new BehaviorChainTemplate(CustomPropertyBehaviorFactory.Instance)
-               .Append(BehaviorKeys.DisplayValueAccessor)
-               .Append(BehaviorKeys.ValueCache)
+               .Append(BehaviorKeys.WaitCursor)
                .Append(TestBehaviorKey)
+               .Append(BehaviorKeys.CommandExecutor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(BehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(BehaviorKeys.TypeDescriptor)
          );
       }
 
-      private class CustomPropertyBehaviorFactory : PropertyBehaviorFactory {
-         public static readonly PropertyBehaviorFactory Instance = new CustomPropertyBehaviorFactory();
+      private class CustomPropertyBehaviorFactory : CommandBehaviorFactory {
+         public static readonly CommandBehaviorFactory Instance = new CustomPropertyBehaviorFactory();
 
          public override IBehavior Create<TVM, TValue>(BehaviorKey key) {
             if (key == TestBehaviorKey) {

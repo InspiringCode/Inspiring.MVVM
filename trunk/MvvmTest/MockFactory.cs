@@ -40,11 +40,5 @@
       public static IBehavior Behavior() {
          return new Mock<IBehavior>().Object;
       }
-
-      public static Mock<IBehaviorFactory> BehaviorFactory<TValue>(IBehavior behavior) {
-         var mock = new Mock<IBehaviorFactory>();
-         mock.Setup(x => x.Create<TValue>()).Returns(behavior);
-         return mock;
-      }
    }
 }

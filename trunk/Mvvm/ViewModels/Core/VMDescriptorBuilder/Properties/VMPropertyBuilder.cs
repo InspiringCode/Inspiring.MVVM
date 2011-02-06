@@ -5,7 +5,6 @@
    using System.Linq.Expressions;
    using System.Windows.Input;
    using Inspiring.Mvvm.Common;
-   using Inspiring.Mvvm.Screens;
 
    internal sealed class VMPropertyBuilder<TVM, TSourceObject> :
       ConfigurationProvider,
@@ -132,11 +131,11 @@
                sourceObject => {
                   // TODO: This and same line in ViewModelWithSourceAccessorBehavior is a hack!
                   TChildVM result = getter(sourceObject);
-                  
+
                   if (result != null) {
                      result.Kernel.Revalidate(ValidationScope.SelfOnly, ValidationMode.CommitValidValues);
                   }
-                  
+
                   return result;
                },
                setter
@@ -201,17 +200,26 @@
          Action<TSourceObject> execute,
          Func<TSourceObject, bool> canExecute
       ) {
-         // TODO: Is this really nice and clean?
-         var sourceValueAccessor = new CalculatedPropertyAccessor<TVM, TSourceObject, ICommand>(
-            _sourceObjectPath,
-            sourceObject => DelegateCommand.For(
-               () => execute(sourceObject),
-               canExecute != null ? () => canExecute(sourceObject) : (Func<bool>)null
-            )
+         var commandTemplate = BehaviorChainTemplateRegistry.GetTemplate(BehaviorChainTemplateKeys.CommandBehaviors);
+         var commandConfig = commandTemplate.CreateConfiguration(CommandBehaviorFactory.CreateInvoker<TVM, TSourceObject>());
+
+         commandConfig.Enable(
+            BehaviorKeys.CommandExecutor,
+            new DelegatingCommandBehavior<TSourceObject>(execute, canExecute)
+         );
+
+         commandConfig.Enable(
+            BehaviorKeys.SourceAccessor,
+            new MappedPropertyAccessor<TVM, TSourceObject>(_sourceObjectPath)
          );
 
          var config = Factory.GetPropertyConfiguration<ICommand>(BehaviorChainTemplateKeys.CommandProperty);
-         config.Enable(BehaviorKeys.SourceAccessor, sourceValueAccessor);
+
+         config.Enable(
+            BehaviorKeys.CommandFactory,
+            new CommandFactoryBehavior(commandConfig)
+         );
+
          return Factory.CreateProperty<ICommand>(config);
       }
 
