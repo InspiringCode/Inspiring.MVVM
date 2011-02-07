@@ -1,0 +1,63 @@
+﻿<Window
+   x:Class="ValidationTest.MainWindow"
+   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+   xmlns:src="clr-namespace:ValidationTest"
+   Title="MainWindow"
+   Height="350"
+   Width="525">
+   <Window.Resources>
+      <Style
+         TargetType="{x:Type TabItem}">
+         <Setter
+            Property="Header"
+            Value="Item" />
+         <Style.Triggers>
+            <Trigger
+               Property="src:View.HasChildErrors"
+               Value="True">
+               <Setter
+                  Property="Header"
+                  Value="Item with Errors" />
+            </Trigger>
+         </Style.Triggers>
+      </Style>
+
+   </Window.Resources>
+   <Grid>
+      <Grid.RowDefinitions>
+         <RowDefinition
+            Height="*" />
+         <RowDefinition
+            Height="Auto" />
+      </Grid.RowDefinitions>
+      <TabControl>
+         <TabItem
+            x:Name="_tabItem1"
+            src:View.MirrorChildValidationErrors="True">
+            <DataGrid
+               ItemsSource="{Binding Employees}">
+               <DataGrid.Columns>
+                  <DataGridTextColumn
+                     Header="Name"
+                     Binding="{Binding Name, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+                  <DataGridTextColumn
+                     Header="Salary"
+                     Binding="{Binding Salary, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+               </DataGrid.Columns>
+            </DataGrid>
+         </TabItem>
+         <TabItem
+            x:Name="_tabItem2"
+            src:View.MirrorChildValidationErrors="True">
+            <TextBox
+               Text="{Binding Turnover, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
+               VerticalAlignment="Top" />
+         </TabItem>
+      </TabControl>
+      <Button
+         Grid.Row="1"
+         Content="Debug"
+         Click="Button_Click" />
+   </Grid>
+</Window>
