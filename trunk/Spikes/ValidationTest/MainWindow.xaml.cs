@@ -35,10 +35,15 @@ namespace ValidationTest {
 
    public class Company : IDataErrorInfo {
       public Company() {
-         Employees = new List<Employee> {
-            new Employee { Name = "John", Salary = 900 },
-            new Employee { Name = "John", Salary = 3000 },
-         };
+         Employees = new List<Employee>();
+
+         Employees.Add(new Employee { Name = "John First", Salary = 900 });
+         for (int i = 0; i < 500; i++)
+			{
+            Employees.Add(new Employee { Name = "John " + i, Salary = 1000 + i * 10 });
+			}
+         Employees.Add(new Employee { Name = "John Last", Salary = 9000 });
+                     
          Turnover = 1000;
       }
 

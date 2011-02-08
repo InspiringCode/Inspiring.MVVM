@@ -9,17 +9,14 @@
    <Window.Resources>
       <Style
          TargetType="{x:Type TabItem}">
-         <Setter
-            Property="Header"
-            Value="Item" />
          <Style.Triggers>
-            <Trigger
-               Property="src:View.HasChildErrors"
+            <DataTrigger
+               Binding="{Binding Content.(src:View.HasChildErrors), RelativeSource={RelativeSource Self}}"
                Value="True">
                <Setter
-                  Property="Header"
-                  Value="Item with Errors" />
-            </Trigger>
+                  Property="Background"
+                  Value="Red" />
+            </DataTrigger>
          </Style.Triggers>
       </Style>
 
@@ -34,25 +31,31 @@
       <TabControl>
          <TabItem
             x:Name="_tabItem1"
-            src:View.MirrorChildValidationErrors="True">
-            <DataGrid
-               ItemsSource="{Binding Employees}">
-               <DataGrid.Columns>
-                  <DataGridTextColumn
-                     Header="Name"
-                     Binding="{Binding Name, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
-                  <DataGridTextColumn
-                     Header="Salary"
-                     Binding="{Binding Salary, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
-               </DataGrid.Columns>
-            </DataGrid>
+            Header="Item 1">
+            <ContentControl
+               src:View.ChildErrorMonitoringIsEnabled="True">
+               <DataGrid
+                  ItemsSource="{Binding Employees}">
+                  <DataGrid.Columns>
+                     <DataGridTextColumn
+                        Header="Name"
+                        Binding="{Binding Name, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+                     <DataGridTextColumn
+                        Header="Salary"
+                        Binding="{Binding Salary, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+                  </DataGrid.Columns>
+               </DataGrid>
+            </ContentControl>
          </TabItem>
          <TabItem
             x:Name="_tabItem2"
-            src:View.MirrorChildValidationErrors="True">
-            <TextBox
-               Text="{Binding Turnover, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
-               VerticalAlignment="Top" />
+            Header="Item 2">
+            <ContentControl
+               src:View.ChildErrorMonitoringIsEnabled="True">
+               <TextBox
+                  Text="{Binding Turnover, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
+                  VerticalAlignment="Top" />
+            </ContentControl>
          </TabItem>
       </TabControl>
       <Button
