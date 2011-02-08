@@ -148,6 +148,22 @@
          //});
       }
 
+      /// <summary>
+      ///   Adds an explicit view model-level validation error (with the given 
+      ///   <paramref name="errorMessage"/>) to the current VM if any of its 
+      ///   descendants are invalid (see remarks).
+      /// </summary>
+      /// <remarks>
+      ///   <para>Beware that the validation state is always propagated to to the
+      ///      parent (meaning that <see cref="ViewModel.IsValid"/> returns false
+      ///      if any descendant is invalid) but <see cref="ViewModel.GetValidationState"/>
+      ///      with <see cref="ValidationStateScope.Self"/> does not return an error
+      ///      by default unless you add this validation rule.</para>
+      ///   <para>This validation rule is most useful in hierarchical data structures
+      ///      (e.g. an employee has projects which have tasks which have records) to
+      ///      guide the user to the (probably not visible) record that is actually
+      ///      invalid.</para>
+      /// </remarks>
       public static void PropagateChildErrors<TVM, TDescriptor>(
          this ValidatorBuilderBase<TVM, TDescriptor> builder,
          string errorMessage
@@ -161,13 +177,29 @@
          });
       }
 
-      // TODO: Test me.
+      /// <summary>
+      ///   Adds an explicit view model-level validation error (with the given 
+      ///   <paramref name="errorMessage"/> to the current VM if any of its 
+      ///   properties are invalid (see remarks).
+      /// </summary>
+      /// <remarks>
+      ///   This rule is useful if a VM is displayed in a grid where not all
+      ///   properties are visible in the grid. If any of the properites of a
+      ///   VM (visible or not) become invalid, a view model-level (row level)
+      ///   validation error is added to the VM (which is for example visualized
+      ///   by a red cross to the left of the grid row). This indicates to the
+      ///   user that something currently not visible may be invalid and that he
+      ///   or she should open the details of the current record to correct the
+      ///   validation error.
+      /// </remarks>
       public static void ValidateProperties<TVM, TDescriptor>(
          this ValidatorBuilderBase<TVM, TDescriptor> builder,
          string errorMessage
       )
          where TVM : IViewModel
          where TDescriptor : VMDescriptorBase {
+
+         // TODO: Test me.
 
          builder.CheckViewModel((vm, args) => {
             if (!vm.Kernel.GetValidationState(ValidationStateScope.PropertiesOnly).IsValid) {
