@@ -112,8 +112,8 @@
                }
                return value[parts[columnNameIndex]];
             } else {
-               IVMPropertyDescriptor property1 = Kernel.GetProperty(propertyName: columnName);
-               ValidationState state = Kernel.GetValidationState(property1);
+               IVMPropertyDescriptor property = Kernel.GetProperty(propertyName: columnName);
+               ValidationState state = Kernel.GetValidationState(property);
                return state.IsValid ?
                   null :
                   state.Errors.First().Message;
