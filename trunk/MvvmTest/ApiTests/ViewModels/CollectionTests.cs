@@ -1,7 +1,5 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels {
    using System.Collections.Generic;
-   using System.Linq;
-   using Inspiring.Mvvm.ViewModels;
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 

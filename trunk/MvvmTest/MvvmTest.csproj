@@ -107,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiTests\ViewModels\CommandHandlerTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Domain\CustomerRepository.cs" />
     <Compile Include="ApiTests\ViewModels\InheritanceTests.cs" />
     <Compile Include="ApiTests\ViewModels\InheritanceWithGenericsTests.cs" />
     <Compile Include="ApiTests\ViewModels\LocalPropertyTests.cs" />
@@ -121,6 +122,7 @@
     <Compile Include="ApiTests\ViewModels\PerformanceTests.cs" />
     <Compile Include="ApiTests\ViewModels\PropertyDependencyTests.cs" />
     <Compile Include="ApiTests\ViewModels\RefreshTests.cs" />
+    <Compile Include="ApiTests\ViewModels\TestCollectionWithInheritance.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\CollectionValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\CustomCollectionValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\DescendantValidationTests.cs" />
@@ -136,7 +138,10 @@
     <Compile Include="ApiTests\ViewModels\Validation\ValidationScopeTests.cs" />
     <Compile Include="ApiTests\ViewModels\ViewModelPropertyTests.cs" />
     <Compile Include="ApiTests\ViewModels\VMs\AreaVM.cs" />
+    <Compile Include="ApiTests\ViewModels\VMs\BaseVM.cs" />
+    <Compile Include="ApiTests\ViewModels\VMs\CollectionOfCustomerWithBaseVM.cs" />
     <Compile Include="ApiTests\ViewModels\VMs\CustomerVM.cs" />
+    <Compile Include="ApiTests\ViewModels\VMs\CustomerWithBaseVM.cs" />
     <Compile Include="ApiTests\ViewModels\VMs\ProjectVM.cs" />
     <Compile Include="ApiTests\ViewModels\VMs\StateVM.cs" />
     <Compile Include="ApiTests\ViewModels\VMs\TaskListVM.cs" />
