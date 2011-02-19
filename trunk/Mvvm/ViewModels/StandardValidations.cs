@@ -81,11 +81,14 @@
          this CollectionPropertyValidatorBuilder<TItemDescriptor, T> builder,
          string errorMessage
       ) where TItemDescriptor : VMDescriptorBase {
-         builder.Custom<IViewModel<TItemDescriptor>>((item, items, property, args) => {
+         // We only require 'IViewModel' because 'IViewModel<TItemDescriptor>' does not
+         // succeed in all inheritance cases.
+         // TODO: Is there a better solution?
+         builder.Custom<IViewModel>((item, items, property, args) => {
             bool isUnique = true;
             T itemPropertyValue = item.Kernel.GetValue(property);
 
-            foreach (IViewModel<TItemDescriptor> i in items) {
+            foreach (IViewModel i in items) {
                if (!Object.ReferenceEquals(i, item)) {
                   if (Object.Equals(i.Kernel.GetValue(property), itemPropertyValue)) {
                      isUnique = false;

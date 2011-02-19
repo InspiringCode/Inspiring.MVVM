@@ -19,10 +19,12 @@
 
       [TestMethod]
       public void Execute_SetsCursorToWaitCursor() {
-         VM.PaySalaryCallback = () => Assert.AreEqual(Cursors.Wait, Mouse.OverrideCursor);
+         Cursor cursorWhileExecuting = null;
+         VM.PaySalaryCallback = () => cursorWhileExecuting = Mouse.OverrideCursor;
+
          VM.ExecuteCommand(x => x.PaySalary);
 
-         Assert.IsNull(Mouse.OverrideCursor);
+         Assert.AreEqual(Cursors.Wait, cursorWhileExecuting);
       }
 
       [TestMethod]

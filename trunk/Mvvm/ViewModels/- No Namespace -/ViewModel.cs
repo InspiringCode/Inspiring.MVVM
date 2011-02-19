@@ -220,6 +220,25 @@
       protected virtual void OnValidationStateChanged(IVMPropertyDescriptor property) {
          if (property != null) {
             OnPropertyChanged("Item[]");
+
+            // An additional PropertyChanged is required if the validation state of a
+            // property has changed, but its value has not. 
+            //
+            // For example:
+            //   1. The 'Name' of 'employee1' is "John".
+            //   2. The 'Name' of 'employee2' is also "John".
+            //   3. Because of a unique validation the 'Name' property of both employees
+            //      is invalid.
+            //   4. The 'Name' of 'employee1' is changed to "Hans".
+            //   5. A property changed with 'Name' is raised for 'employee1' and it 
+            //      becomes valid.
+            //   6. The 'Name' of 'employee2' suddenly also becomes valid even though
+            //      its property value has not changed. 
+            // 
+            // In this case it is necessary to raise an additional 'PropertyChanged' 
+            // event for the 'Name' property of 'employee2'. Raising a 'PropertyChanged'
+            // event for 'Item[]' is not enough for the WPF binding system to update its
+            // validation state.
             OnPropertyChanged(property.PropertyName);
          } else {
             OnPropertyChanged("Error");

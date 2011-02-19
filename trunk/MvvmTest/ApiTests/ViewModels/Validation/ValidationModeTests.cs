@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Validation {
+   using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
@@ -63,9 +64,10 @@
             SetPropertyToInvalidValue(NewValue);
             SetupValidatorToReturnSuccess();
 
-            var listener = CreatePropertyChangedListener();
+            VM.PropertyChangedLog.Clear();
             RevalidateCommit();
-            listener.AssertOneRaise();
+            int propertyChangedCount = VM.PropertyChangedLog.Count(x => x == PropertyName);
+            Assert.AreEqual(1, propertyChangedCount);
          }
 
          [TestMethod]
@@ -151,9 +153,10 @@
             SetPropertyToInvalidValue(NewValue);
             SetupValidatorToReturnSuccess();
 
-            var listener = CreatePropertyChangedListener();
+            VM.PropertyChangedLog.Clear();
             RevalidateDiscard();
-            listener.AssertOneRaise();
+            int propertyChangedCount = VM.PropertyChangedLog.Count(x => x == PropertyName);
+            Assert.AreEqual(1, propertyChangedCount);
          }
 
          [TestMethod]
@@ -221,6 +224,7 @@
 
             public TaskVM()
                : base(ClassDescriptor) {
+               PropertyChangedLog = new List<string>();
             }
 
             public object TitleDisplayValue {
@@ -253,8 +257,15 @@
 
             public bool ReturnError { get; set; }
 
+            public List<string> PropertyChangedLog { get; set; }
+
             public void Revalidate(ValidationMode mode) {
                Revalidate(ValidationScope.SelfOnly, mode);
+            }
+
+            protected override void OnPropertyChanged(IVMPropertyDescriptor property) {
+               base.OnPropertyChanged(property);
+               PropertyChangedLog.Add(property.PropertyName);
             }
          }
 
