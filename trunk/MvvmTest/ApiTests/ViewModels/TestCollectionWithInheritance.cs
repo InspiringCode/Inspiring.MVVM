@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels {
    using System.Collections.Generic;
+   using System.Linq;
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
    using Inspiring.MvvmTest.ApiTests.ViewModels.VMs;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -17,6 +18,16 @@
          VM.InitializeFrom(SourceList);
          Assert.IsNotNull(VM.GetValue(CollectionOfCustomerWithBaseVM.ClassDescriptor.Customers));
          Assert.IsTrue(VM.IsValid);
+      }
+
+      [TestMethod]
+      public void TestAccessInheritedProperty() {
+         SourceList = CustomerRepository.GetCustomers();
+         VM = new CollectionOfCustomerWithBaseVM();
+         VM.InitializeFrom(SourceList);
+         VM.Children.Add(VM.GetValue(CollectionOfCustomerWithBaseVM.ClassDescriptor.Customers)[0]);
+         Assert.IsNotNull(VM.GetValue(CollectionOfCustomerWithBaseVM.ClassDescriptor.Children));
+         Assert.IsFalse(VM.GetValue(CollectionOfCustomerWithBaseVM.ClassDescriptor.Children).Single().IsExpanded);
       }
 
 
