@@ -184,6 +184,7 @@
     <Compile Include="ViewModels\Core\TypeDescriptor\TypeDescriptorServiceTests.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\VMPropertyDescriptorTests.cs" />
     <Compile Include="ViewModels\Core\Validation\PreValidationValueCacheBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\Validation\ValidationContextTests.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationErrorCollectionTests.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationPropertyBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationStateTests.cs" />
