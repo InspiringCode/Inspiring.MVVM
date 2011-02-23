@@ -2,13 +2,13 @@
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
 
-   public class TaskVM : ViewModel<TaskVMDescriptor>, IHasSourceObject<Task> {
+   public class TaskVM : DefaultViewModelWithSourceBase<TaskVMDescriptor, Task> {
       public static readonly TaskVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<TaskVMDescriptor>()
          .For<TaskVM>()
          .WithProperties((d, c) => {
             var vm = c.GetPropertyBuilder();
-            var t = c.GetPropertyBuilder(x => x.SourceTask);
+            var t = c.GetPropertyBuilder(x => x.Source);
 
             d.Title = t.Property.MapsTo(x => x.Title);
             d.Description = t.Property.DelegatesTo(
@@ -27,8 +27,6 @@
          : base(descriptor) {
       }
 
-      public Task SourceTask { get; private set; }
-
       public string ScreenTitle {
          get { return GetValue(Descriptor.ScreenTitle); }
          set { SetValue(Descriptor.ScreenTitle, value); }
@@ -44,13 +42,8 @@
          set { SetValue(Descriptor.Description, value); }
       }
 
-      Task IHasSourceObject<Task>.Source {
-         get { return SourceTask; }
-         set { SourceTask = value; }
-      }
-
-      public void InitializeFrom(Task source) {
-         SourceTask = source;
+      public override void InitializeFrom(Task source) {
+         base.InitializeFrom(source);
          ScreenTitle = "Edit task: " + source.Title;
       }
    }

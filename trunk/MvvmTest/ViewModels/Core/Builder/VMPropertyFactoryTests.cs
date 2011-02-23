@@ -213,6 +213,10 @@
       private class ProjectVM : ViewModelStub, IHasSourceObject<Project> {
          public Project SourceProject { get; private set; }
 
+         Project IHasReadonlySourceObject<Project>.Source {
+            get { return SourceProject; }
+         }
+
          Project IHasSourceObject<Project>.Source {
             get { return SourceProject; }
             set { SourceProject = value; }

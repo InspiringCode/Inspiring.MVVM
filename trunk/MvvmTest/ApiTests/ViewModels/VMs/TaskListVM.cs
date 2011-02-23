@@ -3,14 +3,14 @@
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
 
-   public sealed class TaskListVM : ViewModel<TaskListVMDescriptor>, IHasSourceObject<IEnumerable<Task>> {
+   public sealed class TaskListVM : DefaultViewModelWithSourceBase<TaskListVMDescriptor, IEnumerable<Task>> {
       public static readonly TaskListVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<TaskListVMDescriptor>()
          .For<TaskListVM>()
          .WithProperties((d, c) => {
             var vm = c.GetPropertyBuilder();
 
-            d.Tasks = vm.Collection.Wraps(x => x.TasksSource).With<TaskVM>(TaskVM.ClassDescriptor);
+            d.Tasks = vm.Collection.Wraps(x => x.Source).With<TaskVM>(TaskVM.ClassDescriptor);
          })
          .Build();
 
@@ -18,19 +18,8 @@
          : base(ClassDescriptor) {
       }
 
-      public IEnumerable<Task> TasksSource { get; private set; }
-
       public IVMCollection<TaskVM> Tasks {
          get { return GetValue(Descriptor.Tasks); }
-      }
-
-      public void InitializeFrom(IEnumerable<Task> source) {
-         TasksSource = source;
-      }
-
-      IEnumerable<Task> IHasSourceObject<IEnumerable<Task>>.Source {
-         get { return TasksSource; }
-         set { TasksSource = value; }
       }
    }
 

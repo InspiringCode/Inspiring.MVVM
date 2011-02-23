@@ -47,17 +47,17 @@
          vm.UpdateFromSource(UserVM.ClassDescriptor.Department);
       }
 
-      internal sealed class UserVM : ViewModel<UserVMDescriptor>, IHasSourceObject<User> {
+      internal sealed class UserVM : DefaultViewModelWithSourceBase<UserVMDescriptor, User> {
          public static UserVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<UserVMDescriptor>()
             .For<UserVM>()
             .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
-               var s = c.GetPropertyBuilder(x => x.UserSource);
+               var s = c.GetPropertyBuilder(x => x.Source);
 
                d.Name = s.Property.MapsTo(x => x.Name);
                d.Department = v
-                  .SingleSelection(x => x.UserSource.Department)
+                  .SingleSelection(x => x.Source.Department)
                   .WithItems(x => x.AllSourceDepartments)
                   .WithFilter(x => x.IsActive)
                   .WithCaption(x => x.Name);
@@ -67,16 +67,10 @@
          public UserVM(IEnumerable<Department> allSourceDepartments = null)
             : base(ClassDescriptor) {
             AllSourceDepartments = allSourceDepartments;
-            UserSource = new User();
+            SetSource(new User());
          }
-
-         public User UserSource { get; private set; }
 
          public IEnumerable<Department> AllSourceDepartments { get; set; }
-
-         public void InitializeFrom(User source) {
-            UserSource = source;
-         }
 
          public string Name {
             get { return GetValue(Descriptor.Name); }
@@ -84,11 +78,6 @@
 
          public SingleSelectionVM<Department> Department {
             get { return GetValue(Descriptor.Department); }
-         }
-
-         User IHasSourceObject<User>.Source {
-            get { return UserSource; }
-            set { UserSource = value; }
          }
 
          public new void UpdateFromSource(IVMPropertyDescriptor property) {

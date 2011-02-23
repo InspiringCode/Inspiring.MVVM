@@ -21,26 +21,26 @@
 
       [TestMethod]
       public void GetValue_MappedProperty_Success() {
-         VM.SourceTask.Title = ArbitraryString;
+         VM.Source.Title = ArbitraryString;
          Assert.AreEqual(ArbitraryString, VM.Title);
       }
 
       [TestMethod]
       public void SetValue_MappedProperty_Success() {
          VM.Title = ArbitraryString;
-         Assert.AreEqual(ArbitraryString, VM.SourceTask.Title);
+         Assert.AreEqual(ArbitraryString, VM.Source.Title);
       }
 
       [TestMethod]
       public void GetValue_CalculatedProperty_Success() {
-         VM.SourceTask.Description = new RichText(ArbitraryString);
+         VM.Source.Description = new RichText(ArbitraryString);
          Assert.AreEqual(ArbitraryString, VM.Description);
       }
 
       [TestMethod]
       public void SetValue_CalculatedProperty_Success() {
          VM.Description = ArbitraryString;
-         Assert.AreEqual(ArbitraryString, VM.SourceTask.Description.Html);
+         Assert.AreEqual(ArbitraryString, VM.Source.Description.Html);
       }
    }
 }

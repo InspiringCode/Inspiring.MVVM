@@ -68,16 +68,14 @@
          public IVMPropertyDescriptor<IVMCollection<PersonVM>> PersonListe { get; set; }
       }
 
-      private class PersonVM :
-         ViewModel<PersonVMDescriptor>,
-         IHasSourceObject<Person> {
+      private class PersonVM : DefaultViewModelWithSourceBase<PersonVMDescriptor, Person> {
 
          public static readonly PersonVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<PersonVMDescriptor>()
             .For<PersonVM>()
             .WithProperties((d, b) => {
                var v = b.GetPropertyBuilder();
-               var p = b.GetPropertyBuilder(x => x.Person);
+               var p = b.GetPropertyBuilder(x => x.Source);
 
                d.FirstName = p.Property.MapsTo(x => x.FirstName);
                d.LastName = p.Property.MapsTo(x => x.LastName);
@@ -96,13 +94,6 @@
             : base(ClassDescriptor) {
 
          }
-
-         Person IHasSourceObject<Person>.Source {
-            get { return Person; }
-            set { Person = value; }
-         }
-
-         public Person Person { get; private set; }
 
          #region Helper properties for unit tests
 

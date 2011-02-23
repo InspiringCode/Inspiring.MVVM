@@ -64,7 +64,7 @@
          var additionalItem = vm
             .Groups
             .AllItems
-            .Single(x => x.GroupSource == Group2);
+            .Single(x => x.Source == Group2);
 
          var selectedItems = new List<GroupVM>(vm.Groups.SelectedItems);
          selectedItems.Add(additionalItem);
@@ -84,7 +84,7 @@
          var additionalItem = vm
             .Groups
             .AllItems
-            .Single(x => x.GroupSource == Group2);
+            .Single(x => x.Source == Group2);
 
          var selectedItems = new List<GroupVM>(vm.Groups.SelectedItems);
          selectedItems.Insert(0, additionalItem);
@@ -185,7 +185,7 @@
       /// </summary>
       private void AssertAllItemsAreEqual(UserVM vm, IEnumerable<Group> expectedSourceItems) {
          var expected = expectedSourceItems.ToArray();
-         var actual = vm.Groups.AllItems.Select(x => x.GroupSource).ToArray();
+         var actual = vm.Groups.AllItems.Select(x => x.Source).ToArray();
 
          CollectionAssert.AreEqual(expected, actual);
       }
@@ -206,8 +206,8 @@
       ///   the same groups as the source groups of the given group VMs.
       /// </summary>
       private void AssertSelectedSourceItemsAreEqual(UserVM vm, IEnumerable expectedSelectedItems) {
-         var expected = expectedSelectedItems.Cast<GroupVM>().Select(x => x.GroupSource).ToArray();
-         var actual = vm.UserSource.Groups.ToArray();
+         var expected = expectedSelectedItems.Cast<GroupVM>().Select(x => x.Source).ToArray();
+         var actual = vm.Source.Groups.ToArray();
 
          CollectionAssert.AreEqual(expected, actual);
       }
@@ -243,7 +243,7 @@
             .OfType<UserVMDescriptor>()
             .For<UserVM>()
             .WithProperties((d, c) => {
-               var u = c.GetPropertyBuilder(x => x.UserSource);
+               var u = c.GetPropertyBuilder(x => x.Source);
 
                var builder = selectedGroupsSelector != null ?
                   u.MultiSelection(selectedGroupsSelector) :

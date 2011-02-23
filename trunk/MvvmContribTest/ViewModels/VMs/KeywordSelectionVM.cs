@@ -4,13 +4,13 @@
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
 
-   internal sealed class KeywordSelectionVM : ViewModel<KeywordSelectionVMDescriptor>, IHasSourceObject<User> {
+   internal sealed class KeywordSelectionVM : DefaultViewModelWithSourceBase<KeywordSelectionVMDescriptor, User> {
       public static readonly KeywordSelectionVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<KeywordSelectionVMDescriptor>()
          .For<KeywordSelectionVM>()
          .WithProperties((d, c) => {
             var vm = c.GetPropertyBuilder();
-            var doc = c.GetPropertyBuilder(x => x.Document);
+            var doc = c.GetPropertyBuilder(x => x.Source);
 
             d.AllItems = vm.Collection.Wraps(x => x.FilteredItems).With<GroupVM>(GroupVM.ClassDescriptor);
             d.SelectedItems = vm.Property.DelegatesTo(x => x.CreateSelectedItemsCollection());
@@ -26,12 +26,6 @@
 
       public KeywordSelectionVM()
          : base(ClassDescriptor) {
-      }
-
-      public User Document { get; private set; }
-
-      public void InitializeFrom(User source) {
-         Document = source;
       }
 
       public IEnumerable<Group> AllSourceItems {
@@ -60,7 +54,7 @@
             return
                AllSourceItems.Where(i =>
                   IsItemSelectable(i) ||
-                  SelectedItems.Any(x => x.GroupSource == i)
+                  SelectedItems.Any(x => x.Source == i)
                )
                .ToArray();
          }
@@ -79,7 +73,7 @@
          //var coll = new VMCollection<KeywordVM>(this, KeywordVM.Descriptor);
 
          IEnumerable<GroupVM> selectedItemVMs = SelectedSourceItems
-            .Select(i => AllItems.Single(x => x.GroupSource == i));
+            .Select(i => AllItems.Single(x => x.Source == i));
 
          //coll.Popuplate(
          //   selectedItemVMs,
@@ -111,11 +105,6 @@
       //      _selectedSourceItems.Clear();
       //   }
       //}
-
-      User IHasSourceObject<User>.Source {
-         get { return Document; }
-         set { Document = value; }
-      }
    }
 
    internal sealed class KeywordSelectionVMDescriptor : VMDescriptor {

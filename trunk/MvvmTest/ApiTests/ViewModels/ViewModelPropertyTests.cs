@@ -64,7 +64,7 @@
                   var v = c.GetPropertyBuilder();
 
                   d.Title = v.Property.Of<string>();
-                  d.Customer = v.VM.Wraps(x => x.ProjectSource.Customer).With<CustomerVM>();
+                  d.Customer = v.VM.Wraps(x => x.Source.Customer).With<CustomerVM>();
                })
                .Build();
 
@@ -83,8 +83,8 @@
 
                   d.Title = v.Property.Of<string>();
                   d.Customer = v.VM.Wraps(
-                     x => x.ProjectSource.Customer,
-                     (x, val) => x.ProjectSource.Customer = val
+                     x => x.Source.Customer,
+                     (x, val) => x.Source.Customer = val
                   ).With<CustomerVM>();
                })
                .Build();
@@ -99,7 +99,7 @@
             var descriptor = VMDescriptorBuilder
                .OfType<ProjectVMDescriptor>().For<ProjectVM>()
                .WithProperties((d, c) => {
-                  var p = c.GetPropertyBuilder(x => x.ProjectSource);
+                  var p = c.GetPropertyBuilder(x => x.Source);
 
                   d.Title = p.Property.Of<string>();
                   d.Customer = p.VM.Wraps(x => x.Customer).With<CustomerVM>();
@@ -116,7 +116,7 @@
             var descriptor = VMDescriptorBuilder
                .OfType<ProjectVMDescriptor>().For<ProjectVM>()
                .WithProperties((d, c) => {
-                  var p = c.GetPropertyBuilder(x => x.ProjectSource);
+                  var p = c.GetPropertyBuilder(x => x.Source);
 
                   d.Title = p.Property.Of<string>();
                   d.Customer = p.VM.Wraps(

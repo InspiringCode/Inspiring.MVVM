@@ -76,7 +76,7 @@
          Assert.AreEqual(2, emps.Count);
          Assert.AreEqual(1, custs.Count);
 
-         Assert.AreEqual(compVM.Company.Employees.ElementAt(1), emps[1].Person);
+         Assert.AreEqual(compVM.Company.Employees.ElementAt(1), emps[1].Source);
       }
 
       private class CompanyVM : ViewModel<CompanyVMDescriptor> {
@@ -105,13 +105,13 @@
          public IVMPropertyDescriptor<IVMCollection<PersonVM>> Customers { get; set; }
       }
 
-      private class PersonVM : ViewModel<PersonVMDescriptor>, IHasSourceObject<Person> {
+      private class PersonVM : DefaultViewModelWithSourceBase<PersonVMDescriptor, Person> {
          public static readonly PersonVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<PersonVMDescriptor>()
             .For<PersonVM>()
             .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
-               var p = c.GetPropertyBuilder(x => x.Person);
+               var p = c.GetPropertyBuilder(x => x.Source);
 
                d.BirthDate = p.Property.MapsTo(x => x.BirthDate);
                d.Salary = p.Property.MapsTo(x => x.Salary);
@@ -127,19 +127,9 @@
             .WithBehaviors(c => {
             })
             .Build();
+
          public PersonVM()
             : base(ClassDescriptor) {
-
-         }
-         public Person Person { get; set; }
-
-         Person IHasSourceObject<Person>.Source {
-            get { return Person; }
-            set { Person = value; }
-         }
-
-         public void InitializeFrom(Person source) {
-            Person = source;
          }
       }
 

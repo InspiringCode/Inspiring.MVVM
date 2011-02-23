@@ -3,12 +3,12 @@
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
 
-   public sealed class ProjectVM : ViewModel<ProjectVMDescriptor>, IHasSourceObject<Project> {
+   public sealed class ProjectVM : DefaultViewModelWithSourceBase<ProjectVMDescriptor, Project> {
       public static readonly ProjectVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<ProjectVMDescriptor>()
          .For<ProjectVM>()
          .WithProperties((d, c) => {
-            var p = c.GetPropertyBuilder(x => x.ProjectSource);
+            var p = c.GetPropertyBuilder(x => x.Source);
 
             d.Title = p.Property.MapsTo(x => x.Title);
             d.Customer = p.VM.Wraps(x => x.Customer).With<CustomerVM>();
@@ -31,8 +31,6 @@
 
       }
 
-      public Project ProjectSource { get; private set; }
-
       public bool WasValidated { get; set; }
 
       public CustomerVM Customer {
@@ -45,21 +43,12 @@
          set { SetValue(Descriptor.Title, value); }
       }
 
-      public void InitializeFrom(Project source) {
-         ProjectSource = source;
-      }
-
       public void UpdateCustomerFromSource() {
          Kernel.UpdateFromSource(Descriptor.Customer);
       }
 
       public void Revalidate() {
          Kernel.Revalidate(ValidationScope.SelfOnly, ValidationMode.DiscardInvalidValues);
-      }
-
-      Project IHasSourceObject<Project>.Source {
-         get { return ProjectSource; }
-         set { ProjectSource = value; }
       }
    }
 

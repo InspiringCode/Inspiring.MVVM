@@ -61,7 +61,7 @@
 
          vm.Department.SelectedItem = newDepartment;
 
-         Assert.AreSame(newDepartment.DepartmentSource, vm.UserSource.Department);
+         Assert.AreSame(newDepartment.Source, vm.Source.Department);
       }
 
       [TestMethod]
@@ -71,7 +71,7 @@
 
          vm.Department.SelectedItem = null;
 
-         Assert.IsNull(vm.UserSource.Department);         
+         Assert.IsNull(vm.Source.Department);         
       }
 
       /// <summary>
@@ -80,7 +80,7 @@
       /// </summary>
       private void AssertAllItemsAreEqual(UserVM vm, IEnumerable<Department> expectedSourceItems) {
          var expected = expectedSourceItems.ToArray();
-         var actual = vm.Department.AllItems.Select(x => x.DepartmentSource).ToArray();
+         var actual = vm.Department.AllItems.Select(x => x.Source).ToArray();
 
          CollectionAssert.AreEqual(expected, actual);
       }
@@ -104,7 +104,7 @@
             .OfType<UserVMDescriptor>()
             .For<UserVM>()
             .WithProperties((d, c) => {
-               var u = c.GetPropertyBuilder(x => x.UserSource);
+               var u = c.GetPropertyBuilder(x => x.Source);
 
                var builder = u.SingleSelection(x => x.Department);
 

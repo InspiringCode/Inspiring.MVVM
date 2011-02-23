@@ -1,11 +1,18 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
+   using System.Collections;
    using System.Collections.Generic;
    using System.Linq;
-   using Inspiring.Mvvm.ViewModels.Core;
+
+   public interface ISingleSelectionVM {
+      IList AllItems { get; }
+      object SelectedItem { get; set; }
+      Type ItemSourceType { get; }
+      Type ItemVMType { get; }
+   }
 
    public abstract class SingleSelectionVM<TItemSource, TItemVM> :
-        ViewModel<SingleSelectionVMDescriptor<TItemSource, TItemVM>>
+        ViewModel<SingleSelectionVMDescriptor<TItemSource, TItemVM>>, ISingleSelectionVM
         where TItemVM : IViewModel {
 
       /// <param name="descriptor">
@@ -45,6 +52,23 @@
       public TItemVM SelectedItem {
          get { return GetValue(Descriptor.SelectedItem); }
          set { SetValue(Descriptor.SelectedItem, value); }
+      }
+
+      IList ISingleSelectionVM.AllItems {
+         get { return AllItems; }
+      }
+
+      object ISingleSelectionVM.SelectedItem {
+         get { return SelectedItem; }
+         set { SelectedItem = (TItemVM)value; }
+      }
+
+      Type ISingleSelectionVM.ItemSourceType {
+         get { return typeof(TItemSource); }
+      }
+
+      Type ISingleSelectionVM.ItemVMType {
+         get { return typeof(TItemVM); }
       }
 
       /// <summary>

@@ -1,13 +1,13 @@
 ﻿namespace Inspiring.MvvmContribTest.ApiTests.ViewModels {
    using Inspiring.Mvvm.ViewModels;
 
-   internal sealed class GroupVM : ViewModel<GroupVMDescriptor>, IHasSourceObject<Group> {
+   internal sealed class GroupVM : DefaultViewModelWithSourceBase<GroupVMDescriptor, Group> {
       public static readonly GroupVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<GroupVMDescriptor>()
          .For<GroupVM>()
          .WithProperties((d, c) => {
             var vm = c.GetPropertyBuilder();
-            var k = c.GetPropertyBuilder(x => x.GroupSource);
+            var k = c.GetPropertyBuilder(x => x.Source);
 
             d.Name = k.Property.MapsTo(x => x.Name);
          })
@@ -17,19 +17,8 @@
          : base(ClassDescriptor) {
       }
 
-      public Group GroupSource { get; private set; }
-
       public string Name {
          get { return GetValue(Descriptor.Name); }
-      }
-
-      public void InitializeFrom(Group source) {
-         GroupSource = source;
-      }
-
-      Group IHasSourceObject<Group>.Source {
-         get { return GroupSource; }
-         set { GroupSource = value; }
       }
    }
 

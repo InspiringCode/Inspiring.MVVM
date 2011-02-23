@@ -1,11 +1,19 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
+   using System.Collections;
    using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm;
 
+   public interface IMultiSelectionVM {
+      IList AllItems { get; }
+      IList SelectedItems { get; }
+      Type ItemSourceType { get; }
+      Type ItemVMType { get; }
+   }
+
    public abstract class MultiSelectionVM<TItemSource, TItemVM> :
-      ViewModel<MultiSelectionVMDescriptor<TItemSource, TItemVM>>
+      ViewModel<MultiSelectionVMDescriptor<TItemSource, TItemVM>>, IMultiSelectionVM
       where TItemVM : IViewModel {
 
       /// <param name="descriptor">
@@ -43,6 +51,22 @@
 
       public IVMCollection<TItemVM> SelectedItems {
          get { return GetValue(Descriptor.SelectedItems); }
+      }
+
+      IList IMultiSelectionVM.AllItems {
+         get { return AllItems; }
+      }
+
+      IList IMultiSelectionVM.SelectedItems {
+         get { return SelectedItems; }
+      }
+
+      Type IMultiSelectionVM.ItemSourceType {
+         get { return typeof(TItemSource); }
+      }
+
+      Type IMultiSelectionVM.ItemVMType {
+         get { return typeof(TItemVM); }
       }
 
       public object SelectedItemsDisplayValue {

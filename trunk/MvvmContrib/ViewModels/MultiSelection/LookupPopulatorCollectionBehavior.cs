@@ -36,7 +36,9 @@
                TItemVM vm;
 
                if (!lookupDictionary.TryGetValue(sourceItem, out vm)) {
-                  throw new InvalidOperationException(ExceptionTexts.LookupViewModelNotFound);
+                  throw new InvalidOperationException(
+                     ExceptionTexts.LookupViewModelNotFound.FormatWith(sourceItem)
+                  );
                }
 
                collection.Add(vm);

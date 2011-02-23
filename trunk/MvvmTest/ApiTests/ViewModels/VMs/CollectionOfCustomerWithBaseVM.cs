@@ -3,7 +3,7 @@
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
 
-   public sealed class CollectionOfCustomerWithBaseVM : ViewModel<CollectionOfCustomerWithBaseVMDescriptor>, IHasSourceObject<IEnumerable<Customer>> {
+   public sealed class CollectionOfCustomerWithBaseVM : DefaultViewModelWithSourceBase<CollectionOfCustomerWithBaseVMDescriptor, IEnumerable<Customer>> {
 
       public static readonly CollectionOfCustomerWithBaseVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<CollectionOfCustomerWithBaseVMDescriptor>()
@@ -12,7 +12,7 @@
             var vm = b.GetPropertyBuilder();
 
             d.Customers = vm.Collection
-               .Wraps(x => x.CustomersSource)
+               .Wraps(x => x.Source)
                .With<CustomerWithBaseVM>(CustomerWithBaseVM.ClassDescriptor);
             d.Children = vm.Collection.Of<BaseVM>(BaseVM.ClassDescriptor);
          })
@@ -26,17 +26,10 @@
          : base(ClassDescriptor) {
 
       }
-      public void InitializeFrom(IEnumerable<Customer> source) {
-         CustomersSource = source;
+
+      public override void InitializeFrom(IEnumerable<Customer> source) {
+         SetSource(source);
          Revalidate(ValidationScope.FullSubtree);
-      }
-
-      public IEnumerable<Customer> CustomersSource { get; private set; }
-
-
-      IEnumerable<Customer> IHasSourceObject<IEnumerable<Customer>>.Source {
-         get { return CustomersSource; }
-         set { CustomersSource = value; }
       }
 
       public IVMCollection<BaseVM> Children {

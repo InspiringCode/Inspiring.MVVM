@@ -75,13 +75,13 @@
          return (string)TypeDescriptor.GetProperties(item)["Caption"].GetValue(item);
       }
 
-      private sealed class PersonVM : ViewModel<PersonVMDescriptor>, IHasSourceObject<Person> {
+      private sealed class PersonVM : DefaultViewModelWithSourceBase<PersonVMDescriptor, Person> {
          public static readonly PersonVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<PersonVMDescriptor>()
             .For<PersonVM>()
             .WithProperties((d, c) => {
                var vm = c.GetPropertyBuilder();
-               var p = c.GetPropertyBuilder(x => x.Person);
+               var p = c.GetPropertyBuilder(x => x.Source);
 
                d.Status = p.EnumSelection(x => x.CurrentStatus);
             })
@@ -91,19 +91,8 @@
             : base(ClassDescriptor) {
          }
 
-         public Person Person { get; private set; }
-
          public T InvokeGetValue<T>(IVMPropertyDescriptor<T> property) {
             return GetValue(property);
-         }
-
-         public void InitializeFrom(Person source) {
-            Person = source;
-         }
-
-         Person IHasSourceObject<Person>.Source {
-            get { return Person; }
-            set { Person = value; }
          }
       }
 

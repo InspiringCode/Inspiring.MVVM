@@ -3,13 +3,13 @@
    using System.Collections.Generic;
    using Inspiring.Mvvm.ViewModels;
 
-   public class PersonVM : ViewModel<PersonVMDescriptor>, IHasSourceObject<Person> {
+   public class PersonVM : DefaultViewModelWithSourceBase<PersonVMDescriptor, Person> {
       public static readonly PersonVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<PersonVMDescriptor>()
             .For<PersonVM>()
             .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
-               var p = c.GetPropertyBuilder(x => x.Person);
+               var p = c.GetPropertyBuilder(x => x.Source);
 
                d.FirstName = p.Property.MapsTo(x => x.FirstName);
                d.LastName = p.Property.MapsTo(x => x.LastName);
@@ -34,21 +34,10 @@
 
       public PersonVM(Person person)
          : this() {
-         Person = person;
+         SetSource(person);
       }
-
-      public Person Person { get; set; }
 
       public IEnumerable<Project> Projects { get; set; }
-
-      public void InitializeFrom(Person source) {
-         Person = source;
-      }
-
-      Person IHasSourceObject<Person>.Source {
-         get { return Person; }
-         set { Person = value; }
-      }
    }
 
    public class PersonVMDescriptor : VMDescriptor {
@@ -62,14 +51,14 @@
       public IVMPropertyDescriptor<IVMCollection<ProjectVM>> Projects { get; set; }
    }
 
-   public class ProjectVM : ViewModel<ProjectVMDescriptor>, IHasSourceObject<Project> {
+   public class ProjectVM : DefaultViewModelWithSourceBase<ProjectVMDescriptor, Project> {
       public static readonly ProjectVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<ProjectVMDescriptor>()
             .For<ProjectVM>()
             .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
 
-               d.Name = v.Property.MapsTo(x => x.Project.Name);
+               d.Name = v.Property.MapsTo(x => x.Source.Name);
             })
          //.WithValidators(c => {
          //})
@@ -85,18 +74,7 @@
 
       public ProjectVM(Project project)
          : this() {
-         Project = project;
-      }
-
-      public Project Project { get; set; }
-
-      Project IHasSourceObject<Project>.Source {
-         get { return Project; }
-         set { Project = value; }
-      }
-
-      public void InitializeFrom(Project source) {
-         Project = source;
+         SetSource(project);
       }
    }
 

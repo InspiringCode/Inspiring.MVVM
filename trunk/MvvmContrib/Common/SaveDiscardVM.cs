@@ -9,12 +9,12 @@
       Changed
    }
 
-   public sealed class SaveDiscardVM : ViewModel<SaveDiscardVMDescriptor>, IHasSourceObject<ISaveDiscardHandler> {
+   public sealed class SaveDiscardVM : DefaultViewModelWithSourceBase<SaveDiscardVMDescriptor, ISaveDiscardHandler> {
       public static readonly SaveDiscardVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<SaveDiscardVMDescriptor>()
          .For<SaveDiscardVM>()
          .WithProperties((d, c) => {
-            var h = c.GetPropertyBuilder(x => x.DialogActionHandler);
+            var h = c.GetPropertyBuilder(x => x.Source);
 
             d.Save = h.Command(x => x.Save(), x => x.CanSave());
             d.Discard = h.Command(x => x.Discard(), x => x.CanDiscard());
@@ -38,10 +38,9 @@
          get { return GetValue(Descriptor.State); }
       }
 
-      private ISaveDiscardHandler DialogActionHandler { get; set; }
-
-      public void InitializeFrom(ISaveDiscardHandler handler) {
-         DialogActionHandler = handler;
+      /// <inheritdoc />
+      public override void InitializeFrom(ISaveDiscardHandler source) {
+         base.InitializeFrom(source);
 
          // RequerySuggested is a weak event. We have to hold a strong 
          // reference to the handler to avoid garbage collection!
@@ -51,11 +50,6 @@
          });
 
          CommandManager.RequerySuggested += _requerySuggestedHandler;
-      }
-
-      ISaveDiscardHandler IHasSourceObject<ISaveDiscardHandler>.Source {
-         get { return DialogActionHandler; }
-         set { DialogActionHandler = value; }
       }
    }
 

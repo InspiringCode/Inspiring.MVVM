@@ -5,6 +5,7 @@
 
    public sealed class MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM> :
       MultiSelectionVM<TItemSource, TItemVM>,
+      IHasReadonlySourceObject<TSourceObject>,
       IHasSourceObject<TSourceObject>
       where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
@@ -16,6 +17,10 @@
          IServiceLocator serviceLocator
       )
          : base(descriptor, serviceLocator) {
+      }
+
+      TSourceObject IHasReadonlySourceObject<TSourceObject>.Source {
+         get { return SourceObject; }
       }
 
       TSourceObject IHasSourceObject<TSourceObject>.Source {

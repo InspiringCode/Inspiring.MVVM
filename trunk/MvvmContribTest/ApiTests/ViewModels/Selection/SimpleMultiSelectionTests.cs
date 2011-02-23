@@ -30,17 +30,17 @@
          Assert.AreEqual(group.Name, groupVM.Caption);
       }
 
-      internal sealed class UserVM : ViewModel<UserVMDescriptor>, IHasSourceObject<User> {
+      internal sealed class UserVM : DefaultViewModelWithSourceBase<UserVMDescriptor, User> {
          public static UserVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<UserVMDescriptor>()
             .For<UserVM>()
             .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
-               var s = c.GetPropertyBuilder(x => x.UserSource);
+               var s = c.GetPropertyBuilder(x => x.Source);
 
                d.Name = s.Property.MapsTo(x => x.Name);
                d.Groups = v
-                  .MultiSelection(x => x.UserSource.Groups)
+                  .MultiSelection(x => x.Source.Groups)
                   .WithItems(x => x.AllSourceGroups)
                   .WithFilter(x => x.IsActive)
                   .WithCaption(x => x.Name);
@@ -50,16 +50,10 @@
          public UserVM(IEnumerable<Group> allSourceGroups)
             : base(ClassDescriptor) {
             AllSourceGroups = allSourceGroups;
-            UserSource = new User();
+            SetSource(new User());
          }
-
-         public User UserSource { get; private set; }
 
          public IEnumerable<Group> AllSourceGroups { get; set; }
-
-         public void InitializeFrom(User source) {
-            UserSource = source;
-         }
 
          public string Name {
             get { return GetValue(Descriptor.Name); }
@@ -71,11 +65,6 @@
 
          public SingleSelectionVM<Department> Department {
             get { return GetValue(Descriptor.Department); }
-         }
-
-         User Mvvm.ViewModels.IHasSourceObject<User>.Source {
-            get { return UserSource; }
-            set { UserSource = value; }
          }
       }
 
