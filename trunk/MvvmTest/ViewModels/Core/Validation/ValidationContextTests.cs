@@ -21,26 +21,44 @@
 
       [TestMethod]
       public void TryGetValidatorState_ReturnsRegisteredState() {
-         Assert.Inconclusive();
+         var key = "TEST";
+         var expectedState = new TestValidatorState();
+         Context.SetValidatorState(key, expectedState);
+
+         var actual = Context.TryGetValidatorState<TestValidatorState>(key);
+         Assert.AreSame(expectedState, actual);
       }
 
       [TestMethod]
       public void TryGetValidatorState_KeyNotRegistered_ReturnsNull() {
-         Assert.Inconclusive();
+         var state = Context.TryGetValidatorState<TestValidatorState>(key: "TEST");
+         Assert.IsNull(state);
+      }
+
+      [TestMethod]
+      public void TryGetValidatorState_WithWrongTypeArgument_ThrowsInvalidCastOperation() {
+         var key = "TEST";
+         Context.SetValidatorState(key, new TestValidatorState());
+
+         AssertHelper.Throws<InvalidCastException>(() =>
+            Context.TryGetValidatorState<AnotherValidatorState>(key)
+         );
       }
 
       [TestMethod]
       public void RegisterValidatorState_KeyAlreadyRegistered_ThrowsException() {
-         Assert.Inconclusive();
-         //string key = "KEY";
-         //Context.SetValidationState(key, new TestValidatorState());
+         var key = "TEST";
+         Context.SetValidatorState(key, new TestValidatorState());
 
-         //AssertHelper.Throws<ArgumentException>(() =>
-         //   Context.SetValidationState(key, new TestValidatorState())
-         //);
+         AssertHelper.Throws<ArgumentException>(() =>
+            Context.SetValidatorState(key, new TestValidatorState())
+         );
       }
 
       private class TestValidatorState {
+      }
+
+      private class AnotherValidatorState {
       }
    }
 }

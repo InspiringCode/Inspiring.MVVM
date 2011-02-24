@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
+   using System.Collections.Generic;
    using System.Diagnostics.Contracts;
 
    /// <summary>
@@ -11,6 +12,7 @@
    public sealed class ValidationContext {
       private static ValidationContext _current = null;
       private static int _level = 0;
+      private Dictionary<object, object> _validatorStates = new Dictionary<object, object>();
 
       private ValidationContext() {
          RevalidationQueue = new RevalidationQueue();
@@ -33,13 +35,32 @@
 
       public static void CompleteValidation(ValidationMode validationMode) {
          Contract.Requires<InvalidOperationException>(Current != null);
-         
+
          if ((_level - 1) == 0) {
             Current.RevalidationQueue.Revalidate(Current, validationMode);
             _current = null;
          }
 
          _level--;
+      }
+
+      internal TState TryGetValidatorState<TState>(object key) {
+         object state;
+         _validatorStates.TryGetValue(key, out state);
+         return (TState)state;
+      }
+
+      /// <summary>
+      /// 
+      /// </summary>
+      /// <param name="key"></param>
+      /// <param name="state"></param>
+      /// <exception cref="ArgumentException">
+      ///   A validator state with the given <paramref name="key"/> is already
+      ///   registered.
+      /// </exception>
+      internal void SetValidatorState(object key, object state) {
+         _validatorStates.Add(key, state);
       }
    }
 }
