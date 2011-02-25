@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>vm</Title>
+      <Author>Daniel Berghold</Author>
+      <Description>Creats a Inspring MVVM view model.</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>vm</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>sourceObject</ID>
+          <ToolTip>Type of the source object (domain object).</ToolTip>
+          <Default>Person</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp"><![CDATA[   using Inspiring.Mvvm;
+   using Inspiring.Mvvm.ViewModels;
+
+   public sealed class $sourceObject$VM : ViewModel<$sourceObject$VMDescriptor> {
+      public static readonly $sourceObject$VMDescriptor ClassDescriptor = VMDescriptorBuilder
+         .OfType<$sourceObject$VMDescriptor>()
+		 .For<$sourceObject$VM>()
+         .WithProperties((d, b) => {
+			var v = b.GetPropertyBuilder();
+
+            
+         })
+         .Build();
+
+      public $sourceObject$VM()
+         : base(ClassDescriptor) {
+      }
+   }
+
+   public sealed class $sourceObject$VMDescriptor : VMDescriptor {
+      $end$
+   }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
