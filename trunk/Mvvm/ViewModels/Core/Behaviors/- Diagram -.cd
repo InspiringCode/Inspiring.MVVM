@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Inspiring.Mvvm.ViewModels.Core.Behaviors.VMDescriptorConfiguration">
+    <Position X="0.75" Y="5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Core\Behaviors\VMDescriptorConfiguration.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PropertyConfigurations" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Inspiring.Mvvm.ViewModels.Core.Behaviors.BehaviorChainConfigurationCollection">
+    <Position X="5.75" Y="5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Core\Behaviors\BehaviorChainConfigurationCollection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Inspiring.Mvvm.ViewModels.Core.Behaviors.BehaviorChainTemplate">
+    <Position X="0.75" Y="2.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Core\Behaviors\BehaviorChainTemplate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Inspiring.Mvvm.ViewModels.Core.Behaviors.BehaviorChainTemplateKey">
+    <Position X="5.75" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Core\Behaviors\BehaviorChainTemplateKey.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Inspiring.Mvvm.ViewModels.Core.Behaviors.BehaviorChainTemplateKeys">
+    <Position X="8.75" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAAAAAAAAEACAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>ViewModels\Core\Behaviors\BehaviorChainTemplateKeys.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Inspiring.Mvvm.ViewModels.Core.Behaviors.BehaviorChainTemplateRegistry">
+    <Position X="0.75" Y="0.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Core\Behaviors\BehaviorChainTemplateRegistry.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Inspiring.Mvvm.ViewModels.Core.Behaviors.BehaviorKey">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Core\Behaviors\BehaviorKey.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Inspiring.Mvvm.ViewModels.Core.Behaviors.BehaviorChainConfiguration">
+    <Position X="6" Y="3.25" Width="2.25" />
+    <NestedTypes>
+      <Class Name="Inspiring.Mvvm.ViewModels.Core.Behaviors.BehaviorChainConfiguration.BehaviorChainItemConfiguration" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ViewModels\Core\Behaviors\BehaviorChainConfiguration.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAACAAAABAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Core\Behaviors\BehaviorChainConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Inspiring.Mvvm.ViewModels.Core.Behaviors.IBehaviorFactory">
+    <Position X="3.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Core\Behaviors\IBehaviorFactory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

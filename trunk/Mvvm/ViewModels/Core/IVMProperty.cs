@@ -1,0 +1,3 @@
+﻿namespace Inspiring.Mvvm.ViewModels {
+
+}
