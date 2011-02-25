@@ -3,7 +3,7 @@
    using System.Collections.Generic;
    using System.Linq;
 
-   internal sealed class CollectionValidator : Validator {
+   internal class CollectionValidator : Validator {
 
       public override sealed void Validate(ValidationArgs args) {
          throw new NotImplementedException();
