@@ -124,6 +124,7 @@
     <Compile Include="ApiTests\ViewModels\RefreshTests.cs" />
     <Compile Include="ApiTests\ViewModels\TestCollectionWithInheritance.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\CollectionValidationTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\ValidatorInteractionTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\CustomCollectionValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\DescendantValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\GeneralValidationTests.cs" />

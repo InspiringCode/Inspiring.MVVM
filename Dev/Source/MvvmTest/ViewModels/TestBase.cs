@@ -20,6 +20,7 @@
       [TestCleanup]
       public void Cleanup() {
          ServiceLocator.SetServiceLocator(new ReflectionServiceLocator());
+         ValidationContext.Reset(); // HACK
       }
 
       protected class ViewModelBehaviorContextHelper {
