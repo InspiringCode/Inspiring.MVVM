@@ -3,11 +3,12 @@
    using System.Linq;
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
    using Inspiring.MvvmTest.ApiTests.ViewModels.VMs;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 
    [TestClass]
-   public class TestCollectionWithInheritance {
+   public class TestCollectionWithInheritance : TestBase {
       private List<Customer> SourceList { get; set; }
       private CollectionOfCustomerWithBaseVM VM { get; set; }
 

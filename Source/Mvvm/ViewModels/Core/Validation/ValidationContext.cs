@@ -44,6 +44,12 @@
          _level--;
       }
 
+      // HACK for unit tests...
+      internal static void Reset() {
+         _current = null;
+         _level = 0;
+      }
+
       internal TState TryGetValidatorState<TState>(object key) {
          object state;
          _validatorStates.TryGetValue(key, out state);
