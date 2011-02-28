@@ -8,7 +8,7 @@
       [TestMethod]
       public void DefaultValidInstance_AddError_ThrowsException() {
          AssertHelper.Throws<ArgumentException>(() =>
-            ValidationState.Valid.Errors.Add(new ValidationError("Test"))
+            ValidationState.Valid.Errors.Add("Test")
          );
       }
 
@@ -21,7 +21,7 @@
       [TestMethod]
       public void IsValid_OneError_ReturnsFalse() {
          var state = new ValidationState();
-         state.Errors.Add(new ValidationError("Test"));
+         state.Errors.Add("Test");
          Assert.IsFalse(state.IsValid);
       }
 
@@ -38,11 +38,11 @@
          var s1 = new ValidationState();
          var s2 = new ValidationState();
 
-         s1.Errors.Add(new ValidationError("Error 1"));
-         s2.Errors.Add(new ValidationError("Error 1"));
+         s1.Errors.Add("Error 1");
+         s2.Errors.Add("Error 1");
 
-         s1.Errors.Add(new ValidationError("Error 2"));
-         s2.Errors.Add(new ValidationError("Error 2"));
+         s1.Errors.Add("Error 2");
+         s2.Errors.Add("Error 2");
 
          Assert.IsTrue(s1.Equals(s2));
       }
@@ -52,8 +52,8 @@
          var s1 = new ValidationState();
          var s2 = new ValidationState();
 
-         s1.Errors.Add(new ValidationError("Error 1"));
-         s2.Errors.Add(new ValidationError("Error 2"));
+         s1.Errors.Add("Error 1");
+         s2.Errors.Add("Error 2");
 
          Assert.IsFalse(s1.Equals(s2));
       }
@@ -63,7 +63,7 @@
          var s1 = new ValidationState();
          var s2 = new ValidationState();
 
-         s1.Errors.Add(new ValidationError("Error 1"));
+         s1.Errors.Add("Error 1");
 
          Assert.IsFalse(s1.Equals(s2));
       }

@@ -34,8 +34,8 @@
 
       public void Add(string errorMessage) {
          Contract.Requires<ArgumentNullException>(errorMessage != null);
-         
-         _errors.Add(new ValidationError(errorMessage));
+
+         Add(new ValidationError(errorMessage));
       }
 
       /// <summary>

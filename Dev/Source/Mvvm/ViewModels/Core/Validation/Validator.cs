@@ -1,6 +1,10 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
 
    public abstract class Validator {
-      public abstract void Validate(ValidationArgs args);
+      internal void Validate(ValidationArgs args) {
+         ValidateCore(args.SetTargetValidator(this));
+      }
+
+      public abstract void ValidateCore(ValidationArgs args);
    }
 }

@@ -16,7 +16,7 @@
          .WithValidators(b => {
             b.EnableParentValidation();
             b.Check(x => x.Title).Custom((vm, val, args) => {
-               args.Errors.Add("Error");
+               args.AddError("Error");
                vm.WasValidated = true;
             });
          })

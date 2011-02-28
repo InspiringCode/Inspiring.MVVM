@@ -26,7 +26,7 @@
          private static ValidationState InvalidValidationState {
             get {
                var state = new ValidationState();
-               state.Errors.Add(new ValidationError("Validation Error"));
+               state.Errors.Add("Validation Error");
                return state;
             }
          }
@@ -211,12 +211,12 @@
                .WithValidators(c => {
                   c.Check(x => x.Title).Custom((vm, val, args) => {
                      if (vm.ReturnError) {
-                        args.Errors.Add(InvalidValidationState.Errors.Single());
+                        args.AddError(InvalidValidationState.Errors.Single().Message);
                      }
                   });
                   c.Check(x => x.State).Custom((vm, val, args) => {
                      if (vm.ReturnError) {
-                        args.Errors.Add(InvalidValidationState.Errors.Single());
+                        args.AddError(InvalidValidationState.Errors.Single().Message);
                      }
                   });
                })

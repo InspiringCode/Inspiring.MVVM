@@ -2,9 +2,10 @@
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
+   using Inspiring.MvvmTest.ViewModels;
 
    [TestClass]
-   public class LocalPropertyTests {
+   public class LocalPropertyTests : TestBase {
       public EmployeeVM VM { get; set; }
 
       [TestInitialize]

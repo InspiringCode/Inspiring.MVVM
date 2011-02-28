@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
+   using System.Collections.ObjectModel;
    using System.Diagnostics.Contracts;
    using System.Linq;
    using Inspiring.Mvvm.Common;
@@ -58,6 +59,21 @@
             .ForEach(state.Errors.Add);
 
          return state;
+      }
+
+      //internal void AddValidationError(Validator validator, ValidationError error) {
+
+      //}
+
+
+      //internal void RemoveValidationErrors(Validator validator) {
+
+      //}
+
+
+      public ReadOnlyCollection<ValidationError> Errors_ {
+         get;
+         set;
       }
 
       /// <summary>

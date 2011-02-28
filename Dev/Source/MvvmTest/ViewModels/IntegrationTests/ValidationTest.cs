@@ -52,7 +52,7 @@
    //      bool validationSuccessful = true;
    //      Action<ValidationEventArgs> validator = a => {
    //         if (!validationSuccessful) {
-   //            a.AddError("Error");
+   //            a..AddError("Error");
    //         }
    //      };
 

@@ -38,6 +38,7 @@
       private readonly IVMPropertyDescriptor _targetProperty;
       private readonly InstancePath _changedPath;
       private readonly IVMPropertyDescriptor _changedProperty;
+      private readonly Validator _targetValidator;
 
       private ValidationArgs(
          ValidationType validationType,
@@ -46,7 +47,8 @@
          InstancePath changedPath,
          IVMPropertyDescriptor changedProperty,
          IVMPropertyDescriptor targetProperty,
-         InstancePath targetPath
+         InstancePath targetPath,
+         Validator targetValidator
       ) {
          Contract.Requires(validationState != null);
          Contract.Requires(validationContext != null);
@@ -61,6 +63,7 @@
          _targetProperty = targetProperty;
          _changedPath = changedPath;
          _changedProperty = changedProperty;
+         _targetValidator = targetValidator;
       }
 
       /// <summary>
@@ -163,6 +166,12 @@
          }
       }
 
+      internal Validator TargetValidator {
+         get {
+            return _targetValidator;
+         }
+      }
+
       /// <summary>
       ///   Creates a <see cref="ValidationArgs"/> object for a view model 
       ///   validation that was NOT caused by a property change (it may have 
@@ -198,7 +207,8 @@
             changedPath,
             changedProperty: null,
             targetProperty: null,
-            targetPath: new InstancePath(changedPath.RootVM)
+            targetPath: new InstancePath(changedPath.RootVM),
+            targetValidator: null
          );
       }
 
@@ -237,7 +247,8 @@
             changedPath,
             changedProperty,
             targetProperty: null,
-            targetPath: new InstancePath(changedPath.RootVM)
+            targetPath: new InstancePath(changedPath.RootVM),
+            targetValidator: null
          );
       }
 
@@ -286,7 +297,8 @@
             changedPath: viewModelPath,
             changedProperty: property,
             targetProperty: property,
-            targetPath: viewModelPath
+            targetPath: viewModelPath,
+            targetValidator: null
          );
       }
 
@@ -328,10 +340,16 @@
             changedPath: viewModelPath,
             changedProperty: property,
             targetProperty: property,
-            targetPath: viewModelPath
+            targetPath: viewModelPath,
+            targetValidator: null
          );
       }
 
+      public void AddError(string errorMessage) {
+         // TargetVM.AddValError(validator, ...);
+         Errors.Add(errorMessage);
+      }
+      
       /// <summary>
       ///   Returns a new <see cref="ValidationArgs"/> object whose <see 
       ///   cref="TargetPath"/> is prepended with the passed in <see 
@@ -350,7 +368,21 @@
             changedPath: ChangedPath,
             changedProperty: ChangedProperty,
             targetProperty: TargetProperty,
-            targetPath: TargetPath.PrependVM(with)
+            targetPath: TargetPath.PrependVM(with),
+            targetValidator: _targetValidator
+         );
+      }
+
+      internal ValidationArgs SetTargetValidator(Validator validator) {
+         return new ValidationArgs(
+            _validationType,
+            _validationContext,
+            _validationState,
+            ChangedPath,
+            ChangedProperty,
+            TargetProperty,
+            TargetPath,
+            validator
          );
       }
 

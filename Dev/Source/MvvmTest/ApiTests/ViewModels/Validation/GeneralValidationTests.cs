@@ -31,7 +31,7 @@
 
       private void AssertTitleInvalid() {
          var expected = new ValidationState();
-         expected.Errors.Add(new ValidationError(ErrorMessage));
+         expected.Errors.Add(ErrorMessage);
 
          DomainAssert.AreEqual(expected, VM.TitleValidationState);
       }
@@ -52,7 +52,7 @@
             .WithValidators(c => {
                c.Check(x => x.Title).Custom((task, value, args) => {
                   if (String.IsNullOrEmpty(value)) {
-                     args.Errors.Add(new ValidationError(ErrorMessage));
+                     args.AddError(ErrorMessage);
                   }
                });
             })

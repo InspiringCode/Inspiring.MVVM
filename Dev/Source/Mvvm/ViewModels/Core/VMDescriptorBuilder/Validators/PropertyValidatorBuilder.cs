@@ -36,7 +36,7 @@
             _validatorCallback = validatorCallback;
          }
 
-         public override void Validate(ValidationArgs args) {
+         public override void ValidateCore(ValidationArgs args) {
             var vm = (TVM)args.TargetVM;
             var typedTargetProperty = (IVMPropertyDescriptor<TValue>)args.TargetProperty;
 

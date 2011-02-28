@@ -120,14 +120,14 @@
 //            .WithValidators(c => {
 //               c.CheckCollection(d.Projects).Custom((project, projects, args) => {
 //                  if (projects.Any(x => x != project && x.Name == (string)args.PropertyValue)) {
-//                     args.AddError("Duplicate");
+//                     args..AddError("Duplicate");
 //                  }
 
 //                  args.AffectsOtherItems = true;
 //               });
 //               c.CheckCollection(d.SpareTimeProjects).Check<string>(ProjectVM.Descriptor.Name).Custom(args => {
 //                  if (args.AllItems.Any(i => i.VM != args.Item.VM && i.Value == args.Item.Value)) {
-//                     args.AddError("Duplicate");
+//                     args..AddError("Duplicate");
 //                  }
 
 //                  args.AffectsOtherItems = true;

@@ -72,7 +72,7 @@
       //   base.OnValidate(args);
 
       //   if (ViewModelValidationResult != null && !ViewModelValidationResult.Successful) {
-      //      args.AddError(ViewModelValidationResult.ErrorMessage);
+      //      args..AddError(ViewModelValidationResult.ErrorMessage);
       //   }
       //}
 
@@ -140,7 +140,7 @@
       //   base.OnValidate(args);
 
       //   if (ViewModelValidationResult != null && !ViewModelValidationResult.Successful) {
-      //      args.AddError(ViewModelValidationResult.ErrorMessage);
+      //      args..AddError(ViewModelValidationResult.ErrorMessage);
       //   }
       //}
 
@@ -199,7 +199,7 @@
    //   //   base.OnValidate(args);
 
    //   //   if (ViewModelValidationResult != null && !ViewModelValidationResult.Successful) {
-   //   //      args.AddError(ViewModelValidationResult.ErrorMessage);
+   //   //      args..AddError(ViewModelValidationResult.ErrorMessage);
    //   //   }
    //   //}
 

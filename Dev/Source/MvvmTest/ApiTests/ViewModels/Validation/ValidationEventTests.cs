@@ -58,7 +58,7 @@
             .WithValidators(c => {
                c.Check(x => x.Title).Custom((vm, val, args) => {
                   if (vm.ReturnError) {
-                     args.Errors.Add(new ValidationError("Validation error"));
+                     args.AddError("Validation error");
                   }
                });
             })

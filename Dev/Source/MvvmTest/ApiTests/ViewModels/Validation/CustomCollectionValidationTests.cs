@@ -39,7 +39,7 @@
                         .ToArray();
 
                      if (selectedItems.Count() > 1) {
-                        args.Errors.Add("error");
+                        args.AddError("error");
                      }
 
                      foreach (ProjectVM p in selectedItems) {

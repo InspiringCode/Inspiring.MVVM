@@ -129,7 +129,7 @@
          _ctx
            .ContextMock
            .Setup(x => x.NotifyValidating(It.IsAny<ValidationArgs>()))
-           .Callback<ValidationArgs>(args => args.Errors.Add(expectedError));
+           .Callback<ValidationArgs>(args => args.AddError(expectedError.Message));
       }
 
       private void AssertNotifyPropertyValidatingWasCalledOnContext() {

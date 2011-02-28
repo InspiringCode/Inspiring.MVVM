@@ -103,7 +103,7 @@
             _validatorCallback = validatorCallback;
          }
 
-         public override void Validate(ValidationArgs args) {
+         public override void ValidateCore(ValidationArgs args) {
             Contract.Assert(args.TargetProperty == null);
 
             _validatorCallback((TVM)args.TargetVM, args);

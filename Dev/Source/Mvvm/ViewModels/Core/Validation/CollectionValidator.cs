@@ -5,7 +5,7 @@
 
    internal class CollectionValidator : Validator {
 
-      public override sealed void Validate(ValidationArgs args) {
+      public override sealed void ValidateCore(ValidationArgs args) {
          throw new NotImplementedException();
       }
 

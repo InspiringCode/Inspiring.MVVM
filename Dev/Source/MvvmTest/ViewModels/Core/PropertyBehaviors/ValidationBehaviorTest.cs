@@ -12,7 +12,7 @@
    //      _behavior = new ValidationBehavior<string>();
    //      _behavior.Add(args => {
    //         if (((string)args.PropertyValue).Contains("Invalid")) {
-   //            args.AddError("Error 1");
+   //            args..AddError("Error 1");
    //         }
 
    //         args.AffectsOtherItems = true;
@@ -20,7 +20,7 @@
 
    //      _behavior.Add(args => {
    //         if (((string)args.PropertyValue).Contains("Invalid")) {
-   //            args.AddError("Error 2");
+   //            args..AddError("Error 2");
    //         }
 
    //         args.AffectsOtherItems = false;

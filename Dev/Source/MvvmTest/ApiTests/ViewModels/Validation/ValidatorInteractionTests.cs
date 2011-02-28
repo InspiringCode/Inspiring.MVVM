@@ -234,7 +234,7 @@
             var invalidItems = owner.Test.InvalidItemsOfCollectionValidator.ToList();
 
             if (invalidItems.Contains(item)) {
-               args.Errors.Add("Collection validator error");
+               args.AddError("Collection validator error");
             }
 
             var itemsToRevalidate = invalidItems.Union(items.Where(x => !x.IsValid));
@@ -254,7 +254,7 @@
             var invalidItems = owner.Test.InvalidItemsOfSecondCollectionValidator.ToList();
 
             if (invalidItems.Contains(item)) {
-               args.Errors.Add("Second collection validator error");
+               args.AddError("Second collection validator error");
             }
 
             var itemsToRevalidate = invalidItems.Union(items.Where(x => !x.IsValid));
@@ -310,13 +310,13 @@
 
          private static void FirstPropertyValidator(EmployeeVM vm, string value, ValidationArgs args) {
             if (vm.Test.InvalidItemsOfPropertyValidator.Contains(vm)) {
-               args.Errors.Add("Property validator error");
+               args.AddError("Property validator error");
             }
          }
 
          private static void SecondPropertyValidator(EmployeeVM vm, string value, ValidationArgs args) {
             if (vm.Test.InvalidItemsOfSecondPropertyValidator.Contains(vm)) {
-               args.Errors.Add("Second property validator error");
+               args.AddError("Second property validator error");
             }
          }
       }

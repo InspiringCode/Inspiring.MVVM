@@ -39,7 +39,7 @@
             _validatorCallback = validatorCallback;
          }
 
-         public override void Validate(ValidationArgs args) {
+         public override void ValidateCore(ValidationArgs args) {
             var item = (TItemVM)args.TargetVM;
             var items = (IEnumerable<TItemVM>)args
                .TargetVM

@@ -14,7 +14,7 @@
                Object.Equals(value, null);
 
             if (empty) {
-               args.Errors.Add(new ValidationError(errorMessage));
+               args.AddError(errorMessage);
             }
          });
       }
@@ -26,7 +26,7 @@
       ) where TVM : IViewModel {
          builder.Custom((TVM vm, string value, ValidationArgs args) => {
             if (value != null && value.Length > maximumLength) {
-               args.Errors.Add(new ValidationError(errorMessage.FormatWith(maximumLength)));
+               args.AddError(errorMessage.FormatWith(maximumLength));
             }
          });
       }
@@ -55,7 +55,7 @@
       //) where TItemVM : IViewModel {
       //   builder.Custom(args => {
       //      if (args.AllItems.Any(i => !Object.Equals(i.VM, args.Item.VM) && Object.Equals(i.Value, args.Item.Value))) {
-      //         args.AddError(errorMessage);
+      //         args..AddError(errorMessage);
       //      }
 
       //      args.AffectsOtherItems = true;
@@ -69,7 +69,7 @@
       //) where TItemVM : IViewModel {
       //   builder.Custom(args => {
       //      if (args.AllItems.Any(i => !Object.Equals(i.VM, args.Item.VM) && String.Equals(i.Value, args.Item.Value, comparisonType))) {
-      //         args.AddError(errorMessage);
+      //         args..AddError(errorMessage);
       //      }
 
       //      args.AffectsOtherItems = true;
@@ -102,13 +102,13 @@
             }
 
             if (!isUnique) {
-               args.Errors.Add(new ValidationError(errorMessage));
+               args.AddError(errorMessage);
             }
          });
 
          //builder.Custom((value, values, args) => {
          //   if (values.Count(val => String.Equals(val, value, comparisonType)) > 1) {
-         //      args.Errors.Add(new ValidationError(errorMessage));
+         //      args.AddError(errorMessage));
          //   }
 
          //   // TODO: Affects other items!!!
@@ -138,13 +138,13 @@
             }
 
             if (!isUnique) {
-               args.Errors.Add(new ValidationError(errorMessage));
+               args.AddError(errorMessage);
             }
          });
 
          //builder.Custom((value, values, args) => {
          //   if (values.Count(val => String.Equals(val, value, comparisonType)) > 1) {
-         //      args.Errors.Add(new ValidationError(errorMessage));
+         //      args.AddError(errorMessage));
          //   }
 
          //   // TODO: Affects other items!!!
@@ -175,7 +175,7 @@
          where TDescriptor : VMDescriptorBase {
          builder.CheckViewModel((vm, args) => {
             if (!vm.Kernel.GetValidationState(ValidationStateScope.Descendants).IsValid) {
-               args.Errors.Add(new ValidationError(errorMessage));
+               args.AddError(errorMessage);
             }
          });
       }
@@ -206,7 +206,7 @@
 
          builder.CheckViewModel((vm, args) => {
             if (!vm.Kernel.GetValidationState(ValidationStateScope.PropertiesOnly).IsValid) {
-               args.Errors.Add(new ValidationError(errorMessage));
+               args.AddError(errorMessage);
             }
          });
       }
@@ -220,7 +220,7 @@
          Regex regex = new Regex(regexPattern);
          builder.Custom((vm, value, args) => {
             if (!(String.IsNullOrEmpty(value) || regex.IsMatch(value))) {
-               args.Errors.Add(new ValidationError(errorMessage));
+               args.AddError(errorMessage);
             }
          });
       }
