@@ -1,10 +1,9 @@
-﻿using Inspiring.Mvvm.ViewModels;
-using Inspiring.Mvvm.ViewModels.Core;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿namespace Inspiring.MvvmTest.ViewModels.Behaviors {
+   using Inspiring.Mvvm.ViewModels.Core;
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Inspiring.MvvmTest.ViewModels.Behaviors {
    [TestClass]
-   public class VMPropertyTest {
+   public class VMPropertyTest : TestBase {
       [TestMethod]
       public void TestMethod1() {
          EmployeeVM vm = new EmployeeVM();

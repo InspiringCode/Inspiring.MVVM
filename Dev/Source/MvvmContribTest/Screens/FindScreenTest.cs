@@ -8,7 +8,7 @@
 //   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 //   [TestClass]
-//   public class FindScreenTest {
+//   public class FindScreenTest : TestBase {
 //      private ShellScreen _shell = new ShellScreen();
 //      private ScreenConductor _mainConductor;
 //      private ScreenConductor _dockConductor;

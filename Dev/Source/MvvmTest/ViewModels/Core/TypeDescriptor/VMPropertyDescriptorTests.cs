@@ -8,7 +8,7 @@ using Moq;
 
 namespace Inspiring.MvvmTest.ViewModels.Core.TypeDescriptor {
    [TestClass]
-   public class TypeDescriptorPropertyDescriptorTests {
+   public class TypeDescriptorPropertyDescriptorTests : TestBase {
       private IVMPropertyDescriptor _property;
       private PropertyDescriptor _descriptor;
       private IViewModel _vm;

@@ -1,10 +1,11 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels {
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class ViewModelPropertyTests {
+   public class ViewModelPropertyTests : TestBase {
 
       [TestClass]
       public abstract class BaseTests {

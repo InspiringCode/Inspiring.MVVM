@@ -1,10 +1,11 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels {
    using System.Windows.Input;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class CommandPropertyTests {
+   public class CommandPropertyTests : TestBase {
       private SourceObject Source { get; set; }
       private TaskListVM VM { get; set; }
 

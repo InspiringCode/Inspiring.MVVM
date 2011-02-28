@@ -1,10 +1,8 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core {
-   using System;
-   using System.Linq;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class VMKernelTests {
+   public class VMKernelTests : TestBase {
       [TestMethod]
       public void TestMethod1() {
 

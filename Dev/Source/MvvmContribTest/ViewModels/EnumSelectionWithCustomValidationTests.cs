@@ -3,7 +3,7 @@
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class EnumSelectionWithCustomValidationTests {
+   public class EnumSelectionWithCustomValidationTests : TestBase {
 
       /// <summary>
       /// This integration test was written to reproduce a InvalidOperationException - Sequence contains no matching elements.

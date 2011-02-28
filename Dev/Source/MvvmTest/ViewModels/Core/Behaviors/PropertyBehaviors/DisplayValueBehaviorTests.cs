@@ -4,7 +4,7 @@
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class DisplayValueBehaviorTests {
+   public class DisplayValueBehaviorTests : TestBase {
       //[TestMethod]
       public void GetValue_Initially_ReturnsValueOfNextBehavior() {
 

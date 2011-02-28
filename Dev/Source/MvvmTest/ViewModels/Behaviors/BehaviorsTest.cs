@@ -2,7 +2,7 @@
 
 namespace Inspiring.MvvmTest.ViewModels.Behaviors {
    [TestClass]
-   public class BehaviorsTest {
+   public class BehaviorsTest : TestBase {
       [TestMethod]
       public void InstanceProperty() {
          EmployeeVM vm = new EmployeeVM();

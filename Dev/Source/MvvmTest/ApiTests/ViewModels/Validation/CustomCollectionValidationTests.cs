@@ -1,10 +1,11 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Validation {
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class CustomCollectionValidationTests {
+   public class CustomCollectionValidationTests : TestBase {
       [TestMethod]
       public void ItemValidation_ExecutesCollectionCustomValidator() {
          var vm = new EmployeeVM();
@@ -44,7 +45,7 @@
 
                      foreach (ProjectVM p in selectedItems) {
                         //if (!p.Equals(vm)) {
-                           args.RevalidationQueue.Add(p);
+                        args.RevalidationQueue.Add(p);
                         //}
                      }
                   });

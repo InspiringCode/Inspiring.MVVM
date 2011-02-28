@@ -37,7 +37,7 @@
          SetSource(person);
       }
 
-      public IEnumerable<Project> Projects { get; set; }
+      public IEnumerable<Project_> Projects { get; set; }
    }
 
    public class PersonVMDescriptor : VMDescriptor {
@@ -51,7 +51,7 @@
       public IVMPropertyDescriptor<IVMCollection<ProjectVM>> Projects { get; set; }
    }
 
-   public class ProjectVM : DefaultViewModelWithSourceBase<ProjectVMDescriptor, Project> {
+   public class ProjectVM : DefaultViewModelWithSourceBase<ProjectVMDescriptor, Project_> {
       public static readonly ProjectVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<ProjectVMDescriptor>()
             .For<ProjectVM>()
@@ -72,7 +72,7 @@
          : base(ClassDescriptor) {
       }
 
-      public ProjectVM(Project project)
+      public ProjectVM(Project_ project)
          : this() {
          SetSource(project);
       }
@@ -88,11 +88,11 @@
       public string LastName { get; set; }
       public DateTime BirthDate { get; set; }
       public decimal Salary { get; set; }
-      public ICollection<Project> Projects { get; set; }
-      public Project CurrentProject { get; set; }
+      public ICollection<Project_> Projects { get; set; }
+      public Project_ CurrentProject { get; set; }
    }
 
-   public class Project {
+   public class Project_ {
       public string Name { get; set; }
    }
 

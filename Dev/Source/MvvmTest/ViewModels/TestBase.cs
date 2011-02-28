@@ -17,8 +17,8 @@
          return new Mock<T>().Object;
       }
 
-      [TestCleanup]
-      public void Cleanup() {
+      [TestInitialize]
+      public void Setup() {
          ServiceLocator.SetServiceLocator(new ReflectionServiceLocator());
          ValidationContext.Reset(); // HACK
       }

@@ -18,7 +18,7 @@
       }
 
       [TestClass]
-      public class ViewModelBehavior_ValidateTests {
+      public class ViewModelBehavior_ValidateTests : TestBase {
          private ViewModelBehaviorContextHelper _ctx;
          private ViewModelValidationBehavior _behavior;
 

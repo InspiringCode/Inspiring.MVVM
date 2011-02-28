@@ -7,7 +7,7 @@
    //using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    //[TestClass]
-   //public class VMPropertyFactoryTest {
+   //public class VMPropertyFactoryTest : TestBase {
    //   private BehaviorConfigurationDictionary _configs;
    //   private VMPropertyFactory<PersonVM, PersonVM> _rootFactory;
    //   private _VMPropertyFactory<PersonVM, Person> _personFactory;
@@ -143,7 +143,7 @@
    //}
 
    //[TestClass]
-   //public class ConfiguredVMPropertyFactoryTest {
+   //public class ConfiguredVMPropertyFactoryTest : TestBase {
    //   private Behavior _additionalBehavior;
    //   private _VMPropertyFactory<TestVM, TestVM> _configuredFactory;
    //   private BehaviorConfigurationDictionary _configs;

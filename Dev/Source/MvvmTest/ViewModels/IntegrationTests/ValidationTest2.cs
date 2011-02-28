@@ -4,7 +4,7 @@
 //using Inspiring.Mvvm.ViewModels;
 //using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-//namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
+//namespace Inspiring.MvvmTest.ViewModels.IntegrationTests : TestBase {
 //   [TestClass]
 //   public class ValidationTest2 {
 //      [TestMethod]

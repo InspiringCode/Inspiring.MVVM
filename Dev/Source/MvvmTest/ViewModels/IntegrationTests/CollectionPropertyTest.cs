@@ -3,7 +3,7 @@
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class CollectionPropertyTest {
+   public class CollectionPropertyTest : TestBase {
       private TestVM _parent;
       private TestVMSource _parentSource;
       private ChildVMSource _firstChildSource;

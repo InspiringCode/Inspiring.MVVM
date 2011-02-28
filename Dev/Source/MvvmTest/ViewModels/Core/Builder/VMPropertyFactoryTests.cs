@@ -9,7 +9,7 @@
 
    // TODO: Clean me up a bit please.
    [TestClass]
-   public class VMPropertyFactoryTests {
+   public class VMPropertyFactoryTests : TestBase {
       public VMDescriptorConfiguration Configuration { get; private set; }
 
       [TestInitialize]

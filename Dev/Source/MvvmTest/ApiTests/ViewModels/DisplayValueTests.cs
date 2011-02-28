@@ -2,10 +2,11 @@
    using System;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class DisplayValueTests {
+   public class DisplayValueTests : TestBase {
       private const int ValidRatingValue = 3;
       private const int InvalidRatingValue = 6;
 
@@ -74,7 +75,7 @@
          VM.RatingDisplayValue = InvalidRatingDisplayValue;
 
          var expected = new ValidationState();
-         expected.Errors.Add(InvalidDisplayValueValidationError);
+         expected.AddError(InvalidDisplayValueValidationError);
 
          Assert.AreEqual(expected, VM.ValidationState);
       }
@@ -98,8 +99,8 @@
          VM.RatingSourceValue = InvalidRatingValue;
 
          var expected = new ValidationState();
-         expected.Errors.Add(InvalidDisplayValueValidationError);
-         expected.Errors.Add(InvalidValueValidationError);
+         expected.AddError(InvalidDisplayValueValidationError);
+         expected.AddError(InvalidValueValidationError);
 
          Assert.AreEqual(expected, VM.ValidationState);
       }

@@ -4,7 +4,7 @@
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class VMDescriptorTests {
+   public class VMDescriptorTests : TestBase {
       [TestMethod]
       public void Properties_NoProperties_ReturnsEmptyCollection() {
          var descriptor = new EmptyDescriptor();

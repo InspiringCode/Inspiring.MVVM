@@ -1,10 +1,11 @@
 ﻿using System;
 using Inspiring.Mvvm.ViewModels.Core;
+using Inspiring.MvvmTest.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Inspiring.MvvmTest.Common {
    [TestClass]
-   public class BehaviorsTest {
+   public class BehaviorsTest : TestBase {
       private Behavior _first;
       private Behavior _second;
       private Behavior _third;

@@ -31,7 +31,7 @@
 
       private void AssertTitleInvalid() {
          var expected = new ValidationState();
-         expected.Errors.Add(ErrorMessage);
+         expected.AddError(ErrorMessage);
 
          DomainAssert.AreEqual(expected, VM.TitleValidationState);
       }

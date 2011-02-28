@@ -2,10 +2,11 @@
    using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class SimpleMultiSelectionTests {
+   public class SimpleMultiSelectionTests : TestBase {
       [TestMethod]
       public void AllItems_WithFilter_ReturnsFilteredItems() {
          Group firstGroup = new Group("First group");

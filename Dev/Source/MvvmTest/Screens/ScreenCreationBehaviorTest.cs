@@ -2,11 +2,12 @@
    using System;
    using System.Linq;
    using Inspiring.Mvvm.Screens;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Moq;
 
    [TestClass]
-   public class ScreenCreationBehaviorTest {
+   public class ScreenCreationBehaviorTest : TestBase {
       [TestMethod]
       public void MultipleInstances() {
          ScreenConductor c = new ScreenConductor();

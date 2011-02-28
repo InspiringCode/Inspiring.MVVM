@@ -3,10 +3,12 @@
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
+   using ProjectVM = Inspiring.MvvmTest.ApiTests.ViewModels.ProjectVM;
 
    [TestClass]
-   public class CollectionValidationTests {
+   public class CollectionValidationTests : TestBase {
       [TestMethod]
       public void ItemValidation_ExecutesItemValueValidator() {
          var firstItem = new ProjectVM { Title = "Project 1" };
@@ -85,7 +87,7 @@
       public void ItemRemoval_ExecutesItemValidator() {
          var vm = new EmployeeVM();
          var item = new ProjectVM();
-         
+
          vm.Projects.Add(item);
          item.WasValidated = false;
 
@@ -112,7 +114,7 @@
          var vm = new EmployeeVM();
          var previousItem = new ProjectVM();
          var item = new ProjectVM();
-         
+
          vm.Projects.Add(previousItem);
          vm.ItemArgs = new ValidatorArguments<ProjectVM>();
 

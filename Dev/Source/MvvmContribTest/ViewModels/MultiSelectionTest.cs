@@ -1,9 +1,10 @@
 ﻿namespace Inspiring.MvvmContribTest.ApiTests.ViewModels {
    using System.Collections.Generic;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class MultiSelectionTest {
+   public class MultiSelectionTest : TestBase {
       private Group _firstKeyword;
       private Group _secondKeyword;
       private Group _thirdKeyword;

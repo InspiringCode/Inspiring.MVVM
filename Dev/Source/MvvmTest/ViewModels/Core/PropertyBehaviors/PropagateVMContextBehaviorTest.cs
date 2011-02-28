@@ -1,7 +1,7 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Behaviors {
 
    //[TestClass]
-   //public class PropagateVMContextBehaviorTest {
+   //public class PropagateVMContextBehaviorTest : TestBase {
    //   [TestMethod]
    //   public void CreateInstance() {
    //      var vm = new PersonVM();

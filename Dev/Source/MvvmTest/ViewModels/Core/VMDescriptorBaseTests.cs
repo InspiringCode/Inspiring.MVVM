@@ -1,10 +1,10 @@
-﻿using System;
-using Inspiring.Mvvm.ViewModels;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿namespace Inspiring.MvvmTest.ViewModels.Core {
+   using System;
+   using Inspiring.Mvvm.ViewModels;
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Inspiring.MvvmTest.ViewModels.Core {
    [TestClass]
-   public class VMDescriptorBaseTests {
+   public class VMDescriptorBaseTests : TestBase {
       [TestMethod]
       public void Modify_CallTwoTimes_Succeeds() {
          TestVMDescriptor descriptor = new TestVMDescriptor();

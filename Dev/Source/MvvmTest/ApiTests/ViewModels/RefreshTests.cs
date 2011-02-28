@@ -1,12 +1,13 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels {
+   using System;
    using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
    [TestClass]
-   public class RefreshTests {
+   public class RefreshTests : TestBase {
       private TestVM VM { get; set; }
 
       [TestInitialize]

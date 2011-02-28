@@ -2,11 +2,12 @@
    using System;
    using System.Windows.Input;
    using Inspiring.Mvvm.Screens;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Moq;
 
    [TestClass]
-   public class ApplicationCommandManagerTest {
+   public class ApplicationCommandManagerTest : TestBase {
       [TestMethod]
       public void TestCommandManager() {
          ApplicationCommandManager cm = new ApplicationCommandManager();

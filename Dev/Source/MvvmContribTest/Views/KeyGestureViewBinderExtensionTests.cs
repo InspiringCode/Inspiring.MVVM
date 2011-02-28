@@ -1,14 +1,14 @@
 ﻿namespace Inspiring.MvvmContribTest.Views {
    using System.Windows.Controls;
+   using System.Windows.Data;
    using System.Windows.Input;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.Views;
-   using System.Linq;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
-   using System.Windows.Data;
 
    [TestClass]
-   public class KeyGestureViewBinderExtensionTests {
+   public class KeyGestureViewBinderExtensionTests : TestBase {
       [TestMethod]
       public void KeyGesture_IsAddedToInputBindingsOfTargetObject() {
          var target = new Button();

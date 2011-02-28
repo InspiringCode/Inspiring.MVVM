@@ -3,10 +3,11 @@
    using System.Windows.Input;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class CommandHandlerTests {
+   public class CommandHandlerTests : TestBase {
       private static readonly BehaviorKey TestBehaviorKey = new BehaviorKey("TestBehavior");
 
       private EmployeeVM VM { get; set; }

@@ -3,10 +3,11 @@
    using System.ComponentModel;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class TypeDescriptorTests {
+   public class TypeDescriptorTests : TestBase {
       private const string ArbitraryCommentValue = "Test";
       private const int ArbitraryRatingValue = 10;
 

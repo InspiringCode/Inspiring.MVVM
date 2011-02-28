@@ -5,11 +5,12 @@
    using Inspiring.Mvvm;
    using Inspiring.Mvvm.Screens;
    using Inspiring.Mvvm.Views;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Moq;
 
    [TestClass]
-   public class ViewTest {
+   public class ViewTest : TestBase {
       [TestMethod]
       public void SetModelOnSingleViewInterface() {
          SimpleScreen screen = new SimpleScreen();

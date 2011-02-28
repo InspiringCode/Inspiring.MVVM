@@ -2,7 +2,7 @@
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class DefaultManualUpdateBehaviorTest {
+   public class DefaultManualUpdateBehaviorTest : TestBase {
       //[TestMethod]
       //public void UpdateFromSource_OnPropertyChangedGetsCalled() {
       //   // Arrange

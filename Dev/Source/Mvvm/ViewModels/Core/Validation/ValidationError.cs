@@ -4,7 +4,8 @@
    using Inspiring.Mvvm.Common;
 
    /// <summary>
-   ///   A validation error is the result of a failed validation.
+   ///   A <see cref="ValidationError"/> is the result of a failed validation
+   ///   performed by a <see cref="Validator"/>.
    /// </summary>
    public sealed class ValidationError {
       public ValidationError(string message) {
@@ -12,10 +13,19 @@
          Message = message;
       }
 
+      public ValidationError(Validator validator, string message) {
+         Contract.Requires<ArgumentNullException>(validator != null);
+         Contract.Requires<ArgumentNullException>(message != null);
+         Message = message;
+         Validator = validator;
+      }
+
       /// <summary>
       ///   The error message that should be displayed to the user.
       /// </summary>
       public string Message { get; private set; }
+
+      internal Validator Validator { get; private set; }
 
       /// <summary>
       ///   Two <see cref="ValidationError"/>s are equal if their <see cref="Message"/>

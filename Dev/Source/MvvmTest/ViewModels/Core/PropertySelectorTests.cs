@@ -5,7 +5,7 @@
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class PropertySelectorTests {
+   public class PropertySelectorTests : TestBase {
       [TestMethod]
       public void GetValue_NonGenericProperty_ReturnsValue() {
          const int expectedSalary = 5000;

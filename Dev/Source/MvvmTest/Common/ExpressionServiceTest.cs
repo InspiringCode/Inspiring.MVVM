@@ -2,10 +2,11 @@
    using System;
    using System.Reflection;
    using Inspiring.Mvvm.Common;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class ExpressionServiceTest {
+   public class ExpressionServiceTest : TestBase {
       [TestMethod]
       public void GetProperties() {
          PropertyInfo[] path = ExpressionService.GetProperties<Person, DateTime>(p => p.BirthDate);

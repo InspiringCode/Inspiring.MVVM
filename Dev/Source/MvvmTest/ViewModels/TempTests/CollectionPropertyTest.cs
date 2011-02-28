@@ -1,11 +1,11 @@
-﻿//namespace Inspiring.MvvmTest.ViewModels.TempTests {
+﻿//namespace Inspiring.MvvmTest.ViewModels.TempTests : TestBase {
 //   using System;
 //   using System.Linq;
 //   using Microsoft.VisualStudio.TestTools.UnitTesting;
 //using Inspiring.Mvvm.ViewModels;
 
 //   [TestClass]
-//   public class CollectionPropertyTest {
+//   public class CollectionPropertyTest : TestBase {
 //      [TestMethod]
 //      public void TestMethod1() {
 //         TestVM vm = new TestVM();

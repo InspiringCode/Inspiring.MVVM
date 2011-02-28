@@ -1,13 +1,14 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Validation {
    using System.Collections.Generic;
+   using System.Diagnostics.Contracts;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
-   using System.Diagnostics.Contracts;
 
    [TestClass]
-   public class DescendantValidationTests {
+   public class DescendantValidationTests : TestBase {
       [TestMethod]
       public void FirstAccess_OfWrappingCollection_ValidatesItems() {
          var vm = new EmployeeVM();
@@ -49,7 +50,7 @@
          ProjectVM childItem = new ProjectVM();
          childItem.Source = new Project("Project 1");
          childItem.Revalidate();
-         
+
          var itemBeforeAdditionState = childItem.GetValidationState(ValidationStateScope.All);
          Contract.Assert(!itemBeforeAdditionState.IsValid);
 

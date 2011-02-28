@@ -7,7 +7,7 @@
 
 //namespace Inspiring.MvvmTest.ViewModels.Behaviors {
 //   [TestClass]
-//   public class VMCollectionPropertyTest {
+//   public class VMCollectionPropertyTest : TestBase {
 //      private Mock<IPropertyAccessorBehavior<IEnumerable<Person>>> _sourceAccessor;
 //      private Mock<IPropertyAccessorBehavior<VMCollection<PersonVM>>> _vmCollectionAccesor;
 //      private IBehaviorContext _context;

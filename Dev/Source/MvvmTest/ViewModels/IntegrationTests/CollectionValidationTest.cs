@@ -1,4 +1,4 @@
-﻿//namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
+﻿//namespace Inspiring.MvvmTest.ViewModels.IntegrationTests : TestBase {
 //   using System.Collections.Generic;
 //   using System.ComponentModel;
 //   using System.Linq;
@@ -6,7 +6,7 @@
 //   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 //   [TestClass]
-//   public class CollectionValidationTest {
+//   public class CollectionValidationTest : TestBase {
 //      [TestMethod]
 //      public void CheckChangeNotification() {
 //         var firstProject = new ProjectVM { Name = "X" };

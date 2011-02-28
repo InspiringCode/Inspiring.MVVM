@@ -3,9 +3,11 @@
    using System.Collections.Generic;
    using System.Diagnostics;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
    [TestClass]
-   public class PerformanceTests {
+   public class PerformanceTests : TestBase {
       private const int EmploymentTypeCount = 1000;
       private const int EmployeeCount = 20;
       private static readonly List<EmploymentType> AllEmploymentTypes = GenerateEmploymentTypes(EmploymentTypeCount);

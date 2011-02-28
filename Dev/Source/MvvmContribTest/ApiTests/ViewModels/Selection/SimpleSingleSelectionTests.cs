@@ -2,10 +2,11 @@
    using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class SimpleSingleSelectionTests {
+   public class SimpleSingleSelectionTests : TestBase {
       private Department Group1 { get; set; }
       private Department Group2 { get; set; }
       private Department InactiveGroup { get; set; }

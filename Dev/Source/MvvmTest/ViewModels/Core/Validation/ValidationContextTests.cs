@@ -5,7 +5,7 @@
 //   using System;
 
 //   [TestClass]
-//   public class ValidationContextTests {
+//   public class ValidationContextTests : TestBase {
 //      private ValidationContext Context { get; set; }
 
 //      [TestInitialize]

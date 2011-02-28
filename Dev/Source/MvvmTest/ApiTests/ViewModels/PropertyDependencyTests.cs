@@ -1,8 +1,9 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels {
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class PropertyDependencyTests {
+   public class PropertyDependencyTests : TestBase {
       [TestMethod]
       [Ignore]
       public void SourceIsProperty_ChangeOfThatProperty_RefreshesTargetProperty() {

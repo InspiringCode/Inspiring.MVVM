@@ -1,12 +1,12 @@
-﻿using System.Windows.Controls;
-using System.Windows.Data;
-using Inspiring.Mvvm.Common;
-using Inspiring.MvvmTest.ViewModels;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿namespace Inspiring.MvvmTest.Views {
+   using System.Windows.Controls;
+   using System.Windows.Data;
+   using Inspiring.Mvvm.Common;
+   using Inspiring.MvvmTest.ViewModels;
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Inspiring.MvvmTest.Views {
    [TestClass]
-   public class CustomPropertyDescriptorTest {
+   public class CustomPropertyDescriptorTest : TestBase {
       private PersonView _view;
       private PersonVM _vm;
 

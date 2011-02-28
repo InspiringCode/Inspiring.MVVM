@@ -1,7 +1,7 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Behaviors {
 
    //[TestClass]
-   //public class ValidationBehaviorTest {
+   //public class ValidationBehaviorTest : TestBase {
    //   private ValidationBehavior<string> _behavior;
    //   private Mock<IBehaviorContext> _contextMock;
    //   private VMProperty<string> _property;

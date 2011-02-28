@@ -9,7 +9,7 @@
    using Moq;
 
    [TestClass]
-   public class InstancePathTests {
+   public class InstancePathTests : TestBase {
       [TestMethod]
       public void Steps_OfDefaultInstance_ReturnsEmptyCollection() {
          var path = new InstancePath();

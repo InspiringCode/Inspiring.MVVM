@@ -26,6 +26,10 @@
          Contract.Assert(_level == 0 || Current != null);
          _level++;
 
+         if (_level > 20) {
+            throw new ArgumentException("Endless recursion detected.");
+         }
+
          if (_current == null) {
             _current = new ValidationContext();
          }

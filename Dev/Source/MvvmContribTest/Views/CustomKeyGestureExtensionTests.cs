@@ -1,10 +1,11 @@
 ﻿namespace Inspiring.MvvmContribTest.Views {
    using System.Windows.Input;
    using Inspiring.Mvvm.Views;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class CustomKeyGestureExtensionTests {
+   public class CustomKeyGestureExtensionTests : TestBase {
       [TestMethod]
       public void ProvideValue_WithModifierKey() {
          var e = new CustomKeyGestureExtension("Ctrl+A");

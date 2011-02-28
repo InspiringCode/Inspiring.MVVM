@@ -1,10 +1,11 @@
 ﻿namespace Inspiring.MvvmTest.Common {
    using System;
    using Inspiring.Mvvm.Common;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class TypeServiceTest {
+   public class TypeServiceTest : TestBase {
       [TestMethod]
       public void CanAssignNull_ReferenceType() {
          Assert.IsTrue(TypeService.CanAssignNull(typeof(object)));

@@ -6,7 +6,7 @@
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class TypeDescriptorServiceTests {
+   public class TypeDescriptorServiceTests : TestBase {
       [TestMethod]
       public void PropertyDescriptors_ReturnsVMDescriptorProperties() {
          var behavior = EmployeeVM.ClassDescriptor.Behaviors.GetNextBehavior<TypeDescriptorBehavior>();

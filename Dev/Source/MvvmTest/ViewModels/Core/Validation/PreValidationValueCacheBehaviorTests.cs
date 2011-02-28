@@ -2,7 +2,7 @@
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class PreValidationValueCacheBehaviorTests {
+   public class PreValidationValueCacheBehaviorTests : TestBase {
       // TODO
    }
 }

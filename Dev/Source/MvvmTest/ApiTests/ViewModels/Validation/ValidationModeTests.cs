@@ -3,12 +3,13 @@
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
    [TestClass]
-   public class ValidationModeTests {
+   public class ValidationModeTests : TestBase {
 
       [TestClass]
-      public abstract class AbstractValidationModeTests {
+      public abstract class AbstractValidationModeTests : TestBase {
          protected TaskVM VM { get; set; }
 
          protected abstract object NewValue { get; }
@@ -26,7 +27,7 @@
          private static ValidationState InvalidValidationState {
             get {
                var state = new ValidationState();
-               state.Errors.Add("Validation Error");
+               state.AddError("Validation Error");
                return state;
             }
          }

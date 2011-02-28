@@ -7,7 +7,7 @@
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class VMDescriptorBuilderTest {
+   public class VMDescriptorBuilderTest : TestBase {
       private PersonVMDescriptor _descriptor;
       private CompanyVMDescriptor _companyDescriptor;
 

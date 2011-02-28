@@ -1,8 +1,7 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels {
    using Inspiring.Mvvm.ViewModels;
-   using Inspiring.Mvvm.ViewModels.Core;
-   using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Inspiring.MvvmTest.ViewModels;
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
    public class LocalPropertyTests : TestBase {

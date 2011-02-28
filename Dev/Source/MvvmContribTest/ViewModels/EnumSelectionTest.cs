@@ -2,10 +2,11 @@
    using System.ComponentModel;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class EnumSelectionTest {
+   public class EnumSelectionTest : TestBase {
       private Person _person;
       private PersonVM _vm;
       private PersonStatus[] _allStatus = new PersonStatus[] {

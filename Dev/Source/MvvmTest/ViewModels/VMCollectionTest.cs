@@ -8,7 +8,7 @@
 //   using Moq.Protected;
 
 //   [TestClass]
-//   public class VMCollectionTest {
+//   public class VMCollectionTest : TestBase {
 //      private VMCollection<ChildVM> _coll;
 //      private ChildVM _firstElement;
 //      private ChildVM _secondElement;

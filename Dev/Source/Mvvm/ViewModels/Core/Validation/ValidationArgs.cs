@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
+   using System.Collections.Generic;
    using System.Diagnostics.Contracts;
 
    /// <summary>
@@ -139,9 +140,9 @@
       ///   Holds all validation errors that occur in the current validation 
       ///   process.
       /// </summary>
-      public ValidationErrorCollection Errors {
+      public IEnumerable<ValidationError> Errors {
          get {
-            Contract.Ensures(Contract.Result<ValidationErrorCollection>() != null);
+            Contract.Ensures(Contract.Result<IEnumerable<ValidationError>>() != null);
             return _validationState.Errors;
          }
       }
@@ -347,9 +348,9 @@
 
       public void AddError(string errorMessage) {
          // TargetVM.AddValError(validator, ...);
-         Errors.Add(errorMessage);
+         _validationState.AddError(errorMessage);
       }
-      
+
       /// <summary>
       ///   Returns a new <see cref="ValidationArgs"/> object whose <see 
       ///   cref="TargetPath"/> is prepended with the passed in <see 

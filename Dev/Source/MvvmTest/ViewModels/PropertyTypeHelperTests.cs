@@ -1,12 +1,10 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels {
-   using System;
-   using System.Linq;
-   using Microsoft.VisualStudio.TestTools.UnitTesting;
-   using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.Mvvm.ViewModels.Core;
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class PropertyTypeHelperTests {
+   public class PropertyTypeHelperTests : TestBase {
       [TestMethod]
       public void IsViewModel_Success() {
          Assert.IsTrue(PropertyTypeHelper.IsViewModel(typeof(EmployeeVM)));

@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using Inspiring.Mvvm.ViewModels;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
+   using System;
+   using System.Collections.Generic;
+   using System.ComponentModel;
+   using Inspiring.Mvvm.ViewModels;
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
    [TestClass]
-   public class StandardValidationsTest {
+   public class StandardValidationsTest : TestBase {
       [TestMethod]
       public void CheckUnique() {
          ParentVM vm = new ParentVM();

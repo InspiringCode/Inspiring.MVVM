@@ -4,9 +4,8 @@
    using Inspiring.Mvvm.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-
    [TestClass]
-   public class VMCollectionWithCustomValidationTests {
+   public class VMCollectionWithCustomValidationTests : TestBase {
 
       private PersonListeVM _viewModel;
 

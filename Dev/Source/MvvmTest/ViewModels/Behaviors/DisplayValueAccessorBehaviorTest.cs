@@ -1,12 +1,11 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Behaviors {
    using System;
-   using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Moq;
 
    [TestClass]
-   public class DisplayValueAccessorBehaviorTest {
+   public class DisplayValueAccessorBehaviorTest : TestBase {
       private DisplayValueAccessorBehavior<int> _behavior;
       private FieldDefinitionCollection _dynamicFields;
       private FieldValueHolder _fieldValues;

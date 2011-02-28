@@ -1,7 +1,7 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
 
    //[TestClass]
-   //public class ValidationTest {
+   //public class ValidationTest : TestBase {
    //   private TestVMSource _source;
    //   private TestVM _vm;
 

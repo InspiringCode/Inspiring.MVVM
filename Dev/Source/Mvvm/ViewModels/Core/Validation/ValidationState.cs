@@ -1,6 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Collections.ObjectModel;
+   using System.Collections.Generic;
    using System.Diagnostics.Contracts;
    using System.Linq;
    using Inspiring.Mvvm.Common;
@@ -15,15 +15,15 @@
       ///   Provides a sharable default instance for a valid ValidationState. This
       ///   instance is readonly.
       /// </summary>
-      public static readonly ValidationState Valid = new ValidationState(ValidationErrorCollection.Empty);
+      public static readonly ValidationState Valid = new ValidationState(new List<ValidationError>());
 
-      private ValidationErrorCollection _errors;
+      private readonly List<ValidationError> _errors;
 
       public ValidationState()
-         : this(new ValidationErrorCollection()) {
+         : this(new List<ValidationError>()) {
       }
 
-      private ValidationState(ValidationErrorCollection errors) {
+      private ValidationState(List<ValidationError> errors) {
          _errors = errors;
       }
 
@@ -31,20 +31,15 @@
       ///   Gets the validation errors that were added by the validators of the
       ///   property or view model.
       /// </summary>
-      public ValidationErrorCollection Errors {
-         get {
-            Contract.Ensures(Contract.Result<ValidationErrorCollection>() != null);
-            return _errors;
-         }
+      public IEnumerable<ValidationError> Errors {
+         get { return _errors; }
       }
 
       /// <summary>
       ///   Returns true if all validators have succeeded.
       /// </summary>
       public bool IsValid {
-         get {
-            return Errors.Count == 0;
-         }
+         get { return _errors.Count == 0; }
       }
 
       /// <summary>
@@ -56,24 +51,33 @@
 
          states
             .SelectMany(x => x.Errors)
-            .ForEach(state.Errors.Add);
+            .ForEach(state.AddError);
 
          return state;
       }
 
-      //internal void AddValidationError(Validator validator, ValidationError error) {
+      internal void AddError(ValidationError error) {
+         Contract.Requires(error != null);
+         //Contract.Requires<ArgumentException>(
+         //   this != Empty,
+         //   "The default 'ValidationErrorCollection' cannot be modified."
+         //);
+         _errors.Add(error);
+      }
 
-      //}
+      [Obsolete]
+      internal void AddError(string error) {
+         Contract.Requires(error != null);
+         //Contract.Requires<ArgumentException>(
+         //   this != Empty,
+         //   "The default 'ValidationErrorCollection' cannot be modified."
+         //);
+         _errors.Add(new ValidationError(error));
+      }
 
-
-      //internal void RemoveValidationErrors(Validator validator) {
-
-      //}
-
-
-      public ReadOnlyCollection<ValidationError> Errors_ {
-         get;
-         set;
+      internal void RemoveErrorsOf(Validator validator) {
+         Contract.Requires(validator != null);
+         _errors.RemoveAll(x => x.Validator == validator);
       }
 
       /// <summary>
@@ -82,12 +86,26 @@
       /// </summary>
       public override bool Equals(object obj) {
          var other = obj as ValidationState;
-         return other != null && other.Errors.Equals(Errors);
+
+         if (other == null || other._errors.Count != _errors.Count) {
+            return false;
+         }
+
+         for (int i = 0; i < _errors.Count; i++) {
+            if (!other._errors[i].Equals(_errors[i])) {
+               return false;
+            }
+         }
+
+         return true;
       }
 
       /// <inheritdoc />
       public override int GetHashCode() {
-         return HashCodeService.CalculateHashCode(this, Errors);
+         return HashCodeService.CalculateHashCode(
+            this,
+            HashCodeService.CalculateCollectionHashCode(_errors)
+         );
       }
 
       public override string ToString() {

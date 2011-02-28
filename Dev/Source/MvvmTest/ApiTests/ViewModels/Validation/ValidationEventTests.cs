@@ -1,10 +1,10 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Validation {
    using Inspiring.Mvvm.ViewModels;
-   using Inspiring.Mvvm.ViewModels.Core;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class ValidationEventTests {
+   public class ValidationEventTests : TestBase {
       private TaskVM VM { get; set; }
       private PropertyChangedCounter ValidationStateChangedEvent { get; set; }
 
