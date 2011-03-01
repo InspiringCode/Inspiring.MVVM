@@ -34,7 +34,7 @@
    public class ValidationArgs {
       private readonly ValidationType _validationType;
       private readonly ValidationContext _validationContext;
-      private readonly ValidationState _validationState;
+      private readonly List<ValidationError> _validationErrors;
       private readonly InstancePath _targetPath;
       private readonly IVMPropertyDescriptor _targetProperty;
       private readonly InstancePath _changedPath;
@@ -44,14 +44,14 @@
       private ValidationArgs(
          ValidationType validationType,
          ValidationContext validationContext,
-         ValidationState validationState,
+         List<ValidationError> validationErrors,
          InstancePath changedPath,
          IVMPropertyDescriptor changedProperty,
          IVMPropertyDescriptor targetProperty,
          InstancePath targetPath,
          Validator targetValidator
       ) {
-         Contract.Requires(validationState != null);
+         Contract.Requires(validationErrors != null);
          Contract.Requires(validationContext != null);
          Contract.Requires(targetPath != null);
          Contract.Requires(changedPath != null);
@@ -59,7 +59,7 @@
 
          _validationType = validationType;
          _validationContext = validationContext;
-         _validationState = validationState;
+         _validationErrors = validationErrors;
          _targetPath = targetPath;
          _targetProperty = targetProperty;
          _changedPath = changedPath;
@@ -137,17 +137,6 @@
       }
 
       /// <summary>
-      ///   Holds all validation errors that occur in the current validation 
-      ///   process.
-      /// </summary>
-      public IEnumerable<ValidationError> Errors {
-         get {
-            Contract.Ensures(Contract.Result<IEnumerable<ValidationError>>() != null);
-            return _validationState.Errors;
-         }
-      }
-
-      /// <summary>
       ///   Holds VMs that should be revalidated after the current validation
       ///   process is complete.
       /// </summary>
@@ -173,6 +162,10 @@
          }
       }
 
+      internal List<ValidationError> Errors {
+         get { return _validationErrors; }
+      }
+
       /// <summary>
       ///   Creates a <see cref="ValidationArgs"/> object for a view model 
       ///   validation that was NOT caused by a property change (it may have 
@@ -187,11 +180,11 @@
       /// </param>
       public static ValidationArgs CreateViewModelValidationArgs(
          ValidationContext validationContext,
-         ValidationState validationState,
+         List<ValidationError> validationErrors,
          InstancePath changedPath
       ) {
          Contract.Requires(validationContext != null);
-         Contract.Requires(validationState != null);
+         Contract.Requires(validationErrors != null);
          Contract.Requires(changedPath != null);
          Contract.Requires(!changedPath.IsEmpty);
 
@@ -204,7 +197,7 @@
          return new ValidationArgs(
             ValidationType.ViewModel,
             validationContext,
-            validationState,
+            validationErrors,
             changedPath,
             changedProperty: null,
             targetProperty: null,
@@ -226,12 +219,12 @@
       /// </param>
       public static ValidationArgs CreateViewModelValidationArgs(
          ValidationContext validationContext,
-         ValidationState validationState,
+         List<ValidationError> validationErrors,
          InstancePath changedPath,
          IVMPropertyDescriptor changedProperty
       ) {
          Contract.Requires(validationContext != null);
-         Contract.Requires(validationState != null);
+         Contract.Requires(validationErrors != null);
          Contract.Requires(changedPath != null);
          Contract.Requires(!changedPath.IsEmpty);
 
@@ -244,7 +237,7 @@
          return new ValidationArgs(
             ValidationType.ViewModel,
             validationContext,
-            validationState,
+            validationErrors,
             changedPath,
             changedProperty,
             targetProperty: null,
@@ -274,12 +267,12 @@
       /// </param>
       public static ValidationArgs CreatePropertyValidationArgs(
          ValidationContext validationContext,
-         ValidationState validationState,
+         List<ValidationError> validationErrors,
          IViewModel viewModel,
          IVMPropertyDescriptor property
       ) {
          Contract.Requires(validationContext != null);
-         Contract.Requires(validationState != null);
+         Contract.Requires(validationErrors != null);
          Contract.Requires(viewModel != null);
          Contract.Requires(property != null);
 
@@ -294,7 +287,7 @@
          return new ValidationArgs(
             ValidationType.PropertyValue,
             validationContext,
-            validationState,
+            validationErrors,
             changedPath: viewModelPath,
             changedProperty: property,
             targetProperty: property,
@@ -337,7 +330,7 @@
          return new ValidationArgs(
             ValidationType.PropertyDisplayValue,
             validationContext,
-            validationState,
+            (List<ValidationError>)validationState.Errors, // HACK
             changedPath: viewModelPath,
             changedProperty: property,
             targetProperty: property,
@@ -347,8 +340,11 @@
       }
 
       public void AddError(string errorMessage) {
-         // TargetVM.AddValError(validator, ...);
-         _validationState.AddError(errorMessage);
+         _validationErrors.Add(new ValidationError(TargetVM, TargetValidator, errorMessage));
+      }
+
+      public void AddError(IViewModel item, string errorMessage) {
+         _validationErrors.Add(new ValidationError(item, TargetValidator, errorMessage));
       }
 
       /// <summary>
@@ -365,7 +361,7 @@
          return new ValidationArgs(
             _validationType,
             _validationContext,
-            _validationState,
+            _validationErrors,
             changedPath: ChangedPath,
             changedProperty: ChangedProperty,
             targetProperty: TargetProperty,
@@ -378,7 +374,7 @@
          return new ValidationArgs(
             _validationType,
             _validationContext,
-            _validationState,
+            _validationErrors,
             ChangedPath,
             ChangedProperty,
             TargetProperty,

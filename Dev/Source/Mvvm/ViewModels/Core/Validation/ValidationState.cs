@@ -58,20 +58,20 @@
 
       internal void AddError(ValidationError error) {
          Contract.Requires(error != null);
-         //Contract.Requires<ArgumentException>(
-         //   this != Empty,
-         //   "The default 'ValidationErrorCollection' cannot be modified."
-         //);
+         Contract.Requires<ArgumentException>(
+            this != Valid,
+            ExceptionTexts.ValidationStateCannotBeModified
+         );
          _errors.Add(error);
       }
 
       [Obsolete]
       internal void AddError(string error) {
          Contract.Requires(error != null);
-         //Contract.Requires<ArgumentException>(
-         //   this != Empty,
-         //   "The default 'ValidationErrorCollection' cannot be modified."
-         //);
+         Contract.Requires<ArgumentException>(
+            this != Valid,
+            ExceptionTexts.ValidationStateCannotBeModified
+         );
          _errors.Add(new ValidationError(error));
       }
 

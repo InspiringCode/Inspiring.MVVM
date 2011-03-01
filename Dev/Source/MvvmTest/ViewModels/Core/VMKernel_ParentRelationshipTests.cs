@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core {
    using System;
+   using System.Collections.Generic;
    using Inspiring.Mvvm;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
@@ -30,9 +31,9 @@
          var behaviorSpy = new OnValidatingSpy();
 
          var kernel = (IBehaviorContext)CreateKernel(withBehavior: behaviorSpy);
-         
+
          ValidationContext.BeginValidation();
-         var args = ValidationArgs.CreateViewModelValidationArgs(ValidationContext.Current, new ValidationState(), new InstancePath(kernel.VM)); // TODO: Context
+         var args = ValidationArgs.CreateViewModelValidationArgs(ValidationContext.Current, new List<ValidationError>(), new InstancePath(kernel.VM)); // TODO: Context
          kernel.NotifyValidating(args);
 
          Assert.AreEqual(1, behaviorSpy.IncovationCount, "Behavior was not called.");
@@ -85,18 +86,16 @@
          parentKernel.Parent = grandParentVM;
 
          ValidationContext.BeginValidation();
-         var args = ValidationArgs.CreateViewModelValidationArgs(ValidationContext.Current, new ValidationState(), new InstancePath(kernelContext.VM)); // TODO: Context
+         var args = ValidationArgs.CreateViewModelValidationArgs(ValidationContext.Current, new List<ValidationError>(), new InstancePath(kernelContext.VM)); // TODO: Context
          kernelContext.NotifyValidating(args);
 
          Assert.AreEqual(1, parentSpy.IncovationCount, "Behavior of parent was not invoked.");
-         Assert.AreSame(args.Errors, parentSpy.Args.Errors);
          Assert.AreSame(args.ChangedProperty, parentSpy.Args.ChangedProperty);
          Assert.AreSame(args.TargetProperty, parentSpy.Args.TargetProperty);
          AssertPathsAreEquals(args.ChangedPath, parentSpy.Args.ChangedPath);
          AssertPathsAreEquals(new InstancePath(parentVM, vm), parentSpy.Args.TargetPath);
 
          Assert.AreEqual(1, grandParentSpy.IncovationCount);
-         Assert.AreSame(args.Errors, grandParentSpy.Args.Errors);
          Assert.AreSame(args.ChangedProperty, grandParentSpy.Args.ChangedProperty);
          Assert.AreSame(args.TargetProperty, grandParentSpy.Args.TargetProperty);
          AssertPathsAreEquals(args.ChangedPath, grandParentSpy.Args.ChangedPath);

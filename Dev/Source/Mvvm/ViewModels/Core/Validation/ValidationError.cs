@@ -13,11 +13,13 @@
          Message = message;
       }
 
-      public ValidationError(Validator validator, string message) {
+      public ValidationError(IViewModel target, Validator validator, string message) {
+         Contract.Requires<ArgumentNullException>(target != null);
          Contract.Requires<ArgumentNullException>(validator != null);
          Contract.Requires<ArgumentNullException>(message != null);
          Message = message;
          Validator = validator;
+         Target = target;
       }
 
       /// <summary>
@@ -26,6 +28,8 @@
       public string Message { get; private set; }
 
       internal Validator Validator { get; private set; }
+
+      internal IViewModel Target { get; private set; }
 
       /// <summary>
       ///   Two <see cref="ValidationError"/>s are equal if their <see cref="Message"/>

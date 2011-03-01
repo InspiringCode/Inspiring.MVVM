@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Validation {
+   using System.Collections.Generic;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.MvvmTest.Stubs;
@@ -85,12 +86,12 @@
          }
 
          private void SetupInvalidPropertyValidationCallback(ValidationError expectedError = null) {
-            expectedError = expectedError ?? new ValidationError("Test");
+            expectedError = expectedError ?? new ValidationError(_ctx.VM, Mock<Validator>(), "Test");
 
             _ctx
               .ContextMock
               .Setup(x => x.NotifyValidating(It.IsAny<ValidationArgs>()))
-              .Callback<ValidationArgs>(args => args.AddError(expectedError.Message));
+              .Callback<ValidationArgs>(args => args.SetTargetValidator(expectedError.Validator).AddError(expectedError.Message));
          }
 
          private void Validate() {
@@ -235,7 +236,7 @@
             ValidationContext.BeginValidation();
             return ValidationArgs.CreateViewModelValidationArgs(
                ValidationContext.Current, // TODO
-               validationState: new ValidationState(),
+               validationErrors: new List<ValidationError>(),
                changedPath: new InstancePath(changedVM ?? Mock<IViewModel>())
             );
          }
@@ -244,7 +245,7 @@
             ValidationContext.BeginValidation();
             return ValidationArgs.CreatePropertyValidationArgs(
                ValidationContext.Current, // TODO
-               validationState: new ValidationState(),
+               validationErrors: new List<ValidationError>(),
                viewModel: changedVM ?? Mock<IViewModel>(),
                property: targetProperty
             );

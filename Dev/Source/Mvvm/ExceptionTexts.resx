@@ -261,4 +261,7 @@
   <data name="WrongBehaviorFactoryType" xml:space="preserve">
     <value>Cannot create a behavior for '{0}'. Expected a behavior factory of type '{1}' but got one of type '{2}'. Make sure that you passed the correct factory to your 'BehaviorChainTemplate'.</value>
   </data>
+  <data name="ValidationStateCannotBeModified" xml:space="preserve">
+    <value>'ValidationState.Valid' is readonly and cannot be modified. Create a new 'ValidationState' instance to add validation errors.</value>
+  </data>
 </root>

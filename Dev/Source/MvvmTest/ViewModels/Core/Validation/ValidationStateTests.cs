@@ -7,7 +7,6 @@
    public class ValidationStateTests : TestBase {
       [TestMethod]
       public void DefaultValidInstance_AddError_ThrowsException() {
-         Assert.Inconclusive("FIX ME!");
          AssertHelper.Throws<ArgumentException>(() =>
             ValidationState.Valid.AddError("Test")
          );

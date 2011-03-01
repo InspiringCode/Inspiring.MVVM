@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 namespace Inspiring.Mvvm.ViewModels.Core {
 
@@ -66,16 +67,20 @@ namespace Inspiring.Mvvm.ViewModels.Core {
       internal ValidationState Validate(IBehaviorContext context, ValidationContext validationContext) {
          Contract.Assert(_property != null, "Behavior was not properly initialized.");
 
-         var newState = new ValidationState();
+         List<ValidationError> errors = new List<ValidationError>();
 
          var validationArgs = ValidationArgs.CreatePropertyValidationArgs(
             validationContext,
-            validationState: newState,
+            validationErrors: errors,
             viewModel: context.VM,
             property: _property
          );
 
          context.NotifyValidating(validationArgs);
+
+
+         var newState = new ValidationState();
+         errors.ForEach(newState.AddError);
 
          var oldState = GetValidationState(context);
 

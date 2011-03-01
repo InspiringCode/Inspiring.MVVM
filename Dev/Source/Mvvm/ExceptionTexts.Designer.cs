@@ -466,6 +466,15 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;ValidationState.Valid&apos; is readonly and cannot be modified. Create a new &apos;ValidationState&apos; instance to add validation errors..
+        /// </summary>
+        internal static string ValidationStateCannotBeModified {
+            get {
+                return ResourceManager.GetString("ValidationStateCannotBeModified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The VM collection is not in sync with its source collection anymore. Call &apos;Kernel.UpdateFromSource(Descriptor.&lt;the collection property&gt;)&apos; to repopulate the collection from its source..
         /// </summary>
         internal static string VMCollectionOutOfSync {

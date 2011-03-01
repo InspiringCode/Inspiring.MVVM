@@ -85,16 +85,19 @@
          InstancePath changedPath,
          IVMPropertyDescriptor changedProperty = null
       ) {
-         ValidationState newState = new ValidationState();
+         var errors = new List<ValidationError>();
 
          var validationArgs = ValidationArgs.CreateViewModelValidationArgs(
             validationContext,
-            validationState: newState,
+            validationErrors: errors,
             changedPath: changedPath,
             changedProperty: changedProperty
          );
 
          context.NotifyValidating(validationArgs);
+         
+         var newState = new ValidationState();
+         errors.ForEach(newState.AddError);
 
          var oldState = GetValidationState(context);
 

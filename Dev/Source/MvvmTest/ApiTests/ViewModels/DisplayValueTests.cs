@@ -13,11 +13,11 @@
       private static readonly object ValidRatingDisplayValue = 4;
       private static readonly object InvalidRatingDisplayValue = 2.5m;
 
-      private static readonly ValidationError InvalidDisplayValueValidationError =
-         new ValidationError("Rating must be an integer (no decimal places)!");
+      private static readonly string InvalidDisplayValueValidationError =
+         "Rating must be an integer (no decimal places)!";
 
-      private static readonly ValidationError InvalidValueValidationError =
-         new ValidationError("Rating must be between 1 and 5!");
+      private static readonly string InvalidValueValidationError =
+         "Rating must be between 1 and 5!";
 
       private MovieReviewVM VM { get; set; }
 
