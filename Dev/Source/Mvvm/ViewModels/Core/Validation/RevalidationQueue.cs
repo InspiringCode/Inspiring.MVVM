@@ -9,7 +9,7 @@
             return;
          }
 
-         _queue.Add(vm);
+         //_queue.Add(vm);
       }
 
       internal void Revalidate(ValidationContext validationContext, ValidationMode mode) {

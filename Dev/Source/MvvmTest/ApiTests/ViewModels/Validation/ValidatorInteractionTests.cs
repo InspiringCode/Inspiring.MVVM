@@ -234,7 +234,7 @@
             var invalidItems = owner.Test.InvalidItemsOfCollectionValidator.ToList();
 
             if (invalidItems.Contains(item)) {
-               args.AddError("Collection validator error");
+               args.AddError(item, "Collection validator error");
             }
 
             var itemsToRevalidate = invalidItems.Union(items.Where(x => !x.IsValid));
@@ -254,7 +254,7 @@
             var invalidItems = owner.Test.InvalidItemsOfSecondCollectionValidator.ToList();
 
             if (invalidItems.Contains(item)) {
-               args.AddError("Second collection validator error");
+               args.AddError(item, "Second collection validator error");
             }
 
             var itemsToRevalidate = invalidItems.Union(items.Where(x => !x.IsValid));

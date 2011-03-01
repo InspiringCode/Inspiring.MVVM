@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-namespace Inspiring.Mvvm.ViewModels.Core {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
+   using System;
+   using System.Collections.Generic;
+   using System.Diagnostics.Contracts;
+   using System.Linq;
 
    internal sealed class PropertyValidationBehavior<TValue> :
       Behavior,
@@ -79,8 +80,13 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          context.NotifyValidating(validationArgs);
 
 
+         // Remove errors of each collection item.
+
+         // 
+
+
          var newState = new ValidationState();
-         errors.ForEach(newState.AddError);
+         errors.Where(x => x.Target == context.VM).ForEach(newState.AddError);
 
          var oldState = GetValidationState(context);
 
