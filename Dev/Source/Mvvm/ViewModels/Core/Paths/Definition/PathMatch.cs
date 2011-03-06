@@ -9,12 +9,27 @@
          _length = length;
       }
 
-      public static PathMatch Success(int length) {
+      public bool Success {
+         get { return _success; }
+      }
+
+      public int Length {
+         get { return _length; }
+      }
+
+      public static PathMatch Succeed(int length) {
          return new PathMatch(true, length);
       }
 
-      public static PathMatch Failure() {
-         return new PathMatch(false, 0);
+      public static PathMatch Fail(int length = 0) {
+         return new PathMatch(false, length);
+      }
+
+      public static PathMatch Combine(PathMatch first, PathMatch second) {
+         return new PathMatch(
+            first.Success && second.Success,
+            first.Length + second.Length
+         );
       }
    }
 }

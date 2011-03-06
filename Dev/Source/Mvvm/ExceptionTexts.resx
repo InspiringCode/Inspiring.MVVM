@@ -264,4 +264,7 @@
   <data name="ValidationStateCannotBeModified" xml:space="preserve">
     <value>'ValidationState.Valid' is readonly and cannot be modified. Create a new 'ValidationState' instance to add validation errors.</value>
   </data>
+  <data name="UnexpectedPathStepType" xml:space="preserve">
+    <value>The given 'Path' is invalid: The 'PathStep' at index {0} was expected to be of one of the following 'PathStepType's: {1}.</value>
+  </data>
 </root>

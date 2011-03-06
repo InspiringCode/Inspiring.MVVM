@@ -181,6 +181,8 @@
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\CollectionParentSetterBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Collections\VMCollectionTestBase.cs" />
     <Compile Include="ViewModels\Core\Paths\PathDefinitionTests.cs" />
+    <Compile Include="ViewModels\Core\Paths\PathFixture.cs" />
+    <Compile Include="ViewModels\Core\Paths\PropertyStepTests.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\DefaultManualUpdateBehaviorTest.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\ValidationBehaviorTest.cs" />
     <Compile Include="ViewModels\Core\PropertySelectorTests.cs" />

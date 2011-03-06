@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
+   using System;
 
    internal abstract class PathDefinitionStep {
       private PathDefinitionStep _next;
@@ -9,5 +10,14 @@
       }
 
       public abstract PathMatch Matches(PathIterator path);
+
+      protected void ThrowUnexpectedStepTypeException(int index, params PathStepType[] expectedTypes) {
+         throw new ArgumentException(
+            ExceptionTexts.UnexpectedPathStepType.FormatWith(
+               index,
+               String.Join(", ", expectedTypes)
+            )
+         );
+      }
    }
 }

@@ -9,12 +9,20 @@
          _index = 0;
       }
 
-      public bool IsDone {
-         get { return _index >= _steps.Length; }
+      public bool HasStep {
+         get { return _index < _steps.Length; }
       }
 
-      public PathStepType Type {
-         get { return _steps[_index].Type; }
+      public bool IsViewModel {
+         get { return _steps[_index].Type == PathStepType.ViewModel; }
+      }
+
+      public bool IsCollection {
+         get { return _steps[_index].Type == PathStepType.Collection; }
+      }
+
+      public bool IsProperty {
+         get { return _steps[_index].Type == PathStepType.Property; }
       }
 
       public IViewModel ViewModel {
@@ -29,8 +37,12 @@
          get { return _steps[_index].Property; }
       }
 
-      public void Next() {
+      public void MoveNext() {
          _index++;
+      }
+
+      public int GetIndex() {
+         return _index;
       }
    }
 }

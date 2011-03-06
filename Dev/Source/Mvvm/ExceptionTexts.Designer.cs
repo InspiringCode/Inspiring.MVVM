@@ -430,6 +430,15 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The given &apos;Path&apos; is invalid: The &apos;PathStep&apos; at index {0} was expected to be of one of the following &apos;PathStepType&apos;s: {1}..
+        /// </summary>
+        internal static string UnexpectedPathStepType {
+            get {
+                return ResourceManager.GetString("UnexpectedPathStepType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The given &apos;NotifyCollectionChangedAction&apos; is not supported..
         /// </summary>
         internal static string UnsupportedCollectionChangedAction {
