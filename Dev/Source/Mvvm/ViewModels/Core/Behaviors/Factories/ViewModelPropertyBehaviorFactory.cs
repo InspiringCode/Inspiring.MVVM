@@ -65,6 +65,10 @@
             return new PropertyChangedBehavior<TChildVM>();
          }
 
+         if (key == BehaviorKeys.UntypedValueAccessor) {
+            return new UntypedPropertyAccessorBehavior<TChildVM>();
+         }
+
          throw new NotSupportedException(
             ExceptionTexts.BehaviorNotSupportedByFactory.FormatWith(key)
          );

@@ -97,6 +97,14 @@
          property.Behaviors.SetDisplayValueNext(this, value);
       }
 
+      public object GetValue(IVMPropertyDescriptor property) {
+         return property.Behaviors.GetValueNext(this);
+      }
+
+      public void SetValue(IVMPropertyDescriptor property, object value) {
+         property.Behaviors.SetValueNext(this, value);
+      }
+
       public ValidationState GetValidationState(IVMPropertyDescriptor forProperty) {
          return forProperty.Behaviors.GetValidationStateNext(this);
       }

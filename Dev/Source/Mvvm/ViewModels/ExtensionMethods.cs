@@ -52,6 +52,17 @@
             .SetValue(context, value);
       }
 
+      public static object GetValueNext(this Behavior behavior, IBehaviorContext context) {
+         return behavior
+            .GetNextBehavior<IUntypedValueGetterBehavior>()
+            .GetValue(context);
+      }
+
+      public static void SetValueNext(this Behavior behavior, IBehaviorContext context, object value) {
+         behavior
+            .GetNextBehavior<IUntypedValueSetterBehavior>()
+            .SetValue(context, value);
+      }
 
       public static object GetDisplayValueNext(this Behavior behavior, IBehaviorContext context) {
          return behavior

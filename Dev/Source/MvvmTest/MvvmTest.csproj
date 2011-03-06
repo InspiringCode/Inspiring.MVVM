@@ -123,6 +123,7 @@
     <Compile Include="ApiTests\ViewModels\PropertyDependencyTests.cs" />
     <Compile Include="ApiTests\ViewModels\RefreshTests.cs" />
     <Compile Include="ApiTests\ViewModels\TestCollectionWithInheritance.cs" />
+    <Compile Include="ApiTests\ViewModels\UntypedPropertyAccessTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\CollectionValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\ValidatorInteractionTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\CustomCollectionValidationTests.cs" />
@@ -179,6 +180,7 @@
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\CollectionSynchronizerBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\CollectionParentSetterBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Collections\VMCollectionTestBase.cs" />
+    <Compile Include="ViewModels\Core\Paths\PathDefinitionTests.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\DefaultManualUpdateBehaviorTest.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\ValidationBehaviorTest.cs" />
     <Compile Include="ViewModels\Core\PropertySelectorTests.cs" />

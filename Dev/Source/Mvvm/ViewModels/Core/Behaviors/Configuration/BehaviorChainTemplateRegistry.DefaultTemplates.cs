@@ -30,6 +30,7 @@
             new BehaviorChainTemplate(PropertyBehaviorFactory.Instance)
                .Append(BehaviorKeys.InvalidDisplayValueCache, DefaultBehaviorState.Disabled)
                .Append(BehaviorKeys.DisplayValueAccessor)
+               .Append(BehaviorKeys.UntypedValueAccessor)
                .Append(BehaviorKeys.RefreshBehavior, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(BehaviorKeys.ManualUpdateBehavior, DefaultBehaviorState.Disabled)
                .Append(BehaviorKeys.PreValidationValueCache, DefaultBehaviorState.Disabled)
@@ -47,6 +48,7 @@
             BehaviorChainTemplateKeys.CollectionProperty,
             new BehaviorChainTemplate(PropertyBehaviorFactory.Instance)
                .Append(BehaviorKeys.DisplayValueAccessor)
+               .Append(BehaviorKeys.UntypedValueAccessor)
                .Append(BehaviorKeys.RefreshBehavior, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(BehaviorKeys.ManualUpdateBehavior, DefaultBehaviorState.DisabledWithoutFactory)
 
@@ -69,6 +71,7 @@
             BehaviorChainTemplateKeys.CommandProperty,
             new BehaviorChainTemplate(PropertyBehaviorFactory.Instance)
                .Append(BehaviorKeys.DisplayValueAccessor)
+               .Append(BehaviorKeys.UntypedValueAccessor)
                .Append(BehaviorKeys.ValueCache)
                .Append(BehaviorKeys.CommandFactory, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(BehaviorKeys.TypeDescriptor)
@@ -90,6 +93,7 @@
             BehaviorChainTemplateKeys.ViewModelProperty,
             new BehaviorChainTemplate(ViewModelPropertyBehaviorFactory.Instance)
                .Append(BehaviorKeys.DisplayValueAccessor)
+               .Append(BehaviorKeys.UntypedValueAccessor)
             // TODO: Rethink.
                .Append(BehaviorKeys.RefreshBehavior, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(BehaviorKeys.ManualUpdateBehavior, DefaultBehaviorState.DisabledWithoutFactory)

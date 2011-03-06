@@ -59,6 +59,10 @@
             return new IsLoadedIndicatorBehavior<TValue>();
          }
 
+         if (key == BehaviorKeys.UntypedValueAccessor) {
+            return new UntypedPropertyAccessorBehavior<TValue>();
+         }
+
          throw new NotSupportedException(
             ExceptionTexts.BehaviorNotSupportedByFactory.FormatWith(key)
          );
