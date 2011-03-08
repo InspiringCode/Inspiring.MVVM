@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
+   using System.Collections.Generic;
    using System.ComponentModel;
    using System.Diagnostics.Contracts;
    using System.Linq;
@@ -84,6 +85,10 @@
       protected override void InsertItem(int index, TItemVM item) {
          base.InsertItem(index, item);
 
+         if (IsPopulating) {
+            return;
+         }
+
          Behaviors.TryCall<IModificationCollectionBehavior<TItemVM>>(b =>
             b.ItemInserted(Owner.GetContext(), this, item, index)
          );
@@ -118,7 +123,7 @@
          base.ClearItems();
 
          Behaviors.TryCall<IModificationCollectionBehavior<TItemVM>>(b =>
-            b.ItemsCleared(Owner.GetContext(), this, previousItems)
+            b.CollectionCleared(Owner.GetContext(), this, previousItems)
          );
       }
 
@@ -143,6 +148,20 @@
          // This method is used only in the design-time framework and by the 
          // obsolete DataGrid control.
          return GetType().Name;
+      }
+
+      /// <inheritdoc />
+      public void ReplaceItems(IEnumerable<TItemVM> newItems) {
+         try {
+            IsPopulating = true;
+            Clear();
+            newItems.ForEach(Add);
+         } finally {
+            IsPopulating = false;
+         }
+         Behaviors.TryCall<IModificationCollectionBehavior<TItemVM>>(b =>
+            b.CollectionPopulated(Owner.GetContext(), this)
+         );
       }
    }
 }

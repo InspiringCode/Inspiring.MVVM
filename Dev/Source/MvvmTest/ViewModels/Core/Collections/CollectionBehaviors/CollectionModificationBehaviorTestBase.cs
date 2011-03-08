@@ -38,7 +38,7 @@
       }
 
       protected void Behavior_ItemsCleared(TItemVM[] previousItems) {
-         Behavior.ItemsCleared(BehaviorContext, Collection, previousItems);
+         Behavior.CollectionCleared(BehaviorContext, Collection, previousItems);
       }
 
       protected IViewModel CreateItem() {

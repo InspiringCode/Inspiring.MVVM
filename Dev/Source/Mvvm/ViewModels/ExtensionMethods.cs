@@ -122,6 +122,17 @@
          }
       }
 
+      public static void CollectionPopulatetNext<TItemVM>(
+         this Behavior behavior,
+         IBehaviorContext context,
+         IVMCollection<TItemVM> collection
+      ) where TItemVM : IViewModel {
+         IModificationCollectionBehavior<TItemVM> next;
+         if (behavior.TryGetBehavior(out next)) {
+            next.CollectionPopulated(context, collection);
+         }
+      }
+
       public static void ItemInsertedNext<TItemVM>(
          this Behavior behavior,
          IBehaviorContext context,
@@ -170,7 +181,7 @@
       ) where TItemVM : IViewModel {
          IModificationCollectionBehavior<TItemVM> next;
          if (behavior.TryGetBehavior(out next)) {
-            next.ItemsCleared(context, collection, previousItems);
+            next.CollectionCleared(context, collection, previousItems);
          }
       }
 

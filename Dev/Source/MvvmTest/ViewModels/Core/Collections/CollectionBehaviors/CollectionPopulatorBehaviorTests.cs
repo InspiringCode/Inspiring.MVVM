@@ -1,9 +1,10 @@
-﻿using Inspiring.Mvvm.ViewModels;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Inspiring.Mvvm.ViewModels;
 using Inspiring.Mvvm.ViewModels.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Sequences;
-using System.Linq;
 
 namespace Inspiring.MvvmTest.ViewModels.Core.Collections {
    [TestClass]
@@ -24,10 +25,8 @@ namespace Inspiring.MvvmTest.ViewModels.Core.Collections {
          collectionMock.Setup(x => x.GetEnumerator()).Returns(Enumerable.Empty<ItemVM>().GetEnumerator());
 
          using (Sequence.Create()) {
-            collectionMock.SetupSet(x => x.IsPopulating = true).InSequence();
-            collectionMock.Setup(x => x.Clear()).InSequence();
-            collectionMock.Setup(x => x.Add(itemVM)).InSequence();
-            collectionMock.SetupSet(x => x.IsPopulating = false).InSequence();
+            collectionMock.Setup(x => x.ReplaceItems(It.IsAny<IEnumerable<ItemVM>>()))
+               .Callback<IEnumerable<ItemVM>>((c) => Assert.IsTrue(c.Contains(itemVM)));
 
             populator.Repopulate(Mock<IBehaviorContext>(), collectionMock.Object);
          }

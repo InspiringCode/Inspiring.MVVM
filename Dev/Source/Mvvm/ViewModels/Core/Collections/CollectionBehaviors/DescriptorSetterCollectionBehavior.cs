@@ -18,21 +18,51 @@
          get { return _itemDescriptor; }
       }
 
-      public void ItemInserted(IBehaviorContext context, IVMCollection<TItemVM> collection, TItemVM item, int index) {
+      public void CollectionPopulated(
+        IBehaviorContext context,
+        IVMCollection<TItemVM> collection
+      ) {
+         foreach (TItemVM item in collection) {
+            item.Descriptor = _itemDescriptor;
+         }
+         this.CollectionPopulatetNext(context, collection);
+      }
+
+      public void ItemInserted(
+         IBehaviorContext context,
+         IVMCollection<TItemVM> collection,
+         TItemVM item,
+         int index
+      ) {
          item.Descriptor = _itemDescriptor;
          this.ItemInsertedNext(context, collection, item, index);
       }
 
-      public void ItemSet(IBehaviorContext context, IVMCollection<TItemVM> collection, TItemVM previousItem, TItemVM item, int index) {
+      public void ItemSet(
+         IBehaviorContext context,
+         IVMCollection<TItemVM> collection,
+         TItemVM previousItem,
+         TItemVM item,
+         int index
+      ) {
          item.Descriptor = _itemDescriptor;
          this.ItemSetNext(context, collection, previousItem, item, index);
       }
 
-      public void ItemRemoved(IBehaviorContext context, IVMCollection<TItemVM> collection, TItemVM item, int index) {
+      public void ItemRemoved(
+         IBehaviorContext context,
+         IVMCollection<TItemVM> collection,
+         TItemVM item,
+         int index
+      ) {
          this.ItemRemovedNext(context, collection, item, index);
       }
 
-      public void ItemsCleared(IBehaviorContext context, IVMCollection<TItemVM> collection, TItemVM[] previousItems) {
+      public void CollectionCleared(
+         IBehaviorContext context,
+         IVMCollection<TItemVM> collection,
+         TItemVM[] previousItems
+      ) {
          this.ItemsClearedNext(context, collection, previousItems);
       }
    }

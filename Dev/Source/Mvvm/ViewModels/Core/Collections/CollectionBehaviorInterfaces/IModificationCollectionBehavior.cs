@@ -15,6 +15,15 @@
    /// </remarks>
    [ContractClass(typeof(ICollectionModificationBehaviorContracts<>))]
    public interface IModificationCollectionBehavior<TItemVM> : IBehavior where TItemVM : IViewModel {
+
+      /// <summary>
+      /// Called after the <paramref name="collection"/> is populated.
+      /// </summary>
+      void CollectionPopulated(
+         IBehaviorContext context,
+         IVMCollection<TItemVM> collection
+      );
+
       /// <summary>
       ///   Called after the <paramref name="item"/> is added/inserted into the 
       ///   <paramref name="collection"/>.
@@ -53,7 +62,7 @@
       ///   Called after all items of the <paramref name="collection"/> have been
       ///   removed.
       /// </summary>
-      void ItemsCleared(
+      void CollectionCleared(
          IBehaviorContext context,
          IVMCollection<TItemVM> collection,
          TItemVM[] previousItems
@@ -65,6 +74,11 @@
       internal abstract class ICollectionModificationBehaviorContracts<TItemVM> :
          IModificationCollectionBehavior<TItemVM>
          where TItemVM : IViewModel {
+
+         public void CollectionPopulated(IBehaviorContext context, IVMCollection<TItemVM> collection) {
+            Contract.Requires(context != null);
+            Contract.Requires(collection != null);
+         }
 
          public void ItemInserted(IBehaviorContext context, IVMCollection<TItemVM> collection, TItemVM item, int index) {
             Contract.Requires(context != null);
@@ -88,7 +102,7 @@
             Contract.Requires(0 <= index && index < collection.Count);
          }
 
-         public void ItemsCleared(IBehaviorContext context, IVMCollection<TItemVM> collection, TItemVM[] previousItems) {
+         public void CollectionCleared(IBehaviorContext context, IVMCollection<TItemVM> collection, TItemVM[] previousItems) {
             Contract.Requires(context != null);
             Contract.Requires(collection != null);
             Contract.Requires(previousItems != null);
@@ -100,6 +114,5 @@
             // TODO: Remove
          }
       }
-
    }
 }

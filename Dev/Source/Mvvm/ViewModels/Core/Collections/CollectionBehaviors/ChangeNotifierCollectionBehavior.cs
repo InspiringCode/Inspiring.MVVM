@@ -5,13 +5,23 @@
       IModificationCollectionBehavior<TItemVM>
       where TItemVM : IViewModel {
 
+      public void CollectionPopulated(
+        IBehaviorContext context,
+        IVMCollection<TItemVM> collection
+      ) {
+         foreach (TItemVM item in collection) {
+            NotifyItemAdded(item);
+         }
+         this.CollectionPopulatetNext(context, collection);
+      }
+
       public void ItemInserted(
          IBehaviorContext context,
          IVMCollection<TItemVM> collection,
          TItemVM item,
          int index
       ) {
-         item.GetContext().NotifyChange(new ChangeArgs(ChangeType.AddedToCollection, item));
+         NotifyItemAdded(item);
          this.ItemInsertedNext(context, collection, item, index);
       }
 
@@ -38,7 +48,7 @@
          this.ItemSetNext(context, collection, previousItem, item, index);
       }
 
-      public void ItemsCleared(
+      public void CollectionCleared(
          IBehaviorContext context,
          IVMCollection<TItemVM> collection,
          TItemVM[] previousItems
@@ -48,6 +58,10 @@
          }
 
          this.ItemsClearedNext(context, collection, previousItems);
+      }
+
+      private void NotifyItemAdded(TItemVM item) {
+         item.GetContext().NotifyChange(new ChangeArgs(ChangeType.AddedToCollection, item));
       }
    }
 }

@@ -8,6 +8,13 @@
       IModificationCollectionBehavior<TItemVM>
       where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
+      public void CollectionPopulated(
+         IBehaviorContext context,
+         IVMCollection<TItemVM> collection
+      ) {
+         this.CollectionPopulatetNext(context, collection);
+      }
+
       public void ItemInserted(
          IBehaviorContext context,
          IVMCollection<TItemVM> collection,
@@ -100,7 +107,7 @@
          this.ItemSetNext(context, collection, previousItem, item, index);
       }
 
-      public void ItemsCleared(
+      public void CollectionCleared(
          IBehaviorContext context,
          IVMCollection<TItemVM> collection,
          TItemVM[] previousItems

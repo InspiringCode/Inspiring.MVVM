@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System.Collections.Generic;
+   using System.Linq;
 
    internal sealed class PopulatorCollectionBehavior<TItemVM, TItemSource> :
       Behavior,
@@ -12,23 +13,17 @@
 
          IEnumerable<TItemSource> sourceItems = sourceAccessor.GetValue(context);
 
-         try {
-            collection.IsPopulating = true;
+         var newItems = sourceItems.Select((i) => {
+            TItemVM vm = vmFactory.CreateInstance(context);
+            vm.Source = i;
+            return vm;
+         }).ToArray();
 
-            collection.Clear();
+         collection.ReplaceItems(newItems);
 
-            foreach (TItemSource itemSource in sourceItems) {
-               TItemVM vm = vmFactory.CreateInstance(context);
-               vm.Source = itemSource;
-               collection.Add(vm);
-            }
-         } finally {
-            collection.IsPopulating = false;
-         }
-         
          // TODO: Validation is a bit messy and distributed?
          foreach (TItemVM item in collection) {
-            item.Kernel.Revalidate(ValidationScope.SelfOnly, ValidationMode.CommitValidValues); 
+            item.Kernel.Revalidate(ValidationScope.SelfOnly, ValidationMode.CommitValidValues);
          }
       }
    }

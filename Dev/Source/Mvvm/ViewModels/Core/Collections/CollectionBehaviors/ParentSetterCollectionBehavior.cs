@@ -5,6 +5,16 @@
       IModificationCollectionBehavior<TItemVM>
       where TItemVM : IViewModel {
 
+      public void CollectionPopulated(
+        IBehaviorContext context,
+        IVMCollection<TItemVM> collection
+      ) {
+         foreach (TItemVM item in collection) {
+            HandleItemInserted(item, collection);
+         }
+         this.CollectionPopulatetNext(context, collection);
+      }
+
       public void ItemInserted(
          IBehaviorContext context,
          IVMCollection<TItemVM> collection,
@@ -37,7 +47,7 @@
          HandleItemRemoved(previousItem, collection);
       }
 
-      public void ItemsCleared(
+      public void CollectionCleared(
          IBehaviorContext context,
          IVMCollection<TItemVM> collection,
          TItemVM[] previousItems

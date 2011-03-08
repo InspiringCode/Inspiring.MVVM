@@ -75,7 +75,7 @@ namespace Inspiring.MvvmTest.ViewModels.__No_Namespace__ {
             _collection.Clear();
 
             _behaviorMock.Verify(x =>
-               x.ItemsCleared(
+               x.CollectionCleared(
                   _context,
                   _collection,
                   It.Is((IViewModel[] items) =>

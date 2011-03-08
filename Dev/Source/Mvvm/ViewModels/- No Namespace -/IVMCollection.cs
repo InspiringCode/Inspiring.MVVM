@@ -1,7 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
+   using System.Collections;
    using System.Collections.Generic;
    using Inspiring.Mvvm.ViewModels.Core;
-   using System.Collections;
 
    public interface IVMCollection {
       // TODO: Comment.
@@ -37,6 +37,11 @@
       int Count { get; }
       void Clear();
       void RemoveAt(int index);
+      /// <summary>
+      ///   Clears the collections and adds the <paramref name="newItems"/>.
+      /// </summary>
+      /// <param name="newItems"></param>
+      void ReplaceItems(IEnumerable<TItemVM> newItems);
       TItemVM this[int index] { get; set; }
    }
 }
