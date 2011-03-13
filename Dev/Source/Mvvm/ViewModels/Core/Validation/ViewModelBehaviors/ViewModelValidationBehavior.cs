@@ -2,6 +2,7 @@
    using System;
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
+   using System.Linq;
 
    // TODO: Make me internal please!
    public sealed class ViewModelValidationBehavior :
@@ -95,9 +96,8 @@
          );
 
          context.NotifyValidating(validationArgs);
-         
-         var newState = new ValidationState();
-         errors.ForEach(newState.AddError);
+
+         var newState = ValidationState.Join(errors.Select(x => new ValidationState(x)));
 
          var oldState = GetValidationState(context);
 

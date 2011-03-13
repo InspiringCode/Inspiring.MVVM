@@ -10,20 +10,24 @@
    ///   errors and the overall result (valid/invalid). Each property and the view 
    ///   model have a validation state.
    /// </summary>
+   /// <remarks>
+   ///   The <see cref="ValidationState"/> is an immutable data structure. You can 
+   ///   use <see cref="Join"/> to create states with more than one error.
+   /// </remarks>
    public sealed class ValidationState {
       /// <summary>
-      ///   Provides a sharable default instance for a valid ValidationState. This
-      ///   instance is readonly.
+      ///   A sharable, valid default instance.
       /// </summary>
-      public static readonly ValidationState Valid = new ValidationState(new List<ValidationError>());
+      public static readonly ValidationState Valid = new ValidationState(new ValidationError[0]);
 
-      private readonly List<ValidationError> _errors;
+      private readonly ValidationError[] _errors;
 
-      public ValidationState()
-         : this(new List<ValidationError>()) {
+      public ValidationState(ValidationError error)
+         : this(new[] { error }) {
+         Contract.Requires(error != null);
       }
 
-      private ValidationState(List<ValidationError> errors) {
+      private ValidationState(ValidationError[] errors) {
          _errors = errors;
       }
 
@@ -39,45 +43,32 @@
       ///   Returns true if all validators have succeeded.
       /// </summary>
       public bool IsValid {
-         get { return _errors.Count == 0; }
+         get { return _errors.Length == 0; }
       }
 
       /// <summary>
       ///   Creates a new <see cref="ValidationState"/> that contains the errors 
       ///   of all passed in states.
       /// </summary>
-      public static ValidationState Join(params ValidationState[] states) {
-         var state = new ValidationState();
-
-         states
-            .SelectMany(x => x.Errors)
-            .ForEach(state.AddError);
-
-         return state;
+      public static ValidationState Join(IEnumerable<ValidationState> states) {
+         return states.Aggregate(seed: Valid, func: Join);
       }
 
-      internal void AddError(ValidationError error) {
-         Contract.Requires(error != null);
-         Contract.Requires<ArgumentException>(
-            this != Valid,
-            ExceptionTexts.ValidationStateCannotBeModified
-         );
-         _errors.Add(error);
-      }
+      /// <summary>
+      ///   Creates a new <see cref="ValidationState"/> that contains the errors 
+      ///   of the <paramref name="first"/> and <paramref name="second"/> state.
+      /// </summary>
+      public static ValidationState Join(ValidationState first, ValidationState second) {
+         if (first.IsValid) {
+            return second;
+         }
 
-      [Obsolete]
-      internal void AddError(string error) {
-         Contract.Requires(error != null);
-         Contract.Requires<ArgumentException>(
-            this != Valid,
-            ExceptionTexts.ValidationStateCannotBeModified
-         );
-         _errors.Add(new ValidationError(error));
-      }
+         if (second.IsValid) {
+            return first;
+         }
 
-      internal void RemoveErrorsOf(Validator validator) {
-         Contract.Requires(validator != null);
-         _errors.RemoveAll(x => x.Validator == validator);
+         var allErrors = ArrayUtils.Concat(first._errors, second._errors);
+         return new ValidationState(allErrors);
       }
 
       /// <summary>
@@ -87,11 +78,11 @@
       public override bool Equals(object obj) {
          var other = obj as ValidationState;
 
-         if (other == null || other._errors.Count != _errors.Count) {
+         if (other == null || other._errors.Length != _errors.Length) {
             return false;
          }
 
-         for (int i = 0; i < _errors.Count; i++) {
+         for (int i = 0; i < _errors.Length; i++) {
             if (!other._errors[i].Equals(_errors[i])) {
                return false;
             }
@@ -110,9 +101,9 @@
 
       public override string ToString() {
          return String.Format(
-            "IsValid = {0}, Errors={1}",
+            "{{IsValid = {0}, Errors={1}}}",
             IsValid,
-            Errors
+            String.Join(", ", Errors)
          );
       }
    }

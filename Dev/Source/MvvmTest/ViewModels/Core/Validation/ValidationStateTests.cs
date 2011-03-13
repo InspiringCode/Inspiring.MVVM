@@ -1,71 +1,53 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Validation {
-   using System;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class ValidationStateTests : TestBase {
-      [TestMethod]
-      public void DefaultValidInstance_AddError_ThrowsException() {
-         AssertHelper.Throws<ArgumentException>(() =>
-            ValidationState.Valid.AddError("Test")
-         );
-      }
-
+   public class ValidationStateTests : ValidationTestBase {
       [TestMethod]
       public void IsValid_NoErrors_ReturnsTrue() {
-         var state = new ValidationState();
+         var state = ValidationState.Valid;
          Assert.IsTrue(state.IsValid);
       }
 
       [TestMethod]
       public void IsValid_OneError_ReturnsFalse() {
-         var state = new ValidationState();
-         state.AddError("Test");
+         var state = CreateValidationState("Single error");
          Assert.IsFalse(state.IsValid);
       }
 
       [TestMethod]
       public void Equals_BothEmpty_ReturnsTrue() {
-         var s1 = new ValidationState();
-         var s2 = new ValidationState();
+         var s1 = ValidationState.Valid;
+         var s2 = ValidationState.Valid;
 
          Assert.IsTrue(s1.Equals(s2));
       }
 
       [TestMethod]
       public void Equals_SameErrorMessages_ReturnsTrue() {
-         var s1 = new ValidationState();
-         var s2 = new ValidationState();
-
-         s1.AddError("Error 1");
-         s2.AddError("Error 1");
-
-         s1.AddError("Error 2");
-         s2.AddError("Error 2");
+         var s1 = CreateValidationState("Error 1", "Error 2");
+         var s2 = CreateValidationState("Error 1", "Error 2");
 
          Assert.IsTrue(s1.Equals(s2));
       }
 
       [TestMethod]
       public void Equals_DifferentErrorMessages_ReturnsFalse() {
-         var s1 = new ValidationState();
-         var s2 = new ValidationState();
-
-         s1.AddError("Error 1");
-         s2.AddError("Error 2");
+         var s1 = CreateValidationState("Error 1");
+         var s2 = CreateValidationState("Error 2");
 
          Assert.IsFalse(s1.Equals(s2));
       }
 
       [TestMethod]
       public void Equals_DifferentNumberOfElements_ReturnsFalse() {
-         var s1 = new ValidationState();
-         var s2 = new ValidationState();
-
-         s1.AddError("Error 1");
+         var s1 = CreateValidationState("Error 1");
+         var s2 = CreateValidationState();
 
          Assert.IsFalse(s1.Equals(s2));
       }
+
+
    }
 }

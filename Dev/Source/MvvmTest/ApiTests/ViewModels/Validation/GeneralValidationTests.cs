@@ -2,11 +2,10 @@
    using System;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
-   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class GeneralValidationTests : TestBase {
+   public class GeneralValidationTests : ValidationTestBase {
       private const string ErrorMessage = "Test";
 
       public TaskVM VM { get; set; }
@@ -30,9 +29,7 @@
       }
 
       private void AssertTitleInvalid() {
-         var expected = new ValidationState();
-         expected.AddError(ErrorMessage);
-
+         var expected = CreateValidationState(ErrorMessage);
          DomainAssert.AreEqual(expected, VM.TitleValidationState);
       }
 

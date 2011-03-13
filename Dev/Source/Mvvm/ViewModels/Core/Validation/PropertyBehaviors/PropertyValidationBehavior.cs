@@ -85,8 +85,11 @@
          // 
 
 
-         var newState = new ValidationState();
-         errors.Where(x => x.Target == context.VM).ForEach(newState.AddError);
+         var newState = ValidationState.Join(
+            errors
+               .Where(x => x.Target == context.VM)
+               .Select(x => new ValidationState(x))
+         );
 
          var oldState = GetValidationState(context);
 

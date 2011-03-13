@@ -6,7 +6,7 @@
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
    [TestClass]
-   public class ValidationModeTests : TestBase {
+   public class ValidationModeTests : ValidationTestBase {
 
       [TestClass]
       public abstract class AbstractValidationModeTests : TestBase {
@@ -25,11 +25,7 @@
          protected abstract string PropertyName { get; }
 
          private static ValidationState InvalidValidationState {
-            get {
-               var state = new ValidationState();
-               state.AddError("Validation Error");
-               return state;
-            }
+            get { return CreateValidationState("Validation error"); }
          }
 
          [TestInitialize]
