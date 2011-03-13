@@ -24,10 +24,6 @@
          : base(ClassDescriptor) {
       }
 
-      public ValidationResult ViewModelValidationResult { get; set; }
-
-      public ValidationResult LocalPropertyValidationResult { get; set; }
-
       public TestVMSource Source { get; set; }
 
       public int CalculatedMutableAccessor {
@@ -118,11 +114,6 @@
       }
 
       public ChildVMSource Source { get; set; }
-
-
-      public ValidationResult ViewModelValidationResult { get; set; }
-
-      public ValidationResult MappedMutablePropertyValidationResult { get; set; }
 
       public string MappeddMutableAccessor {
          get { return GetValue(Descriptor.MappedMutableProperty); }

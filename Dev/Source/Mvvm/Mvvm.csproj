@@ -311,7 +311,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\ICanInitializeFrom.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\AllowInvalidDisplayValuesBehavior.cs" />
-    <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\DisplayValueValidationBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\ValueCacheBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\CalculatedPropertyBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\DynamicFieldGroups.cs" />
@@ -320,7 +319,6 @@
     <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\IManualUpdateBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\IHandlePropertyChangedBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\IHandlePropertyChangingBehavior.cs" />
-    <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\IValidationBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\MappedPropertyBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\PropertyChangedBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\DisplayValueAccessorBehavior.cs" />
