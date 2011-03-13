@@ -194,6 +194,8 @@
     <Compile Include="ViewModels\Core\Validation\CollectionValidationArgs.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionValidator.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionValidatorState.cs" />
+    <Compile Include="ViewModels\Core\Validation\Validators\IValidator.cs" />
+    <Compile Include="ViewModels\Core\Validation\Validators\PropertyValidationArgs.cs" />
     <Compile Include="ViewModels\Core\Validation\Validators\ValidationArgs.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\VMDescriptorConfiguration.cs" />
     <Compile Include="ViewModels\Core\VMDescriptor\IVMDescriptorBuilder.cs" />
