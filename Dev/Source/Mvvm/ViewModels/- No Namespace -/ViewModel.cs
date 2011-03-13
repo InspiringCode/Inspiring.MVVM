@@ -78,7 +78,7 @@
 
       string IDataErrorInfo.Error {
          get {
-            ValidationState state = Kernel.GetValidationState(ValidationStateScope.ViewModelValidationsOnly);
+            ValidationResult state = Kernel.GetValidationState(ValidationStateScope.ViewModelValidationsOnly);
             return state.IsValid ?
                null :
                state.Errors.First().Message;
@@ -113,7 +113,7 @@
                return value[parts[columnNameIndex]];
             } else {
                IVMPropertyDescriptor property = Kernel.GetProperty(propertyName: columnName);
-               ValidationState state = Kernel.GetValidationState(property);
+               ValidationResult state = Kernel.GetValidationState(property);
                return state.IsValid ?
                   null :
                   state.Errors.First().Message;
@@ -264,7 +264,7 @@
             .PropertyDescriptors;
       }
 
-      public ValidationState GetValidationState(ValidationStateScope scope) {
+      public ValidationResult GetValidationState(ValidationStateScope scope) {
          return Kernel.GetValidationState(scope);
       }
 

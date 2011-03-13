@@ -13,14 +13,14 @@
 
       private static readonly FieldDefinitionGroup ValidationErrorGroup = new FieldDefinitionGroup();
 
-      private FieldDefinition<ValidationState> _validationStateField;
+      private FieldDefinition<ValidationResult> _validationStateField;
       private IVMPropertyDescriptor _property;
 
       public void Initialize(BehaviorInitializationContext context) {
          _property = context.Property;
          _validationStateField = context
             .Fields
-            .DefineField<ValidationState>(ValidationErrorGroup);
+            .DefineField<ValidationResult>(ValidationErrorGroup);
 
          this.InitializeNext(context);
       }
@@ -35,17 +35,17 @@
          }
       }
 
-      public ValidationState GetValidationState(IBehaviorContext context) {
-         ValidationState state;
+      public ValidationResult GetValidationState(IBehaviorContext context) {
+         ValidationResult state;
 
          if (context.FieldValues.TryGetValue(_validationStateField, out state)) {
             return state;
          } else {
-            return ValidationState.Valid;
+            return ValidationResult.Valid;
          }
       }
 
-      public ValidationState GetDescendantsValidationState(IBehaviorContext context) {
+      public ValidationResult GetDescendantsValidationState(IBehaviorContext context) {
          return this.GetDescendantsValidationStateNext(context);
       }
 
@@ -65,7 +65,7 @@
          this.RevalidateNext(context, validationContext, mode);
       }
 
-      internal ValidationState Validate(IBehaviorContext context, ValidationContext validationContext) {
+      internal ValidationResult Validate(IBehaviorContext context, ValidationContext validationContext) {
          Contract.Assert(_property != null, "Behavior was not properly initialized.");
 
          List<ValidationError> errors = new List<ValidationError>();
@@ -85,10 +85,10 @@
          // 
 
 
-         var newState = ValidationState.Join(
+         var newState = ValidationResult.Join(
             errors
                .Where(x => x.Target == context.VM)
-               .Select(x => new ValidationState(x))
+               .Select(x => new ValidationResult(x))
          );
 
          var oldState = GetValidationState(context);
@@ -112,8 +112,8 @@
          return newState;
       }
 
-      private ValidationState Validate(IBehaviorContext context) {
-         Contract.Ensures(Contract.Result<ValidationState>() != null);
+      private ValidationResult Validate(IBehaviorContext context) {
+         Contract.Ensures(Contract.Result<ValidationResult>() != null);
 
          ValidationContext.BeginValidation();
          var result = Validate(context, ValidationContext.Current);

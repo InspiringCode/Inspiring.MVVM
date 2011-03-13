@@ -14,12 +14,12 @@
 
       internal IValidator Validator { get; private set; }
 
-      internal ValidationState State { get; private set; }
+      internal ValidationResult State { get; private set; }
 
       protected void AddError(IViewModel target, string message) {
          var error = new ValidationError(target, Validator, message);
-         var state = new ValidationState(error);
-         State = ValidationState.Join(State, state);
+         var state = new ValidationResult(error);
+         State = ValidationResult.Join(State, state);
       }
    }
 }

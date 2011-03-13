@@ -70,7 +70,7 @@
 
       }
 
-      private ValidationState CreateValidationStateWithError() {
+      private ValidationResult CreateValidationStateWithError() {
          throw new NotImplementedException();
       }
 
@@ -78,7 +78,7 @@
          throw new NotImplementedException();
       }
 
-      private void SetupNextValidationStateProvidersResult(ValidationState result) {
+      private void SetupNextValidationStateProvidersResult(ValidationResult result) {
          throw new NotImplementedException();
       }
 

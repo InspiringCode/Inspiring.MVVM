@@ -74,14 +74,14 @@
       [TestMethod]
       public void GetValidationState_Initially_ReturnsValidState() {
          var state = _behavior.GetValidationState(_ctx.Context);
-         Assert.AreSame(ValidationState.Valid, state);
+         Assert.AreSame(ValidationResult.Valid, state);
       }
 
       [TestMethod]
       public void GetValidationState_AfterValidateWithoutErrors_ReturnsValidState() {
          Validate();
          var state = _behavior.GetValidationState(_ctx.Context);
-         Assert.AreSame(ValidationState.Valid, state);
+         Assert.AreSame(ValidationResult.Valid, state);
       }
 
       [TestMethod]

@@ -4,7 +4,7 @@
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    public static class DomainAssert {
-      public static void AreEqual(ValidationState expected, ValidationState actual) {
+      public static void AreEqual(ValidationResult expected, ValidationResult actual) {
          var expectedErrors = expected.Errors.Select(x => new ValidationErrorCO(x)).ToArray();
          var actualErrors = actual.Errors.Select(x => new ValidationErrorCO(x)).ToArray();
 

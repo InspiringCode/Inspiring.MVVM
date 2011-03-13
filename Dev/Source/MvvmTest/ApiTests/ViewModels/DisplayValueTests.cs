@@ -146,7 +146,7 @@
 
          public string ChangedPropertyName { get; set; }
 
-         public ValidationState ValidationState {
+         public ValidationResult ValidationState {
             get { return Kernel.GetValidationState(Descriptor.Rating); }
          }
 

@@ -311,7 +311,7 @@
       /// </param>
       public static ValidationArgs CreateDisplayValueValidationArgs(
          ValidationContext validationContext,
-         ValidationState validationState,
+         ValidationResult validationState,
          IViewModel viewModel,
          IVMPropertyDescriptor property
       ) {

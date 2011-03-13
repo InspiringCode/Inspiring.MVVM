@@ -50,11 +50,11 @@
          this.RevalidateDescendantsNext(context, validationContext, scope, mode); // TODO: There is some duplication!
       }
 
-      public ValidationState GetValidationState(IBehaviorContext context) {
+      public ValidationResult GetValidationState(IBehaviorContext context) {
          return this.GetValidationStateNext(context);
       }
 
-      public ValidationState GetDescendantsValidationState(IBehaviorContext context) {
+      public ValidationResult GetDescendantsValidationState(IBehaviorContext context) {
          if (this.IsLoadedNext(context)) {
             if (_isViewModelProperty) {
                var childVM = (IViewModel)this.GetValueNext<TValue>(context); // TODO: What stage?
@@ -68,7 +68,7 @@
                var collection = (IEnumerable)this.GetValueNext<TValue>(context); // TODO: What stage?
 
                if (collection != null) {
-                  var state = ValidationState.Join(
+                  var state = ValidationResult.Join(
                      collection
                         .Cast<IViewModel>()
                         .Select(x => x.Kernel.GetValidationState(ValidationStateScope.All))
@@ -79,7 +79,7 @@
             }
          }
 
-         return ValidationState.Valid;
+         return ValidationResult.Valid;
       }
    }
 }

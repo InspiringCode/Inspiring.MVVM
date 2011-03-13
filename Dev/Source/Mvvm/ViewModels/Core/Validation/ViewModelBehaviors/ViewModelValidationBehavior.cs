@@ -10,7 +10,7 @@
       IBehaviorInitializationBehavior,
       IValidationStateProviderBehavior {
 
-      private FieldDefinition<ValidationState> _validationStateField;
+      private FieldDefinition<ValidationResult> _validationStateField;
 
       private List<ValidatorDefinition> _validators = new List<ValidatorDefinition>();
 
@@ -56,18 +56,18 @@
       public void Initialize(BehaviorInitializationContext context) {
          _validationStateField = context
             .Fields
-            .DefineField<ValidationState>(ViewModel.GeneralFieldGroup);
+            .DefineField<ValidationResult>(ViewModel.GeneralFieldGroup);
 
          this.InitializeNext(context);
       }
 
-      public ValidationState GetValidationState(IBehaviorContext context) {
-         ValidationState state;
+      public ValidationResult GetValidationState(IBehaviorContext context) {
+         ValidationResult state;
 
          if (context.FieldValues.TryGetValue(_validationStateField, out state)) {
             return state;
          } else {
-            return ValidationState.Valid;
+            return ValidationResult.Valid;
          }
       }
 
@@ -97,7 +97,7 @@
 
          context.NotifyValidating(validationArgs);
 
-         var newState = ValidationState.Join(errors.Select(x => new ValidationState(x)));
+         var newState = ValidationResult.Join(errors.Select(x => new ValidationResult(x)));
 
          var oldState = GetValidationState(context);
 
@@ -204,7 +204,7 @@
          }
       }
 
-      ValidationState IValidationStateProviderBehavior.GetDescendantsValidationState(IBehaviorContext context) {
+      ValidationResult IValidationStateProviderBehavior.GetDescendantsValidationState(IBehaviorContext context) {
          throw new NotImplementedException(); // TODO: Improve interface please (split in two)!
       }
    }

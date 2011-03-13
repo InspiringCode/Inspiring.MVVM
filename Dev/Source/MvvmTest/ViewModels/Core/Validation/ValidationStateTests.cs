@@ -6,7 +6,7 @@
    public class ValidationStateTests : ValidationTestBase {
       [TestMethod]
       public void IsValid_NoErrors_ReturnsTrue() {
-         var state = ValidationState.Valid;
+         var state = ValidationResult.Valid;
          Assert.IsTrue(state.IsValid);
       }
 
@@ -18,8 +18,8 @@
 
       [TestMethod]
       public void Equals_BothEmpty_ReturnsTrue() {
-         var s1 = ValidationState.Valid;
-         var s2 = ValidationState.Valid;
+         var s1 = ValidationResult.Valid;
+         var s2 = ValidationResult.Valid;
 
          Assert.IsTrue(s1.Equals(s2));
       }

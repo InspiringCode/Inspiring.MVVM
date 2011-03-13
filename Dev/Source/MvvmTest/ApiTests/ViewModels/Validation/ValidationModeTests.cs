@@ -20,11 +20,11 @@
 
          protected abstract object DisplayValue { get; set; }
 
-         protected abstract ValidationState ValidationState { get; }
+         protected abstract ValidationResult ValidationState { get; }
 
          protected abstract string PropertyName { get; }
 
-         private static ValidationState InvalidValidationState {
+         private static ValidationResult InvalidValidationState {
             get { return CreateValidationState("Validation error"); }
          }
 
@@ -52,7 +52,7 @@
 
             RevalidateCommit();
 
-            DomainAssert.AreEqual(ValidationState.Valid, ValidationState);
+            DomainAssert.AreEqual(ValidationResult.Valid, ValidationState);
          }
 
          [TestMethod]
@@ -119,7 +119,7 @@
 
             RevalidateDiscard();
 
-            Assert.AreEqual(ValidationState.Valid, ValidationState);
+            Assert.AreEqual(ValidationResult.Valid, ValidationState);
          }
 
          [TestMethod]
@@ -234,7 +234,7 @@
                set { SetValue(Descriptor.Title, value); }
             }
 
-            public ValidationState TitleValidationState {
+            public ValidationResult TitleValidationState {
                get { return Kernel.GetValidationState(Descriptor.Title); }
             }
 
@@ -248,7 +248,7 @@
                set { SetValue(Descriptor.State, value); }
             }
 
-            public ValidationState StateValidationState {
+            public ValidationResult StateValidationState {
                get { return Kernel.GetValidationState(Descriptor.State); }
             }
 
@@ -292,7 +292,7 @@
             set { VM.TitleDisplayValue = value; }
          }
 
-         protected override ValidationState ValidationState {
+         protected override ValidationResult ValidationState {
             get { return VM.TitleValidationState; }
          }
 
@@ -324,7 +324,7 @@
             set { VM.StateDisplayValue = value; }
          }
 
-         protected override ValidationState ValidationState {
+         protected override ValidationResult ValidationState {
             get { return VM.StateValidationState; }
          }
 

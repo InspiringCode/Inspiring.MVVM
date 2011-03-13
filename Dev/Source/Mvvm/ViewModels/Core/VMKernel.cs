@@ -11,11 +11,11 @@
 
       private bool _validationStateIsCurrent = false;
       private bool _isValid = true;
-      private ValidationState _viewModelValidationState = ValidationState.Valid;
-      private ValidationState _propertiesValidationState = ValidationState.Valid;
-      private ValidationState _selfOnlyValidationState = ValidationState.Valid;
-      private ValidationState _descendantsOnlyValidationState = ValidationState.Valid;
-      private ValidationState _validationState = ValidationState.Valid;
+      private ValidationResult _viewModelValidationState = ValidationResult.Valid;
+      private ValidationResult _propertiesValidationState = ValidationResult.Valid;
+      private ValidationResult _selfOnlyValidationState = ValidationResult.Valid;
+      private ValidationResult _descendantsOnlyValidationState = ValidationResult.Valid;
+      private ValidationResult _validationState = ValidationResult.Valid;
 
       public VMKernel(IViewModel vm, VMDescriptorBase descriptor, IServiceLocator serviceLocator) {
          Contract.Requires<ArgumentNullException>(vm != null);
@@ -105,11 +105,11 @@
          property.Behaviors.SetValueNext(this, value);
       }
 
-      public ValidationState GetValidationState(IVMPropertyDescriptor forProperty) {
+      public ValidationResult GetValidationState(IVMPropertyDescriptor forProperty) {
          return forProperty.Behaviors.GetValidationStateNext(this);
       }
 
-      public ValidationState GetValidationState(ValidationStateScope scope = ValidationStateScope.All) {
+      public ValidationResult GetValidationState(ValidationStateScope scope = ValidationStateScope.All) {
          if (!_validationStateIsCurrent) {
             UpdateValidationState();
          }
@@ -289,26 +289,26 @@
       private void UpdateValidationState() {
          _viewModelValidationState = _descriptor.Behaviors.GetValidationStateNext(this);
 
-         _propertiesValidationState = ValidationState.Join(
+         _propertiesValidationState = ValidationResult.Join(
             _descriptor
                .Properties
                .Select(x => GetValidationState(x))
                .ToArray()
          );
 
-         _selfOnlyValidationState = ValidationState.Join(
+         _selfOnlyValidationState = ValidationResult.Join(
             _propertiesValidationState,
             _viewModelValidationState
          );
 
-         _descendantsOnlyValidationState = ValidationState.Join(
+         _descendantsOnlyValidationState = ValidationResult.Join(
             _descriptor
                .Properties
                .Select(x => x.Behaviors.GetDescendantsValidationStateNext(this))
                .ToArray()
          );
 
-         _validationState = ValidationState.Join(
+         _validationState = ValidationResult.Join(
             _selfOnlyValidationState,
             _descendantsOnlyValidationState
          );

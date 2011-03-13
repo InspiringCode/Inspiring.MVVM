@@ -272,24 +272,24 @@
          }
       }
 
-      public static ValidationState GetValidationStateNext(
+      public static ValidationResult GetValidationStateNext(
          this Behavior behavior,
          IBehaviorContext context
       ) {
          IValidationStateProviderBehavior next;
          return behavior.TryGetBehavior(out next) ?
             next.GetValidationState(context) :
-            ValidationState.Valid;
+            ValidationResult.Valid;
       }
 
-      public static ValidationState GetDescendantsValidationStateNext(
+      public static ValidationResult GetDescendantsValidationStateNext(
          this Behavior behavior,
          IBehaviorContext context
       ) {
          IValidationStateProviderBehavior next;
          return behavior.TryGetBehavior(out next) ?
             next.GetDescendantsValidationState(context) :
-            ValidationState.Valid;
+            ValidationResult.Valid;
       }
 
       public static bool IsLoadedNext(

@@ -11,23 +11,23 @@
    ///   model have a validation state.
    /// </summary>
    /// <remarks>
-   ///   The <see cref="ValidationState"/> is an immutable data structure. You can 
+   ///   The <see cref="ValidationResult"/> is an immutable data structure. You can 
    ///   use <see cref="Join"/> to create states with more than one error.
    /// </remarks>
-   public sealed class ValidationState {
+   public sealed class ValidationResult {
       /// <summary>
       ///   A sharable, valid default instance.
       /// </summary>
-      public static readonly ValidationState Valid = new ValidationState(new ValidationError[0]);
+      public static readonly ValidationResult Valid = new ValidationResult(new ValidationError[0]);
 
       private readonly ValidationError[] _errors;
 
-      public ValidationState(ValidationError error)
+      public ValidationResult(ValidationError error)
          : this(new[] { error }) {
          Contract.Requires(error != null);
       }
 
-      private ValidationState(ValidationError[] errors) {
+      private ValidationResult(ValidationError[] errors) {
          _errors = errors;
       }
 
@@ -47,18 +47,18 @@
       }
 
       /// <summary>
-      ///   Creates a new <see cref="ValidationState"/> that contains the errors 
+      ///   Creates a new <see cref="ValidationResult"/> that contains the errors 
       ///   of all passed in states.
       /// </summary>
-      public static ValidationState Join(IEnumerable<ValidationState> states) {
+      public static ValidationResult Join(IEnumerable<ValidationResult> states) {
          return states.Aggregate(seed: Valid, func: Join);
       }
 
       /// <summary>
-      ///   Creates a new <see cref="ValidationState"/> that contains the errors 
+      ///   Creates a new <see cref="ValidationResult"/> that contains the errors 
       ///   of the <paramref name="first"/> and <paramref name="second"/> state.
       /// </summary>
-      public static ValidationState Join(ValidationState first, ValidationState second) {
+      public static ValidationResult Join(ValidationResult first, ValidationResult second) {
          if (first.IsValid) {
             return second;
          }
@@ -68,15 +68,15 @@
          }
 
          var allErrors = ArrayUtils.Concat(first._errors, second._errors);
-         return new ValidationState(allErrors);
+         return new ValidationResult(allErrors);
       }
 
       /// <summary>
-      ///   Two <see cref="ValidationState"/>s are equal, if there <see 
+      ///   Two <see cref="ValidationResult"/>s are equal, if there <see 
       ///   cref="ValidationErrorCollection"/>s are equal.
       /// </summary>
       public override bool Equals(object obj) {
-         var other = obj as ValidationState;
+         var other = obj as ValidationResult;
 
          if (other == null || other._errors.Length != _errors.Length) {
             return false;

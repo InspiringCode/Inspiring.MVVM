@@ -7,11 +7,11 @@
 
    [TestClass]
    public class ValidationTestBase : TestBase {
-      protected static ValidationState CreateValidationState(params string[] errors) {
-         IEnumerable<ValidationState> states = errors
-            .Select(error => new ValidationState(new ValidationError(error)));
+      protected static ValidationResult CreateValidationState(params string[] errors) {
+         IEnumerable<ValidationResult> states = errors
+            .Select(error => new ValidationResult(new ValidationError(error)));
 
-         return ValidationState.Join(states);
+         return ValidationResult.Join(states);
       }
    }
 }

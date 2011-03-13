@@ -34,7 +34,7 @@
       }
 
       private void AssertTitleValid() {
-         DomainAssert.AreEqual(ValidationState.Valid, VM.TitleValidationState);
+         DomainAssert.AreEqual(ValidationResult.Valid, VM.TitleValidationState);
       }
 
       public class TaskVM : ViewModel<TaskVMDescriptor> {
@@ -59,7 +59,7 @@
             : base(ClassDescriptor) {
          }
 
-         public ValidationState TitleValidationState {
+         public ValidationResult TitleValidationState {
             get { return Kernel.GetValidationState(Descriptor.Title); }
          }
 
