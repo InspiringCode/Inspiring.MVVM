@@ -1,6 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
 
-   internal struct PathIterator {
+   public struct PathIterator {
       private readonly PathStep[] _steps;
       private int _index;
 

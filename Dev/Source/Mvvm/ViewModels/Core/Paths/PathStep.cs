@@ -1,13 +1,13 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
 
-   internal enum PathStepType {
+   public enum PathStepType {
       None,
       ViewModel,
       Collection,
       Property
    }
 
-   internal struct PathStep {
+   public struct PathStep {
       private readonly PathStepType _type;
       private readonly IViewModel _viewModel;
       private readonly IVMCollection _collection;

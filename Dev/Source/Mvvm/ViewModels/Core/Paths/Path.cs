@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
 
-   internal sealed class Path {
+   // TODO: Is it OK for me to be public?
+   public sealed class Path {
       public static readonly Path Empty = new Path(new PathStep[0]);
 
       private readonly PathStep[] _steps;

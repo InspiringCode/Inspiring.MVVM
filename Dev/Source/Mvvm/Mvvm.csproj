@@ -180,6 +180,7 @@
     <Compile Include="ViewModels\Core\Commands\DelegatingCommandBehavior.cs" />
     <Compile Include="ViewModels\Core\Commands\ViewModelCommand.cs" />
     <Compile Include="ViewModels\Core\Commands\WaitCursorBehavior.cs" />
+    <Compile Include="ViewModels\Core\Common\ICondition.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\RefreshBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\ChildScreenBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\UntypedPropertyAccessorBehavior.cs" />
@@ -194,9 +195,16 @@
     <Compile Include="ViewModels\Core\Validation\CollectionValidationArgs.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionValidator.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionValidatorState.cs" />
+    <Compile Include="ViewModels\Core\Validation\ValidationRequest.cs" />
+    <Compile Include="ViewModels\Core\Validation\ValidationStep.cs" />
+    <Compile Include="ViewModels\Core\Validation\Validators\ConditionalValidator.cs" />
+    <Compile Include="ViewModels\Core\Validation\Validators\DelegateValidator.cs" />
     <Compile Include="ViewModels\Core\Validation\Validators\IValidator.cs" />
     <Compile Include="ViewModels\Core\Validation\Validators\PropertyValidationArgs.cs" />
     <Compile Include="ViewModels\Core\Validation\Validators\ValidationArgs.cs" />
+    <Compile Include="ViewModels\Core\Validation\Validators\ValidationStepCondition.cs" />
+    <Compile Include="ViewModels\Core\Validation\Validators\ValidationTargetCondition.cs" />
+    <Compile Include="ViewModels\Core\Validation\Validators\Validator.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\VMDescriptorConfiguration.cs" />
     <Compile Include="ViewModels\Core\VMDescriptor\IVMDescriptorBuilder.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\CacheBehavior.cs" />

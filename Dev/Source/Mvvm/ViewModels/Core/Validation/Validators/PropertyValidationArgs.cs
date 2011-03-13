@@ -33,8 +33,15 @@
          AddError(Target, message);
       }
 
-      internal static PropertyValidationArgs<TOwnerVM, TTargetVM, TValue> Create(object request) {
-         return null;
+      internal static PropertyValidationArgs<TOwnerVM, TTargetVM, TValue> Create(ValidationRequest request) {
+         Path path = request.ValidationTarget;
+
+         var owner = (TOwnerVM)path[0].ViewModel;
+         var target = (TTargetVM)path[path.Length - 2].ViewModel;
+         var property = (IVMPropertyDescriptor<TValue>)path[path.Length - 1].Property;
+
+         //return new PropertyValidationArgs<TOwnerVM,TTargetVM,TValue>(
+         throw new NotImplementedException();
       }
    }
 }
