@@ -27,6 +27,11 @@
          Contract.Requires(error != null);
       }
 
+      public ValidationResult(IEnumerable<ValidationError> errors)
+         : this(errors.ToArray()) {
+         Contract.Requires(errors != null);
+      }
+
       private ValidationResult(ValidationError[] errors) {
          _errors = errors;
       }

@@ -146,6 +146,7 @@
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IUntypedValueGetterBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IUntypedValueSetterBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\ViewModelBehaviors\IRefreshControllerBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\ViewModelBehaviors\IValidationExecutorBehavior.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Factories\CommandBehaviorFactory.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IItemDescriptorProviderCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IPopulatorCollectionBehavior.cs" />
@@ -192,6 +193,7 @@
     <Compile Include="ViewModels\Core\Paths\PathIterator.cs" />
     <Compile Include="ViewModels\Core\Paths\PathStep.cs" />
     <Compile Include="ViewModels\Core\Paths\Definition\PathTerminationStep.cs" />
+    <Compile Include="ViewModels\Core\Validation\CollectionBehaviors\CollectionValidationResultCacheBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionValidationArgs.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionValidator.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionValidatorState.cs" />
@@ -205,6 +207,7 @@
     <Compile Include="ViewModels\Core\Validation\Validators\ValidationStepCondition.cs" />
     <Compile Include="ViewModels\Core\Validation\Validators\ValidationTargetCondition.cs" />
     <Compile Include="ViewModels\Core\Validation\Validators\Validator.cs" />
+    <Compile Include="ViewModels\Core\Validation\ViewModelBehaviors\ValidationCoordinatorBehavior.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\VMDescriptorConfiguration.cs" />
     <Compile Include="ViewModels\Core\VMDescriptor\IVMDescriptorBuilder.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\CacheBehavior.cs" />
@@ -243,7 +246,6 @@
     <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\DisplayValueBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\RefreshableValueCacheBehavior.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\ViewModelTypeDescriptor.cs" />
-    <Compile Include="ViewModels\Core\Validation\CollectionBehaviors\CollectionValidatorBehavior.cs" />
     <Compile Include="ViewModels\Core\Common\ChangeArgs.cs" />
     <Compile Include="ViewModels\Core\Common\InstancePath.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\IBehaviorInitializationBehavior.cs" />

@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using Inspiring.Mvvm.ViewModels.Core;
+   using Inspiring.Mvvm.ViewModels.Core.Validation;
 
    public static class ExtensionMethods {
       /// <summary>
@@ -365,6 +366,17 @@
          if (behavior.TryGetBehavior(out next)) {
             next.Refresh(context, property);
          }
+      }
+
+      public static ValidationResult ValidateNext(
+         this Behavior behavior,
+         IBehaviorContext context,
+         ValidationRequest request
+      ) {
+         IValidationExecutorBehavior next;
+         return behavior.TryGetBehavior(out next) ?
+            next.Validate(context, request) :
+            ValidationResult.Valid;
       }
    }
 }
