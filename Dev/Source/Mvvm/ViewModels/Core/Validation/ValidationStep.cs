@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core.Validation {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
 
    public enum ValidationStep {
       DisplayValue,

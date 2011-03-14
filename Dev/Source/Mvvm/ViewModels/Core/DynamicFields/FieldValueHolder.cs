@@ -34,7 +34,7 @@
          throw new InvalidOperationException(ExceptionTexts.FieldNotSet);
       }
 
-      public T GetValueOrDefault<T>(FieldDefinition<T> field) {
+      public T GetValueOrDefault<T>(FieldDefinition<T> field, T defaultValue = default(T)) {
          Contract.Requires<ArgumentNullException>(field != null);
          CheckField(field);
 
@@ -43,7 +43,7 @@
             return value;
          }
 
-         return default(T);
+         return defaultValue;
       }
 
       public bool TryGetValue<T>(FieldDefinition<T> field, out T value) {

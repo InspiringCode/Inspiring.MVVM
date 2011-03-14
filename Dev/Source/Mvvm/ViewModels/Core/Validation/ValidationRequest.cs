@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core.Validation {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System.Diagnostics.Contracts;
 
    public sealed class ValidationRequest {

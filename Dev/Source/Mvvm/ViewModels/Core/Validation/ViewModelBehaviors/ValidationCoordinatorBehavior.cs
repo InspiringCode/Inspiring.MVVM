@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core.Validation.ViewModelBehaviors {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System.Collections;
    using System.Collections.Generic;
 
@@ -7,7 +7,7 @@
 
       public void Revalidate(IBehaviorContext context, IVMPropertyDescriptor property) {
          IEnumerable<IVMCollection> owners = GetOwnerCollectionsOfVM(context.VM);
-         
+
          RefreshCollectionValidationResults(context, ValidationStep.DisplayValue, owners, property);
          RefreshCollectionValidationResults(context, ValidationStep.Value, owners, property);
       }

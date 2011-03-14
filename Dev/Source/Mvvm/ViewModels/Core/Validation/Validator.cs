@@ -9,7 +9,7 @@
 
       public abstract void ValidateCore(ValidationArgs args);
 
-      public ValidationResult Execute(Validation.ValidationRequest request) {
+      public ValidationResult Execute(ValidationRequest request) {
          throw new NotImplementedException();
       }
    }
