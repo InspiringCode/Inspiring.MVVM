@@ -11,10 +11,8 @@
 
       internal ValidationResult Result { get; private set; }
 
-      protected void AddError(IViewModel target, string message) {
-         var error = new ValidationError(target, Validator, message);
-         var result = new ValidationResult(error);
-         Result = ValidationResult.Join(Result, result);
+      protected void AddError(ValidationError error) {
+         Result = ValidationResult.Join(Result, new ValidationResult(error));
       }
    }
 

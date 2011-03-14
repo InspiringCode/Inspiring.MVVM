@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
+   using Inspiring.Mvvm.ViewModels.Core.Validation.Validators;
 
    /// <summary>
    ///   Holds all infos necessary for a <see cref="Validator"/> to validate a
@@ -39,7 +40,7 @@
       private readonly IVMPropertyDescriptor _targetProperty;
       private readonly InstancePath _changedPath;
       private readonly IVMPropertyDescriptor _changedProperty;
-      private readonly Validator _targetValidator;
+      private readonly IValidator _targetValidator;
 
       private ValidationArgs(
          ValidationType validationType,
@@ -49,7 +50,7 @@
          IVMPropertyDescriptor changedProperty,
          IVMPropertyDescriptor targetProperty,
          InstancePath targetPath,
-         Validator targetValidator
+         IValidator targetValidator
       ) {
          Contract.Requires(validationErrors != null);
          Contract.Requires(validationContext != null);
@@ -156,7 +157,7 @@
          }
       }
 
-      internal Validator TargetValidator {
+      internal IValidator TargetValidator {
          get {
             return _targetValidator;
          }
@@ -340,11 +341,11 @@
       }
 
       public void AddError(string errorMessage) {
-         _validationErrors.Add(new ValidationError(TargetVM, TargetValidator, errorMessage));
+         _validationErrors.Add(new ValidationError(TargetValidator, TargetVM, errorMessage));
       }
 
       public void AddError(IViewModel item, string errorMessage) {
-         _validationErrors.Add(new ValidationError(item, TargetValidator, errorMessage));
+         _validationErrors.Add(new ValidationError(TargetValidator, item, errorMessage));
       }
 
       /// <summary>
@@ -370,7 +371,7 @@
          );
       }
 
-      internal ValidationArgs SetTargetValidator(Validator validator) {
+      internal ValidationArgs SetTargetValidator(IValidator validator) {
          return new ValidationArgs(
             _validationType,
             _validationContext,

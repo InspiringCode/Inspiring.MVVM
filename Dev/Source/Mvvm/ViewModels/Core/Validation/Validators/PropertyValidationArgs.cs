@@ -28,20 +28,24 @@
 
       public TValue Value { get; private set; }
 
-      public void AddError(string message) {
+      public void AddError(string message, object details = null) {
          Contract.Requires<ArgumentNullException>(message != null);
-         AddError(Target, message);
+
+         var e = new ValidationError(Validator, Target, TargetProperty, message, details);
+         AddError(e);
       }
 
-      internal static PropertyValidationArgs<TOwnerVM, TTargetVM, TValue> Create(ValidationRequest request) {
+      internal static PropertyValidationArgs<TOwnerVM, TTargetVM, TValue> Create(
+         IValidator validator,
+         ValidationRequest request
+      ) {
          Path path = request.ValidationTarget;
 
          var owner = (TOwnerVM)path[0].ViewModel;
          var target = (TTargetVM)path[path.Length - 2].ViewModel;
          var property = (IVMPropertyDescriptor<TValue>)path[path.Length - 1].Property;
 
-         //return new PropertyValidationArgs<TOwnerVM,TTargetVM,TValue>(
-         throw new NotImplementedException();
+         return new PropertyValidationArgs<TOwnerVM, TTargetVM, TValue>(validator, owner, target, property);
       }
    }
 }

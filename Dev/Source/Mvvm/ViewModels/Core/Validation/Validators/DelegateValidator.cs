@@ -9,7 +9,7 @@
       private readonly Action<TArgs> _validatorAction;
 
       public DelegateValidator(
-         Func<ValidationRequest, TArgs> argsFactory,
+         Func<ValidationRequest, IValidator, TArgs> argsFactory,
          Action<TArgs> validatorAction
       )
          : base(argsFactory) {

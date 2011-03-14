@@ -86,12 +86,12 @@
          }
 
          private void SetupInvalidPropertyValidationCallback(ValidationError expectedError = null) {
-            expectedError = expectedError ?? new ValidationError(_ctx.VM, Mock<Validator>(), "Test");
+            expectedError = expectedError ?? new ValidationError(Mock<Validator>(), _ctx.VM, "Test");
 
             _ctx
               .ContextMock
               .Setup(x => x.NotifyValidating(It.IsAny<ValidationArgs>()))
-              .Callback<ValidationArgs>(args => args.SetTargetValidator(expectedError.Validator).AddError(expectedError.Message));
+              .Callback<ValidationArgs>(args => args.AddError(expectedError.Message));
          }
 
          private void Validate() {
