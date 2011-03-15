@@ -5,6 +5,17 @@
    internal sealed class ValidationCoordinatorBehavior : Behavior {
       private static readonly IVMCollection[] EmptyVMCollectionArray = new IVMCollection[0];
 
+      private DynamicFieldAccessor<ValidationResult> _validationResultField;
+
+      public void Initialize(BehaviorInitializationContext context) {
+         _validationResultField = new DynamicFieldAccessor<ValidationResult>(
+            context,
+            ViewModel.GeneralFieldGroup
+         );
+
+         this.InitializeNext(context);
+      }
+
       public void Revalidate(IBehaviorContext context, IVMPropertyDescriptor property) {
          IEnumerable<IVMCollection> owners = GetOwnerCollectionsOfVM(context.VM);
 
@@ -12,6 +23,60 @@
          RefreshCollectionValidationResults(context, ValidationStep.Value, owners, property);
 
          property.Behaviors.GetNextBehavior<IRevalidationBehavior>().Revalidate(context);
+      }
+
+      public void Revalidate(IBehaviorContext context, IVMCollection collection) {
+         var itemDescriptor = collection.GetItemDescriptor();
+         var owners = new[] { collection };
+
+         itemDescriptor.Properties.ForEach(p => {
+            RefreshCollectionValidationResults(context, ValidationStep.DisplayValue, owners, p);
+            RefreshCollectionValidationResults(context, ValidationStep.Value, owners, p);
+         });
+
+         foreach (IViewModel item in collection) {
+            ValidateViewModel(context, item);
+         }
+      }
+
+      public void Revalidate(IBehaviorContext context) {
+         foreach (var property in context.VM.Descriptor.Properties) {
+            Revalidate(context, property);
+         }
+         ExecuteViewModelValidators(context, context.VM);
+      }
+
+      private void ValidateViewModel(IBehaviorContext context, IViewModel viewModel) {
+         foreach (IVMPropertyDescriptor property in viewModel.Descriptor.Properties) {
+            property
+               .Behaviors
+               .GetNextBehavior<IRevalidationBehavior>()
+               .Revalidate(context);
+         }
+
+         ExecuteViewModelValidators(context, viewModel);
+      }
+
+      private void ExecuteViewModelValidators(IBehaviorContext context, IViewModel viewModel) {
+         ValidationRequest request = new ValidationRequest(
+            ValidationTrigger.Revalidate, 
+            ValidationStep.ViewModel, 
+            viewModel
+         );
+
+         ValidationResult result = InvokeValidationExecutors(context, request);
+
+         var previousResult = _validationResultField.GetWithDefault(context, ValidationResult.Valid);
+         if (!result.Equals(previousResult)) {
+            if (result.IsValid) {
+               _validationResultField.Clear(context);
+            } else {
+               _validationResultField.Set(context, result);
+            }
+
+            ChangeArgs args = new ChangeArgs(ChangeType.ValidationStateChanged, viewModel);
+            context.NotifyChange(args);
+         }
       }
 
       public ValidationResult ValidateProperty(IBehaviorContext context, ValidationRequest request) {

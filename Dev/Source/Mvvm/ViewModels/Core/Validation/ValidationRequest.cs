@@ -16,6 +16,16 @@
       public ValidationRequest(
          ValidationTrigger trigger,
          ValidationStep step,
+         IViewModel vm
+      )
+         : this(trigger, step, Path.Empty.Prepend(vm)) {
+         Contract.Requires(vm != null);
+         Target = vm;
+      }
+
+      public ValidationRequest(
+         ValidationTrigger trigger,
+         ValidationStep step,
          IViewModel vm,
          IVMPropertyDescriptor property
       )

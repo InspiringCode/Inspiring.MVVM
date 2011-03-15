@@ -397,5 +397,12 @@
             next.HandlePropertyChanged(context);
          }
       }
+
+      public static VMDescriptorBase GetItemDescriptor(this IVMCollection collection) {
+         return collection
+            .Behaviors
+            .GetNextBehavior<IItemDescriptorProviderCollectionBehavior>()
+            .ItemDescriptor;
+      }
    }
 }

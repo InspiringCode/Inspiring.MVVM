@@ -134,9 +134,7 @@
       }
 
       public PropertyDescriptorCollection GetItemProperties(PropertyDescriptor[] listAccessors) {
-         var itemDescriptor = Behaviors
-            .GetNextBehavior<IItemDescriptorProviderCollectionBehavior>()
-            .ItemDescriptor;
+         var itemDescriptor = this.GetItemDescriptor();
 
          return itemDescriptor
             .Behaviors

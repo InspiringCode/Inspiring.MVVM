@@ -3,7 +3,7 @@
    using System.Collections.Generic;
    using Inspiring.Mvvm.ViewModels.Core;
 
-   public interface IVMCollection {
+   public interface IVMCollection : IEnumerable {
       // TODO: Comment.
       BehaviorChain Behaviors { get; }
 
