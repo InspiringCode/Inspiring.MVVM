@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using Inspiring.Mvvm.ViewModels.Core;
-   using Inspiring.Mvvm.ViewModels.Core.Validation;
 
    public static class ExtensionMethods {
       /// <summary>
@@ -260,6 +259,16 @@
          }
       }
 
+      public static void RevalidateNext(
+         this Behavior behavior,
+         IBehaviorContext context
+      ) {
+         IRevalidationBehavior next;
+         if (behavior.TryGetBehavior(out next)) {
+            next.Revalidate(context);
+         }
+      }
+
       public static void RevalidateDescendantsNext(
          this Behavior behavior,
          IBehaviorContext context,
@@ -377,6 +386,16 @@
          return behavior.TryGetBehavior(out next) ?
             next.Validate(context, request) :
             ValidationResult.Valid;
+      }
+
+      public static void HandlePropertyChangedNext(
+         this Behavior behavior,
+         IBehaviorContext context
+      ) {
+         IHandlePropertyChangedBehavior next;
+         if (behavior.TryGetBehavior(out next)) {
+            next.HandlePropertyChanged(context);
+         }
       }
    }
 }

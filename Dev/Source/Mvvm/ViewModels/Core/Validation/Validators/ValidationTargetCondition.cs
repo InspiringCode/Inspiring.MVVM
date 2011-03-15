@@ -11,7 +11,7 @@
       }
 
       public bool IsTrue(ValidationRequest operand) {
-         PathMatch match = _expectedTarget.Matches(operand.ValidationTarget);
+         PathMatch match = _expectedTarget.Matches(operand.TargetPath);
          return match.Success;
       }
 

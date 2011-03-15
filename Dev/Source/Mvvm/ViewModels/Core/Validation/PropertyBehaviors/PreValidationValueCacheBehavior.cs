@@ -53,6 +53,10 @@
          }
       }
 
+      public void Revalidate(IBehaviorContext context) {
+         throw new System.NotImplementedException();
+      }
+
       public void Revalidate(IBehaviorContext context, ValidationContext validationContext, ValidationMode mode) {
          RequireInitialized();
 

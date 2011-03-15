@@ -10,29 +10,16 @@
 
          RefreshCollectionValidationResults(context, ValidationStep.DisplayValue, owners, property);
          RefreshCollectionValidationResults(context, ValidationStep.Value, owners, property);
+
+         property.Behaviors.GetNextBehavior<IRevalidationBehavior>().Revalidate(context);
       }
 
-      /// <summary>
-      ///   Refreshes the collection validation cache of the <paramref name="property"/>,
-      ///   executes all validators for the it and returns the result.
-      /// </summary>
-      public ValidationResult ValidatePropertyWithFreshCollectionResults(
-         IBehaviorContext context,
-         ValidationStep step,
-         IVMPropertyDescriptor property
-      ) {
-         IEnumerable<IVMCollection> owners = GetOwnerCollectionsOfVM(context.VM);
-         RefreshCollectionValidationResults(context, step, owners, property);
-
-         return ValidatePropertyWithCachedCollectionResults(context, step, property);
-      }
-
-      public ValidationResult ValidatePropertyWithCachedCollectionResults(
-         IBehaviorContext context,
-         ValidationStep step,
-         IVMPropertyDescriptor property
-      ) {
-         return Validate(context, step, context.VM, property);
+      public ValidationResult ValidateProperty(IBehaviorContext context, ValidationRequest request) {
+         if (request.Trigger == ValidationTrigger.PropertyChange) {
+            IEnumerable<IVMCollection> owners = GetOwnerCollectionsOfVM(context.VM);
+            RefreshCollectionValidationResults(context, request.Step, owners, request.TargetProperty);
+         }
+         return Validate(context, request);
       }
 
       private IEnumerable<IVMCollection> GetOwnerCollectionsOfVM(IViewModel vm) {
@@ -53,7 +40,11 @@
                .Prepend(collection)
                .Prepend(collection.Owner);
 
-            var request = new ValidationRequest(step, validationTarget);
+            var request = new ValidationRequest(
+               ValidationTrigger.CollectionValidation,
+               step,
+               validationTarget
+            );
 
             ValidationResult result = InvokeValidationExecutors(context, request);
 
@@ -64,18 +55,10 @@
 
       private ValidationResult Validate(
          IBehaviorContext context,
-         ValidationStep step,
-         IViewModel vm,
-         IVMPropertyDescriptor property = null
+         ValidationRequest request
       ) {
-         var validationTarget = property != null ?
-            Path.Empty.Prepend(property).Prepend(vm) :
-            Path.Empty.Prepend(vm);
-
-         var request = new ValidationRequest(step, validationTarget);
-
          var first = InvokeValidationExecutors(context, request);
-         var second = GetCachedCollectionResults(vm, property);
+         var second = GetCachedCollectionResults(request.Target, request.TargetProperty);
 
          return ValidationResult.Join(first, second);
       }

@@ -49,6 +49,10 @@
          return this.GetDescendantsValidationStateNext(context);
       }
 
+      public void Revalidate(IBehaviorContext context) {
+         throw new NotImplementedException();
+      }
+
       public void Revalidate(IBehaviorContext context, ValidationContext validationContext, ValidationMode mode) {
          switch (mode) {
             case ValidationMode.CommitValidValues:
@@ -121,6 +125,5 @@
 
          return result;
       }
-
    }
 }

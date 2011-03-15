@@ -198,9 +198,11 @@
     <Compile Include="ViewModels\Core\Validation\CollectionValidationArgs.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionValidator.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionValidatorState.cs" />
-    <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\PropertyValidationBehavior.new.cs" />
+    <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\ValueValidationSourceBehavior.cs" />
+    <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\PropertyValidationSourceBehaviorBase.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationRequest.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationStep.cs" />
+    <Compile Include="ViewModels\Core\Validation\ValidationTrigger.cs" />
     <Compile Include="ViewModels\Core\Validation\Validators\ConditionalValidator.cs" />
     <Compile Include="ViewModels\Core\Validation\Validators\DelegateValidator.cs" />
     <Compile Include="ViewModels\Core\Validation\Validators\IValidator.cs" />

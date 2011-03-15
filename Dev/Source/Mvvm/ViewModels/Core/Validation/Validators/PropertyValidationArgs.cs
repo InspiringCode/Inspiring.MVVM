@@ -39,7 +39,7 @@
          IValidator validator,
          ValidationRequest request
       ) {
-         Path path = request.ValidationTarget;
+         Path path = request.TargetPath;
 
          var owner = (TOwnerVM)path[0].ViewModel;
          var target = (TTargetVM)path[path.Length - 2].ViewModel;
