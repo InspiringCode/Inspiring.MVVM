@@ -198,8 +198,11 @@
     <Compile Include="ViewModels\Core\Validation\CollectionValidationArgs.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionValidator.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionValidatorState.cs" />
+    <Compile Include="ViewModels\Core\Validation\HierarchicalRevalidator.cs" />
     <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\ValueValidationSourceBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\PropertyValidationSourceBehaviorBase.cs" />
+    <Compile Include="ViewModels\Core\Validation\PropertyValidationBatch.cs" />
+    <Compile Include="ViewModels\Core\Validation\Revalidator.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationRequest.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationStep.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationTrigger.cs" />
@@ -212,6 +215,7 @@
     <Compile Include="ViewModels\Core\Validation\Validators\ValidationTargetCondition.cs" />
     <Compile Include="ViewModels\Core\Validation\Validators\Validator.cs" />
     <Compile Include="ViewModels\Core\Validation\ViewModelBehaviors\ValidationCoordinatorBehavior.cs" />
+    <Compile Include="ViewModels\Core\Validation\ViewModelValidationBatch.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\VMDescriptorConfiguration.cs" />
     <Compile Include="ViewModels\Core\VMDescriptor\IVMDescriptorBuilder.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\CacheBehavior.cs" />
