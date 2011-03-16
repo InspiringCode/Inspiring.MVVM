@@ -24,6 +24,8 @@
          IServiceLocator serviceLocator
       )
          : base(descriptor, serviceLocator) {
+
+         NonExistingSelectedSourceItems = new List<TItemSource>();
       }
 
       /// <summary>
@@ -53,6 +55,11 @@
          get { return GetValue(Descriptor.SelectedItems); }
       }
 
+      /// <summary>
+      ///   May contain items that are selected, but not in the AllSourceItems collection.
+      /// </summary>
+      internal ICollection<TItemSource> NonExistingSelectedSourceItems { get; private set; }
+
       IList IMultiSelectionVM.AllItems {
          get { return AllItems; }
       }
@@ -78,23 +85,38 @@
       ///   Returns all source items for which the <see cref="ActiveItemFilter"/>
       ///   returns true or that are currently contained by selected items collection
       ///   of the source object.
+      ///   All selected items are always contained, even if they are not in the collection of
+      ///   all items.
       /// </summary>
       internal IEnumerable<TItemSource> GetActiveSourceItems() {
          IEnumerable<TItemSource> allSourceItems = GetValue(Descriptor.AllSourceItems);
          IEnumerable<TItemSource> selectedSourceItems = GetValue(Descriptor.SelectedSourceItems);
+         IEnumerable<TItemSource> activeSourceItems = null;
 
          if (allSourceItems == null) {
-            return new TItemSource[0];
+            activeSourceItems = new TItemSource[0];
+         } else if (ActiveItemFilter == null) {
+            activeSourceItems = allSourceItems;
+         } else {
+            activeSourceItems = allSourceItems
+               .Where(i =>
+                  ActiveItemFilter(i) ||
+                  selectedSourceItems.Contains(i)
+               )
+               .ToArray();
          }
 
-         if (ActiveItemFilter == null) {
-            return allSourceItems;
+         NonExistingSelectedSourceItems = selectedSourceItems
+            .Except(activeSourceItems)
+            .ToArray();
+
+         if (NonExistingSelectedSourceItems.Any()) {
+            activeSourceItems = activeSourceItems
+               .Concat(NonExistingSelectedSourceItems)
+               .ToArray();
          }
 
-         return allSourceItems.Where(i =>
-            ActiveItemFilter(i) ||
-            selectedSourceItems.Contains(i)
-         );
+         return activeSourceItems;
       }
    }
 

@@ -175,8 +175,8 @@
                context.ServiceLocator
             );
 
-            vm.InitializeFrom(sourceObject);
             vm.ActiveItemFilter = _filter;
+            vm.InitializeFrom(sourceObject);
 
             return vm;
          }
@@ -206,9 +206,8 @@
                context.ServiceLocator
             );
 
-            vm.InitializeFrom(sourceObject);
-
             vm.ActiveItemFilter = _filter;
+            vm.InitializeFrom(sourceObject);
 
             return vm;
          }

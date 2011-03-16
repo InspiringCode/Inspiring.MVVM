@@ -88,6 +88,15 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No value..
+        /// </summary>
+        internal static string NoValue {
+            get {
+                return ResourceManager.GetString("NoValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to T must be an enumeration..
         /// </summary>
         internal static string TypeNotEnum {

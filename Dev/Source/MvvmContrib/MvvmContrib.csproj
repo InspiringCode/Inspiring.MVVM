@@ -96,6 +96,7 @@
   <ItemGroup>
     <Compile Include="Common\OkCancelScreen.cs" />
     <Compile Include="Common\OkCancelVM.cs" />
+    <Compile Include="Common\Optional.cs" />
     <Compile Include="Common\SaveDiscardScreen.cs" />
     <Compile Include="Common\SaveDiscardVM.cs" />
     <Compile Include="Common\IOkCancelHandler.cs" />

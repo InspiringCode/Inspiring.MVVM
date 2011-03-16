@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.MvvmContribTest.ViewModels {
+   using System;
    using System.ComponentModel;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
@@ -60,12 +61,69 @@
          );
       }
 
+      [TestMethod]
+      public void CheckWithNonExistingItem() {
+         _person.CurrentStatus = (PersonStatus)99;
+         _vm.Refresh(PersonVM.ClassDescriptor.Status);
+         PersonStatus[] status = GetAllItems().Select(x => x.Source).ToArray();
+         CollectionAssert.AreEqual(
+            new PersonStatus[] { 
+               PersonStatus.None,
+               PersonStatus.Active,
+               PersonStatus.Inactive,
+               PersonStatus.Dismissed,
+               (PersonStatus)99
+            },
+            status
+         );
+         Assert.IsFalse(_vm.IsValid);
+      }
+
+      [TestMethod]
+      public void CheckFilter() {
+         PersonStatus[] status = GetAllFilteredItems().Select(x => x.Source).ToArray();
+         CollectionAssert.AreEqual(
+            new PersonStatus[] { 
+               PersonStatus.None,
+               PersonStatus.Active,
+               PersonStatus.Inactive
+            },
+            status
+         );
+         Assert.IsTrue(_vm.IsValid);
+      }
+
+      [TestMethod]
+      public void CheckFilterWithSelectedItem() {
+         _person.CurrentStatus = PersonStatus.Dismissed;
+         _vm.Refresh(PersonVM.ClassDescriptor.FilteredStatus);
+         PersonStatus[] status = GetAllFilteredItems().Select(x => x.Source).ToArray();
+         CollectionAssert.AreEqual(
+            new PersonStatus[] { 
+               PersonStatus.None,
+               PersonStatus.Active,
+               PersonStatus.Inactive,
+               PersonStatus.Dismissed
+            },
+            status
+         );
+         Assert.IsTrue(_vm.IsValid);
+      }
+
       private SingleSelectionVM<PersonStatus> GetSelection() {
          return _vm.InvokeGetValue(PersonVM.ClassDescriptor.Status);
       }
 
+      private SingleSelectionVM<PersonStatus> GetFilteredSelection() {
+         return _vm.InvokeGetValue(PersonVM.ClassDescriptor.FilteredStatus);
+      }
+
       private IVMCollection<SelectionItemVM<PersonStatus>> GetAllItems() {
          return GetSelection().AllItems;
+      }
+
+      private IVMCollection<SelectionItemVM<PersonStatus>> GetAllFilteredItems() {
+         return GetFilteredSelection().AllItems;
       }
 
       private SelectionItemVM<PersonStatus> GetSelectedItem() {
@@ -85,6 +143,12 @@
                var p = c.GetPropertyBuilder(x => x.Source);
 
                d.Status = p.EnumSelection(x => x.CurrentStatus);
+
+               d.FilteredStatus = p
+                  .SingleSelection(x => x.CurrentStatus)
+                  .WithItems(x => GetEnumValues<PersonStatus>())
+                  .WithFilter(x => x != PersonStatus.Dismissed)
+                  .WithCaption(x => EnumLocalizer.GetCaption(x));
             })
             .Build();
 
@@ -95,19 +159,23 @@
          public T InvokeGetValue<T>(IVMPropertyDescriptor<T> property) {
             return GetValue(property);
          }
+
+         public new void Refresh(IVMPropertyDescriptor property) {
+            base.Refresh(property);
+         }
+
+         private static TEnum[] GetEnumValues<TEnum>() {
+            return Enum.GetValues(typeof(TEnum)).Cast<TEnum>().ToArray();
+         }
       }
 
       private sealed class PersonVMDescriptor : VMDescriptor {
          public IVMPropertyDescriptor<SingleSelectionVM<PersonStatus>> Status { get; set; }
+         public IVMPropertyDescriptor<SingleSelectionVM<PersonStatus>> FilteredStatus { get; set; }
       }
 
       private class Person {
          public PersonStatus CurrentStatus { get; set; }
       }
-   }
-
-   internal class StatusSelectionItemVMDescriptor : VMDescriptor {
-      public IVMPropertyDescriptor<string> Name { get; set; }
-
    }
 }
