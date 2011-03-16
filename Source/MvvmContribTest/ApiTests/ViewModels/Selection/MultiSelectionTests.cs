@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.MvvmContribTest.ApiTests.ViewModels.Selection {
    using System;
+   using System.Collections;
    using System.Collections.Generic;
    using System.ComponentModel;
    using System.Linq;
@@ -8,7 +9,6 @@
    using Inspiring.MvvmTest.Stubs;
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
-   using System.Collections;
 
    [TestClass]
    public class MultiSelectionTests : TestBase {
@@ -39,6 +39,64 @@
          var vm = CreateUserVM(allGroups: allGroups, filter: x => x.IsActive);
 
          AssertAllItemsAreEqual(vm, selectableGroups);
+      }
+
+      [TestMethod]
+      public void AllItems_WithFilteredSelectedItems_ReturnsFilteredItemsIncludingSelectedAndIsValid() {
+         var allGroups = new[] { Group1, InactiveGroup };
+         var selectableGroups = new[] { Group1, InactiveGroup };
+
+         var vm = CreateUserVM(
+            allGroups: allGroups,
+            filter: x => x.IsActive,
+            selectedGroups: InactiveGroup
+         );
+
+         AssertAllItemsAreEqual(vm, selectableGroups);
+         CollectionAssert.AreEqual(
+            new[] { InactiveGroup },
+            vm.Groups.SelectedSourceItems.ToArray()
+         );
+         Assert.IsTrue(vm.IsValid);
+      }
+
+      [TestMethod]
+      public void AllItems_WithNonExistingSelectedItems_ReturnsAllItemsIncludingSelectedAndIsInvalid() {
+         var allGroups = new[] { Group1 };
+         var selectableGroups = new[] { Group1, Group2 };
+
+         var vm = CreateUserVM(
+            allGroups: allGroups,
+            selectedGroups: Group2
+         );
+
+         AssertAllItemsAreEqual(vm, selectableGroups);
+         CollectionAssert.AreEqual(
+            new[] { Group2 },
+            vm.Groups.SelectedSourceItems.ToArray()
+         );
+         // TODO: Fix it when validation is refactored.
+         Assert.IsFalse(vm.IsValid);
+      }
+
+      [TestMethod]
+      public void AllItems_WithFilteredAndNonExistingSelectedItems_ReturnsFilteredItemsIncludingSelectedAndIsInvalid() {
+         var allGroups = new[] { Group1, InactiveGroup };
+         var selectableGroups = new[] { Group1, Group2 };
+
+         var vm = CreateUserVM(
+            allGroups: allGroups,
+            filter: x => x.IsActive,
+            selectedGroups: Group2
+         );
+
+         AssertAllItemsAreEqual(vm, selectableGroups);
+         CollectionAssert.AreEqual(
+            new[] { Group2 },
+            vm.Groups.SelectedSourceItems.ToArray()
+         );
+         // TODO: Fix it when validation is refactored.
+         Assert.IsFalse(vm.IsValid);
       }
 
       [TestMethod]

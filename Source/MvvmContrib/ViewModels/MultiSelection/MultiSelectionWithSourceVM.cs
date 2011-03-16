@@ -95,6 +95,16 @@
                c.For(x => x.SelectedItems).AddChangeHandler((vm, args, path) => {
                   vm.OnPropertyChanged("SelectedItems"); // HACK!
                });
+            })
+            .WithValidators(b => {
+               b.CheckCollection(x => x.SelectedItems).Custom((item, items, args) => {
+                  var vm = (MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>)args.OwnerVM;
+
+                  if (vm.NonExistingSelectedSourceItems.Contains(item.Source)) {
+                     // TODO: Let the user specify the message.
+                     args.Errors.Add("Das gewählte Element ist nicht vorhanden.");
+                  }
+               });
             });
 
          if (enableValidation) {
@@ -195,6 +205,16 @@
 
                c.For(x => x.SelectedItems).AddChangeHandler((vm, args, path) => {
                   vm.OnPropertyChanged("SelectedItems"); // HACK!
+               });
+            })
+            .WithValidators(b => {
+               b.CheckCollection(x => x.SelectedItems).Custom((item, items, args) => {
+                  var vm = (MultiSelectionWithSourceVM<TSourceObject, TItemSource>)args.OwnerVM;
+
+                  if (vm.NonExistingSelectedSourceItems.Contains(item.Source)) {
+                     // TODO: Let the user specify the message.
+                     args.Errors.Add("Das gewählte Element ist nicht vorhanden.");
+                  }
                });
             });
 

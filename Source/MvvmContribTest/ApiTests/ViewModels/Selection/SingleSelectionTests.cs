@@ -8,7 +8,6 @@
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-   // TODO: Add test for inactive item is currently selected.
    // TODO: Write more tests!
    [TestClass]
    public class SingleSelectionTests : TestBase {
@@ -42,6 +41,53 @@
       }
 
       [TestMethod]
+      public void AllItems_WithFilteredSelectedItem_ReturnsFilteredItemsIncludingSelectedAndIsValid() {
+         var allDepartments = new[] { Department1, InactiveDepartment };
+         var selectableDepartments = new[] { Department1, InactiveDepartment };
+
+         var vm = CreateUserVM(
+            allDepartments: allDepartments,
+            filter: x => x.IsActive,
+            selectedDepartment: InactiveDepartment
+         );
+
+         AssertAllItemsAreEqual(vm, selectableDepartments);
+         Assert.AreEqual(InactiveDepartment, vm.Department.SelectedItem.Source);
+         Assert.IsTrue(vm.IsValid);
+      }
+
+      [TestMethod]
+      public void AllItems_WithNonExistingSelectedItem_ReturnsAllItemsIncludingSelectedAndIsInvalid() {
+         var allDepartments = new[] { Department1 };
+         var allIncludingSelected = new[] { Department1, Department2 };
+
+         var vm = CreateUserVM(
+            allDepartments: allDepartments,
+            selectedDepartment: Department2
+         );
+
+         AssertAllItemsAreEqual(vm, allIncludingSelected);
+         Assert.AreEqual(Department2, vm.Department.SelectedItem.Source);
+         Assert.IsFalse(vm.IsValid);
+      }
+
+      [TestMethod]
+      public void AllItems_WithFilteredAndNonExistingSelectedItem_ReturnsFilteredItemsIncludingSelectedAndIsInvalid() {
+         var allDepartments = new[] { Department1, InactiveDepartment };
+         var filteredIncludingSelected = new[] { Department1, Department2 };
+
+         var vm = CreateUserVM(
+            allDepartments: allDepartments,
+            filter: x => x.IsActive,
+            selectedDepartment: Department2
+         );
+
+         AssertAllItemsAreEqual(vm, filteredIncludingSelected);
+         Assert.AreEqual(Department2, vm.Department.SelectedItem.Source);
+         Assert.IsFalse(vm.IsValid);
+      }
+
+      [TestMethod]
       public void AllItems_WithoutItemsSource_UsesServiceLocator() {
          Department[] allItems = new[] { Department1 };
 
@@ -71,7 +117,7 @@
 
          vm.Department.SelectedItem = null;
 
-         Assert.IsNull(vm.Source.Department);         
+         Assert.IsNull(vm.Source.Department);
       }
 
       /// <summary>
@@ -92,13 +138,15 @@
       private UserVM CreateUserVM(
          Func<Department, bool> filter = null,
          Department[] allDepartments = null,
-         Func<User, IEnumerable<Department>> allDepartmentsSelector = null
+         Func<User, IEnumerable<Department>> allDepartmentsSelector = null,
+         Department selectedDepartment = null
       ) {
          if (allDepartments != null && allDepartmentsSelector != null) {
             throw new ArgumentException();
          }
 
          var sourceUser = new User();
+         sourceUser.Department = selectedDepartment;
 
          UserVMDescriptor descriptor = VMDescriptorBuilder
             .OfType<UserVMDescriptor>()

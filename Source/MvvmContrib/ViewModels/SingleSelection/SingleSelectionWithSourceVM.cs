@@ -91,6 +91,17 @@
                b.OverrideUpdateSourceProperties(
                   x => x.SelectedSourceItem
                );
+            })
+            .WithValidators(b => {
+               b.Check(x => x.SelectedItem).Custom((vm, value, args) => {
+                  if (value != null &&
+                      vm.NonExistingSelectedSourceItem.HasValue &&
+                      Object.Equals(value.Source, vm.NonExistingSelectedSourceItem.Value)
+                  ) {
+                     // TODO: Let the user specify the message.
+                     args.Errors.Add("Das gewählte Element ist nicht vorhanden.");
+                  }
+               });
             });
 
          if (enableValidation) {
@@ -193,6 +204,17 @@
                b.OverrideUpdateSourceProperties(
                   x => x.SelectedSourceItem
                );
+            })
+            .WithValidators(b => {
+               b.Check(x => x.SelectedItem).Custom((vm, value, args) => {
+                  if (value != null &&
+                      vm.NonExistingSelectedSourceItem.HasValue &&
+                      Object.Equals(value.Source, vm.NonExistingSelectedSourceItem.Value)
+                  ) {
+                     // TODO: Let the user specify the message.
+                     args.Errors.Add("Das gewählte Element ist nicht vorhanden.");
+                  }
+               });
             });
 
          if (enableValidation) {

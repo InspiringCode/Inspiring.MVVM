@@ -126,6 +126,9 @@
   <data name="LookupViewModelNotFound" xml:space="preserve">
     <value>The lookup collection does not contain a VM for the source item: '{0}'.</value>
   </data>
+  <data name="NoValue" xml:space="preserve">
+    <value>No value.</value>
+  </data>
   <data name="TypeNotEnum" xml:space="preserve">
     <value>T must be an enumeration.</value>
   </data>
