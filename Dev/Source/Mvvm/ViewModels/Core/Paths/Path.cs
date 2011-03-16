@@ -30,6 +30,18 @@
          return Prepend(new PathStep(property));
       }
 
+      public Path Append(IViewModel viewModel) {
+         return Append(new PathStep(viewModel));
+      }
+
+      public Path Append(IVMCollection collection) {
+         return Append(new PathStep(collection));
+      }
+
+      public Path Append(IVMPropertyDescriptor property) {
+         return Append(new PathStep(property));
+      }
+
       public PathIterator GetIterator() {
          return new PathIterator(_steps);
       }
@@ -38,6 +50,15 @@
          var s = new PathStep[Length + 1];
          s[0] = step;
          _steps.CopyTo(s, 1);
+
+         return new Path(s);
+      }
+
+      // TODO: Use array utils!
+      private Path Append(PathStep step) {
+         var s = new PathStep[Length + 1];
+         _steps.CopyTo(s, 0);
+         s[Length] = step;
 
          return new Path(s);
       }

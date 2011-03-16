@@ -102,7 +102,7 @@
 
                   if (vm.NonExistingSelectedSourceItems.Contains(item.Source)) {
                      // TODO: Let the user specify the message.
-                     args.Errors.Add("Das gewählte Element ist nicht vorhanden.");
+                     args.AddError("Das gewählte Element ist nicht vorhanden.");
                   }
                });
             });
@@ -213,7 +213,7 @@
 
                   if (vm.NonExistingSelectedSourceItems.Contains(item.Source)) {
                      // TODO: Let the user specify the message.
-                     args.Errors.Add("Das gewählte Element ist nicht vorhanden.");
+                     args.AddError("Das gewählte Element ist nicht vorhanden.");
                   }
                });
             });

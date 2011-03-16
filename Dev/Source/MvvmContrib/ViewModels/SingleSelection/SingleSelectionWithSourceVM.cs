@@ -99,7 +99,7 @@
                       Object.Equals(value.Source, vm.NonExistingSelectedSourceItem.Value)
                   ) {
                      // TODO: Let the user specify the message.
-                     args.Errors.Add("Das gewählte Element ist nicht vorhanden.");
+                     args.AddError("Das gewählte Element ist nicht vorhanden.");
                   }
                });
             });
@@ -212,7 +212,7 @@
                       Object.Equals(value.Source, vm.NonExistingSelectedSourceItem.Value)
                   ) {
                      // TODO: Let the user specify the message.
-                     args.Errors.Add("Das gewählte Element ist nicht vorhanden.");
+                     args.AddError("Das gewählte Element ist nicht vorhanden.");
                   }
                });
             });

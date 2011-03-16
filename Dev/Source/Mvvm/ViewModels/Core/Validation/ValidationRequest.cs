@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
+   using System;
    using System.Diagnostics.Contracts;
 
    public sealed class ValidationRequest {
@@ -34,6 +35,16 @@
          Contract.Requires(property != null);
          Target = vm;
          TargetProperty = property;
+      }
+      public ValidationRequest(
+         ValidationStep step,
+         Path targetPath
+      ) {
+         throw new NotImplementedException();
+         //Contract.Requires(targetPath != null);
+         //Trigger = trigger;
+         //Step = step;
+         //TargetPath = targetPath;
       }
 
       public ValidationTrigger Trigger { get; private set; }

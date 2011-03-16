@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core.Validation {
+   using System.Collections.Generic;
    using System.Diagnostics.Contracts;
 
    internal sealed class Revalidator {
@@ -34,6 +35,10 @@
          foreach (var item in collection) {
             // call viewModelBehavior.Revalidate(viewModelBatch);
          }
+      }
+
+      public void RevalidateItems(IEnumerable<IViewModel> items, VMDescriptorBase itemDescriptor) {
+
       }
 
       public void RevalidatePropertyValidations(IVMPropertyDescriptor property) {
