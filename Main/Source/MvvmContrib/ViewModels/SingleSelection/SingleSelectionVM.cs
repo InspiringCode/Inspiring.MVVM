@@ -3,6 +3,7 @@
    using System.Collections;
    using System.Collections.Generic;
    using System.Linq;
+   using Inspiring.Mvvm.Common;
 
    public interface ISingleSelectionVM {
       IList AllItems { get; }
@@ -54,6 +55,11 @@
          set { SetValue(Descriptor.SelectedItem, value); }
       }
 
+      /// <summary>
+      ///   May contain an item that is selected, but not in the AllSourceItems collection.
+      /// </summary>
+      internal Optional<TItemSource> NonExistingSelectedSourceItem { get; private set; }
+
       IList ISingleSelectionVM.AllItems {
          get { return AllItems; }
       }
@@ -73,29 +79,41 @@
 
       /// <summary>
       ///   Returns all source items for which the <see cref="ActiveItemFilter"/>
-      ///   returns true or that are currently contained by selected items collection
-      ///   of the source object.
+      ///   returns true or that are currently the selected item of the source object.
+      ///   The selected item is always contained, even if it is not in the collection of
+      ///   all items.
       /// </summary>
       internal IEnumerable<TItemSource> GetActiveSourceItems() {
-         IEnumerable<TItemSource> allSourceItems = AllSourceItems;
+         IEnumerable<TItemSource> allSourceItems = GetValue(Descriptor.AllSourceItems);
          TItemSource selectedSourceItem = GetValue(Descriptor.SelectedSourceItem);
+         IEnumerable<TItemSource> activeSourceItems = null;
 
          if (allSourceItems == null) {
-            return new TItemSource[0];
+            activeSourceItems = new TItemSource[0];
+         } else if (ActiveItemFilter == null) {
+            activeSourceItems = allSourceItems;
+         } else {
+            activeSourceItems = allSourceItems
+               .Where(i =>
+                  ActiveItemFilter(i) ||
+                  Object.Equals(selectedSourceItem, i)
+               )
+               .ToArray();
          }
 
-         if (ActiveItemFilter == null) {
-            return allSourceItems;
+         if (selectedSourceItem != null && !activeSourceItems.Contains(selectedSourceItem)) {
+            NonExistingSelectedSourceItem = new Optional<TItemSource>(selectedSourceItem);
+
+            activeSourceItems = activeSourceItems
+               .Concat(new TItemSource[] { selectedSourceItem })
+               .ToArray();
+         } else {
+            NonExistingSelectedSourceItem = default(Optional<TItemSource>);
          }
 
-         return allSourceItems.Where(i =>
-            ActiveItemFilter(i) ||
-            Object.ReferenceEquals(selectedSourceItem, i)
-         );
+         return activeSourceItems;
       }
    }
-
-
 
    public abstract class SingleSelectionVM<TItemSource> :
       SingleSelectionVM<TItemSource, SelectionItemVM<TItemSource>> {
