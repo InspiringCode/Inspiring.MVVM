@@ -3,50 +3,74 @@
    using System.Diagnostics.Contracts;
 
    internal sealed class Revalidator {
-      private IViewModel _viewModel;
+      private readonly IViewModel _viewModel;
+      private readonly CollectionResultCache _cache;
 
-      public Revalidator(IViewModel viewModel) {
+      private Revalidator(IViewModel viewModel)
+         : this(viewModel, new CollectionResultCache()) {
+      }
+
+      private Revalidator(IViewModel viewModel, CollectionResultCache cache) {
          Contract.Requires(viewModel != null);
+         Contract.Requires(cache != null);
+
          _viewModel = viewModel;
+         _cache = cache;
       }
 
-      public void Revalidate() {
-         _viewModel
+      public static void Revalidate(IViewModel viewModel) {
+         new Revalidator(viewModel).PerformAllValidations();
+      }
+
+      public static void RevalidatePropertyValidations(
+         IViewModel viewModel,
+         IVMPropertyDescriptor property
+      ) {
+         new Revalidator(viewModel).PerformPropertyValidations(property);
+      }
+
+      public static void RevalidateViewModelValidations(IViewModel viewModel) {
+         new Revalidator(viewModel).PerformViewModelValidations();
+      }
+
+      public static void RevalidateItems(IEnumerable<IViewModel> items) {
+         var cache = new CollectionResultCache();
+
+         foreach (IViewModel item in items) {
+            new Revalidator(item, cache).PerformAllValidations();
+         }
+      }
+
+      private void PerformAllValidations() {
+         var properties = _viewModel.Descriptor.Properties;
+         properties.ForEach(PerformPropertyValidations);
+
+         PerformViewModelValidations();
+      }
+
+      private void PerformViewModelValidations() {
+         IRevalidationBehavior behavior;
+
+         bool hasRevalidationBehavior = _viewModel
             .Descriptor
-            .Properties
-            .ForEach(RevalidatePropertyValidations);
+            .Behaviors
+            .TryGetBehavior(out behavior);
 
-         RevalidateViewModelValidations();
-      }
-
-      public void RevalidateItems(IVMCollection collection) {
-         var properties = collection.GetItemDescriptor().Properties;
-
-         foreach (var p in properties) {
-            var batch = new PropertyValidationBatch(p);
-
-            foreach (var item in collection) {
-               // call prop.Revalidate(batch);
-            }
-         }
-
-         var viewModelBatch = new ViewModelValidationBatch();
-
-         foreach (var item in collection) {
-            // call viewModelBehavior.Revalidate(viewModelBatch);
+         if (hasRevalidationBehavior) {
+            behavior.Revalidate(_viewModel.GetContext(), _cache);
          }
       }
 
-      public void RevalidateItems(IEnumerable<IViewModel> items, VMDescriptorBase itemDescriptor) {
+      private void PerformPropertyValidations(IVMPropertyDescriptor property) {
+         IRevalidationBehavior behavior;
 
-      }
+         bool hasRevalidationBehavior = property
+            .Behaviors
+            .TryGetBehavior(out behavior);
 
-      public void RevalidatePropertyValidations(IVMPropertyDescriptor property) {
-
-      }
-
-      public void RevalidateViewModelValidations() {
-
+         if (hasRevalidationBehavior) {
+            behavior.Revalidate(_viewModel.GetContext(), _cache);
+         }
       }
    }
 }

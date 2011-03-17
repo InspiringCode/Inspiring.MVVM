@@ -217,6 +217,7 @@
     <Compile Include="ViewModels\Core\Validation\Validators\ValidationTargetCondition.cs" />
     <Compile Include="ViewModels\Core\Validation\Validators\Validator.cs" />
     <Compile Include="ViewModels\Core\Validation\ViewModelBehaviors\ValidationCoordinatorBehavior.cs" />
+    <Compile Include="ViewModels\Core\Validation\ViewModelBehaviors\ViewModelValidationSourceBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\ViewModelValidationBatch.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\VMDescriptorConfiguration.cs" />
     <Compile Include="ViewModels\Core\VMDescriptor\IVMDescriptorBuilder.cs" />

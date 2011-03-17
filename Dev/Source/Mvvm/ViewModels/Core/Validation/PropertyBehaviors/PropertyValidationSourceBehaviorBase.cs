@@ -37,8 +37,27 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          return this.GetDescendantsValidationStateNext(context);
       }
 
+      // TODO: Remove
       public void Revalidate(IBehaviorContext context) {
          var result = InvokeValidation(context, ValidationTrigger.Revalidate);
+
+         bool valueWasInvalid = _invalidValueCache.HasValue(context);
+         bool valueIsNotInvalidAnymore = result.IsValid;
+
+         if (valueWasInvalid && valueIsNotInvalidAnymore) {
+            TValue previouslyInvalidValue = _invalidValueCache.Get(context);
+
+            _invalidValueCache.Clear(context);
+            SetValueNext(context, previouslyInvalidValue);
+         } else {
+            this.RevalidateNext(context);
+         }
+
+         UpdateValidationResult(context, result);
+      }
+
+      public void Revalidate(IBehaviorContext context, CollectionResultCache cache) {
+         var result = ValidationOperation.PerformPropertyValidation(cache, _step, context.VM, _property);
 
          bool valueWasInvalid = _invalidValueCache.HasValue(context);
          bool valueIsNotInvalidAnymore = result.IsValid;
@@ -74,7 +93,14 @@ namespace Inspiring.Mvvm.ViewModels.Core {
       protected void SetValueIfValidationSucceeds(IBehaviorContext context, TValue value) {
          CachePotentiallyInvalidValue(context, value);
 
-         var result = InvokeValidation(context, ValidationTrigger.PropertyChange);
+         var result = ValidationOperation.PerformPropertyValidation(
+            new CollectionResultCache(),
+            _step,
+            context.VM,
+            _property
+         );
+
+         //var result = InvokeValidation(context, ValidationTrigger.PropertyChange);
 
          if (result.IsValid) {
             _invalidValueCache.Clear(context);

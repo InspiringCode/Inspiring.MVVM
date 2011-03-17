@@ -2,7 +2,7 @@
    using System.Collections.Generic;
    using System.Linq;
 
-   internal sealed class CollectionResultCache {
+   public sealed class CollectionResultCache {
       private List<KeyValuePair<CollectionResultKey, ValidationResult>> _cache =
          new List<KeyValuePair<CollectionResultKey, ValidationResult>>();
 
@@ -18,7 +18,7 @@
          IVMPropertyDescriptor property
       ) {
          var builder = new CollectionValidationController(this, step, property);
-         
+
          return ValidationResult.Join(
             item.Kernel.OwnerCollections.Select(collection => {
                builder.EnsureCollectionWasValidated(collection);
@@ -31,7 +31,7 @@
          var entry = _cache.Single(x => x.Key.Collection == collection);
          return entry.Value;
       }
-      
+
       private void Add(CollectionResultKey key, ValidationResult result) {
          _cache.Add(new KeyValuePair<CollectionResultKey, ValidationResult>(key, result));
       }

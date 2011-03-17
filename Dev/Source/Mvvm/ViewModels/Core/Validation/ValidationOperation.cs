@@ -1,5 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core.Validation {
-   using System;
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
 
    internal sealed class ValidationOperation {
       private CollectionResultCache _cache;
@@ -11,7 +10,7 @@
          CollectionResultCache cache,
          ValidationStep step,
          IViewModel viewModel,
-         IVMPropertyDescriptor property = null
+         IVMPropertyDescriptor property
       ) {
          _cache = cache;
          _step = step;
@@ -32,14 +31,20 @@
          CollectionResultCache cache,
          IViewModel viewModel
       ) {
-         return new ValidationOperation(cache, ValidationStep.ViewModel, viewModel).Execute();
+         return new ValidationOperation(cache, ValidationStep.ViewModel, viewModel, null).Execute();
       }
 
       private ValidationResult Execute() {
-         throw new NotImplementedException();
+         var result = InvokeValidationExecutors();
+
+         var collectionResults = _cache.GetCollectionValidationResults(
+            _step,
+            _viewModel,
+            _property
+         );
+
+         return ValidationResult.Join(result, collectionResults);
       }
-
-
 
       private ValidationResult InvokeValidationExecutors() {
          var requestPath = Path.Empty
@@ -51,38 +56,6 @@
 
          var request = new ValidationRequest(_step, requestPath);
          return _viewModel.ExecuteValidationRequest(request);
-         //return ExecuteRequest(request, _viewModel);
-      }
-
-
-      //private ValidationResult InvokeCollectionValidationExecutors(CollectionResultKey key) {
-      //   var requestPath = Path.Empty
-      //      .Append(key.Collection.Owner)
-      //      .Append(key.Collection);
-
-      //   if (key.Property != null) {
-      //      requestPath = requestPath.Append(key.Property);
-      //   }
-
-      //   var request = new ValidationRequest(key.Step, requestPath);
-      //   return key.Collection.Owner.ExecuteValidationRequest(request);
-
-      //   //return ExecuteRequest(request, key.Collection.Owner);
-      //}
-
-      private ValidationResult ExecuteRequest(ValidationRequest request, IViewModel requestTarget) {
-         IValidationExecutorBehavior executor;
-
-         bool hasExecutors = requestTarget
-            .Descriptor
-            .Behaviors
-            .TryGetBehavior(out executor);
-
-         if (!hasExecutors) {
-            return ValidationResult.Valid;
-         }
-
-         return executor.Validate(requestTarget.GetContext(), request);
       }
    }
 }

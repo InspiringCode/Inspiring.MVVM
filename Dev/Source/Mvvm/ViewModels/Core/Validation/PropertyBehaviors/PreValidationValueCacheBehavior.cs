@@ -80,5 +80,10 @@
       protected override FieldDefinitionGroup GetFieldGroup() {
          return ValueCacheGroup;
       }
+
+
+      public void Revalidate(IBehaviorContext context, CollectionResultCache cache) {
+         throw new System.NotImplementedException();
+      }
    }
 }

@@ -125,5 +125,10 @@
 
          return result;
       }
+
+
+      public void Revalidate(IBehaviorContext context, CollectionResultCache cache) {
+         throw new NotImplementedException();
+      }
    }
 }

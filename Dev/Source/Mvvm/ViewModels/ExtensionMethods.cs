@@ -269,6 +269,17 @@
          }
       }
 
+      public static void RevalidateNext(
+         this Behavior behavior,
+         IBehaviorContext context,
+         CollectionResultCache cache
+      ) {
+         IRevalidationBehavior next;
+         if (behavior.TryGetBehavior(out next)) {
+            next.Revalidate(context, cache);
+         }
+      }
+
       public static void RevalidateDescendantsNext(
          this Behavior behavior,
          IBehaviorContext context,
