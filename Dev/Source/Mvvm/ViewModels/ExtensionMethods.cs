@@ -404,5 +404,20 @@
             .GetNextBehavior<IItemDescriptorProviderCollectionBehavior>()
             .ItemDescriptor;
       }
+
+      public static ValidationResult ExecuteValidationRequest(this IViewModel requestTarget, ValidationRequest request) {
+         IValidationExecutorBehavior executor;
+
+         bool hasExecutors = requestTarget
+            .Descriptor
+            .Behaviors
+            .TryGetBehavior(out executor);
+
+         if (!hasExecutors) {
+            return ValidationResult.Valid;
+         }
+
+         return executor.Validate(requestTarget.GetContext(), request);
+      }
    }
 }

@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
+   using System.Collections.Generic;
    using System.Diagnostics.Contracts;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
@@ -48,6 +49,11 @@
       }
 
       internal IVMCollection OwnerCollection { get; set; }
+
+      // TODO
+      internal ICollection<IVMCollection> OwnerCollections {
+         get { return new[] { OwnerCollection }; }
+      }
 
       FieldValueHolder IBehaviorContext.FieldValues {
          get {
@@ -106,6 +112,8 @@
       }
 
       public ValidationResult GetValidationState(IVMPropertyDescriptor forProperty) {
+         // TODO: Is it a good idea to extract the state for a property from the _propertiesValidationState?
+         // It would be faster, but would it preserve all sematics and so?
          return forProperty.Behaviors.GetValidationStateNext(this);
       }
 
