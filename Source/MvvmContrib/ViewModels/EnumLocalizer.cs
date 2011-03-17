@@ -8,7 +8,13 @@
       private static List<ResourceManager> _localizationResources = new List<ResourceManager>();
 
       public static string GetCaption<TEnum>(TEnum value) {
-         Type type = typeof(TEnum);
+         Type type;
+
+         if (IsNullableType(typeof(TEnum))) {
+            type = Nullable.GetUnderlyingType(typeof(TEnum));
+         } else {
+            type = typeof(TEnum);
+         }
 
          // Since generic constrains for Enum are not supported,
          // we'll check it at run-time.
@@ -35,6 +41,10 @@
          if (!_localizationResources.Contains(resourceManager)) {
             _localizationResources.Add(resourceManager);
          }
+      }
+
+      private static bool IsNullableType(Type t) {
+         return t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>) ? true : false;
       }
    }
 }
