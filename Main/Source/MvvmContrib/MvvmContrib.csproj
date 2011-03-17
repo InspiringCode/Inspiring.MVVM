@@ -109,7 +109,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screens\ApplicationCommandManager.cs" />
-    <Compile Include="Screens\ProxyCommand.cs" />
+    <Compile Include="Screens\CommandProxy.cs" />
     <Compile Include="Testing\MessageBoxResponderSetup.cs" />
     <Compile Include="ViewModels\Behaviors\SettableListDisplayValueBehavior.cs" />
     <Compile Include="ViewModels\EnumLocalizer.cs" />

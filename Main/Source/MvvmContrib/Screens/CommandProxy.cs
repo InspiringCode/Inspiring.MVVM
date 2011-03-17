@@ -5,7 +5,7 @@
    /// <summary>
    ///   A proxy to a real ICommand.
    /// </summary>
-   public class CommandProxy : ICommand {
+   public sealed class CommandProxy : ICommand {
       private ICommand _actual;
       private EventHandler _strongReferenceToHandlerDelegate;
 
