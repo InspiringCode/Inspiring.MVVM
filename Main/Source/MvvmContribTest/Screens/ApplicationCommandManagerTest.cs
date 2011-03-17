@@ -64,6 +64,27 @@
          Assert.IsTrue(raised);
       }
 
+      [TestMethod]
+      public void GetProxyCommand_WithNoRegisteredRealCommand_HasCommandIsFalse() {
+         ApplicationCommandManager cm = new ApplicationCommandManager();
+
+         var proxyCmd = (CommandProxy)cm[TestCommands.New];
+
+         Assert.IsFalse(proxyCmd.HasCommand);
+      }
+
+      [TestMethod]
+      public void GetProxyCommand_WithRegisteredRealCommand_HasCommandIsTrue() {
+         ApplicationCommandManager cm = new ApplicationCommandManager();
+
+         TestCommand cmd = new TestCommand();
+         cm.RegisterCommand(TestCommands.New, cmd);
+
+         var proxyCmd = (CommandProxy)cm[TestCommands.New];
+
+         Assert.IsTrue(proxyCmd.HasCommand);
+      }
+
       private enum TestCommands {
          New,
          Save,
