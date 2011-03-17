@@ -5,7 +5,6 @@
    using System.Linq;
    using System.Linq.Expressions;
    using Inspiring.Mvvm.ViewModels.Core;
-   using Inspiring.Mvvm.ViewModels;
 
    public static class SelectionBuilderExtensions {
       public static MultiSelectionBuilder<TSourceObject, TItemSource> MultiSelection<TSourceObject, TItemSource>(
@@ -54,7 +53,18 @@
       }
 
       private static TEnum[] GetEnumValues<TEnum>() {
-         return Enum.GetValues(typeof(TEnum)).Cast<TEnum>().ToArray();
+         Type enumType;
+
+         if (IsNullableType(typeof(TEnum))) {
+            enumType = Nullable.GetUnderlyingType(typeof(TEnum));
+         } else {
+            enumType = typeof(TEnum);
+         }
+         return Enum.GetValues(enumType).Cast<TEnum>().ToArray();
+      }
+
+      private static bool IsNullableType(Type t) {
+         return t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>) ? true : false;
       }
    }
 }
