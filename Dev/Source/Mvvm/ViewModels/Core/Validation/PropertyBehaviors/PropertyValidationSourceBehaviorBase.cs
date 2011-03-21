@@ -12,7 +12,8 @@ namespace Inspiring.Mvvm.ViewModels.Core {
       private static readonly FieldDefinitionGroup InvalidValueGroup = new FieldDefinitionGroup();
 
       private readonly ValidationStep _step;
-      private DynamicFieldAccessor<ValidationResult> _resultField;
+      private ValidationResultManager _resultManager;
+      //private DynamicFieldAccessor<ValidationResult> _resultField;
       private DynamicFieldAccessor<TValue> _invalidValueCache;
       private IVMPropertyDescriptor _property;
 
@@ -22,14 +23,14 @@ namespace Inspiring.Mvvm.ViewModels.Core {
 
       public void Initialize(BehaviorInitializationContext context) {
          _property = context.Property;
-         _resultField = new DynamicFieldAccessor<ValidationResult>(context, ValidationResultGroup);
+         _resultManager = new ValidationResultManager(context, ValidationResultGroup);
          _invalidValueCache = new DynamicFieldAccessor<TValue>(context, InvalidValueGroup);
          this.InitializeNext(context);
       }
 
       public ValidationResult GetValidationState(IBehaviorContext context) {
          var next = this.GetValidationStateNext(context);
-         var result = GetValidationResult(context);
+         var result = _resultManager.GetValidationResult(context);
          return ValidationResult.Join(result, next);
       }
 
@@ -53,7 +54,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
             this.RevalidateNext(context);
          }
 
-         UpdateValidationResult(context, result);
+         _resultManager.UpdateValidationResult(context, result);
       }
 
       public void Revalidate(IBehaviorContext context, CollectionResultCache cache) {
@@ -71,7 +72,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
             this.RevalidateNext(context);
          }
 
-         UpdateValidationResult(context, result);
+         _resultManager.UpdateValidationResult(context, result);
       }
 
       // TODO: Remove
@@ -107,7 +108,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
             SetValueNext(context, value);
          }
 
-         UpdateValidationResult(context, result);
+         _resultManager.UpdateValidationResult(context, result);
       }
 
       protected abstract TValue GetValueNext(IBehaviorContext context);
@@ -132,31 +133,31 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          _invalidValueCache.Set(context, value);
       }
 
-      private void UpdateValidationResult(IBehaviorContext context, ValidationResult result) {
-         var previousResult = GetValidationResult(context);
-         if (!result.Equals(previousResult)) {
-            SetOrClearValidationResult(context, result);
+      //private void UpdateValidationResult(IBehaviorContext context, ValidationResult result) {
+      //   var previousResult = GetValidationResult(context);
+      //   if (!result.Equals(previousResult)) {
+      //      SetOrClearValidationResult(context, result);
 
-            var args = new ChangeArgs(
-               ChangeType.ValidationStateChanged,
-               changedVM: context.VM,
-               changedProperty: _property
-            );
+      //      var args = new ChangeArgs(
+      //         ChangeType.ValidationStateChanged,
+      //         changedVM: context.VM,
+      //         changedProperty: _property
+      //      );
 
-            context.NotifyChange(args);
-         }
-      }
+      //      context.NotifyChange(args);
+      //   }
+      //}
 
-      private ValidationResult GetValidationResult(IBehaviorContext context) {
-         return _resultField.GetWithDefault(context, ValidationResult.Valid);
-      }
+      //private ValidationResult GetValidationResult(IBehaviorContext context) {
+      //   return _resultField.GetWithDefault(context, ValidationResult.Valid);
+      //}
 
-      private void SetOrClearValidationResult(IBehaviorContext context, ValidationResult result) {
-         if (result.IsValid) {
-            _resultField.Clear(context);
-         } else {
-            _resultField.Set(context, result);
-         }
-      }
+      //private void SetOrClearValidationResult(IBehaviorContext context, ValidationResult result) {
+      //   if (result.IsValid) {
+      //      _resultField.Clear(context);
+      //   } else {
+      //      _resultField.Set(context, result);
+      //   }
+      //}
    }
 }

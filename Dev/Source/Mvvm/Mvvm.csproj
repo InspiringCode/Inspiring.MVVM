@@ -206,6 +206,7 @@
     <Compile Include="ViewModels\Core\Validation\Revalidator.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationOperation.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationRequest.cs" />
+    <Compile Include="ViewModels\Core\Validation\ValidationResultManager.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationStep.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationTrigger.cs" />
     <Compile Include="ViewModels\Core\Validation\Validators\ConditionalValidator.cs" />
@@ -217,6 +218,7 @@
     <Compile Include="ViewModels\Core\Validation\Validators\ValidationTargetCondition.cs" />
     <Compile Include="ViewModels\Core\Validation\Validators\Validator.cs" />
     <Compile Include="ViewModels\Core\Validation\ViewModelBehaviors\ValidationCoordinatorBehavior.cs" />
+    <Compile Include="ViewModels\Core\Validation\ViewModelBehaviors\ValidatorExecutorBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\ViewModelBehaviors\ViewModelValidationSourceBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\ViewModelValidationBatch.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\VMDescriptorConfiguration.cs" />
