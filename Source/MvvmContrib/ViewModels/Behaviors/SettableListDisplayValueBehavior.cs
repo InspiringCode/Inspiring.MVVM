@@ -19,13 +19,13 @@
       /// <inheritdoc />
       public object GetDisplayValue(IBehaviorContext context) {
          var targetCollection = GetTargetCollection(context);
-         
+
          // This is a hack for DevExpress GridControl.
          if (targetCollection.Count == 0) {
             return null;
          }
 
-         return targetCollection;
+         return new List<TItemVM>(targetCollection);
       }
 
       /// <inheritdoc />
