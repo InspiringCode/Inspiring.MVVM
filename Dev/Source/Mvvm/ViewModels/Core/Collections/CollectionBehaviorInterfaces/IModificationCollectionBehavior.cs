@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
+   using System.Collections.Generic;
    using System.Diagnostics.Contracts;
    using Contracts;
 
@@ -68,6 +69,140 @@
          IVMCollection<TItemVM> collection,
          TItemVM[] previousItems
       );
+
+      //void HandleChange(IBehaviorContext context, CollectionChangedArgs<TItemVM> args) {
+
+      //}
+   }
+
+   public enum CollectionChangeType {
+      ItemAdded,
+      ItemRemoved,
+      ItemSet,
+      ItemsCleared,
+      Populated
+   }
+
+   public class CollectionChangedArgs<TItemVM> {
+      private CollectionChangedArgs(
+         CollectionChangeType type,
+         IVMCollection<TItemVM> collection,
+         int index,
+         TItemVM oldItem = default(TItemVM),
+         TItemVM newItem = default(TItemVM)
+      ) {
+         Type = type;
+         Collection = collection;
+         OldItem = oldItem;
+         OldItems = new[] { oldItem };
+         NewItem = newItem;
+         NewItems = new[] { newItem };
+      }
+
+      private CollectionChangedArgs(
+         CollectionChangeType type,
+         IVMCollection<TItemVM> collection,
+         IEnumerable<TItemVM> oldItems
+      ) {
+         Type = type;
+         Collection = collection;
+         OldItems = collection;
+         NewItems = oldItems;
+      }
+
+      public CollectionChangeType Type { get; private set; }
+
+      public IVMCollection Collection { get; private set; }
+
+      public TItemVM OldItem { get; private set; }
+
+      public TItemVM NewItem { get; private set; }
+
+      public IEnumerable<TItemVM> OldItems { get; private set; }
+
+      public IEnumerable<TItemVM> NewItems { get; private set; }
+
+      public static CollectionChangedArgs<TItemVM> ItemAdded(
+         IVMCollection<TItemVM> collection,
+         TItemVM newItem,
+         int index
+      ) {
+         Contract.Requires(collection != null);
+         Contract.Requires(newItem != null);
+         Contract.Requires(0 <= index && index <= collection.Count);
+
+         return new CollectionChangedArgs<TItemVM>(
+            CollectionChangeType.ItemAdded,
+            collection,
+            index,
+            newItem: newItem
+         );
+      }
+
+      public static CollectionChangedArgs<TItemVM> ItemRemoved(
+         IVMCollection<TItemVM> collection,
+         TItemVM oldItem,
+         int index
+      ) {
+         Contract.Requires(collection != null);
+         Contract.Requires(oldItem != null);
+         Contract.Requires(0 <= index && index <= collection.Count);
+
+         return new CollectionChangedArgs<TItemVM>(
+            CollectionChangeType.ItemRemoved,
+            collection,
+            index,
+            oldItem: oldItem
+         );
+      }
+
+      public static CollectionChangedArgs<TItemVM> ItemSet(
+         IVMCollection<TItemVM> collection,
+         TItemVM oldItem,
+         TItemVM newItem,
+         int index
+      ) {
+         Contract.Requires(collection != null);
+         Contract.Requires(oldItem != null);
+         Contract.Requires(newItem != null);
+         Contract.Requires(0 <= index && index < collection.Count);
+
+         return new CollectionChangedArgs<TItemVM>(
+            CollectionChangeType.ItemSet,
+            collection,
+            index,
+            oldItem: oldItem,
+            newItem: newItem
+         );
+      }
+
+      public static CollectionChangedArgs<TItemVM> CollectionCleared(
+         IVMCollection<TItemVM> collection,
+         TItemVM[] oldItems
+      ) {
+         Contract.Requires(collection != null);
+         Contract.Requires(oldItems != null);
+
+         return new CollectionChangedArgs<TItemVM>(
+            CollectionChangeType.ItemsCleared,
+            collection,
+            oldItems
+         );
+      }
+
+      public static CollectionChangedArgs<TItemVM> CollectionPopulated(
+         IVMCollection<TItemVM> collection,
+         TItemVM[] oldItems,
+         int index
+      ) {
+         Contract.Requires(collection != null);
+
+         return new CollectionChangedArgs<TItemVM>(
+            CollectionChangeType.Populated,
+            collection,
+            oldItems
+         );
+      }
    }
 
    namespace Contracts {
