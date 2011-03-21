@@ -20,6 +20,10 @@
 
          ChangeType = changeType;
          ChangedVM = changedVM;
+
+         ChangedPath = Path
+            .Empty
+            .Append(changedVM);
       }
 
       internal ChangeArgs(
@@ -28,7 +32,7 @@
          IVMPropertyDescriptor changedProperty
       ) {
          Contract.Requires(
-            changeType == ChangeType.PropertyChanged || 
+            changeType == ChangeType.PropertyChanged ||
             changeType == ChangeType.ValidationStateChanged
          );
          Contract.Requires(changedVM != null);
@@ -37,6 +41,24 @@
          ChangeType = changeType;
          ChangedVM = changedVM;
          ChangedProperty = changedProperty;
+
+         ChangedPath = Path
+            .Empty
+            .Append(changedVM)
+            .Append(changedProperty);
+      }
+
+      private ChangeArgs(
+         ChangeType changeType,
+         IViewModel changedVM,
+         IVMPropertyDescriptor changedProperty,
+         Path changedPath
+      ) {
+         ChangeType = changeType;
+         ChangedVM = changedVM;
+         ChangedProperty = changedProperty;
+
+         ChangedPath = changedPath;
       }
 
       public ChangeType ChangeType { get; private set; }
@@ -44,6 +66,17 @@
       public IViewModel ChangedVM { get; private set; }
 
       public IVMPropertyDescriptor ChangedProperty { get; private set; }
+
+      public Path ChangedPath { get; private set; }
+
+      internal ChangeArgs PrependViewModel(IViewModel viewModel) {
+         return new ChangeArgs(
+            ChangeType,
+            ChangedVM,
+            ChangedProperty,
+            ChangedPath.Prepend(viewModel)
+         );
+      }
 
       public override bool Equals(object obj) {
          ChangeArgs other = obj as ChangeArgs;

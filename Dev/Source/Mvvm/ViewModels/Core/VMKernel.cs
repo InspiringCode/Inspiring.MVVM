@@ -231,6 +231,7 @@
       private void NotifyChange(ChangeArgs args, InstancePath changedPath) {
          bool selfChanged = changedPath.IsEmpty;
          changedPath = changedPath.PrependVM(_vm);
+         args = args.PrependViewModel(_vm);
 
          if (selfChanged && args.ChangeType == ChangeType.PropertyChanged) {
             args
@@ -257,14 +258,16 @@
 
          ViewModelBehavior behavior;
          if (_descriptor.Behaviors.TryGetBehavior(out behavior)) {
-            if (selfChanged) {
-               behavior.OnSelfChanged(this, args);
-            } else {
-               behavior.OnChildChanged(this, args, changedPath);
-            }
+            //if (selfChanged) {
+            //   behavior.OnSelfChanged(this, args);
+            //} else {
+            //   behavior.OnChildChanged(this, args, changedPath);
+            //}
 
             behavior.OnChanged(this, args, changedPath);
          }
+
+         _descriptor.Behaviors.HandleChangedNext(this, args);
 
          if (Parent != null) {
             Parent.Kernel.NotifyChange(args, changedPath);

@@ -145,6 +145,7 @@
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IPopulationBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IUntypedValueGetterBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IUntypedValueSetterBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\ViewModelBehaviors\IChangeHandlerBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\ViewModelBehaviors\IRefreshControllerBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\ViewModelBehaviors\IValidationExecutorBehavior.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Factories\CommandBehaviorFactory.cs" />
@@ -195,6 +196,7 @@
     <Compile Include="ViewModels\Core\Paths\PathStep.cs" />
     <Compile Include="ViewModels\Core\Paths\Definition\PathTerminationStep.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionBehaviors\CollectionValidationResultCacheBehavior.cs" />
+    <Compile Include="ViewModels\Core\Validation\CollectionBehaviors\CollectionValidationSourceBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionResultCache.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionValidationArgs.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionValidator.cs" />

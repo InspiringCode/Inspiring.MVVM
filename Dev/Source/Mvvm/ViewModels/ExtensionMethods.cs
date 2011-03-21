@@ -76,28 +76,28 @@
             .SetDisplayValue(context, value);
       }
 
-      public static void OnSelfChangedNext(
-         this Behavior behavior,
-         IBehaviorContext context,
-         ChangeArgs args
-      ) {
-         ViewModelBehavior next;
-         if (behavior.TryGetBehavior(out next)) {
-            next.OnSelfChanged(context, args);
-         }
-      }
+      //public static void OnSelfChangedNext(
+      //   this Behavior behavior,
+      //   IBehaviorContext context,
+      //   ChangeArgs args
+      //) {
+      //   ViewModelBehavior next;
+      //   if (behavior.TryGetBehavior(out next)) {
+      //      next.OnSelfChanged(context, args);
+      //   }
+      //}
 
-      public static void OnChildChangedNext(
-         this Behavior behavior,
-         IBehaviorContext context,
-         ChangeArgs args,
-         InstancePath changedChildPath
-      ) {
-         ViewModelBehavior next;
-         if (behavior.TryGetBehavior(out next)) {
-            next.OnChildChanged(context, args, changedChildPath);
-         }
-      }
+      //public static void OnChildChangedNext(
+      //   this Behavior behavior,
+      //   IBehaviorContext context,
+      //   ChangeArgs args,
+      //   InstancePath changedChildPath
+      //) {
+      //   ViewModelBehavior next;
+      //   if (behavior.TryGetBehavior(out next)) {
+      //      next.OnChildChanged(context, args, changedChildPath);
+      //   }
+      //}
 
       public static void OnChangedNext(
          this Behavior behavior,
@@ -108,6 +108,17 @@
          ViewModelBehavior next;
          if (behavior.TryGetBehavior(out next)) {
             next.OnChanged(context, args, changedPath);
+         }
+      }
+
+      public static void HandleChangedNext(
+         this Behavior behavior,
+         IBehaviorContext context,
+         ChangeArgs args
+      ) {
+         IChangeHandlerBehavior next;
+         if (behavior.TryGetBehavior(out next)) {
+            next.HandleChange(context, args);
          }
       }
 

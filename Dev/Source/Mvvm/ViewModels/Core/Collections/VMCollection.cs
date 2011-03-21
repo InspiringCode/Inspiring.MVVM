@@ -149,7 +149,7 @@
       }
 
       /// <inheritdoc />
-      public void ReplaceItems(IEnumerable<TItemVM> newItems) {
+      void IVMCollection<TItemVM>.ReplaceItems(IEnumerable<TItemVM> newItems) {
          try {
             IsPopulating = true;
             Clear();

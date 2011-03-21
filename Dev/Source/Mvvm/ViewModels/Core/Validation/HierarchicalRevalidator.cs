@@ -1,4 +1,5 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core.Validation {
+﻿using System.Collections.Generic;
+namespace Inspiring.Mvvm.ViewModels.Core.Validation {
 
    internal sealed class HierarchicalRevalidator {
       public HierarchicalRevalidator(IViewModel viewModel, ValidationScope scope) {
@@ -13,8 +14,8 @@
 
       }
 
-      public void RevalidateCollection(IVMCollection collection) {
-
+      public void RevalidateCollection(IEnumerable<IViewModel> collection) {
+         
       }
    }
 }

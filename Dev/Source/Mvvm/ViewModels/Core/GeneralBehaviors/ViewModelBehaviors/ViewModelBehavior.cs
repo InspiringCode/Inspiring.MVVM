@@ -8,20 +8,20 @@
          this.OnValidatingNext(context, args);
       }
 
-      protected internal virtual void OnSelfChanged(
-         IBehaviorContext context,
-         ChangeArgs args
-      ) {
-         this.OnSelfChangedNext(context, args);
-      }
+      //protected internal virtual void OnSelfChanged(
+      //   IBehaviorContext context,
+      //   ChangeArgs args
+      //) {
+      //   this.OnSelfChangedNext(context, args);
+      //}
 
-      protected internal virtual void OnChildChanged(
-         IBehaviorContext context,
-         ChangeArgs args,
-         InstancePath changedChildPath
-      ) {
-         this.OnChildChangedNext(context, args, changedChildPath);
-      }
+      //protected internal virtual void OnChildChanged(
+      //   IBehaviorContext context,
+      //   ChangeArgs args,
+      //   InstancePath changedChildPath
+      //) {
+      //   this.OnChildChangedNext(context, args, changedChildPath);
+      //}
 
       /// <summary>
       /// 
