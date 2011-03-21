@@ -21,6 +21,8 @@
       private Dictionary<object, CommandProxy> _commandProxies =
          new Dictionary<object, CommandProxy>();
 
+      public event EventHandler RegisteredCommandsChanged;
+
       public ICommand this[object commandKey] {
          get {
             Contract.Requires<ArgumentNullException>(commandKey != null);
@@ -32,11 +34,13 @@
          Contract.Requires<ArgumentNullException>(commandKey != null);
          Contract.Requires<ArgumentNullException>(actualImplementation != null);
          GetProxy(commandKey).SetActualCommand(actualImplementation);
+         RaiseRegisteredCommandsChanged();
       }
 
       public void UnregisterCommand(object commandKey) {
          Contract.Requires<ArgumentNullException>(commandKey != null);
          GetProxy(commandKey).SetActualCommand(null);
+         RaiseRegisteredCommandsChanged();
       }
 
       private CommandProxy GetProxy(object commandKey) {
@@ -48,6 +52,13 @@
          }
 
          return proxy;
+      }
+
+      private void RaiseRegisteredCommandsChanged() {
+         EventHandler handler = this.RegisteredCommandsChanged;
+         if (handler != null) {
+            handler(this, EventArgs.Empty);
+         }
       }
    }
 }
