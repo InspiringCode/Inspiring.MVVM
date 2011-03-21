@@ -85,6 +85,30 @@
          Assert.IsTrue(proxyCmd.HasCommand);
       }
 
+      [TestMethod]
+      public void RegisterCommand_CommandRegisteredIsFired() {
+         bool regsiteredCommandsChangedRaised = false;
+
+         ApplicationCommandManager cm = new ApplicationCommandManager();
+         cm.RegisteredCommandsChanged += (s, e) => regsiteredCommandsChangedRaised = true;
+
+         TestCommand cmd = new TestCommand();
+         cm.RegisterCommand(TestCommands.New, cmd);
+
+         Assert.IsTrue(regsiteredCommandsChangedRaised);
+      }
+
+      [TestMethod]
+      public void UnregisterCommand_CommandRegisteredIsFired() {
+         bool regsiteredCommandsChangedRaised = false;
+
+         ApplicationCommandManager cm = new ApplicationCommandManager();
+         cm.RegisteredCommandsChanged += (s, e) => regsiteredCommandsChangedRaised = true;
+
+         cm.UnregisterCommand(TestCommands.Close);
+         Assert.IsTrue(regsiteredCommandsChangedRaised);
+      }
+
       private enum TestCommands {
          New,
          Save,
