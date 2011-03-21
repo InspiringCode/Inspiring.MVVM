@@ -6,10 +6,10 @@
       IModificationCollectionBehavior<TItemVM>
       where TItemVM : IViewModel {
 
-      public void CollectionPopulated(IBehaviorContext context, IVMCollection<TItemVM> collection) {
+      public void CollectionPopulated(IBehaviorContext context, IVMCollection<TItemVM> collection, TItemVM[] previousItems) {
          // TODO: What is the best way to handle initial/repopulation handling????
 
-         this.CollectionPopulatetNext(context, collection);
+         this.CollectionPopulatetNext(context, collection, previousItems);
       }
 
       public void ItemInserted(IBehaviorContext context, IVMCollection<TItemVM> collection, TItemVM item, int index) {

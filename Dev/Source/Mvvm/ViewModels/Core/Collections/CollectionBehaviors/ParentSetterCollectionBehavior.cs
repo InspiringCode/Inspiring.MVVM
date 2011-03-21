@@ -6,13 +6,19 @@
       where TItemVM : IViewModel {
 
       public void CollectionPopulated(
-        IBehaviorContext context,
-        IVMCollection<TItemVM> collection
+         IBehaviorContext context,
+         IVMCollection<TItemVM> collection,
+         TItemVM[] previousItems
       ) {
+         foreach (TItemVM item in previousItems) {
+            HandleItemRemoved(item, collection);
+         }
+
          foreach (TItemVM item in collection) {
             HandleItemInserted(item, collection);
          }
-         this.CollectionPopulatetNext(context, collection);
+
+         this.CollectionPopulatetNext(context, collection, previousItems);
       }
 
       public void ItemInserted(

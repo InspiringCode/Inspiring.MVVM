@@ -21,7 +21,8 @@
       /// </summary>
       void CollectionPopulated(
          IBehaviorContext context,
-         IVMCollection<TItemVM> collection
+         IVMCollection<TItemVM> collection,
+         TItemVM[] previousItems
       );
 
       /// <summary>
@@ -75,7 +76,7 @@
          IModificationCollectionBehavior<TItemVM>
          where TItemVM : IViewModel {
 
-         public void CollectionPopulated(IBehaviorContext context, IVMCollection<TItemVM> collection) {
+         public void CollectionPopulated(IBehaviorContext context, IVMCollection<TItemVM> collection, TItemVM[] previousItems) {
             Contract.Requires(context != null);
             Contract.Requires(collection != null);
          }

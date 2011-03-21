@@ -118,6 +118,11 @@
 
       /// <inheritdoc />
       protected override void ClearItems() {
+         if (IsPopulating) {
+            base.ClearItems();
+            return;
+         }
+
          TItemVM[] previousItems = this.ToArray();
 
          base.ClearItems();
@@ -150,6 +155,8 @@
 
       /// <inheritdoc />
       void IVMCollection<TItemVM>.ReplaceItems(IEnumerable<TItemVM> newItems) {
+         TItemVM[] previousItems = this.ToArray();
+
          try {
             IsPopulating = true;
             Clear();
@@ -158,7 +165,7 @@
             IsPopulating = false;
          }
          Behaviors.TryCall<IModificationCollectionBehavior<TItemVM>>(b =>
-            b.CollectionPopulated(Owner.GetContext(), this)
+            b.CollectionPopulated(Owner.GetContext(), this, previousItems)
          );
       }
    }

@@ -136,11 +136,12 @@
       public static void CollectionPopulatetNext<TItemVM>(
          this Behavior behavior,
          IBehaviorContext context,
-         IVMCollection<TItemVM> collection
+         IVMCollection<TItemVM> collection,
+         TItemVM[] previousItems
       ) where TItemVM : IViewModel {
          IModificationCollectionBehavior<TItemVM> next;
          if (behavior.TryGetBehavior(out next)) {
-            next.CollectionPopulated(context, collection);
+            next.CollectionPopulated(context, collection, previousItems);
          }
       }
 

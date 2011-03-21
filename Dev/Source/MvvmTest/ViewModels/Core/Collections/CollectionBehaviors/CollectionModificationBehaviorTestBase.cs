@@ -41,6 +41,10 @@
          Behavior.CollectionCleared(BehaviorContext, Collection, previousItems);
       }
 
+      protected void Behavior_CollectionPopulated(TItemVM[] previousItems) {
+         Behavior.CollectionPopulated(BehaviorContext, Collection, previousItems);
+      }
+
       protected IViewModel CreateItem() {
          var item = new ViewModelStub();
          item.OverrideContext(BehaviorContext);

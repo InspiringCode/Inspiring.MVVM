@@ -42,7 +42,6 @@
 
       [TestMethod]
       public void ItemsCleared_ClearsParentOfAllItems() {
-
          var item = CreateItem();
          item.Kernel.OwnerCollection = Collection;
 
@@ -50,6 +49,11 @@
 
          Behavior_ItemsCleared(previousItems);
          Assert.IsTrue(previousItems.All(x => x.Kernel.Parent == null));
+      }
+
+      [TestMethod]
+      public void ReplaceItems_ClearsParentOfAllItems() {
+         Assert.Inconclusive();
       }
    }
 }

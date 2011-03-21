@@ -6,13 +6,14 @@
       where TItemVM : IViewModel {
 
       public void CollectionPopulated(
-        IBehaviorContext context,
-        IVMCollection<TItemVM> collection
+         IBehaviorContext context,
+         IVMCollection<TItemVM> collection,
+         TItemVM[] previousItems
       ) {
          foreach (TItemVM item in collection) {
             NotifyItemAdded(item);
          }
-         this.CollectionPopulatetNext(context, collection);
+         this.CollectionPopulatetNext(context, collection, previousItems);
       }
 
       public void ItemInserted(

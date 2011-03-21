@@ -10,9 +10,10 @@
 
       public void CollectionPopulated(
          IBehaviorContext context,
-         IVMCollection<TItemVM> collection
+         IVMCollection<TItemVM> collection,
+         TItemVM[] previousItems
       ) {
-         this.CollectionPopulatetNext(context, collection);
+         this.CollectionPopulatetNext(context, collection, previousItems);
       }
 
       public void ItemInserted(
