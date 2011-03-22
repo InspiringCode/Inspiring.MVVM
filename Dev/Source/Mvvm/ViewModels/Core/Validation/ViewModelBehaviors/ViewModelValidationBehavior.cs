@@ -122,7 +122,7 @@
          ChangeArgs args,
          InstancePath changedPath
       ) {
-         IVMCollection ownerCollection = args.ChangedVM.Kernel.OwnerCollection;
+         IVMCollection ownerCollection = args.ChangedPath[args.ChangedPath.Length - 1].Collection;
 
          if (ownerCollection == null || !ownerCollection.IsPopulating) {
             ValidationContext.BeginValidation();
@@ -134,11 +134,18 @@
             bool isInitialValidationLevel = changedPath.Length == 1;
 
             if (collectionChange && isInitialValidationLevel) {
-               args.ChangedVM.Kernel.Revalidate(
+               // TODO: Refactor.
+               args.NewItems.ForEach(x => x.Kernel.Revalidate(
                   ValidationContext.Current,
                   ValidationScope.SelfAndLoadedDescendants,
                   ValidationMode.CommitValidValues
-               );
+               ));
+
+               args.OldItems.ForEach(x => x.Kernel.Revalidate(
+                  ValidationContext.Current,
+                  ValidationScope.SelfAndLoadedDescendants,
+                  ValidationMode.CommitValidValues
+               ));
             } else {
                // If an item was removed or added to an collection it is enough to
                // call 'Revalidate' on that item, because the blow statement would

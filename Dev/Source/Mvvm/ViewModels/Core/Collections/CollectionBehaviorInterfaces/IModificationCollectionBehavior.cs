@@ -2,6 +2,7 @@
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
    using Contracts;
+   using System.Linq;
 
    /// <summary>
    ///   A collection behavior whose methods are called by the <see cref="VMCollection"/>
@@ -93,21 +94,22 @@
          Collection = collection;
          Index = index;
          OldItem = oldItem;
-         OldItems = new[] { oldItem };
+         OldItems = oldItem != null ? new[] { oldItem } : Enumerable.Empty<TItemVM>();
          NewItem = newItem;
-         NewItems = new[] { newItem };
+         NewItems = newItem != null ? new[] { newItem } : Enumerable.Empty<TItemVM>();
       }
 
       private CollectionChangedArgs(
          CollectionChangeType type,
          IVMCollection<TItemVM> collection,
-         IEnumerable<TItemVM> oldItems
+         IEnumerable<TItemVM> oldItems = null,
+         IEnumerable<TItemVM> newItems = null
       ) {
          Type = type;
          Collection = collection;
          Index = -1;
-         OldItems = collection;
-         NewItems = oldItems;
+         OldItems = oldItems ?? Enumerable.Empty<TItemVM>();
+         NewItems = newItems ?? Enumerable.Empty<TItemVM>();
       }
 
       public CollectionChangeType Type { get; private set; }
@@ -124,7 +126,7 @@
 
       public IEnumerable<TItemVM> NewItems { get; private set; }
 
-      public static CollectionChangedArgs<TItemVM> ItemAdded(
+      public static CollectionChangedArgs<TItemVM> ItemInserted(
          IVMCollection<TItemVM> collection,
          TItemVM newItem,
          int index
@@ -188,7 +190,7 @@
          return new CollectionChangedArgs<TItemVM>(
             CollectionChangeType.ItemsCleared,
             collection,
-            oldItems
+            oldItems: oldItems
          );
       }
 
@@ -202,7 +204,8 @@
          return new CollectionChangedArgs<TItemVM>(
             CollectionChangeType.Populated,
             collection,
-            oldItems
+            oldItems: oldItems,
+            newItems: collection
          );
       }
    }

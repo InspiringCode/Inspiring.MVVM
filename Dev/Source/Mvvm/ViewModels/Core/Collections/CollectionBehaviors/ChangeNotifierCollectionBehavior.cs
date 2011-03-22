@@ -70,7 +70,7 @@
       public void HandleChange(IBehaviorContext context, CollectionChangedArgs<TItemVM> args) {
          var c = args.Collection;
 
-         var oldItems = (IEnumerable<IViewModel>)args.OldItem;
+         var oldItems = (IEnumerable<IViewModel>)args.OldItems;
          var newItems = (IEnumerable<IViewModel>)args.NewItems;
 
          if (oldItems.Any()) {

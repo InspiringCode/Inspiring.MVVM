@@ -58,6 +58,10 @@
             vm.InitializeFrom(source);
             return vm;
          }
+
+         protected override ItemVM CreateAnonymousItem() {
+            return new ItemVM();
+         }
       }
 
       //[TestClass]
@@ -182,6 +186,10 @@
 
          public class ListMock : Collection<ItemSource> {
          }
+
+         protected override ItemVM CreateAnonymousItem() {
+            return new ItemVM();
+         }
       }
 
       [TestClass]
@@ -292,6 +300,10 @@
             IEnumerator IEnumerable.GetEnumerator() {
                return _list.GetEnumerator();
             }
+         }
+
+         protected override ItemVM CreateAnonymousItem() {
+            return new ItemVM();
          }
       }
    }

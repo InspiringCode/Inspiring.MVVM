@@ -57,6 +57,8 @@
          IEnumerable<IViewModel> oldItems = null,
          IEnumerable<IViewModel> newItems = null
       ) {
+         ChangeType = changeType;
+
          ChangedPath = Path
             .Empty
             .Append(changedCollection.Owner)
@@ -97,7 +99,10 @@
             ChangedVM,
             ChangedProperty,
             ChangedPath.Prepend(viewModel)
-         );
+         ) { 
+            NewItems = NewItems,
+            OldItems = OldItems         
+         };
       }
 
       public override bool Equals(object obj) {
@@ -120,10 +125,10 @@
 
       [ContractInvariantMethod]
       private void ObjectInvariant() {
-         Contract.Invariant(ChangedVM != null);
-         Contract.Invariant(
-            ChangeType == ChangeType.PropertyChanged ? ChangedProperty != null : true
-         );
+         //Contract.Invariant(ChangedVM != null);
+         //Contract.Invariant(
+         //   ChangeType == ChangeType.PropertyChanged ? ChangedProperty != null : true
+         //);
       }
    }
 }

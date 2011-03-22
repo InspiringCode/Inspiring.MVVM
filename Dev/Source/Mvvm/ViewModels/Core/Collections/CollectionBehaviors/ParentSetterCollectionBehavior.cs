@@ -87,7 +87,7 @@
       public void HandleChange(IBehaviorContext context, CollectionChangedArgs<TItemVM> args) {
          // Set the parent first so that validation and change notification can
          // propagate properly.
-         foreach (IViewModel item in args.OldItems) {
+         foreach (IViewModel item in args.NewItems) {
             if (item.Kernel.OwnerCollection == null) {
                item.Kernel.Parent = args.Collection.Owner;
                item.Kernel.OwnerCollection = args.Collection;
@@ -98,7 +98,7 @@
 
          // Clear the parent last so that validation and change notification can
          // propagate properly.
-         foreach (IViewModel item in args.NewItems) {
+         foreach (IViewModel item in args.OldItems) {
             if (item.Kernel.OwnerCollection == args.Collection) {
                item.Kernel.Parent = null;
                item.Kernel.OwnerCollection = null;

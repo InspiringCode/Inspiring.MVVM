@@ -89,31 +89,37 @@
             return;
          }
 
-         Behaviors.TryCall<IModificationCollectionBehavior<TItemVM>>(b =>
-            b.ItemInserted(Owner.GetContext(), this, item, index)
-         );
+         CallBehaviors(CollectionChangedArgs<TItemVM>.ItemInserted(this, item, index));
+
+         //Behaviors.TryCall<IModificationCollectionBehavior<TItemVM>>(b =>
+         //   b.ItemInserted(Owner.GetContext(), this, item, index)
+         //);
       }
 
       /// <inheritdoc />
       protected override void RemoveItem(int index) {
-         TItemVM removedItem = this[index];
+         TItemVM oldItem = this[index];
 
          base.RemoveItem(index);
 
-         Behaviors.TryCall<IModificationCollectionBehavior<TItemVM>>(b =>
-            b.ItemRemoved(Owner.GetContext(), this, removedItem, index)
-         );
+         CallBehaviors(CollectionChangedArgs<TItemVM>.ItemRemoved(this, oldItem, index));
+
+         //Behaviors.TryCall<IModificationCollectionBehavior<TItemVM>>(b =>
+         //   b.ItemRemoved(Owner.GetContext(), this, removedItem, index)
+         //);
       }
 
       /// <inheritdoc />
       protected override void SetItem(int index, TItemVM item) {
-         TItemVM previousItem = this[index];
+         TItemVM oldItem = this[index];
 
          base.SetItem(index, item);
 
-         Behaviors.TryCall<IModificationCollectionBehavior<TItemVM>>(b =>
-            b.ItemSet(Owner.GetContext(), this, previousItem, item, index)
-         );
+         CallBehaviors(CollectionChangedArgs<TItemVM>.ItemSet(this, oldItem, item, index));
+
+         //Behaviors.TryCall<IModificationCollectionBehavior<TItemVM>>(b =>
+         //   b.ItemSet(Owner.GetContext(), this, previousItem, item, index)
+         //);
       }
 
       /// <inheritdoc />
@@ -123,12 +129,16 @@
             return;
          }
 
-         TItemVM[] previousItems = this.ToArray();
+         TItemVM[] oldItems = this.ToArray();
 
          base.ClearItems();
 
+         CallBehaviors(CollectionChangedArgs<TItemVM>.CollectionCleared(this, oldItems));
+      }
+
+      private void CallBehaviors(CollectionChangedArgs<TItemVM> args) {
          Behaviors.TryCall<IModificationCollectionBehavior<TItemVM>>(b =>
-            b.CollectionCleared(Owner.GetContext(), this, previousItems)
+            b.HandleChange(Owner.GetContext(), args)
          );
       }
 
@@ -155,7 +165,7 @@
 
       /// <inheritdoc />
       void IVMCollection<TItemVM>.ReplaceItems(IEnumerable<TItemVM> newItems) {
-         TItemVM[] previousItems = this.ToArray();
+         TItemVM[] oldItems = this.ToArray();
 
          try {
             IsPopulating = true;
@@ -164,9 +174,12 @@
          } finally {
             IsPopulating = false;
          }
-         Behaviors.TryCall<IModificationCollectionBehavior<TItemVM>>(b =>
-            b.CollectionPopulated(Owner.GetContext(), this, previousItems)
-         );
+         
+         CallBehaviors(CollectionChangedArgs<TItemVM>.CollectionPopulated(this, oldItems));
+         
+         //Behaviors.TryCall<IModificationCollectionBehavior<TItemVM>>(b =>
+         //   b.CollectionPopulated(Owner.GetContext(), this, previousItems)
+         //);
       }
    }
 }

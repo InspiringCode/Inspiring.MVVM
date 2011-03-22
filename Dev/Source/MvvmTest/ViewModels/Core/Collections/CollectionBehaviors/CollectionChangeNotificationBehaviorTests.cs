@@ -72,5 +72,9 @@
             x.NotifyChange(new ChangeArgs(ChangeType.RemovedFromCollection, previousItem))
          );
       }
+
+      protected override IViewModel CreateAnonymousItem() {
+         return CreateItem();
+      }
    }
 }

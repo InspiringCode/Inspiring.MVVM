@@ -134,7 +134,7 @@
          
          switch (args.Type) {
             case CollectionChangeType.ItemAdded:
-               AddItemToSourceCollection(source, args);      
+               InsertItemIntoSourceCollection(source, args);      
                break;
             case CollectionChangeType.ItemRemoved:
                RemoveItemFromSourceCollection(source, args);
@@ -147,7 +147,7 @@
                break;
          }
 
-         this.HandleChangeNext(context, args);
+         this.HandleChangeNext(context, args); 
       }
 
       private IEnumerable<TItemSource> GetSourceCollection(IBehaviorContext context) {
@@ -157,19 +157,22 @@
          return collectionSource;
       }
 
-      private static void AddItemToSourceCollection(IEnumerable<TItemSource> source, CollectionChangedArgs<TItemVM> args) {
+
+      private static void InsertItemIntoSourceCollection(IEnumerable<TItemSource> source, CollectionChangedArgs<TItemVM> args) {
          var listSource = source as IList<TItemSource>;
          var collectionSource = source as ICollection<TItemSource>;
 
          if (listSource != null) {
-            bool listSourceHasChanged = !Object.ReferenceEquals(listSource[args.Index], args.NewItem.Source);
-            ThrowOutOfSyncExceptionIf(listSourceHasChanged);
-            listSource.RemoveAt(args.Index);
-         } else if (collectionSource != null) {
-            bool itemWasFound = collectionSource.Remove(args.NewItem.Source);
-            bool listSourceHasChanged = collectionSource.Count != args.Collection.Count;
+            listSource.Insert(args.Index, args.NewItem.Source);
+         } else {
+            if (collectionSource != null) {
+               collectionSource.Add(args.NewItem.Source);
+            }
+         }
 
-            ThrowOutOfSyncExceptionIf(!itemWasFound || listSourceHasChanged);
+         if (collectionSource != null) {
+            bool listSourceHasChanged = collectionSource.Count != args.Collection.Count;
+            ThrowOutOfSyncExceptionIf(listSourceHasChanged);
          }
       }
 

@@ -15,6 +15,7 @@
       [TestMethod]
       public void ItemInserted_SetsParent() {
          IViewModel insertedItem = CreateItem();
+
          Behavior_ItemInserted(insertedItem);
          Assert.AreSame(CollectionOwner, insertedItem.Kernel.Parent);
       }
@@ -54,6 +55,10 @@
       [TestMethod]
       public void ReplaceItems_ClearsParentOfAllItems() {
          Assert.Inconclusive();
+      }
+
+      protected override IViewModel CreateAnonymousItem() {
+         return CreateItem();
       }
    }
 }
