@@ -18,6 +18,7 @@
       private ValidationResult _validationState = ValidationResult.Valid;
 
       private CountingSet<IVMCollection> _ownerCollections = new CountingSet<IVMCollection>();
+      private CountingSet<IViewModel> _parents = new CountingSet<IViewModel>();
 
       public VMKernel(IViewModel vm, VMDescriptorBase descriptor, IServiceLocator serviceLocator) {
          Contract.Requires<ArgumentNullException>(vm != null);
@@ -29,7 +30,9 @@
          ServiceLocator = serviceLocator;
       }
 
-      public IViewModel Parent { get; set; }
+      public CountingSet<IViewModel> Parents {
+         get { return _parents; }
+      }
 
       public IServiceLocator ServiceLocator {
          get;
@@ -70,10 +73,7 @@
 
       void IBehaviorContext.NotifyValidating(ValidationArgs args) {
          HandleNotifyValidating(args);
-
-         if (Parent != null) {
-            Parent.Kernel.NotifyValidating(args);
-         }
+         Parents.ForEach(x => x.Kernel.NotifyValidating(args));
       }
 
       public bool IsLoaded(IVMPropertyDescriptor property) {
@@ -267,9 +267,7 @@
 
          _descriptor.Behaviors.HandleChangedNext(this, args);
 
-         if (Parent != null) {
-            Parent.Kernel.NotifyChange(args, changedPath);
-         }
+         Parents.ForEach(x => x.Kernel.NotifyChange(args, changedPath));
 
          if (args.ChangeType == ChangeType.PropertyChanged && args.ChangedVM == _vm) {
             _vm.NotifyPropertyChanged(args.ChangedProperty);
@@ -289,10 +287,7 @@
       private void NotifyValidating(ValidationArgs args) {
          args = args.PrependTargetPath(with: _vm);
          HandleNotifyValidating(args);
-
-         if (Parent != null) {
-            Parent.Kernel.NotifyValidating(args);
-         }
+         Parents.ForEach(x => x.Kernel.NotifyValidating(args));
       }
 
       private void UpdateValidationState() {

@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
+   using System.Collections.Generic;
    using System.ComponentModel;
    using System.Diagnostics.Contracts;
    using System.Linq;
@@ -31,9 +32,8 @@
 
       private VMKernel _kernel;
 
-      public IViewModel Parent {
-         get { return Kernel.Parent; }
-         set { Kernel.Parent = value; }
+      public IEnumerable<IViewModel> Parents {
+         get { return Kernel.Parents.ToArray(); }
       }
 
       public bool IsValid {

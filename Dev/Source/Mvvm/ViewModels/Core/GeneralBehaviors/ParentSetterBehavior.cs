@@ -23,8 +23,8 @@
       public TValue GetValue(IBehaviorContext context) {
          TValue childVM = this.GetValueNext<TValue>(context);
 
-         if (_setParentOnGetValue && childVM != null && childVM.Kernel.Parent == null) {
-            childVM.Kernel.Parent = context.VM;
+         if (_setParentOnGetValue && childVM != null) {
+            childVM.Kernel.Parents.Add(context.VM);
          }
 
          return childVM;
@@ -39,8 +39,8 @@
          // Note 2: We do not set the parent if it is already set because the VM
          // may already be the child of a different VM.
 
-         if (_setParentOnSetValue && value != null && value.Kernel.Parent == null) {
-            value.Kernel.Parent = context.VM;
+         if (_setParentOnSetValue && value != null) {
+            value.Kernel.Parents.Add(context.VM);
          }
 
          this.SetValueNext(context, value);

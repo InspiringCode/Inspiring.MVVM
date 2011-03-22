@@ -17,7 +17,8 @@
          IViewModel insertedItem = CreateItem();
 
          Behavior_ItemInserted(insertedItem);
-         Assert.AreSame(CollectionOwner, insertedItem.Kernel.Parent);
+
+         Assert.IsTrue(insertedItem.Kernel.Parents.Contains(CollectionOwner));
       }
 
       [TestMethod]
@@ -25,7 +26,8 @@
          IViewModel deletedItem = CreateItem();
          deletedItem.Kernel.OwnerCollections.Add(Collection);
          Behavior_ItemRemoved(deletedItem);
-         Assert.IsNull(deletedItem.Kernel.Parent);
+
+         Assert.AreEqual(0, deletedItem.Kernel.Parents.Count());
       }
 
       [TestMethod]
@@ -37,8 +39,8 @@
 
          Behavior_ItemSet(previousItem, item);
 
-         Assert.IsNull(previousItem.Kernel.Parent);
-         Assert.AreSame(CollectionOwner, item.Kernel.Parent);
+         Assert.AreEqual(0, previousItem.Kernel.Parents.Count());
+         Assert.IsTrue(item.Kernel.Parents.Contains(CollectionOwner));
       }
 
       [TestMethod]
@@ -49,7 +51,7 @@
          var previousItems = new IViewModel[] { item };
 
          Behavior_ItemsCleared(previousItems);
-         Assert.IsTrue(previousItems.All(x => x.Kernel.Parent == null));
+         Assert.IsTrue(previousItems.All(x => x.Kernel.Parents.Count() == 0));
       }
 
       [TestMethod]

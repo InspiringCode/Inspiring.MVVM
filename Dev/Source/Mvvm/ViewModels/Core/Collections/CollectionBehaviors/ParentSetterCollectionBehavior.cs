@@ -66,12 +66,12 @@
       }
 
       private void HandleItemInserted(TItemVM item, IVMCollection<TItemVM> collection) {
-         item.Kernel.Parent = collection.Owner;
+         item.Kernel.Parents.Add(collection.Owner);
          item.Kernel.OwnerCollections.Add(collection);
       }
 
       private void HandleItemRemoved(TItemVM item, IVMCollection<TItemVM> collection) {
-         item.Kernel.Parent = null;
+         item.Kernel.Parents.Remove(collection.Owner);
          item.Kernel.OwnerCollections.Remove(collection);
       }
 
@@ -80,7 +80,7 @@
          // Set the parent first so that validation and change notification can
          // propagate properly.
          foreach (IViewModel item in args.NewItems) {
-            item.Kernel.Parent = args.Collection.Owner;
+            item.Kernel.Parents.Add(args.Collection.Owner);
             item.Kernel.OwnerCollections.Add(args.Collection);
          }
 
@@ -89,7 +89,7 @@
          // Clear the parent last so that validation and change notification can
          // propagate properly.
          foreach (IViewModel item in args.OldItems) {
-            item.Kernel.Parent = null;
+            item.Kernel.Parents.Remove(args.Collection.Owner);
             item.Kernel.OwnerCollections.Remove(args.Collection);
          }
       }

@@ -53,9 +53,8 @@
          var parentContext = (IBehaviorContext)parentKernel;
          var grandParentContext = (IBehaviorContext)grandParentKernel;
 
-         kernel.Parent = parentContext.VM;
-         parentKernel.Parent = grandParentContext.VM;
-
+         kernel.Parents.Add(parentContext.VM);
+         parentKernel.Parents.Add(grandParentContext.VM);
          var changeArgs = new ChangeArgs(ChangeType.ValidationStateChanged, kernelContext.VM);
          kernelContext.NotifyChange(changeArgs);
 
@@ -82,8 +81,8 @@
          var parentVM = ((IBehaviorContext)parentKernel).VM;
          var grandParentVM = ((IBehaviorContext)grandParentKernel).VM;
 
-         kernel.Parent = parentVM;
-         parentKernel.Parent = grandParentVM;
+         kernel.Parents.Add(parentVM);
+         parentKernel.Parents.Add(grandParentVM);
 
          ValidationContext.BeginValidation();
          var args = ValidationArgs.CreateViewModelValidationArgs(ValidationContext.Current, new List<ValidationError>(), new InstancePath(kernelContext.VM)); // TODO: Context
