@@ -183,6 +183,7 @@
     <Compile Include="ViewModels\Core\Commands\ViewModelCommand.cs" />
     <Compile Include="ViewModels\Core\Commands\WaitCursorBehavior.cs" />
     <Compile Include="ViewModels\Core\Common\ICondition.cs" />
+    <Compile Include="ViewModels\Core\CountingSet.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\DynamicFieldAccessor.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\RefreshBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\ChildScreenBehavior.cs" />
