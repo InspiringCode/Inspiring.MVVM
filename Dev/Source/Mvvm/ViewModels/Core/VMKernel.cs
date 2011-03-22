@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Collections.Generic;
    using System.Diagnostics.Contracts;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
@@ -17,6 +16,8 @@
       private ValidationResult _selfOnlyValidationState = ValidationResult.Valid;
       private ValidationResult _descendantsOnlyValidationState = ValidationResult.Valid;
       private ValidationResult _validationState = ValidationResult.Valid;
+
+      private CountingSet<IVMCollection> _ownerCollections = new CountingSet<IVMCollection>();
 
       public VMKernel(IViewModel vm, VMDescriptorBase descriptor, IServiceLocator serviceLocator) {
          Contract.Requires<ArgumentNullException>(vm != null);
@@ -48,11 +49,8 @@
          get { return _vm; }
       }
 
-      internal IVMCollection OwnerCollection { get; set; }
-
-      // TODO
-      internal ICollection<IVMCollection> OwnerCollections {
-         get { return new[] { OwnerCollection }; }
+      internal CountingSet<IVMCollection> OwnerCollections {
+         get { return _ownerCollections; }
       }
 
       FieldValueHolder IBehaviorContext.FieldValues {

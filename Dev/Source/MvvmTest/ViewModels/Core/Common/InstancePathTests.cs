@@ -224,7 +224,8 @@
          employeeVM.SetValue(employeeDescriptor.Projects, projectsCollection);
          projectVM.SetValue(projectDescriptor.Customer, customerVM);
 
-         projectVM.Kernel.OwnerCollection = projectsCollection;
+         projectVM.Kernel.OwnerCollections.Add(projectsCollection);
+
 
          var path = new InstancePath(customerVM);
 

@@ -169,9 +169,10 @@
          //   return collection.Cast<object>().Contains(stepVM);
          //}
 
-         if (Object.ReferenceEquals(propertyValue, stepVM.Kernel.OwnerCollection)) {
+         if (stepVM.Kernel.OwnerCollections.Any(x => Object.ReferenceEquals(propertyValue, x))) {
             return true;
          }
+
 
          return false;
       }

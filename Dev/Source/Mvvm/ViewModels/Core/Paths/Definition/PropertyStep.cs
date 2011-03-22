@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Diagnostics.Contracts;
+   using System.Linq;
 
    internal sealed class PropertyStep<TDescriptor> :
       PathDefinitionStep
@@ -86,7 +87,7 @@
          }
 
          IViewModel potentialItem = step.ViewModel;
-         return potentialItem.Kernel.OwnerCollection == collection;
+         return potentialItem.Kernel.OwnerCollections.Any(x => x.Equals(collection));
       }
    }
 }

@@ -23,7 +23,7 @@
       [TestMethod]
       public void ItemRemoved_SetsParentToNull() {
          IViewModel deletedItem = CreateItem();
-         deletedItem.Kernel.OwnerCollection = Collection;
+         deletedItem.Kernel.OwnerCollections.Add(Collection);
          Behavior_ItemRemoved(deletedItem);
          Assert.IsNull(deletedItem.Kernel.Parent);
       }
@@ -33,7 +33,7 @@
          var item = CreateItem();
          var previousItem = CreateItem();
 
-         previousItem.Kernel.OwnerCollection = Collection;
+         previousItem.Kernel.OwnerCollections.Add(Collection);
 
          Behavior_ItemSet(previousItem, item);
 
@@ -44,7 +44,7 @@
       [TestMethod]
       public void ItemsCleared_ClearsParentOfAllItems() {
          var item = CreateItem();
-         item.Kernel.OwnerCollection = Collection;
+         item.Kernel.OwnerCollections.Add(Collection);
 
          var previousItems = new IViewModel[] { item };
 

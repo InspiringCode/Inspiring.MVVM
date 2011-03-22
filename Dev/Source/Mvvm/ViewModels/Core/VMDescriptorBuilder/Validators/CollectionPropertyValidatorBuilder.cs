@@ -2,6 +2,7 @@
    using System;
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
+   using System.Linq;
    using Inspiring.Mvvm.Common;
 
    public sealed class CollectionPropertyValidatorBuilder<TItemDescriptor, TItemValue>
@@ -49,7 +50,9 @@
             var items = (IEnumerable<TItemVM>)args
                .TargetVM
                .Kernel
-               .OwnerCollection;
+               .OwnerCollections
+               .SelectMany(x => x.Cast<TItemVM>())
+               .ToArray();
 
             var property = (IVMPropertyDescriptor<TItemValue>)args.TargetProperty;
 

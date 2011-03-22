@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System.Collections;
    using System.Collections.Generic;
+   using System.Linq;
 
    internal sealed class ValidationCoordinatorBehavior : Behavior {
       private static readonly IVMCollection[] EmptyVMCollectionArray = new IVMCollection[0];
@@ -59,8 +60,8 @@
 
       private void ExecuteViewModelValidators(IBehaviorContext context, IViewModel viewModel) {
          ValidationRequest request = new ValidationRequest(
-            ValidationTrigger.Revalidate, 
-            ValidationStep.ViewModel, 
+            ValidationTrigger.Revalidate,
+            ValidationStep.ViewModel,
             viewModel
          );
 
@@ -88,9 +89,9 @@
       }
 
       private IEnumerable<IVMCollection> GetOwnerCollectionsOfVM(IViewModel vm) {
-         return vm.Kernel.OwnerCollection != null ?
-            new[] { vm.Kernel.OwnerCollection } :
-            EmptyVMCollectionArray;
+         return vm.Kernel.OwnerCollections
+            .SelectMany(x => x.Cast<IVMCollection>())
+            .ToArray();
       }
 
       private void RefreshCollectionValidationResults(
@@ -139,13 +140,14 @@
       }
 
       private ValidationResult GetCachedCollectionResults(IViewModel item, IVMPropertyDescriptor property) {
-         IVMCollection owner = item.Kernel.OwnerCollection;
+         // bkauf owner refactoring
+         //IVMCollection owner = item.Kernel.OwnerCollection;
 
-         if (owner != null) {
-            var cache = owner.Behaviors.GetNextBehavior<CollectionValidationResultCacheBehavior>();
-            IEnumerable<ValidationError> errors = cache.GetItemErrors(item, property);
-            return new ValidationResult(errors);
-         }
+         //if (owner != null) {
+         //   var cache = owner.Behaviors.GetNextBehavior<CollectionValidationResultCacheBehavior>();
+         //   IEnumerable<ValidationError> errors = cache.GetItemErrors(item, property);
+         //   return new ValidationResult(errors);
+         //}
 
          return ValidationResult.Valid;
       }
