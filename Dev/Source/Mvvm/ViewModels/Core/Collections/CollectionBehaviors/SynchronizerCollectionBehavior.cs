@@ -2,6 +2,7 @@
    using System;
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
+   using System.Linq;
 
    internal sealed class SynchronizerCollectionBehavior<TItemVM, TItemSource> :
       Behavior,
@@ -23,7 +24,7 @@
          int index
       ) {
          if (!collection.IsPopulating) {
-            IEnumerable<TItemSource> source = GetSource(context);
+            IEnumerable<TItemSource> source = GetSourceCollection(context);
 
             var listSource = source as IList<TItemSource>;
             var collectionSource = source as ICollection<TItemSource>;
@@ -52,7 +53,7 @@
          int index
       ) {
          if (!collection.IsPopulating) {
-            IEnumerable<TItemSource> source = GetSource(context);
+            IEnumerable<TItemSource> source = GetSourceCollection(context);
 
             var listSource = source as IList<TItemSource>;
             var collectionSource = source as ICollection<TItemSource>;
@@ -80,7 +81,7 @@
          int index
       ) {
          if (!collection.IsPopulating) {
-            IEnumerable<TItemSource> source = GetSource(context);
+            IEnumerable<TItemSource> source = GetSourceCollection(context);
 
             var listSource = source as IList<TItemSource>;
             var collectionSource = source as ICollection<TItemSource>;
@@ -114,7 +115,7 @@
          TItemVM[] previousItems
       ) {
          if (!collection.IsPopulating) {
-            IEnumerable<TItemSource> source = GetSource(context);
+            IEnumerable<TItemSource> source = GetSourceCollection(context);
 
             var collectionSource = source as ICollection<TItemSource>;
             if (collectionSource != null) {
@@ -128,16 +129,101 @@
          this.ItemsClearedNext(context, collection, previousItems);
       }
 
-      private IEnumerable<TItemSource> GetSource(IBehaviorContext context) {
-         var sourceAccessorBehavior = GetNextBehavior<IValueAccessorBehavior<IEnumerable<TItemSource>>>();
+      public void HandleChange(IBehaviorContext context, CollectionChangedArgs<TItemVM> args) {
+         IEnumerable<TItemSource> source = GetSourceCollection(context);
+         
+         switch (args.Type) {
+            case CollectionChangeType.ItemAdded:
+               AddItemToSourceCollection(source, args);      
+               break;
+            case CollectionChangeType.ItemRemoved:
+               RemoveItemFromSourceCollection(source, args);
+               break;
+            case CollectionChangeType.ItemSet:
+               SetItemInSourceCollection(source, args);
+               break;
+            case CollectionChangeType.ItemsCleared:
+               ClearSourceCollection(source, args);
+               break;
+         }
 
-         IEnumerable<TItemSource> collectionSource = sourceAccessorBehavior.GetValue(context);
+         this.HandleChangeNext(context, args);
+      }
+
+      private IEnumerable<TItemSource> GetSourceCollection(IBehaviorContext context) {
+         IEnumerable<TItemSource> collectionSource = this.GetValueNext<IEnumerable<TItemSource>>(context);
+
          Contract.Assert(collectionSource != null);
-
          return collectionSource;
       }
 
-      private void ThrowOutOfSyncExceptionIf(bool condition) {
+      private static void AddItemToSourceCollection(IEnumerable<TItemSource> source, CollectionChangedArgs<TItemVM> args) {
+         var listSource = source as IList<TItemSource>;
+         var collectionSource = source as ICollection<TItemSource>;
+
+         if (listSource != null) {
+            bool listSourceHasChanged = !Object.ReferenceEquals(listSource[args.Index], args.NewItem.Source);
+            ThrowOutOfSyncExceptionIf(listSourceHasChanged);
+            listSource.RemoveAt(args.Index);
+         } else if (collectionSource != null) {
+            bool itemWasFound = collectionSource.Remove(args.NewItem.Source);
+            bool listSourceHasChanged = collectionSource.Count != args.Collection.Count;
+
+            ThrowOutOfSyncExceptionIf(!itemWasFound || listSourceHasChanged);
+         }
+      }
+
+      private static void RemoveItemFromSourceCollection(IEnumerable<TItemSource> source, CollectionChangedArgs<TItemVM> args) {
+         var listSource = source as IList<TItemSource>;
+         var collectionSource = source as ICollection<TItemSource>;
+
+         if (listSource != null) {
+            bool listSourceHasChanged = !Object.ReferenceEquals(listSource[args.Index], args.OldItem.Source);
+            ThrowOutOfSyncExceptionIf(listSourceHasChanged);
+            listSource.RemoveAt(args.Index);
+         } else if (collectionSource != null) {
+            bool itemWasFound = collectionSource.Remove(args.OldItem.Source);
+            bool listSourceHasChanged = collectionSource.Count != args.Collection.Count;
+
+            ThrowOutOfSyncExceptionIf(!itemWasFound || listSourceHasChanged);
+         }
+      }
+
+      private static void SetItemInSourceCollection(IEnumerable<TItemSource> source, CollectionChangedArgs<TItemVM> args) {
+         var listSource = source as IList<TItemSource>;
+         var collectionSource = source as ICollection<TItemSource>;
+
+         if (listSource != null) {
+            bool listSourceHasChanged = !Object.Equals(listSource[args.Index], args.OldItem.Source);
+            ThrowOutOfSyncExceptionIf(listSourceHasChanged);
+
+            listSource[args.Index] = args.NewItem.Source;
+         } else {
+            if (collectionSource != null) {
+               bool itemWasFound = collectionSource.Remove(args.OldItem.Source);
+               ThrowOutOfSyncExceptionIf(!itemWasFound);
+
+               collectionSource.Add(args.NewItem.Source);
+            }
+         }
+
+         if (collectionSource != null) {
+            bool listSourceHasChanged = collectionSource.Count != args.Collection.Count;
+            ThrowOutOfSyncExceptionIf(listSourceHasChanged);
+         }
+      }
+
+      private static void ClearSourceCollection(IEnumerable<TItemSource> source, CollectionChangedArgs<TItemVM> args) {
+         var collectionSource = source as ICollection<TItemSource>;
+         if (collectionSource != null) {
+            bool listSourceHasChanged = collectionSource.Count != args.OldItems.Count();
+            ThrowOutOfSyncExceptionIf(listSourceHasChanged);
+
+            collectionSource.Clear();
+         }
+      }
+
+      private static void ThrowOutOfSyncExceptionIf(bool condition) {
          if (condition) {
             throw new InvalidOperationException(ExceptionTexts.VMCollectionOutOfSync);
          }

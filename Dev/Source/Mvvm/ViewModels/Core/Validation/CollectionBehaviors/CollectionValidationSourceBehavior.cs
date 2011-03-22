@@ -47,5 +47,10 @@
          new HierarchicalRevalidator(null, ValidationScope.SelfAndLoadedDescendants)
             .RevalidateCollection((IEnumerable<IViewModel>)items); // TODO: Why do we need to cast here?
       }
+
+
+      public void HandleChange(IBehaviorContext context, CollectionChangedArgs<TItemVM> args) {
+         throw new System.NotImplementedException();
+      }
    }
 }

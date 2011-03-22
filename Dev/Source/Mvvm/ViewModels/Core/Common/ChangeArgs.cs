@@ -1,5 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
+   using System.Collections.Generic;
    using System.Diagnostics.Contracts;
+   using System.Linq;
    using Inspiring.Mvvm.Common;
 
    public enum ChangeType {
@@ -48,6 +50,22 @@
             .Append(changedProperty);
       }
 
+
+      internal ChangeArgs(
+         ChangeType changeType,
+         IVMCollection changedCollection,
+         IEnumerable<IViewModel> oldItems = null,
+         IEnumerable<IViewModel> newItems = null
+      ) {
+         ChangedPath = Path
+            .Empty
+            .Append(changedCollection.Owner)
+            .Append(changedCollection);
+
+         OldItems = oldItems ?? Enumerable.Empty<IViewModel>();
+         NewItems = newItems ?? Enumerable.Empty<IViewModel>();
+      }
+
       private ChangeArgs(
          ChangeType changeType,
          IViewModel changedVM,
@@ -68,6 +86,10 @@
       public IVMPropertyDescriptor ChangedProperty { get; private set; }
 
       public Path ChangedPath { get; private set; }
+
+      public IEnumerable<IViewModel> OldItems { get; private set; }
+
+      public IEnumerable<IViewModel> NewItems { get; private set; }
 
       internal ChangeArgs PrependViewModel(IViewModel viewModel) {
          return new ChangeArgs(

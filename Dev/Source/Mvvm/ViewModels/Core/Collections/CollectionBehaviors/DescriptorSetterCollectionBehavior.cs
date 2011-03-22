@@ -66,5 +66,14 @@
       ) {
          this.ItemsClearedNext(context, collection, previousItems);
       }
+
+      public void HandleChange(IBehaviorContext context, CollectionChangedArgs<TItemVM> args) {
+         foreach (IViewModel item in args.NewItems) {
+            // TODO: Should we check old descriptor, should the Descriptor property handle this, or is it OK as it is now?
+            item.Descriptor = _itemDescriptor;
+         }
+
+         this.HandleChangeNext(context, args);
+      }
    }
 }

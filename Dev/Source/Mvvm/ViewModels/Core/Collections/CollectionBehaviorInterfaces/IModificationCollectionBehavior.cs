@@ -70,9 +70,7 @@
          TItemVM[] previousItems
       );
 
-      //void HandleChange(IBehaviorContext context, CollectionChangedArgs<TItemVM> args) {
-
-      //}
+      void HandleChange(IBehaviorContext context, CollectionChangedArgs<TItemVM> args);
    }
 
    public enum CollectionChangeType {
@@ -93,6 +91,7 @@
       ) {
          Type = type;
          Collection = collection;
+         Index = index;
          OldItem = oldItem;
          OldItems = new[] { oldItem };
          NewItem = newItem;
@@ -106,13 +105,16 @@
       ) {
          Type = type;
          Collection = collection;
+         Index = -1;
          OldItems = collection;
          NewItems = oldItems;
       }
 
       public CollectionChangeType Type { get; private set; }
 
-      public IVMCollection Collection { get; private set; }
+      public IVMCollection<TItemVM> Collection { get; private set; }
+
+      public int Index { get; private set; }
 
       public TItemVM OldItem { get; private set; }
 
@@ -192,10 +194,10 @@
 
       public static CollectionChangedArgs<TItemVM> CollectionPopulated(
          IVMCollection<TItemVM> collection,
-         TItemVM[] oldItems,
-         int index
+         TItemVM[] oldItems
       ) {
          Contract.Requires(collection != null);
+         Contract.Requires(oldItems != null);
 
          return new CollectionChangedArgs<TItemVM>(
             CollectionChangeType.Populated,
@@ -248,6 +250,11 @@
 
          public void Initialize(BehaviorInitializationContext context) {
             // TODO: Remove
+         }
+
+
+         public void HandleChange(IBehaviorContext context, CollectionChangedArgs<TItemVM> args) {
+            throw new System.NotImplementedException();
          }
       }
    }

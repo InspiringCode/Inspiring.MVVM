@@ -133,6 +133,17 @@
          }
       }
 
+      public static void HandleChangeNext<TItemVM>(
+         this Behavior behavior,
+         IBehaviorContext context,
+         CollectionChangedArgs<TItemVM> args
+      ) where TItemVM : IViewModel {
+         IModificationCollectionBehavior<TItemVM> next;
+         if (behavior.TryGetBehavior(out next)) {
+            next.HandleChange(context, args);
+         }
+      }
+
       public static void CollectionPopulatetNext<TItemVM>(
          this Behavior behavior,
          IBehaviorContext context,
