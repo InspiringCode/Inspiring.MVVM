@@ -5,6 +5,7 @@
       protected ValidationArgs(IValidator validator) {
          Contract.Requires(validator != null);
          Validator = validator;
+         Result = ValidationResult.Valid;
       }
 
       internal IValidator Validator { get; private set; }

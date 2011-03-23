@@ -19,14 +19,15 @@
 
          Target = target;
          TargetProperty = targetProperty;
-         Value = Target.Kernel.GetValue(TargetProperty);
       }
 
       public TTargetVM Target { get; private set; }
 
       public IVMPropertyDescriptor<TValue> TargetProperty { get; private set; }
 
-      public TValue Value { get; private set; }
+      public TValue Value {
+         get { return Target.Kernel.GetValue(TargetProperty); }
+      }
 
       public void AddError(string message, object details = null) {
          Contract.Requires<ArgumentNullException>(message != null);

@@ -195,6 +195,11 @@
     <Compile Include="ViewModels\Core\Validation\ValidationErrorCollectionTests.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationPropertyBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationStateTests.cs" />
+    <Compile Include="ViewModels\Core\Validation\Validators\CollectionValidationArgsTests.cs" />
+    <Compile Include="ViewModels\Core\Validation\Validators\DelegateValidatorTests.cs" />
+    <Compile Include="ViewModels\Core\Validation\Validators\PropertyValidationArgsTests.cs" />
+    <Compile Include="ViewModels\Core\Validation\Validators\ValidationArgsFixture.cs" />
+    <Compile Include="ViewModels\Core\Validation\Validators\ViewModelValidationArgsTests.cs" />
     <Compile Include="ViewModels\Core\Validation\ViewModelValidationBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBaseTests.cs" />
     <Compile Include="ViewModels\Core\Common\InstancePathTests.cs" />
