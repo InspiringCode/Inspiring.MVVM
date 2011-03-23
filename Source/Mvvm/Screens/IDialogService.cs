@@ -5,11 +5,14 @@
    /// </summary>
    public enum CustomDialogIcon {
       None,
-      Information,
+      Error,
+      Hand,
+      Stop,
       Question,
       Exclamation,
-      Stop,
-      Warning
+      Warning,
+      Information,
+      Asterisk
    }
 
    /// <summary>

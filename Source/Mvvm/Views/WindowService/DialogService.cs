@@ -112,18 +112,24 @@
 
       protected static MessageBoxImage MapIcon(CustomDialogIcon icon) {
          switch (icon) {
-            case CustomDialogIcon.Exclamation:
-               return MessageBoxImage.Exclamation;
-            case CustomDialogIcon.Information:
-               return MessageBoxImage.Information;
             case CustomDialogIcon.None:
                return MessageBoxImage.None;
-            case CustomDialogIcon.Question:
-               return MessageBoxImage.Question;
+            case CustomDialogIcon.Error:
+               return MessageBoxImage.Error;
+            case CustomDialogIcon.Hand:
+               return MessageBoxImage.Hand;
             case CustomDialogIcon.Stop:
                return MessageBoxImage.Stop;
+            case CustomDialogIcon.Question:
+               return MessageBoxImage.Question;
+            case CustomDialogIcon.Exclamation:
+               return MessageBoxImage.Exclamation;
             case CustomDialogIcon.Warning:
                return MessageBoxImage.Warning;
+            case CustomDialogIcon.Information:
+               return MessageBoxImage.Information;
+            case CustomDialogIcon.Asterisk:
+               return MessageBoxImage.Asterisk;
             default:
                throw new ArgumentException();
          }
