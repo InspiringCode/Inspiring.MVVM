@@ -2,14 +2,7 @@
    using System;
 
    internal abstract class PathDefinitionStep {
-      private PathDefinitionStep _next;
-
-      public PathDefinitionStep Next {
-         get { return _next ?? PathTerminationStep.Instance; }
-         set { _next = value; }
-      }
-
-      public abstract PathMatch Matches(PathIterator path);
+      public abstract PathMatch Matches(PathDefinitionIterator definitionSteps, PathIterator step);
 
       protected void ThrowUnexpectedStepTypeException(int index, params PathStepType[] expectedTypes) {
          throw new ArgumentException(

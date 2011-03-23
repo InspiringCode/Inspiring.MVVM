@@ -188,6 +188,7 @@
     <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\RefreshBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\ChildScreenBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\UntypedPropertyAccessorBehavior.cs" />
+    <Compile Include="ViewModels\Core\Paths\Definition\PathDefinitionIterator.cs" />
     <Compile Include="ViewModels\Core\Paths\Definition\PathMatch.cs" />
     <Compile Include="ViewModels\Core\Paths\Definition\PropertyStep.cs" />
     <Compile Include="ViewModels\Core\Paths\Path.cs" />

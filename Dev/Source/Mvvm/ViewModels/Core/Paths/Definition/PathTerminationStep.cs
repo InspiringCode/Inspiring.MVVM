@@ -6,15 +6,15 @@
       private PathTerminationStep() {
       }
 
-      public override PathMatch Matches(PathIterator path) {
+      public override PathMatch Matches(PathDefinitionIterator definitionSteps, PathIterator step) {
          int matchedSteps = 0;
 
-         if (path.HasStep) {
-            path.MoveNext();
+         if (step.HasStep) {
+            step.MoveNext();
             matchedSteps++;
          }
 
-         return path.HasStep ?
+         return step.HasStep ?
             PathMatch.Fail() :
             PathMatch.Succeed(length: matchedSteps);
       }

@@ -37,7 +37,7 @@
 
       internal void AssertException(PathDefinitionStep step, Path path) {
          AssertHelper.Throws<ArgumentException>(() =>
-            step.Matches(path.GetIterator())
+            step.Matches(GetDefinitionIterator(), path.GetIterator())
          );
       }
 
@@ -57,8 +57,7 @@
             PathDefinitionStep nextStep,
             string message = "The step was expected to return a successful match."
          ) {
-            _step.Next = nextStep;
-            var result = _step.Matches(_path.GetIterator());
+            var result = _step.Matches(GetDefinitionIterator(nextStep), _path.GetIterator());
             Assert.IsTrue(result.Success, message);
          }
 
@@ -66,8 +65,7 @@
             PathDefinitionStep nextStep,
             string message = "The step was expected to return a failing match."
          ) {
-            _step.Next = nextStep;
-            var result = _step.Matches(_path.GetIterator());
+            var result = _step.Matches(GetDefinitionIterator(nextStep), _path.GetIterator());            
             Assert.IsFalse(result.Success, message);
          }
 
@@ -76,8 +74,7 @@
             int expectedLength,
             string message = "Expected a match length of {0} but was {1}."
          ) {
-            _step.Next = nextStep;
-            var result = _step.Matches(_path.GetIterator());
+            var result = _step.Matches(GetDefinitionIterator(nextStep), _path.GetIterator());
             Assert.AreEqual(expectedLength, result.Length, message, expectedLength, result.Length);
          }
 
@@ -87,11 +84,10 @@
             var mock = new Mock<PathDefinitionStep>();
 
             mock
-               .Setup(x => x.Matches(It.IsAny<PathIterator>()))
+               .Setup(x => x.Matches(It.IsAny<PathDefinitionIterator>(), It.IsAny<PathIterator>()))
                .Callback(() => Assert.Fail(message));
 
-            _step.Next = mock.Object;
-            _step.Matches(_path.GetIterator());
+            _step.Matches(GetDefinitionIterator(mock.Object), _path.GetIterator());
          }
 
          public void AssertIteratorWasIncremented(
@@ -101,14 +97,13 @@
             var mock = new Mock<PathDefinitionStep>();
 
             mock
-               .Setup(x => x.Matches(It.IsAny<PathIterator>()))
-               .Callback<PathIterator>(it => {
+               .Setup(x => x.Matches(It.IsAny<PathDefinitionIterator>(), It.IsAny<PathIterator>()))
+               .Callback<PathDefinitionIterator, PathIterator>((s, it) => {
                   int actual = it.GetIndex();
                   Assert.AreEqual(expectedIncrement, actual, message, expectedIncrement, actual);
                });
-
-            _step.Next = mock.Object;
-            _step.Matches(_path.GetIterator());
+            
+            _step.Matches(GetDefinitionIterator(mock.Object), _path.GetIterator());
          }
 
          private static PathDefinitionStep CreateStepStub(bool success, int matchLength = 0) {
@@ -119,13 +114,18 @@
                PathMatch.Fail(matchLength);
 
             mock
-              .Setup(x => x.Matches(It.IsAny<PathIterator>()))
+              .Setup(x => x.Matches(It.IsAny<PathDefinitionIterator>(), It.IsAny<PathIterator>()))
               .Returns(result);
 
             return mock.Object;
          }
       }
 
+      private static PathDefinitionIterator GetDefinitionIterator(
+         params PathDefinitionStep[] nextDefinitionSteps
+      ) {
+         return new PathDefinitionIterator(nextDefinitionSteps);
+      }
 
       //
       // TEST VIEW MODELS

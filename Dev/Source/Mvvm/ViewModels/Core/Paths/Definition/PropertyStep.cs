@@ -14,7 +14,7 @@
          _propertySelector = propertySelector;
       }
 
-      public override PathMatch Matches(PathIterator step) {
+      public override PathMatch Matches(PathDefinitionIterator definitionSteps, PathIterator step) {
          if (!step.HasStep) {
             return PathMatch.Fail();
          }
@@ -35,7 +35,8 @@
             }
 
             PathMatch result = PathMatch.Succeed(length: matchedPathSteps);
-            PathMatch nextResult = Next.Matches(step);
+            PathMatch nextResult = definitionSteps.MatchesNext(step);
+            //PathMatch nextResult = Next.Matches(definitionSteps, step);
 
             return PathMatch.Combine(result, nextResult);
          } else {
