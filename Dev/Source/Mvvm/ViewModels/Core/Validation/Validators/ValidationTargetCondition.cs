@@ -17,7 +17,7 @@
 
       public override string ToString() {
          return String.Format(
-            "ValidationRequest.ValidationTarget matches {0}",
+            "ValidationTarget matches {0}",
             _expectedTarget
          );
       }

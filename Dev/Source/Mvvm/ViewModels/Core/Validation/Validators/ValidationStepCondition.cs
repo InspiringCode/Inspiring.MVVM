@@ -13,7 +13,7 @@
       }
 
       public override string ToString() {
-         return String.Format("ValidationRequest.Step == {0}", _expectedStep);
+         return String.Format("Step == {0}", _expectedStep);
       }
    }
 }

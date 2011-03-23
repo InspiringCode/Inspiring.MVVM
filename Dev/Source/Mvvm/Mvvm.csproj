@@ -214,6 +214,7 @@
     <Compile Include="ViewModels\Core\Validation\ValidationStep.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationTrigger.cs" />
     <Compile Include="ViewModels\Core\Validation\Args\CollectionValidationArgs.cs" />
+    <Compile Include="ViewModels\Core\Validation\Validators\CompositeValidator.cs" />
     <Compile Include="ViewModels\Core\Validation\Validators\ConditionalValidator.cs" />
     <Compile Include="ViewModels\Core\Validation\Validators\DelegateValidator.cs" />
     <Compile Include="ViewModels\Core\Validation\Validators\IValidator.cs" />

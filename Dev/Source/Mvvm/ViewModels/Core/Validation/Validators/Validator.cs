@@ -5,15 +5,15 @@
    internal abstract class Validator<TArgs> : IValidator
       where TArgs : ValidationArgs {
 
+      private readonly Func<ValidationRequest, IValidator, TArgs> _argsFactory;
+
       public Validator(Func<ValidationRequest, IValidator, TArgs> argsFactory) {
          Contract.Requires(argsFactory != null);
-         ArgsFactory = argsFactory;
+         _argsFactory = argsFactory;
       }
 
-      public Func<ValidationRequest, IValidator, TArgs> ArgsFactory { get; private set; }
-
       public ValidationResult Execute(ValidationRequest request) {
-         TArgs args = ArgsFactory(request, this);
+         TArgs args = _argsFactory(request, this);
          Execute(args);
          return args.Result;
       }
