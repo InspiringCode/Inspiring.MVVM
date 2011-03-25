@@ -168,6 +168,7 @@
     <Compile Include="TestUtils\ComparisonObjectTests.cs" />
     <Compile Include="TestUtils\GenericComparisonObjectTests.cs" />
     <Compile Include="ValidationTestBase.cs" />
+    <Compile Include="ViewModels\- No Namespace -\VMCollectionCallModificationBehaviorTests.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMCollectionTests.cs" />
     <Compile Include="ViewModels\Core\Behaviors\PropertyBehaviors\DisplayValueBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Behaviors\PropertyBehaviors\RefreshableValueCacheBehaviorTests.cs" />

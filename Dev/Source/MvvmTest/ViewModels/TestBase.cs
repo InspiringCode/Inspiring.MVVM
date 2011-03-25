@@ -18,7 +18,7 @@
       }
 
       [TestInitialize]
-      public void Setup() {
+      public void SetupBase() {
          ServiceLocator.SetServiceLocator(new ReflectionServiceLocator());
          ValidationContext.Reset(); // HACK
       }

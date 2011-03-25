@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Collections {
    using System.Collections.ObjectModel;
-   using Inspiring.Mvvm;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.MvvmTest.Stubs;
@@ -67,11 +66,21 @@
 
       protected IVMCollection<TItemVM> CreateCollectionStub(int itemCount) {
          var stub = new VMCollectionMock(CollectionOwner);
-         
+
          for (int i = 0; i < itemCount; i++) {
             stub.Add(CreateAnonymousItem());
          }
-         
+
+         return stub;
+      }
+
+      protected IVMCollection<TItemVM> CreateCollectionStub(params TItemVM[] items) {
+         var stub = new VMCollectionMock(CollectionOwner);
+
+         for (int i = 0; i < items.Length; i++) {
+            stub.Add(items[i]);
+         }
+
          return stub;
       }
 

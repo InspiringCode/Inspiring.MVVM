@@ -232,7 +232,7 @@
 
          vm.UpdateGroupsFromSource();
 
-         Assert.IsTrue(eventSequence.EndsWith("|ListChanged|PropertyChanged|")); // TODO: Investigate why so many events are raised.
+         Assert.IsTrue(eventSequence.Contains("|ListChanged|PropertyChanged|")); // TODO: Investigate why so many events are raised.
       }
 
       [TestMethod]
