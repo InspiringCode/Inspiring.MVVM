@@ -76,7 +76,7 @@
       ///      items of a collection (for example that the 'Name' property of 
       ///      the collection is unique).</para>
       /// </param>
-      public CollectionPropertyValidatorBuilder<TItemDescriptor, TItemValue> CheckCollection<TItemDescriptor, TItemValue>(
+      public CollectionValidatorBuilder<TItemDescriptor, TItemValue> CheckCollection<TItemDescriptor, TItemValue>(
          Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<TItemDescriptor>>>> collectionSelector,
          Func<TItemDescriptor, IVMPropertyDescriptor<TItemValue>> itemPropertySelector
       ) where TItemDescriptor : VMDescriptorBase {
@@ -84,7 +84,7 @@
             .ExtendTargetPath(PropertySelector.Create(collectionSelector))
             .SetTargetProperty(PropertySelector.CreateExactlyTyped(itemPropertySelector));
 
-         return new CollectionPropertyValidatorBuilder<TItemDescriptor, TItemValue>(config);
+         return new CollectionValidatorBuilder<TItemDescriptor, TItemValue>(config);
       }
 
       /// <summary>

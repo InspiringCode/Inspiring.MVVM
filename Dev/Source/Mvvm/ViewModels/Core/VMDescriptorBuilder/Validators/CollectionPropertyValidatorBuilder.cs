@@ -5,12 +5,12 @@
    using System.Linq;
    using Inspiring.Mvvm.Common;
 
-   public sealed class CollectionPropertyValidatorBuilder<TItemDescriptor, TItemValue>
+   public sealed class CollectionValidatorBuilder<TItemDescriptor, TItemValue>
       where TItemDescriptor : VMDescriptorBase {
 
       private ValidatorConfiguration _configuration;
 
-      internal CollectionPropertyValidatorBuilder(ValidatorConfiguration configuration) {
+      internal CollectionValidatorBuilder(ValidatorConfiguration configuration) {
          Contract.Requires(configuration != null);
          _configuration = configuration;
       }

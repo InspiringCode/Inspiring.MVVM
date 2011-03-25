@@ -12,7 +12,7 @@
          ValidationRequest actualRequest = null;
          IValidator actualValidator = null;
 
-         Func<ValidationRequest, IValidator, TestArgs> argsFactory = (r, v) => {
+         Func<IValidator, ValidationRequest, TestArgs> argsFactory = (v, r) => {
             actualRequest = r;
             actualValidator = v;
             return new TestArgs();
@@ -32,7 +32,7 @@
          TestArgs args = new TestArgs();
          TestArgs actualArgs = null;
 
-         Func<ValidationRequest, IValidator, TestArgs> argsFactory = (r, v) => {
+         Func<IValidator, ValidationRequest, TestArgs> argsFactory = (v, r) => {
             return args;
          };
 

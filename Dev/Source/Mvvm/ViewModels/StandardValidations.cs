@@ -78,7 +78,7 @@
 
       // TODO: Test me.
       public static void IsUnique<TItemDescriptor, T>(
-         this CollectionPropertyValidatorBuilder<TItemDescriptor, T> builder,
+         this CollectionValidatorBuilder<TItemDescriptor, T> builder,
          string errorMessage
       ) where TItemDescriptor : VMDescriptorBase {
          // We only require 'IViewModel' because 'IViewModel<TItemDescriptor>' does not
@@ -116,7 +116,7 @@
       }
 
       public static void IsUnique<TItemDescriptor>(
-         this CollectionPropertyValidatorBuilder<TItemDescriptor, string> builder,
+         this CollectionValidatorBuilder<TItemDescriptor, string> builder,
          StringComparison comparisonType,
          string errorMessage
       ) where TItemDescriptor : VMDescriptorBase {

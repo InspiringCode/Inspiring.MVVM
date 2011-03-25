@@ -3,13 +3,22 @@
    using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.Common;
 
+   internal static class DelegateValidator {
+      public static DelegateValidator<TArgs> Create<TArgs>(
+         Func<IValidator, ValidationRequest, TArgs> argsFactory,
+         Action<TArgs> validatorAction
+      ) where TArgs : ValidationArgs {
+         return new DelegateValidator<TArgs>(argsFactory, validatorAction);
+      }
+   }
+
    internal sealed class DelegateValidator<TArgs> : Validator<TArgs>
       where TArgs : ValidationArgs {
 
       private readonly Action<TArgs> _validatorAction;
 
       public DelegateValidator(
-         Func<ValidationRequest, IValidator, TArgs> argsFactory,
+         Func<IValidator, ValidationRequest, TArgs> argsFactory,
          Action<TArgs> validatorAction
       )
          : base(argsFactory) {
