@@ -149,6 +149,7 @@
     <Compile Include="ViewModels\Core\BehaviorInterfaces\ViewModelBehaviors\IRefreshControllerBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\ViewModelBehaviors\IValidationExecutorBehavior.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Factories\CommandBehaviorFactory.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Keys\PropertyBehaviorKeys.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IItemDescriptorProviderCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IPopulatorCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IModificationCollectionBehavior.cs" />
