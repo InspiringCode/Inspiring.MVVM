@@ -1,7 +1,17 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core.VMDescriptorBuilder.ValidatorsNew {
    using System;
+   using Inspiring.Mvvm.ViewModels.Core.Validation.Validators;
 
-   public sealed class PropertyValidatorBuilder<TVM, TValue> where TVM : IViewModel {
+   public sealed class PropertyValidatorBuilder<TOwnerVM, TTargetVM, TValue>
+      where TOwnerVM : IViewModel
+      where TTargetVM : IViewModel {
+
+      private readonly ValidatorBuilderOperation _operation;
+
+      internal PropertyValidatorBuilder(ValidatorBuilderOperation operation) {
+         _operation = operation;
+      }
+
       /// <summary>
       ///   Defines a custom validator that is executed every time the selected
       ///   property is about to change.
@@ -10,13 +20,20 @@
       ///   The validator is also executed when a revalidation is performed, or
       ///   the VM is added to/removed from a collection.
       /// </remarks>
-      /// <param name="validator">
-      ///   An action that performs the validation. The first argument is the VM
-      ///   whose property should be validated and the second argument is the new
-      ///   value of the property.
-      /// </param>
-      public void Custom(Action<TVM, TValue, ValidationArgs> validator) {
-         throw new NotImplementedException();
+      public void Custom(Action<PropertyValidationArgs<TOwnerVM, TTargetVM, TValue>> validationAction) {
+         IValidator val = DelegateValidator.For(
+            PropertyValidationArgs<TOwnerVM, TTargetVM, TValue>.Create,
+            validationAction
+         );
+
+         val = new ConditionalValidator(
+            new ValidationStepCondition(ValidationStep.Value),
+            val
+         );
+
+         _operation.BuildActions.Push(() => {
+            _operation.ActionArgs.Push(val);
+         });
       }
    }
 }

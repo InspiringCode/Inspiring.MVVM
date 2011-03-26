@@ -49,9 +49,25 @@
          Assert.AreEqual("BirthDate", name);
       }
 
+      [TestMethod]
+      public void GetPropertyNameParameterless_StaticFieldInCallingClass_Succeeds() {
+         var name = ExpressionService.GetPropertyName(() => StaticField);
+         Assert.AreEqual("StaticField", name);
+      }
+
+      [TestMethod]
+      public void GetPropertyNameParameterless_StaticFieldInExternalClass_Succeeds() {
+         var name = ExpressionService.GetPropertyName(() => Person.DefaultDepartment);
+         Assert.AreEqual("DefaultDepartment", name);
+      }
+
+      private static readonly object StaticField = new Object();
+
       public DateTime BirthDate { get; set; }
 
       private class Person {
+         public static readonly Department DefaultDepartment = null;
+
          public DateTime BirthDate { get; set; }
          public Department Department { get; set; }
          public DateTime GetBirthDate() {

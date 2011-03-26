@@ -9,6 +9,10 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          _steps = steps;
       }
 
+      public int Length {
+         get { return _steps.Length; }
+      }
+
       public bool IsEmpty {
          get { return _steps.Length == 0; }
       }

@@ -4,7 +4,7 @@
    using Inspiring.Mvvm.Common;
 
    internal static class DelegateValidator {
-      public static DelegateValidator<TArgs> Create<TArgs>(
+      public static DelegateValidator<TArgs> For<TArgs>(
          Func<IValidator, ValidationRequest, TArgs> argsFactory,
          Action<TArgs> validatorAction
       ) where TArgs : ValidationArgs {

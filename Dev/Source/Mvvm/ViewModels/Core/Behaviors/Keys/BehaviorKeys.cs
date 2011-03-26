@@ -1,6 +1,18 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core {
+﻿using System;
+using System.Linq.Expressions;
+using Inspiring.Mvvm.Common;
+namespace Inspiring.Mvvm.ViewModels.Core {
 
-   public static class BehaviorKeys {
+   public class BehaviorKeysBase {
+      private static readonly BehaviorKey ValidationSource = Key(() => ValidationSource);
+
+      protected static BehaviorKey Key(Expression<Func<BehaviorKey>> behaviorFieldSelector) {
+         string key = ExpressionService.GetPropertyName(behaviorFieldSelector);
+         return new BehaviorKey(key);
+      }
+   }
+
+   public static class BehaviorKeys  {
 
       public static readonly BehaviorKey TypeDescriptor = new BehaviorKey("TypeDescriptor");
 

@@ -2,8 +2,8 @@
    using System;
    using Inspiring.Mvvm.ViewModels.Core.Validation.Validators;
 
-   internal class ValidatorBuilder<TOwner, TTarget, TDescriptor>
-      where TOwner : IViewModel
+   internal class ValidatorBuilder<TOwnerVM, TTarget, TDescriptor>
+      where TOwnerVM : IViewModel
       where TTarget : IViewModel
       where TDescriptor : VMDescriptorBase {
 
@@ -21,78 +21,76 @@
 
       /// <summary>
       ///   Defines a custom validator that is executed every time the VM or 
-      ///   any descendant VM changes.
+      ///   any descendant VM has changed.
       /// </summary>
-      public void CheckViewModel(Action<ViewModelValidationArgs<TOwner, TTarget>> validatorAction) {
+      public void CheckViewModel(Action<ViewModelValidationArgs<TOwnerVM, TTarget>> validatorAction) {
          var op = OperationProvider.GetOperation();
 
-         if (op.Path.IsEmpty) {
-            // This is the first path step: A custom validation is defined for 
-            // OUR view model (with the descriptor that we are building right 
-            // now) and NOT for a descendant.
-            // 
-            // If a descendant is validated, it has to enable the appropriate
-            // behaviors itself, because we can only modify our own descriptor
-            // (the user has to call 'EnableParentValidation' manually).  
+         if (PathSelectsDescendant(op.Path)) {
             op.EnableViewModelValidationSourceBehavior();
          }
 
-         op.BuildActions.Push(() => {
-            op.ActionArgs.Push(
-               new ConditionalValidator(
-                  new ValidationTargetCondition(op.Path),
-                  new ConditionalValidator(
-                     new ValidationStepCondition(ValidationStep.ViewModel),
-                     DelegateValidator.Create(ViewModelValidationArgs<TOwner, TTarget>.Create, validatorAction)
-                  )
-               )
-            );
-         });
+         IValidator val = DelegateValidator.For(
+            ViewModelValidationArgs<TOwnerVM, TTarget>.Create,
+            validatorAction
+         );
 
-         throw new NotImplementedException();
+         val = WithStandardConditions(val, ValidationStep.ViewModel, op.Path);
+
+         op.BuildActions.Push(() => {
+            op.ActionArgs.Push(val);
+         });
       }
 
       /// <summary>
       ///   Selects the VM property for which a validator should be defined.
       /// </summary>
-      public PropertyValidatorBuilder<TTarget, TValue> Check<TValue>(
+      public PropertyValidatorBuilder<TOwnerVM, TTarget, TValue> Check<TValue>(
          Func<TDescriptor, IVMPropertyDescriptor<TValue>> propertySelector
       ) {
          var op = OperationProvider.GetOperation();
 
-         if (op.Path.IsEmpty) {
-            // This is the first path step: A custom validation is defined for 
-            // a property of OUR view model (with the descriptor that we are 
-            // building right now) and NOT for a descendant.
-            // 
-            // If a descendant is validated, it has to enable the appropriate
-            // behaviors itself, because we can only modify our own descriptor
-            // (the user has to call 'EnableParentValidation' manually).
-
+         if (PathSelectsDescendant(op.Path)) {
             IVMPropertyDescriptor p = propertySelector(_descriptor);
             op.EnablePropertyValidationSourceBehavior(p);
          }
 
          op.Path = op.Path.Append(propertySelector);
 
+         var targetPathCondition = new ValidationTargetCondition(op.Path);
+
          op.BuildActions.Push(() => {
             var inner = op.ActionArgs.Pop();
 
             op.ActionArgs.Push(
-               new ConditionalValidator(new ValidationTargetCondition(op.Path), inner)
+               new ConditionalValidator(targetPathCondition, inner)
             );
          });
 
-         throw new NotImplementedException();
+         return new PropertyValidatorBuilder<TOwnerVM, TTarget, TValue>(op);
       }
 
       /// <summary>
       ///   Selects the VM collection for which a validator should be defined.
       /// </summary>
-      public CollectionValidatorBuilder<TItemVM> CheckCollection<TItemVM>(
+      public CollectionValidatorBuilder<TOwnerVM, TItemVM> CheckCollection<TItemVM>(
          Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<TItemVM>>> collectionSelector
       ) where TItemVM : IViewModel {
-         throw new NotImplementedException();
+         var op = OperationProvider.GetOperation();
+
+         op.Path = op.Path.Append(collectionSelector);
+
+         var targetPathCondition = new ValidationTargetCondition(op.Path);
+
+         op.BuildActions.Push(() => {
+            var inner = op.ActionArgs.Pop();
+
+            op.ActionArgs.Push(
+               new ConditionalValidator(targetPathCondition, inner)
+            );
+         });
+
+         return new CollectionValidatorBuilder<TOwnerVM, TItemVM>(op);
       }
 
       /// <summary>
@@ -105,38 +103,91 @@
       ///      items of a collection (for example that the 'Name' property of 
       ///      the collection is unique).</para>
       /// </param>
-      public CollectionValidatorBuilder<TItemDescriptor, TItemValue> CheckCollection<TItemDescriptor, TItemValue>(
+      public CollectionValidatorBuilder<TOwnerVM, TItemDescriptor, TValue> CheckCollection<TItemDescriptor, TValue>(
          Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<TItemDescriptor>>>> collectionSelector,
-         Func<TItemDescriptor, IVMPropertyDescriptor<TItemValue>> itemPropertySelector
+         Func<TItemDescriptor, IVMPropertyDescriptor<TValue>> itemPropertySelector
       ) where TItemDescriptor : VMDescriptorBase {
-         throw new NotImplementedException();
+         var op = OperationProvider.GetOperation();
+
+         op.Path = op
+            .Path
+            .Append(collectionSelector)
+            .Append(itemPropertySelector);
+
+         var targetPathCondition = new ValidationTargetCondition(op.Path);
+
+         op.BuildActions.Push(() => {
+            var inner = op.ActionArgs.Pop();
+
+            op.ActionArgs.Push(
+               new ConditionalValidator(targetPathCondition, inner)
+            );
+         });
+
+         return new CollectionValidatorBuilder<TOwnerVM, TItemDescriptor, TValue>(op);
       }
 
       /// <summary>
       ///   Selects the child VM for which a validator should be defined. <see 
-      ///   cref="ValidateDescendant"/> calls may be chained to select any descendant VM.
-      /// </summary>
-      /// <param name="propertySelector">
-      ///   The given function should return a collection VM property.
-      /// </param>
-      public ValidatorBuilder<IViewModel<TChildDescriptor>, TChildDescriptor> ValidateDescendant<TChildDescriptor>(
-         Func<TDescriptor, IVMPropertyDescriptor<IViewModel<TChildDescriptor>>> propertySelector
-      ) where TChildDescriptor : VMDescriptorBase {
-         throw new NotImplementedException();
-      }
-
-      /// <summary>
-      ///   Selects a child collection for whose items a validator should be 
-      ///   defined. <see cref="ValidateDescendant"/> may be freely intermixed with <see
-      ///   cref="ValidateDescendant"/> calls to select any descendant VM.
+      ///   cref="ValidateDescendant"/> calls may be chained to select any 
+      ///   descendant VM.
       /// </summary>
       /// <param name="propertySelector">
       ///   The given function should return a child VM property.
       /// </param>
-      public ValidatorBuilder<IViewModel<TChildDescriptor>, TChildDescriptor> ValidateDescendant<TChildDescriptor>(
-         Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModel<TChildDescriptor>>>> propertySelector
-      ) where TChildDescriptor : VMDescriptorBase {
-         throw new NotImplementedException();
+      /// <typeparam name="C">
+      ///   The descriptor type of the child VM. Can be inferred by the compiler.
+      /// </typeparam>
+      public ValidatorBuilder<TOwnerVM, IViewModel<C>, C> ValidateDescendant<C>(
+         Func<TDescriptor, IVMPropertyDescriptor<IViewModel<C>>> propertySelector
+      ) where C : VMDescriptorBase {
+         var op = OperationProvider.GetOperation();
+         op.Path = op.Path.Append(propertySelector);
+
+         return new ValidatorBuilder<TOwnerVM, IViewModel<C>, C>(op, null);
+      }
+
+      /// <summary>
+      ///   Selects the child VM for which a validator should be defined. <see 
+      ///   cref="ValidateDescendant"/> calls may be chained to select any 
+      ///   descendant VM.
+      /// </summary>
+      /// <param name="propertySelector">
+      ///   The given function should return a collection VM property.
+      /// </param>
+      /// <typeparam name="C">
+      ///   The descriptor type of the child VM. Can be inferred by the compiler.
+      /// </typeparam>
+      public ValidatorBuilder<TOwnerVM, IViewModel<C>, C> ValidateDescendant<C>(
+         Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModel<C>>>> propertySelector
+      ) where C : VMDescriptorBase {
+         var op = OperationProvider.GetOperation();
+         op.Path = op.Path.Append(propertySelector);
+
+         return new ValidatorBuilder<TOwnerVM, IViewModel<C>, C>(op, null);
+      }
+
+      /// <summary>
+      ///   If a descendant is validated, it has to enable the appropriate behaviors 
+      ///   itself, because we can only modify our own descriptor (the user has to 
+      ///   call <see cref="EnableParentValidation"/> manually). 
+      /// </summary>
+      private static bool PathSelectsDescendant(PathDefinition descendantsPath) {
+         return !descendantsPath.IsEmpty;
+      }
+
+      private static ConditionalValidator WithStandardConditions(
+         IValidator innerValidator,
+         ValidationStep step,
+         PathDefinition targetPath
+      ) {
+         return new ConditionalValidator(
+            new ValidationStepCondition(ValidationStep.ViewModel),
+            new ConditionalValidator(
+               new ValidationTargetCondition(targetPath),
+               innerValidator
+            )
+         );
       }
    }
 }
