@@ -38,7 +38,7 @@
             get {
                // TODO: Refactor this?
                BehaviorChainConfiguration collectionConfiguration = _propertyConfiguration
-                  .GetBehavior<ICollectionBehaviorConfigurationBehavior>(BehaviorKeys.CollectionFactory)
+                  .GetBehavior<ICollectionBehaviorConfigurationBehavior>(PropertyBehaviorKeys.CollectionFactory)
                   .CollectionBehaviorConfiguration;
 
                return new SinglePropertyBehaviorBuilder<TValue>(Configuration, collectionConfiguration);

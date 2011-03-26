@@ -88,7 +88,7 @@
             .Configuration
             .PropertyConfigurations[property]
             .Enable(
-               BehaviorKeys.ManualUpdateBehavior,
+               PropertyBehaviorKeys.ManualUpdateBehavior,
                new ManualUpdateSelectionPropertyBehavior<SingleSelectionVM<TItemSource, TItemVM>, TSourceObject>()
             );
 
@@ -133,7 +133,7 @@
             .Configuration
             .PropertyConfigurations[property]
             .Enable(
-               BehaviorKeys.ManualUpdateBehavior,
+               PropertyBehaviorKeys.ManualUpdateBehavior,
                new ManualUpdateSelectionPropertyBehavior<SingleSelectionVM<TItemSource>, TSourceObject>()
             );
 

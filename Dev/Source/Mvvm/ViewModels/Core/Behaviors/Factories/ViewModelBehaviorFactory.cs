@@ -11,15 +11,15 @@
       }
 
       public IBehavior Create<TVM>(BehaviorKey key) where TVM : IViewModel {
-         if (key == BehaviorKeys.Validator) {
+         if (key == PropertyBehaviorKeys.Validator) {
             return new ViewModelValidationBehavior();
          }
 
-         if (key == BehaviorKeys.ManualUpdateCoordinator) {
+         if (key == PropertyBehaviorKeys.ManualUpdateCoordinator) {
             return new LoadOrderBehavior();
          }
 
-         if (key == BehaviorKeys.TypeDescriptor) {
+         if (key == PropertyBehaviorKeys.TypeDescriptor) {
             return new TypeDescriptorBehavior();
          }
 

@@ -11,7 +11,7 @@
       }
 
       public virtual IBehavior Create<TVM, TSourceObject>(BehaviorKey key) where TVM : IViewModel {
-         if (key == BehaviorKeys.WaitCursor) {
+         if (key == PropertyBehaviorKeys.WaitCursor) {
             return new WaitCursorBehavior();
          }
 

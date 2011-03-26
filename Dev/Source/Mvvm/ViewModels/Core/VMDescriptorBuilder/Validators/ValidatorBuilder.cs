@@ -70,7 +70,7 @@
             get {
                return _descriptorConfiguration
                   .ViewModelConfiguration
-                  .GetBehavior<ViewModelValidationBehavior>(BehaviorKeys.Validator);
+                  .GetBehavior<ViewModelValidationBehavior>(PropertyBehaviorKeys.Validator);
             }
          }
 
@@ -113,18 +113,18 @@
 
             _descriptorConfiguration
                .PropertyConfigurations[forProperty]
-               .Enable(BehaviorKeys.PreValidationValueCache);
+               .Enable(PropertyBehaviorKeys.PreValidationValueCache);
 
             _descriptorConfiguration
                .PropertyConfigurations[forProperty]
-               .Enable(BehaviorKeys.Validator);
+               .Enable(PropertyBehaviorKeys.Validator);
          }
 
          // TODO: Should this really be public??
          private void EnableViewModelValidation() {
             _descriptorConfiguration
                .ViewModelConfiguration
-               .Enable(BehaviorKeys.Validator);
+               .Enable(PropertyBehaviorKeys.Validator);
          }
       }
    }

@@ -18,9 +18,9 @@
          RegisterTemplate(
             BehaviorChainTemplateKeys.ViewModel,
             new BehaviorChainTemplate(ViewModelBehaviorFactory.Instance)
-               .Append(BehaviorKeys.ManualUpdateCoordinator)
-               .Append(BehaviorKeys.Validator, DefaultBehaviorState.Disabled)
-               .Append(BehaviorKeys.TypeDescriptor)
+               .Append(PropertyBehaviorKeys.ManualUpdateCoordinator)
+               .Append(PropertyBehaviorKeys.Validator, DefaultBehaviorState.Disabled)
+               .Append(PropertyBehaviorKeys.TypeDescriptor)
          );
       }
 
@@ -28,18 +28,18 @@
          RegisterTemplate(
             BehaviorChainTemplateKeys.Property,
             new BehaviorChainTemplate(PropertyBehaviorFactory.Instance)
-               .Append(BehaviorKeys.InvalidDisplayValueCache, DefaultBehaviorState.Disabled)
-               .Append(BehaviorKeys.DisplayValueAccessor)
-               .Append(BehaviorKeys.UntypedValueAccessor)
-               .Append(BehaviorKeys.RefreshBehavior, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(BehaviorKeys.ManualUpdateBehavior, DefaultBehaviorState.Disabled)
-               .Append(BehaviorKeys.PreValidationValueCache, DefaultBehaviorState.Disabled)
-               .Append(BehaviorKeys.Validator, DefaultBehaviorState.Disabled)
-               .Append(BehaviorKeys.PropertyChangedTrigger)
-               .Append(BehaviorKeys.PropertyValueCache, DefaultBehaviorState.DisabledWithoutFactory) // TODO!
+               .Append(PropertyBehaviorKeys.InvalidDisplayValueCache, DefaultBehaviorState.Disabled)
+               .Append(PropertyBehaviorKeys.DisplayValueAccessor)
+               .Append(PropertyBehaviorKeys.UntypedValueAccessor)
+               .Append(PropertyBehaviorKeys.RefreshBehavior, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(PropertyBehaviorKeys.ManualUpdateBehavior, DefaultBehaviorState.Disabled)
+               .Append(PropertyBehaviorKeys.PreValidationValueCache, DefaultBehaviorState.Disabled)
+               .Append(PropertyBehaviorKeys.Validator, DefaultBehaviorState.Disabled)
+               .Append(PropertyBehaviorKeys.PropertyChangedTrigger)
+               .Append(PropertyBehaviorKeys.PropertyValueCache, DefaultBehaviorState.DisabledWithoutFactory) // TODO!
             //.Append(BehaviorKeys.ManualUpdateBehavior) // TODO: Is this correct?
-               .Append(BehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(BehaviorKeys.TypeDescriptor)
+               .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(PropertyBehaviorKeys.TypeDescriptor)
          );
       }
 
@@ -47,22 +47,22 @@
          RegisterTemplate(
             BehaviorChainTemplateKeys.CollectionProperty,
             new BehaviorChainTemplate(PropertyBehaviorFactory.Instance)
-               .Append(BehaviorKeys.DisplayValueAccessor)
-               .Append(BehaviorKeys.UntypedValueAccessor)
-               .Append(BehaviorKeys.RefreshBehavior, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(BehaviorKeys.ManualUpdateBehavior, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(PropertyBehaviorKeys.DisplayValueAccessor)
+               .Append(PropertyBehaviorKeys.UntypedValueAccessor)
+               .Append(PropertyBehaviorKeys.RefreshBehavior, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(PropertyBehaviorKeys.ManualUpdateBehavior, DefaultBehaviorState.DisabledWithoutFactory)
 
                // TODO: Rethink these two behaviors.
-               .Append(BehaviorKeys.PreValidationValueCache, DefaultBehaviorState.Disabled)
-               .Append(BehaviorKeys.Validator, DefaultBehaviorState.Disabled)
+               .Append(PropertyBehaviorKeys.PreValidationValueCache, DefaultBehaviorState.Disabled)
+               .Append(PropertyBehaviorKeys.Validator, DefaultBehaviorState.Disabled)
 
-               .Append(BehaviorKeys.DescendantValidator)
+               .Append(PropertyBehaviorKeys.DescendantValidator)
 
-               .Append(BehaviorKeys.IsLoadedIndicator)
-               .Append(BehaviorKeys.CollectionPopulator, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(BehaviorKeys.ValueCache)
-               .Append(BehaviorKeys.CollectionFactory, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(BehaviorKeys.TypeDescriptor)
+               .Append(PropertyBehaviorKeys.IsLoadedIndicator)
+               .Append(PropertyBehaviorKeys.CollectionPopulator, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(PropertyBehaviorKeys.ValueCache)
+               .Append(PropertyBehaviorKeys.CollectionFactory, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(PropertyBehaviorKeys.TypeDescriptor)
          );
       }
 
@@ -70,11 +70,11 @@
          RegisterTemplate(
             BehaviorChainTemplateKeys.CommandProperty,
             new BehaviorChainTemplate(PropertyBehaviorFactory.Instance)
-               .Append(BehaviorKeys.DisplayValueAccessor)
-               .Append(BehaviorKeys.UntypedValueAccessor)
-               .Append(BehaviorKeys.ValueCache)
-               .Append(BehaviorKeys.CommandFactory, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(BehaviorKeys.TypeDescriptor)
+               .Append(PropertyBehaviorKeys.DisplayValueAccessor)
+               .Append(PropertyBehaviorKeys.UntypedValueAccessor)
+               .Append(PropertyBehaviorKeys.ValueCache)
+               .Append(PropertyBehaviorKeys.CommandFactory, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(PropertyBehaviorKeys.TypeDescriptor)
          );
       }
 
@@ -82,9 +82,9 @@
          RegisterTemplate(
             BehaviorChainTemplateKeys.CommandBehaviors,
             new BehaviorChainTemplate(CommandBehaviorFactory.Instance)
-               .Append(BehaviorKeys.WaitCursor)
-               .Append(BehaviorKeys.CommandExecutor, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(BehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(PropertyBehaviorKeys.WaitCursor)
+               .Append(PropertyBehaviorKeys.CommandExecutor, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
          );
       }
 
@@ -92,28 +92,28 @@
          RegisterTemplate(
             BehaviorChainTemplateKeys.ViewModelProperty,
             new BehaviorChainTemplate(ViewModelPropertyBehaviorFactory.Instance)
-               .Append(BehaviorKeys.DisplayValueAccessor)
-               .Append(BehaviorKeys.UntypedValueAccessor)
+               .Append(PropertyBehaviorKeys.DisplayValueAccessor)
+               .Append(PropertyBehaviorKeys.UntypedValueAccessor)
             // TODO: Rethink.
-               .Append(BehaviorKeys.RefreshBehavior, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(BehaviorKeys.ManualUpdateBehavior, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(PropertyBehaviorKeys.RefreshBehavior, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(PropertyBehaviorKeys.ManualUpdateBehavior, DefaultBehaviorState.DisabledWithoutFactory)
 
-               .Append(BehaviorKeys.ParentSetter)
+               .Append(PropertyBehaviorKeys.ParentSetter)
 
-               .Append(BehaviorKeys.PreValidationValueCache, DefaultBehaviorState.Disabled)
-               .Append(BehaviorKeys.Validator, DefaultBehaviorState.Disabled)
+               .Append(PropertyBehaviorKeys.PreValidationValueCache, DefaultBehaviorState.Disabled)
+               .Append(PropertyBehaviorKeys.Validator, DefaultBehaviorState.Disabled)
 
-               .Append(BehaviorKeys.DescendantValidator)
+               .Append(PropertyBehaviorKeys.DescendantValidator)
 
-               .Append(BehaviorKeys.IsLoadedIndicator)
-               .Append(BehaviorKeys.PropertyChangedTrigger)
-               .Append(BehaviorKeys.ValueCache, DefaultBehaviorState.Disabled)
+               .Append(PropertyBehaviorKeys.IsLoadedIndicator)
+               .Append(PropertyBehaviorKeys.PropertyChangedTrigger)
+               .Append(PropertyBehaviorKeys.ValueCache, DefaultBehaviorState.Disabled)
 
-               .Append(BehaviorKeys.ParentInitializer)
-               .Append(BehaviorKeys.ViewModelAccessor, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(BehaviorKeys.ViewModelFactory, DefaultBehaviorState.Disabled)
-               .Append(BehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(BehaviorKeys.TypeDescriptor)
+               .Append(PropertyBehaviorKeys.ParentInitializer)
+               .Append(PropertyBehaviorKeys.ViewModelAccessor, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(PropertyBehaviorKeys.ViewModelFactory, DefaultBehaviorState.Disabled)
+               .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(PropertyBehaviorKeys.TypeDescriptor)
          );
       }
 

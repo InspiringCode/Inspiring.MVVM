@@ -88,7 +88,7 @@
                // This behavior allows a bound comobox to assign a new list to the 'SelectedItems'
                // property every time the selection changes.
                c.For(x => x.SelectedItems).Enable(
-                  BehaviorKeys.DisplayValueAccessor,
+                  PropertyBehaviorKeys.DisplayValueAccessor,
                   new SettableListDisplayValueBehavior<TItemVM>()
                );
 
@@ -199,7 +199,7 @@
                // This behavior allows a bound comobox to assign a new list to the 'SelectedItems'
                // property every time the selection changes.
                c.For(x => x.SelectedItems).Enable(
-                  BehaviorKeys.DisplayValueAccessor,
+                  PropertyBehaviorKeys.DisplayValueAccessor,
                   new SettableListDisplayValueBehavior<SelectionItemVM<TItemSource>>()
                );
 

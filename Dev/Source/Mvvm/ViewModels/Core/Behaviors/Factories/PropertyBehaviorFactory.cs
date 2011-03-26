@@ -11,55 +11,55 @@
       }
 
       public virtual IBehavior Create<TVM, TValue>(BehaviorKey key) where TVM : IViewModel {
-         if (key == BehaviorKeys.InvalidDisplayValueCache) {
+         if (key == PropertyBehaviorKeys.InvalidDisplayValueCache) {
             return new AllowInvalidDisplayValuesBehavior();
          }
 
-         if (key == BehaviorKeys.DisplayValueAccessor) {
+         if (key == PropertyBehaviorKeys.DisplayValueAccessor) {
             return new DisplayValueAccessorBehavior<TValue>();
          }
 
-         if (key == BehaviorKeys.PropertyChangedTrigger) {
+         if (key == PropertyBehaviorKeys.PropertyChangedTrigger) {
             return new PropertyChangedBehavior<TValue>();
          }
 
-         if (key == BehaviorKeys.TypeDescriptor) {
+         if (key == PropertyBehaviorKeys.TypeDescriptor) {
             return new PropertyDescriptorBehavior();
          }
 
-         if (key == BehaviorKeys.PreValidationValueCache) {
+         if (key == PropertyBehaviorKeys.PreValidationValueCache) {
             return new PreValidationValueCacheBehavior<TValue>();
          }
 
-         if (key == BehaviorKeys.Validator) {
+         if (key == PropertyBehaviorKeys.Validator) {
             return new PropertyValidationBehavior<TValue>();
          }
 
-         if (key == BehaviorKeys.PropertyValueCache) {
+         if (key == PropertyBehaviorKeys.PropertyValueCache) {
             return new RefreshableValueCacheBehavior<TValue>();
          }
 
-         if (key == BehaviorKeys.ValueCache) {
+         if (key == PropertyBehaviorKeys.ValueCache) {
             return new ValueCacheBehavior<TValue>();
          }
 
-         if (key == BehaviorKeys.CollectionInstanceCache) {
+         if (key == PropertyBehaviorKeys.CollectionInstanceCache) {
             return new ValueCacheBehavior<TValue>();
          }
 
-         if (key == BehaviorKeys.ManualUpdateBehavior) {
+         if (key == PropertyBehaviorKeys.ManualUpdateBehavior) {
             return new ManualUpdatePropertyBehavior();
          }
 
-         if (key == BehaviorKeys.DescendantValidator) {
+         if (key == PropertyBehaviorKeys.DescendantValidator) {
             return new DescendantValidationBehavior<TValue>();
          }
 
-         if (key == BehaviorKeys.IsLoadedIndicator) {
+         if (key == PropertyBehaviorKeys.IsLoadedIndicator) {
             return new IsLoadedIndicatorBehavior<TValue>();
          }
 
-         if (key == BehaviorKeys.UntypedValueAccessor) {
+         if (key == PropertyBehaviorKeys.UntypedValueAccessor) {
             return new UntypedPropertyAccessorBehavior<TValue>();
          }
 

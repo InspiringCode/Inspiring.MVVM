@@ -15,57 +15,57 @@
          where TVM : IViewModel
          where TChildVM : IViewModel {
 
-         if (key == BehaviorKeys.DisplayValueAccessor) {
+         if (key == PropertyBehaviorKeys.DisplayValueAccessor) {
             return new DisplayValueAccessorBehavior<TChildVM>();
          }
 
-         if (key == BehaviorKeys.TypeDescriptor) {
+         if (key == PropertyBehaviorKeys.TypeDescriptor) {
             return new PropertyDescriptorBehavior();
          }
 
-         if (key == BehaviorKeys.PreValidationValueCache) {
+         if (key == PropertyBehaviorKeys.PreValidationValueCache) {
             return new PreValidationValueCacheBehavior<TChildVM>();
          }
 
-         if (key == BehaviorKeys.Validator) {
+         if (key == PropertyBehaviorKeys.Validator) {
             return new PropertyValidationBehavior<TChildVM>();
          }
 
-         if (key == BehaviorKeys.ValueCache) {
+         if (key == PropertyBehaviorKeys.ValueCache) {
             return new ValueCacheBehavior<TChildVM>();
          }
 
-         if (key == BehaviorKeys.ParentInitializer) {
+         if (key == PropertyBehaviorKeys.ParentInitializer) {
             return new ParentSetterBehavior<TChildVM>(
                setParentOnGetValue: true,
                setParentOnSetValue: false
             );
          }
 
-         if (key == BehaviorKeys.ParentSetter) {
+         if (key == PropertyBehaviorKeys.ParentSetter) {
             return new ParentSetterBehavior<TChildVM>(
                setParentOnGetValue: false,
                setParentOnSetValue: true
             );
          }
 
-         if (key == BehaviorKeys.ViewModelFactory) {
+         if (key == PropertyBehaviorKeys.ViewModelFactory) {
             return new ViewModelFactoryBehavior<TChildVM>();
          }
 
-         if (key == BehaviorKeys.DescendantValidator) {
+         if (key == PropertyBehaviorKeys.DescendantValidator) {
             return new DescendantValidationBehavior<TChildVM>();
          }
 
-         if (key == BehaviorKeys.IsLoadedIndicator) {
+         if (key == PropertyBehaviorKeys.IsLoadedIndicator) {
             return new IsLoadedIndicatorBehavior<TChildVM>();
          }
 
-         if (key == BehaviorKeys.PropertyChangedTrigger) {
+         if (key == PropertyBehaviorKeys.PropertyChangedTrigger) {
             return new PropertyChangedBehavior<TChildVM>();
          }
 
-         if (key == BehaviorKeys.UntypedValueAccessor) {
+         if (key == PropertyBehaviorKeys.UntypedValueAccessor) {
             return new UntypedPropertyAccessorBehavior<TChildVM>();
          }
 

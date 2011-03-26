@@ -49,10 +49,10 @@
          BehaviorChainTemplateRegistry.RegisterTemplate(
             BehaviorChainTemplateKeys.CommandBehaviors,
             new BehaviorChainTemplate(CustomPropertyBehaviorFactory.Instance)
-               .Append(BehaviorKeys.WaitCursor)
+               .Append(PropertyBehaviorKeys.WaitCursor)
                .Append(TestBehaviorKey)
-               .Append(BehaviorKeys.CommandExecutor, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(BehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(PropertyBehaviorKeys.CommandExecutor, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
          );
       }
 

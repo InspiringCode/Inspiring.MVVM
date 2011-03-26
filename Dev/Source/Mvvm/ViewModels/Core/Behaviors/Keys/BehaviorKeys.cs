@@ -12,7 +12,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
       }
    }
 
-   public static class BehaviorKeys  {
+   public static class PropertyBehaviorKeys {
 
       public static readonly BehaviorKey TypeDescriptor = new BehaviorKey("TypeDescriptor");
 

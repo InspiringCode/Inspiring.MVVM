@@ -204,19 +204,19 @@
          var commandConfig = commandTemplate.CreateConfiguration(CommandBehaviorFactory.CreateInvoker<TVM, TSourceObject>());
 
          commandConfig.Enable(
-            BehaviorKeys.CommandExecutor,
+            PropertyBehaviorKeys.CommandExecutor,
             new DelegatingCommandBehavior<TSourceObject>(execute, canExecute)
          );
 
          commandConfig.Enable(
-            BehaviorKeys.SourceAccessor,
+            PropertyBehaviorKeys.SourceAccessor,
             new MappedPropertyAccessor<TVM, TSourceObject>(_sourceObjectPath)
          );
 
          var config = Factory.GetPropertyConfiguration<ICommand>(BehaviorChainTemplateKeys.CommandProperty);
 
          config.Enable(
-            BehaviorKeys.CommandFactory,
+            PropertyBehaviorKeys.CommandFactory,
             new CommandFactoryBehavior(commandConfig)
          );
 

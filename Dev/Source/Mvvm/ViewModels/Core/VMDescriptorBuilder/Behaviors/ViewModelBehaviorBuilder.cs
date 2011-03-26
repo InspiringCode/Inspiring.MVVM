@@ -47,7 +47,7 @@
          params Func<TDescriptor, IVMPropertyDescriptor>[] orderedProperties
       ) {
          return Configure(
-            BehaviorKeys.ManualUpdateCoordinator,
+            PropertyBehaviorKeys.ManualUpdateCoordinator,
             (LoadOrderBehavior behavior) => {
                behavior.UpdateFromSourceProperties = orderedProperties
                   .Select(selector => selector(_descriptor))
@@ -60,7 +60,7 @@
           params Func<TDescriptor, IVMPropertyDescriptor>[] orderedProperties
        ) {
          return Configure(
-            BehaviorKeys.ManualUpdateCoordinator,
+            PropertyBehaviorKeys.ManualUpdateCoordinator,
             (LoadOrderBehavior behavior) => {
                behavior.UpdateSourceProperties = orderedProperties
                   .Select(selector => selector(_descriptor))

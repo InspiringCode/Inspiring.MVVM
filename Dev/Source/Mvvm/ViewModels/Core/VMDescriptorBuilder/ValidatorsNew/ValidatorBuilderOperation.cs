@@ -24,7 +24,7 @@
       public void EnableViewModelValidationSourceBehavior() {
          Config
             .ViewModelConfiguration
-            .Enable(BehaviorKeys.Validator); // TODO: Use correct key.
+            .Enable(PropertyBehaviorKeys.Validator); // TODO: Use correct key.
 
          throw new NotImplementedException();
       }
@@ -32,7 +32,7 @@
       public void EnablePropertyValidationSourceBehavior(IVMPropertyDescriptor property) {
          Config
             .PropertyConfigurations[property]
-            .Enable(BehaviorKeys.Validator); // TODO: Use correct key.
+            .Enable(PropertyBehaviorKeys.Validator); // TODO: Use correct key.
 
          throw new NotImplementedException();
       }
