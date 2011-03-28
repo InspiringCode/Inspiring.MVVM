@@ -20,6 +20,7 @@
             new BehaviorChainTemplate(ViewModelBehaviorFactory.Instance)
                .Append(PropertyBehaviorKeys.ManualUpdateCoordinator)
                .Append(PropertyBehaviorKeys.Validator, DefaultBehaviorState.Disabled)
+               .Append(ViewModelBehaviorKeys.ValidationExecutor, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.TypeDescriptor)
          );
       }

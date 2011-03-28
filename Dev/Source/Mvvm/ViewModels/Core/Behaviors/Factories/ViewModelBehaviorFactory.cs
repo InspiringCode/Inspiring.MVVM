@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
+   using Inspiring.Mvvm.ViewModels.Core.Validation.ViewModelBehaviors;
 
    public class ViewModelBehaviorFactory : IBehaviorFactory {
       public static readonly ViewModelBehaviorFactory Instance = new ViewModelBehaviorFactory();
@@ -11,6 +12,10 @@
       }
 
       public IBehavior Create<TVM>(BehaviorKey key) where TVM : IViewModel {
+         if (key == ViewModelBehaviorKeys.ValidationExecutor) {
+            return new ValidatorExecutorBehavior();
+         }
+
          if (key == PropertyBehaviorKeys.Validator) {
             return new ViewModelValidationBehavior();
          }
