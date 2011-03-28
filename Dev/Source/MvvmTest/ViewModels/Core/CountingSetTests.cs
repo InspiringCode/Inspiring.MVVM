@@ -4,7 +4,7 @@
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class CountingSetTest {
+   public class CountingSetTests {
 
       [TestMethod]
       public void RemoveItem_TheSameItemWasAddedTwice_CollectionStillContainsItem() {

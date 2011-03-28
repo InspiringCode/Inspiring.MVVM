@@ -183,7 +183,7 @@
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\CollectionSynchronizerBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\CollectionParentSetterBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Collections\VMCollectionTestBase.cs" />
-    <Compile Include="ViewModels\Core\CountingSetTest.cs" />
+    <Compile Include="ViewModels\Core\CountingSetTests.cs" />
     <Compile Include="ViewModels\Core\Paths\PathDefinitionTests.cs" />
     <Compile Include="ViewModels\Core\Paths\PathFixture.cs" />
     <Compile Include="ViewModels\Core\Paths\PropertyStepTests.cs" />
@@ -192,6 +192,9 @@
     <Compile Include="ViewModels\Core\PropertySelectorTests.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\TypeDescriptorServiceTests.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\VMPropertyDescriptorTests.cs" />
+    <Compile Include="ViewModels\Core\Validation\CollectionResultCacheTests\ItemListVM.cs" />
+    <Compile Include="ViewModels\Core\Validation\CollectionResultCacheTests\ItemVM.cs" />
+    <Compile Include="ViewModels\Core\Validation\CollectionResultCacheTests\CollectionResultCacheTests.cs" />
     <Compile Include="ViewModels\Core\Validation\PreValidationValueCacheBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationContextTests.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationErrorCollectionTests.cs" />
