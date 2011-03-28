@@ -75,13 +75,13 @@
             _unvalidatedQueue.Enqueue(collection);
 
             while (_unvalidatedQueue.Any()) {
-               var c = _unvalidatedQueue.Dequeue();
+               var coll = _unvalidatedQueue.Dequeue();
 
-               var key = new CollectionResultKey(_step, c, _property);
+               var key = new CollectionResultKey(_step, coll, _property);
                var result = InvokeCollectionValidationExecutors(key);
                _cache.Add(key, result);
 
-               var staleItems = GetPossiblyStaleItems(c, result);
+               var staleItems = GetPossiblyStaleItems(coll, result);
                QueueUnvalidatedOwnerCollections(staleItems);
             }
          }
