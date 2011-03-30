@@ -23,22 +23,20 @@
          .Build();
 
       private readonly CollectionResultCacheTests _testFixture;
+      private readonly ValidatorInvocationLog _invocationLog;
 
-      public ItemListVM(CollectionResultCacheTests testFixture)
+      public ItemListVM(CollectionResultCacheTests testFixture, ValidatorInvocationLog invocationLog)
          : base(ClassDescriptor) {
          _testFixture = testFixture;
+         _invocationLog = invocationLog;
       }
 
       public CollectionResultCacheTests TestFixture {
          get { return _testFixture; }
       }
 
-      public int Collection3ViewModelValidatorCount { get; private set; }
-      public int Collection3PropertyValidatorCount { get; private set; }
-
-      public void ResetValidatorInvocationCounts() {
-         Collection3ViewModelValidatorCount = 0;
-         Collection3PropertyValidatorCount = 0;
+      private ValidatorInvocationLog InvocationLog {
+         get { return _invocationLog; }
       }
 
       private static void Collection3ViewModelValidator(
@@ -47,8 +45,10 @@
          ValidationArgs args
       ) {
          var owner = (ItemListVM)args.OwnerVM;
-         owner.Collection3ViewModelValidatorCount++;
-
+         owner.InvocationLog.AddCall(
+            CollectionResultCacheTests.Validator.Collection3ViewModelValidator,
+            args
+         );
          var invalidItems = owner.TestFixture.InvalidItemsOfCollection3ViewModelValidator.ToList();
 
          if (invalidItems.Contains(item)) {
@@ -63,8 +63,10 @@
          ValidationArgs args
       ) {
          var owner = (ItemListVM)args.OwnerVM;
-         owner.Collection3PropertyValidatorCount++;
-
+         owner.InvocationLog.AddCall(
+            CollectionResultCacheTests.Validator.Collection3PropertyValidator,
+            args
+         );
          var invalidItems = owner.TestFixture.InvalidItemsOfCollection3PropertyValidator.ToList();
 
          if (invalidItems.Contains(item)) {

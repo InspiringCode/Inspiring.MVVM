@@ -14,7 +14,7 @@
    ///                                  /       
    ///                 --> Collection1  -------       
    ///                |                 \      |
-   ///              VM1                  \     |    
+   ///               VM1                 \     |    
    ///                |                   \    |
    ///                 --> Collection2 ----\--Item2
    ///                                 \    \
@@ -28,6 +28,16 @@
    /// </remarks>
    [TestClass]
    public class CollectionResultCacheTests {
+
+      public enum Validator {
+         Collection1PropertyValidator,
+         Collection2PropertyValidator,
+         Collection3PropertyValidator,
+         Collection1ViewModelValidator,
+         Collection2ViewModelValidator,
+         Collection3ViewModelValidator,
+      }
+
       public const string Collection1PropertyValidationErrorMessage = "Error of collection1 property validator";
       public const string Collection2PropertyValidationErrorMessage = "Error of collection2 property validator";
       public const string Collection3PropertyValidationErrorMessage = "Error of collection3 property validator";
@@ -59,6 +69,8 @@
       public List<ItemVM> InvalidItemsOfCollection3PropertyValidator { get; private set; }
       public List<ItemVM> InvalidItemsOfCollection3ViewModelValidator { get; private set; }
 
+      public ValidatorInvocationLog InvocationLog { get; private set; }
+
       [TestInitialize]
       public void Setup() {
          InvalidItemsOfItemVMPropertyValidator = new List<ItemVM>();
@@ -74,8 +86,10 @@
          Item3 = new ItemVM(this, Item3Name);
          Item4 = new ItemVM(this, Item4Name);
 
-         VM1 = new TwoItemListsVM(this);
-         VM2 = new ItemListVM(this);
+         InvocationLog = new ValidatorInvocationLog();
+
+         VM1 = new TwoItemListsVM(this, InvocationLog);
+         VM2 = new ItemListVM(this, InvocationLog);
 
          VM1.GetValue(x => x.Collection1).Add(Item1);
          VM1.GetValue(x => x.Collection1).Add(Item2);
@@ -86,9 +100,6 @@
 
          VM2.GetValue(x => x.Collection3).Add(Item3);
          VM2.GetValue(x => x.Collection3).Add(Item4);
-
-         VM1.ResetValidatorInvocationCounts();
-         VM2.ResetValidatorInvocationCounts();
 
          ResultCache = new CollectionResultCache();
       }
@@ -168,61 +179,141 @@
          AssertErrors(result.Errors, expectedError);
       }
 
-      /// <summary>
-      ///   GetResultsForNamePropertyOfItem1_Item1InvalidatesItem3_InvokesCollection2And3Validation
-      /// </summary>
       [TestMethod]
       public void GetResults_OtherItemBecomesInvalid_ValidatesItsUnvalidatedOwnerCollectionsToo() {
-         ChangeValidatorResult(InvalidItemsOfCollection1ViewModelValidator, Item1, false);
+         Assert.Inconclusive("Waiting for implementation");
          ChangeValidatorResult(InvalidItemsOfCollection1ViewModelValidator, Item3, false);
+
+         InvocationLog.ExpectCalls(
+            Validator.Collection1ViewModelValidator,
+            Validator.Collection2ViewModelValidator,
+            Validator.Collection3ViewModelValidator
+         );
 
          ResultCache.GetCollectionValidationResults(
             ValidationStep.Value,
             Item1,
             null
          );
+
+         InvocationLog.VerifyCalls();
       }
 
       [TestMethod]
       public void GetResults_OtherItemBecomesInvalid_DoesNotValidateAlreadyValidatedOwnerCollections() {
+         Assert.Inconclusive("Waiting for implementation");
+         ChangeValidatorResult(InvalidItemsOfCollection3PropertyValidator, Item4, false);
 
+         InvocationLog.ExpectCalls(
+            Validator.Collection1PropertyValidator,
+            Validator.Collection2PropertyValidator,
+            Validator.Collection3PropertyValidator
+         );
+
+         ResultCache.GetCollectionValidationResults(
+            ValidationStep.Value,
+            Item3,
+            ItemVM.ClassDescriptor.Name
+         );
+
+         InvocationLog.VerifyCalls();
       }
 
       [TestMethod]
       public void GetResults_OtherItemWasPreviouslyInvalid_ValidatesItsUnvalidatedOwnerCollectionsToo() {
+         Assert.Inconclusive("Waiting for implementation");
+         ChangeValidatorResult(InvalidItemsOfItemVMPropertyValidator, Item3, false);
 
+         InvocationLog.ExpectCalls(
+            Validator.Collection3PropertyValidator,
+            Validator.Collection1PropertyValidator,
+            Validator.Collection2PropertyValidator
+         );
+
+         ResultCache.GetCollectionValidationResults(
+            ValidationStep.Value,
+            Item4,
+            ItemVM.ClassDescriptor.Name
+         );
+
+         InvocationLog.VerifyCalls();
       }
 
-      /// <summary>
-      ///   GetCollectionValidationResultsForItem3_Item2WasPreviouslyInvalid_DoesntInvokeValidationForCollections1And2
-      /// </summary>
       [TestMethod]
       public void GetResults_OtherItemWasPreviouslyInvalid_DoesNotValidateAlreadyValidatedOwnerCollections() {
+         Assert.Inconclusive("Waiting for implementation");
+         ChangeValidatorResult(InvalidItemsOfItemVMPropertyValidator, Item2, false);
 
+         InvocationLog.ExpectCalls(
+            Validator.Collection1ViewModelValidator,
+            Validator.Collection2ViewModelValidator,
+            Validator.Collection3ViewModelValidator
+         );
+
+         ResultCache.GetCollectionValidationResults(
+            ValidationStep.Value,
+            Item3,
+            null
+         );
+
+         InvocationLog.VerifyCalls();
       }
 
       [TestMethod]
       public void GetResults_AllItemsBecomeInvalid_InvokesCollectionsValidatorsOnlyOnce() {
+         Assert.Inconclusive("Waiting for implementation");
+         ChangeValidatorResult(InvalidItemsOfItemVMPropertyValidator, Item1, false);
+         Item1.Revalidate();
 
+         ChangeValidatorResult(InvalidItemsOfItemVMPropertyValidator, Item2, false);
+         Item2.Revalidate();
+
+         ChangeValidatorResult(InvalidItemsOfCollection1PropertyValidator, Item3, false);
+         ChangeValidatorResult(InvalidItemsOfCollection3PropertyValidator, Item4, false);
+
+         InvocationLog.ExpectCalls(
+            Validator.Collection1PropertyValidator,
+            Validator.Collection2PropertyValidator,
+            Validator.Collection3PropertyValidator
+         );
+
+         ResultCache.GetCollectionValidationResults(
+            ValidationStep.Value,
+            Item3,
+            ItemVM.ClassDescriptor.Name
+         );
+
+         InvocationLog.VerifyCalls();
       }
 
-      /// <summary>
-      ///   GetCollectionValidationResultsForItem2ThenForItem3_Item2IsInvalidAndItem3WasPreviouslyInvalid_SubsequentCallsUsingCache
-      /// </summary>
       [TestMethod]
       public void GetResultsForMultipleItemsOfSameCollection_SubsequentCallsUseCache() {
+         Assert.Inconclusive("Waiting for implementation");
+         InvocationLog.ExpectCalls(
+            Validator.Collection1PropertyValidator,
+            Validator.Collection2PropertyValidator,
+            Validator.Collection3PropertyValidator
+         );
 
+         ResultCache.GetCollectionValidationResults(
+           ValidationStep.Value,
+           Item3,
+           ItemVM.ClassDescriptor.Name
+         );
+
+         ResultCache.GetCollectionValidationResults(
+           ValidationStep.Value,
+           Item2,
+           ItemVM.ClassDescriptor.Name
+         );
+
+         InvocationLog.VerifyCalls();
       }
 
       private static void AssertErrors(
          IEnumerable<ValidationError> actualErrors,
          params ValidationError[] expectedErrors
       ) {
-         Assert.AreEqual(
-            expectedErrors.Length,
-            actualErrors.Count(),
-            "The number of expexted validation errors doesn't match");
-
          CollectionAssert.AreEqual(expectedErrors, actualErrors.ToArray(), new ValidationErrorComparer());
       }
 

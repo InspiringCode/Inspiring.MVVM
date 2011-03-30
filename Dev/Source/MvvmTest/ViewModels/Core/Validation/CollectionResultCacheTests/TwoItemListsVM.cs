@@ -31,26 +31,20 @@
          .Build();
 
       private readonly CollectionResultCacheTests _testFixture;
+      private readonly ValidatorInvocationLog _invocationLog;
 
-      public TwoItemListsVM(CollectionResultCacheTests testFixture)
+      public TwoItemListsVM(CollectionResultCacheTests testFixture, ValidatorInvocationLog invocationLog)
          : base(ClassDescriptor) {
          _testFixture = testFixture;
+         _invocationLog = invocationLog;
       }
 
       public CollectionResultCacheTests TestFixture {
          get { return _testFixture; }
       }
 
-      public int Collection1ViewModelValidatorCount { get; private set; }
-      public int Collection1PropertyValidatorCount { get; private set; }
-      public int Collection2ViewModelValidatorCount { get; private set; }
-      public int Collection2PropertyValidatorCount { get; private set; }
-
-      public void ResetValidatorInvocationCounts() {
-         Collection1ViewModelValidatorCount = 0;
-         Collection1PropertyValidatorCount = 0;
-         Collection2ViewModelValidatorCount = 0;
-         Collection2PropertyValidatorCount = 0;
+      private ValidatorInvocationLog InvocationLog {
+         get { return _invocationLog; }
       }
 
       private static void Collection1ViewModelValidator(
@@ -59,8 +53,10 @@
          ValidationArgs args
       ) {
          var owner = (TwoItemListsVM)args.OwnerVM;
-         owner.Collection1ViewModelValidatorCount++;
-
+         owner.InvocationLog.AddCall(
+            CollectionResultCacheTests.Validator.Collection1ViewModelValidator,
+            args
+         );
          var invalidItems = owner.TestFixture.InvalidItemsOfCollection1ViewModelValidator.ToList();
 
          if (invalidItems.Contains(item)) {
@@ -75,8 +71,10 @@
          ValidationArgs args
       ) {
          var owner = (TwoItemListsVM)args.OwnerVM;
-         owner.Collection1PropertyValidatorCount++;
-
+         owner.InvocationLog.AddCall(
+            CollectionResultCacheTests.Validator.Collection1PropertyValidator,
+            args
+         );
          var invalidItems = owner.TestFixture.InvalidItemsOfCollection1PropertyValidator.ToList();
 
          if (invalidItems.Contains(item)) {
@@ -90,8 +88,10 @@
          ValidationArgs args
       ) {
          var owner = (TwoItemListsVM)args.OwnerVM;
-         owner.Collection2ViewModelValidatorCount++;
-
+         owner.InvocationLog.AddCall(
+            CollectionResultCacheTests.Validator.Collection2ViewModelValidator,
+            args
+         );
          var invalidItems = owner.TestFixture.InvalidItemsOfCollection2ViewModelValidator.ToList();
 
          if (invalidItems.Contains(item)) {
@@ -106,7 +106,10 @@
          ValidationArgs args
       ) {
          var owner = (TwoItemListsVM)args.OwnerVM;
-         owner.Collection2PropertyValidatorCount++;
+         owner.InvocationLog.AddCall(
+            CollectionResultCacheTests.Validator.Collection2PropertyValidator,
+            args
+         );
          var invalidItems = owner.TestFixture.InvalidItemsOfCollection2PropertyValidator.ToList();
 
          if (invalidItems.Contains(item)) {

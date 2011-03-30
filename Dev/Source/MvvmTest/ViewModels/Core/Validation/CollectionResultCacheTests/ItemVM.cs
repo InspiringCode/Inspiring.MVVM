@@ -27,23 +27,15 @@
          get { return _testFixture; }
       }
 
-      //public int NamePropertyValidatorCount { get; private set; }
-
       public void Revalidate() {
          base.Revalidate();
       }
-
-      //public void ResetValidatorInvocationCounts() {
-      //   NamePropertyValidatorCount = 0;
-      //}
 
       private static void PropertyValidator(
          ItemVM vm,
          string value,
          ValidationArgs args
       ) {
-         //vm.NamePropertyValidatorCount++;
-
          if (vm.TestFixture.InvalidItemsOfItemVMPropertyValidator.Contains(vm)) {
             args.AddError(CollectionResultCacheTests.NamePropertyValidatorErrorMessage);
          }
