@@ -5,7 +5,7 @@
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class HierarchyValidationFixture {
+   public abstract class HierarchyValidationFixture {
       public ValidationLog Log { get; set; }
 
       [TestInitialize]
