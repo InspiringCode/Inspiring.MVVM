@@ -25,6 +25,13 @@
          }
       }
 
+      public static void InitializeValueNext(this Behavior behavior, IBehaviorContext context) {
+         IValueInitializerBehavior next;
+         if (behavior.TryGetBehavior(out next)) {
+            next.InitializeValue(context);
+         }
+      }
+
       public static TValue GetValidatedValueNext<TValue>(
          this Behavior behavior,
          IBehaviorContext context

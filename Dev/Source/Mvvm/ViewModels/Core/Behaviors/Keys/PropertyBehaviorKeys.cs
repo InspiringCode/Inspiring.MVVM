@@ -2,6 +2,9 @@
    public class PropertyBehaviorKeys : BehaviorKeys {
       public static readonly BehaviorKey ValueValidationSource = Key(() => ValueValidationSource);
 
+      public static readonly BehaviorKey ValueInitializer = Key(() => ValueInitializer);
+
+      public static readonly BehaviorKey ParentSetter = Key(() => ParentSetter);
 
       public static readonly BehaviorKey TypeDescriptor = new BehaviorKey("TypeDescriptor");
 
@@ -38,10 +41,6 @@
       public static readonly BehaviorKey ViewModelAccessor = new BehaviorKey("ViewModelAccessor");
 
       public static readonly BehaviorKey ViewModelPropertyInitializer = new BehaviorKey("ViewModelPropertyInitializer");
-
-      public static readonly BehaviorKey ParentInitializer = new BehaviorKey("ParentInitializer");
-
-      public static readonly BehaviorKey ParentSetter = new BehaviorKey("ParentSetter");
 
       public static readonly BehaviorKey ViewModelFactory = new BehaviorKey("ViewModelFactory");
 

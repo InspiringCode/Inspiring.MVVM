@@ -15,6 +15,10 @@
          where TVM : IViewModel
          where TChildVM : IViewModel {
 
+         if (key == PropertyBehaviorKeys.ValueInitializer) {
+            return new ValueInitializerBehavior<TChildVM>();
+         }
+
          if (key == PropertyBehaviorKeys.DisplayValueAccessor) {
             return new DisplayValueAccessorBehavior<TChildVM>();
          }
@@ -34,19 +38,9 @@
          if (key == PropertyBehaviorKeys.ValueCache) {
             return new ValueCacheBehavior<TChildVM>();
          }
-
-         if (key == PropertyBehaviorKeys.ParentInitializer) {
-            return new ParentSetterBehavior<TChildVM>(
-               setParentOnGetValue: true,
-               setParentOnSetValue: false
-            );
-         }
-
+         
          if (key == PropertyBehaviorKeys.ParentSetter) {
-            return new ParentSetterBehavior<TChildVM>(
-               setParentOnGetValue: false,
-               setParentOnSetValue: true
-            );
+            return new ParentSetterBehavior<TChildVM>();
          }
 
          if (key == PropertyBehaviorKeys.ViewModelFactory) {

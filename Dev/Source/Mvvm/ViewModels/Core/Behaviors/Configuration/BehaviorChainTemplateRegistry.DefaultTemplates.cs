@@ -99,18 +99,18 @@
                .Append(PropertyBehaviorKeys.RefreshBehavior, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.ManualUpdateBehavior, DefaultBehaviorState.DisabledWithoutFactory)
 
+               .Append(PropertyBehaviorKeys.DescendantValidator)
+
+               .Append(PropertyBehaviorKeys.ValueInitializer)
+
                .Append(PropertyBehaviorKeys.ParentSetter)
 
                .Append(PropertyBehaviorKeys.PreValidationValueCache, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.Validator, DefaultBehaviorState.Disabled)
 
-               .Append(PropertyBehaviorKeys.DescendantValidator)
-
-               .Append(PropertyBehaviorKeys.IsLoadedIndicator)
                .Append(PropertyBehaviorKeys.PropertyChangedTrigger)
                .Append(PropertyBehaviorKeys.ValueCache, DefaultBehaviorState.Disabled)
 
-               .Append(PropertyBehaviorKeys.ParentInitializer)
                .Append(PropertyBehaviorKeys.ViewModelAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.ViewModelFactory, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)

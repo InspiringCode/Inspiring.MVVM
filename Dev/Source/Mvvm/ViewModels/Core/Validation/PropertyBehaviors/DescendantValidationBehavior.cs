@@ -3,6 +3,11 @@
    using System.Diagnostics.Contracts;
    using System.Linq;
 
+
+   /// <remarks>
+   ///   Requirements: If there is a <see cref="IIsLoadedBehavior"/> in the chain
+   ///   it should come after this behavior.
+   /// </remarks>
    internal sealed class DescendantValidationBehavior<TValue> :
       Behavior,
       IDescendantValidationBehavior,

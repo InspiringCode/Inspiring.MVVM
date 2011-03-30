@@ -1,49 +1,40 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
-   using System.Diagnostics.Contracts;
 
    internal sealed class ParentSetterBehavior<TValue> :
       Behavior,
-      IValueAccessorBehavior<TValue>
+      IValueAccessorBehavior<TValue>,
+      IValueInitializerBehavior
       where TValue : IViewModel {
 
-      private bool _setParentOnGetValue;
-      private bool _setParentOnSetValue;
-
-      public ParentSetterBehavior(
-         bool setParentOnGetValue,
-         bool setParentOnSetValue
-      ) {
-         Contract.Requires(setParentOnGetValue || setParentOnSetValue);
-
-         _setParentOnGetValue = setParentOnGetValue;
-         _setParentOnSetValue = setParentOnSetValue;
-      }
-
-      /// <inheritdoc />
       public TValue GetValue(IBehaviorContext context) {
-         TValue childVM = this.GetValueNext<TValue>(context);
-
-         if (_setParentOnGetValue && childVM != null) {
-            childVM.Kernel.Parents.Add(context.VM);
-         }
-
-         return childVM;
+         return this.GetValueNext<TValue>(context);
       }
 
-      /// <inheritdoc />
       public void SetValue(IBehaviorContext context, TValue value) {
-         // Note 1: It is not a good idea to reset the 'Parent' of the previous
-         // VM to null, because it may also be contained in a VM collection and
-         // would loose its parent connection in this case.
-
-         // Note 2: We do not set the parent if it is already set because the VM
-         // may already be the child of a different VM.
-
-         if (_setParentOnSetValue && value != null) {
-            value.Kernel.Parents.Add(context.VM);
-         }
-
+         var previousChild = this.GetValueNext<TValue>(context);
+         RemoveParentFrom(previousChild, context);
+         AddParentTo(value, context);
          this.SetValueNext(context, value);
+      }
+
+      public void InitializeValue(IBehaviorContext context) {
+         var child = this.GetValueNext<TValue>(context);
+         AddParentTo(child, context);
+         this.InitializeValueNext(context);
+      }
+
+      private static void AddParentTo(TValue child, IBehaviorContext context) {
+         if (child != null) {
+            var parent = context.VM;
+            child.Kernel.Parents.Add(parent);
+         }
+      }
+
+      private static void RemoveParentFrom(TValue child, IBehaviorContext context) {
+         if (child != null) {
+            var parent = context.VM;
+            child.Kernel.Parents.Remove(parent);
+         }
       }
    }
 }
