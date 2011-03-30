@@ -1,16 +1,14 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Validation {
-   using System.Collections.Generic;
    using Inspiring.Mvvm.ViewModels;
-   using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
    public abstract class HierarchyValidationFixture {
-      public ValidationLog Log { get; set; }
+      public ValidatorInvocationLog Log { get; set; }
 
       [TestInitialize]
       public void Setup() {
-         Log = new ValidationLog();
+         Log = new ValidatorInvocationLog();
       }
 
       protected EmployeeVM CreateEmployeeVM() {
@@ -39,48 +37,6 @@
          CustomerName,
          CustomerAddress,
          CustomerPostalCode
-      }
-
-      public class ValidationLog {
-         private List<Validator> _expectedCalls = new List<Validator>();
-         private Dictionary<Validator, ValidationArgs> _actualCalls = new Dictionary<Validator, ValidationArgs>();
-
-         public ValidationLog() {
-            IsEnabled = false;
-         }
-
-         public bool IsEnabled { get; set; }
-
-         public void ExpectCalls(params Validator[] toValidators) {
-            IsEnabled = true;
-            _expectedCalls.AddRange(toValidators);
-         }
-
-         public void AddCall(Validator validator, ValidationArgs args) {
-            if (!IsEnabled) {
-               return;
-            }
-
-            Assert.IsTrue(
-               _expectedCalls.Contains(validator),
-               "Did not expect a call to validator {0}.",
-               validator
-            );
-
-            _actualCalls.Add(validator, args);
-         }
-
-         public void VerifyCalls() {
-            CollectionAssert.AreEquivalent(
-               _expectedCalls,
-               _actualCalls.Keys,
-               "Not all expected validators were called."
-            );
-         }
-
-         public ValidationArgs GetArgs(Validator forValidator) {
-            return _actualCalls[forValidator];
-         }
       }
 
       public sealed class EmployeeVM : ViewModel<EmployeeVMDescriptor> {
@@ -117,7 +73,7 @@
             : base(ClassDescriptor) {
          }
 
-         public ValidationLog Log { get; set; }
+         public ValidatorInvocationLog Log { get; set; }
 
          public IVMCollection<ProjectVM> Projects {
             get { return GetValue(Descriptor.Projects); }
@@ -155,7 +111,7 @@
             : base(ClassDescriptor) {
          }
 
-         public ValidationLog Log { get; set; }
+         public ValidatorInvocationLog Log { get; set; }
 
          public CustomerVM Customer {
             get { return GetValue(Descriptor.Customer); }
@@ -191,7 +147,7 @@
             : base(ClassDescriptor) {
          }
 
-         public ValidationLog Log { get; set; }
+         public ValidatorInvocationLog Log { get; set; }
 
          public void Revalidate(ValidationScope scope = ValidationScope.SelfOnly) {
             Revalidate(scope, ValidationMode.DiscardInvalidValues);

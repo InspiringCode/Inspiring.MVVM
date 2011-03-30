@@ -168,6 +168,7 @@
     <Compile Include="TestUtils\ComparisonObjectTests.cs" />
     <Compile Include="TestUtils\GenericComparisonObjectTests.cs" />
     <Compile Include="ValidationTestBase.cs" />
+    <Compile Include="ValidatorInvocationLog.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMCollectionCallModificationBehaviorTests.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMCollectionTests.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorKeysTests.cs" />
@@ -195,6 +196,7 @@
     <Compile Include="ViewModels\Core\Validation\CollectionResultCacheTests\ItemListVM.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionResultCacheTests\ItemVM.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionResultCacheTests\CollectionResultCacheTests.cs" />
+    <Compile Include="ViewModels\Core\Validation\CollectionResultCacheTests\TwoItemListsVM.cs" />
     <Compile Include="ViewModels\Core\Validation\PreValidationValueCacheBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationContextTests.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationErrorCollectionTests.cs" />

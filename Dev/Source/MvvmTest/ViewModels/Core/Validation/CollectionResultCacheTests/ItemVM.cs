@@ -3,7 +3,6 @@
    using Inspiring.Mvvm.ViewModels.Core;
 
    public class ItemVM : ViewModel<ItemVMDescriptor> {
-
       public static readonly ItemVMDescriptor ClassDescriptor = VMDescriptorBuilder
          .OfType<ItemVMDescriptor>()
          .For<ItemVM>()
@@ -12,21 +11,41 @@
             d.Name = b.Property.Of<string>();
          })
          .WithValidators(b => {
-            b.Check(x => x.Name).Custom(FirstPropertyValidator);
+            b.Check(x => x.Name).Custom(PropertyValidator);
          })
          .Build();
 
-      public ItemVM()
+      private readonly CollectionResultCacheTests _testFixture;
+
+      public ItemVM(CollectionResultCacheTests testFixture, string name)
          : base(ClassDescriptor) {
+         _testFixture = testFixture;
+         SetValue(Descriptor.Name, name);
       }
 
-      private static void FirstPropertyValidator(
+      public CollectionResultCacheTests TestFixture {
+         get { return _testFixture; }
+      }
+
+      //public int NamePropertyValidatorCount { get; private set; }
+
+      public void Revalidate() {
+         base.Revalidate();
+      }
+
+      //public void ResetValidatorInvocationCounts() {
+      //   NamePropertyValidatorCount = 0;
+      //}
+
+      private static void PropertyValidator(
          ItemVM vm,
          string value,
-         ValidationArgs args) {
+         ValidationArgs args
+      ) {
+         //vm.NamePropertyValidatorCount++;
 
-         if (false) {
-            args.AddError("Property validator error");
+         if (vm.TestFixture.InvalidItemsOfItemVMPropertyValidator.Contains(vm)) {
+            args.AddError(CollectionResultCacheTests.NamePropertyValidatorErrorMessage);
          }
       }
    }
