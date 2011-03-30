@@ -46,7 +46,7 @@
          Children.CloseAll(parentCallback: OnClose);
       }
 
-      void IScreenLifecycle.Corrupt(object data) {
+      public void Corrupt(object data = null) {
          Children.CorruptAll(data, parentCallback: () => OnCorrupt(data));
       }
 
