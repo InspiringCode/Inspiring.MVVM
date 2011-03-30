@@ -35,6 +35,7 @@
          get { return _screens.Items; }
       }
 
+      // TODO: Maybe set the ScreenConductor as Opener of the new Screen.
       public void OpenScreen<TScreen>(IScreenFactory<TScreen> screen)
          where TScreen : class, IScreenBase {
 
@@ -60,14 +61,18 @@
          }
 
          if (screen.RequestClose()) {
-            IScreenBase next = ChooseNextScreen(screen);
-            ActiveScreen = next;
-            screen.Close();
-            _screens.Items.Remove(screen);
+            ImmediateCloseScreen(screen);
             return true;
          }
 
          return false;
+      }
+
+      public void ImmediateCloseScreen(IScreenBase screen) {
+         IScreenBase next = ChooseNextScreen(screen);
+         ActiveScreen = next;
+         screen.Close();
+         _screens.Items.Remove(screen);
       }
 
       protected virtual IScreenBase ChooseNextScreen(IScreenBase screen) {

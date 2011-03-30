@@ -15,5 +15,8 @@
 
       public virtual void Close() {
       }
+
+      public void Corrupt(object data = null) {
+      }
    }
 }

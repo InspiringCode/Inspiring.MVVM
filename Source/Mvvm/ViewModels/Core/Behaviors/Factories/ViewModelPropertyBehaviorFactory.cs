@@ -1,7 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
 
-   internal sealed class ViewModelPropertyBehaviorFactory : IBehaviorFactory {
+   public class ViewModelPropertyBehaviorFactory : IBehaviorFactory {
       public static readonly ViewModelPropertyBehaviorFactory Instance = new ViewModelPropertyBehaviorFactory();
 
       public static BehaviorFactoryInvoker CreateInvoker<TVM, TChildVM>()
@@ -11,7 +11,7 @@
          return new ViewModelPropertyBehaviorFactoryInvoker<TVM, TChildVM>();
       }
 
-      public IBehavior Create<TVM, TChildVM>(BehaviorKey key)
+      public virtual IBehavior Create<TVM, TChildVM>(BehaviorKey key)
          where TVM : IViewModel
          where TChildVM : IViewModel {
 

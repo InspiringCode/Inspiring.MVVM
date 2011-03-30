@@ -22,12 +22,25 @@
          dl.ScreenResult = result;
       }
 
+      public static void SetDialogResult(this IScreenBase dialog, Exception exception) {
+         DialogLifecycle dl = DialogLifecycle.GetDialogLifecycle(dialog);
+         dl.ScreenResult = new DialogScreenResult(false, new ExceptionResult(exception));
+      }
+
       public static void CloseDialog(this IScreenBase dialog, DialogScreenResult result) {
          DialogLifecycle dl = DialogLifecycle.GetDialogLifecycle(dialog);
          dl.ScreenResult = result;
          dl.RaiseCloseWindow();
       }
 
+      public static void CloseDialog(this IScreenBase dialog, Exception exception) {
+         DialogLifecycle dl = DialogLifecycle.GetDialogLifecycle(dialog);
+         dl.ScreenResult = new DialogScreenResult(false, new ExceptionResult(exception));
+         dl.RaiseCloseWindow();
+      }
 
+      public static bool IsDialog(this IScreenBase screen) {
+         return DialogLifecycle.HasDialogLifecycle(screen);
+      }
    }
 }
