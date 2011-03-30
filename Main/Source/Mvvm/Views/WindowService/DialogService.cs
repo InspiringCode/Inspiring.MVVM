@@ -22,7 +22,13 @@
          WindowService.ShowDialogWindow(s, parent, title);
 
          var dl = DialogLifecycle.GetDialogLifecycle(s);
-         return dl.ScreenResult ?? new DialogScreenResult(false);
+         var result = dl.ScreenResult ?? new DialogScreenResult(false);
+
+         if (result.Data is ExceptionResult) {
+            throw ((ExceptionResult)result.Data).Exception;
+         }
+
+         return result;
       }
 
       public virtual bool ShowOpenFileDialog(

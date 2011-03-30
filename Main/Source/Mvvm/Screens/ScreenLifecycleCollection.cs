@@ -82,6 +82,10 @@
          Invoke("Close", h => h.Close(), parentCallback);
       }
 
+      internal void CorruptAll(object data = null, Action parentCallback = null) {
+         Invoke("Corrupt", h => h.Corrupt(data), parentCallback);
+      }
+
       internal void Invoke(
          string lifecycleMethodName,
          Action<T> methodInvocation,

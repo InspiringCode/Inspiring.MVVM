@@ -7,5 +7,6 @@
       void Deactivate();
       bool RequestClose();
       void Close();
+      void Corrupt(object data = null);
    }
 }

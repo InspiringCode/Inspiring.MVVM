@@ -5,7 +5,7 @@
    // TODO: Make me less visible
    public class DialogCloseHandler : WindowCloseHandler {
       private IScreenBase _dialog;
-      private bool _closeIsUserRequested = true;
+      private bool _raiseOnClosing = true;
 
       public DialogCloseHandler(IScreenBase dialog)
          : base(dialog) {
@@ -17,7 +17,7 @@
          DialogLifecycle
             .GetDialogLifecycle(_dialog)
             .CloseWindow += (sender, e) => {
-               _closeIsUserRequested = false;
+               _raiseOnClosing = false;
                window.Close();
             };
       }
@@ -27,7 +27,7 @@
             .GetDialogLifecycle(_dialog)
             .WindowResult = window.DialogResult;
 
-         return _closeIsUserRequested ?
+         return _raiseOnClosing ?
             base.OnClosing(window) :
             true;
       }
