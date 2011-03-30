@@ -33,6 +33,7 @@
       }
 
       private void Add(CollectionResultKey key, ValidationResult result) {
+         ValidatedCollections.Add(key.Collection);
          _cache.Add(new KeyValuePair<CollectionResultKey, ValidationResult>(key, result));
       }
 
@@ -105,14 +106,14 @@
          ) {
             var previouslyInvalidItems = collection
                .Cast<IViewModel>()
-               .Where(PropertyIsValid);
+               .Where(PropertyIsInvalid);
 
             var failedItems = collectionResult.Errors.Select(x => x.Target);
 
             return previouslyInvalidItems.Union(failedItems);
          }
 
-         private bool PropertyIsValid(IViewModel viewModel) {
+         private bool PropertyIsInvalid(IViewModel viewModel) {
             return viewModel
                .Kernel
                .GetValidationState(ValidationStateScope.Self)
