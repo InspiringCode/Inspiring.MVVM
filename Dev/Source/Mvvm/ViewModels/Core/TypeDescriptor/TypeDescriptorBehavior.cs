@@ -7,13 +7,13 @@
    ///   A view model behavior that caches all <see cref="TypeDescriptorPropertyDescriptor"/> 
    ///   objects of a <see cref="VMDescriptorBase"/> object.
    /// </summary>
-   public sealed class TypeDescriptorBehavior : 
+   public sealed class TypeDescriptorBehavior :
       Behavior,
       IBehaviorInitializationBehavior {
 
       private PropertyDescriptorCollection _propertyDescriptors;
       private VMDescriptorBase _vmDescriptor;
-      
+
       public PropertyDescriptorCollection PropertyDescriptors {
          get {
             AssertInitialized();
@@ -31,8 +31,9 @@
          }
       }
 
-      public new void Initialize(BehaviorInitializationContext context) {
+      public void Initialize(BehaviorInitializationContext context) {
          _vmDescriptor = context.Descriptor;
+         this.InitializeNext(context);
       }
 
       private void AssertInitialized() {
