@@ -14,7 +14,7 @@
       }
 
       public bool IsSet { get; private set; }
-      protected object Value { get; private set; }
+      internal object Value { get; private set; }
       private string ParameterName { get; set; }
 
       public void SetValue(object value) {

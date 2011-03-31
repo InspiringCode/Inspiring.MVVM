@@ -44,7 +44,31 @@
             IScreenBase s = screen.Create();
             s.Children.Add(new DialogLifecycle());
 
+            IScreenBase parent = (IScreenBase)invocation.Parent.Value;
+
+            if (parent != null) {
+               // HACK
+               if (s.Children != null) {
+                  s.Children.Expose<ScreenHierarchyLifecycle>().Opener = parent;
+               }
+               // HACK
+               if (parent.Children != null) {
+                  parent.Children.Expose<ScreenHierarchyLifecycle>().OpenedScreens.Add(s);
+               }
+            }
+
             DialogTestAction((TScreen)s);
+
+            if (parent != null) {
+               // HACK
+               if (s.Children != null) {
+                  s.Children.Expose<ScreenHierarchyLifecycle>().Opener = null;
+               }
+               // HACK
+               if (parent.Children != null) {
+                  parent.Children.Expose<ScreenHierarchyLifecycle>().OpenedScreens.Remove(s);
+               }
+            }
 
             var dl = DialogLifecycle.GetDialogLifecycle(s);
             result = dl.ScreenResult ?? new DialogScreenResult(false);
