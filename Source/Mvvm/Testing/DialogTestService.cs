@@ -56,13 +56,18 @@
          invocation.Parent.SetValue(parent);
 
          IScreenBase s = screen.Create();
-         s.Children.Expose<ScreenHierarchyLifecycle>().Opener = parent;
-         parent.Children.Expose<ScreenHierarchyLifecycle>().OpenedScreens.Add(s);
+
+         if (parent != null) {
+            s.Children.Expose<ScreenHierarchyLifecycle>().Opener = parent;
+            parent.Children.Expose<ScreenHierarchyLifecycle>().OpenedScreens.Add(s);
+         }
 
          var result = DequeueResponder().ProcessScreenDialogInvocation(invocation, screen);
 
-         s.Children.Expose<ScreenHierarchyLifecycle>().Opener = null;
-         parent.Children.Expose<ScreenHierarchyLifecycle>().OpenedScreens.Remove(s);
+         if (parent != null) {
+            s.Children.Expose<ScreenHierarchyLifecycle>().Opener = null;
+            parent.Children.Expose<ScreenHierarchyLifecycle>().OpenedScreens.Remove(s);
+         }
 
          return result;
       }
