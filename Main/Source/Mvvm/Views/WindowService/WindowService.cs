@@ -60,13 +60,17 @@
 
          dialogWindow.ShowInTaskbar = false;
 
-         screen.Children.Expose<ScreenHierarchyLifecycle>().Opener = parent;
-         parent.Children.Expose<ScreenHierarchyLifecycle>().OpenedScreens.Add(screen);
+         if (parent != null) {
+            screen.Children.Expose<ScreenHierarchyLifecycle>().Opener = parent;
+            parent.Children.Expose<ScreenHierarchyLifecycle>().OpenedScreens.Add(screen);
+         }
 
          dialogWindow.ShowDialog();
 
-         screen.Children.Expose<ScreenHierarchyLifecycle>().Opener = null;
-         parent.Children.Expose<ScreenHierarchyLifecycle>().OpenedScreens.Remove(screen);
+         if (parent != null) {
+            screen.Children.Expose<ScreenHierarchyLifecycle>().Opener = null;
+            parent.Children.Expose<ScreenHierarchyLifecycle>().OpenedScreens.Remove(screen);
+         }
       }
 
       public Window GetAssociatedWindow(IScreenBase ofScreen) {
