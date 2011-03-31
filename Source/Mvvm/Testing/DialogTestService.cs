@@ -54,7 +54,17 @@
          var invocation = new DialogServiceInvocation(DialogServiceMethod.OpenDialog);
          invocation.Caption.SetValue(title);
          invocation.Parent.SetValue(parent);
-         return DequeueResponder().ProcessScreenDialogInvocation(invocation, screen);
+
+         IScreenBase s = screen.Create();
+         s.Children.Expose<ScreenHierarchyLifecycle>().Opener = parent;
+         parent.Children.Expose<ScreenHierarchyLifecycle>().OpenedScreens.Add(s);
+
+         var result = DequeueResponder().ProcessScreenDialogInvocation(invocation, screen);
+
+         s.Children.Expose<ScreenHierarchyLifecycle>().Opener = null;
+         parent.Children.Expose<ScreenHierarchyLifecycle>().OpenedScreens.Remove(s);
+
+         return result;
       }
 
       bool IDialogService.ShowOpenFileDialog(IScreenBase parent, out string fileName, string filter, string initialDirectory) {

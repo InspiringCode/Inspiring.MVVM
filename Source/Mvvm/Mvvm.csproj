@@ -127,7 +127,7 @@
     <Compile Include="Testing\Responders\FileDialogResponderSetup.cs" />
     <Compile Include="Testing\DialogServiceInvocation.cs" />
     <Compile Include="Testing\Responders\MessageBoxResponderSetup.cs" />
-    <Compile Include="Testing\MessageBoxTestService.new.cs" />
+    <Compile Include="Testing\DialogTestService.cs" />
     <Compile Include="Testing\Responders\ResponderBase.cs" />
     <Compile Include="Testing\Responders\ShowDialogResponderSetup.cs" />
     <Compile Include="ViewModels\- No Namespace -\RefreshScope.cs" />
