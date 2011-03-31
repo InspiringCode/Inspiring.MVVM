@@ -9,6 +9,7 @@
             var b = c.GetPropertyBuilder(x => x.Source);
 
             d.Title = b.Property.MapsTo(x => x.Title);
+            d.Customer = b.VM.Wraps(x => x.Customer).With<CustomerVM>();
          })
          .WithViewModelBehaviors(b => {
             b.EnableUndo();
@@ -22,6 +23,6 @@
 
    public sealed class ProjectVMDescriptor : VMDescriptor {
       public IVMPropertyDescriptor<string> Title { get; set; }
-      //public IVMPropertyDescriptor<CustomerVM> Customer { get; set; }
+      public IVMPropertyDescriptor<CustomerVM> Customer { get; set; }
    }
 }

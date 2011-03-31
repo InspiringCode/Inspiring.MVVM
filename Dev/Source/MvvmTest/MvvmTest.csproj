@@ -123,10 +123,10 @@
     <Compile Include="ApiTests\ViewModels\PropertyDependencyTests.cs" />
     <Compile Include="ApiTests\ViewModels\RefreshTests.cs" />
     <Compile Include="ApiTests\ViewModels\TestCollectionWithInheritance.cs" />
-    <Compile Include="ApiTests\ViewModels\Undo\Employee.cs" />
+    <Compile Include="ApiTests\ViewModels\Undo\CustomerVM.cs" />
+    <Compile Include="ApiTests\ViewModels\Undo\DomainObjects.cs" />
     <Compile Include="ApiTests\ViewModels\Undo\EmployeeVM.cs" />
     <Compile Include="ApiTests\ViewModels\Undo\FirstTests.cs" />
-    <Compile Include="ApiTests\ViewModels\Undo\Project.cs" />
     <Compile Include="ApiTests\ViewModels\Undo\ProjectVM.cs" />
     <Compile Include="ApiTests\ViewModels\UntypedPropertyAccessTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\CollectionValidationTests.cs" />
