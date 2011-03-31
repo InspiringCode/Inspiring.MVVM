@@ -28,6 +28,10 @@
             return new TypeDescriptorBehavior();
          }
 
+         if (key == ViewModelBehaviorKeys.UndoRoot) {
+            return new UndoRootBehavior();
+         }
+
          throw new NotSupportedException(
             ExceptionTexts.BehaviorNotSupportedByFactory.FormatWith(key)
          );

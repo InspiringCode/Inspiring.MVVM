@@ -27,15 +27,17 @@
          _configuration.ViewModelConfiguration = config;
       }
 
-      ViewModelBehaviorBuilder<TVM, TDescriptor> Enable(
-         BehaviorKey key,
-         IBehavior behaviorInstance
+      // Todo: Should this be public ?
+      public ViewModelBehaviorBuilder<TVM, TDescriptor> Enable(
+        BehaviorKey key,
+        IBehavior behaviorInstance = null
       ) {
          _configuration.ViewModelConfiguration.Enable(key, behaviorInstance);
          return this;
       }
 
-      ViewModelBehaviorBuilder<TVM, TDescriptor> Configure<TBehavior>(
+      // Todo: Should this be public ?
+      public ViewModelBehaviorBuilder<TVM, TDescriptor> Configure<TBehavior>(
          BehaviorKey key,
          Action<TBehavior> configurationAction
       ) where TBehavior : IBehavior {
@@ -69,8 +71,6 @@
          );
       }
 
-
-
       public void AddChangeHandler(Action<TVM, ChangeArgs, InstancePath> changeHandler) {
          // TODO: Make this more official...
          var key = new BehaviorKey("ChangeListener");
@@ -79,6 +79,30 @@
             key,
             new ChangeListenerBehavior<TVM>(changeHandler)
          );
+      }
+
+      public void EnableUndo() {
+         foreach (var property in _descriptor.Properties) {
+            var config = _configuration.PropertyConfigurations[property];
+            if (config.Contains(PropertyBehaviorKeys.Undo)) {
+               config.Enable(PropertyBehaviorKeys.Undo);
+            }
+
+            if (PropertyTypeHelper.IsCollectionPropertyDescriptor(property.GetType())) {
+               EnableCollectionBehaviorUndo(config);
+            }
+         }
+      }
+
+      private void EnableCollectionBehaviorUndo(BehaviorChainConfiguration propertyConfig) {
+         var collectionConfiguration = propertyConfig
+            .GetBehavior<ICollectionBehaviorConfigurationBehavior>(PropertyBehaviorKeys.CollectionFactory);
+
+         collectionConfiguration.CollectionBehaviorConfiguration.Enable(CollectionBehaviorKeys.Undo);
+      }
+
+      public void IsUndoRoot() {
+         Enable(ViewModelBehaviorKeys.UndoRoot);
       }
    }
 }

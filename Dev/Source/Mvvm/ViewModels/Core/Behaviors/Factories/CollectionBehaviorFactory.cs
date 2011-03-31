@@ -27,6 +27,10 @@
             return new ViewModelFactoryBehavior<TItemVM>();
          }
 
+         if (key == CollectionBehaviorKeys.Undo) {
+            return new UndoCollectionModifcationBehavior<TItemVM>();
+         }
+
          throw new NotSupportedException(
             ExceptionTexts.BehaviorNotSupportedByFactory.FormatWith(key)
          );

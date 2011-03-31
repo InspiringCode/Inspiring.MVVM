@@ -38,7 +38,7 @@
          if (key == PropertyBehaviorKeys.ValueCache) {
             return new ValueCacheBehavior<TChildVM>();
          }
-         
+
          if (key == PropertyBehaviorKeys.ParentSetter) {
             return new ParentSetterBehavior<TChildVM>();
          }
@@ -61,6 +61,10 @@
 
          if (key == PropertyBehaviorKeys.UntypedValueAccessor) {
             return new UntypedPropertyAccessorBehavior<TChildVM>();
+         }
+
+         if (key == PropertyBehaviorKeys.Undo) {
+            return new UndoSetValueBehavior<TChildVM>();
          }
 
          throw new NotSupportedException(

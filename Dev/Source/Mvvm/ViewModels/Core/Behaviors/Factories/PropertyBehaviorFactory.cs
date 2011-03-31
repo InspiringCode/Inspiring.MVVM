@@ -63,6 +63,10 @@
             return new UntypedPropertyAccessorBehavior<TValue>();
          }
 
+         if (key == PropertyBehaviorKeys.Undo) {
+            return new UndoSetValueBehavior<TValue>();
+         }
+
          throw new NotSupportedException(
             ExceptionTexts.BehaviorNotSupportedByFactory.FormatWith(key)
          );

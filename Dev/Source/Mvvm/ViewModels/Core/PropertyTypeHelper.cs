@@ -20,6 +20,12 @@
          return implementsInterface;
       }
 
+      public static bool IsCollectionPropertyDescriptor(Type propertyType) {
+         return propertyType
+            .GetGenericArguments()
+            .Any(IsViewModelCollection);
+      }
+
       private static bool IsVMCollectionInterface(Type type) {
          return
             type.IsGenericType &&

@@ -1,5 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    public class PropertyBehaviorKeys : BehaviorKeys {
+      public static readonly BehaviorKey Undo = Key(() => Undo);
+
       public static readonly BehaviorKey ValueValidationSource = Key(() => ValueValidationSource);
 
       public static readonly BehaviorKey ValueInitializer = Key(() => ValueInitializer);
