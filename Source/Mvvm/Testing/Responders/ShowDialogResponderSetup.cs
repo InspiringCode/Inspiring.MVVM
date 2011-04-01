@@ -1,6 +1,8 @@
 ﻿namespace Inspiring.Mvvm.Testing {
    using System;
+   using System.Windows;
    using Inspiring.Mvvm.Screens;
+   using Inspiring.Mvvm.Views;
 
    public sealed class ShowDialogResponderSetup<TScreen> :
       ResponderBase
@@ -43,6 +45,8 @@
          if (match) {
             IScreenBase s = screen.Create();
             s.Children.Add(new DialogLifecycle());
+            var closeHandler = new DialogCloseHandler(s);
+            closeHandler.AttachTo(new Window());
 
             IScreenBase parent = (IScreenBase)invocation.Parent.Value;
 
