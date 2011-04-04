@@ -10,6 +10,9 @@
 
             d.Name = b.Property.MapsTo(x => x.Name);
          })
+         .WithViewModelBehaviors(b => {
+            b.EnableUndo();
+         })
          .Build();
 
       public CustomerVM()

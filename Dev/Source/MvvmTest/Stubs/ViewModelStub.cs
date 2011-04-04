@@ -21,6 +21,11 @@
          _context = Kernel;
       }
 
+      public ViewModelStub(IBehavior behavior)
+         : this() {
+         Descriptor.Behaviors.Successor = behavior;
+      }
+
       public void OverrideContext(IBehaviorContext context) {
          _context = context;
       }

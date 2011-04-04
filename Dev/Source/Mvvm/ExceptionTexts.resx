@@ -267,4 +267,7 @@
   <data name="UnexpectedPathStepType" xml:space="preserve">
     <value>The given 'Path' is invalid: The 'PathStep' at index {0} was expected to be of one of the following 'PathStepType's: {1}.</value>
   </data>
+  <data name="MultipleUndoRoots" xml:space="preserve">
+    <value>At most one ancestor of a certain distance can be the undo root.</value>
+  </data>
 </root>

@@ -304,6 +304,15 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to At most one ancestor of a certain distance can be the undo root..
+        /// </summary>
+        internal static string MultipleUndoRoots {
+            get {
+                return ResourceManager.GetString("MultipleUndoRoots", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The given &apos;screen&apos; (or one of its parents) is not associated with a &apos;Window&apos;. Make sure you only call this operation for screens that are currently shown..
         /// </summary>
         internal static string NoAssociatedWindow {
