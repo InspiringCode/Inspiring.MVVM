@@ -2,14 +2,14 @@
    using System;
    using Inspiring.Mvvm.ViewModels.Core.Validation.Validators;
 
-   internal class ValidatorBuilder<TOwnerVM, TTarget, TDescriptor>
+   public class ValidatorBuilder<TOwnerVM, TTarget, TDescriptor>
       where TOwnerVM : IViewModel
       where TTarget : IViewModel
       where TDescriptor : VMDescriptorBase {
 
       private readonly TDescriptor _descriptor;
 
-      public ValidatorBuilder(
+      internal ValidatorBuilder(
          IValidatorBuilderOperationProvider operationProvider,
          TDescriptor descriptor
       ) {
@@ -26,16 +26,15 @@
       public void CheckViewModel(Action<ViewModelValidationArgs<TOwnerVM, TTarget>> validatorAction) {
          var op = OperationProvider.GetOperation();
 
-         if (PathSelectsDescendant(op.Path)) {
+         if (!PathSelectsDescendant(op.Path)) {
             op.EnableViewModelValidationSourceBehavior();
          }
 
-         IValidator val = DelegateValidator.For(
-            ViewModelValidationArgs<TOwnerVM, TTarget>.Create,
-            validatorAction
+         var val = WithStandardConditions(
+            DelegateValidator.For(validatorAction),
+            ValidationStep.ViewModel,
+            op.Path
          );
-
-         val = WithStandardConditions(val, ValidationStep.ViewModel, op.Path);
 
          op.BuildActions.Push(() => {
             op.ActionArgs.Push(val);
@@ -50,7 +49,7 @@
       ) {
          var op = OperationProvider.GetOperation();
 
-         if (PathSelectsDescendant(op.Path)) {
+         if (!PathSelectsDescendant(op.Path)) {
             IVMPropertyDescriptor p = propertySelector(_descriptor);
             op.EnablePropertyValidationSourceBehavior(p);
          }
@@ -159,7 +158,7 @@
       ///   The descriptor type of the child VM. Can be inferred by the compiler.
       /// </typeparam>
       public ValidatorBuilder<TOwnerVM, IViewModel<C>, C> ValidateDescendant<C>(
-         Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModel<C>>>> propertySelector
+         Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<C>>>> propertySelector
       ) where C : VMDescriptorBase {
          var op = OperationProvider.GetOperation();
          op.Path = op.Path.Append(propertySelector);
@@ -182,9 +181,9 @@
          PathDefinition targetPath
       ) {
          return new ConditionalValidator(
-            new ValidationStepCondition(ValidationStep.ViewModel),
+            new ValidationTargetCondition(targetPath),
             new ConditionalValidator(
-               new ValidationTargetCondition(targetPath),
+               new ValidationStepCondition(ValidationStep.ViewModel),
                innerValidator
             )
          );

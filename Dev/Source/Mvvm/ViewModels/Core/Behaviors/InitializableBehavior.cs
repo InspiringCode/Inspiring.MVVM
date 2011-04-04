@@ -2,7 +2,7 @@
    using System;
    using System.Diagnostics.Contracts;
 
-   internal abstract class InitializableBehavior : Behavior {
+   public abstract class InitializableBehavior : Behavior {
       /// <summary>
       ///   Gets whether the behavior was already initialized. If a behavior does
       ///   not require initialization this property has no meaning.

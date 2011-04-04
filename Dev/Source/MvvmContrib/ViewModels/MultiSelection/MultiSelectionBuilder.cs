@@ -155,8 +155,7 @@
       }
 
       private class MultSelectionAccessor<TItemVM> :
-         Behavior,
-         IValueAccessorBehavior<MultiSelectionVM<TItemSource, TItemVM>>
+         CachedAccessorBehavior<MultiSelectionVM<TItemSource, TItemVM>>
          where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
          private MultiSelectionVMDescriptor<TItemSource, TItemVM> _descriptor;
@@ -167,7 +166,25 @@
             _filter = filter;
          }
 
-         public MultiSelectionVM<TItemSource, TItemVM> GetValue(IBehaviorContext context) {
+         //public MultiSelectionVM<TItemSource, TItemVM> GetValue(IBehaviorContext context) {
+         //   TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context);
+
+         //   var vm = new MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>(
+         //      _descriptor,
+         //      context.ServiceLocator
+         //   );
+
+         //   vm.ActiveItemFilter = _filter;
+         //   vm.InitializeFrom(sourceObject);
+
+         //   return vm;
+         //}
+
+         //public void SetValue(IBehaviorContext context, MultiSelectionVM<TItemSource, TItemVM> value) {
+         //   throw new NotSupportedException();
+         //}
+
+         protected override MultiSelectionVM<TItemSource, TItemVM> ProvideValue(IBehaviorContext context) {
             TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context);
 
             var vm = new MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>(
@@ -180,15 +197,10 @@
 
             return vm;
          }
-
-         public void SetValue(IBehaviorContext context, MultiSelectionVM<TItemSource, TItemVM> value) {
-            throw new NotSupportedException();
-         }
       }
 
       private class MultSelectionAccessor :
-         Behavior,
-         IValueAccessorBehavior<MultiSelectionVM<TItemSource>> {
+         CachedAccessorBehavior<MultiSelectionVM<TItemSource>> {
 
          private MultiSelectionVMDescriptor<TItemSource> _descriptor;
          private Func<TItemSource, bool> _filter;
@@ -198,7 +210,25 @@
             _filter = filter;
          }
 
-         public MultiSelectionVM<TItemSource> GetValue(IBehaviorContext context) {
+         //public MultiSelectionVM<TItemSource> GetValue(IBehaviorContext context) {
+         //   TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context);
+
+         //   var vm = new MultiSelectionWithSourceVM<TSourceObject, TItemSource>(
+         //      _descriptor,
+         //      context.ServiceLocator
+         //   );
+
+         //   vm.ActiveItemFilter = _filter;
+         //   vm.InitializeFrom(sourceObject);
+
+         //   return vm;
+         //}
+
+         //public void SetValue(IBehaviorContext context, MultiSelectionVM<TItemSource> value) {
+         //   throw new NotSupportedException();
+         //}
+
+         protected override MultiSelectionVM<TItemSource> ProvideValue(IBehaviorContext context) {
             TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context);
 
             var vm = new MultiSelectionWithSourceVM<TSourceObject, TItemSource>(
@@ -210,10 +240,6 @@
             vm.InitializeFrom(sourceObject);
 
             return vm;
-         }
-
-         public void SetValue(IBehaviorContext context, MultiSelectionVM<TItemSource> value) {
-            throw new NotSupportedException();
          }
       }
 

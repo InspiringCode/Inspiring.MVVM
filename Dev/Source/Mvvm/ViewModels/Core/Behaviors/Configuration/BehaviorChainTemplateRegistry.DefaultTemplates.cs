@@ -97,6 +97,7 @@
             new BehaviorChainTemplate(ViewModelPropertyBehaviorFactory.Instance)
                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
+               .Append(PropertyBehaviorKeys.LazyRefresh)
                .Append(PropertyBehaviorKeys.Undo, DefaultBehaviorState.Disabled)
             // TODO: Rethink.
                .Append(PropertyBehaviorKeys.RefreshBehavior, DefaultBehaviorState.DisabledWithoutFactory)
@@ -104,7 +105,7 @@
 
                .Append(PropertyBehaviorKeys.DescendantValidator)
 
-               .Append(PropertyBehaviorKeys.ValueInitializer)
+               //.Append(PropertyBehaviorKeys.ValueInitializer)
 
                .Append(PropertyBehaviorKeys.ParentSetter)
 
@@ -112,11 +113,13 @@
                .Append(PropertyBehaviorKeys.Validator, DefaultBehaviorState.Disabled)
 
                .Append(PropertyBehaviorKeys.PropertyChangedTrigger)
-               .Append(PropertyBehaviorKeys.ValueCache, DefaultBehaviorState.Disabled)
 
+
+               //.Append(PropertyBehaviorKeys.ViewModelSourceSetter, DefaultBehaviorState.DisabledWithoutFactory)
+            //.Append(PropertyBehaviorKeys.ValueCache)
                .Append(PropertyBehaviorKeys.ViewModelAccessor, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(PropertyBehaviorKeys.ViewModelFactory, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(PropertyBehaviorKeys.ViewModelFactory)
                .Append(PropertyBehaviorKeys.TypeDescriptor)
          );
       }

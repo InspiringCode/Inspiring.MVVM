@@ -66,7 +66,7 @@
          Func<TSourceObject, T> getter,
          Action<TSourceObject, T> setter
       ) {
-         var sourceValueAccessor = new CalculatedPropertyAccessor<TVM, TSourceObject, T>(
+         var sourceValueAccessor = new DelegateValueAccessor<TVM, TSourceObject, T>(
             _sourceObjectPath,
             getter,
             setter
@@ -108,7 +108,7 @@
          Func<TSourceObject, TSourceValue> getter,
          Action<TSourceObject, TSourceValue> setter
       ) {
-         var sourceValueAccessor = new CalculatedPropertyAccessor<TVM, TSourceObject, TSourceValue>(
+         var sourceValueAccessor = new DelegateValueAccessor<TVM, TSourceObject, TSourceValue>(
             _sourceObjectPath,
             getter,
             setter
@@ -126,18 +126,10 @@
          Action<TSourceObject, TChildVM> setter
       ) {
          return Factory.CreateViewModelProperty(
-            viewModelAccessor: new CalculatedPropertyAccessor<TVM, TSourceObject, TChildVM>(
+            viewModelAccessor: new DelegateViewModelAccessorBehavior<TChildVM>(),
+            sourceAccessor: new DelegateValueAccessor<TVM, TSourceObject, TChildVM>(
                _sourceObjectPath,
-               sourceObject => {
-                  // TODO: This and same line in ViewModelWithSourceAccessorBehavior is a hack!
-                  TChildVM result = getter(sourceObject);
-
-                  if (result != null) {
-                     result.Kernel.Revalidate(ValidationScope.SelfOnly, ValidationMode.CommitValidValues);
-                  }
-
-                  return result;
-               },
+               getter,
                setter
             ),
             cachesValue: true,
@@ -151,7 +143,7 @@
             viewModelAccessor: new InstancePropertyBehavior<TChildVM>(),
             needsViewModelFactory: false,
             cachesValue: false,
-            refreshBehavior: new RefreshBehavior.ViewModelInstanceProperty<TChildVM>()
+            refreshBehavior: new RefreshBehavior.ViewModelProperty<TChildVM>()
          );
       }
 
@@ -161,7 +153,7 @@
       ICollectionPropertyBuilderWithSource<TItemSource> ICollectionPropertyBuilder<TSourceObject>.Wraps<TItemSource>(
          Func<TSourceObject, IEnumerable<TItemSource>> sourceCollectionSelector
       ) {
-         var sourceValueAccessor = new CalculatedPropertyAccessor<TVM, TSourceObject, IEnumerable<TItemSource>>(
+         var sourceValueAccessor = new DelegateValueAccessor<TVM, TSourceObject, IEnumerable<TItemSource>>(
             _sourceObjectPath,
             sourceCollectionSelector,
             setter: null
@@ -250,7 +242,7 @@
 
             collectionConfiguration.Enable(CollectionBehaviorKeys.SourceSynchronizer, new SynchronizerCollectionBehavior<TItemVM, TItemSource>());
             collectionConfiguration.Enable(CollectionBehaviorKeys.SourceAccessor, _sourceCollectionAccessor);
-            collectionConfiguration.Enable(CollectionBehaviorKeys.ViewModelFactory, new ViewModelFactoryBehavior<TItemVM>());
+            collectionConfiguration.Enable(CollectionBehaviorKeys.ViewModelFactory, new ServiceLocatorValueFactoryBehavior<TItemVM>());
             collectionConfiguration.Enable(
                CollectionBehaviorKeys.Populator,
                new PopulatorCollectionBehavior<TItemVM, TItemSource>()
@@ -282,10 +274,11 @@
 
          IVMPropertyDescriptor<TChildVM> IViewModelPropertyBuilderWithSource<TSourceValue>.With<TChildVM>() {
             return Factory.CreateViewModelProperty(
-               viewModelAccessor: new ViewModelWithSourceAcessorBehavior<TChildVM, TSourceValue>(),
+               viewModelAccessor: new WrapperViewModelAccessorBehavior<TChildVM, TSourceValue>(),
                manualUpdateBehavior: new ManualUpdateViewModelPropertyBehavior<TChildVM, TSourceValue>(),
                sourceAccessor: _sourceValueAccessor,
-               needsViewModelFactory: true,
+               //sourceSetter: new ViewModelSourceSetterBehavior<TChildVM, TSourceValue>(),
+               needsViewModelFactory: false,
                cachesValue: true,
                refreshBehavior: new RefreshBehavior.ViewModelProperty<TChildVM>()
             );
@@ -333,7 +326,7 @@
          return Factory.CreateViewModelProperty(
             viewModelAccessor: viewModelAccessor,
             sourceAccessor: GetSourceObjectAccessor(),
-            needsViewModelFactory: true,
+            needsViewModelFactory: false,
             cachesValue: true,
             refreshBehavior: new RefreshBehavior.ViewModelProperty<TChildVM>()
          );

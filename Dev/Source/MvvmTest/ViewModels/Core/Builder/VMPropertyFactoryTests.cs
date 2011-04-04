@@ -38,7 +38,7 @@
          var f = CreateRootFactory();
          var p = f.Property.DelegatesTo(x => x.SourcePerson.Name);
 
-         Assert.IsTrue(ContainsBehavior<CalculatedPropertyAccessor<EmployeeVM, EmployeeVM, string>>(p));
+         Assert.IsTrue(ContainsBehavior<DelegateValueAccessor<EmployeeVM, EmployeeVM, string>>(p));
          Assert.IsTrue(ContainsBehavior<RefreshBehavior.SimpleProperty<string>>(p));
          AssertDefaultPropertyBehaviors(p);
       }
@@ -60,9 +60,9 @@
 
          AssertDefaultViewModelBehaviors(p);
          Assert.IsTrue(ContainsBehavior<MappedPropertyAccessor<EmployeeVM, Project>>(p));
-         Assert.IsTrue(ContainsBehavior<ViewModelFactoryBehavior<ProjectVM>>(p));
-         Assert.IsTrue(ContainsBehavior<ViewModelWithSourceAcessorBehavior<ProjectVM, Project>>(p));
-         Assert.IsTrue(ContainsBehavior<ValueCacheBehavior<ProjectVM>>(p));
+         Assert.IsTrue(ContainsBehavior<ServiceLocatorValueFactoryBehavior<ProjectVM>>(p));
+         Assert.IsTrue(ContainsBehavior<WrapperViewModelAccessorBehavior<ProjectVM, Project>>(p));
+         Assert.IsTrue(ContainsBehavior<ValueCacheBehaviorOld<ProjectVM>>(p));
          Assert.IsTrue(ContainsBehavior<RefreshBehavior.ViewModelProperty<ProjectVM>>(p));
       }
 
@@ -72,10 +72,10 @@
          var p = f.VM.Wraps(x => x.SourcePerson.CurrentProject, setter: null).With<ProjectVM>();
 
          AssertDefaultViewModelBehaviors(p);
-         Assert.IsTrue(ContainsBehavior<CalculatedPropertyAccessor<EmployeeVM, EmployeeVM, Project>>(p));
-         Assert.IsTrue(ContainsBehavior<ViewModelFactoryBehavior<ProjectVM>>(p));
-         Assert.IsTrue(ContainsBehavior<ViewModelWithSourceAcessorBehavior<ProjectVM, Project>>(p));
-         Assert.IsTrue(ContainsBehavior<ValueCacheBehavior<ProjectVM>>(p));
+         Assert.IsTrue(ContainsBehavior<DelegateValueAccessor<EmployeeVM, EmployeeVM, Project>>(p));
+         Assert.IsTrue(ContainsBehavior<ServiceLocatorValueFactoryBehavior<ProjectVM>>(p));
+         Assert.IsTrue(ContainsBehavior<WrapperViewModelAccessorBehavior<ProjectVM, Project>>(p));
+         Assert.IsTrue(ContainsBehavior<ValueCacheBehaviorOld<ProjectVM>>(p));
          Assert.IsTrue(ContainsBehavior<RefreshBehavior.ViewModelProperty<ProjectVM>>(p));
       }
 
@@ -86,10 +86,10 @@
 
          AssertDefaultViewModelBehaviors(p);
          Assert.IsTrue(ContainsBehavior<InstancePropertyBehavior<ProjectVM>>(p));
-         Assert.IsFalse(ContainsBehavior<ViewModelFactoryBehavior<ProjectVM>>(p));
-         Assert.IsFalse(ContainsBehavior<ViewModelWithSourceAcessorBehavior<ProjectVM, Project>>(p));
-         Assert.IsFalse(ContainsBehavior<ValueCacheBehavior<ProjectVM>>(p));
-         Assert.IsTrue(ContainsBehavior<RefreshBehavior.ViewModelInstanceProperty<ProjectVM>>(p));
+         Assert.IsFalse(ContainsBehavior<ServiceLocatorValueFactoryBehavior<ProjectVM>>(p));
+         Assert.IsFalse(ContainsBehavior<WrapperViewModelAccessorBehavior<ProjectVM, Project>>(p));
+         Assert.IsFalse(ContainsBehavior<ValueCacheBehaviorOld<ProjectVM>>(p));
+         Assert.IsTrue(ContainsBehavior<RefreshBehavior.ViewModelProperty<ProjectVM>>(p));
       }
 
       [TestMethod]
@@ -99,12 +99,12 @@
 
          AssertDefaultCollectionPropertyBehaviors(p);
          Assert.IsTrue(ContainsBehavior<CollectionPopulatorBehavior<ProjectVM>>(p));
-         Assert.IsTrue(ContainsBehavior<ValueCacheBehavior<IVMCollection<ProjectVM>>>(p));
+         Assert.IsTrue(ContainsBehavior<ValueCacheBehaviorOld<IVMCollection<ProjectVM>>>(p));
          Assert.IsTrue(ContainsBehavior<RefreshBehavior.PopulatedCollectionProperty<ProjectVM>>(p));
 
          Assert.IsTrue(ContainsCollectionBehavior<PopulatorCollectionBehavior<ProjectVM, Project>>(p));
-         Assert.IsTrue(ContainsCollectionBehavior<ViewModelFactoryBehavior<ProjectVM>>(p));
-         Assert.IsTrue(ContainsCollectionBehavior<CalculatedPropertyAccessor<EmployeeVM, EmployeeVM, IEnumerable<Project>>>(p));
+         Assert.IsTrue(ContainsCollectionBehavior<ServiceLocatorValueFactoryBehavior<ProjectVM>>(p));
+         Assert.IsTrue(ContainsCollectionBehavior<DelegateValueAccessor<EmployeeVM, EmployeeVM, IEnumerable<Project>>>(p));
       }
 
       [TestMethod]
@@ -114,12 +114,12 @@
 
          AssertDefaultCollectionPropertyBehaviors(p);
          Assert.IsTrue(ContainsBehavior<CollectionPopulatorBehavior<ProjectVM>>(p));
-         Assert.IsTrue(ContainsBehavior<ValueCacheBehavior<IVMCollection<ProjectVM>>>(p));
+         Assert.IsTrue(ContainsBehavior<ValueCacheBehaviorOld<IVMCollection<ProjectVM>>>(p));
          Assert.IsTrue(ContainsBehavior<RefreshBehavior.PopulatedCollectionProperty<ProjectVM>>(p));
 
          Assert.IsTrue(ContainsCollectionBehavior<DelegatePopulatorCollectionBehavior<ProjectVM, EmployeeVM>>(p));
          Assert.IsTrue(ContainsCollectionBehavior<MappedPropertyAccessor<EmployeeVM, EmployeeVM>>(p));
-         Assert.IsFalse(ContainsCollectionBehavior<ViewModelFactoryBehavior<ProjectVM>>(p));
+         Assert.IsFalse(ContainsCollectionBehavior<ServiceLocatorValueFactoryBehavior<ProjectVM>>(p));
       }
 
       [TestMethod]
@@ -133,7 +133,7 @@
 
          Assert.IsFalse(ContainsCollectionBehavior<PopulatorCollectionBehavior<ProjectVM, Project>>(p));
          Assert.IsFalse(ContainsCollectionBehavior<MappedPropertyAccessor<EmployeeVM, EmployeeVM>>(p));
-         Assert.IsFalse(ContainsCollectionBehavior<ViewModelFactoryBehavior<ProjectVM>>(p));
+         Assert.IsFalse(ContainsCollectionBehavior<ServiceLocatorValueFactoryBehavior<ProjectVM>>(p));
       }
 
       [TestMethod]
@@ -142,9 +142,9 @@
          var p = f.VM.DelegatesTo(x => new ProjectVM());
 
          AssertDefaultViewModelBehaviors(p);
-         Assert.IsTrue(ContainsBehavior<CalculatedPropertyAccessor<EmployeeVM, EmployeeVM, ProjectVM>>(p));
-         Assert.IsTrue(ContainsBehavior<ValueCacheBehavior<ProjectVM>>(p));
-         Assert.IsFalse(ContainsBehavior<ViewModelWithSourceAcessorBehavior<ProjectVM, Project>>(p));
+         Assert.IsTrue(ContainsBehavior<DelegateValueAccessor<EmployeeVM, EmployeeVM, ProjectVM>>(p));
+         Assert.IsTrue(ContainsBehavior<ValueCacheBehaviorOld<ProjectVM>>(p));
+         Assert.IsFalse(ContainsBehavior<WrapperViewModelAccessorBehavior<ProjectVM, Project>>(p));
       }
 
       private void AssertDefaultPropertyBehaviors(IVMPropertyDescriptor p) {
@@ -163,7 +163,7 @@
 
       private void AssertDefaultCollectionPropertyBehaviors(IVMPropertyDescriptor p) {
          Assert.IsTrue(ContainsBehavior<IDisplayValueAccessorBehavior>(p));
-         Assert.IsTrue(ContainsBehavior<ValueCacheBehavior<IVMCollection<ProjectVM>>>(p));
+         Assert.IsTrue(ContainsBehavior<ValueCacheBehaviorOld<IVMCollection<ProjectVM>>>(p));
          Assert.IsTrue(ContainsBehavior<CollectionFactoryBehavior<ProjectVM>>(p));
          Assert.IsTrue(ContainsBehavior<PropertyDescriptorBehavior>(p));
 

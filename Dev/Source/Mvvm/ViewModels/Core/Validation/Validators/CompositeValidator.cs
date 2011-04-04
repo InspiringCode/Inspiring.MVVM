@@ -1,4 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core.Validation.Validators {
+   using System;
+   using System.Collections.Generic;
    using System.Diagnostics.Contracts;
    using System.Linq;
 
@@ -20,6 +22,15 @@
       public ValidationResult Execute(ValidationRequest request) {
          return ValidationResult.Join(
             _validators.Select(x => x.Execute(request))
+         );
+      }
+
+      public override string ToString() {
+         IEnumerable<IValidator> validators = _validators;
+
+         return String.Format(
+            "Composite({0})",
+            String.Join(", ", validators)
          );
       }
    }

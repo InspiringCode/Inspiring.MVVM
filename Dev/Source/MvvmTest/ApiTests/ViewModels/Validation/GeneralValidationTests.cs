@@ -46,9 +46,9 @@
 
                d.Title = vm.Property.Of<string>();
             })
-            .WithValidators(c => {
-               c.Check(x => x.Title).Custom((task, value, args) => {
-                  if (String.IsNullOrEmpty(value)) {
+            .WithNewValidators(c => {
+               c.Check(x => x.Title).Custom(args => {
+                  if (String.IsNullOrEmpty(args.Value)) {
                      args.AddError(ErrorMessage);
                   }
                });

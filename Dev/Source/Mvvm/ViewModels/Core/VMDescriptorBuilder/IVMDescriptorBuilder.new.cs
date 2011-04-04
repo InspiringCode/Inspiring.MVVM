@@ -62,6 +62,10 @@
          Action<ValidatorBuilder<TVM, TDescriptor>> validatorConfigurator
       );
 
+      IVMDescriptorBuilderWithProperties<TDescriptor, TVM> WithNewValidators(
+         Action<RootValidatorBuilder<TVM, TVM, TDescriptor>> validatorConfigurator
+      );
+
       /// <summary>
       ///   Configures additional "behaviors" that modify how the properties
       ///   of the view model behave (optional).

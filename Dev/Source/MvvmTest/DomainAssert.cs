@@ -11,7 +11,7 @@
          CollectionAssert.AreEquivalent(
             expectedErrors,
             actualErrors,
-            "The two 'ValidationState' objects contain different validation errors."
+            "The two 'ValidationResult' objects contain different validation errors."
          );
       }
 

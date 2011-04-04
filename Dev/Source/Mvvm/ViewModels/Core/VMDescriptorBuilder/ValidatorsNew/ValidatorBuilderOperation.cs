@@ -1,6 +1,8 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core.VMDescriptorBuilder.ValidatorsNew {
    using System;
    using System.Collections.Generic;
+   using System.Diagnostics.Contracts;
+   using System.Linq;
    using Inspiring.Mvvm.ViewModels.Core.Validation.Validators;
 
    internal sealed class ValidatorBuilderOperation : IValidatorBuilderOperationProvider {
@@ -25,16 +27,12 @@
          Config
             .ViewModelConfiguration
             .Enable(PropertyBehaviorKeys.Validator); // TODO: Use correct key.
-
-         throw new NotImplementedException();
       }
 
       public void EnablePropertyValidationSourceBehavior(IVMPropertyDescriptor property) {
          Config
             .PropertyConfigurations[property]
             .Enable(PropertyBehaviorKeys.Validator); // TODO: Use correct key.
-
-         throw new NotImplementedException();
       }
 
       public ValidatorBuilderOperation GetOperation() {
@@ -42,7 +40,23 @@
       }
 
       public void Execute() {
+         while (BuildActions.Any()) {
+            var action = BuildActions.Pop();
+            action();
+         }
 
+         Contract.Assert(ActionArgs.Count == 1);
+
+         AddValidator(ActionArgs.Single());
+      }
+
+      private void AddValidator(IValidator validator) {
+         Config
+            .ViewModelConfiguration
+            .ConfigureBehavior<ValidatorExecutorBehavior>(
+               ViewModelBehaviorKeys.ValidationExecutor,
+               b => b.AddValidator(validator)
+            );
       }
    }
 
@@ -63,6 +77,10 @@
          var op = new ValidatorBuilderOperation(_descriptor, _config);
          _operations.Add(op);
          return op;
+      }
+
+      internal void Perform() {
+         _operations.ForEach(o => o.Execute());
       }
    }
 }

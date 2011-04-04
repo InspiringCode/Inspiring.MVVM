@@ -9,7 +9,8 @@
    public sealed class CollectionFactoryBehavior<TItemVM> :
       Behavior,
       ICollectionBehaviorConfigurationBehavior,
-      IValueAccessorBehavior<IVMCollection<TItemVM>>
+      IValueAccessorBehavior<IVMCollection<TItemVM>>,
+      IValueFactoryBehavior<IVMCollection<TItemVM>>
       where TItemVM : IViewModel {
 
       private BehaviorChain _collectionBehaviors;
@@ -42,6 +43,16 @@
 
       public void SetValue(IBehaviorContext context, IVMCollection<TItemVM> value) {
          throw new NotSupportedException();
+      }
+
+      public IVMCollection<TItemVM> CreateValue(IBehaviorContext context) {
+         if (_collectionBehaviors == null) {
+            _collectionBehaviors = CollectionBehaviorConfiguration.CreateChain();
+            CollectionBehaviorConfiguration.Seal();
+            Seal();
+         }
+
+         return new VMCollection<TItemVM>(_collectionBehaviors, owner: context.VM);
       }
    }
 }

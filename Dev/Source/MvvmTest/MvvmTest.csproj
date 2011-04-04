@@ -216,6 +216,7 @@
     <Compile Include="ViewModels\Core\Validation\ViewModelValidationBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBaseTests.cs" />
     <Compile Include="ViewModels\Core\Common\InstancePathTests.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\ValidatorBuilderTests.cs" />
     <Compile Include="ViewModels\Core\VMKernelTests.cs" />
     <Compile Include="ViewModels\Core\VMKernel_ParentRelationshipTests.cs" />
     <Compile Include="ViewModels\IntegrationTests\ChangeNotificationTest.cs" />

@@ -68,6 +68,7 @@
       private readonly IVMDescriptorBuilder _baseBuilder;
       private Action<TDescriptor, IVMPropertyBuilderProvider<TVM>> _propertyConfigurator;
       private Action<ValidatorBuilder<TVM, TDescriptor>> _validatorConfigurator;
+      private Action<RootValidatorBuilder<TVM, TVM, TDescriptor>> _validatorConfiguratorNew;
       private Action<IVMBehaviorBuilder<TVM, TDescriptor>> _behaviorConfigurator;
       private Action<ViewModelBehaviorBuilder<TVM, TDescriptor>> _viewModelBehaviorConfigurator;
       private Action<IVMDependencyConfigurator<TDescriptor>> _dependencyConfigurator;
@@ -100,6 +101,15 @@
       ) {
          Contract.Requires<ArgumentNullException>(validatorConfigurator != null);
          _validatorConfigurator = validatorConfigurator;
+         return this;
+      }
+
+      /// <inheritdoc />
+      public IVMDescriptorBuilderWithProperties<TDescriptor, TVM> WithNewValidators(
+         Action<RootValidatorBuilder<TVM, TVM, TDescriptor>> validatorConfigurator
+      ) {
+         Contract.Requires<ArgumentNullException>(validatorConfigurator != null);
+         _validatorConfiguratorNew = validatorConfigurator;
          return this;
       }
 
@@ -149,12 +159,18 @@
          var propertyBuilderProvider = new VMPropertyBuilderProvider<TVM>(configuration);
          var viewModeBehaviorBulider = new ViewModelBehaviorBuilder<TVM, TDescriptor>(configuration, descriptor);
          var validatorBuilder = new ValidatorBuilder<TVM, TDescriptor>(configuration, descriptor);
+         var validatorBuilderNew = new RootValidatorBuilder<TVM, TVM, TDescriptor>(configuration, descriptor);
          var behaviorBuilder = new VMBehaviorBuilder<TVM, TDescriptor>(configuration, descriptor);
 
          _propertyConfigurator(descriptor, propertyBuilderProvider);
 
          if (_validatorConfigurator != null) {
             _validatorConfigurator(validatorBuilder);
+         }
+
+         if (_validatorConfiguratorNew != null) {
+            _validatorConfiguratorNew(validatorBuilderNew);
+            validatorBuilderNew.Execute();
          }
 
          if (_viewModelBehaviorConfigurator != null) {

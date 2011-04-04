@@ -1,4 +1,5 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core.Validation.ViewModelBehaviors {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
+   using System;
    using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.ViewModels.Core.Validation.Validators;
 
@@ -18,6 +19,13 @@
       public ValidationResult Validate(IBehaviorContext context, ValidationRequest request) {
          Seal();
          return _compositeValidator.Execute(request);
+      }
+
+      public override string ToString() {
+         return String.Format(
+            "ValidatorExecutor: {0}",
+            _compositeValidator
+         );
       }
    }
 }

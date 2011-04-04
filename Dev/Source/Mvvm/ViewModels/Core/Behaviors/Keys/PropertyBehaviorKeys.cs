@@ -1,5 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    public class PropertyBehaviorKeys : BehaviorKeys {
+      public static readonly BehaviorKey LazyRefresh = Key(() => LazyRefresh);
+
       public static readonly BehaviorKey Undo = Key(() => Undo);
 
       public static readonly BehaviorKey ValueValidationSource = Key(() => ValueValidationSource);
@@ -9,6 +11,10 @@
       public static readonly BehaviorKey ParentSetter = Key(() => ParentSetter);
 
       public static readonly BehaviorKey TypeDescriptor = new BehaviorKey("TypeDescriptor");
+
+      public static readonly BehaviorKey ValueCacheNew = Key(() => ValueCacheNew);
+
+      public static readonly BehaviorKey ViewModelSourceSetter = Key(() => ViewModelSourceSetter);
 
       public static readonly BehaviorKey InvalidDisplayValueCache = new BehaviorKey("InvalidDisplayValueCache");
       public static readonly BehaviorKey DisplayValueAccessor = new BehaviorKey("DisplayValueAccessor");

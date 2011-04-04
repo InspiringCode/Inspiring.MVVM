@@ -15,6 +15,10 @@
          where TVM : IViewModel
          where TChildVM : IViewModel {
 
+         if (key == PropertyBehaviorKeys.LazyRefresh) {
+            return new LazyRefreshBehavior();
+         }
+
          if (key == PropertyBehaviorKeys.ValueInitializer) {
             return new ValueInitializerBehavior<TChildVM>();
          }
@@ -36,6 +40,10 @@
          }
 
          if (key == PropertyBehaviorKeys.ValueCache) {
+            return new ValueCacheBehaviorOld<TChildVM>();
+         }
+
+         if (key == PropertyBehaviorKeys.ValueCacheNew) {
             return new ValueCacheBehavior<TChildVM>();
          }
 
@@ -44,7 +52,7 @@
          }
 
          if (key == PropertyBehaviorKeys.ViewModelFactory) {
-            return new ViewModelFactoryBehavior<TChildVM>();
+            return new ServiceLocatorValueFactoryBehavior<TChildVM>();
          }
 
          if (key == PropertyBehaviorKeys.DescendantValidator) {

@@ -4,11 +4,59 @@
    using Inspiring.Mvvm.Common;
 
    internal static class DelegateValidator {
-      public static DelegateValidator<TArgs> For<TArgs>(
+      public static IValidator For<TArgs>(
          Func<IValidator, ValidationRequest, TArgs> argsFactory,
          Action<TArgs> validatorAction
       ) where TArgs : ValidationArgs {
          return new DelegateValidator<TArgs>(argsFactory, validatorAction);
+      }
+
+      public static IValidator For<TOwnerVM, TTargetVM, TValue>(
+         Action<PropertyValidationArgs<TOwnerVM, TTargetVM, TValue>> validationAction
+      )
+         where TOwnerVM : IViewModel
+         where TTargetVM : IViewModel {
+
+         return DelegateValidator.For(
+            PropertyValidationArgs<TOwnerVM, TTargetVM, TValue>.Create,
+            validationAction
+         );
+      }
+
+      public static IValidator For<TOwnerVM, TItemVM>(
+         Action<CollectionValidationArgs<TOwnerVM, TItemVM>> validationAction
+      )
+         where TOwnerVM : IViewModel
+         where TItemVM : IViewModel {
+
+         return DelegateValidator.For(
+            CollectionValidationArgs<TOwnerVM, TItemVM>.Create,
+            validationAction
+         );
+      }
+
+      public static IValidator For<TOwnerVM, TItemVM, TValue>(
+         Action<CollectionValidationArgs<TOwnerVM, TItemVM, TValue>> validationAction
+      )
+         where TOwnerVM : IViewModel
+         where TItemVM : IViewModel {
+
+         return DelegateValidator.For(
+            CollectionValidationArgs<TOwnerVM, TItemVM, TValue>.Create,
+            validationAction
+         );
+      }
+
+      public static IValidator For<TOwnerVM, TTargetVM>(
+         Action<ViewModelValidationArgs<TOwnerVM, TTargetVM>> validationAction
+      )
+         where TOwnerVM : IViewModel
+         where TTargetVM : IViewModel {
+
+         return DelegateValidator.For(
+            ViewModelValidationArgs<TOwnerVM, TTargetVM>.Create,
+            validationAction
+         );
       }
    }
 

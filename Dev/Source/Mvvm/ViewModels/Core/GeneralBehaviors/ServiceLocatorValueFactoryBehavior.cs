@@ -4,13 +4,18 @@
    ///   name="TVM"/> using the <see cref="IBehaviorContext.ServiceLocator"/> of the
    ///   <see cref="IBehaviorContext"/>.
    /// </summary>
-   internal sealed class ViewModelFactoryBehavior<TVM> :
+   internal sealed class ServiceLocatorValueFactoryBehavior<TVM> :
       Behavior,
-      IViewModelFactoryBehavior<TVM>
-      where TVM : IViewModel {
+      IViewModelFactoryBehavior<TVM>,
+      IValueFactoryBehavior<TVM>
+      where TVM : IViewModel { // TODO: Remove constraint, update documentation...
 
       public TVM CreateInstance(IBehaviorContext vm) {
          return vm.ServiceLocator.GetInstance<TVM>();
+      }
+
+      public TVM CreateValue(IBehaviorContext context) {
+         return context.ServiceLocator.GetInstance<TVM>();
       }
    }
 }

@@ -2,17 +2,18 @@
    using System;
    using System.Diagnostics.Contracts;
    using System.Linq;
+   using Inspiring.Mvvm.Common;
 
-   internal sealed class PropertyStep<TDescriptor> :
+   internal sealed class PropertyStep<TDescriptor, TValue> :
       PathDefinitionStep
       where TDescriptor : VMDescriptorBase {
 
-      private Func<TDescriptor, IVMPropertyDescriptor> _propertySelector;
+      private Func<TDescriptor, IVMPropertyDescriptor<TValue>> _propertySelector;
 
-      public PropertyStep(Func<TDescriptor, IVMPropertyDescriptor> propertySelector) {
+      public PropertyStep(Func<TDescriptor, IVMPropertyDescriptor<TValue>> propertySelector) {
          Contract.Requires(propertySelector != null);
          _propertySelector = propertySelector;
-      }
+      }  
 
       public override PathMatch Matches(PathDefinitionIterator definitionSteps, PathIterator step) {
          if (!step.HasStep) {
@@ -42,6 +43,14 @@
          } else {
             return PathMatch.Fail();
          }
+      }
+
+      public override string ToString() {
+         return String.Format(
+            "{0} -> {1}",
+            TypeService.GetFriendlyName(typeof(TDescriptor)),
+            TypeService.GetFriendlyName(typeof(TValue))
+         );
       }
 
       private bool Matches(IViewModel parent, PathIterator nextStep) {

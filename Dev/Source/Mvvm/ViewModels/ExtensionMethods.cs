@@ -53,10 +53,12 @@
             .GetValue(context);
       }
 
+      // TODO: Is TryGetBehavior a good idea?
       public static void SetValueNext<TValue>(this Behavior behavior, IBehaviorContext context, TValue value) {
-         behavior
-            .GetNextBehavior<IValueAccessorBehavior<TValue>>()
-            .SetValue(context, value);
+         IValueAccessorBehavior<TValue> b;
+         if (behavior.TryGetBehavior(out b)) {
+            b.SetValue(context, value);
+         }
       }
 
       public static object GetValueNext(this Behavior behavior, IBehaviorContext context) {
@@ -427,6 +429,15 @@
          return behavior.TryGetBehavior(out next) ?
             next.Validate(context, request) :
             ValidationResult.Valid;
+      }
+
+      public static TValue CreateValueNext<TValue>(
+         this Behavior behavior,
+         IBehaviorContext context
+      ) {
+         return behavior
+            .GetNextBehavior<IValueFactoryBehavior<TValue>>()
+            .CreateValue(context);
       }
 
       public static void HandlePropertyChangedNext(

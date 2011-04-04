@@ -11,7 +11,8 @@
    internal sealed class DescendantValidationBehavior<TValue> :
       Behavior,
       IDescendantValidationBehavior,
-      IValidationStateProviderBehavior {
+      IValidationStateProviderBehavior,
+      IValueInitializerBehavior {
 
       private readonly bool _isViewModelProperty;
       private readonly bool _isCollectionProperty;
@@ -85,6 +86,18 @@
          }
 
          return ValidationResult.Valid;
+      }
+
+      public void InitializeValue(IBehaviorContext context) {
+         // TODO: Finish
+         if (_isViewModelProperty) {
+            var childVM = (IViewModel)this.GetValueNext<TValue>(context); // TODO: What stage?
+            if (childVM != null) {
+               childVM.Kernel.Revalidate(ValidationScope.SelfOnly, ValidationMode.CommitValidValues);
+            }
+         }
+
+         this.InitializeValueNext(context);
       }
    }
 }

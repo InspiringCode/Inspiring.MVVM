@@ -105,19 +105,25 @@
          var projectNameProperty = ProjectVM.ClassDescriptor.Name;
 
          AssertException(
-            CreateStep<ProjectVMDescriptor>(x => x.Name),
+            CreateStep<ProjectVMDescriptor, string>(x => x.Name),
             Path.Empty.Prepend(projectNameProperty).Prepend(projectCollection)
          );
       }
 
-      private PathDefinitionStep CreateStep(Func<EmployeeVMDescriptor, IVMPropertyDescriptor> propertySelector) {
-         return CreateStep<EmployeeVMDescriptor>(propertySelector);
+      [TestMethod]
+      public void ToString_ReturnsDescriptorNameAndPropertyType() {
+         var step = CreateStep(x => x.Projects);
+         Assert.AreEqual("EmployeeVMDescriptor -> IVMCollection<ProjectVM>", step.ToString());
       }
 
-      private PathDefinitionStep CreateStep<TDescriptor>(
-         Func<TDescriptor, IVMPropertyDescriptor> propertySelector
+      private PathDefinitionStep CreateStep<TValue>(Func<EmployeeVMDescriptor, IVMPropertyDescriptor<TValue>> propertySelector) {
+         return CreateStep<EmployeeVMDescriptor, TValue>(propertySelector);
+      }
+
+      private PathDefinitionStep CreateStep<TDescriptor, TValue>(
+         Func<TDescriptor, IVMPropertyDescriptor<TValue>> propertySelector
       ) where TDescriptor : VMDescriptorBase {
-         return new PropertyStep<TDescriptor>(propertySelector);
+         return new PropertyStep<TDescriptor, TValue>(propertySelector);
       }
    }
 }

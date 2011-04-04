@@ -32,29 +32,35 @@
          private IVMPropertyDescriptor _property;
 
          public void Refresh(IBehaviorContext context) {
-            // Two cases:
-            //  (1) Validations on the view model property itself:
-            //      We have to load the VM to perform these validations (e.g. a
-            //      HasValue validation).
-            //  (2) The validation of the child VM.
+            this.RefreshNext(context);
 
-            RequireInitialized();
-
-            // Force recreation
-            GetNextBehavior<ValueCacheBehavior<TValue>>().ClearCache(context);
             var childVM = this.GetValueNext<TValue>(context);
 
             if (childVM != null) {
                childVM.Kernel.Refresh();
             }
+            
+            //// Two cases:
+            ////  (1) Validations on the view model property itself:
+            ////      We have to load the VM to perform these validations (e.g. a
+            ////      HasValue validation).
+            ////  (2) The validation of the child VM.
 
-            context.VM.Kernel.Revalidate(_property, ValidationMode.DiscardInvalidValues);
+            //RequireInitialized();
 
-            // The value of the property has changed
-            var changeArgs = new ChangeArgs(ChangeType.PropertyChanged, context.VM, _property);
-            context.NotifyChange(changeArgs);
+            //// Force recreation
+            //GetNextBehavior<ValueCacheBehaviorOld<TValue>>().ClearCache(context);
+            //var childVM = this.GetValueNext<TValue>(context);
 
-            this.RefreshNext(context);
+            //if (childVM != null) {
+            //   childVM.Kernel.Refresh();
+            //}
+
+            //context.VM.Kernel.Revalidate(_property, ValidationMode.DiscardInvalidValues);
+
+            //// The value of the property has changed
+            //var changeArgs = new ChangeArgs(ChangeType.PropertyChanged, context.VM, _property);
+            //context.NotifyChange(changeArgs);
          }
 
          public void Initialize(BehaviorInitializationContext context) {
@@ -64,18 +70,18 @@
          }
       }
 
-      internal sealed class ViewModelInstanceProperty<TValue> :
-         Behavior,
-         IRefreshBehavior
-         where TValue : IViewModel {
+      //internal sealed class ViewModelInstanceProperty<TValue> :
+      //   Behavior,
+      //   IRefreshBehavior
+      //   where TValue : IViewModel {
 
-         public void Refresh(IBehaviorContext context) {
-            var viewModel = this.GetValueNext<TValue>(context);
-            viewModel.Kernel.Refresh();
+      //   public void Refresh(IBehaviorContext context) {
+      //      var viewModel = this.GetValueNext<TValue>(context);
+      //      viewModel.Kernel.Refresh();
 
-            this.RefreshNext(context);
-         }
-      }
+      //      this.RefreshNext(context);
+      //   }
+      //}
 
       internal sealed class PopulatedCollectionProperty<TItemVM> :
          Behavior,

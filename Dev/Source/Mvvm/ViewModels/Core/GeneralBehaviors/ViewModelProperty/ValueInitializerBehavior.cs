@@ -7,15 +7,18 @@
 
       private static readonly FieldDefinitionGroup IsLoadedGroup = new FieldDefinitionGroup();
       private DynamicFieldAccessor<bool> _isLoadedField;
+      private IVMPropertyDescriptor _property;
 
       public void Initialize(BehaviorInitializationContext context) {
          _isLoadedField = new DynamicFieldAccessor<bool>(context, IsLoadedGroup);
+         _property = context.Property;
+
          this.InitializeNext(context);
       }
 
       public TValue GetValue(IBehaviorContext context) {
          if (!GetLoaded(context)) {
-            SetLoaded(context);
+            Load(context);
             this.InitializeValueNext(context);
          }
 
@@ -37,6 +40,22 @@
 
       private void SetLoaded(IBehaviorContext context) {
          _isLoadedField.Set(context, true);
+      }
+
+      /// <summary>
+      ///   This behavior calls <see cref="IValueInitializerBehavior.InitializeValue"/>
+      ///   directly on property behavior chain (instead of on the rest of the chain
+      ///   that follows this behavior) to resolve some tricky behavior ordering
+      ///   issues (some behavior need the <see cref="IIsLoadedIndicatorBehavior"/> 
+      ///   but also need to have <see cref="IValueInitializerBehavior.InitializeValue"/>
+      ///   called.
+      /// </summary>
+      private void Load(IBehaviorContext context) {
+         SetLoaded(context);
+
+         _property
+            .Behaviors
+            .InitializeValueNext(context);
       }
    }
 }

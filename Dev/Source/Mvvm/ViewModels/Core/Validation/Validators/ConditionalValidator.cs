@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core.Validation.Validators {
+   using System;
    using System.Diagnostics.Contracts;
 
    internal sealed class ConditionalValidator : IValidator {
@@ -20,6 +21,14 @@
          return _condition.IsTrue(request) ?
             _inner.Execute(request) :
             ValidationResult.Valid;
+      }
+
+      public override string ToString() {
+         return String.Format(
+            "if ({0}) then ({1})",
+            _condition,
+            _inner
+         );
       }
    }
 }

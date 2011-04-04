@@ -1,18 +1,26 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core.VMDescriptorBuilder.ValidatorsNew {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Diagnostics.Contracts;
+   using Inspiring.Mvvm.ViewModels.Core.VMDescriptorBuilder.ValidatorsNew;
 
-   internal sealed class RootValidatorBuilder<TOwner, TTarget, TDescriptor> :
+   public sealed class RootValidatorBuilder<TOwner, TTarget, TDescriptor> :
       ValidatorBuilder<TOwner, TTarget, TDescriptor>
       where TOwner : IViewModel
       where TTarget : IViewModel
       where TDescriptor : VMDescriptorBase {
 
-      public RootValidatorBuilder(
-         IValidatorBuilderOperationProvider operationProvider,
+      private ValidatorBuilderOperationCollection _operations;
+
+      public RootValidatorBuilder(VMDescriptorConfiguration config, TDescriptor descriptor)
+         : this(new ValidatorBuilderOperationCollection(descriptor, config), descriptor) {
+      }
+
+      private RootValidatorBuilder(
+         ValidatorBuilderOperationCollection operations,
          TDescriptor descriptor
       )
-         : base(operationProvider, descriptor) {
+         : base(operations, descriptor) {
+         _operations = operations;
       }
 
       /// <summary>
@@ -26,6 +34,10 @@
 
          op.EnablePropertyValidationSourceBehavior(property);
          op.EnableViewModelValidationSourceBehavior();
+      }
+
+      public void Execute() {
+         _operations.Perform();
       }
    }
 }

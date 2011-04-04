@@ -100,7 +100,9 @@
 
       public IVMPropertyDescriptor<TChildVM> CreateViewModelProperty<TChildVM>(
          IValueAccessorBehavior<TChildVM> viewModelAccessor,
+         IValueFactoryBehavior<TChildVM> viewModelFactory = null,
          IBehavior sourceAccessor = null,
+         IBehavior sourceSetter = null,
          IBehavior manualUpdateBehavior = null,
          IBehavior refreshBehavior = null,
          bool needsViewModelFactory = false,
@@ -110,9 +112,9 @@
 
          config.Enable(PropertyBehaviorKeys.ViewModelAccessor, viewModelAccessor);
 
-         if (cachesValue) {
-            config.Enable(PropertyBehaviorKeys.ValueCache);
-         }
+         //if (cachesValue) {
+         //   config.Enable(PropertyBehaviorKeys.ValueCache);
+         //}
 
          if (needsViewModelFactory) {
             config.Enable(PropertyBehaviorKeys.ViewModelFactory);
@@ -121,6 +123,10 @@
          if (sourceAccessor != null) {
             config.Enable(PropertyBehaviorKeys.SourceAccessor, sourceAccessor);
          }
+
+         //if (sourceSetter != null) {
+         //   config.Enable(PropertyBehaviorKeys.ViewModelSourceSetter, sourceSetter);
+         //}
 
          if (manualUpdateBehavior != null) {
             config.Enable(PropertyBehaviorKeys.ManualUpdateBehavior, manualUpdateBehavior);

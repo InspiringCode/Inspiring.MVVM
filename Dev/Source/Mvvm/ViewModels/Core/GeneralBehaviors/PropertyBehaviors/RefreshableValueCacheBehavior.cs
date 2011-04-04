@@ -1,7 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
 
-   internal sealed class RefreshableValueCacheBehavior<TValue> : ValueCacheBehavior<TValue>, IManualUpdateBehavior {
+   internal sealed class RefreshableValueCacheBehavior<TValue> : ValueCacheBehaviorOld<TValue>, IManualUpdateBehavior {
       private IVMPropertyDescriptor _property;
 
       public RefreshableValueCacheBehavior() {

@@ -11,6 +11,10 @@
       }
 
       public virtual IBehavior Create<TVM, TValue>(BehaviorKey key) where TVM : IViewModel {
+         if (key == PropertyBehaviorKeys.LazyRefresh) {
+            return new LazyRefreshBehavior();
+         }
+
          if (key == PropertyBehaviorKeys.InvalidDisplayValueCache) {
             return new AllowInvalidDisplayValuesBehavior();
          }
@@ -40,11 +44,11 @@
          }
 
          if (key == PropertyBehaviorKeys.ValueCache) {
-            return new ValueCacheBehavior<TValue>();
+            return new ValueCacheBehaviorOld<TValue>();
          }
 
          if (key == PropertyBehaviorKeys.CollectionInstanceCache) {
-            return new ValueCacheBehavior<TValue>();
+            return new ValueCacheBehaviorOld<TValue>();
          }
 
          if (key == PropertyBehaviorKeys.ManualUpdateBehavior) {

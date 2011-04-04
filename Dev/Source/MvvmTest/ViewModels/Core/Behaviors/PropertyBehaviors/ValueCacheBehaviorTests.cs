@@ -6,14 +6,14 @@
    [TestClass]
    public class ValueCacheBehaviorTests : TestBase {
       private IBehaviorContext Context { get; set; }
-      private ValueCacheBehavior<string> Behavior { get; set; }
+      private ValueCacheBehaviorOld<string> Behavior { get; set; }
       private Mock<IValueAccessorBehavior<string>> SourceAccessorMock { get; set; }
 
       [TestInitialize]
       public void Setup() {
          SourceAccessorMock = new Mock<IValueAccessorBehavior<string>>();
 
-         Behavior = new ValueCacheBehavior<string>();
+         Behavior = new ValueCacheBehaviorOld<string>();
          Behavior.Successor = SourceAccessorMock.Object;
 
          var helper = new ContextTestHelper();

@@ -39,7 +39,7 @@
 
       // [TestMethod] // TODO
       public void CheckAccessorBehaviors() {
-         CalculatedPropertyAccessor<PersonVM, Person, string> calculatedStringBehavior;
+         DelegateValueAccessor<PersonVM, Person, string> calculatedStringBehavior;
          MappedPropertyAccessor<PersonVM, DateTime> mappedDateTimeBehavior;
          MappedPropertyAccessor<PersonVM, decimal> mappedDecimalBehavior;
          InstancePropertyBehavior<bool> boolInstanceBehavior;

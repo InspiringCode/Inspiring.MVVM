@@ -24,7 +24,7 @@
          }
 
          if (key == CollectionBehaviorKeys.ViewModelFactory) {
-            return new ViewModelFactoryBehavior<TItemVM>();
+            return new ServiceLocatorValueFactoryBehavior<TItemVM>();
          }
 
          if (key == CollectionBehaviorKeys.Undo) {

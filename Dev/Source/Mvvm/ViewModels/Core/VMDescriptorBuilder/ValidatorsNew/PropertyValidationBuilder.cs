@@ -21,14 +21,9 @@
       ///   the VM is added to/removed from a collection.
       /// </remarks>
       public void Custom(Action<PropertyValidationArgs<TOwnerVM, TTargetVM, TValue>> validationAction) {
-         IValidator val = DelegateValidator.For(
-            PropertyValidationArgs<TOwnerVM, TTargetVM, TValue>.Create,
-            validationAction
-         );
-
-         val = new ConditionalValidator(
+         var val = new ConditionalValidator(
             new ValidationStepCondition(ValidationStep.Value),
-            val
+            DelegateValidator.For(validationAction)
          );
 
          _operation.BuildActions.Push(() => {

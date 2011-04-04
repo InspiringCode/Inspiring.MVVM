@@ -15,7 +15,7 @@
          var ctxMock = new Mock<IBehaviorContext>();
          ctxMock.Setup(x => x.ServiceLocator).Returns(sl);
 
-         var fac = new ViewModelFactoryBehavior<ViewModelStub>();
+         var fac = new ServiceLocatorValueFactoryBehavior<ViewModelStub>();
          var actualVM = fac.CreateInstance(ctxMock.Object);
 
          Assert.AreSame(vm, actualVM);
