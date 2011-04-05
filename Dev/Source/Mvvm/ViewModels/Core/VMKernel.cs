@@ -165,6 +165,10 @@
          _descriptor.Behaviors.ViewModelRefreshNext(this, property);
       }
 
+      public IRollbackPoint GetRollbackPoint() {
+         return UndoManager.GetManager(_vm).GetCurrentAction();
+      }
+
       private void PerformViewModelValidations() {
          ValidationContext.BeginValidation();
          PerformViewModelValidations(ValidationContext.Current);

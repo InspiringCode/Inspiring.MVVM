@@ -340,6 +340,15 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Undo functionality is enabled but no undo manager is found in the view model hierarchy.
+        /// </summary>
+        internal static string NoUndoRootManagerFound {
+            get {
+                return ResourceManager.GetString("NoUndoRootManagerFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The object cannot be modified because it is sealed. Make sure you make all modifications before the object is sealed..
         /// </summary>
         internal static string ObjectIsSealed {

@@ -129,6 +129,7 @@
     <Compile Include="ApiTests\ViewModels\Undo\FirstTests.cs" />
     <Compile Include="ApiTests\ViewModels\Undo\ProjectVM.cs" />
     <Compile Include="ApiTests\ViewModels\Undo\UndoRootSearchTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Undo\UndoTests.cs" />
     <Compile Include="ApiTests\ViewModels\UntypedPropertyAccessTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\CollectionValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\ValidatorInteractionTests.cs" />

@@ -8,43 +8,39 @@
    public class UndoRootSearchTests {
 
       [TestMethod]
-      public void GetUndoRootBehavior_NoBehaviorIsDefined_ReturnsNull() {
+      public void GetManager_NoBehaviorIsDefined_ThrowsInvalidOperationException() {
          var rootVM = new ViewModelStub();
 
-         var foundBehavior = UndoManager.GetUndoRootBehavior(rootVM);
-
-         Assert.IsNull(foundBehavior);
+         AssertHelper.Throws<InvalidOperationException>(() => {
+            UndoManager.GetManager(rootVM);
+         });
       }
 
       [TestMethod]
-      public void GetUndoRootBehavior_RootViewModelContainsBehavior_ReturnsBehavior() {
-         var expectedBehavior = new UndoRootBehavior();
+      public void GetManager_RootViewModelContainsBehavior_ReturnsManager() {
+         var rootVM = new ViewModelStub(new UndoRootBehavior());
 
-         var rootVM = new ViewModelStub(expectedBehavior);
+         var foundManager = UndoManager.GetManager(rootVM);
 
-         var foundBehavior = UndoManager.GetUndoRootBehavior(rootVM);
-
-         Assert.AreSame(expectedBehavior, foundBehavior);
+         Assert.IsNotNull(foundManager);
       }
 
       [TestMethod]
-      public void GetUndoRootBehavior_ParentVMContainsBehavior_ReturnsBehavior() {
-         var expectedBehavior = new UndoRootBehavior();
-
+      public void GetManager_ParentVMContainsBehavior_ReturnsManager() {
          var parent1 = new ViewModelStub();
-         var parent2 = new ViewModelStub(expectedBehavior);
+         var parent2 = new ViewModelStub(new UndoRootBehavior());
 
          var rootVM = new ViewModelStub();
          rootVM.Kernel.Parents.Add(parent1);
          rootVM.Kernel.Parents.Add(parent2);
 
-         var foundBehavior = UndoManager.GetUndoRootBehavior(rootVM);
+         var foundManager = UndoManager.GetManager(rootVM);
 
-         Assert.AreSame(expectedBehavior, foundBehavior);
+         Assert.IsNotNull(foundManager);
       }
 
       [TestMethod]
-      public void GetUndoRootBehavior_MultipleUndoRootsInSameAncestorDistance_ThrowsNotSupportedException() {
+      public void GetManager_MultipleUndoRootsInSameAncestorDistance_ThrowsNotSupportedException() {
          var parent1 = new ViewModelStub(new UndoRootBehavior());
          var parent2 = new ViewModelStub(new UndoRootBehavior());
 
@@ -53,15 +49,13 @@
          rootVM.Kernel.Parents.Add(parent2);
 
          AssertHelper.Throws<NotSupportedException>(() => {
-            UndoManager.GetUndoRootBehavior(rootVM);
+            UndoManager.GetManager(rootVM);
          });
       }
 
       [TestMethod]
-      public void GetUndoRootBehavior_BehaviorIsLocatedInComplexAncestorStructure_ResturnsBehavior() {
-         var expectedBehavior = new UndoRootBehavior();
-
-         var grandparent1 = new ViewModelStub(expectedBehavior);
+      public void GetManager_BehaviorIsLocatedInComplexAncestorStructure_ResturnsManager() {
+         var grandparent1 = new ViewModelStub(new UndoRootBehavior());
 
          var parent1 = new ViewModelStub();
          parent1.Kernel.Parents.Add(grandparent1);
@@ -72,29 +66,32 @@
          rootVM.Kernel.Parents.Add(parent1);
          rootVM.Kernel.Parents.Add(parent2);
 
-         var foundBehavior = UndoManager.GetUndoRootBehavior(rootVM);
+         var foundManager = UndoManager.GetManager(rootVM);
 
-         Assert.AreSame(expectedBehavior, foundBehavior);
+         Assert.IsNotNull(foundManager);
       }
 
       [TestMethod]
-      public void GetUndoRootBehavior_BehaviorIsLocatedInDifferentAncestorDisntances_ReturnsNearestBehavior() {
-         var expectedBehavior = new UndoRootBehavior();
+      public void GetManager_BehaviorIsLocatedInDifferentAncestorDisntances_ReturnsNearestManager() {
+         var behavior = new UndoRootBehavior();
 
          var grandparent1 = new ViewModelStub(new UndoRootBehavior());
 
          var parent1 = new ViewModelStub();
          parent1.Kernel.Parents.Add(grandparent1);
 
-         var parent2 = new ViewModelStub(expectedBehavior);
+         var parent2 = new ViewModelStub(behavior);
+         var expectedManager = behavior.GetUndoManager(parent2.GetContext());
 
          var rootVM = new ViewModelStub();
          rootVM.Kernel.Parents.Add(parent1);
          rootVM.Kernel.Parents.Add(parent2);
 
-         var foundBehavior = UndoManager.GetUndoRootBehavior(rootVM);
+         var foundManager = UndoManager.GetManager(rootVM);
 
-         Assert.AreSame(expectedBehavior, foundBehavior);
+         Assert.IsNotNull(foundManager);
+         Assert.AreSame(expectedManager, foundManager);
+
       }
    }
 }
