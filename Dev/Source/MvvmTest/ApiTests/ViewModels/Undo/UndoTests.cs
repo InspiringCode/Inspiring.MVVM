@@ -187,6 +187,25 @@
          Assert.AreSame(rollbackPoint, ((IViewModel)EmployeeVM).Kernel.GetRollbackPoint());
       }
 
+      [TestMethod]
+      public void RollbackTo_ModifyingSourceObjectAndCallRefresh_DoesNotUndo() {
+         var employee = CreateEmployee();
+
+         EmployeeVM.InitializeFrom(employee);
+         var originalEmployeeName = EmployeeVM.GetValue(x => x.Name);
+
+         var rollbackPoint = ((IViewModel)EmployeeVM).Kernel.GetRollbackPoint();
+
+         var modifiedName = string.Format("Modified{0}", originalEmployeeName);
+         employee.Name = modifiedName;
+
+         ((IViewModel)EmployeeVM).Kernel.Refresh();
+
+         ((IViewModel)EmployeeVM).Kernel.RollbackTo(rollbackPoint);
+
+         Assert.AreEqual(modifiedName, EmployeeVM.GetValue(x => x.Name));
+      }
+
       private Employee CreateEmployee(
          string name = "Employee",
          Project currentProject = null,
