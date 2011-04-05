@@ -59,8 +59,8 @@
       }
 
       /// <summary>
-      ///   Sucht in dieser VM und allen Parents nach einem Undo Root Behavior.
-      ///   Sonst wird der Undo Root Manager in der am nächsten gelegen Ebene zurück gegeben.
+      ///   Returns the <see cref="UndoManager"/> defined in the view model or
+      ///   nearest ancestor hierachy. 
       /// </summary>
       /// <exception cref="NotSupportedException">
       ///   More than one <see cref="UndoManager"/> is defined in the same ancestor level.
