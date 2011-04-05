@@ -421,7 +421,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Testing\- Diagrams -\DialogTestService.cd" />
-    <None Include="ViewModels\Core\GeneralBehaviors\Descendants validation.vsd" />
     <None Include="Views\- Diagrams -\ViewBinder.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
