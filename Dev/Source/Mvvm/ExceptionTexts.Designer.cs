@@ -394,6 +394,15 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The &apos;UndoManager&apos; does not contain the rollback point..
+        /// </summary>
+        internal static string RollbackPointNotFound {
+            get {
+                return ResourceManager.GetString("RollbackPointNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No &apos;ScreenConductor&apos; with a &apos;ScreenId&apos; of &apos;{0}&apos; could be found. Make sure that the current screen hierarchy contains a &apos;ScreenConductor&apos; instance that implements &apos;IIdentifiedScreen&apos; and returns the given id (this only applies if the &apos;screenId&apos; is not null)..
         /// </summary>
         internal static string ScreenConductorNotFound {

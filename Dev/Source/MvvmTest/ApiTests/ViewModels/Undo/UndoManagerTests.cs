@@ -3,9 +3,10 @@
    using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.MvvmTest.Stubs;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
+   using Moq;
 
    [TestClass]
-   public class UndoRootSearchTests {
+   public class UndoManagerTests {
 
       [TestMethod]
       public void GetManager_NoBehaviorIsDefined_ThrowsInvalidOperationException() {
@@ -92,6 +93,13 @@
          Assert.IsNotNull(foundManager);
          Assert.AreSame(expectedManager, foundManager);
 
+      }
+
+      [TestMethod]
+      public void Undo_RollbackPointDoesntExists_ThrowsArgumentException() {
+         AssertHelper.Throws<ArgumentException>(() => {
+            new UndoManager().Undo(new Mock<IUndoableAction>().Object);
+         });
       }
    }
 }

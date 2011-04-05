@@ -210,8 +210,10 @@
     <Compile Include="ViewModels\Core\Paths\PathIterator.cs" />
     <Compile Include="ViewModels\Core\Paths\PathStep.cs" />
     <Compile Include="ViewModels\Core\Paths\Definition\PathTerminationStep.cs" />
+    <Compile Include="ViewModels\Core\Undo\Actions\CollectionModificationAction.cs" />
     <Compile Include="ViewModels\Core\Undo\Actions\InitialPseudoAction.cs" />
     <Compile Include="ViewModels\Core\Undo\Actions\IUndoableAction.cs" />
+    <Compile Include="ViewModels\Core\Undo\Actions\SetValueAction.cs" />
     <Compile Include="ViewModels\Core\Undo\UndoCollectionModifcationBehavior.cs" />
     <Compile Include="ViewModels\Core\Undo\UndoManager.cs" />
     <Compile Include="ViewModels\Core\Undo\UndoRootBehavior.cs" />

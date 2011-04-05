@@ -169,6 +169,11 @@
          return UndoManager.GetManager(_vm).GetCurrentAction();
       }
 
+      public void RollbackTo(IRollbackPoint point) {
+         Contract.Requires<ArgumentNullException>(point != null);
+         UndoManager.GetManager(_vm).Undo(point);
+      }
+
       private void PerformViewModelValidations() {
          ValidationContext.BeginValidation();
          PerformViewModelValidations(ValidationContext.Current);

@@ -26,7 +26,12 @@
       }
 
       public void HandleChange(IBehaviorContext context, CollectionChangedArgs<TItemVM> args) {
+         UndoManager
+            .GetManager(context.VM)
+            .PushAction(new CollectionModificationAction<TItemVM>(args));
          this.HandleChangeNext(context, args);
       }
+
+
    }
 }

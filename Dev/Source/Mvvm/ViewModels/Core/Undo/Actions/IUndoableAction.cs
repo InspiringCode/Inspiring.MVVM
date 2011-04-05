@@ -3,6 +3,6 @@
    public interface IRollbackPoint { }
 
    internal interface IUndoableAction : IRollbackPoint {
-
+      void Undo();
    }
 }
