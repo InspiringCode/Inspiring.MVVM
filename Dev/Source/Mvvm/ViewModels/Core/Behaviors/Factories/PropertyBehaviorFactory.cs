@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
+   using Inspiring.Mvvm.ViewModels.Core.Validation.PropertyBehaviors;
 
    public class PropertyBehaviorFactory : IBehaviorFactory {
       public static readonly PropertyBehaviorFactory Instance = new PropertyBehaviorFactory();
@@ -37,6 +38,10 @@
 
          if (key == PropertyBehaviorKeys.Validator) {
             return new PropertyValidationBehavior<TValue>();
+         }
+
+         if (key == PropertyBehaviorKeys.ValueValidationSource) {
+            return new ValueValidationSourceBehavior<TValue>();
          }
 
          if (key == PropertyBehaviorKeys.PropertyValueCache) {

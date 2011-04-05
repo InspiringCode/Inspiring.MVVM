@@ -19,6 +19,10 @@
             return new ViewModelValidationBehavior();
          }
 
+         if (key == ViewModelBehaviorKeys.ViewModelValidationSource) {
+            return new ViewModelValidationSourceBehavior();
+         }
+
          if (key == PropertyBehaviorKeys.ManualUpdateCoordinator) {
             return new LoadOrderBehavior();
          }

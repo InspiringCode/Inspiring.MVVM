@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
+   using Inspiring.Mvvm.ViewModels.Core.Validation.PropertyBehaviors;
 
    internal sealed class ViewModelPropertyBehaviorFactory : IBehaviorFactory {
       public static readonly ViewModelPropertyBehaviorFactory Instance = new ViewModelPropertyBehaviorFactory();
@@ -37,6 +38,10 @@
 
          if (key == PropertyBehaviorKeys.Validator) {
             return new PropertyValidationBehavior<TChildVM>();
+         }
+
+         if (key == PropertyBehaviorKeys.ValueValidationSource) {
+            return new ValueValidationSourceBehavior<TChildVM>();
          }
 
          if (key == PropertyBehaviorKeys.ValueCache) {

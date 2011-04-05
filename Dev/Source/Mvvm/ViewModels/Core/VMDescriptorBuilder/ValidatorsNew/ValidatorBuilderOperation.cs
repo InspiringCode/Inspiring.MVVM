@@ -26,13 +26,13 @@
       public void EnableViewModelValidationSourceBehavior() {
          Config
             .ViewModelConfiguration
-            .Enable(PropertyBehaviorKeys.Validator); // TODO: Use correct key.
+            .Enable(ViewModelBehaviorKeys.ViewModelValidationSource);
       }
 
       public void EnablePropertyValidationSourceBehavior(IVMPropertyDescriptor property) {
          Config
             .PropertyConfigurations[property]
-            .Enable(PropertyBehaviorKeys.Validator); // TODO: Use correct key.
+            .Enable(PropertyBehaviorKeys.ValueValidationSource);
       }
 
       public ValidatorBuilderOperation GetOperation() {
@@ -40,14 +40,16 @@
       }
 
       public void Execute() {
-         while (BuildActions.Any()) {
-            var action = BuildActions.Pop();
-            action();
+         if (BuildActions.Any()) {
+            while (BuildActions.Any()) {
+               var action = BuildActions.Pop();
+               action();
+            }
+
+            Contract.Assert(ActionArgs.Count == 1);
+
+            AddValidator(ActionArgs.Single());
          }
-
-         Contract.Assert(ActionArgs.Count == 1);
-
-         AddValidator(ActionArgs.Single());
       }
 
       private void AddValidator(IValidator validator) {

@@ -2,6 +2,7 @@
    using System;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
+   using Inspiring.Mvvm.ViewModels.Core.Validation.PropertyBehaviors;
    using Inspiring.Mvvm.ViewModels.Core.Validation.Validators;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -11,7 +12,10 @@
       public void PropertyValidator_AddsValidators() {
          Action<PropertyValidationArgs<EmployeeVM, EmployeeVM, string>> validationAction = (args) => { };
 
-         var d = BuildDescriptor(b => b.Check(x => x.Name).Custom(validationAction));
+         var d = BuildDescriptor(b => b
+            .Check(x => x.Name)
+            .Custom(validationAction)
+         );
 
          AssertStandardValidators(
             d,
@@ -137,6 +141,71 @@
                .Append(ViewModelSelector<EmployeeVMDescriptor, ProjectVMDescriptor>()),
             DelegateValidator.For(validationAction)
          );
+      }
+
+      [TestMethod]
+      public void PropertyValidator_EnablesValueValidationSourceBehavior() {
+         var d = BuildDescriptor(b => b
+            .Check(x => x.Name)
+            .Custom(_ => { })
+         );
+
+         Assert.IsTrue(IsEnabled<ValueValidationSourceBehavior<string>>(d, x => x.Name));
+      }
+
+      [TestMethod]
+      public void PropertyValidator_ForDescendant_DoesNotEnableValueValidationSourceBehavior() {
+         var d = BuildDescriptor(b => b
+            .ValidateDescendant(x => x.SelectedProject)
+            .Check(x => x.EndDate)
+            .Custom(_ => { })
+         );
+
+         Assert.IsFalse(IsEnabled<ValueValidationSourceBehavior<string>>(d, x => x.Name));
+      }
+
+      [TestMethod]
+      public void ViewModelValidator_EnablesViewModelValidationSourceBehavior() {
+         var d = BuildDescriptor(b => b
+            .CheckViewModel(_ => { })
+         );
+
+         Assert.IsTrue(IsEnabled<ViewModelValidationSourceBehavior>(d));
+      }
+
+      [TestMethod]
+      public void ViewModelValidator_ForDescendant_DoesNotEnableViewModelValidationSourceBehavior() {
+         var d = BuildDescriptor(b => b
+            .ValidateDescendant(x => x.Projects)
+            .CheckViewModel(_ => { })
+         );
+
+         Assert.IsFalse(IsEnabled<ViewModelValidationSourceBehavior>(d));
+      }
+
+      [TestMethod]
+      public void EnableParentValidation_EnablesValueValidationSourceBehavior() {
+         var d = BuildDescriptor(b => b
+            .EnableParentValidation(x => x.Name)
+         );
+
+         Assert.IsTrue(IsEnabled<ValueValidationSourceBehavior<string>>(d, x => x.Name));
+      }
+
+      private bool IsEnabled<TPropertyBehavior>(
+         EmployeeVMDescriptor d,
+         Func<EmployeeVMDescriptor, IVMPropertyDescriptor> propertySelector
+      ) {
+         var property = propertySelector(d);
+         TPropertyBehavior b;
+         return property.Behaviors.TryGetBehavior(out b);
+      }
+
+      private bool IsEnabled<TViewModelBehavior>(
+         EmployeeVMDescriptor d
+      ) {
+         TViewModelBehavior b;
+         return d.Behaviors.TryGetBehavior(out b);
       }
 
       private static Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<TItemDescriptor>>>>

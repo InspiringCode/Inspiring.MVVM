@@ -3,6 +3,8 @@
    public class CollectionBehaviorKeys : BehaviorKeys {
       public static readonly BehaviorKey Undo = Key(() => Undo);
 
+      public static readonly BehaviorKey CollectionValidationSource = Key(() => CollectionValidationSource);
+
       public static readonly BehaviorKey DescriptorSetter = new BehaviorKey("DescriptorSetter");
 
       public static readonly BehaviorKey ParentSetter = new BehaviorKey("ParentSetter");

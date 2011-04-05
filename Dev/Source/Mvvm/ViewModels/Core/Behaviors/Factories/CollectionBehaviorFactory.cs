@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
+   using Inspiring.Mvvm.ViewModels.Core.Validation.CollectionBehaviors;
 
    public class CollectionBehaviorFactory : IBehaviorFactory {
       public static readonly CollectionBehaviorFactory Instance = new CollectionBehaviorFactory();
@@ -14,6 +15,10 @@
       public virtual IBehavior Create<TVM, TItemVM>(BehaviorKey key)
          where TVM : IViewModel
          where TItemVM : IViewModel {
+
+         if (key == CollectionBehaviorKeys.CollectionValidationSource) {
+            return new CollectionValidationSourceBehavior<TItemVM>();
+         }
 
          if (key == CollectionBehaviorKeys.ParentSetter) {
             return new ParentSetterCollectionBehavior<TItemVM>();

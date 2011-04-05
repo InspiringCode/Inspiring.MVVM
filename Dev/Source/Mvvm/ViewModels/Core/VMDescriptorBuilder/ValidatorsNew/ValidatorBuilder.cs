@@ -30,10 +30,12 @@
             op.EnableViewModelValidationSourceBehavior();
          }
 
-         var val = WithStandardConditions(
-            DelegateValidator.For(validatorAction),
-            ValidationStep.ViewModel,
-            op.Path
+         var val = new ConditionalValidator(
+            new ValidationTargetCondition(op.Path),
+            new ConditionalValidator(
+               new ValidationStepCondition(ValidationStep.ViewModel),
+               DelegateValidator.For(validatorAction)
+            )
          );
 
          op.BuildActions.Push(() => {
@@ -173,20 +175,6 @@
       /// </summary>
       private static bool PathSelectsDescendant(PathDefinition descendantsPath) {
          return !descendantsPath.IsEmpty;
-      }
-
-      private static ConditionalValidator WithStandardConditions(
-         IValidator innerValidator,
-         ValidationStep step,
-         PathDefinition targetPath
-      ) {
-         return new ConditionalValidator(
-            new ValidationTargetCondition(targetPath),
-            new ConditionalValidator(
-               new ValidationStepCondition(ValidationStep.ViewModel),
-               innerValidator
-            )
-         );
       }
    }
 }

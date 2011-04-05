@@ -20,6 +20,7 @@
             new BehaviorChainTemplate(ViewModelBehaviorFactory.Instance)
                .Append(PropertyBehaviorKeys.ManualUpdateCoordinator)
                .Append(PropertyBehaviorKeys.Validator, DefaultBehaviorState.Disabled)
+               .Append(ViewModelBehaviorKeys.ViewModelValidationSource, DefaultBehaviorState.Disabled)
                .Append(ViewModelBehaviorKeys.ValidationExecutor, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.TypeDescriptor)
                .Append(ViewModelBehaviorKeys.UndoRoot, DefaultBehaviorState.Disabled)
@@ -36,6 +37,7 @@
                .Append(PropertyBehaviorKeys.Undo, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.RefreshBehavior, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.ManualUpdateBehavior, DefaultBehaviorState.Disabled)
+               .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.PreValidationValueCache, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.Validator, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.PropertyChangedTrigger)
@@ -109,6 +111,7 @@
 
                .Append(PropertyBehaviorKeys.ParentSetter)
 
+               .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.PreValidationValueCache, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.Validator, DefaultBehaviorState.Disabled)
 
@@ -130,8 +133,9 @@
             new BehaviorChainTemplate(CollectionBehaviorFactory.Instance)
                .Append(CollectionBehaviorKeys.DescriptorSetter, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(CollectionBehaviorKeys.ParentSetter)
-               .Append(CollectionBehaviorKeys.ChangeNotifier)
                .Append(CollectionBehaviorKeys.SourceSynchronizer, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(CollectionBehaviorKeys.CollectionValidationSource, DefaultBehaviorState.Disabled)
+               .Append(CollectionBehaviorKeys.ChangeNotifier)
                .Append(CollectionBehaviorKeys.Undo, DefaultBehaviorState.Disabled)
                .Append(CollectionBehaviorKeys.Populator, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(CollectionBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
