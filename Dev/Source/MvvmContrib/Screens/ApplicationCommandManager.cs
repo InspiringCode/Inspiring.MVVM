@@ -21,6 +21,8 @@
       private Dictionary<object, CommandProxy> _commandProxies =
          new Dictionary<object, CommandProxy>();
 
+      public event EventHandler RegisteredCommandsChanged;
+
       public ICommand this[object commandKey] {
          get {
             Contract.Requires<ArgumentNullException>(commandKey != null);
@@ -32,11 +34,13 @@
          Contract.Requires<ArgumentNullException>(commandKey != null);
          Contract.Requires<ArgumentNullException>(actualImplementation != null);
          GetProxy(commandKey).SetActualCommand(actualImplementation);
+         RaiseRegisteredCommandsChanged();
       }
 
       public void UnregisterCommand(object commandKey) {
          Contract.Requires<ArgumentNullException>(commandKey != null);
          GetProxy(commandKey).SetActualCommand(null);
+         RaiseRegisteredCommandsChanged();
       }
 
       private CommandProxy GetProxy(object commandKey) {
@@ -50,50 +54,10 @@
          return proxy;
       }
 
-      private class CommandProxy : ICommand {
-         private ICommand _actual;
-         EventHandler _strongReferenceToHandlerDelegate;
-
-         public CommandProxy() {
-            _strongReferenceToHandlerDelegate = new EventHandler(OnCanExecuteChanged);
-         }
-
-         public event EventHandler CanExecuteChanged;
-
-         public void SetActualCommand(ICommand actual) {
-            if (_actual != null) {
-               _actual.CanExecuteChanged -= _strongReferenceToHandlerDelegate;
-            }
-
-            if (actual != null) {
-               actual.CanExecuteChanged += _strongReferenceToHandlerDelegate;
-            }
-
-            _actual = actual;
-            OnCanExecuteChanged(this, EventArgs.Empty);
-         }
-
-         public bool CanExecute(object parameter) {
-            return _actual != null ?
-               _actual.CanExecute(parameter) :
-               false;
-         }
-
-         public void Execute(object parameter) {
-            if (_actual == null) {
-               throw new InvalidOperationException(
-                  ExceptionTexts.ExecuteCalledWithoutActualCommand
-               );
-            }
-
-            _actual.Execute(parameter);
-         }
-
-         private void OnCanExecuteChanged(object sender, EventArgs e) {
-            EventHandler handler = CanExecuteChanged;
-            if (handler != null) {
-               handler(sender, e);
-            }
+      private void RaiseRegisteredCommandsChanged() {
+         EventHandler handler = this.RegisteredCommandsChanged;
+         if (handler != null) {
+            handler(this, EventArgs.Empty);
          }
       }
    }

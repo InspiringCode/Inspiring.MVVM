@@ -114,6 +114,7 @@
     <Compile Include="Screens\ScreenCreationBehavior.cs" />
     <Compile Include="Screens\ScreenCreationBehaviorAttribute.cs" />
     <Compile Include="Screens\ScreenExtensions.cs" />
+    <Compile Include="Screens\ScreenHierarchyLifecycle.cs" />
     <Compile Include="Screens\ScreenInitializer.cs" />
     <Compile Include="Screens\ScreenLifecycle.cs" />
     <Compile Include="Screens\ScreenLifecycleCollection.cs" />
@@ -127,7 +128,7 @@
     <Compile Include="Testing\Responders\FileDialogResponderSetup.cs" />
     <Compile Include="Testing\DialogServiceInvocation.cs" />
     <Compile Include="Testing\Responders\MessageBoxResponderSetup.cs" />
-    <Compile Include="Testing\MessageBoxTestService.new.cs" />
+    <Compile Include="Testing\DialogTestService.cs" />
     <Compile Include="Testing\Responders\ResponderBase.cs" />
     <Compile Include="Testing\Responders\ShowDialogResponderSetup.cs" />
     <Compile Include="ViewModels\- No Namespace -\RefreshScope.cs" />

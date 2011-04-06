@@ -105,6 +105,10 @@
             throw new NotImplementedException();
          }
 
+         public void Corrupt(object data = null) {
+            throw new NotImplementedException();
+         }
+
 
          public IScreenLifecycle Parent {
             get {

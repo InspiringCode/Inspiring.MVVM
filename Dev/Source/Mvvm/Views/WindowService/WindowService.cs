@@ -59,7 +59,18 @@
          }
 
          dialogWindow.ShowInTaskbar = false;
+
+         if (parent != null) {
+            screen.Children.Expose<ScreenHierarchyLifecycle>().Opener = parent;
+            parent.Children.Expose<ScreenHierarchyLifecycle>().OpenedScreens.Add(screen);
+         }
+
          dialogWindow.ShowDialog();
+
+         if (parent != null) {
+            screen.Children.Expose<ScreenHierarchyLifecycle>().Opener = null;
+            parent.Children.Expose<ScreenHierarchyLifecycle>().OpenedScreens.Remove(screen);
+         }
       }
 
       public Window GetAssociatedWindow(IScreenBase ofScreen) {

@@ -17,6 +17,8 @@
          PersonStatus.Dismissed
       };
 
+
+
       [TestInitialize]
       public void Setup() {
          EnumLocalizer.AddLocalizationResource(EnumLocalizations.ResourceManager);
@@ -110,6 +112,67 @@
          Assert.IsTrue(_vm.IsValid);
       }
 
+      [TestMethod]
+      public void CheckNullableSelection() {
+         Nullable<PersonStatus>[] allItems = GetAllNullableItems().Select(x => x.Source).ToArray();
+         CollectionAssert.AreEqual(
+            new Nullable<PersonStatus>[] {
+               PersonStatus.None,
+               PersonStatus.Active,
+               PersonStatus.Inactive,
+               PersonStatus.Dismissed
+            },
+            allItems
+         );
+      }
+
+      [TestMethod]
+      public void CheckNullSelectionOfNullable() {
+         GetNullableSelection().SelectedItem = null;
+         Assert.AreEqual(null, _person.CurrentNullableStatus);
+      }
+
+      [TestMethod]
+      public void CheckNullableCaptions() {
+         string[] captions = GetAllNullableItems().Select(x => GetCaptionOfNullable(x)).ToArray();
+         CollectionAssert.AreEqual(
+            new string[] { 
+               EnumLocalizations.PersonStatus_None, 
+               EnumLocalizations.PersonStatus_Active,
+               EnumLocalizations.PersonStatus_Inactive,
+               EnumLocalizations.PersonStatus_Dismissed
+            },
+            captions
+         );
+      }
+
+      [TestMethod]
+      public void CheckNullableCaptionsSelectedItemIsNull() {
+         GetNullableSelection().SelectedItem = null;
+         string[] captions = GetAllNullableItems().Select(x => GetCaptionOfNullable(x)).ToArray();
+         CollectionAssert.AreEqual(
+            new string[] { 
+               EnumLocalizations.PersonStatus_None, 
+               EnumLocalizations.PersonStatus_Active,
+               EnumLocalizations.PersonStatus_Inactive,
+               EnumLocalizations.PersonStatus_Dismissed
+            },
+            captions
+         );
+      }
+
+      private IVMCollection<SelectionItemVM<Nullable<PersonStatus>>> GetAllNullableItems() {
+         return GetNullableSelection().AllItems;
+      }
+
+      private SingleSelectionVM<Nullable<PersonStatus>> GetNullableSelection() {
+         return _vm.InvokeGetValue(PersonVM.ClassDescriptor.NullableStatus);
+      }
+
+      private string GetCaptionOfNullable(SelectionItemVM<Nullable<PersonStatus>> item) {
+         return (string)TypeDescriptor.GetProperties(item)["Caption"].GetValue(item);
+      }
+
       private SingleSelectionVM<PersonStatus> GetSelection() {
          return _vm.InvokeGetValue(PersonVM.ClassDescriptor.Status);
       }
@@ -144,6 +207,8 @@
 
                d.Status = p.EnumSelection(x => x.CurrentStatus);
 
+               d.NullableStatus = p.EnumSelection(x => x.CurrentNullableStatus);
+
                d.FilteredStatus = p
                   .SingleSelection(x => x.CurrentStatus)
                   .WithItems(x => GetEnumValues<PersonStatus>())
@@ -172,10 +237,12 @@
       private sealed class PersonVMDescriptor : VMDescriptor {
          public IVMPropertyDescriptor<SingleSelectionVM<PersonStatus>> Status { get; set; }
          public IVMPropertyDescriptor<SingleSelectionVM<PersonStatus>> FilteredStatus { get; set; }
+         public IVMPropertyDescriptor<SingleSelectionVM<Nullable<PersonStatus>>> NullableStatus { get; set; }
       }
 
       private class Person {
          public PersonStatus CurrentStatus { get; set; }
+         public Nullable<PersonStatus> CurrentNullableStatus { get; set; }
       }
    }
 }

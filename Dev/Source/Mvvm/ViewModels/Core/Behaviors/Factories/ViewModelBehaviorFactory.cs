@@ -10,7 +10,7 @@
          return new ViewModelBehaviorFactoryInvoker<TVM>();
       }
 
-      public IBehavior Create<TVM>(BehaviorKey key) where TVM : IViewModel {
+      public virtual IBehavior Create<TVM>(BehaviorKey key) where TVM : IViewModel {
          if (key == ViewModelBehaviorKeys.ValidationExecutor) {
             return new ValidatorExecutorBehavior();
          }

@@ -1,15 +1,20 @@
 ﻿namespace Inspiring.Mvvm.Screens {
+   using System;
+
    /// <summary>
    ///   The icon a message box should have. Abstracts the orginal <see 
    ///   cref="System.Windows.MessageBoxImage"/> enum to be more UI agnostic.
    /// </summary>
    public enum CustomDialogIcon {
       None,
-      Information,
+      Error,
+      Hand,
+      Stop,
       Question,
       Exclamation,
-      Stop,
-      Warning
+      Warning,
+      Information,
+      Asterisk
    }
 
    /// <summary>
@@ -73,7 +78,15 @@
          Data = data;
       }
 
-      public bool Result { get; set; }
-      public object Data { get; set; }
+      public bool Result { get; private set; }
+      public object Data { get; private set; }
+   }
+
+   internal sealed class ExceptionResult {
+      public ExceptionResult(Exception exception) {
+         Exception = exception;
+      }
+
+      public Exception Exception { get; private set; }
    }
 }

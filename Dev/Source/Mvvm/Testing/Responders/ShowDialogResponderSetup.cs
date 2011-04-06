@@ -1,6 +1,8 @@
 ﻿namespace Inspiring.Mvvm.Testing {
    using System;
+   using System.Windows;
    using Inspiring.Mvvm.Screens;
+   using Inspiring.Mvvm.Views;
 
    public sealed class ShowDialogResponderSetup<TScreen> :
       ResponderBase
@@ -43,8 +45,34 @@
          if (match) {
             IScreenBase s = screen.Create();
             s.Children.Add(new DialogLifecycle());
+            var closeHandler = new DialogCloseHandler(s);
+            closeHandler.AttachTo(new Window());
+
+            IScreenBase parent = (IScreenBase)invocation.Parent.Value;
+
+            if (parent != null) {
+               // HACK
+               if (s.Children != null) {
+                  s.Children.Expose<ScreenHierarchyLifecycle>().Opener = parent;
+               }
+               // HACK
+               if (parent.Children != null) {
+                  parent.Children.Expose<ScreenHierarchyLifecycle>().OpenedScreens.Add(s);
+               }
+            }
 
             DialogTestAction((TScreen)s);
+
+            if (parent != null) {
+               // HACK
+               if (s.Children != null) {
+                  s.Children.Expose<ScreenHierarchyLifecycle>().Opener = null;
+               }
+               // HACK
+               if (parent.Children != null) {
+                  parent.Children.Expose<ScreenHierarchyLifecycle>().OpenedScreens.Remove(s);
+               }
+            }
 
             var dl = DialogLifecycle.GetDialogLifecycle(s);
             result = dl.ScreenResult ?? new DialogScreenResult(false);

@@ -17,11 +17,13 @@
       public ViewModelScreenBase(IServiceLocator serviceLocator = null)
          : base(serviceLocator) {
          Children = new ScreenLifecycleCollection<IScreenLifecycle>(this);
+         Children.Add(new ScreenHierarchyLifecycle());
       }
 
       public ViewModelScreenBase(TDescriptor descriptor, IServiceLocator serviceLocator = null)
          : base(descriptor, serviceLocator) {
          Children = new ScreenLifecycleCollection<IScreenLifecycle>(this);
+         Children.Add(new ScreenHierarchyLifecycle());
       }
 
       public ScreenLifecycleCollection<IScreenLifecycle> Children { get; private set; }
@@ -44,6 +46,10 @@
          Children.CloseAll(parentCallback: OnClose);
       }
 
+      public void Corrupt(object data = null) {
+         Children.CorruptAll(data, parentCallback: () => OnCorrupt(data));
+      }
+
       protected virtual void OnActivate() {
       }
 
@@ -55,6 +61,9 @@
       }
 
       protected virtual void OnClose() {
+      }
+
+      protected virtual void OnCorrupt(object data) {
       }
 
       protected void OpenChildScreen<T>(
