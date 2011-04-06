@@ -11,6 +11,9 @@
             d.Title = b.Property.MapsTo(x => x.Title);
             d.Customer = b.VM.Wraps(x => x.Customer).With<CustomerVM>();
          })
+         .WithValidators(b => {
+            //b.EnableParentValidation(x => x.Title);
+         })
          .WithViewModelBehaviors(b => {
             b.EnableUndo();
          })

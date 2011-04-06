@@ -16,7 +16,10 @@
             d.SelectedProject = b.Property.Of<ProjectVM>();
          })
          .WithValidators(b => {
-            b.Check(x => x.Name).HasValue(String.Empty);
+            b.Check(x => x.Name)
+               .HasValue(String.Empty);
+            //b.CheckCollection(x => x.Projects, x => x.Title)
+            //   .IsUnique(string.Empty);
          })
          .WithViewModelBehaviors(b => {
             b.IsUndoRoot();

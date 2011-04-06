@@ -77,8 +77,7 @@
 
          EmployeeVM.InitializeFrom(CreateEmployee(projects: projects));
 
-         ProjectVM[] expectedProjectVMColl = new ProjectVM[EmployeeVM.Projects.Count];
-         EmployeeVM.Projects.CopyTo(expectedProjectVMColl, 0);
+         ProjectVM[] expectedProjectVMColl = EmployeeVM.Projects.ToArray();
 
          var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
 
@@ -103,8 +102,7 @@
 
          EmployeeVM.InitializeFrom(CreateEmployee(projects: projects));
 
-         ProjectVM[] expectedProjectVMColl = new ProjectVM[EmployeeVM.Projects.Count];
-         EmployeeVM.Projects.CopyTo(expectedProjectVMColl, 0);
+         ProjectVM[] expectedProjectVMColl = EmployeeVM.Projects.ToArray();
 
          var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
 
@@ -128,8 +126,7 @@
 
          EmployeeVM.InitializeFrom(CreateEmployee(projects: projects));
 
-         ProjectVM[] expectedProjectVMColl = new ProjectVM[EmployeeVM.Projects.Count];
-         EmployeeVM.Projects.CopyTo(expectedProjectVMColl, 0);
+         ProjectVM[] expectedProjectVMColl = EmployeeVM.Projects.ToArray();
 
          var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
 
@@ -152,8 +149,7 @@
 
          EmployeeVM.InitializeFrom(CreateEmployee(projects: projects));
 
-         ProjectVM[] expectedProjectVMColl = new ProjectVM[EmployeeVM.Projects.Count];
-         EmployeeVM.Projects.CopyTo(expectedProjectVMColl, 0);
+         ProjectVM[] expectedProjectVMColl = EmployeeVM.Projects.ToArray();
 
          var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
 
@@ -176,8 +172,7 @@
 
          EmployeeVM.InitializeFrom(CreateEmployee(projects: projects));
 
-         ProjectVM[] expectedProjectVMColl = new ProjectVM[EmployeeVM.Projects.Count];
-         EmployeeVM.Projects.CopyTo(expectedProjectVMColl, 0);
+         ProjectVM[] expectedProjectVMColl = EmployeeVM.Projects.ToArray();
 
          var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
 
@@ -225,8 +220,7 @@
          EmployeeVM.InitializeFrom(employee);
 
 
-         ProjectVM[] expectedProjectVMColl = new ProjectVM[EmployeeVM.Projects.Count];
-         EmployeeVM.Projects.CopyTo(expectedProjectVMColl, 0);
+         ProjectVM[] expectedProjectVMColl = EmployeeVM.Projects.ToArray();
 
          var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
 
@@ -274,8 +268,7 @@
 
          EmployeeVM.InitializeFrom(employee);
 
-         ProjectVM[] expectedProjectVMColl = new ProjectVM[EmployeeVM.Projects.Count];
-         EmployeeVM.Projects.CopyTo(expectedProjectVMColl, 0);
+         ProjectVM[] expectedProjectVMColl = EmployeeVM.Projects.ToArray();
 
          // Act - Assert
          var employeeVMRollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
@@ -315,8 +308,30 @@
       }
 
       [TestMethod]
-      public void RollbackTo_ModificationInvalidatesViewModel_RollbackValidatesViewModel() {
+      public void RollbackTo_PropertyModificationInvalidatesViewModel_RollbackValidatesViewModel() {
          EmployeeVM.InitializeFrom(CreateEmployee());
+
+         Assert.IsTrue(EmployeeVM.IsValid);
+
+         var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
+
+         EmployeeVM.Name = null;
+
+         Assert.IsFalse(EmployeeVM.IsValid);
+
+         EmployeeVM.UndoManager.RollbackTo(rollbackPoint);
+
+         Assert.IsTrue(EmployeeVM.IsValid);
+      }
+
+      [TestMethod]
+      public void RollbackTo_CollectionModificationInvalidatesViewModel_RollbackValidatesViewModel() {
+         Assert.Inconclusive("Waiting for new collection validation");
+
+         var project1Title = "Title of project1";
+         var project1 = CreateProject(project1Title);
+
+         EmployeeVM.InitializeFrom(CreateEmployee(projects: project1));
 
          EmployeeVM.Revalidate();
 
@@ -324,7 +339,10 @@
 
          var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
 
-         EmployeeVM.Name = null;
+         var project2 = CreateProject(project1Title);
+         var project2VM = new ProjectVM();
+         project2VM.InitializeFrom(project2);
+         EmployeeVM.Projects.Add(project2VM);
 
          Assert.IsFalse(EmployeeVM.IsValid);
 
