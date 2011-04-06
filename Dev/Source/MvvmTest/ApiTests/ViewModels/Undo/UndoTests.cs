@@ -16,34 +16,56 @@
 
       [TestMethod]
       public void GetRollbackPoint_NoModifications_ReturnsPseudoAction() {
-         var rollbackPoint = ((IViewModel)EmployeeVM).Kernel.GetRollbackPoint();
+         var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
          Assert.IsInstanceOfType(rollbackPoint, typeof(InitialPseudoAction));
       }
 
       [TestMethod]
       public void GetRollbackPoint_PropertyWasModifiedBefore_ReturnsLastAction() {
-         var originalEmployeeName = EmployeeVM.GetValue(x => x.Name);
-         EmployeeVM.SetValue(x => x.Name, string.Format("Modified{0}", originalEmployeeName));
+         EmployeeVM.Name = "ModifiedName";
 
-         var rollbackPoint = ((IViewModel)EmployeeVM).Kernel.GetRollbackPoint();
+         var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
 
          Assert.IsInstanceOfType(rollbackPoint, typeof(SetValueAction<string>));
       }
 
       [TestMethod]
       public void RollbackTo_ModifyProperty_RestoresRollbackPoint() {
-         var employee = CreateEmployee();
-         EmployeeVM.InitializeFrom(employee);
+         var originalEmployeeName = "Name";
+         EmployeeVM.InitializeFrom(CreateEmployee(originalEmployeeName));
 
-         var rollbackPoint = ((IViewModel)EmployeeVM).Kernel.GetRollbackPoint();
+         var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
 
-         var originalEmployeeName = EmployeeVM.GetValue(x => x.Name);
-         EmployeeVM.SetValue(x => x.Name, string.Format("Modified{0}", originalEmployeeName));
+         EmployeeVM.Name = "ModifiedName";
 
-         ((IViewModel)EmployeeVM).Kernel.RollbackTo(rollbackPoint);
+         EmployeeVM.UndoManager.RollbackTo(rollbackPoint);
 
-         Assert.AreEqual(originalEmployeeName, EmployeeVM.GetValue(x => x.Name));
-         Assert.AreSame(rollbackPoint, ((IViewModel)EmployeeVM).Kernel.GetRollbackPoint());
+         Assert.AreEqual(originalEmployeeName, EmployeeVM.Name);
+         Assert.AreSame(rollbackPoint, EmployeeVM.UndoManager.GetRollbackPoint());
+      }
+
+      [TestMethod]
+      public void RollbackTo_ModifyChildVM_RestoresRollbackPoint() {
+         var projectTitle = "Project1";
+         var projects = new Project[] {
+            CreateProject(projectTitle)
+         };
+
+         EmployeeVM.InitializeFrom(CreateEmployee(projects: projects));
+
+         var expectedProjectVM = EmployeeVM
+            .Projects
+            .Single(x => x.Title == projectTitle);
+
+         EmployeeVM.SelectedProject = expectedProjectVM;
+
+         var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
+
+         EmployeeVM.SelectedProject = null;
+
+         EmployeeVM.UndoManager.RollbackTo(rollbackPoint);
+
+         Assert.AreSame(expectedProjectVM, EmployeeVM.SelectedProject);
       }
 
       [TestMethod]
@@ -53,24 +75,20 @@
             CreateProject("Project2")
          };
 
-         var employee = CreateEmployee(projects: projects);
+         EmployeeVM.InitializeFrom(CreateEmployee(projects: projects));
 
-         EmployeeVM.InitializeFrom(employee);
+         ProjectVM[] expectedProjectVMColl = new ProjectVM[EmployeeVM.Projects.Count];
+         EmployeeVM.Projects.CopyTo(expectedProjectVMColl, 0);
 
-         var projectVMColl = EmployeeVM.GetValue(x => x.Projects);
-
-         ProjectVM[] expectedProjectVMColl = new ProjectVM[projectVMColl.Count];
-         projectVMColl.CopyTo(expectedProjectVMColl, 0);
-
-         var rollbackPoint = ((IViewModel)EmployeeVM).Kernel.GetRollbackPoint();
+         var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
 
          // Act
-         projectVMColl.Add(new ProjectVM());
+         EmployeeVM.Projects.Add(new ProjectVM());
 
-         ((IViewModel)EmployeeVM).Kernel.RollbackTo(rollbackPoint);
+         EmployeeVM.UndoManager.RollbackTo(rollbackPoint);
 
-         CollectionAssert.AreEqual(expectedProjectVMColl, projectVMColl);
-         Assert.AreSame(rollbackPoint, ((IViewModel)EmployeeVM).Kernel.GetRollbackPoint());
+         CollectionAssert.AreEqual(expectedProjectVMColl, EmployeeVM.Projects);
+         Assert.AreSame(rollbackPoint, EmployeeVM.UndoManager.GetRollbackPoint());
       }
 
       [TestMethod]
@@ -83,25 +101,21 @@
             CreateProject("Project3"),
          };
 
-         var employee = CreateEmployee(projects: projects);
+         EmployeeVM.InitializeFrom(CreateEmployee(projects: projects));
 
-         EmployeeVM.InitializeFrom(employee);
+         ProjectVM[] expectedProjectVMColl = new ProjectVM[EmployeeVM.Projects.Count];
+         EmployeeVM.Projects.CopyTo(expectedProjectVMColl, 0);
 
-         var projectVMColl = EmployeeVM.GetValue(x => x.Projects);
-
-         ProjectVM[] expectedProjectVMColl = new ProjectVM[projectVMColl.Count];
-         projectVMColl.CopyTo(expectedProjectVMColl, 0);
-
-         var rollbackPoint = ((IViewModel)EmployeeVM).Kernel.GetRollbackPoint();
+         var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
 
          // Act
-         var itemToRemove = projectVMColl.Single(x => x.GetValue(d => d.Title) == projectTitle);
-         projectVMColl.Remove(itemToRemove);
+         var itemToRemove = EmployeeVM.Projects.Single(x => x.Title == projectTitle);
+         EmployeeVM.Projects.Remove(itemToRemove);
 
-         ((IViewModel)EmployeeVM).Kernel.RollbackTo(rollbackPoint);
+         EmployeeVM.UndoManager.RollbackTo(rollbackPoint);
 
-         CollectionAssert.AreEqual(expectedProjectVMColl, projectVMColl);
-         Assert.AreSame(rollbackPoint, ((IViewModel)EmployeeVM).Kernel.GetRollbackPoint());
+         CollectionAssert.AreEqual(expectedProjectVMColl, EmployeeVM.Projects);
+         Assert.AreSame(rollbackPoint, EmployeeVM.UndoManager.GetRollbackPoint());
       }
 
       [TestMethod]
@@ -112,23 +126,19 @@
             CreateProject("Project3"),
          };
 
-         var employee = CreateEmployee(projects: projects);
+         EmployeeVM.InitializeFrom(CreateEmployee(projects: projects));
 
-         EmployeeVM.InitializeFrom(employee);
+         ProjectVM[] expectedProjectVMColl = new ProjectVM[EmployeeVM.Projects.Count];
+         EmployeeVM.Projects.CopyTo(expectedProjectVMColl, 0);
 
-         var projectVMColl = EmployeeVM.GetValue(x => x.Projects);
-
-         ProjectVM[] expectedProjectVMColl = new ProjectVM[projectVMColl.Count];
-         projectVMColl.CopyTo(expectedProjectVMColl, 0);
-
-         var rollbackPoint = ((IViewModel)EmployeeVM).Kernel.GetRollbackPoint();
+         var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
 
          // Act
-         projectVMColl[0] = new ProjectVM();
-         ((IViewModel)EmployeeVM).Kernel.RollbackTo(rollbackPoint);
+         EmployeeVM.Projects[0] = new ProjectVM();
+         EmployeeVM.UndoManager.RollbackTo(rollbackPoint);
 
-         CollectionAssert.AreEqual(expectedProjectVMColl, projectVMColl);
-         Assert.AreSame(rollbackPoint, ((IViewModel)EmployeeVM).Kernel.GetRollbackPoint());
+         CollectionAssert.AreEqual(expectedProjectVMColl, EmployeeVM.Projects);
+         Assert.AreSame(rollbackPoint, EmployeeVM.UndoManager.GetRollbackPoint());
       }
 
       [TestMethod]
@@ -140,23 +150,19 @@
             CreateProject("Project4"),
          };
 
-         var employee = CreateEmployee(projects: projects);
+         EmployeeVM.InitializeFrom(CreateEmployee(projects: projects));
 
-         EmployeeVM.InitializeFrom(employee);
+         ProjectVM[] expectedProjectVMColl = new ProjectVM[EmployeeVM.Projects.Count];
+         EmployeeVM.Projects.CopyTo(expectedProjectVMColl, 0);
 
-         var projectVMColl = EmployeeVM.GetValue(x => x.Projects);
-
-         ProjectVM[] expectedProjectVMColl = new ProjectVM[projectVMColl.Count];
-         projectVMColl.CopyTo(expectedProjectVMColl, 0);
-
-         var rollbackPoint = ((IViewModel)EmployeeVM).Kernel.GetRollbackPoint();
+         var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
 
          // Act
-         projectVMColl.Clear();
-         ((IViewModel)EmployeeVM).Kernel.RollbackTo(rollbackPoint);
+         EmployeeVM.Projects.Clear();
+         EmployeeVM.UndoManager.RollbackTo(rollbackPoint);
 
-         CollectionAssert.AreEqual(expectedProjectVMColl, projectVMColl);
-         Assert.AreSame(rollbackPoint, ((IViewModel)EmployeeVM).Kernel.GetRollbackPoint());
+         CollectionAssert.AreEqual(expectedProjectVMColl, EmployeeVM.Projects);
+         Assert.AreSame(rollbackPoint, EmployeeVM.UndoManager.GetRollbackPoint());
       }
 
       [TestMethod]
@@ -168,23 +174,19 @@
             CreateProject("Project4"),
          };
 
-         var employee = CreateEmployee(projects: projects);
+         EmployeeVM.InitializeFrom(CreateEmployee(projects: projects));
 
-         EmployeeVM.InitializeFrom(employee);
+         ProjectVM[] expectedProjectVMColl = new ProjectVM[EmployeeVM.Projects.Count];
+         EmployeeVM.Projects.CopyTo(expectedProjectVMColl, 0);
 
-         var projectVMColl = EmployeeVM.GetValue(x => x.Projects);
-
-         ProjectVM[] expectedProjectVMColl = new ProjectVM[projectVMColl.Count];
-         projectVMColl.CopyTo(expectedProjectVMColl, 0);
-
-         var rollbackPoint = ((IViewModel)EmployeeVM).Kernel.GetRollbackPoint();
+         var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
 
          // Act
          ((IViewModel)EmployeeVM).Kernel.Refresh(EmployeeVM.ClassDescriptor.Projects);
-         ((IViewModel)EmployeeVM).Kernel.RollbackTo(rollbackPoint);
+         EmployeeVM.UndoManager.RollbackTo(rollbackPoint);
 
-         CollectionAssert.AreEqual(expectedProjectVMColl, projectVMColl);
-         Assert.AreSame(rollbackPoint, ((IViewModel)EmployeeVM).Kernel.GetRollbackPoint());
+         CollectionAssert.AreEqual(expectedProjectVMColl, EmployeeVM.Projects);
+         Assert.AreSame(rollbackPoint, EmployeeVM.UndoManager.GetRollbackPoint());
       }
 
       [TestMethod]
@@ -192,18 +194,143 @@
          var employee = CreateEmployee();
 
          EmployeeVM.InitializeFrom(employee);
-         var originalEmployeeName = EmployeeVM.GetValue(x => x.Name);
 
-         var rollbackPoint = ((IViewModel)EmployeeVM).Kernel.GetRollbackPoint();
+         var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
 
-         var modifiedName = string.Format("Modified{0}", originalEmployeeName);
+         var modifiedName = string.Format("Modified{0}", EmployeeVM.Name);
          employee.Name = modifiedName;
 
          ((IViewModel)EmployeeVM).Kernel.Refresh();
 
-         ((IViewModel)EmployeeVM).Kernel.RollbackTo(rollbackPoint);
+         EmployeeVM.UndoManager.RollbackTo(rollbackPoint);
 
-         Assert.AreEqual(modifiedName, EmployeeVM.GetValue(x => x.Name));
+         Assert.AreEqual(modifiedName, EmployeeVM.Name);
+      }
+
+      [TestMethod]
+      public void RollbackTo_SeveralModifications_RestoresRollbackPoint() {
+         // Arrange
+         var originalCustomer1Name = "Customer1";
+         var customer1 = CreateCustomer(originalCustomer1Name);
+         var customer2 = CreateCustomer();
+
+         var originalProject1Title = "Project1";
+         var projects = new Project[] {
+            CreateProject(originalProject1Title, customer1),
+            CreateProject("Project2", customer2)
+         };
+         var originalEmployeeName = "Name";
+         var employee = CreateEmployee(name: originalEmployeeName, projects: projects);
+
+         EmployeeVM.InitializeFrom(employee);
+
+
+         ProjectVM[] expectedProjectVMColl = new ProjectVM[EmployeeVM.Projects.Count];
+         EmployeeVM.Projects.CopyTo(expectedProjectVMColl, 0);
+
+         var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
+
+         // Act
+         EmployeeVM.Projects.Add(new ProjectVM());
+
+         EmployeeVM.Name = "ModifiedName";
+
+         ((IViewModel)EmployeeVM).Kernel.Refresh();
+
+         var project1VM = EmployeeVM
+            .Projects
+            .Single(x => x.Title == originalProject1Title);
+         project1VM.Title = "ModifiedTitle";
+
+         project1VM.Customer.Name = "ModifiedName";
+
+         EmployeeVM.Projects.RemoveAt(0);
+
+         EmployeeVM.Projects.Clear();
+
+         EmployeeVM.UndoManager.RollbackTo(rollbackPoint);
+
+         // Assert
+         Assert.AreEqual(originalEmployeeName, EmployeeVM.Name);
+         Assert.AreEqual(project1VM.Title, originalProject1Title);
+         Assert.AreEqual(project1VM.Customer.Name, originalCustomer1Name);
+         CollectionAssert.AreEqual(expectedProjectVMColl, EmployeeVM.Projects);
+      }
+
+      [TestMethod]
+      public void MultipleRollbackTo_WithMultipleRollbackPoints_RestoresRollbackPoints() {
+         // Arrange
+         var originalCustomer1Name = "Customer1";
+         var customer1 = CreateCustomer(originalCustomer1Name);
+         var customer2 = CreateCustomer();
+
+         var originalProject1Title = "Project1";
+         var projects = new Project[] {
+            CreateProject(originalProject1Title, customer1),
+            CreateProject("Project2", customer2)
+         };
+         var originalEmployeeName = "Name";
+         var employee = CreateEmployee(name: originalEmployeeName, projects: projects);
+
+         EmployeeVM.InitializeFrom(employee);
+
+         ProjectVM[] expectedProjectVMColl = new ProjectVM[EmployeeVM.Projects.Count];
+         EmployeeVM.Projects.CopyTo(expectedProjectVMColl, 0);
+
+         // Act - Assert
+         var employeeVMRollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
+
+         EmployeeVM.Projects.Add(new ProjectVM());
+
+         EmployeeVM.Name = "ModifiedName";
+
+         ((IViewModel)EmployeeVM).Kernel.Refresh();
+
+         var project1VM = EmployeeVM
+            .Projects
+            .Single(x => x.Title == originalProject1Title);
+
+         var projectVMRollbackPoint = project1VM.UndoManager.GetRollbackPoint();
+
+         project1VM.Title = "ModifiedTitle";
+
+         var customerVMRollbackPoint = project1VM.Customer.UndoManager.GetRollbackPoint();
+
+         project1VM.Customer.Name = "ModifiedName";
+
+         project1VM.Customer.UndoManager.RollbackTo(customerVMRollbackPoint);
+         Assert.AreEqual(project1VM.Customer.Name, originalCustomer1Name);
+
+         project1VM.UndoManager.RollbackTo(projectVMRollbackPoint);
+         Assert.AreEqual(project1VM.Title, originalProject1Title);
+
+         EmployeeVM.Projects.RemoveAt(0);
+
+         EmployeeVM.Projects.Clear();
+
+         EmployeeVM.UndoManager.RollbackTo(employeeVMRollbackPoint);
+
+         Assert.AreEqual(originalEmployeeName, EmployeeVM.Name);
+         CollectionAssert.AreEqual(expectedProjectVMColl, EmployeeVM.Projects);
+      }
+
+      [TestMethod]
+      public void RollbackTo_ModificationInvalidatesViewModel_RollbackValidatesViewModel() {
+         EmployeeVM.InitializeFrom(CreateEmployee());
+
+         EmployeeVM.Revalidate();
+
+         Assert.IsTrue(EmployeeVM.IsValid);
+
+         var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
+
+         EmployeeVM.Name = null;
+
+         Assert.IsFalse(EmployeeVM.IsValid);
+
+         EmployeeVM.UndoManager.RollbackTo(rollbackPoint);
+
+         Assert.IsTrue(EmployeeVM.IsValid);
       }
 
       private Employee CreateEmployee(

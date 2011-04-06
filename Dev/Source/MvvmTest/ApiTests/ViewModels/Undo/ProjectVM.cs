@@ -19,6 +19,16 @@
       public ProjectVM()
          : base(ClassDescriptor) {
       }
+
+      internal string Title {
+         get { return GetValue(Descriptor.Title); }
+         set { SetValue(Descriptor.Title, value); }
+      }
+
+      internal CustomerVM Customer {
+         get { return GetValue(Descriptor.Customer); }
+         set { SetValue(Descriptor.Customer, value); }
+      }
    }
 
    public sealed class ProjectVMDescriptor : VMDescriptor {

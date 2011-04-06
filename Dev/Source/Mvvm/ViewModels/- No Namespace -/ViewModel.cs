@@ -40,6 +40,10 @@
          get { return Kernel.IsValid; }
       }
 
+      public UndoManager UndoManager {
+         get { return Kernel.UndoManager; }
+      }
+
       VMKernel IViewModel.Kernel {
          get { return Kernel; }
       }

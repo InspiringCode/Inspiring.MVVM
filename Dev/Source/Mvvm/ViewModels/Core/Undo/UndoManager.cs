@@ -4,28 +4,18 @@
    using System.Diagnostics.Contracts;
    using System.Linq;
 
-   internal sealed class UndoManager {
+   public sealed class UndoManager {
       private Stack<IUndoableAction> _actionStack = new Stack<IUndoableAction>();
       private bool _undoing;
 
-      public UndoManager() {
+      internal UndoManager() {
          _actionStack.Push(new InitialPseudoAction());
-      }
-
-      /// <summary>
-      ///   Inserts an <see cref="IUndoableAction"> at the top of the undo stack.
-      /// </summary>
-      public void PushAction(IUndoableAction action) {
-         if (_undoing) {
-            return;
-         }
-         _actionStack.Push(action);
       }
 
       /// <summary>
       ///  Returns an <see cref="IUndoableAction"> at the top of the undo stack without removing it.
       /// </summary>
-      public IUndoableAction GetCurrentAction() {
+      public IRollbackPoint GetRollbackPoint() {
          return _actionStack.Peek();
       }
 
@@ -36,7 +26,7 @@
       /// <exception cref="ArgumentException">
       ///   Undo stack doesn't contain <see creff="IRollbackPoint"/>. 
       /// </exception>
-      public void Undo(IRollbackPoint toPoint) {
+      public void RollbackTo(IRollbackPoint toPoint) {
          Contract.Requires<ArgumentException>(
             ContainsRollbackPoint(toPoint),
             ExceptionTexts.RollbackPointNotFound
@@ -97,6 +87,16 @@
          } while (currentLevel.Any());
 
          throw new InvalidOperationException(ExceptionTexts.NoUndoRootManagerFound);
+      }
+
+      /// <summary>
+      ///   Inserts an <see cref="IUndoableAction"> at the top of the undo stack.
+      /// </summary>
+      internal void PushAction(IUndoableAction action) {
+         if (_undoing) {
+            return;
+         }
+         _actionStack.Push(action);
       }
    }
 }

@@ -48,6 +48,10 @@
          }
       }
 
+      public UndoManager UndoManager {
+         get { return UndoManager.GetManager(_vm); }
+      }
+
       IViewModel IBehaviorContext.VM {
          get { return _vm; }
       }
@@ -163,15 +167,6 @@
 
       public void Refresh(IVMPropertyDescriptor property) {
          _descriptor.Behaviors.ViewModelRefreshNext(this, property);
-      }
-
-      public IRollbackPoint GetRollbackPoint() {
-         return UndoManager.GetManager(_vm).GetCurrentAction();
-      }
-
-      public void RollbackTo(IRollbackPoint point) {
-         Contract.Requires<ArgumentNullException>(point != null);
-         UndoManager.GetManager(_vm).Undo(point);
       }
 
       private void PerformViewModelValidations() {

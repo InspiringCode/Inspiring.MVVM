@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Undo {
+   using System;
    using Inspiring.Mvvm.ViewModels;
 
    public sealed class EmployeeVM : DefaultViewModelWithSourceBase<EmployeeVMDescriptor, Employee> {
@@ -14,6 +15,9 @@
                .With<ProjectVM>(ProjectVM.ClassDescriptor);
             d.SelectedProject = b.Property.Of<ProjectVM>();
          })
+         .WithValidators(b => {
+            b.Check(x => x.Name).HasValue(String.Empty);
+         })
          .WithViewModelBehaviors(b => {
             b.IsUndoRoot();
             b.EnableUndo();
@@ -22,6 +26,25 @@
 
       public EmployeeVM()
          : base(ClassDescriptor) {
+      }
+
+      internal string Name {
+         get { return GetValue(Descriptor.Name); }
+         set { SetValue(Descriptor.Name, value); }
+      }
+
+      internal ProjectVM SelectedProject {
+         get { return GetValue(Descriptor.SelectedProject); }
+         set { SetValue(Descriptor.SelectedProject, value); }
+      }
+
+      internal IVMCollection<ProjectVM> Projects {
+         get { return GetValue(Descriptor.Projects); }
+         set { SetValue(Descriptor.Projects, value); }
+      }
+
+      internal void Revalidate() {
+         Kernel.Revalidate(ValidationScope.FullSubtree, ValidationMode.CommitValidValues);
       }
    }
 

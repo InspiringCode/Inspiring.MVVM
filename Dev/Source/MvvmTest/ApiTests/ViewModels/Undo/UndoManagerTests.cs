@@ -98,7 +98,7 @@
       [TestMethod]
       public void Undo_RollbackPointDoesntExists_ThrowsArgumentException() {
          AssertHelper.Throws<ArgumentException>(() => {
-            new UndoManager().Undo(new Mock<IUndoableAction>().Object);
+            new UndoManager().RollbackTo(new Mock<IUndoableAction>().Object);
          });
       }
    }

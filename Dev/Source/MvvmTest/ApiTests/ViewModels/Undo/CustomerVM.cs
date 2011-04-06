@@ -18,6 +18,11 @@
       public CustomerVM()
          : base(ClassDescriptor) {
       }
+
+      internal string Name {
+         get { return GetValue(Descriptor.Name); }
+         set { SetValue(Descriptor.Name, value); }
+      }
    }
 
    public sealed class CustomerVMDescriptor : VMDescriptor {
