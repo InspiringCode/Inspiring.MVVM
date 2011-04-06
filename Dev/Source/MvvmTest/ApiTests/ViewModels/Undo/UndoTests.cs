@@ -177,7 +177,7 @@
          var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
 
          // Act
-         ((IViewModel)EmployeeVM).Kernel.Refresh(EmployeeVM.ClassDescriptor.Projects);
+         ((IViewModel)EmployeeVM).Kernel.Refresh(EmployeeVM.Descriptor.Projects);
          EmployeeVM.UndoManager.RollbackTo(rollbackPoint);
 
          CollectionAssert.AreEqual(expectedProjectVMColl, EmployeeVM.Projects);
@@ -349,6 +349,50 @@
          EmployeeVM.UndoManager.RollbackTo(rollbackPoint);
 
          Assert.IsTrue(EmployeeVM.IsValid);
+      }
+
+      [TestMethod]
+      public void RollbackTo_WithMultipleUndoRoots_RestoresCorrectChanges() {
+         // Arrange
+         var originalCustomer1Name = "Customer1";
+         var customer1 = CreateCustomer(originalCustomer1Name);
+         var customer2 = CreateCustomer();
+
+         var originalProject1Title = "Project1";
+         var project2Title = "Project2";
+         var projects = new Project[] {
+            CreateProject(originalProject1Title, customer1),
+            CreateProject(project2Title, customer2)
+         };
+         var originalEmployeeName = "Name";
+         var employee = CreateEmployee(name: originalEmployeeName, projects: projects);
+
+         EmployeeVM = new EmployeeVM(ProjectVM.ClassDescriptorWithUndoRoot);
+         EmployeeVM.InitializeFrom(employee);
+
+         var expectedOriginalProjectVMColl = EmployeeVM.Projects.ToArray();
+
+         var employeeVMRollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
+
+         EmployeeVM.Projects.Remove(EmployeeVM.Projects.Single(x => x.Title == project2Title));
+
+         var expectedModifiedProjectVMColl = EmployeeVM.Projects.ToArray();
+
+         var project1VM = EmployeeVM
+            .Projects
+            .Single(x => x.Title == originalProject1Title);
+
+         var projectVMRollbackPoint = project1VM.UndoManager.GetRollbackPoint();
+
+         project1VM.Title = "ModifiedTitle";
+
+         project1VM.UndoManager.RollbackTo(projectVMRollbackPoint);
+
+         Assert.AreEqual(project1VM.Title, originalProject1Title);
+         CollectionAssert.AreEqual(expectedModifiedProjectVMColl, EmployeeVM.Projects);
+
+         EmployeeVM.UndoManager.RollbackTo(employeeVMRollbackPoint);
+         CollectionAssert.AreEqual(expectedOriginalProjectVMColl, EmployeeVM.Projects);
       }
 
       private Employee CreateEmployee(

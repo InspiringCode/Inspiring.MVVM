@@ -2,7 +2,7 @@
    using Inspiring.Mvvm.ViewModels;
 
    public sealed class ProjectVM : DefaultViewModelWithSourceBase<ProjectVMDescriptor, Project> {
-      public static readonly ProjectVMDescriptor ClassDescriptor = VMDescriptorBuilder
+      public static readonly ProjectVMDescriptor ClassDescriptorWithoutUndoRoot = VMDescriptorBuilder
          .OfType<ProjectVMDescriptor>()
          .For<ProjectVM>()
          .WithProperties((d, c) => {
@@ -19,8 +19,19 @@
          })
          .Build();
 
+      public static readonly ProjectVMDescriptor ClassDescriptorWithUndoRoot = VMDescriptorBuilder
+         .Inherits(ClassDescriptorWithoutUndoRoot)
+         .OfType<ProjectVMDescriptor>()
+         .For<ProjectVM>()
+         .WithProperties((d, c) => { })
+         .WithViewModelBehaviors(b => {
+            b.IsUndoRoot();
+            b.EnableUndo();
+         })
+         .Build();
+
       public ProjectVM()
-         : base(ClassDescriptor) {
+         : base(ClassDescriptorWithoutUndoRoot) {
       }
 
       internal string Title {
