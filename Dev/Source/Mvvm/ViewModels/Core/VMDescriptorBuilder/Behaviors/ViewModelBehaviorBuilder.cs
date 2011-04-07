@@ -103,6 +103,7 @@
 
       public void IsUndoRoot() {
          Enable(ViewModelBehaviorKeys.UndoRoot);
+         EnableUndo();
       }
    }
 }
