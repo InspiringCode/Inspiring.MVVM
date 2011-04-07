@@ -13,39 +13,10 @@
       }
 
       /// <summary>
-      ///  Returns an <see cref="IUndoableAction"> at the top of the undo stack without removing it.
+      ///  Returns an <see cref="IUndoableAction"/> at the top of the undo stack without removing it.
       /// </summary>
-      public IRollbackPoint GetRollbackPoint() {
-         return _actionStack.Peek();
-      }
-
-      /// <summary>
-      ///    Removes and executes an <see cref="IUndoableAction"> beginning from the top of undo stack
-      ///    till the rollback point is reached.
-      /// </summary>
-      /// <exception cref="ArgumentException">
-      ///   Undo stack doesn't contain <see creff="IRollbackPoint"/>. 
-      /// </exception>
-      public void RollbackTo(IRollbackPoint toPoint) {
-         Contract.Requires<ArgumentException>(
-            ContainsRollbackPoint(toPoint),
-            ExceptionTexts.RollbackPointNotFound
-          );
-
-         _undoing = true;
-         IUndoableAction action;
-         action = _actionStack.Pop();
-         while (!Object.ReferenceEquals(action, toPoint)) {
-            action.Undo();
-            action = _actionStack.Pop();
-         }
-         _actionStack.Push(action);
-         _undoing = false;
-      }
-
-      public bool ContainsRollbackPoint(IRollbackPoint point) {
-         Contract.Requires<ArgumentNullException>(point != null);
-         return _actionStack.Contains(point);
+      internal IUndoableAction TopMostAction {
+         get { return _actionStack.Peek(); }
       }
 
       /// <summary>
@@ -86,11 +57,48 @@
             }
          } while (currentLevel.Any());
 
-         throw new InvalidOperationException(ExceptionTexts.NoUndoRootManagerFound);
+         //throw new InvalidOperationException(ExceptionTexts.NoUndoRootManagerFound);
+         return null;
       }
 
       /// <summary>
-      ///   Inserts an <see cref="IUndoableAction"> at the top of the undo stack.
+      ///  Returns an <see cref="IRollbackPoint"/> at the top of the undo stack without removing it.
+      /// </summary>
+      public IRollbackPoint GetRollbackPoint() {
+         return _actionStack.Peek();
+      }
+
+      /// <summary>
+      ///    Removes and executes an <see cref="IUndoableAction"/> beginning from the top of undo stack
+      ///    till the rollback point is reached.
+      /// </summary>
+      /// <exception cref="ArgumentException">
+      ///   Undo stack doesn't contain <see cref="IRollbackPoint"/>. 
+      /// </exception>
+      public void RollbackTo(IRollbackPoint toPoint) {
+         Contract.Requires<ArgumentException>(
+            ContainsRollbackPoint(toPoint),
+            ExceptionTexts.RollbackPointNotFound
+          );
+
+         _undoing = true;
+         IUndoableAction action;
+         action = _actionStack.Pop();
+         while (!Object.ReferenceEquals(action, toPoint)) {
+            action.Undo();
+            action = _actionStack.Pop();
+         }
+         _actionStack.Push(action);
+         _undoing = false;
+      }
+
+      public bool ContainsRollbackPoint(IRollbackPoint point) {
+         Contract.Requires<ArgumentNullException>(point != null);
+         return _actionStack.Contains(point);
+      }
+
+      /// <summary>
+      ///   Inserts an <see cref="IUndoableAction"/> at the top of the undo stack.
       /// </summary>
       internal void PushAction(IUndoableAction action) {
          if (_undoing) {

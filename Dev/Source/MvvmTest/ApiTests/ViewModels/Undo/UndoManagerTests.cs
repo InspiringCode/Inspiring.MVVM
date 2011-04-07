@@ -8,13 +8,18 @@
    [TestClass]
    public class UndoManagerTests {
 
-      [TestMethod]
-      public void GetManager_NoBehaviorIsDefined_ThrowsInvalidOperationException() {
-         var rootVM = new ViewModelStub();
+      //[TestMethod]
+      //public void GetManager_NoBehaviorIsDefined_ThrowsInvalidOperationException() {
+      //   var rootVM = new ViewModelStub();
 
-         AssertHelper.Throws<InvalidOperationException>(() => {
-            UndoManager.GetManager(rootVM);
-         });
+      //   AssertHelper.Throws<InvalidOperationException>(() => {
+      //      UndoManager.GetManager(rootVM);
+      //   });
+      //}
+      [TestMethod]
+      public void GetManager_NoBehaviorIsDefined_ReturnsNull() {
+         var rootVM = new ViewModelStub();
+         Assert.IsNull(UndoManager.GetManager(rootVM));
       }
 
       [TestMethod]

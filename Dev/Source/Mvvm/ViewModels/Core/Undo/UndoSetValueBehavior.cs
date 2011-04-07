@@ -19,8 +19,11 @@
       public void SetValue(IBehaviorContext context, TValue value) {
          TValue oldValue = (TValue)context.VM.Kernel.GetValue(_property);
 
-         var action = new SetValueAction<TValue>(context.VM, _property, oldValue);
-         UndoManager.GetManager(context.VM).PushAction(action);
+         var manager = UndoManager.GetManager(context.VM);
+         if (manager != null) {
+            var action = new SetValueAction<TValue>(context.VM, _property, oldValue);
+            manager.PushAction(action);
+         }
          this.SetValueNext(context, value);
       }
    }

@@ -49,7 +49,13 @@
       }
 
       public UndoManager UndoManager {
-         get { return UndoManager.GetManager(_vm); }
+         get {
+            var manager = UndoManager.GetManager(_vm);
+            if (manager == null) {
+               throw new InvalidOperationException(ExceptionTexts.NoUndoRootManagerFound);
+            }
+            return manager;
+         }
       }
 
       IViewModel IBehaviorContext.VM {
@@ -167,6 +173,14 @@
 
       public void Refresh(IVMPropertyDescriptor property) {
          _descriptor.Behaviors.ViewModelRefreshNext(this, property);
+      }
+
+      public void AddParent(IViewModel parent) {
+         Parents.Add(parent);
+      }
+
+      public void RemoveParent(IViewModel parent) {
+         Parents.Remove(parent);
       }
 
       private void PerformViewModelValidations() {
