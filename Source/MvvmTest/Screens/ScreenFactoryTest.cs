@@ -62,6 +62,34 @@
          Assert.IsInstanceOfType(screen, typeof(TestScreen));
       }
 
+      [TestMethod]
+      public void Create_ScreenFactoryForInstance_CallsInitialize() {
+         var expected = new InitializableScreen();
+
+         IScreenFactory<InitializableScreen> factory = ScreenFactory.For<InitializableScreen>();
+         
+         var actual = factory.Create();
+         Assert.IsTrue(actual.InitializeWasCalled);
+      }
+
+      [TestMethod]
+      public void Create_ScreenFactoryForInstance_ReturnsThisInstance() {
+         var expected = new InitializableScreen();
+
+         IScreenFactory<InitializableScreen> factory = ScreenFactory.For(expected);
+
+         var actual = factory.Create();
+         Assert.AreEqual(expected, actual);
+      }
+
+      private class InitializableScreen : ScreenBase, INeedsInitialization {
+         public bool InitializeWasCalled { get; set; }
+
+         public void Initialize() {
+            InitializeWasCalled = true;
+         }
+      }
+
       private class FirstScreen : ScreenBase {
       }
 
