@@ -1,14 +1,26 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Undo {
    using System;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.Mvvm.ViewModels.Core;
 
    public sealed class EmployeeVM : DefaultViewModelWithSourceBase<EmployeeVMDescriptor, Employee> {
+
+      private static readonly Action<EmployeeVM, ChangeArgs, InstancePath> NoChangeHandling = (vm, args, path) => { };
+
       public EmployeeVM()
-         : base(CreateDescriptor(ProjectVM.ClassDescriptorWithoutUndoRoot)) {
+         : base(CreateDescriptor(ProjectVM.ClassDescriptorWithoutUndoRoot, NoChangeHandling)) {
       }
 
       public EmployeeVM(ProjectVMDescriptor projectVMDescriptor)
-         : base(CreateDescriptor(projectVMDescriptor)) {
+         : base(CreateDescriptor(projectVMDescriptor, NoChangeHandling)) {
+
+      }
+
+      public EmployeeVM(
+         Action<EmployeeVM, ChangeArgs, InstancePath> handleChangeAction
+      )
+         : base(CreateDescriptor(ProjectVM.ClassDescriptorWithoutUndoRoot, handleChangeAction)) {
+
       }
 
       internal string Name {
@@ -30,11 +42,21 @@
          get { return base.Descriptor; }
       }
 
+      internal Action<EmployeeVM, ChangeArgs, InstancePath> HandleChangeAction { get; set; }
+
       internal void Revalidate() {
          Kernel.Revalidate(ValidationScope.FullSubtree, ValidationMode.CommitValidValues);
       }
 
-      private static EmployeeVMDescriptor CreateDescriptor(ProjectVMDescriptor projectVMDescriptor) {
+      internal void SetSource(Employee emp, Action action) {
+         base.SetSource(emp);
+         action();
+      }
+
+      private static EmployeeVMDescriptor CreateDescriptor(
+         ProjectVMDescriptor projectVMDescriptor,
+         Action<EmployeeVM, ChangeArgs, InstancePath> handleChangeAction
+      ) {
          return VMDescriptorBuilder
             .OfType<EmployeeVMDescriptor>()
             .For<EmployeeVM>()
@@ -55,7 +77,9 @@
             })
             .WithViewModelBehaviors(b => {
                b.IsUndoRoot();
-               b.EnableUndo();
+               b.AddChangeHandler((vm, changeArgs, changedPath) => {
+                  handleChangeAction(vm, changeArgs, changedPath);
+               });
             })
             .Build();
       }

@@ -49,6 +49,7 @@
          var projectTitle = "Project1";
          var projects = new Project[] {
             CreateProject(projectTitle)
+
          };
 
          EmployeeVM.InitializeFrom(CreateEmployee(projects: projects));
@@ -67,6 +68,7 @@
 
          Assert.AreSame(expectedProjectVM, EmployeeVM.SelectedProject);
       }
+
 
       [TestMethod]
       public void RollbackTo_AddNewItemToCollection_RestoresRollbackPoint() {
@@ -393,6 +395,75 @@
 
          EmployeeVM.UndoManager.RollbackTo(employeeVMRollbackPoint);
          CollectionAssert.AreEqual(expectedOriginalProjectVMColl, EmployeeVM.Projects);
+      }
+
+
+      //[TestMethod]
+      //public void TempTest() {
+      //   var projects = new Project[] {
+      //      CreateProject("Project1"),
+      //      CreateProject("Project2")
+      //   };
+
+      //   //EmployeeVM.InitializeFrom(CreateEmployee(projects: projects));
+
+      //   EmployeeVM.SetSource(CreateEmployee(projects: projects), () => { });
+
+      //   var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
+
+
+      //   EmployeeVM.Projects[0].Title = "dvsdvsv";
+      //}
+
+      //[TestMethod]
+      //public void SetSource_AccessChildVMInSetSource_UndoManagerFromRootViewModelIsReachable() {
+      //   EmployeeVM.SetSource(
+      //      CreateEmployee(currentProject: CreateProject()),
+      //      () => {
+      //         EmployeeVM.SelectedProject.Title = string.Empty;
+      //      });
+      //}
+
+      [TestMethod]
+      public void AddItemToCollection_HandleItemAddedChangeAndModifiyItem_ModifiyActionIsOnTopOfAddedAction() {
+         EmployeeVM = new EmployeeVM((vm, args, path) => {
+            if (args.ChangeType == ChangeType.AddedToCollection) {
+               var addedProjectVM = (ProjectVM)args.NewItems.Single();
+               addedProjectVM.Title = "NewProjectTitle";
+            }
+         });
+
+         EmployeeVM.InitializeFrom(CreateEmployee());
+
+         EmployeeVM.Projects.Add(new ProjectVM());
+
+         var topMostUndoAction = EmployeeVM.UndoManager.TopMostAction;
+
+         Assert.IsInstanceOfType(topMostUndoAction, typeof(SetValueAction<string>));
+      }
+
+      [TestMethod]
+      public void RemoveItemToCollection_HandleItemRemovedChangeAndModifiyItem_VMofUndoActionDoesntHaveParentsAnymore() {
+         EmployeeVM = new EmployeeVM((vm, args, path) => {
+            if (args.ChangeType == ChangeType.RemovedFromCollection) {
+               var removedProjectVM = (ProjectVM)args.OldItems.Single();
+               removedProjectVM.Title = "this project will be removed";
+            }
+         });
+
+         var projectTitle = "Title of project";
+         EmployeeVM.InitializeFrom(CreateEmployee(projects: CreateProject(projectTitle)));
+
+         var projectToRemove = EmployeeVM.Projects.Single(x => x.Title == projectTitle);
+         EmployeeVM.Projects.Remove(projectToRemove);
+
+         var topMostUndoAction = EmployeeVM.UndoManager.TopMostAction;
+
+         // ToDo: use own utils
+         PrivateObject accessor = new PrivateObject(topMostUndoAction);
+         IViewModel _vmOfUndoAction = (IViewModel)accessor.GetField("_vm");
+
+         Assert.AreEqual(0, _vmOfUndoAction.Kernel.Parents.Count());
       }
 
       private Employee CreateEmployee(

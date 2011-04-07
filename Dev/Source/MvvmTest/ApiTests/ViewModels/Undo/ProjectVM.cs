@@ -34,6 +34,11 @@
          : base(ClassDescriptorWithoutUndoRoot) {
       }
 
+      protected override void SetSource(Project source) {
+         base.SetSource(source);
+         //Title = string.Empty;
+      }
+
       internal string Title {
          get { return GetValue(Descriptor.Title); }
          set { SetValue(Descriptor.Title, value); }
