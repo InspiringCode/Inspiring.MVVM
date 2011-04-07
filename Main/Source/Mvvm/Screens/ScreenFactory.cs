@@ -10,6 +10,12 @@
          return new SubjectExpression<TSubject>(subject);
       }
 
+      public static IScreenFactory<TScreen> For<TScreen>(
+         TScreen instance
+      ) where TScreen : IScreenBase {
+         return new InstanceFactory<TScreen>(instance);
+      }
+
       public class SubjectExpression<TSubject> {
          private TSubject _subject;
 
@@ -67,6 +73,27 @@
             }
 
             return screen;
+         }
+      }
+
+      private class InstanceFactory<TScreen> :
+         IScreenFactory<TScreen>
+         where TScreen : IScreenBase {
+
+         private readonly TScreen _instance;
+
+         public InstanceFactory(TScreen instance) {
+            _instance = instance;
+         }
+
+         public TScreen Create(Action<TScreen> initializationCallback = null) {
+            ScreenInitializer.Initialize(_instance);
+
+            if (initializationCallback != null) {
+               initializationCallback(_instance);
+            }
+
+            return _instance;
          }
       }
    }
