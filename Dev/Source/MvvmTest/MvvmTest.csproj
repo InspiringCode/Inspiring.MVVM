@@ -126,7 +126,6 @@
     <Compile Include="ApiTests\ViewModels\Undo\CustomerVM.cs" />
     <Compile Include="ApiTests\ViewModels\Undo\DomainObjects.cs" />
     <Compile Include="ApiTests\ViewModels\Undo\EmployeeVM.cs" />
-    <Compile Include="ApiTests\ViewModels\Undo\FirstTests.cs" />
     <Compile Include="ApiTests\ViewModels\Undo\ProjectVM.cs" />
     <Compile Include="ApiTests\ViewModels\Undo\UndoManagerTests.cs" />
     <Compile Include="ApiTests\ViewModels\Undo\UndoTests.cs" />
