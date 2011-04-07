@@ -146,20 +146,21 @@
                   ValidationScope.SelfAndLoadedDescendants,
                   ValidationMode.CommitValidValues
                ));
-            } else {
-               // If an item was removed or added to an collection it is enough to
-               // call 'Revalidate' on that item, because the blow statement would
-               // only perform a view model validation (because 'ChangedProperty'
-               // is always null) and 'Revalidate' performs a view model validation
-               // too.
-
-               Validate(
-                  context,
-                  ValidationContext.Current,
-                  changedPath: changedPath,
-                  changedProperty: args.ChangedProperty
-               );
             }
+            // Bugfix mit börg am 7.4.2011
+            //} else {
+            //   // If an item was removed or added to an collection it is enough to
+            //   // call 'Revalidate' on that item, because the blow statement would
+            //   // only perform a view model validation (because 'ChangedProperty'
+            //   // is always null) and 'Revalidate' performs a view model validation
+            //   // too.
+
+            Validate(
+               context,
+               ValidationContext.Current,
+               changedPath: changedPath,
+               changedProperty: args.ChangedProperty
+            );
 
             ValidationContext.CompleteValidation(ValidationMode.CommitValidValues);
          }
