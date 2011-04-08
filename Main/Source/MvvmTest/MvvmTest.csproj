@@ -236,6 +236,7 @@
     <Compile Include="ViewModels\VMCollectionWithCustomValidationTests.cs" />
     <Compile Include="ViewModels\VMDescriptorTests.cs" />
     <Compile Include="Views\CustomPropertyDescriptorTest.cs" />
+    <Compile Include="Views\DialogServiceTests.cs" />
     <Compile Include="Views\PersonView.xaml.cs">
       <DependentUpon>PersonView.xaml</DependentUpon>
     </Compile>
