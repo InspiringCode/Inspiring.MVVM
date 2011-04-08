@@ -16,17 +16,16 @@
 
       [TestMethod]
       public void GetRollbackPoint_NoModifications_ReturnsPseudoAction() {
-         var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
-         Assert.IsInstanceOfType(rollbackPoint, typeof(InitialPseudoAction));
+         Assert.IsInstanceOfType(EmployeeVM.UndoManager.TopMostAction, typeof(InitialPseudoAction));
       }
 
       [TestMethod]
       public void GetRollbackPoint_PropertyWasModifiedBefore_ReturnsLastAction() {
-         EmployeeVM.Name = "ModifiedName";
-
          var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
 
-         Assert.IsInstanceOfType(rollbackPoint, typeof(SetValueAction<string>));
+         EmployeeVM.Name = "ModifiedName";
+
+         Assert.IsInstanceOfType(EmployeeVM.UndoManager.TopMostAction, typeof(SetValueAction<string>));
       }
 
       [TestMethod]
@@ -41,7 +40,28 @@
          EmployeeVM.UndoManager.RollbackTo(rollbackPoint);
 
          Assert.AreEqual(originalEmployeeName, EmployeeVM.Name);
-         Assert.AreSame(rollbackPoint, EmployeeVM.UndoManager.GetRollbackPoint());
+         Assert.AreSame(rollbackPoint, EmployeeVM.UndoManager.TopMostAction);
+      }
+
+      [TestMethod]
+      public void UndoManager_HasNoRollbackPoint_DoesNotTrackUndoActions() {
+         EmployeeVM.InitializeFrom(CreateEmployee());
+
+         EmployeeVM.Name = "ModifiedName";
+
+         Assert.IsInstanceOfType(EmployeeVM.UndoManager.TopMostAction, typeof(InitialPseudoAction));
+
+         var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
+
+         EmployeeVM.Name = "OtherName";
+
+         Assert.IsInstanceOfType(EmployeeVM.UndoManager.TopMostAction, typeof(SetValueAction<string>));
+
+         EmployeeVM.UndoManager.RollbackTo(rollbackPoint);
+
+         EmployeeVM.Name = "OnMoreOtherName";
+
+         Assert.IsInstanceOfType(EmployeeVM.UndoManager.TopMostAction, typeof(InitialPseudoAction));
       }
 
       [TestMethod]
@@ -89,7 +109,7 @@
          EmployeeVM.UndoManager.RollbackTo(rollbackPoint);
 
          CollectionAssert.AreEqual(expectedProjectVMColl, EmployeeVM.Projects);
-         Assert.AreSame(rollbackPoint, EmployeeVM.UndoManager.GetRollbackPoint());
+         Assert.AreSame(rollbackPoint, EmployeeVM.UndoManager.TopMostAction);
       }
 
       [TestMethod]
@@ -115,7 +135,7 @@
          EmployeeVM.UndoManager.RollbackTo(rollbackPoint);
 
          CollectionAssert.AreEqual(expectedProjectVMColl, EmployeeVM.Projects);
-         Assert.AreSame(rollbackPoint, EmployeeVM.UndoManager.GetRollbackPoint());
+         Assert.AreSame(rollbackPoint, EmployeeVM.UndoManager.TopMostAction);
       }
 
       [TestMethod]
@@ -137,7 +157,7 @@
          EmployeeVM.UndoManager.RollbackTo(rollbackPoint);
 
          CollectionAssert.AreEqual(expectedProjectVMColl, EmployeeVM.Projects);
-         Assert.AreSame(rollbackPoint, EmployeeVM.UndoManager.GetRollbackPoint());
+         Assert.AreSame(rollbackPoint, EmployeeVM.UndoManager.TopMostAction);
       }
 
       [TestMethod]
@@ -160,7 +180,7 @@
          EmployeeVM.UndoManager.RollbackTo(rollbackPoint);
 
          CollectionAssert.AreEqual(expectedProjectVMColl, EmployeeVM.Projects);
-         Assert.AreSame(rollbackPoint, EmployeeVM.UndoManager.GetRollbackPoint());
+         Assert.AreSame(rollbackPoint, EmployeeVM.UndoManager.TopMostAction);
       }
 
       [TestMethod]
@@ -183,7 +203,7 @@
          EmployeeVM.UndoManager.RollbackTo(rollbackPoint);
 
          CollectionAssert.AreEqual(expectedProjectVMColl, EmployeeVM.Projects);
-         Assert.AreSame(rollbackPoint, EmployeeVM.UndoManager.GetRollbackPoint());
+         Assert.AreSame(rollbackPoint, EmployeeVM.UndoManager.TopMostAction);
       }
 
       [TestMethod]
@@ -435,6 +455,8 @@
 
          EmployeeVM.InitializeFrom(CreateEmployee());
 
+         var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
+
          EmployeeVM.Projects.Add(new ProjectVM());
 
          var topMostUndoAction = EmployeeVM.UndoManager.TopMostAction;
@@ -453,6 +475,8 @@
 
          var projectTitle = "Title of project";
          EmployeeVM.InitializeFrom(CreateEmployee(projects: CreateProject(projectTitle)));
+
+         var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
 
          var projectToRemove = EmployeeVM.Projects.Single(x => x.Title == projectTitle);
          EmployeeVM.Projects.Remove(projectToRemove);

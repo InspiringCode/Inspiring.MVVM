@@ -6,6 +6,7 @@
 
    public sealed class UndoManager {
       private Stack<IUndoableAction> _actionStack = new Stack<IUndoableAction>();
+      private HashSet<IRollbackPoint> _rollbackPoints = new HashSet<IRollbackPoint>();
       private bool _undoing;
 
       internal UndoManager() {
@@ -65,7 +66,9 @@
       ///  Returns an <see cref="IRollbackPoint"/> at the top of the undo stack without removing it.
       /// </summary>
       public IRollbackPoint GetRollbackPoint() {
-         return _actionStack.Peek();
+         var rollbackPoint = _actionStack.Peek();
+         _rollbackPoints.Add(rollbackPoint);
+         return rollbackPoint;
       }
 
       /// <summary>
@@ -80,7 +83,7 @@
             ContainsRollbackPoint(toPoint),
             ExceptionTexts.RollbackPointNotFound
           );
-
+         _rollbackPoints.Remove(toPoint);
          _undoing = true;
          IUndoableAction action;
          action = _actionStack.Pop();
@@ -101,7 +104,7 @@
       ///   Inserts an <see cref="IUndoableAction"/> at the top of the undo stack.
       /// </summary>
       internal void PushAction(IUndoableAction action) {
-         if (_undoing) {
+         if (_undoing || _rollbackPoints.Count == 0) {
             return;
          }
          _actionStack.Push(action);
