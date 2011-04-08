@@ -115,9 +115,11 @@
          WindowCloseHandler closeHandler
       ) {
          // Save the window for later
-         forScreen.Children.Add(new WindowLifecycle {
-            AssociatedWindow = window
-         });
+         var windowLifecycle = new WindowLifecycle { AssociatedWindow = window };
+         forScreen.Children.Add(windowLifecycle);
+         window.Closed += (s, e) => {
+            forScreen.Children.Remove(windowLifecycle);
+         };
 
          forScreen.Activate();
 
