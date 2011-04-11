@@ -30,40 +30,17 @@
          ServiceLocator = serviceLocator;
       }
 
-      public CountingSet<IViewModel> Parents {
-         get { return _parents; }
-      }
+      //
+      // IBehaviorContext implementation
+      //
 
       public IServiceLocator ServiceLocator {
          get;
          private set;
       }
 
-      public bool IsValid {
-         get {
-            if (!_validationStateIsCurrent) {
-               //UpdateValidationState();
-            }
-            return _isValid;
-         }
-      }
-
-      public UndoManager UndoManager {
-         get {
-            var manager = UndoManager.GetManager(_vm);
-            if (manager == null) {
-               throw new InvalidOperationException(ExceptionTexts.NoUndoRootManagerFound);
-            }
-            return manager;
-         }
-      }
-
       IViewModel IBehaviorContext.VM {
          get { return _vm; }
-      }
-
-      internal CountingSet<IVMCollection> OwnerCollections {
-         get { return _ownerCollections; }
       }
 
       FieldValueHolder IBehaviorContext.FieldValues {
@@ -80,21 +57,32 @@
          NotifyChangeCore(args.PrependViewModel(_vm));
       }
 
+
+      public bool IsValid {
+         get { return GetValidationState(ValidationResultScope.All).IsValid; }
+      }
+
+      public UndoManager UndoManager {
+         get {
+            var manager = UndoManager.GetManager(_vm);
+            if (manager == null) {
+               throw new InvalidOperationException(ExceptionTexts.NoUndoRootManagerFound);
+            }
+            return manager;
+         }
+      }
+
+      public CountingSet<IViewModel> Parents {
+         get { return _parents; }
+      }
+
+      internal CountingSet<IVMCollection> OwnerCollections {
+         get { return _ownerCollections; }
+      }
+
       public bool IsLoaded(IVMPropertyDescriptor property) {
          Contract.Requires<ArgumentNullException>(property != null);
          return property.Behaviors.IsLoadedNext(this);
-      }
-
-      public T GetValue<T>(IVMPropertyDescriptor<T> property) {
-         return property.Behaviors.GetValueNext<T>(this);
-      }
-
-      public T GetValidatedValue<T>(IVMPropertyDescriptor<T> property) {
-         return property.Behaviors.GetValidatedValueNext<T>(this);
-      }
-
-      public void SetValue<T>(IVMPropertyDescriptor<T> property, T value) {
-         property.Behaviors.SetValueNext<T>(this, value);
       }
 
       public object GetDisplayValue(IVMPropertyDescriptor property) {
@@ -113,34 +101,28 @@
          property.Behaviors.SetValueNext(this, value);
       }
 
-      public ValidationResult GetValidationState(IVMPropertyDescriptor forProperty) {
-         // TODO: Is it a good idea to extract the state for a property from the _propertiesValidationState?
-         // It would be faster, but would it preserve all sematics and so?
-         return forProperty.Behaviors.GetValidationResultNext(this);
+      public T GetValue<T>(IVMPropertyDescriptor<T> property) {
+         return property.Behaviors.GetValueNext<T>(this);
+      }
+
+      public void SetValue<T>(IVMPropertyDescriptor<T> property, T value) {
+         property.Behaviors.SetValueNext<T>(this, value);
+      }
+
+      public T GetValidatedValue<T>(IVMPropertyDescriptor<T> property) {
+         return property.Behaviors.GetValidatedValueNext<T>(this);
       }
 
       public ValidationResult GetValidationState(ValidationResultScope scope = ValidationResultScope.All) {
          return _descriptor
             .Behaviors
             .GetValidationResultNext(this, ValidationResultScope.All);
+      }
 
-         if (!_validationStateIsCurrent) {
-            //UpdateValidationState();
-         }
-         switch (scope) {
-            case ValidationResultScope.All:
-               return _validationState;
-            case ValidationResultScope.Self:
-               return _selfOnlyValidationState;
-            case ValidationResultScope.Descendants:
-               return _descendantsOnlyValidationState;
-            case ValidationResultScope.ViewModelValidationsOnly:
-               return _viewModelValidationState;
-            case ValidationResultScope.PropertiesOnly:
-               return _propertiesValidationState;
-            default:
-               throw new NotSupportedException();
-         }
+      public ValidationResult GetValidationState(IVMPropertyDescriptor forProperty) {
+         // TODO: Is it a good idea to extract the state for a property from the _propertiesValidationState?
+         // It would be faster, but would it preserve all sematics and so?
+         return forProperty.Behaviors.GetValidationResultNext(this);
       }
 
       public IVMPropertyDescriptor GetProperty(string propertyName) {
@@ -148,19 +130,23 @@
       }
 
       public void UpdateFromSource() {
-         _descriptor.Behaviors.UpdateFromSourceNext(this);
+         throw new NotImplementedException();
+         //_descriptor.Behaviors.UpdateFromSourceNext(this);
       }
 
       public void UpdateFromSource(IVMPropertyDescriptor property) {
-         _descriptor.Behaviors.UpdateFromSourceNext(this, property);
+         throw new NotImplementedException();
+         //_descriptor.Behaviors.UpdateFromSourceNext(this, property);
       }
 
       public void UpdateSource() {
-         _descriptor.Behaviors.UpdateSourceNext(this);
+         throw new NotImplementedException();
+         //_descriptor.Behaviors.UpdateSourceNext(this);
       }
 
       public void UpdateSource(IVMPropertyDescriptor property) {
-         _descriptor.Behaviors.UpdateSourceNext(this, property);
+         throw new NotImplementedException();
+         //_descriptor.Behaviors.UpdateSourceNext(this, property);
       }
 
       public void Refresh() {
@@ -200,44 +186,6 @@
          CallChangeHandlerBehaviors(args);
          ForwardChangeNotificationToParents(args);
          ForwardChangeToViewModel(args);
-
-         //bool selfChanged = args.ChangedPath.Length == 0;
-         //args = args.PrependViewModel(_vm);
-
-         //if (selfChanged && args.ChangeType == ChangeType.PropertyChanged) {
-         //   args
-         //      .ChangedProperty
-         //      .Behaviors
-         //      .TryCall<IHandlePropertyChangedBehavior>(b =>
-         //         b.HandlePropertyChanged(this)
-         //      );
-         //}
-
-         //bool validationStateChanged = args.ChangeType == ChangeType.ValidationStateChanged;
-         //bool collectionChanged =
-         //   args.ChangeType == ChangeType.AddedToCollection ||
-         //   args.ChangeType == ChangeType.RemovedFromCollection;
-
-         //bool viewModelPropertyChanged = args.ChangedProperty != null ?
-         //   PropertyTypeHelper.IsViewModel(args.ChangedProperty.PropertyType) :
-         //   false;
-
-         //if (validationStateChanged || collectionChanged || viewModelPropertyChanged) {
-         //   _validationStateIsCurrent = false;
-         //   //UpdateValidationState();
-         //}
-
-         //_descriptor.Behaviors.HandleChangedNext(this, args);
-
-         //Parents.ForEach(x => x.Kernel.NotifyChange(args));
-
-         //if (args.ChangeType == ChangeType.PropertyChanged && args.ChangedVM == _vm) {
-         //   _vm.NotifyPropertyChanged(args.ChangedProperty);
-         //}
-
-         //if (args.ChangeType == ChangeType.ValidationStateChanged && args.ChangedVM == _vm) {
-         //   _vm.NotifyValidationStateChanged(args.ChangedProperty);
-         //}
       }
 
       private void CallPropertyChangedHandlerBehaviors(ChangeArgs args) {

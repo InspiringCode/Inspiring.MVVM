@@ -2,10 +2,78 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Sequences;
+using Inspiring.Mvvm.Screens;
+using Inspiring.Mvvm.ViewModels;
 
 namespace Inspiring.MvvmTest {
    [TestClass]
    public class UnitTest1 : TestBase {
+      private class A { }
+
+      private class B : A { }
+
+      private class Base<T> where T : A {
+
+      }
+
+      private class Sub<T> : Base<T> where T : B {
+
+      }
+
+      public interface IScreen {
+      }
+
+      public abstract class Screen<TDescriptor> : ViewModelScreenBase<TDescriptor>, IScreen where TDescriptor : ScreenDescriptor {
+
+      }
+
+      public class ScreenDescriptor : VMDescriptor {
+
+      }
+
+      //private class PropBehFac: IBehaviorFactory {
+
+      //   protected virtual IBehFac CreateFactory<T1, T2>() {
+      //      return new PropBehImpl<T1, T2>();
+      //   }
+
+      //   private class PropBehFacInvoker<T1, T2> : BehaviorFactoryInvoker {
+      //      public IBehFac CreateFactory(IBehaviorFactory factory) {
+      //         return ((PropBehFac)factory).CreateFactory<T1, T2>();
+      //      }
+
+      //      public override IBehavior Invoke(IBehaviorFactory factory, BehaviorKey behaviorToCreate) {
+      //         //return new XyzFactoryImpl<T1, T2>().Create(behaviorToCreate);
+      //         return null;
+      //      }
+      //   }
+      //}
+
+      //private class PropBehFacImpl<T1, T2> : IBehFac {
+      //   public IBehavior Create(BehaviorKey key) { return null; }
+      //}
+
+      //private interface IBehFac {
+      //   IBehavior Create(BehaviorKey key);
+      //}
+
+
+      //private class DerivedPropBehFac : PropBehFac {
+      //   protected override IBehFac CreateFactory<T1, T2>() {
+      //      return base.CreateFactory<T1, T2>();
+      //   }
+
+      //   private class DerivedPropBehFacImp<T1, T2> : PropBehFacImpl<T1, T2> {
+      //      // override create or add registrations...
+      //   }
+      //}
+
+
+      [TestMethod]
+      public void MyTestMethod() {
+
+      }
+
       [TestMethod]
       public void ThisShouldWork2() {
          var a = new Mock<IFoo>(MockBehavior.Strict);
