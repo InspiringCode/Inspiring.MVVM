@@ -23,6 +23,12 @@
          return name;
       }
 
+      public static string GetFriendlyTypeName(object instance) {
+         return instance == null ?
+            "<NULL>" :
+            GetFriendlyName(instance.GetType());
+      }
+
       public static bool CanAssignNull(Type type) {
          return !type.IsValueType || IsNullableType(type);
       }

@@ -1,7 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
 
-   public class CommandBehaviorFactory : IBehaviorFactory {
+   public class CommandBehaviorFactory : IBehaviorFactoryProvider {
       public static readonly CommandBehaviorFactory Instance = new CommandBehaviorFactory();
 
       public static BehaviorFactoryInvoker CreateInvoker<TVM, TSourceObject>()
@@ -24,7 +24,7 @@
          BehaviorFactoryInvoker
          where TVM : IViewModel {
 
-         public override IBehavior Invoke(IBehaviorFactory factory, BehaviorKey behaviorToCreate) {
+         public override IBehavior Invoke(IBehaviorFactoryProvider factory, BehaviorKey behaviorToCreate) {
             var f = CastFactory<CommandBehaviorFactory>(factory, behaviorToCreate);
             return f.Create<TVM, TSourceObject>(behaviorToCreate);
          }

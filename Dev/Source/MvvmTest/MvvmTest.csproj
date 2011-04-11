@@ -156,11 +156,13 @@
     <Compile Include="ApiTests\ViewModels\VMs\TaskVM.cs" />
     <Compile Include="AssertHelper.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Common\Behaviors\BehaviorFactoryConfigurationTests.cs" />
     <Compile Include="Common\DelegateUtilsTests.cs" />
     <Compile Include="Common\HashCodeServiceTests.cs" />
     <Compile Include="Common\ServiceRegistryTests.cs" />
-    <Compile Include="Common\TypeServiceTest.cs" />
+    <Compile Include="Common\TypeServiceTests.cs" />
     <Compile Include="DomainAssert.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="PropertyChangedCounter.cs" />
     <Compile Include="ReflectionServiceLocator.cs" />
     <Compile Include="Screens\ScreenCreationBehaviorTest.cs" />

@@ -2,15 +2,20 @@
    using System;
    using System.Diagnostics.Contracts;
    using Contracts;
+   using Inspiring.Mvvm.Common.Behaviors;
+
+   public interface IBehaviorFactoryConfiguration {
+      IBehaviorFactory GetFactory(IBehaviorFactoryProvider factoryProvider);
+   }
 
    [ContractClass(typeof(BehaviorFactoryInvokerContract))]
    public abstract class BehaviorFactoryInvoker {
-      public abstract IBehavior Invoke(IBehaviorFactory factory, BehaviorKey behaviorToCreate);
+      public abstract IBehavior Invoke(IBehaviorFactoryProvider factory, BehaviorKey behaviorToCreate);
 
       protected TFactory CastFactory<TFactory>(
-         IBehaviorFactory factory,
+         IBehaviorFactoryProvider factory,
          BehaviorKey behaviorToCreate
-      ) where TFactory : IBehaviorFactory {
+      ) where TFactory : IBehaviorFactoryProvider {
          if (factory is TFactory) {
             return (TFactory)factory;
          }
@@ -28,7 +33,7 @@
    namespace Contracts {
       [ContractClassFor(typeof(BehaviorFactoryInvoker))]
       internal abstract class BehaviorFactoryInvokerContract : BehaviorFactoryInvoker {
-         public override IBehavior Invoke(IBehaviorFactory factory, BehaviorKey behaviorToCreate) {
+         public override IBehavior Invoke(IBehaviorFactoryProvider factory, BehaviorKey behaviorToCreate) {
             Contract.Requires(factory != null);
             Contract.Requires(behaviorToCreate != null);
 

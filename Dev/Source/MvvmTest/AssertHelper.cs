@@ -233,6 +233,11 @@
          return this;
       }
 
+      public ExceptionExpression<TException> WithMessage(string message) {
+         Assert.AreEqual(_exception.Message, message, "Exception message did not match expected message.");
+         return this;
+      }
+
       public ExceptionExpression<TException> Matches(string messagePattern) {
          Assert.IsTrue(Regex.IsMatch(_exception.Message, messagePattern, RegexOptions.IgnoreCase));
          Assert.IsTrue(

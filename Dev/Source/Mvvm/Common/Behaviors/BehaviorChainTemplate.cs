@@ -21,14 +21,14 @@
    /// </remarks>
    public sealed class BehaviorChainTemplate {
       private readonly List<BehaviorChainItemTemplate> _itemTemplates;
-      private readonly IBehaviorFactory _behaviorFactory;
+      private readonly IBehaviorFactoryProvider _behaviorFactory;
 
-      public BehaviorChainTemplate(IBehaviorFactory behaviorFactory)
+      public BehaviorChainTemplate(IBehaviorFactoryProvider behaviorFactory)
          : this(behaviorFactory, new List<BehaviorChainItemTemplate>()) {
       }
 
       private BehaviorChainTemplate(
-         IBehaviorFactory behaviorFactory,
+         IBehaviorFactoryProvider behaviorFactory,
          List<BehaviorChainItemTemplate> itemTemplates
       ) {
          _behaviorFactory = behaviorFactory;
@@ -61,9 +61,9 @@
       /// <summary>
       ///   Returns a new <see cref="BehaviorChainTemplate"/> with the same
       ///   behavior chain item templates but with a different <see 
-      ///   cref="IBehaviorFactory"/>.
+      ///   cref="IBehaviorFactoryProvider"/>.
       /// </summary>
-      public BehaviorChainTemplate OverrideFactory(IBehaviorFactory factory) {
+      public BehaviorChainTemplate OverrideFactory(IBehaviorFactoryProvider factory) {
          Contract.Requires<ArgumentNullException>(factory != null);
 
          // The _itemTemplates list can be shared because we do not modify it.

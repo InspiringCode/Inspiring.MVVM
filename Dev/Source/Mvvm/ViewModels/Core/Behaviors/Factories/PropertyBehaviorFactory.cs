@@ -2,7 +2,7 @@
    using System;
    using Inspiring.Mvvm.ViewModels.Core.Validation.PropertyBehaviors;
 
-   public class PropertyBehaviorFactory : IBehaviorFactory {
+   public class PropertyBehaviorFactory : IBehaviorFactoryProvider {
       public static readonly PropertyBehaviorFactory Instance = new PropertyBehaviorFactory();
 
       public static BehaviorFactoryInvoker CreateInvoker<TVM, TValue>()
@@ -74,7 +74,7 @@
          BehaviorFactoryInvoker
          where TVM : IViewModel {
 
-         public override IBehavior Invoke(IBehaviorFactory factory, BehaviorKey behaviorToCreate) {
+         public override IBehavior Invoke(IBehaviorFactoryProvider factory, BehaviorKey behaviorToCreate) {
             var typedFactory = CastFactory<PropertyBehaviorFactory>(factory, behaviorToCreate);
             return typedFactory.Create<TVM, TValue>(behaviorToCreate);
          }

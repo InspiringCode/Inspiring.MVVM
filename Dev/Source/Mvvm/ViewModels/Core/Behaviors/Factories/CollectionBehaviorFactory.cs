@@ -2,7 +2,7 @@
    using System;
    using Inspiring.Mvvm.ViewModels.Core.Validation.CollectionBehaviors;
 
-   public class CollectionBehaviorFactory : IBehaviorFactory {
+   public class CollectionBehaviorFactory : IBehaviorFactoryProvider {
       public static readonly CollectionBehaviorFactory Instance = new CollectionBehaviorFactory();
 
       public static BehaviorFactoryInvoker CreateInvoker<TVM, TItemVM>()
@@ -46,7 +46,7 @@
          where TVM : IViewModel
          where TItemVM : IViewModel {
 
-         public override IBehavior Invoke(IBehaviorFactory factory, BehaviorKey behaviorToCreate) {
+         public override IBehavior Invoke(IBehaviorFactoryProvider factory, BehaviorKey behaviorToCreate) {
             var typedFactory = CastFactory<CollectionBehaviorFactory>(factory, behaviorToCreate);
             return typedFactory.Create<TVM, TItemVM>(behaviorToCreate);
          }

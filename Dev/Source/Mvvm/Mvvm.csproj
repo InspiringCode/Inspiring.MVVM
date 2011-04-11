@@ -94,7 +94,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArrayUtils.cs" />
+    <Compile Include="Common\Behaviors\BehaviorFactory.cs" />
+    <Compile Include="Common\Behaviors\BehaviorFactoryConfiguration.cs" />
+    <Compile Include="Common\Behaviors\IBehaviorFactory.cs" />
     <Compile Include="Common\DelegateUtils.cs" />
+    <Compile Include="Common\ECommon.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ECommon.resx</DependentUpon>
+    </Compile>
     <Compile Include="Common\HashCodeService.cs" />
     <Compile Include="Common\SealableObject.cs" />
     <Compile Include="Common\ServiceRegistry.cs" />
@@ -153,6 +161,8 @@
     <Compile Include="ViewModels\Core\BehaviorInterfaces\ViewModelBehaviors\IRefreshControllerBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\ViewModelBehaviors\IValidationExecutorBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\ViewModelBehaviors\IValidationResultAggregatorBehavior.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryConfigurations.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Factories\CommandBehaviorFactory.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Keys\PropertyBehaviorKeys.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Keys\ViewModelBehaviorKeys.cs" />
@@ -166,22 +176,22 @@
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IRevalidationBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IValidationResultProviderBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\ViewModelBehaviors\IManualUpdateCoordinatorBehavior.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\BehaviorChain.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\Configuration\BehaviorChainConfiguration.cs" />
+    <Compile Include="Common\Behaviors\BehaviorChain.cs" />
+    <Compile Include="Common\Behaviors\BehaviorChainConfiguration.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Configuration\BehaviorChainConfigurationCollection.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\Configuration\BehaviorChainTemplate.cs" />
+    <Compile Include="Common\Behaviors\BehaviorChainTemplate.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Factories\CollectionBehaviorFactory.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\Factories\IBehaviorFactoryInvoker.cs" />
+    <Compile Include="Common\Behaviors\IBehaviorFactoryInvoker.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Factories\ViewModelPropertyBehaviorFactory.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\Keys\BehaviorChainTemplateKey.cs" />
+    <Compile Include="Common\Behaviors\BehaviorChainTemplateKey.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Keys\BehaviorChainTemplateKeys.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\Configuration\BehaviorChainTemplateRegistry.cs" />
+    <Compile Include="Common\Behaviors\BehaviorChainTemplateRegistry.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Configuration\BehaviorChainTemplateRegistry.DefaultTemplates.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Keys\BehaviorKeys.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Factories\PropertyBehaviorFactory.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Factories\ViewModelBehaviorFactory.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\Factories\IBehaviorFactory.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\Keys\BehaviorKey.cs" />
+    <Compile Include="Common\Behaviors\IBehaviorFactoryProvider.cs" />
+    <Compile Include="Common\Behaviors\BehaviorKey.cs" />
     <Compile Include="ViewModels\Core\Behaviors\InitializableBehavior.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Keys\CollectionBehaviorKeys.cs" />
     <Compile Include="ViewModels\Core\Collections\IVMCollectionExpression.cs" />
@@ -327,8 +337,8 @@
     <Compile Include="ViewModels\IViewModel.cs" />
     <Compile Include="ViewModels\- No Namespace -\IVMProperty.cs" />
     <Compile Include="ViewModels\StandardValidations.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\Behavior.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\IBehavior.cs" />
+    <Compile Include="Common\Behaviors\Behavior.cs" />
+    <Compile Include="Common\Behaviors\IBehavior.cs" />
     <Compile Include="ViewModels\Core\DynamicFields\FieldDefinition.cs" />
     <Compile Include="ViewModels\Core\DynamicFields\FieldDefinitionCollection.cs" />
     <Compile Include="ViewModels\Core\DynamicFields\FieldDefinitionGroup.cs" />
@@ -391,6 +401,10 @@
     <Content Include="license.txt" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Common\ECommon.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ECommon.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="ExceptionTexts.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ExceptionTexts.Designer.cs</LastGenOutput>

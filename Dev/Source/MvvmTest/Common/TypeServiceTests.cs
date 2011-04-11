@@ -6,7 +6,7 @@
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class TypeServiceTest : TestBase {
+   public class TypeServiceTests : TestBase {
       [TestMethod]
       public void CanAssignNull_ReferenceType() {
          Assert.IsTrue(TypeService.CanAssignNull(typeof(object)));
@@ -32,6 +32,17 @@
       public void GetFriendlyName_ForGenericType_ReturnsNameInCharpSyntax() {
          var t = typeof(List<Nullable<TestStruct>>);
          Assert.AreEqual("List<Nullable<TestStruct>>", TypeService.GetFriendlyName(t));
+      }
+
+      [TestMethod]
+      public void GetFriendlyTypeName_OfInstance_ReturnsTypeName() {
+         var instance = new Object();
+         Assert.AreEqual("Object", TypeService.GetFriendlyTypeName(instance));
+      }
+
+      [TestMethod]
+      public void GetFriendlyTypeName_OfNull_ReturnsDescriptiveString() {
+         Assert.AreEqual("<NULL>", TypeService.GetFriendlyTypeName(null));
       }
 
       private struct TestStruct {
