@@ -41,6 +41,10 @@
       public static PropertyStub<T> Of<T>() {
          return new PropertyStubBuilder().Of<T>();
       }
+
+      public static PropertyStub<object> Build() {
+         return Of<object>();
+      }
    }
 
    public class PropertyStubBuilder {

@@ -1,4 +1,5 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core {
+﻿using System;
+namespace Inspiring.Mvvm.ViewModels.Core {
 
    // TODO: Is it OK for me to be public?
    public sealed class Path {
@@ -44,6 +45,13 @@
 
       public PathIterator GetIterator() {
          return new PathIterator(_steps);
+      }
+
+      public override string ToString() {
+         return String.Format(
+            "[{0}]",
+            String.Join(", ", _steps)
+         );
       }
 
       private Path Prepend(PathStep step) {

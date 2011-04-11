@@ -11,7 +11,7 @@
          public void Refresh(IBehaviorContext context) {
             RequireInitialized();
             context.VM.Kernel.Revalidate(_property, ValidationMode.DiscardInvalidValues);
-            context.NotifyChange(new ChangeArgs(ChangeType.PropertyChanged, context.VM, _property));
+            context.NotifyChange(ChangeArgs.PropertyChanged(_property));
 
             this.RefreshNext(context);
          }

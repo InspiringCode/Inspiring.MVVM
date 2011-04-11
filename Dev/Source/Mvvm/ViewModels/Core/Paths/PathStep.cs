@@ -1,4 +1,6 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core {
+﻿using System;
+using Inspiring.Mvvm.Common;
+namespace Inspiring.Mvvm.ViewModels.Core {
 
    public enum PathStepType {
       None,
@@ -45,6 +47,19 @@
 
       public IVMPropertyDescriptor Property {
          get { return _property; }
+      }
+
+      public override string ToString() {
+         switch (_type) {
+            case PathStepType.ViewModel:
+               return TypeService.GetFriendlyName(_viewModel.GetType());
+            case PathStepType.Collection:
+               return TypeService.GetFriendlyName(_collection.GetType());
+            case PathStepType.Property:
+               return _property.PropertyName;
+            default:
+               throw new NotSupportedException();
+         }
       }
    }
 }

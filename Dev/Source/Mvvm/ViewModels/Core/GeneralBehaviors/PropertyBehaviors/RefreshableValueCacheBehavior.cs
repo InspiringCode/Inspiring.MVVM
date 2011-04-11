@@ -14,8 +14,7 @@
          TValue newValue = GetValue(context);
 
          if (!Object.Equals(oldValue, newValue)) {
-            var args = new ChangeArgs(ChangeType.PropertyChanged, context.VM, _property);
-            context.NotifyChange(args);
+            context.NotifyChange(ChangeArgs.PropertyChanged(_property));
          }
       }
 

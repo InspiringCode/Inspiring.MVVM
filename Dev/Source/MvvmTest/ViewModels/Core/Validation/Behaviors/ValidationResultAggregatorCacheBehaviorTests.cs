@@ -87,7 +87,7 @@
 
          Behavior.HandleChange(
             Context,
-            new ChangeArgs(ChangeType.ValidationStateChanged, ViewModelStub.Build())
+            ChangeArgs.ValidationStateChanged().PrependViewModel(ViewModelStub.Build())
          );
 
          var actualResult = Behavior.GetValidationResult(Context, ValidationResultScope.All);
@@ -102,7 +102,7 @@
 
          Behavior.HandleChange(
             Context,
-            new ChangeArgs(ChangeType.AddedToCollection, Mock<IVMCollection>())
+            ChangeArgs.ItemsAdded(VMCollectionStub.Build(), new[] { ViewModelStub.Build() })
          );
 
          var actualResult = Behavior.GetValidationResult(Context, ValidationResultScope.All);
@@ -117,7 +117,7 @@
 
          Behavior.HandleChange(
             Context,
-            new ChangeArgs(ChangeType.PropertyChanged, ViewModelStub.Build(), PropertyStub.Of<string>())
+            ChangeArgs.PropertyChanged(PropertyStub.Of<string>()).PrependViewModel(ViewModelStub.Build())
          );
 
          var actualResult = Behavior.GetValidationResult(Context, ValidationResultScope.All);
@@ -135,7 +135,7 @@
 
          Behavior.HandleChange(
             Context,
-            new ChangeArgs(ChangeType.PropertyChanged, ViewModelStub.Build(), PropertyStub.Of<ViewModelStub>())
+            ChangeArgs.PropertyChanged(PropertyStub.Of<ViewModelStub>()).PrependViewModel(ViewModelStub.Build())
          );
 
          var actualResult = Behavior.GetValidationResult(Context, ValidationResultScope.All);

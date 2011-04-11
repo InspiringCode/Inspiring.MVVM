@@ -14,12 +14,12 @@
          var newItems = (IEnumerable<IViewModel>)args.NewItems;
 
          if (oldItems.Any()) {
-            var a = new ChangeArgs(ChangeType.RemovedFromCollection, c, oldItems: oldItems);
+            var a = ChangeArgs.ItemsRemoved(c, oldItems);
             context.NotifyChange(a);
          }
 
          if (newItems.Any()) {
-            var a = new ChangeArgs(ChangeType.AddedToCollection, c, newItems: newItems);
+            var a = ChangeArgs.ItemsAdded(c, newItems);
             context.NotifyChange(a);
          }
 

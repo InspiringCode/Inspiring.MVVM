@@ -65,6 +65,10 @@
       public static BehaviorContextStub BuildContext() {
          return new ViewModelStubBuilder().BuildContext();
       }
+
+      protected override void OnChange(ChangeArgs args) {
+         NotifyChangeInvocations.Add(args);
+      }
    }
 
    public class ViewModelStubBuilder {

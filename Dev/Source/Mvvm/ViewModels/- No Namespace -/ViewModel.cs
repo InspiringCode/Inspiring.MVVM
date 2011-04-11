@@ -293,8 +293,11 @@
       //   SetDisplayValue(property, value);
       //}
 
-      public void NotifyChange(ChangeArgs args) {
-         throw new NotImplementedException();
+      void IViewModel.NotifyChange(ChangeArgs args) {
+         OnChange(args);
+      }
+
+      protected virtual void OnChange(ChangeArgs args) {
       }
    }
 }

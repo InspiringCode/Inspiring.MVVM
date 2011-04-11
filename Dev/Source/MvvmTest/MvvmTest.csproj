@@ -184,6 +184,7 @@
     <Compile Include="ViewModels\- Test Infrastructure -\ValidationResultProviderStub.cs" />
     <Compile Include="ViewModels\- Test Infrastructure -\ValueAccessorStub.cs" />
     <Compile Include="ViewModels\- Test Infrastructure -\ViewModelStub.cs" />
+    <Compile Include="ViewModels\- Test Infrastructure -\VMCollectionStub.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorKeysTests.cs" />
     <Compile Include="ViewModels\Core\Behaviors\PropertyBehaviors\DisplayValueBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Behaviors\PropertyBehaviors\RefreshableValueCacheBehaviorTests.cs" />

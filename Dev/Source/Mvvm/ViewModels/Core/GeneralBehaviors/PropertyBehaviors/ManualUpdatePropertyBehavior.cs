@@ -26,13 +26,7 @@
          //var validationBehavior = GetNextBehavior<IRevalidationBehavior>();
          //validationBehavior.Revalidate(context, ValidationMode.DiscardInvalidValues);
 
-         context.NotifyChange(
-            new ChangeArgs(
-               ChangeType.PropertyChanged,
-               context.VM,
-               _property
-            )
-         );
+         context.NotifyChange(ChangeArgs.PropertyChanged(_property));
       }
 
       public void UpdatePropertySource(IBehaviorContext context) {

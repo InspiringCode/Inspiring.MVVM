@@ -30,7 +30,7 @@
          Behavior_ItemInserted(item);
 
          AssertChangeArgs(
-            new ChangeArgs(ChangeType.AddedToCollection, Collection, newItems: new[] { item })
+            ChangeArgs.ItemsAdded(Collection, newItems: new[] { item })
          );
       }
 
@@ -40,9 +40,7 @@
 
          Behavior_ItemRemoved(item);
 
-         AssertChangeArgs(
-            new ChangeArgs(ChangeType.RemovedFromCollection, Collection, oldItems: new[] { item })
-         );
+         AssertChangeArgs(ChangeArgs.ItemsRemoved(Collection, new[] { item }));
       }
 
       [TestMethod]
@@ -53,8 +51,8 @@
          Behavior_ItemSet(previousItem: oldItem, item: item);
 
          AssertChangeArgs(
-            new ChangeArgs(ChangeType.RemovedFromCollection, Collection, oldItems: new[] { oldItem }),
-            new ChangeArgs(ChangeType.AddedToCollection, Collection, newItems: new[] { item })
+            ChangeArgs.ItemsRemoved(Collection, oldItems: new[] { oldItem }),
+            ChangeArgs.ItemsAdded(Collection, newItems: new[] { item })
          );
       }
 
@@ -65,7 +63,7 @@
          Behavior_ItemsCleared(previousItems: oldItems);
 
          AssertChangeArgs(
-            new ChangeArgs(ChangeType.RemovedFromCollection, Collection, oldItems: oldItems)
+            ChangeArgs.ItemsRemoved(Collection, oldItems: oldItems)
          );
       }
 
@@ -79,8 +77,8 @@
          Behavior_CollectionPopulated(oldItems);
 
          AssertChangeArgs(
-            new ChangeArgs(ChangeType.RemovedFromCollection, Collection, oldItems: oldItems),
-            new ChangeArgs(ChangeType.AddedToCollection, Collection, newItems: newItems)
+            ChangeArgs.ItemsRemoved(Collection, oldItems: oldItems),
+            ChangeArgs.ItemsAdded(Collection, newItems: newItems)
          );
       }
 
@@ -104,7 +102,7 @@
          CollectionAssert.AreEquivalent(expected.OldItems.ToArray(), actual.OldItems.ToArray());
          CollectionAssert.AreEquivalent(expected.NewItems.ToArray(), actual.NewItems.ToArray());
 
-         Assert.AreEqual(expected.ChangedPath.Length, actual.ChangedPath.Length); // TODO: Better equal
+         DomainAssert.AreEqual(expected.ChangedPath, actual.ChangedPath);
       }
 
       private class BehaviorContextStub : IBehaviorContext {

@@ -56,14 +56,7 @@
       }
 
       public void UpdatePropertyFromSource(IBehaviorContext context) {
-         var args = new ChangeArgs(
-            ChangeType.PropertyChanged,
-            changedVM: context.VM,
-            changedProperty: _property
-         );
-
-         context.NotifyChange(args);
-
+         context.NotifyChange(ChangeArgs.PropertyChanged(_property));
          this.UpdatePropertyFromSourceNext(context);
       }
 

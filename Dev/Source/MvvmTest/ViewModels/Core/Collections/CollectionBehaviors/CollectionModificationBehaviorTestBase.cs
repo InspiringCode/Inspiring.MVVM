@@ -1,5 +1,4 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Collections {
-   using System.Collections.ObjectModel;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.MvvmTest.Stubs;
@@ -65,7 +64,7 @@
       }
 
       protected IVMCollection<TItemVM> CreateCollectionStub(int itemCount) {
-         var stub = new VMCollectionMock(CollectionOwner);
+         var stub = new VMCollectionStub<TItemVM>(CollectionOwner);
 
          for (int i = 0; i < itemCount; i++) {
             stub.Add(CreateAnonymousItem());
@@ -75,42 +74,13 @@
       }
 
       protected IVMCollection<TItemVM> CreateCollectionStub(params TItemVM[] items) {
-         var stub = new VMCollectionMock(CollectionOwner);
+         var stub = new VMCollectionStub<TItemVM>(CollectionOwner);
 
          for (int i = 0; i < items.Length; i++) {
             stub.Add(items[i]);
          }
 
          return stub;
-      }
-
-      private class VMCollectionMock : Collection<TItemVM>, IVMCollection<TItemVM> {
-         private readonly IViewModel _owner;
-
-         public VMCollectionMock(IViewModel owner) {
-            _owner = owner;
-         }
-
-         public void ReplaceItems(System.Collections.Generic.IEnumerable<TItemVM> newItems) {
-            throw new System.NotImplementedException();
-         }
-
-         public BehaviorChain Behaviors {
-            get { throw new System.NotImplementedException(); }
-         }
-
-         public bool IsPopulating {
-            get {
-               throw new System.NotImplementedException();
-            }
-            set {
-               throw new System.NotImplementedException();
-            }
-         }
-
-         public IViewModel Owner {
-            get { return _owner; }
-         }
       }
    }
 }

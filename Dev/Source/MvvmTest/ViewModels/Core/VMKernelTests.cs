@@ -1,6 +1,6 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core {
-   using Inspiring.Mvvm;
    using System.Linq;
+   using Inspiring.Mvvm;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -8,36 +8,41 @@
    [TestClass]
    public class VMKernelTests : TestBase {
       [TestMethod]
-      public void NotifyChange_CallsNotifyChangeOfViewModel() {
+      public void NotifyChange_CallsNotifyChangeOfViewModelWithPrependedViewModel() {
          var vm = ViewModelStub.Build();
 
          var args = CreateChangeArgs();
          IBehaviorContext kernel = CreateKernel(vm);
          kernel.NotifyChange(args);
 
-         DomainAssert.AreEqual(args, vm.NotifyChangeInvocations.SingleOrDefault());
+         var expectedArgs = args.PrependViewModel(vm);
+         DomainAssert.AreEqual(expectedArgs, vm.NotifyChangeInvocations.SingleOrDefault());
       }
 
       [TestMethod]
       public void NotifyChange_CallsParentWithExtendedPath() {
          var parentVM = ViewModelStub.Build();
+         var vm = ViewModelStub.Build();
+         
+         
+         var parentKernel = CreateKernel(parentVM);
+         var kernel = CreateKernel(vm);
+         kernel.Parents.Add(parentVM);
 
-         IBehaviorContext kernel = CreateKernel();
-         var parent = CreateKernel(parentVM);
-
+         IBehaviorContext kernelContext = kernel;
+                  
          var args = CreateChangeArgs();
-         kernel.NotifyChange(args);
+         kernelContext.NotifyChange(args);
 
-         var expectedArgs = args.PrependViewModel(parentVM);
-         DomainAssert.AreEqual(expectedArgs, parentVM.NotifyChangeInvocations.SingleOrDefault());         
+         var expectedArgs = args
+            .PrependViewModel(vm)
+            .PrependViewModel(parentVM);
+
+         DomainAssert.AreEqual(expectedArgs, parentVM.NotifyChangeInvocations.SingleOrDefault());
       }
 
       private static ChangeArgs CreateChangeArgs() {
-         return new ChangeArgs(
-            ChangeType.PropertyChanged,
-            ViewModelStub.Build(),
-            PropertyStub.Of<object>()
-         );
+         return ChangeArgs.PropertyChanged(PropertyStub.Build());
       }
 
       private static VMKernel CreateKernel(IViewModel vm = null) {

@@ -20,8 +20,7 @@
          GetNextBehavior<IValueAccessorBehavior<TValue>>().SetValue(context, value);
 
          if (!Object.Equals(value, oldValue)) {
-            var args = new ChangeArgs(ChangeType.PropertyChanged, context.VM, _property);
-            context.NotifyChange(args);
+            context.NotifyChange(ChangeArgs.PropertyChanged(_property));
          }
       }
 

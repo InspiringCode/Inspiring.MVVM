@@ -39,20 +39,26 @@
 
       [TestMethod]
       public void HandleChange_OwnPropertyChanged_PerformsViewModelValidations() {
-         Behavior.HandleChange(Context, new ChangeArgs(ChangeType.PropertyChanged, VM, PropertyStub.Of<string>()));
+         var args = ChangeArgs
+            .PropertyChanged(PropertyStub.Of<string>())
+            .PrependViewModel(VM);
+
+         Behavior.HandleChange(Context, args);
+
          Assert.AreEqual(HandleChangeNext + Validate + RevalidateNext, ActionLog);
       }
 
       [TestMethod]
       public void HandleChange_OwnValidationStateChanged_PerformsViewModelValidation() {
-         Behavior.HandleChange(Context, new ChangeArgs(ChangeType.ValidationStateChanged, VM));
+         Behavior.HandleChange(Context, ChangeArgs.ValidationStateChanged().PrependViewModel(VM));
          Assert.AreEqual(HandleChangeNext + Validate + RevalidateNext, ActionLog);
       }
 
       [TestMethod]
       public void HandleChange_DescendantValidationStateChanged_PerformsViewModelValidation() {
-         var args = new ChangeArgs(ChangeType.ValidationStateChanged, VM)
-            .PrependViewModel(new ViewModelStub());
+         var args = ChangeArgs.ValidationStateChanged()
+            .PrependViewModel(VM)
+            .PrependViewModel(ViewModelStub.Build());
 
          Behavior.HandleChange(Context, args);
          Assert.AreEqual(HandleChangeNext + Validate + RevalidateNext, ActionLog);
@@ -60,7 +66,8 @@
 
       [TestMethod]
       public void HandleChange_DescendantPropertyChanged_PerformsViewModelValidation() {
-         var args = new ChangeArgs(ChangeType.PropertyChanged, VM, PropertyStub.Of<string>())
+         var args = ChangeArgs.PropertyChanged(PropertyStub.Of<string>())
+            .PrependViewModel(VM)
             .PrependViewModel(new ViewModelStub());
 
          Behavior.HandleChange(Context, args);

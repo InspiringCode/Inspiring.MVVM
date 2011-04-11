@@ -77,7 +77,7 @@
       }
 
       void IBehaviorContext.NotifyChange(ChangeArgs args) {
-         NotifyChange(args);
+         NotifyChangeCore(args.PrependViewModel(_vm));
       }
 
       public bool IsLoaded(IVMPropertyDescriptor property) {
@@ -191,55 +191,68 @@
          Revalidator.RevalidatePropertyValidations(_vm, property, scope);
       }
 
-      private void NotifyChange(ChangeArgs args) {
-         bool selfChanged = args.ChangedPath.Length == 0;
-         args = args.PrependViewModel(_vm);
+      public IBehaviorContext GetContext() {
+         return this;
+      }
 
-         if (selfChanged && args.ChangeType == ChangeType.PropertyChanged) {
-            args
-               .ChangedProperty
-               .Behaviors
-               .TryCall<IHandlePropertyChangedBehavior>(b =>
-                  b.HandlePropertyChanged(this)
-               );
+      private void NotifyChangeCore(ChangeArgs args) {
+         _vm.NotifyChange(args);
+
+         foreach (var parent in Parents) {
+            parent
+               .Kernel
+               .GetContext()
+               .NotifyChange(args);
          }
 
-         bool validationStateChanged = args.ChangeType == ChangeType.ValidationStateChanged;
-         bool collectionChanged =
-            args.ChangeType == ChangeType.AddedToCollection ||
-            args.ChangeType == ChangeType.RemovedFromCollection;
+         //bool selfChanged = args.ChangedPath.Length == 0;
+         //args = args.PrependViewModel(_vm);
 
-         bool viewModelPropertyChanged = args.ChangedProperty != null ?
-            PropertyTypeHelper.IsViewModel(args.ChangedProperty.PropertyType) :
-            false;
-
-         if (validationStateChanged || collectionChanged || viewModelPropertyChanged) {
-            _validationStateIsCurrent = false;
-            //UpdateValidationState();
-         }
-
-         //ViewModelBehavior behavior;
-         //if (_descriptor.Behaviors.TryGetBehavior(out behavior)) {
-         //   //if (selfChanged) {
-         //   //   behavior.OnSelfChanged(this, args);
-         //   //} else {
-         //   //   behavior.OnChildChanged(this, args, changedPath);
-         //   //}
-
-         //   behavior.OnChanged(this, args, changedPath);
+         //if (selfChanged && args.ChangeType == ChangeType.PropertyChanged) {
+         //   args
+         //      .ChangedProperty
+         //      .Behaviors
+         //      .TryCall<IHandlePropertyChangedBehavior>(b =>
+         //         b.HandlePropertyChanged(this)
+         //      );
          //}
 
-         _descriptor.Behaviors.HandleChangedNext(this, args);
+         //bool validationStateChanged = args.ChangeType == ChangeType.ValidationStateChanged;
+         //bool collectionChanged =
+         //   args.ChangeType == ChangeType.AddedToCollection ||
+         //   args.ChangeType == ChangeType.RemovedFromCollection;
 
-         Parents.ForEach(x => x.Kernel.NotifyChange(args));
+         //bool viewModelPropertyChanged = args.ChangedProperty != null ?
+         //   PropertyTypeHelper.IsViewModel(args.ChangedProperty.PropertyType) :
+         //   false;
 
-         if (args.ChangeType == ChangeType.PropertyChanged && args.ChangedVM == _vm) {
-            _vm.NotifyPropertyChanged(args.ChangedProperty);
-         }
+         //if (validationStateChanged || collectionChanged || viewModelPropertyChanged) {
+         //   _validationStateIsCurrent = false;
+         //   //UpdateValidationState();
+         //}
 
-         if (args.ChangeType == ChangeType.ValidationStateChanged && args.ChangedVM == _vm) {
-            _vm.NotifyValidationStateChanged(args.ChangedProperty);
-         }
+         ////ViewModelBehavior behavior;
+         ////if (_descriptor.Behaviors.TryGetBehavior(out behavior)) {
+         ////   //if (selfChanged) {
+         ////   //   behavior.OnSelfChanged(this, args);
+         ////   //} else {
+         ////   //   behavior.OnChildChanged(this, args, changedPath);
+         ////   //}
+
+         ////   behavior.OnChanged(this, args, changedPath);
+         ////}
+
+         //_descriptor.Behaviors.HandleChangedNext(this, args);
+
+         //Parents.ForEach(x => x.Kernel.NotifyChange(args));
+
+         //if (args.ChangeType == ChangeType.PropertyChanged && args.ChangedVM == _vm) {
+         //   _vm.NotifyPropertyChanged(args.ChangedProperty);
+         //}
+
+         //if (args.ChangeType == ChangeType.ValidationStateChanged && args.ChangedVM == _vm) {
+         //   _vm.NotifyValidationStateChanged(args.ChangedProperty);
+         //}
       }
 
       private void UpdateValidationState() {
