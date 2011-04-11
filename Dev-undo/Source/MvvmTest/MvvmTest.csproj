@@ -1,0 +1,301 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4BDD1C93-B8FB-4CCB-9980-0A0AD4502D8C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Inspiring.MvvmTest</RootNamespace>
+    <AssemblyName>InspiringMvvmTest</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <CodeContractsAssemblyMode>0</CodeContractsAssemblyMode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeContractsEnableRuntimeChecking>False</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>False</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>False</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>False</CodeContractsArithmeticObligations>
+    <CodeContractsContainerAnalysis>False</CodeContractsContainerAnalysis>
+    <CodeContractsRedundantAssumptions>False</CodeContractsRedundantAssumptions>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>False</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsBaseLineFile />
+    <CodeContractsCacheAnalysisResults>False</CodeContractsCacheAnalysisResults>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeContractsEnableRuntimeChecking>False</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>False</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>False</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>False</CodeContractsArithmeticObligations>
+    <CodeContractsContainerAnalysis>False</CodeContractsContainerAnalysis>
+    <CodeContractsRedundantAssumptions>False</CodeContractsRedundantAssumptions>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>False</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsBaseLineFile />
+    <CodeContractsCacheAnalysisResults>False</CodeContractsCacheAnalysisResults>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Moq">
+      <HintPath>..\Libs\Moq\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq.Sequences">
+      <HintPath>..\Libs\Moq.Sequences\Moq.Sequences.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
+      <Visible>False</Visible>
+    </CodeAnalysisDependentAssemblyPaths>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApiTests\ViewModels\CommandHandlerTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Domain\CustomerRepository.cs" />
+    <Compile Include="ApiTests\ViewModels\InheritanceTests.cs" />
+    <Compile Include="ApiTests\ViewModels\InheritanceWithGenericsTests.cs" />
+    <Compile Include="ApiTests\ViewModels\LocalPropertyTests.cs" />
+    <Compile Include="ApiTests\ViewModels\CollectionTests.cs" />
+    <Compile Include="ApiTests\ViewModels\CommandPropertyTests.cs" />
+    <Compile Include="ApiTests\ViewModels\DisplayValueTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Domain\Customer.cs" />
+    <Compile Include="ApiTests\ViewModels\Domain\Project.cs" />
+    <Compile Include="ApiTests\ViewModels\Domain\RichText.cs" />
+    <Compile Include="ApiTests\ViewModels\Domain\Task.cs" />
+    <Compile Include="ApiTests\ViewModels\Domain\TaskRepository.cs" />
+    <Compile Include="ApiTests\ViewModels\PerformanceTests.cs" />
+    <Compile Include="ApiTests\ViewModels\PropertyDependencyTests.cs" />
+    <Compile Include="ApiTests\ViewModels\RefreshTests.cs" />
+    <Compile Include="ApiTests\ViewModels\TestCollectionWithInheritance.cs" />
+    <Compile Include="ApiTests\ViewModels\Undo\CustomerVM.cs" />
+    <Compile Include="ApiTests\ViewModels\Undo\DomainObjects.cs" />
+    <Compile Include="ApiTests\ViewModels\Undo\EmployeeVM.cs" />
+    <Compile Include="ApiTests\ViewModels\Undo\ProjectVM.cs" />
+    <Compile Include="ApiTests\ViewModels\Undo\UndoManagerTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Undo\UndoTests.cs" />
+    <Compile Include="ApiTests\ViewModels\UntypedPropertyAccessTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\CollectionValidationTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\ValidatorInteractionTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\CustomCollectionValidationTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\DescendantValidationTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\GeneralValidationTests.cs" />
+    <Compile Include="ApiTests\ViewModels\TypeDescriptorTests.cs" />
+    <Compile Include="ApiTests\ViewModels\AccessPropertyTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Domain\Area.cs" />
+    <Compile Include="ApiTests\ViewModels\Domain\AreaRepository.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\HierarchyValidationFixture.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\ParentValidationTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\ValidationEventTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\ValidationModeTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\ValidationScopeTests.cs" />
+    <Compile Include="ApiTests\ViewModels\ViewModelPropertyTests.cs" />
+    <Compile Include="ApiTests\ViewModels\VMs\AreaVM.cs" />
+    <Compile Include="ApiTests\ViewModels\VMs\BaseVM.cs" />
+    <Compile Include="ApiTests\ViewModels\VMs\CollectionOfCustomerWithBaseVM.cs" />
+    <Compile Include="ApiTests\ViewModels\VMs\CustomerVM.cs" />
+    <Compile Include="ApiTests\ViewModels\VMs\CustomerWithBaseVM.cs" />
+    <Compile Include="ApiTests\ViewModels\VMs\ProjectVM.cs" />
+    <Compile Include="ApiTests\ViewModels\VMs\StateVM.cs" />
+    <Compile Include="ApiTests\ViewModels\VMs\TaskListVM.cs" />
+    <Compile Include="ApiTests\ViewModels\VMs\TaskVM.cs" />
+    <Compile Include="AssertHelper.cs" />
+    <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Common\DelegateUtilsTests.cs" />
+    <Compile Include="Common\HashCodeServiceTests.cs" />
+    <Compile Include="Common\ServiceRegistryTests.cs" />
+    <Compile Include="Common\TypeServiceTest.cs" />
+    <Compile Include="DomainAssert.cs" />
+    <Compile Include="PropertyChangedCounter.cs" />
+    <Compile Include="ReflectionServiceLocator.cs" />
+    <Compile Include="Screens\ScreenCreationBehaviorTest.cs" />
+    <Compile Include="Stubs\BehaviorContextStub.cs" />
+    <Compile Include="Stubs\ServiceLocatorStub.cs" />
+    <Compile Include="Stubs\ViewModelStub.cs" />
+    <Compile Include="Stubs\VMDescriptorStub.cs" />
+    <Compile Include="Stubs\VMPropertyBaseStub.cs" />
+    <Compile Include="TestExtensions.cs" />
+    <Compile Include="TestUtils\ComparisonObject.cs" />
+    <Compile Include="TestUtils\ComparisonObjectTests.cs" />
+    <Compile Include="TestUtils\GenericComparisonObjectTests.cs" />
+    <Compile Include="ValidationTestBase.cs" />
+    <Compile Include="ValidatorInvocationLog.cs" />
+    <Compile Include="ViewModels\- No Namespace -\VMCollectionCallModificationBehaviorTests.cs" />
+    <Compile Include="ViewModels\- No Namespace -\VMCollectionTests.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\BehaviorKeysTests.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\PropertyBehaviors\DisplayValueBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\PropertyBehaviors\RefreshableValueCacheBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\PropertyBehaviors\ValueCacheBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\BehaviorTestBase.cs" />
+    <Compile Include="ViewModels\Core\Builder\VMPropertyFactoryTests.cs" />
+    <Compile Include="ViewModels\Core\Collections\AddNewHelperTests.cs" />
+    <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\CollectionChangeNotificationBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\CollectionModificationBehaviorTestBase.cs" />
+    <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\CollectionPopulatorBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\CollectionSynchronizerBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\CollectionParentSetterBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\Collections\VMCollectionTestBase.cs" />
+    <Compile Include="ViewModels\Core\CountingSetTests.cs" />
+    <Compile Include="ViewModels\Core\Paths\PathDefinitionTests.cs" />
+    <Compile Include="ViewModels\Core\Paths\PathFixture.cs" />
+    <Compile Include="ViewModels\Core\Paths\PropertyStepTests.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\DefaultManualUpdateBehaviorTest.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\ValidationBehaviorTest.cs" />
+    <Compile Include="ViewModels\Core\PropertySelectorTests.cs" />
+    <Compile Include="ViewModels\Core\TypeDescriptor\TypeDescriptorServiceTests.cs" />
+    <Compile Include="ViewModels\Core\TypeDescriptor\VMPropertyDescriptorTests.cs" />
+    <Compile Include="ViewModels\Core\Validation\CollectionResultCacheTests\ItemListVM.cs" />
+    <Compile Include="ViewModels\Core\Validation\CollectionResultCacheTests\ItemVM.cs" />
+    <Compile Include="ViewModels\Core\Validation\CollectionResultCacheTests\CollectionResultCacheTests.cs" />
+    <Compile Include="ViewModels\Core\Validation\CollectionResultCacheTests\TwoItemListsVM.cs" />
+    <Compile Include="ViewModels\Core\Validation\PreValidationValueCacheBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\Validation\ValidationContextTests.cs" />
+    <Compile Include="ViewModels\Core\Validation\ValidationErrorCollectionTests.cs" />
+    <Compile Include="ViewModels\Core\Validation\ValidationPropertyBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\Validation\ValidationStateTests.cs" />
+    <Compile Include="ViewModels\Core\Validation\Validators\CollectionValidationArgsTests.cs" />
+    <Compile Include="ViewModels\Core\Validation\Validators\DelegateValidatorTests.cs" />
+    <Compile Include="ViewModels\Core\Validation\Validators\PropertyValidationArgsTests.cs" />
+    <Compile Include="ViewModels\Core\Validation\Validators\ValidationArgsFixture.cs" />
+    <Compile Include="ViewModels\Core\Validation\Validators\ViewModelValidationArgsTests.cs" />
+    <Compile Include="ViewModels\Core\Validation\ViewModelValidationBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBaseTests.cs" />
+    <Compile Include="ViewModels\Core\Common\InstancePathTests.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\ValidatorBuilderTests.cs" />
+    <Compile Include="ViewModels\Core\VMKernelTests.cs" />
+    <Compile Include="ViewModels\Core\VMKernel_ParentRelationshipTests.cs" />
+    <Compile Include="ViewModels\IntegrationTests\ChangeNotificationTest.cs" />
+    <Compile Include="ViewModels\IntegrationTests\CollectionPropertyTest.cs" />
+    <Compile Include="ViewModels\IntegrationTests\CollectionValidationTest.cs" />
+    <Compile Include="ViewModels\IntegrationTests\StandardValidationsTest.cs" />
+    <Compile Include="ViewModels\IntegrationTests\ValidationTest2.cs" />
+    <Compile Include="ViewModels\IntegrationTests\ValidationTest.cs" />
+    <Compile Include="ViewModels\PropertyTypeHelperTests.cs" />
+    <Compile Include="ViewModels\TempTests\CollectionPropertyTest.cs" />
+    <Compile Include="ViewModels\TestBase.cs" />
+    <Compile Include="ViewModels\TestVM.cs" />
+    <Compile Include="Common\BehaviorsTest.cs" />
+    <Compile Include="Common\ExpressionServiceTest.cs" />
+    <Compile Include="Common\PropertyPathTest.cs" />
+    <Compile Include="DynamicFields\FieldDefinitionCollectionTest.cs" />
+    <Compile Include="DynamicFields\FieldValueHolderTest.cs" />
+    <Compile Include="DynamicFields\DynamicFieldsTest.cs" />
+    <Compile Include="EmployeeVM.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MockFactory.cs" />
+    <Compile Include="Screens\ScreenConductorTest.cs" />
+    <Compile Include="Screens\ScreenFactoryTest.cs" />
+    <Compile Include="Screens\ScreenTest.cs" />
+    <Compile Include="UnitTest1.cs" />
+    <Compile Include="ViewModels\Behaviors\BehaviorsTest.cs" />
+    <Compile Include="ViewModels\Core\Collections\PropertyBehaviors\CollectionFactoryBehaviorTests.cs" />
+    <Compile Include="ViewModels\Behaviors\CollectionPopulatorTest.cs" />
+    <Compile Include="ViewModels\Behaviors\DisplayValueAccessorBehaviorTest.cs" />
+    <Compile Include="ViewModels\CommandPropertyTest.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\PropagateVMContextBehaviorTest.cs" />
+    <Compile Include="ViewModels\Behaviors\VMPropertyTest.cs" />
+    <Compile Include="ViewModels\Core\Builder\VMPropertyFactoryTest.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\ViewModelFactoryBehaviorTests.cs" />
+    <Compile Include="ViewModels\PersonVM.cs" />
+    <Compile Include="ViewModels\TypeDescriptorTest.cs" />
+    <Compile Include="ViewModels\ViewModelsTest.cs" />
+    <Compile Include="ViewModels\ViewModel_ParentChild.cs" />
+    <Compile Include="ViewModels\VMCollectionPropertyTest.cs" />
+    <Compile Include="ViewModels\Core\Builder\VMDescriptorBuilderTest.cs" />
+    <Compile Include="ViewModels\VMCollectionTest.cs" />
+    <Compile Include="ViewModels\VMCollectionWithCustomValidationTests.cs" />
+    <Compile Include="ViewModels\VMDescriptorTests.cs" />
+    <Compile Include="Views\CustomPropertyDescriptorTest.cs" />
+    <Compile Include="Views\PersonView.xaml.cs">
+      <DependentUpon>PersonView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ScreenConductorAdapterTest.cs" />
+    <Compile Include="Views\ViewBinderTest.cs" />
+    <Compile Include="Views\ViewTest.cs" />
+    <Compile Include="WpfTestHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MvvmTestability\MvvmTestability.csproj">
+      <Project>{DDE69E0D-5034-4E89-82D2-F80DD3E82729}</Project>
+      <Name>MvvmTestability</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mvvm\Mvvm.csproj">
+      <Project>{B2E313EF-1DB8-423E-AB2E-5767F02BD026}</Project>
+      <Name>Mvvm</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ApiTests\ViewModels\BasicTests\" />
+    <Folder Include="API\" />
+    <Folder Include="Shell\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Views\PersonView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

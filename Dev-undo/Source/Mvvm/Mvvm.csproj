@@ -1,0 +1,437 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B2E313EF-1DB8-423E-AB2E-5767F02BD026}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Inspiring.Mvvm</RootNamespace>
+    <AssemblyName>InspiringMvvm</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>False</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>False</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>False</CodeContractsArithmeticObligations>
+    <CodeContractsContainerAnalysis>False</CodeContractsContainerAnalysis>
+    <CodeContractsRedundantAssumptions>False</CodeContractsRedundantAssumptions>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>False</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsBaseLineFile />
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
+    <DocumentationFile>
+    </DocumentationFile>
+    <CodeContractsCacheAnalysisResults>False</CodeContractsCacheAnalysisResults>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\InspiringMvvm.XML</DocumentationFile>
+    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>False</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>False</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>False</CodeContractsArithmeticObligations>
+    <CodeContractsContainerAnalysis>False</CodeContractsContainerAnalysis>
+    <CodeContractsRedundantAssumptions>False</CodeContractsRedundantAssumptions>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>False</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsBaseLineFile />
+    <CodeContractsCacheAnalysisResults>False</CodeContractsCacheAnalysisResults>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ArrayUtils.cs" />
+    <Compile Include="Common\DelegateUtils.cs" />
+    <Compile Include="Common\HashCodeService.cs" />
+    <Compile Include="Common\SealableObject.cs" />
+    <Compile Include="Common\ServiceRegistry.cs" />
+    <Compile Include="Common\TypeService.cs" />
+    <Compile Include="MvvmApplication.cs" />
+    <Compile Include="Common\NotifyObject.cs" />
+    <Compile Include="IServiceLocator.cs" />
+    <Compile Include="Screens\DelegateCommand.cs" />
+    <Compile Include="Screens\DialogLifecycle.cs" />
+    <Compile Include="Screens\IDialogService.cs" />
+    <Compile Include="Screens\INeedsInitialization.cs" />
+    <Compile Include="Screens\InvocationOrder.cs" />
+    <Compile Include="Screens\IScreen.cs" />
+    <Compile Include="Screens\IScreenFactory.cs" />
+    <Compile Include="Screens\IScreenLifecycle.cs" />
+    <Compile Include="Screens\IViewModelScreen.cs" />
+    <Compile Include="Screens\ScreenCreationBehavior.cs" />
+    <Compile Include="Screens\ScreenCreationBehaviorAttribute.cs" />
+    <Compile Include="Screens\ScreenExtensions.cs" />
+    <Compile Include="Screens\ScreenHierarchyLifecycle.cs" />
+    <Compile Include="Screens\ScreenInitializer.cs" />
+    <Compile Include="Screens\ScreenLifecycle.cs" />
+    <Compile Include="Screens\ScreenLifecycleCollection.cs" />
+    <Compile Include="Screens\LifecycleTreeWalker.cs" />
+    <Compile Include="Screens\ParentScreenLifecycle.cs" />
+    <Compile Include="Screens\Screen.cs" />
+    <Compile Include="Screens\ScreenConductor.cs" />
+    <Compile Include="Screens\ScreenFactory.cs" />
+    <Compile Include="ServiceLocator.cs" />
+    <Compile Include="Testing\ArgumentValue.cs" />
+    <Compile Include="Testing\Responders\FileDialogResponderSetup.cs" />
+    <Compile Include="Testing\DialogServiceInvocation.cs" />
+    <Compile Include="Testing\Responders\MessageBoxResponderSetup.cs" />
+    <Compile Include="Testing\DialogTestService.cs" />
+    <Compile Include="Testing\Responders\ResponderBase.cs" />
+    <Compile Include="Testing\Responders\ShowDialogResponderSetup.cs" />
+    <Compile Include="ViewModels\- No Namespace -\RefreshScope.cs" />
+    <Compile Include="ViewModels\- No Namespace -\Validation\ValidationMode.cs" />
+    <Compile Include="ViewModels\- No Namespace -\Validation\ValidationScope.cs" />
+    <Compile Include="ViewModels\- No Namespace -\Validation\ValidationStateScope.cs" />
+    <Compile Include="ViewModels\- No Namespace -\ViewModel.cs" />
+    <Compile Include="ViewModels\- No Namespace -\VMDescriptorBuilder.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\ICollectionFactoryBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\ICommandBehaviorConfigurationBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\ICommandCanExecuteBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\ICommandExecuteBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\ICommandFactoryBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IValueFactoryBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IValueInitializerBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IRefreshBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IPopulationBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IUntypedValueGetterBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IUntypedValueSetterBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\ViewModelBehaviors\IChangeHandlerBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\ViewModelBehaviors\IRefreshControllerBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\ViewModelBehaviors\IValidationExecutorBehavior.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Factories\CommandBehaviorFactory.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Keys\PropertyBehaviorKeys.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Keys\ViewModelBehaviorKeys.cs" />
+    <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IItemDescriptorProviderCollectionBehavior.cs" />
+    <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IPopulatorCollectionBehavior.cs" />
+    <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IModificationCollectionBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IDescendantValidationBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IIsLoadedIndicatorBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IValidatedValueAccessorBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IValueAccessorBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IRevalidationBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IValidationStateProviderBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\ViewModelBehaviors\IManualUpdateCoordinatorBehavior.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\BehaviorChain.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Configuration\BehaviorChainConfiguration.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Configuration\BehaviorChainConfigurationCollection.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Configuration\BehaviorChainTemplate.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Factories\CollectionBehaviorFactory.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Factories\IBehaviorFactoryInvoker.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Factories\ViewModelPropertyBehaviorFactory.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Keys\BehaviorChainTemplateKey.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Keys\BehaviorChainTemplateKeys.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Configuration\BehaviorChainTemplateRegistry.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Configuration\BehaviorChainTemplateRegistry.DefaultTemplates.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Keys\BehaviorKeys.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Factories\PropertyBehaviorFactory.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Factories\ViewModelBehaviorFactory.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Factories\IBehaviorFactory.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Keys\BehaviorKey.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\InitializableBehavior.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Keys\CollectionBehaviorKeys.cs" />
+    <Compile Include="ViewModels\Core\Collections\IVMCollectionExpression.cs" />
+    <Compile Include="ViewModels\Core\Commands\CommandFactoryBehavior.cs" />
+    <Compile Include="ViewModels\Core\Commands\DelegatingCommandBehavior.cs" />
+    <Compile Include="ViewModels\Core\Commands\ViewModelCommand.cs" />
+    <Compile Include="ViewModels\Core\Commands\WaitCursorBehavior.cs" />
+    <Compile Include="ViewModels\Core\Common\ICondition.cs" />
+    <Compile Include="ViewModels\Core\CountingSet.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\CachedAccessorBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\DefaultValueFactoryBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\DelegateValueFactoryBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\DynamicFieldAccessor.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\LazyRefreshBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\RefreshBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\ChildScreenBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\UntypedPropertyAccessorBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\ServiceLocatorValueAccessorBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\ViewModelProperty\DelegateViewModelAccessorBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\ViewModelProperty\ValueInitializerBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\ViewModelProperty\ViewModelPropertyRefreshBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\ViewModelProperty\ViewModelSourceSetterBehavior.cs" />
+    <Compile Include="ViewModels\Core\Paths\Definition\PathDefinitionIterator.cs" />
+    <Compile Include="ViewModels\Core\Paths\Definition\PathMatch.cs" />
+    <Compile Include="ViewModels\Core\Paths\Definition\PropertyStep.cs" />
+    <Compile Include="ViewModels\Core\Paths\Path.cs" />
+    <Compile Include="ViewModels\Core\Paths\Definition\PathDefinition.cs" />
+    <Compile Include="ViewModels\Core\Paths\Definition\PathDefinitionStep.cs" />
+    <Compile Include="ViewModels\Core\Paths\PathIterator.cs" />
+    <Compile Include="ViewModels\Core\Paths\PathStep.cs" />
+    <Compile Include="ViewModels\Core\Paths\Definition\PathTerminationStep.cs" />
+    <Compile Include="ViewModels\Core\Undo\Actions\CollectionModificationAction.cs" />
+    <Compile Include="ViewModels\Core\Undo\Actions\InitialPseudoAction.cs" />
+    <Compile Include="ViewModels\Core\Undo\Actions\IUndoableAction.cs" />
+    <Compile Include="ViewModels\Core\Undo\Actions\SetValueAction.cs" />
+    <Compile Include="ViewModels\Core\Undo\UndoCollectionModifcationBehavior.cs" />
+    <Compile Include="ViewModels\Core\Undo\UndoManager.cs" />
+    <Compile Include="ViewModels\Core\Undo\UndoRootBehavior.cs" />
+    <Compile Include="ViewModels\Core\Undo\UndoSetValueBehavior.cs" />
+    <Compile Include="ViewModels\Core\Validation\CollectionBehaviors\CollectionValidationResultCacheBehavior.cs" />
+    <Compile Include="ViewModels\Core\Validation\CollectionBehaviors\CollectionValidationSourceBehavior.cs" />
+    <Compile Include="ViewModels\Core\Validation\CollectionResultCache.cs" />
+    <Compile Include="ViewModels\Core\Validation\CollectionValidationArgs.cs" />
+    <Compile Include="ViewModels\Core\Validation\CollectionValidator.cs" />
+    <Compile Include="ViewModels\Core\Validation\CollectionValidatorState.cs" />
+    <Compile Include="ViewModels\Core\Validation\HierarchicalRevalidator.cs" />
+    <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\DescendantsValidationBehavior.cs" />
+    <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\ValueValidationSourceBehavior.cs" />
+    <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\PropertyValidationSourceBehaviorBase.cs" />
+    <Compile Include="ViewModels\Core\Validation\PropertyValidationBatch.cs" />
+    <Compile Include="ViewModels\Core\Validation\Revalidator.cs" />
+    <Compile Include="ViewModels\Core\Validation\ValidationOperation.cs" />
+    <Compile Include="ViewModels\Core\Validation\ValidationRequest.cs" />
+    <Compile Include="ViewModels\Core\Validation\ValidationResultManager.cs" />
+    <Compile Include="ViewModels\Core\Validation\ValidationStep.cs" />
+    <Compile Include="ViewModels\Core\Validation\ValidationTrigger.cs" />
+    <Compile Include="ViewModels\Core\Validation\Args\CollectionValidationArgs.cs" />
+    <Compile Include="ViewModels\Core\Validation\Validators\CompositeValidator.cs" />
+    <Compile Include="ViewModels\Core\Validation\Validators\ConditionalValidator.cs" />
+    <Compile Include="ViewModels\Core\Validation\Validators\DelegateValidator.cs" />
+    <Compile Include="ViewModels\Core\Validation\Validators\IValidator.cs" />
+    <Compile Include="ViewModels\Core\Validation\Args\PropertyValidationArgs.cs" />
+    <Compile Include="ViewModels\Core\Validation\Args\ValidationArgs.cs" />
+    <Compile Include="ViewModels\Core\Validation\Validators\ValidationStepCondition.cs" />
+    <Compile Include="ViewModels\Core\Validation\Validators\ValidationTargetCondition.cs" />
+    <Compile Include="ViewModels\Core\Validation\Validators\Validator.cs" />
+    <Compile Include="ViewModels\Core\Validation\Args\ViewModelValidationArgs.cs" />
+    <Compile Include="ViewModels\Core\Validation\ViewModelBehaviors\ValidationCoordinatorBehavior.cs" />
+    <Compile Include="ViewModels\Core\Validation\ViewModelBehaviors\ValidatorExecutorBehavior.cs" />
+    <Compile Include="ViewModels\Core\Validation\ViewModelBehaviors\ViewModelValidationSourceBehavior.cs" />
+    <Compile Include="ViewModels\Core\Validation\ViewModelValidationBatch.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\ValidatorsNew\IValidatorBuilderOperationProvider.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\ValidatorsNew\ValidatorBuilderOperation.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\ValidatorsNew\CollectionValidationBuilder.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\ValidatorsNew\PropertyValidationBuilder.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\ValidatorsNew\RootValidatorBuilder.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\ValidatorsNew\ValidatorBuilder.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\VMDescriptorConfiguration.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptor\IVMDescriptorBuilder.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\CacheBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\CollectionBehaviors\DelegatePopulatorCollectionBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\ParentSetterBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\DelegateViewModelFactory.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\IsLoadedIndicatorBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\ManualUpdateCollectionPropertyBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\ManualUpdatePropertyBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\ManualUpdateViewModelPropertyBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\RevalidationBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\ViewModelProperty\WrapperViewModelAccessorBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\ViewModelBehaviors\ChangeListenerBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\ViewModelBehaviors\LoadOrderBehavior.cs" />
+    <Compile Include="ViewModels\Core\PropertySelector.cs" />
+    <Compile Include="ViewModels\Core\PropertyTypeHelper.cs" />
+    <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\DescendantValidationBehavior.cs" />
+    <Compile Include="ViewModels\Core\Validation\RevalidationQueue.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Behaviors\Interfaces\ISinglePropertyBehaviorBuilder.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Behaviors\Interfaces\IVMBehaviorBuilder.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Behaviors\ViewModelBehaviorBuilder.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Behaviors\VMBehaviorBuilder.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\ConfigurationProvider.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\IVMDescriptorBuilder.new.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\Interfaces\IPopulatedCollectionPropertyBuilder.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\VMPropertyBuilder.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\VMPropertyFactory.cs" />
+    <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\ChangeNotifierCollectionBehavior.cs" />
+    <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\DescriptorSetterCollectionBehavior.cs" />
+    <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\ParentSetterCollectionBehavior.cs" />
+    <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\SynchronizerCollectionBehavior.cs" />
+    <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\PopulatorCollectionBehavior.cs" />
+    <Compile Include="ViewModels\- No Namespace -\IVMCollection.cs" />
+    <Compile Include="ViewModels\Core\Collections\VMCollection.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\DisplayValueBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\RefreshableValueCacheBehavior.cs" />
+    <Compile Include="ViewModels\Core\TypeDescriptor\ViewModelTypeDescriptor.cs" />
+    <Compile Include="ViewModels\Core\Common\ChangeArgs.cs" />
+    <Compile Include="ViewModels\Core\Common\InstancePath.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\IBehaviorInitializationBehavior.cs" />
+    <Compile Include="ViewModels\Core\Common\BehaviorInitializationContext.cs" />
+    <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\DiscardingRevalidationBehavior.cs" />
+    <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\PreValidationValueCacheBehavior.cs" />
+    <Compile Include="ViewModels\Core\Validation\PropertyBehaviors\PropertyValidationBehavior.cs" />
+    <Compile Include="ViewModels\Core\Validation\ValidationContext.cs" />
+    <Compile Include="ViewModels\Core\Validation\ValidationError.cs" />
+    <Compile Include="ViewModels\Core\Common\VMPropertyPath.cs" />
+    <Compile Include="ViewModels\Core\- Todo -\ItemCreationController.cs" />
+    <Compile Include="ViewModels\Core\VMKernel.cs" />
+    <Compile Include="ViewModels\Core\Collections\PropertyBehaviors\CollectionFactoryBehavior.cs" />
+    <Compile Include="ViewModels\Core\Collections\PropertyBehaviors\CollectionPopulatorBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\DefaultManualUpdateBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\DelegateCommandBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\IMutabilityCheckerBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IViewModelFactoryBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\PropagateVMContextBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\ServiceLocatorValueFactoryBehavior.cs" />
+    <Compile Include="ViewModels\Core\TypeDescriptor\SimplePropertyDescriptor.cs" />
+    <Compile Include="ViewModels\Core\TypeDescriptor\PropertyDescriptorBehavior.cs" />
+    <Compile Include="ViewModels\Core\TypeDescriptor\TypeDescriptorBehavior.cs" />
+    <Compile Include="ViewModels\Core\Validation\ValidationArgs.cs" />
+    <Compile Include="ViewModels\Core\Validation\ValidationErrorCollection.cs" />
+    <Compile Include="ViewModels\Core\Validation\ValidationState.cs" />
+    <Compile Include="ViewModels\Core\Validation\ValidationType.cs" />
+    <Compile Include="ViewModels\Core\Validation\ViewModelBehaviors\ViewModelValidationBehavior.cs" />
+    <Compile Include="ViewModels\Core\Validation\Validator.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\ViewModelBehaviors\IViewModelBehaviorContext.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\ViewModelBehaviors\ViewModelBehavior.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Validators\CollectionPropertyValidatorBuilder.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Validators\CollectionValidatorBuilder.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Validators\PropertyValidatorBuilder.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Validators\ValidatorBuilder.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Validators\ValidatorBuilderBase.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Validators\ValidatorConfiguration.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\VMDescriptorBuilder.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\VMPropertyBuilderProvider.cs" />
+    <Compile Include="ViewModels\DefaultViewModelWithSourceBase.cs" />
+    <Compile Include="ViewModels\ExtensionMethods.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptor\VMDescriptorBase.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptor\VMPropertyCollection.cs" />
+    <Compile Include="ViewModels\Core\- Todo -\ICreatableItem.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\IConfigurationProvider.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\Interfaces\ICollectionPropertyBuilder.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\Interfaces\ICollectionPropertyBuilderWithSource.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\Interfaces\IVMPropertyBuilder.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\Interfaces\IValuePropertyBuilder.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\Interfaces\IViewModelPropertyBuilder.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\Interfaces\IViewModelPropertyBuilderWithSource.cs" />
+    <Compile Include="ViewModels\IHasSourceObject.cs" />
+    <Compile Include="ViewModels\IViewModel.cs" />
+    <Compile Include="ViewModels\- No Namespace -\IVMProperty.cs" />
+    <Compile Include="ViewModels\StandardValidations.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Behavior.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\IBehavior.cs" />
+    <Compile Include="ViewModels\Core\DynamicFields\FieldDefinition.cs" />
+    <Compile Include="ViewModels\Core\DynamicFields\FieldDefinitionCollection.cs" />
+    <Compile Include="ViewModels\Core\DynamicFields\FieldDefinitionGroup.cs" />
+    <Compile Include="ViewModels\Core\DynamicFields\FieldValueHolder.cs" />
+    <Compile Include="Common\IHideObjectMembers.cs" />
+    <Compile Include="Common\PropertyPath.cs" />
+    <Compile Include="Common\ExpressionService.cs" />
+    <Compile Include="ExceptionTexts.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExceptionTexts.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\ICanInitializeFrom.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\AllowInvalidDisplayValuesBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\ValueCacheBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\DelegateValueAccessor.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\DynamicFieldGroups.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\InstancePropertyBehavior.cs" />
+    <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IDisplayValueAccessorBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\IManualUpdateBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\IHandlePropertyChangedBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\IHandlePropertyChangingBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\MappedPropertyBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\PropertyChangedBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\DisplayValueAccessorBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\ValidationBehavior.cs" />
+    <Compile Include="ViewModels\Core\TypeDescriptor\VMPropertyDescriptor.cs" />
+    <Compile Include="ViewModels\IVMValueConverter.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\IVMPropertyBuilderProvider.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Dependencies\Interfaces\IVMDependencyConfigurator.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\IVMPropertyFactory.cs" />
+    <Compile Include="ViewModels\- No Namespace -\VMDescriptor.cs" />
+    <Compile Include="ViewModels\VMProperty.cs" />
+    <Compile Include="Views\Binder\BinderBuildStep.cs" />
+    <Compile Include="Views\Binder\BinderBuildStepRegistry.cs" />
+    <Compile Include="Views\Binder\BinderContext.cs" />
+    <Compile Include="Views\Binder\BinderExpression.cs" />
+    <Compile Include="Views\Binder\BinderRootExpression.cs" />
+    <Compile Include="Views\Binder\DataGridBinderBuildStep.cs" />
+    <Compile Include="Views\Binder\SetBindingBuildStep.cs" />
+    <Compile Include="Views\Binder\DefaultPropertyBuildStep.cs" />
+    <Compile Include="Views\Binder\VMPropertyBinder.cs" />
+    <Compile Include="Views\CommonBehaviors.cs" />
+    <Compile Include="Views\WindowService\DialogCloseHandler.cs" />
+    <Compile Include="Views\WindowService\DialogService.cs" />
+    <Compile Include="Views\IView.cs" />
+    <Compile Include="Views\WindowService\IWindowService.cs" />
+    <Compile Include="Views\ScreenConductorAdapter.cs" />
+    <Compile Include="Views\View.cs" />
+    <Compile Include="Views\ViewBinder.cs" />
+    <Compile Include="Views\ViewFactory.cs" />
+    <Compile Include="Views\WindowService\WindowCloseHandler.cs" />
+    <Compile Include="Views\WindowService\WindowService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="license.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ExceptionTexts.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExceptionTexts.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModels\Core\BehaviorInterfaces\CollectionBehaviors\" />
+    <Folder Include="Views\TestDoubles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Testing\- Diagrams -\DialogTestService.cd" />
+    <None Include="Views\- Diagrams -\ViewBinder.cd" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
