@@ -3,15 +3,26 @@
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
+   using Inspiring.Mvvm.ViewModels.Core.Validation.Validators;
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
    using ValidationArgs = Inspiring.Mvvm.ViewModels.Core.Validation.Validators.ValidationArgs;
 
    [TestClass]
    public class ValidationTestBase : TestBase {
-      protected static ValidationResult CreateValidationResult(params string[] errors) {
+
+      protected static ValidationResult CreateValidationResult(
+         params string[] errors
+      ) {
+         return CreateValidationResult(target: null, errors: errors);
+      }
+
+      protected static ValidationResult CreateValidationResult(
+         IViewModel target = null,
+         params string[] errors
+      ) {
          IEnumerable<ValidationResult> states = errors
-            .Select(error => new ValidationResult(new ValidationError(error)));
+            .Select(error => new ValidationResult(new ValidationError(Mock<IValidator>(), target, error)));
 
          return ValidationResult.Join(states);
       }

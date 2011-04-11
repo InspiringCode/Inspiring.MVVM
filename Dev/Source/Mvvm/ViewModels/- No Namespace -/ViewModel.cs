@@ -272,6 +272,10 @@
          return Kernel.GetValidationState(scope);
       }
 
+      public ValidationResult GetValidationState(IVMPropertyDescriptor property) {
+         return Kernel.GetValidationState(property);
+      }
+
       protected void Load(IVMPropertyDescriptor property) {
          GetDisplayValue(property);
       }

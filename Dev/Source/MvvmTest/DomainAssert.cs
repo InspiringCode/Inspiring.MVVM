@@ -54,7 +54,7 @@
 
       private class ValidationErrorCO : ComparisonObject<ValidationError> {
          public ValidationErrorCO(ValidationError error)
-            : base(error, x => x.Message) {
+            : base(error, x => x.Target, x => x.Message) {
          }
       }
    }

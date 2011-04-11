@@ -16,7 +16,7 @@
 
       public TTargetVM Target { get; private set; }
 
-      public void AddError(string message, object details) {
+      public void AddError(string message, object details = null) {
          Contract.Requires<ArgumentNullException>(message != null);
 
          var error = new ValidationError(Validator, Target, message, details);
