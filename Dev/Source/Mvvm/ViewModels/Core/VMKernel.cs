@@ -42,7 +42,7 @@
       public bool IsValid {
          get {
             if (!_validationStateIsCurrent) {
-               UpdateValidationState();
+               //UpdateValidationState();
             }
             return _isValid;
          }
@@ -125,7 +125,7 @@
             .GetValidationResultNext(this, ValidationResultScope.All);
 
          if (!_validationStateIsCurrent) {
-            UpdateValidationState();
+            //UpdateValidationState();
          }
          switch (scope) {
             case ValidationResultScope.All:
@@ -196,14 +196,10 @@
       }
 
       private void NotifyChangeCore(ChangeArgs args) {
-         _vm.NotifyChange(args);
-
-         foreach (var parent in Parents) {
-            parent
-               .Kernel
-               .GetContext()
-               .NotifyChange(args);
-         }
+         CallPropertyChangedHandlerBehaviors(args);
+         CallChangeHandlerBehaviors(args);
+         ForwardChangeNotificationToParents(args);
+         ForwardChangeToViewModel(args);
 
          //bool selfChanged = args.ChangedPath.Length == 0;
          //args = args.PrependViewModel(_vm);
@@ -231,17 +227,6 @@
          //   //UpdateValidationState();
          //}
 
-         ////ViewModelBehavior behavior;
-         ////if (_descriptor.Behaviors.TryGetBehavior(out behavior)) {
-         ////   //if (selfChanged) {
-         ////   //   behavior.OnSelfChanged(this, args);
-         ////   //} else {
-         ////   //   behavior.OnChildChanged(this, args, changedPath);
-         ////   //}
-
-         ////   behavior.OnChanged(this, args, changedPath);
-         ////}
-
          //_descriptor.Behaviors.HandleChangedNext(this, args);
 
          //Parents.ForEach(x => x.Kernel.NotifyChange(args));
@@ -255,35 +240,38 @@
          //}
       }
 
-      private void UpdateValidationState() {
-         //_viewModelValidationState = _descriptor.Behaviors.GetValidationResultNext(this);
+      private void CallPropertyChangedHandlerBehaviors(ChangeArgs args) {
+         var result = args
+            .ChangedPath
+            .SelectsOnlyPropertyOf(_vm);
 
-         //_propertiesValidationState = ValidationResult.Join(
-         //   _descriptor
-         //      .Properties
-         //      .Select(x => GetValidationState(x))
-         //      .ToArray()
-         //);
+         bool ownPropertyChanged = result.Success;
 
-         //_selfOnlyValidationState = ValidationResult.Join(
-         //   _propertiesValidationState,
-         //   _viewModelValidationState
-         //);
+         if (ownPropertyChanged) {
+            result
+               .Property
+               .Behaviors
+               .HandlePropertyChangedNext(GetContext());
+         }
+      }
 
-         //_descendantsOnlyValidationState = ValidationResult.Join(
-         //   _descriptor
-         //      .Properties
-         //      .Select(x => x.Behaviors.GetDescendantsValidationStateNext(this))
-         //      .ToArray()
-         //);
+      private void CallChangeHandlerBehaviors(ChangeArgs args) {
+         _descriptor
+            .Behaviors
+            .HandleChangedNext(this, args);
+      }
 
-         //_validationState = ValidationResult.Join(
-         //   _selfOnlyValidationState,
-         //   _descendantsOnlyValidationState
-         //);
+      private void ForwardChangeNotificationToParents(ChangeArgs args) {
+         foreach (var parent in Parents) {
+            parent
+               .Kernel
+               .GetContext()
+               .NotifyChange(args);
+         }
+      }
 
-         //_isValid = _validationState.IsValid;
-         //_validationStateIsCurrent = true;
+      private void ForwardChangeToViewModel(ChangeArgs args) {
+         _vm.NotifyChange(args);
       }
    }
 }

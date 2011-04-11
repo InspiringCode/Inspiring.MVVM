@@ -23,7 +23,7 @@
    }
 
    internal static class PathHelper {
-      public static PathHelperResult SelectsPropertyOf(this Path path, IViewModel owner) {
+      public static PathHelperResult SelectsOnlyPropertyOf(this Path path, IViewModel owner) {
          Contract.Requires(path != null);
          Contract.Requires(owner != null);
 
@@ -33,7 +33,20 @@
             path[1].Type == PathStepType.Property;
 
          return success ?
-            PathHelperResult.Succeeded(owner, path[1].Property) :
+            PathHelperResult.Succeeded(vm: owner, property: path[1].Property) :
+            PathHelperResult.Failed();
+      }
+
+      public static PathHelperResult SelectsOnly(this Path path, IViewModel singleViewModel) {
+         Contract.Requires(path != null);
+         Contract.Requires(singleViewModel != null);
+
+         bool success =
+            path.Length == 1 &&
+            path[0].ViewModel == singleViewModel;
+
+         return success ?
+            PathHelperResult.Succeeded(vm: singleViewModel) :
             PathHelperResult.Failed();
       }
    }

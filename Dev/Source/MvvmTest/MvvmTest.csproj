@@ -175,6 +175,7 @@
     <Compile Include="TestUtils\GenericComparisonObjectTests.cs" />
     <Compile Include="ValidationTestBase.cs" />
     <Compile Include="ValidatorInvocationLog.cs" />
+    <Compile Include="ViewModels\- No Namespace -\ViewModelTests.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMCollectionCallModificationBehaviorTests.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMCollectionTests.cs" />
     <Compile Include="ViewModels\- Test Infrastructure -\BehaviorContextStub.cs" />

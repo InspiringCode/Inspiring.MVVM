@@ -298,6 +298,34 @@
       }
 
       protected virtual void OnChange(ChangeArgs args) {
+         bool relevantChange =
+            args.ChangeType == ChangeType.PropertyChanged ||
+            args.ChangeType == ChangeType.ValidationStateChanged;
+
+         if (!relevantChange) {
+            return;
+         }
+         
+         var r = args.ChangedPath.SelectsOnlyPropertyOf(this);
+         bool ownPropertyChanged = r.Success;
+
+         if (ownPropertyChanged) {
+            switch (args.ChangeType) {
+               case ChangeType.PropertyChanged:
+                  OnPropertyChanged(r.Property);
+                  break;
+               case ChangeType.ValidationStateChanged:
+                  OnValidationStateChanged(r.Property);
+                  break;
+            }
+         } else {
+            r = args.ChangedPath.SelectsOnly(this);
+            bool selfChanged = r.Success;
+
+            if (selfChanged && args.ChangeType == ChangeType.ValidationStateChanged) {
+               OnPropertyChanged("Error");
+            }
+         }
       }
    }
 }
