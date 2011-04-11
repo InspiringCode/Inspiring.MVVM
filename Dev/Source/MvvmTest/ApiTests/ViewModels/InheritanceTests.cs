@@ -120,7 +120,7 @@
                d.PersonalNumber = v.Property.Of<decimal>();
             })
             .WithValidators(b => {
-               b.EnableParentValidation();
+               b.EnableParentValidation(x => x.PersonalNumber);
             })
             .Build();
 

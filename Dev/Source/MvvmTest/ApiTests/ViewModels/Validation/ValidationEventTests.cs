@@ -56,8 +56,8 @@
                d.Title = v.Property.Of<string>();
             })
             .WithValidators(c => {
-               c.Check(x => x.Title).Custom((vm, val, args) => {
-                  if (vm.ReturnError) {
+               c.Check(x => x.Title).Custom(args => {
+                  if (args.Owner.ReturnError) {
                      args.AddError("Validation error");
                   }
                });

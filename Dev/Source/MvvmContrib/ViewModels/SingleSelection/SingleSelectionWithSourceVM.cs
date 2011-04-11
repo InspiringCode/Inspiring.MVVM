@@ -93,10 +93,10 @@
                );
             })
             .WithValidators(b => {
-               b.Check(x => x.SelectedItem).Custom((vm, value, args) => {
-                  if (value != null &&
-                      vm.NonExistingSelectedSourceItem.HasValue &&
-                      Object.Equals(value.Source, vm.NonExistingSelectedSourceItem.Value)
+               b.Check(x => x.SelectedItem).Custom(args => {
+                  if (args.Value != null &&
+                      args.Owner.NonExistingSelectedSourceItem.HasValue &&
+                      Object.Equals(args.Value.Source, args.Owner.NonExistingSelectedSourceItem.Value)
                   ) {
                      // TODO: Let the user specify the message.
                      args.AddError("Das gewählte Element ist nicht vorhanden.");
@@ -206,10 +206,10 @@
                );
             })
             .WithValidators(b => {
-               b.Check(x => x.SelectedItem).Custom((vm, value, args) => {
-                  if (value != null &&
-                      vm.NonExistingSelectedSourceItem.HasValue &&
-                      Object.Equals(value.Source, vm.NonExistingSelectedSourceItem.Value)
+               b.Check(x => x.SelectedItem).Custom(args => {
+                  if (args.Value != null &&
+                      args.Owner.NonExistingSelectedSourceItem.HasValue &&
+                      Object.Equals(args.Value.Source, args.Owner.NonExistingSelectedSourceItem.Value)
                   ) {
                      // TODO: Let the user specify the message.
                      args.AddError("Das gewählte Element ist nicht vorhanden.");

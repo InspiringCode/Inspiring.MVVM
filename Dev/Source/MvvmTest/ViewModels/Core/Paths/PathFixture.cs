@@ -65,7 +65,7 @@
             PathDefinitionStep nextStep,
             string message = "The step was expected to return a failing match."
          ) {
-            var result = _step.Matches(GetDefinitionIterator(nextStep), _path.GetIterator());            
+            var result = _step.Matches(GetDefinitionIterator(nextStep), _path.GetIterator());
             Assert.IsFalse(result.Success, message);
          }
 
@@ -102,7 +102,7 @@
                   int actual = it.GetIndex();
                   Assert.AreEqual(expectedIncrement, actual, message, expectedIncrement, actual);
                });
-            
+
             _step.Matches(GetDefinitionIterator(mock.Object), _path.GetIterator());
          }
 
@@ -141,11 +141,15 @@
                d.Name = v.Property.Of<string>();
                d.SelectedProject = v.VM.Of<ProjectVM>();
                d.Projects = v.Collection.Of<ProjectVM>(ProjectVM.ClassDescriptor);
+               d.Managers = v.Collection.Of<EmployeeVM>(d);
             })
             .Build();
 
          public EmployeeVM()
             : base(ClassDescriptor) {
+            var project = new ProjectVM();
+            SetValue(Descriptor.SelectedProject, project);
+            GetValue(Descriptor.Projects).Add(project);
          }
       }
 
@@ -153,6 +157,7 @@
          public IVMPropertyDescriptor<string> Name { get; set; }
          public IVMPropertyDescriptor<ProjectVM> SelectedProject { get; set; }
          public IVMPropertyDescriptor<IVMCollection<ProjectVM>> Projects { get; set; }
+         public IVMPropertyDescriptor<IVMCollection<EmployeeVM>> Managers { get; set; }
       }
 
       protected sealed class ProjectVM : ViewModel<ProjectVMDescriptor> {

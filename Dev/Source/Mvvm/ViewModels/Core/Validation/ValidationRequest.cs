@@ -3,49 +3,34 @@
 
    public sealed class ValidationRequest {
       public ValidationRequest(
-         ValidationTrigger trigger,
          ValidationStep step,
          Path targetPath
       ) {
          Contract.Requires(targetPath != null);
-         Trigger = trigger;
          Step = step;
          TargetPath = targetPath;
       }
 
       public ValidationRequest(
-         ValidationTrigger trigger,
          ValidationStep step,
          IViewModel vm
       )
-         : this(trigger, step, Path.Empty.Prepend(vm)) {
+         : this(step, Path.Empty.Prepend(vm)) {
          Contract.Requires(vm != null);
          Target = vm;
       }
 
       public ValidationRequest(
-         ValidationTrigger trigger,
          ValidationStep step,
          IViewModel vm,
          IVMPropertyDescriptor property
       )
-         : this(trigger, step, Path.Empty.Prepend(property).Prepend(vm)) {
+         : this(step, Path.Empty.Prepend(property).Prepend(vm)) {
          Contract.Requires(vm != null);
          Contract.Requires(property != null);
          Target = vm;
          TargetProperty = property;
       }
-      public ValidationRequest(
-         ValidationStep step,
-         Path targetPath
-      ) {
-         Contract.Requires(targetPath != null);
-
-         Step = step;
-         TargetPath = targetPath;
-      }
-
-      public ValidationTrigger Trigger { get; private set; }
 
       public ValidationStep Step { get; private set; }
 
@@ -54,5 +39,12 @@
       public IViewModel Target { get; private set; }
 
       public IVMPropertyDescriptor TargetProperty { get; private set; }
+
+      internal ValidationRequest PrependAncestor(IViewModel ancestor) {
+         return new ValidationRequest(
+            Step,
+            TargetPath.Prepend(ancestor)
+         );
+      }
    }
 }

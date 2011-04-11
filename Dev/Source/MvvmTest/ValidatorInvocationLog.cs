@@ -1,7 +1,7 @@
 ﻿namespace Inspiring.MvvmTest {
    using System.Collections.Generic;
-   using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
+   using ValidationArgs = Inspiring.Mvvm.ViewModels.Core.Validation.Validators.ValidationArgs;
 
    public class ValidatorInvocationLog {
       private List<object> _expectedCalls = new List<object>();

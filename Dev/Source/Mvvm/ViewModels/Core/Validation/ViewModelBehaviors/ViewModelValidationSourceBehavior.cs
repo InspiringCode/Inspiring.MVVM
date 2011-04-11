@@ -1,17 +1,21 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
-   using System;
+   using Inspiring.Mvvm.ViewModels.Core.Validation;
 
    internal sealed class ViewModelValidationSourceBehavior :
       InitializableBehavior,
       IBehaviorInitializationBehavior,
-      IValidationStateProviderBehavior,
-      IRevalidationBehavior {
+      IChangeHandlerBehavior,
+      IValidationResultProviderBehavior,
+      IRevalidationBehavior,
+      IRefreshControllerBehavior {
 
       private ValidationResultManager _resultManager;
 
       public void Initialize(BehaviorInitializationContext context) {
          _resultManager = new ValidationResultManager(context, ViewModel.GeneralFieldGroup);
          SetInitialized();
+
+         this.InitializeNext(context);
       }
 
       public void Revalidate(IBehaviorContext context, CollectionResultCache cache) {
@@ -19,23 +23,31 @@
 
          var result = ValidationOperation.PerformViewModelValidation(cache, context.VM);
          _resultManager.UpdateValidationResult(context, result);
+
+         this.RevalidateNext(context, cache);
       }
 
-      public void Revalidate(IBehaviorContext context, ValidationContext validationContext, ValidationMode mode) {
-         throw new NotImplementedException();
+      public void Refresh(IBehaviorContext context) {
+         this.ViewModelRefreshNext(context);
+         Revalidator.RevalidateViewModelValidations(context.VM);
       }
 
-      public void Revalidate(IBehaviorContext context) {
-         throw new NotImplementedException();
+      public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property) {
+         this.ViewModelRefreshNext(context, property);
       }
 
-      public ValidationResult GetValidationState(IBehaviorContext context) {
+      public ValidationResult GetValidationResult(IBehaviorContext context) {
          RequireInitialized();
-         return _resultManager.GetValidationResult(context);
+
+         return ValidationResult.Join(
+            _resultManager.GetValidationResult(context),
+            this.GetValidationResultNext(context)
+         );
       }
 
-      public ValidationResult GetDescendantsValidationState(IBehaviorContext context) {
-         throw new NotImplementedException();
+      public void HandleChange(IBehaviorContext context, ChangeArgs args) {
+         this.HandleChangedNext(context, args);
+         Revalidator.RevalidateViewModelValidations(context.VM);
       }
    }
 }

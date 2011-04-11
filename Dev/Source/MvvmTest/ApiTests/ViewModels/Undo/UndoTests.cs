@@ -446,7 +446,7 @@
 
       [TestMethod]
       public void AddItemToCollection_HandleItemAddedChangeAndModifiyItem_ModifiyActionIsOnTopOfAddedAction() {
-         EmployeeVM = new EmployeeVM((vm, args, path) => {
+         EmployeeVM = new EmployeeVM((vm, args) => {
             if (args.ChangeType == ChangeType.AddedToCollection) {
                var addedProjectVM = (ProjectVM)args.NewItems.Single();
                addedProjectVM.Title = "NewProjectTitle";
@@ -466,7 +466,7 @@
 
       [TestMethod]
       public void RemoveItemToCollection_HandleItemRemovedChangeAndModifiyItem_VMofUndoActionDoesntHaveParentsAnymore() {
-         EmployeeVM = new EmployeeVM((vm, args, path) => {
+         EmployeeVM = new EmployeeVM((vm, args) => {
             if (args.ChangeType == ChangeType.RemovedFromCollection) {
                var removedProjectVM = (ProjectVM)args.OldItems.Single();
                removedProjectVM.Title = "this project will be removed";

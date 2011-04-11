@@ -30,6 +30,8 @@
 
       void NotifyPropertyChanged(IVMPropertyDescriptor property);
       void NotifyValidationStateChanged(IVMPropertyDescriptor property);
+
+      void NotifyChange(ChangeArgs args);
    }
 
    namespace Contracts {

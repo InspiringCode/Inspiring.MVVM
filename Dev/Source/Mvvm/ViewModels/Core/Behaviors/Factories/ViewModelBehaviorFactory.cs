@@ -15,10 +15,6 @@
             return new ValidatorExecutorBehavior();
          }
 
-         if (key == PropertyBehaviorKeys.Validator) {
-            return new ViewModelValidationBehavior();
-         }
-
          if (key == ViewModelBehaviorKeys.ViewModelValidationSource) {
             return new ViewModelValidationSourceBehavior();
          }

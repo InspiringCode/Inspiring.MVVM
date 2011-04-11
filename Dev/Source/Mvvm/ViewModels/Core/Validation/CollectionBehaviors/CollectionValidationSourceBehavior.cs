@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core.Validation.CollectionBehaviors {
+   using System;
    using System.Collections.Generic;
 
    internal sealed class CollectionValidationSourceBehavior<TItemVM> :
@@ -6,51 +7,43 @@
       IModificationCollectionBehavior<TItemVM>
       where TItemVM : IViewModel {
 
-      public void CollectionPopulated(IBehaviorContext context, IVMCollection<TItemVM> collection, TItemVM[] previousItems) {
-         // TODO: What is the best way to handle initial/repopulation handling????
+      public void HandleChange(IBehaviorContext context, CollectionChangedArgs<TItemVM> args) {
+         switch (args.Type) {
+            case CollectionChangeType.ItemAdded:
+               ValidateItem(args.NewItem);
+               break;
+            case CollectionChangeType.ItemRemoved:
+               ValidateItem(args.OldItem);
+               break;
+            case CollectionChangeType.ItemSet:
+               ValidateItem(args.OldItem);
+               ValidateItem(args.NewItem);
+               break;
+            case CollectionChangeType.ItemsCleared:
+               ValidateItems(args.OldItems);
+               break;
+            case CollectionChangeType.Populated:
+               // We do not validate when the collection is populated because this is
+               // done by the DescendantsValidatorBehavior.
+               break;
+            default:
+               throw new NotSupportedException();
+         }
 
-         this.CollectionPopulatetNext(context, collection, previousItems);
-      }
-
-      public void ItemInserted(IBehaviorContext context, IVMCollection<TItemVM> collection, TItemVM item, int index) {
-         ValidateItem(item);
-
-         this.ItemInsertedNext(context, collection, item, index);
-      }
-
-      public void ItemRemoved(IBehaviorContext context, IVMCollection<TItemVM> collection, TItemVM item, int index) {
-         ValidateItem(item);
-
-         this.ItemRemovedNext(context, collection, item, index);
-      }
-
-      public void ItemSet(IBehaviorContext context, IVMCollection<TItemVM> collection, TItemVM previousItem, TItemVM item, int index) {
-         ValidateItem(previousItem);
-         ValidateItem(item);
-
-         this.ItemSetNext(context, collection, previousItem, item, index);
-      }
-
-      public void CollectionCleared(IBehaviorContext context, IVMCollection<TItemVM> collection, TItemVM[] previousItems) {
-         ValidateItems(previousItems);
-
-         this.ItemsClearedNext(context, collection, previousItems);
+         this.HandleChangeNext(context, args);
       }
 
       private void ValidateItem(IViewModel item) {
-         // TODO: With what scope/when should here be revalidated?
-         new HierarchicalRevalidator(item, ValidationScope.SelfAndLoadedDescendants)
-            .Revalidate();
+         Revalidator.Revalidate(item, ValidationScope.SelfAndLoadedDescendants);
       }
 
       private void ValidateItems(IEnumerable<TItemVM> items) {
-         new HierarchicalRevalidator(null, ValidationScope.SelfAndLoadedDescendants)
-            .RevalidateCollection((IEnumerable<IViewModel>)items); // TODO: Why do we need to cast here?
-      }
+         var enumerableItems = (IEnumerable<IViewModel>)items;
 
-
-      public void HandleChange(IBehaviorContext context, CollectionChangedArgs<TItemVM> args) {
-         throw new System.NotImplementedException();
+         Revalidator.RevalidateItems(
+            enumerableItems,
+            ValidationScope.SelfAndLoadedDescendants
+         );
       }
    }
 }

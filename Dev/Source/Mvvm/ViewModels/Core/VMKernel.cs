@@ -1,8 +1,8 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Diagnostics.Contracts;
-   using System.Linq;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.Mvvm.ViewModels.Core.Validation;
 
    public sealed class VMKernel : IBehaviorContext {
       private readonly IViewModel _vm;
@@ -77,13 +77,7 @@
       }
 
       void IBehaviorContext.NotifyChange(ChangeArgs args) {
-         NotifyChange(args, InstancePath.Empty);
-      }
-
-
-      void IBehaviorContext.NotifyValidating(ValidationArgs args) {
-         HandleNotifyValidating(args);
-         Parents.ForEach(x => x.Kernel.NotifyValidating(args));
+         NotifyChange(args);
       }
 
       public bool IsLoaded(IVMPropertyDescriptor property) {
@@ -122,23 +116,27 @@
       public ValidationResult GetValidationState(IVMPropertyDescriptor forProperty) {
          // TODO: Is it a good idea to extract the state for a property from the _propertiesValidationState?
          // It would be faster, but would it preserve all sematics and so?
-         return forProperty.Behaviors.GetValidationStateNext(this);
+         return forProperty.Behaviors.GetValidationResultNext(this);
       }
 
-      public ValidationResult GetValidationState(ValidationStateScope scope = ValidationStateScope.All) {
+      public ValidationResult GetValidationState(ValidationResultScope scope = ValidationResultScope.All) {
+         return _descriptor
+            .Behaviors
+            .GetValidationResultNext(this, ValidationResultScope.All);
+
          if (!_validationStateIsCurrent) {
             UpdateValidationState();
          }
          switch (scope) {
-            case ValidationStateScope.All:
+            case ValidationResultScope.All:
                return _validationState;
-            case ValidationStateScope.Self:
+            case ValidationResultScope.Self:
                return _selfOnlyValidationState;
-            case ValidationStateScope.Descendants:
+            case ValidationResultScope.Descendants:
                return _descendantsOnlyValidationState;
-            case ValidationStateScope.ViewModelValidationsOnly:
+            case ValidationResultScope.ViewModelValidationsOnly:
                return _viewModelValidationState;
-            case ValidationStateScope.PropertiesOnly:
+            case ValidationResultScope.PropertiesOnly:
                return _propertiesValidationState;
             default:
                throw new NotSupportedException();
@@ -167,8 +165,6 @@
 
       public void Refresh() {
          _descriptor.Behaviors.ViewModelRefreshNext(this);
-
-         PerformViewModelValidations(); // TODO: Should this be in the behavior?
       }
 
       public void Refresh(IVMPropertyDescriptor property) {
@@ -183,70 +179,20 @@
          Parents.Remove(parent);
       }
 
-      private void PerformViewModelValidations() {
-         ValidationContext.BeginValidation();
-         PerformViewModelValidations(ValidationContext.Current);
-         ValidationContext.CompleteValidation(ValidationMode.CommitValidValues);
-      }
-
-      private void PerformViewModelValidations(ValidationContext validationContext) {
-         ViewModelValidationBehavior behavior;
-
-         if (_descriptor.Behaviors.TryGetBehavior(out behavior)) {
-            behavior.Validate(this, validationContext);
-         }
-      }
-
       public void Revalidate(ValidationScope scope, ValidationMode mode) {
-         ValidationContext.BeginValidation();
-         Revalidate(ValidationContext.Current, scope, mode);
-         ValidationContext.CompleteValidation(mode);
-      }
-
-      internal void Revalidate(
-         ValidationContext validationContext,
-         ValidationScope scope,
-         ValidationMode mode
-      ) {
-         if (scope == ValidationScope.SelfAndValidatedChildren) {
-            throw new NotImplementedException("Still TODO");
-         }
-
-         if (scope == ValidationScope.FullSubtree || scope == ValidationScope.SelfAndLoadedDescendants) { // TODO Only loaded descendants
-            foreach (IVMPropertyDescriptor property in _descriptor.Properties) {
-               property
-                  .Behaviors
-                  .RevalidateDescendantsNext(this, validationContext, scope, mode);
-            }
-         }
-
-         foreach (IVMPropertyDescriptor property in _descriptor.Properties) {
-            Revalidate(property, validationContext, mode);
-         }
-
-         PerformViewModelValidations(validationContext);
+         Revalidator.Revalidate(_vm, scope);
       }
 
       public void Revalidate(
          IVMPropertyDescriptor property,
-         ValidationMode mode
+         ValidationMode mode,
+         ValidationScope scope = ValidationScope.SelfOnly
       ) {
-         ValidationContext.BeginValidation();
-         Revalidate(property, ValidationContext.Current, mode);
-         ValidationContext.CompleteValidation(mode);
+         Revalidator.RevalidatePropertyValidations(_vm, property, scope);
       }
 
-      private void Revalidate(
-         IVMPropertyDescriptor property,
-         ValidationContext validationContext,
-         ValidationMode mode
-      ) {
-         property.Behaviors.RevalidateNext(this, validationContext, mode);
-      }
-
-      private void NotifyChange(ChangeArgs args, InstancePath changedPath) {
-         bool selfChanged = changedPath.IsEmpty;
-         changedPath = changedPath.PrependVM(_vm);
+      private void NotifyChange(ChangeArgs args) {
+         bool selfChanged = args.ChangedPath.Length == 0;
          args = args.PrependViewModel(_vm);
 
          if (selfChanged && args.ChangeType == ChangeType.PropertyChanged) {
@@ -272,20 +218,20 @@
             //UpdateValidationState();
          }
 
-         ViewModelBehavior behavior;
-         if (_descriptor.Behaviors.TryGetBehavior(out behavior)) {
-            //if (selfChanged) {
-            //   behavior.OnSelfChanged(this, args);
-            //} else {
-            //   behavior.OnChildChanged(this, args, changedPath);
-            //}
+         //ViewModelBehavior behavior;
+         //if (_descriptor.Behaviors.TryGetBehavior(out behavior)) {
+         //   //if (selfChanged) {
+         //   //   behavior.OnSelfChanged(this, args);
+         //   //} else {
+         //   //   behavior.OnChildChanged(this, args, changedPath);
+         //   //}
 
-            behavior.OnChanged(this, args, changedPath);
-         }
+         //   behavior.OnChanged(this, args, changedPath);
+         //}
 
          _descriptor.Behaviors.HandleChangedNext(this, args);
 
-         Parents.ForEach(x => x.Kernel.NotifyChange(args, changedPath));
+         Parents.ForEach(x => x.Kernel.NotifyChange(args));
 
          if (args.ChangeType == ChangeType.PropertyChanged && args.ChangedVM == _vm) {
             _vm.NotifyPropertyChanged(args.ChangedProperty);
@@ -296,47 +242,35 @@
          }
       }
 
-      private void HandleNotifyValidating(ValidationArgs args) {
-         _descriptor.Behaviors.TryCall<ViewModelBehavior>(b =>
-            b.OnValidating(this, args)
-         );
-      }
-
-      private void NotifyValidating(ValidationArgs args) {
-         args = args.PrependTargetPath(with: _vm);
-         HandleNotifyValidating(args);
-         Parents.ForEach(x => x.Kernel.NotifyValidating(args));
-      }
-
       private void UpdateValidationState() {
-         _viewModelValidationState = _descriptor.Behaviors.GetValidationStateNext(this);
+         //_viewModelValidationState = _descriptor.Behaviors.GetValidationResultNext(this);
 
-         _propertiesValidationState = ValidationResult.Join(
-            _descriptor
-               .Properties
-               .Select(x => GetValidationState(x))
-               .ToArray()
-         );
+         //_propertiesValidationState = ValidationResult.Join(
+         //   _descriptor
+         //      .Properties
+         //      .Select(x => GetValidationState(x))
+         //      .ToArray()
+         //);
 
-         _selfOnlyValidationState = ValidationResult.Join(
-            _propertiesValidationState,
-            _viewModelValidationState
-         );
+         //_selfOnlyValidationState = ValidationResult.Join(
+         //   _propertiesValidationState,
+         //   _viewModelValidationState
+         //);
 
-         _descendantsOnlyValidationState = ValidationResult.Join(
-            _descriptor
-               .Properties
-               .Select(x => x.Behaviors.GetDescendantsValidationStateNext(this))
-               .ToArray()
-         );
+         //_descendantsOnlyValidationState = ValidationResult.Join(
+         //   _descriptor
+         //      .Properties
+         //      .Select(x => x.Behaviors.GetDescendantsValidationStateNext(this))
+         //      .ToArray()
+         //);
 
-         _validationState = ValidationResult.Join(
-            _selfOnlyValidationState,
-            _descendantsOnlyValidationState
-         );
+         //_validationState = ValidationResult.Join(
+         //   _selfOnlyValidationState,
+         //   _descendantsOnlyValidationState
+         //);
 
-         _isValid = _validationState.IsValid;
-         _validationStateIsCurrent = true;
+         //_isValid = _validationState.IsValid;
+         //_validationStateIsCurrent = true;
       }
    }
 }

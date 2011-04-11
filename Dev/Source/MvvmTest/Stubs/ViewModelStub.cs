@@ -5,6 +5,7 @@
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
 
+   // TODO: Remove
    public class ViewModelStub : IViewModel {
       private Dictionary<IVMPropertyDescriptor, object> _fakeValues;
       private IBehaviorContext _context;
@@ -102,6 +103,11 @@
 
       public void SetDisplayValue(IVMPropertyDescriptor property, object value) {
          Kernel.SetDisplayValue(property, value);
+      }
+
+
+      public void NotifyChange(ChangeArgs args) {
+         throw new NotImplementedException();
       }
    }
 }

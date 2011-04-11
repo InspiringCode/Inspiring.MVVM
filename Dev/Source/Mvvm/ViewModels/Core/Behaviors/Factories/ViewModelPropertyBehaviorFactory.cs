@@ -32,14 +32,6 @@
             return new PropertyDescriptorBehavior();
          }
 
-         if (key == PropertyBehaviorKeys.PreValidationValueCache) {
-            return new PreValidationValueCacheBehavior<TChildVM>();
-         }
-
-         if (key == PropertyBehaviorKeys.Validator) {
-            return new PropertyValidationBehavior<TChildVM>();
-         }
-
          if (key == PropertyBehaviorKeys.ValueValidationSource) {
             return new ValueValidationSourceBehavior<TChildVM>();
          }
@@ -60,8 +52,8 @@
             return new ServiceLocatorValueFactoryBehavior<TChildVM>();
          }
 
-         if (key == PropertyBehaviorKeys.DescendantValidator) {
-            return new DescendantValidationBehavior<TChildVM>();
+         if (key == PropertyBehaviorKeys.DescendantsValidator) {
+            return new ViewModelPropertyDescendantsValidatorBehavior<TChildVM>();
          }
 
          if (key == PropertyBehaviorKeys.IsLoadedIndicator) {

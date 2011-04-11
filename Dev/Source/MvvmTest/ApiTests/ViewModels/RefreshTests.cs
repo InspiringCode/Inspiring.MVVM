@@ -185,20 +185,18 @@
                d.LocalCollection = v.Collection.Of<ChildVM>(ChildVM.ClassDescriptor);
             })
             .WithValidators(b => {
-               b.Check(x => x.MappedProperty).Custom((vm, value, args) => {
-                  vm.MappedPropertyWasValidated = true;
+               b.Check(x => x.MappedProperty).Custom(args => {
+                  args.Owner.MappedPropertyWasValidated = true;
                });
-               b.Check(x => x.LocalProperty).Custom((vm, value, args) => {
-                  vm.LocalPropertyWasValidated = true;
+               b.Check(x => x.LocalProperty).Custom(args => {
+                  args.Owner.LocalPropertyWasValidated = true;
                });
-               b.Check(x => x.DelegatedVM).Custom((vm, value, args) => {
-                  vm.DelegatedVMPropertyWasValidated = true;
+               b.Check(x => x.DelegatedVM).Custom(args => {
+                  args.Owner.DelegatedVMPropertyWasValidated = true;
                });
 
-               b.CheckViewModel((vm, args) => {
-                  if (args.ChangedProperty == null) {
-                     vm.ViewModelValidatorWasCalled = true;
-                  }
+               b.CheckViewModel(args => {
+                  args.Owner.ViewModelValidatorWasCalled = true;
                });
             })
             .Build();
@@ -325,8 +323,8 @@
                d.GrandchildVM = v.VM.DelegatesTo(vm => new GrandchildVM());
             })
             .WithValidators(b => {
-               b.Check(x => x.Property).Custom((vm, value, args) => {
-                  vm.WasValidated = true;
+               b.Check(x => x.Property).Custom(args => {
+                  args.Owner.WasValidated = true;
                });
             })
             .Build();

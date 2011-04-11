@@ -1,8 +1,6 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Validation {
-   using System;
-   using System.Linq;
+   using Inspiring.Mvvm.ViewModels.Core.Validation.Validators;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
-   using Inspiring.Mvvm.ViewModels.Core;
 
    [TestClass]
    public class ParentValidationTests : HierarchyValidationFixture {
@@ -16,13 +14,10 @@
          project.Revalidate();
          Log.VerifyCalls();
 
-         ValidationArgs args = Log.GetArgs(Validator.ProjectTitle);
-         Assert.AreSame(project, args.ChangedVM);
-         Assert.AreSame(project, args.TargetVM);
-         Assert.AreSame(emp, args.OwnerVM);
-         Assert.AreSame(ProjectVM.ClassDescriptor.Title, args.ChangedProperty);
+         var args = (PropertyValidationArgs<EmployeeVM, ProjectVM, string>)Log.GetArgs(Validator.ProjectTitle);
+         Assert.AreSame(project, args.Target);
+         Assert.AreSame(emp, args.Owner);
          Assert.AreSame(ProjectVM.ClassDescriptor.Title, args.TargetProperty);
-         Assert.AreEqual(ValidationType.PropertyValue, args.ValidationType);
       }
 
       [TestMethod]
@@ -35,13 +30,10 @@
          customer.Revalidate();
          Log.VerifyCalls();
 
-         ValidationArgs args = Log.GetArgs(Validator.CustomerAddress);
-         Assert.AreSame(customer, args.ChangedVM);
-         Assert.AreSame(customer, args.TargetVM);
-         Assert.AreSame(project, args.OwnerVM);
-         Assert.AreSame(CustomerVM.ClassDescriptor.Address, args.ChangedProperty);
+         var args = (PropertyValidationArgs<ProjectVM, CustomerVM, string>)Log.GetArgs(Validator.CustomerAddress);
+         Assert.AreSame(customer, args.Target);
+         Assert.AreSame(project, args.Owner);
          Assert.AreSame(CustomerVM.ClassDescriptor.Address, args.TargetProperty);
-         Assert.AreEqual(ValidationType.PropertyValue, args.ValidationType);
       }
 
       [TestMethod]
@@ -57,13 +49,10 @@
          customer.Revalidate();
          Log.VerifyCalls();
 
-         ValidationArgs args = Log.GetArgs(Validator.CustomerName);
-         Assert.AreSame(customer, args.ChangedVM);
-         Assert.AreSame(customer, args.TargetVM);
-         Assert.AreSame(employee, args.OwnerVM);
-         Assert.AreSame(CustomerVM.ClassDescriptor.Name, args.ChangedProperty);
+         var args = (PropertyValidationArgs<EmployeeVM, CustomerVM, string>)Log.GetArgs(Validator.CustomerName);
+         Assert.AreSame(customer, args.Target);
+         Assert.AreSame(employee, args.Owner);
          Assert.AreSame(CustomerVM.ClassDescriptor.Name, args.TargetProperty);
-         Assert.AreEqual(ValidationType.PropertyValue, args.ValidationType);
       }
 
       //[TestMethod]

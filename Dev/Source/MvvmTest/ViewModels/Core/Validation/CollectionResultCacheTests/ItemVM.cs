@@ -1,6 +1,6 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Validation {
    using Inspiring.Mvvm.ViewModels;
-   using Inspiring.Mvvm.ViewModels.Core;
+   using Inspiring.Mvvm.ViewModels.Core.Validation.Validators;
 
    public class ItemVM : ViewModel<ItemVMDescriptor> {
       public static readonly ItemVMDescriptor ClassDescriptor = VMDescriptorBuilder
@@ -32,11 +32,9 @@
       }
 
       private static void PropertyValidator(
-         ItemVM vm,
-         string value,
-         ValidationArgs args
+         PropertyValidationArgs<ItemVM, ItemVM, string> args
       ) {
-         if (vm.TestFixture.InvalidItemsOfItemVMPropertyValidator.Contains(vm)) {
+         if (args.Owner.TestFixture.InvalidItemsOfItemVMPropertyValidator.Contains(args.Target)) {
             args.AddError(CollectionResultCacheTests.NamePropertyValidatorErrorMessage);
          }
       }

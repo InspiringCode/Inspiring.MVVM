@@ -17,20 +17,12 @@
          get { throw new System.NotImplementedException(); }
       }
 
-      public void NotifyValidating(ValidationArgs args) {
-         throw new System.NotImplementedException();
-      }
-
       FieldValueHolder IBehaviorContext.FieldValues {
          get { throw new System.NotImplementedException(); }
       }
 
       Mvvm.IServiceLocator IBehaviorContext.ServiceLocator {
          get { throw new System.NotImplementedException(); }
-      }
-
-      void IBehaviorContext.NotifyValidating(ValidationArgs args) {
-         throw new System.NotImplementedException();
       }
 
       void IBehaviorContext.NotifyChange(ChangeArgs args) {

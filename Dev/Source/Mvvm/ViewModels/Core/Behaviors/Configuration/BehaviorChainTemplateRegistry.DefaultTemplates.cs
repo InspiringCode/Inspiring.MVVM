@@ -38,7 +38,6 @@
                .Append(PropertyBehaviorKeys.RefreshBehavior, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.ManualUpdateBehavior, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
-               .Append(PropertyBehaviorKeys.PreValidationValueCache, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.Validator, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.PropertyChangedTrigger)
                .Append(PropertyBehaviorKeys.PropertyValueCache, DefaultBehaviorState.DisabledWithoutFactory) // TODO!
@@ -57,11 +56,9 @@
                .Append(PropertyBehaviorKeys.RefreshBehavior, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.ManualUpdateBehavior, DefaultBehaviorState.DisabledWithoutFactory)
 
-               // TODO: Rethink these two behaviors.
-               .Append(PropertyBehaviorKeys.PreValidationValueCache, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.Validator, DefaultBehaviorState.Disabled)
 
-               .Append(PropertyBehaviorKeys.DescendantValidator)
+               .Append(PropertyBehaviorKeys.DescendantsValidator) // TODO: Construction!
 
                .Append(PropertyBehaviorKeys.IsLoadedIndicator)
                .Append(PropertyBehaviorKeys.CollectionPopulator, DefaultBehaviorState.DisabledWithoutFactory)
@@ -105,14 +102,13 @@
                .Append(PropertyBehaviorKeys.RefreshBehavior, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.ManualUpdateBehavior, DefaultBehaviorState.DisabledWithoutFactory)
 
-               .Append(PropertyBehaviorKeys.DescendantValidator)
+               .Append(PropertyBehaviorKeys.DescendantsValidator)
 
                //.Append(PropertyBehaviorKeys.ValueInitializer)
 
                .Append(PropertyBehaviorKeys.ParentSetter)
 
                .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
-               .Append(PropertyBehaviorKeys.PreValidationValueCache, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.Validator, DefaultBehaviorState.Disabled)
 
                .Append(PropertyBehaviorKeys.PropertyChangedTrigger)

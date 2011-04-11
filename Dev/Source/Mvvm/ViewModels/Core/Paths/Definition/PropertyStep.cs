@@ -13,21 +13,36 @@
       public PropertyStep(Func<TDescriptor, IVMPropertyDescriptor<TValue>> propertySelector) {
          Contract.Requires(propertySelector != null);
          _propertySelector = propertySelector;
-      }  
+      }
 
       public override PathMatch Matches(PathDefinitionIterator definitionSteps, PathIterator step) {
          if (!step.HasStep) {
             return PathMatch.Fail();
          }
 
-         if (!step.IsViewModel) {
-            ThrowUnexpectedStepTypeException(step.GetIndex(), PathStepType.ViewModel);
+         if (!step.IsViewModel && !step.IsCollection) {
+            ThrowUnexpectedStepTypeException(step.GetIndex(), PathStepType.ViewModel, PathStepType.Collection);
          }
 
-         IViewModel parent = step.ViewModel;
+         PathIterator parentStep = step;
          step.MoveNext();
 
-         if (Matches(parent, step)) {
+         if (!step.HasStep) {
+            return PathMatch.Fail();
+         }
+
+         bool currenStepMatches = false;
+
+         switch (parentStep.Type) {
+            case PathStepType.ViewModel:
+               currenStepMatches = Matches(parentStep.ViewModel, step);
+               break;
+            case PathStepType.Collection:
+               currenStepMatches = Matches(parentStep.Collection, step);
+               break;
+         }
+
+         if (currenStepMatches) {
             int matchedPathSteps = 1;
 
             if (CollectionIsFollowedByItemViewModel(step)) {
@@ -37,7 +52,6 @@
 
             PathMatch result = PathMatch.Succeed(length: matchedPathSteps);
             PathMatch nextResult = definitionSteps.MatchesNext(step);
-            //PathMatch nextResult = Next.Matches(definitionSteps, step);
 
             return PathMatch.Combine(result, nextResult);
          } else {
@@ -81,6 +95,22 @@
          }
 
          throw new NotSupportedException();
+      }
+
+      private bool Matches(IVMCollection collection, PathIterator nextStep) {
+         bool canMatchAgainstItemDescriptor = nextStep.IsProperty;
+
+         if (!canMatchAgainstItemDescriptor) {
+            return false;
+         }
+
+         TDescriptor itemDescriptor = collection.GetItemDescriptor() as TDescriptor;
+
+         if (itemDescriptor == null) {
+            return false;
+         }
+
+         return _propertySelector(itemDescriptor) == nextStep.Property;
       }
 
       private static bool CollectionIsFollowedByItemViewModel(PathIterator step) {

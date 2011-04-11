@@ -2,7 +2,7 @@
    using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
-   using Inspiring.Mvvm.ViewModels.Core;
+   using Inspiring.Mvvm.ViewModels.Core.Validation.Validators;
 
    public class ItemListVM : ViewModel<ItemListVMDescriptor> {
       public static readonly ItemListVMDescriptor ClassDescriptor = VMDescriptorBuilder
@@ -40,38 +40,31 @@
       }
 
       private static void Collection3ViewModelValidator(
-         ItemVM item,
-         IEnumerable<ItemVM> items,
-         ValidationArgs args
+         CollectionValidationArgs<ItemListVM, ItemVM> args
       ) {
-         var owner = (ItemListVM)args.OwnerVM;
-         owner.InvocationLog.AddCall(
+         args.Owner.InvocationLog.AddCall(
             CollectionResultCacheTests.Validator.Collection3ViewModelValidator,
             args
          );
-         var invalidItems = owner.TestFixture.InvalidItemsOfCollection3ViewModelValidator.ToList();
+         var invalidItems = args.Owner.TestFixture.InvalidItemsOfCollection3ViewModelValidator.ToList();
 
-         if (invalidItems.Contains(item)) {
-            args.AddError(item, CollectionResultCacheTests.Collection3ViewModelValidationErrorMessage);
-         }
+         invalidItems.ForEach(i =>
+            args.AddError(i, CollectionResultCacheTests.Collection3ViewModelValidationErrorMessage)
+         );
       }
 
       private static void Collection3PropertyValidator(
-         ItemVM item,
-         IEnumerable<ItemVM> items,
-         IVMPropertyDescriptor<string> property,
-         ValidationArgs args
+         CollectionValidationArgs<ItemListVM, ItemVM, string> args
       ) {
-         var owner = (ItemListVM)args.OwnerVM;
-         owner.InvocationLog.AddCall(
+         args.Owner.InvocationLog.AddCall(
             CollectionResultCacheTests.Validator.Collection3PropertyValidator,
             args
          );
-         var invalidItems = owner.TestFixture.InvalidItemsOfCollection3PropertyValidator.ToList();
+         var invalidItems = args.Owner.TestFixture.InvalidItemsOfCollection3PropertyValidator.ToList();
 
-         if (invalidItems.Contains(item)) {
-            args.AddError(item, CollectionResultCacheTests.Collection3PropertyValidationErrorMessage);
-         }
+         invalidItems.ForEach(i =>
+            args.AddError(i, CollectionResultCacheTests.Collection3PropertyValidationErrorMessage)
+         );
       }
    }
 

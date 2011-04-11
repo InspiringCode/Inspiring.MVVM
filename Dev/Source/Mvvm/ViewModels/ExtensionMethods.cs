@@ -108,17 +108,17 @@
       //   }
       //}
 
-      public static void OnChangedNext(
-         this Behavior behavior,
-         IBehaviorContext context,
-         ChangeArgs args,
-         InstancePath changedPath
-      ) {
-         ViewModelBehavior next;
-         if (behavior.TryGetBehavior(out next)) {
-            next.OnChanged(context, args, changedPath);
-         }
-      }
+      //public static void OnChangedNext(
+      //   this Behavior behavior,
+      //   IBehaviorContext context,
+      //   ChangeArgs args,
+      //   InstancePath changedPath
+      //) {
+      //   ViewModelBehavior next;
+      //   if (behavior.TryGetBehavior(out next)) {
+      //      next.OnChanged(context, args, changedPath);
+      //   }
+      //}
 
       public static void HandleChangedNext(
          this Behavior behavior,
@@ -128,17 +128,6 @@
          IChangeHandlerBehavior next;
          if (behavior.TryGetBehavior(out next)) {
             next.HandleChange(context, args);
-         }
-      }
-
-      public static void OnValidatingNext(
-         this Behavior behavior,
-         IBehaviorContext context,
-         ValidationArgs args
-      ) {
-         ViewModelBehavior next;
-         if (behavior.TryGetBehavior(out next)) {
-            next.OnValidating(context, args);
          }
       }
 
@@ -153,74 +142,10 @@
          }
       }
 
-      public static void CollectionPopulatetNext<TItemVM>(
-         this Behavior behavior,
-         IBehaviorContext context,
-         IVMCollection<TItemVM> collection,
-         TItemVM[] previousItems
-      ) where TItemVM : IViewModel {
-         IModificationCollectionBehavior<TItemVM> next;
-         if (behavior.TryGetBehavior(out next)) {
-            next.CollectionPopulated(context, collection, previousItems);
-         }
-      }
-
-      public static void ItemInsertedNext<TItemVM>(
-         this Behavior behavior,
-         IBehaviorContext context,
-         IVMCollection<TItemVM> collection,
-         TItemVM item,
-         int index
-      ) where TItemVM : IViewModel {
-         IModificationCollectionBehavior<TItemVM> next;
-         if (behavior.TryGetBehavior(out next)) {
-            next.ItemInserted(context, collection, item, index);
-         }
-      }
-
-      public static void ItemRemovedNext<TItemVM>(
-         this Behavior behavior,
-         IBehaviorContext context,
-         IVMCollection<TItemVM> collection,
-         TItemVM item,
-         int index
-      ) where TItemVM : IViewModel {
-         IModificationCollectionBehavior<TItemVM> next;
-         if (behavior.TryGetBehavior(out next)) {
-            next.ItemRemoved(context, collection, item, index);
-         }
-      }
-
-      public static void ItemSetNext<TItemVM>(
-         this Behavior behavior,
-         IBehaviorContext context,
-         IVMCollection<TItemVM> collection,
-         TItemVM previousItem,
-         TItemVM item,
-         int index
-      ) where TItemVM : IViewModel {
-         IModificationCollectionBehavior<TItemVM> next;
-         if (behavior.TryGetBehavior(out next)) {
-            next.ItemSet(context, collection, previousItem, item, index);
-         }
-      }
-
-      public static void ItemsClearedNext<TItemVM>(
-         this Behavior behavior,
-         IBehaviorContext context,
-         IVMCollection<TItemVM> collection,
-         TItemVM[] previousItems
-      ) where TItemVM : IViewModel {
-         IModificationCollectionBehavior<TItemVM> next;
-         if (behavior.TryGetBehavior(out next)) {
-            next.CollectionCleared(context, collection, previousItems);
-         }
-      }
-
       public static void UpdatePropertyFromSourceNext(
-         this Behavior behavior,
-         IBehaviorContext context
-      ) {
+          this Behavior behavior,
+          IBehaviorContext context
+       ) {
          IManualUpdateBehavior next;
          if (behavior.TryGetBehavior(out next)) {
             next.UpdatePropertyFromSource(context);
@@ -282,28 +207,6 @@
       public static void RevalidateNext(
          this Behavior behavior,
          IBehaviorContext context,
-         ValidationContext validationContext,
-         ValidationMode mode
-      ) {
-         IRevalidationBehavior next;
-         if (behavior.TryGetBehavior(out next)) {
-            next.Revalidate(context, validationContext, mode);
-         }
-      }
-
-      public static void RevalidateNext(
-         this Behavior behavior,
-         IBehaviorContext context
-      ) {
-         IRevalidationBehavior next;
-         if (behavior.TryGetBehavior(out next)) {
-            next.Revalidate(context);
-         }
-      }
-
-      public static void RevalidateNext(
-         this Behavior behavior,
-         IBehaviorContext context,
          CollectionResultCache cache
       ) {
          IRevalidationBehavior next;
@@ -315,33 +218,42 @@
       public static void RevalidateDescendantsNext(
          this Behavior behavior,
          IBehaviorContext context,
-         ValidationContext validationContext,
-         ValidationScope scope,
-         ValidationMode mode
+         ValidationScope scope
       ) {
          IDescendantValidationBehavior next;
          if (behavior.TryGetBehavior(out next)) {
-            next.RevalidateDescendants(context, validationContext, scope, mode);
+            next.RevalidateDescendants(context, scope);
          }
       }
 
-      public static ValidationResult GetValidationStateNext(
+      public static ValidationResult GetValidationResultNext(
          this Behavior behavior,
          IBehaviorContext context
       ) {
-         IValidationStateProviderBehavior next;
+         IValidationResultProviderBehavior next;
          return behavior.TryGetBehavior(out next) ?
-            next.GetValidationState(context) :
+            next.GetValidationResult(context) :
             ValidationResult.Valid;
       }
 
-      public static ValidationResult GetDescendantsValidationStateNext(
+      public static ValidationResult GetValidationResultNext(
+         this Behavior behavior,
+         IBehaviorContext context,
+         ValidationResultScope scope
+      ) {
+         IValidationResultAggregatorBehavior next;
+         return behavior.TryGetBehavior(out next) ?
+            next.GetValidationResult(context, scope) :
+            ValidationResult.Valid;
+      }
+
+      public static ValidationResult GetDescendantsValidationResultNext(
          this Behavior behavior,
          IBehaviorContext context
       ) {
-         IValidationStateProviderBehavior next;
+         IDescendantsValidationResultProviderBehavior next;
          return behavior.TryGetBehavior(out next) ?
-            next.GetDescendantsValidationState(context) :
+            next.GetDescendantsValidationResult(context) :
             ValidationResult.Valid;
       }
 

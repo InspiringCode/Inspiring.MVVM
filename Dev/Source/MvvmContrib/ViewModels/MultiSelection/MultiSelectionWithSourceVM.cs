@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
    using System.Collections.Generic;
+   using System.Linq;
    using Inspiring.Mvvm.ViewModels.Core;
 
    public sealed class MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM> :
@@ -92,17 +93,23 @@
                   new SettableListDisplayValueBehavior<TItemVM>()
                );
 
-               c.For(x => x.SelectedItems).AddChangeHandler((vm, args, path) => {
+               c.For(x => x.SelectedItems).AddChangeHandler((vm, args) => {
                   vm.OnPropertyChanged("SelectedItems"); // HACK!
                });
             })
             .WithValidators(b => {
-               b.CheckCollection(x => x.SelectedItems).Custom((item, items, args) => {
-                  var vm = (MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>)args.OwnerVM;
+               b.CheckCollection(x => x.SelectedItems).Custom(args => {
+                  var invalidItems = args
+                     .Items
+                     .Where(i => args
+                        .Owner
+                        .NonExistingSelectedSourceItems
+                        .Contains(i.Source));
 
-                  if (vm.NonExistingSelectedSourceItems.Contains(item.Source)) {
+
+                  foreach (var item in invalidItems) {
                      // TODO: Let the user specify the message.
-                     args.AddError("Das gewählte Element ist nicht vorhanden.");
+                     args.AddError(item, "Das gewählte Element ist nicht vorhanden.");
                   }
                });
             });
@@ -203,17 +210,23 @@
                   new SettableListDisplayValueBehavior<SelectionItemVM<TItemSource>>()
                );
 
-               c.For(x => x.SelectedItems).AddChangeHandler((vm, args, path) => {
+               c.For(x => x.SelectedItems).AddChangeHandler((vm, args) => {
                   vm.OnPropertyChanged("SelectedItems"); // HACK!
                });
             })
             .WithValidators(b => {
-               b.CheckCollection(x => x.SelectedItems).Custom((item, items, args) => {
-                  var vm = (MultiSelectionWithSourceVM<TSourceObject, TItemSource>)args.OwnerVM;
+               b.CheckCollection(x => x.SelectedItems).Custom(args => {
+                  var invalidItems = args
+                     .Items
+                     .Where(i => args
+                        .Owner
+                        .NonExistingSelectedSourceItems
+                        .Contains(i.Source));
 
-                  if (vm.NonExistingSelectedSourceItems.Contains(item.Source)) {
+
+                  foreach (var item in invalidItems) {
                      // TODO: Let the user specify the message.
-                     args.AddError("Das gewählte Element ist nicht vorhanden.");
+                     args.AddError(item, "Das gewählte Element ist nicht vorhanden.");
                   }
                });
             });

@@ -1,8 +1,9 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Validation {
+   using System;
    using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
-   using Inspiring.Mvvm.ViewModels.Core;
+   using Inspiring.Mvvm.ViewModels.Core.Validation.Validators;
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
    using ProjectVM = Inspiring.MvvmTest.ApiTests.ViewModels.ProjectVM;
@@ -31,8 +32,9 @@
             args.Items.ToArray()
          );
 
-         Assert.AreSame(vm, args.ValidationArgs.OwnerVM);
-         Assert.AreSame(firstItem, args.ValidationArgs.TargetVM);
+         Assert.AreSame(vm, args.ValidationArgs.Owner);
+         throw new NotImplementedException();
+         //Assert.AreSame(firstItem, args.ValidationArgs.Target);
       }
 
       [TestMethod]
@@ -136,24 +138,24 @@
                d.Projects = v.Collection.Of<ProjectVM>(ProjectVM.ClassDescriptor);
             })
             .WithValidators(c => {
-               c.CheckCollection(x => x.Projects, x => x.Title).Custom<ProjectVM>((item, items, property, args) => {
-                  var vm = (EmployeeVM)args.OwnerVM;
+               c.CheckCollection(x => x.Projects, x => x.Title).Custom<ProjectVM>(args => {
+                  var vm = args.Owner;
 
                   vm.ValueArgs.InvocationCount++;
-                  vm.ValueArgs.Item = item.GetValue(property);
-                  vm.ValueArgs.Items = items.Select(x => x.GetValue(property)).ToArray();
-                  vm.ValueArgs.ValidationArgs = args;
-                  vm.ValueArgs.TargetVMHistory.Add(args.TargetVM);
+                  //vm.ValueArgs.Item = item.GetValue(property);
+                  vm.ValueArgs.Items = args.Items.Select(x => x.GetValue(args.TargetProperty)).ToArray();
+                  //vm.ValueArgs.ValidationArgs = args;
+                  //vm.ValueArgs.TargetVMHistory.Add(args.TargetVM);
                });
 
-               c.CheckCollection(x => x.Projects).Custom((item, items, args) => {
-                  var vm = (EmployeeVM)args.OwnerVM;
+               c.CheckCollection(x => x.Projects).Custom(args => {
+                  var vm = args.Owner;
 
                   vm.ItemArgs.InvocationCount++;
-                  vm.ItemArgs.Item = item;
-                  vm.ItemArgs.Items = items;
-                  vm.ItemArgs.ValidationArgs = args;
-                  vm.ItemArgs.TargetVMHistory.Add(args.TargetVM);
+                  //vm.ItemArgs.Item = item;
+                  vm.ItemArgs.Items = args.Items;
+                  //vm.ItemArgs.ValidationArgs = args;
+                  //vm.ItemArgs.TargetVMHistory.Add(args.TargetVM);
                });
             })
             .Build();
@@ -193,7 +195,7 @@
          public int InvocationCount { get; set; }
          public T Item { get; set; }
          public IEnumerable<T> Items { get; set; }
-         public ValidationArgs ValidationArgs { get; set; }
+         public ValidationArgs<IViewModel> ValidationArgs { get; set; }
          public List<IViewModel> TargetVMHistory { get; set; }
       }
    }

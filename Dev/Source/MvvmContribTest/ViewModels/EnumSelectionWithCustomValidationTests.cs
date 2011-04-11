@@ -29,8 +29,8 @@
                d.PropertyOfEnumerationType = vm.EnumSelection(x => x.PropertyOfEnumerationType);
             })
             .WithValidators(b => {
-               b.CheckViewModel((vm, args) => {
-                  vm.GetValue(vm.Descriptor.PropertyOfEnumerationType).SelectedItem.Equals(null);
+               b.CheckViewModel(args => {
+                  args.Owner.GetValue(args.Owner.Descriptor.PropertyOfEnumerationType).SelectedItem.Equals(null);
                });
             })
             .Build();

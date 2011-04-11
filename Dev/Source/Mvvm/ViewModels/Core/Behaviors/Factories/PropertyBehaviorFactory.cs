@@ -32,14 +32,6 @@
             return new PropertyDescriptorBehavior();
          }
 
-         if (key == PropertyBehaviorKeys.PreValidationValueCache) {
-            return new PreValidationValueCacheBehavior<TValue>();
-         }
-
-         if (key == PropertyBehaviorKeys.Validator) {
-            return new PropertyValidationBehavior<TValue>();
-         }
-
          if (key == PropertyBehaviorKeys.ValueValidationSource) {
             return new ValueValidationSourceBehavior<TValue>();
          }
@@ -58,10 +50,6 @@
 
          if (key == PropertyBehaviorKeys.ManualUpdateBehavior) {
             return new ManualUpdatePropertyBehavior();
-         }
-
-         if (key == PropertyBehaviorKeys.DescendantValidator) {
-            return new DescendantValidationBehavior<TValue>();
          }
 
          if (key == PropertyBehaviorKeys.IsLoadedIndicator) {

@@ -13,8 +13,6 @@
 
       IServiceLocator ServiceLocator { get; }
 
-      void NotifyValidating(ValidationArgs args);
-
       void NotifyChange(ChangeArgs args);
    }
 
@@ -38,11 +36,6 @@
          public void NotifyChange(ChangeArgs args) {
             Contract.Requires(args != null);
          }
-
-         public void NotifyValidating(ValidationArgs args) {
-            Contract.Requires(args != null);
-         }
-
 
          public IServiceLocator ServiceLocator {
             get {

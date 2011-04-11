@@ -7,7 +7,7 @@
    using Moq;
 
    [TestClass]
-   public abstract class VMCollectionTestBase : BehaviorTestBase {
+   public abstract class VMCollectionTestBase : TestBase {
 
       protected static IValueAccessorBehavior<IEnumerable<ItemSource>> CreateCollectionSourceBehavior(
          IEnumerable<ItemSource> sourceItems

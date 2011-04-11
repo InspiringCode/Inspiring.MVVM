@@ -14,10 +14,12 @@
             d.Customer = p.VM.Wraps(x => x.Customer).With<CustomerVM>();
          })
          .WithValidators(b => {
-            b.EnableParentValidation();
-            b.Check(x => x.Title).Custom((vm, val, args) => {
+            b.EnableParentValidation(x => x.Title);
+            b.EnableParentValidation(x => x.Customer);
+
+            b.Check(x => x.Title).Custom(args => {
                args.AddError("Error");
-               vm.WasValidated = true;
+               args.Owner.WasValidated = true;
             });
          })
          .Build();

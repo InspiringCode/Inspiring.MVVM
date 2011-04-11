@@ -56,6 +56,26 @@
       }
 
       [TestMethod]
+      public void Matches_WithMatchingCollectionPlusProperty_Succeeds() {
+         IVMCollection<ProjectVM> collection = VM.GetValue(x => x.Projects);
+
+         AssertMatchIfNextSucceeds(
+            CreateStep((ProjectVMDescriptor x) => x.Name),
+            Path.Empty.Prepend(ProjectVM.ClassDescriptor.Name).Prepend(collection)
+         );
+      }
+
+      [TestMethod]
+      public void Matches_WithNonMatchingCollectionPlusProperty_Fails() {
+         IVMCollection<EmployeeVM> nonMatching = VM.GetValue(x => x.Managers);
+
+         AssertNoMatch(
+            CreateStep((ProjectVMDescriptor x) => x.Name),
+            Path.Empty.Prepend(ProjectVM.ClassDescriptor.Name).Prepend(nonMatching)
+         );
+      }
+
+      [TestMethod]
       public void Matches_WithEmptyPath_Fails() {
          AssertNoMatch(
             CreateStep(x => x.SelectedProject),
@@ -98,15 +118,32 @@
       }
 
       [TestMethod]
-      public void Matches_WithMatchingCollectionAndProperty_Fails() {
-         // I couldn't think of a concrete example where this feature is useful.
+      public void Matches_WithSingleCollection_Fails() {
+         // This would be the case, if the definiton [EmployeeVM -> Projects, ProjectVM -> Name]
+         // is matched against the path [employeeVM, projects].
+         AssertNoMatch(
+            CreateStep<ProjectVMDescriptor, string>(x => x.Name),
+            Path.Empty.Prepend(VM.GetValue(x => x.Projects))
+         );
+      }
 
-         var projectCollection = VM.GetValue(x => x.Projects);
-         var projectNameProperty = ProjectVM.ClassDescriptor.Name;
+      [TestMethod]
+      public void Matches_WithSingleViewModel_Fails() {
+         // This would be the case, if the definiton [EmployeeVM -> SelectedProject, ProjectVM -> Name]
+         // is matched against the path [employeeVM, projectVM].
+         AssertNoMatch(
+            CreateStep<ProjectVMDescriptor, string>(x => x.Name),
+            Path.Empty.Prepend(VM.GetValue(x => x.SelectedProject))
+         );
+      }
 
+      [TestMethod]
+      public void Matches_WithSingleProperty_ThrowsException() {
+         // I couldn't think of an valid definition/path constellation where this
+         // makes sense.
          AssertException(
             CreateStep<ProjectVMDescriptor, string>(x => x.Name),
-            Path.Empty.Prepend(projectNameProperty).Prepend(projectCollection)
+            Path.Empty.Prepend(Descriptor.Projects)
          );
       }
 

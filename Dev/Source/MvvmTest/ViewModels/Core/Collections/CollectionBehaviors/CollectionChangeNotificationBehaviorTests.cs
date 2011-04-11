@@ -126,9 +126,6 @@
             get { throw new NotImplementedException(); }
          }
 
-         public void NotifyValidating(ValidationArgs args) {
-         }
-
          public void NotifyChange(ChangeArgs args) {
             NotifyChangeArgsInvocations.Add(args);
          }

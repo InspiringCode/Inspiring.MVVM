@@ -18,9 +18,10 @@
 
          this.UpdatePropertyFromSourceNext(context);
 
-         ValidationContext.BeginValidation(); // TODO: Is there a nicer solution?
-         this.RevalidateNext(context, ValidationContext.Current, ValidationMode.DiscardInvalidValues);
-         ValidationContext.CompleteValidation(ValidationMode.DiscardInvalidValues);
+         // TODO: Is this behavior still current?
+         //ValidationContext.BeginValidation(); // TODO: Is there a nicer solution?
+         //this.RevalidateNext(context, ValidationContext.Current, ValidationMode.DiscardInvalidValues);
+         //ValidationContext.CompleteValidation(ValidationMode.DiscardInvalidValues);
 
          //var validationBehavior = GetNextBehavior<IRevalidationBehavior>();
          //validationBehavior.Revalidate(context, ValidationMode.DiscardInvalidValues);

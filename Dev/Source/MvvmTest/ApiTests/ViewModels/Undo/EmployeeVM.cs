@@ -5,7 +5,7 @@
 
    public sealed class EmployeeVM : DefaultViewModelWithSourceBase<EmployeeVMDescriptor, Employee> {
 
-      private static readonly Action<EmployeeVM, ChangeArgs, InstancePath> NoChangeHandling = (vm, args, path) => { };
+      private static readonly Action<EmployeeVM, ChangeArgs> NoChangeHandling = (vm, args) => { };
 
       public EmployeeVM()
          : base(CreateDescriptor(ProjectVM.ClassDescriptorWithoutUndoRoot, NoChangeHandling)) {
@@ -17,7 +17,7 @@
       }
 
       public EmployeeVM(
-         Action<EmployeeVM, ChangeArgs, InstancePath> handleChangeAction
+         Action<EmployeeVM, ChangeArgs> handleChangeAction
       )
          : base(CreateDescriptor(ProjectVM.ClassDescriptorWithoutUndoRoot, handleChangeAction)) {
 
@@ -42,8 +42,6 @@
          get { return base.Descriptor; }
       }
 
-      internal Action<EmployeeVM, ChangeArgs, InstancePath> HandleChangeAction { get; set; }
-
       internal void Revalidate() {
          Kernel.Revalidate(ValidationScope.FullSubtree, ValidationMode.CommitValidValues);
       }
@@ -55,7 +53,7 @@
 
       private static EmployeeVMDescriptor CreateDescriptor(
          ProjectVMDescriptor projectVMDescriptor,
-         Action<EmployeeVM, ChangeArgs, InstancePath> handleChangeAction
+         Action<EmployeeVM, ChangeArgs> handleChangeAction
       ) {
          return VMDescriptorBuilder
             .OfType<EmployeeVMDescriptor>()
@@ -77,8 +75,8 @@
             })
             .WithViewModelBehaviors(b => {
                b.IsUndoRoot();
-               b.AddChangeHandler((vm, changeArgs, changedPath) => {
-                  handleChangeAction(vm, changeArgs, changedPath);
+               b.AddChangeHandler((vm, changeArgs) => {
+                  handleChangeAction(vm, changeArgs);
                });
             })
             .Build();

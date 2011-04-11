@@ -17,7 +17,7 @@
    /// </summary>
    public sealed class ChangeArgs {
       internal ChangeArgs(ChangeType changeType, IViewModel changedVM) {
-         Contract.Requires(changeType != ChangeType.PropertyChanged);
+         Contract.Requires(changeType == ChangeType.ValidationStateChanged);
          Contract.Requires(changedVM != null);
 
          ChangeType = changeType;

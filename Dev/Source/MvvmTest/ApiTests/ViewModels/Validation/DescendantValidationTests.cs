@@ -51,16 +51,16 @@
          childItem.Source = new Project("Project 1");
          childItem.Revalidate();
 
-         var itemBeforeAdditionState = childItem.GetValidationState(ValidationStateScope.All);
+         var itemBeforeAdditionState = childItem.GetValidationState(ValidationResultScope.All);
          Contract.Assert(!itemBeforeAdditionState.IsValid);
 
          EmployeeVM vm = new EmployeeVM();
-         var parentBeforeAdditionState = vm.GetValidationState(ValidationStateScope.All);
+         var parentBeforeAdditionState = vm.GetValidationState(ValidationResultScope.All);
          Contract.Assert(parentBeforeAdditionState.IsValid);
 
          vm.ProjectsWrapped.Add(childItem);
 
-         Assert.IsFalse(vm.GetValidationState(ValidationStateScope.Descendants).IsValid);
+         Assert.IsFalse(vm.GetValidationState(ValidationResultScope.Descendants).IsValid);
       }
 
       [TestMethod]
@@ -69,16 +69,16 @@
          childItem.Source = new Project("Project 1");
          childItem.Revalidate();
 
-         var itemBeforeAdditionState = childItem.GetValidationState(ValidationStateScope.All);
+         var itemBeforeAdditionState = childItem.GetValidationState(ValidationResultScope.All);
          Contract.Assert(!itemBeforeAdditionState.IsValid);
 
          EmployeeVM vm = new EmployeeVM();
-         var parentBeforeAdditionState = vm.GetValidationState(ValidationStateScope.All);
+         var parentBeforeAdditionState = vm.GetValidationState(ValidationResultScope.All);
          Contract.Assert(parentBeforeAdditionState.IsValid);
 
          vm.CurrentProjectWrapped = childItem;
 
-         Assert.IsFalse(vm.GetValidationState(ValidationStateScope.Descendants).IsValid);
+         Assert.IsFalse(vm.GetValidationState(ValidationResultScope.Descendants).IsValid);
       }
 
       private sealed class EmployeeVM : ViewModel<EmployeeVMDescriptor> {
@@ -151,9 +151,9 @@
                d.Title = p.Property.MapsTo(x => x.Title);
             })
             .WithValidators(b => {
-               b.Check(x => x.Title).Custom((vm, val, args) => {
+               b.Check(x => x.Title).Custom(args => {
                   args.AddError("Error");
-                  vm.WasValidated = true;
+                  args.Owner.WasValidated = true;
                });
             })
             .Build();

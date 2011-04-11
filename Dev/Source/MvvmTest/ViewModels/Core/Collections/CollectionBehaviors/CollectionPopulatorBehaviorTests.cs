@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Inspiring.Mvvm.ViewModels;
 using Inspiring.Mvvm.ViewModels.Core;
@@ -32,6 +33,20 @@ namespace Inspiring.MvvmTest.ViewModels.Core.Collections {
          }
 
          Assert.AreSame(itemSource, itemVM.Source, "ICanInitializeFrom was not called correctly on item VM.");
+      }
+
+      private static IViewModelFactoryBehavior<TVM> CreateViewModelFactory<TVM>(
+         Func<TVM> instanceFactory
+      ) where TVM : IViewModel {
+         var stub = new Mock<IViewModelFactoryBehavior<TVM>>();
+
+         stub
+            .Setup(x => x.CreateInstance(It.IsAny<IBehaviorContext>()))
+            .Returns(instanceFactory);
+
+         stub.SetupAllProperties();
+
+         return stub.Object;
       }
    }
 }

@@ -50,21 +50,21 @@
                d.Projects = v.Collection.Of<ProjectVM>(ProjectVM.ClassDescriptor);
             })
             .WithValidators(c => {
-               c.Check(x => x.Name).Custom((vm, val, args) => {
-                  vm.Log.AddCall(Validator.EmployeeName, args);
+               c.Check(x => x.Name).Custom(args => {
+                  args.Owner.Log.AddCall(Validator.EmployeeName, args);
                });
                c
                   .ValidateDescendant(x => x.Projects)
                   .Check(x => x.Title)
-                  .Custom((vm, val, args) => {
-                     ((ProjectVM)vm).Log.AddCall(Validator.ProjectTitle, args);
+                  .Custom(args => {
+                     args.Owner.Log.AddCall(Validator.ProjectTitle, args);
                   });
                c
                   .ValidateDescendant(x => x.Projects)
                   .ValidateDescendant(x => x.Customer)
                   .Check(x => x.Name)
-                  .Custom((vm, val, args) => {
-                     ((CustomerVM)vm).Log.AddCall(Validator.CustomerName, args);
+                  .Custom(args => {
+                     args.Owner.Log.AddCall(Validator.CustomerName, args);
                   });
             })
             .Build();
@@ -98,11 +98,11 @@
             .WithValidators(c => {
                c.EnableParentValidation(x => x.Title);
 
-               c.Check(x => x.Description).Custom((vm, val, args) => {
-                  vm.Log.AddCall(Validator.ProjectDescription, args);
+               c.Check(x => x.Description).Custom(args => {
+                  args.Owner.Log.AddCall(Validator.ProjectDescription, args);
                });
-               c.ValidateDescendant(x => x.Customer).Check(x => x.Address).Custom((vm, val, args) => {
-                  ((CustomerVM)vm).Log.AddCall(Validator.CustomerAddress, args);
+               c.ValidateDescendant(x => x.Customer).Check(x => x.Address).Custom(args => {
+                  args.Owner.Log.AddCall(Validator.CustomerAddress, args);
                });
             })
             .Build();
@@ -137,8 +137,8 @@
             .WithValidators(c => {
                c.EnableParentValidation(x => x.Name);
                c.EnableParentValidation(x => x.Address);
-               c.Check(x => x.PostalCode).Custom((vm, val, args) => {
-                  vm.Log.AddCall(Validator.CustomerPostalCode, args);
+               c.Check(x => x.PostalCode).Custom(args => {
+                  args.Owner.Log.AddCall(Validator.CustomerPostalCode, args);
                });
             })
             .Build();

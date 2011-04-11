@@ -29,7 +29,7 @@
       }
 
       private void AssertTitleInvalid() {
-         var expected = CreateValidationState(ErrorMessage);
+         var expected = CreateValidationResult(ErrorMessage);
          DomainAssert.AreEqual(expected, VM.TitleValidationState);
       }
 
@@ -46,7 +46,7 @@
 
                d.Title = vm.Property.Of<string>();
             })
-            .WithNewValidators(c => {
+            .WithValidators(c => {
                c.Check(x => x.Title).Custom(args => {
                   if (String.IsNullOrEmpty(args.Value)) {
                      args.AddError(ErrorMessage);

@@ -4,6 +4,7 @@
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
+   using Inspiring.Mvvm.ViewModels.Core.Validation.Validators;
 
    public class TwoItemListsVM : ViewModel<TwoItemListsVMDescriptor> {
       public static readonly TwoItemListsVMDescriptor ClassDescriptor = VMDescriptorBuilder
@@ -48,73 +49,60 @@
       }
 
       private static void Collection1ViewModelValidator(
-         ItemVM item,
-         IEnumerable<ItemVM> items,
-         ValidationArgs args
+         CollectionValidationArgs<TwoItemListsVM, ItemVM> args
       ) {
-         var owner = (TwoItemListsVM)args.OwnerVM;
-         owner.InvocationLog.AddCall(
+         args.Owner.InvocationLog.AddCall(
             CollectionResultCacheTests.Validator.Collection1ViewModelValidator,
             args
          );
-         var invalidItems = owner.TestFixture.InvalidItemsOfCollection1ViewModelValidator.ToList();
+         var invalidItems = args.Owner.TestFixture.InvalidItemsOfCollection1ViewModelValidator.ToList();
 
-         if (invalidItems.Contains(item)) {
-            args.AddError(item, CollectionResultCacheTests.Collection1ViewModelValidationErrorMessage);
-         }
+         invalidItems.ForEach(i =>
+            args.AddError(i, CollectionResultCacheTests.Collection1ViewModelValidationErrorMessage)
+         );
       }
 
       private static void Collection1PropertyValidator(
-         ItemVM item,
-         IEnumerable<ItemVM> items,
-         IVMPropertyDescriptor<string> property,
-         ValidationArgs args
+         CollectionValidationArgs<TwoItemListsVM, ItemVM, string> args
       ) {
-         var owner = (TwoItemListsVM)args.OwnerVM;
-         owner.InvocationLog.AddCall(
+         args.Owner.InvocationLog.AddCall(
             CollectionResultCacheTests.Validator.Collection1PropertyValidator,
             args
          );
-         var invalidItems = owner.TestFixture.InvalidItemsOfCollection1PropertyValidator.ToList();
+         var invalidItems = args.Owner.TestFixture.InvalidItemsOfCollection1PropertyValidator.ToList();
 
-         if (invalidItems.Contains(item)) {
-            args.AddError(item, CollectionResultCacheTests.Collection1PropertyValidationErrorMessage);
-         }
+         invalidItems.ForEach(i =>
+            args.AddError(i, CollectionResultCacheTests.Collection1PropertyValidationErrorMessage)
+         );
       }
 
       private static void Collection2ViewModelValidator(
-         ItemVM item,
-         IEnumerable<ItemVM> items,
-         ValidationArgs args
+         CollectionValidationArgs<TwoItemListsVM, ItemVM> args
       ) {
-         var owner = (TwoItemListsVM)args.OwnerVM;
-         owner.InvocationLog.AddCall(
+         args.Owner.InvocationLog.AddCall(
             CollectionResultCacheTests.Validator.Collection2ViewModelValidator,
             args
          );
-         var invalidItems = owner.TestFixture.InvalidItemsOfCollection2ViewModelValidator.ToList();
 
-         if (invalidItems.Contains(item)) {
-            args.AddError(item, CollectionResultCacheTests.Collection2ViewModelValidationErrorMessage);
-         }
+         var invalidItems = args.Owner.TestFixture.InvalidItemsOfCollection2ViewModelValidator.ToList();
+         
+         invalidItems.ForEach(i =>
+            args.AddError(i, CollectionResultCacheTests.Collection2ViewModelValidationErrorMessage)
+         );
       }
 
       private static void Collection2PropertyValidator(
-         ItemVM item,
-         IEnumerable<ItemVM> items,
-         IVMPropertyDescriptor<string> property,
-         ValidationArgs args
+         CollectionValidationArgs<TwoItemListsVM, ItemVM, string> args
       ) {
-         var owner = (TwoItemListsVM)args.OwnerVM;
-         owner.InvocationLog.AddCall(
+         args.Owner.InvocationLog.AddCall(
             CollectionResultCacheTests.Validator.Collection2PropertyValidator,
             args
          );
-         var invalidItems = owner.TestFixture.InvalidItemsOfCollection2PropertyValidator.ToList();
+         var invalidItems = args.Owner.TestFixture.InvalidItemsOfCollection2PropertyValidator.ToList();
 
-         if (invalidItems.Contains(item)) {
-            args.AddError(item, CollectionResultCacheTests.Collection2PropertyValidationErrorMessage);
-         }
+         invalidItems.ForEach(i =>
+            args.AddError(i, CollectionResultCacheTests.Collection2PropertyValidationErrorMessage)
+         );
       }
    }
 

@@ -20,7 +20,7 @@
 
       public IVMCollection<TItemVM> Items { get; private set; }
 
-      public void AddError(TItemVM item, string message, object details) {
+      public void AddError(TItemVM item, string message, object details = null) {
          Contract.Requires<ArgumentNullException>(item != null);
          Contract.Requires<ArgumentNullException>(message != null);
 
@@ -69,7 +69,7 @@
 
       public IVMPropertyDescriptor<TValue> TargetProperty { get; private set; }
 
-      public void AddError(TItemVM item, string message, object details) {
+      public void AddError(TItemVM item, string message, object details = null) {
          Contract.Requires<ArgumentNullException>(item != null);
          Contract.Requires<ArgumentNullException>(message != null);
 

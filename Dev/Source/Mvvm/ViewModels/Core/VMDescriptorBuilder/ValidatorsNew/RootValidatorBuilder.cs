@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Diagnostics.Contracts;
-   using Inspiring.Mvvm.ViewModels.Core.VMDescriptorBuilder.ValidatorsNew;
 
    public sealed class RootValidatorBuilder<TOwner, TTarget, TDescriptor> :
       ValidatorBuilder<TOwner, TTarget, TDescriptor>

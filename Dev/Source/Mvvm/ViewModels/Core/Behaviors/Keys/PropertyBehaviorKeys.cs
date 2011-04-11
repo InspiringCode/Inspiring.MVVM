@@ -16,11 +16,13 @@
 
       public static readonly BehaviorKey ViewModelSourceSetter = Key(() => ViewModelSourceSetter);
 
+      public static readonly BehaviorKey DescendantsValidator = Key(() => DescendantsValidator);
+
+
       public static readonly BehaviorKey InvalidDisplayValueCache = new BehaviorKey("InvalidDisplayValueCache");
       public static readonly BehaviorKey DisplayValueAccessor = new BehaviorKey("DisplayValueAccessor");
       public static readonly BehaviorKey Validator = new BehaviorKey("Validator");
       public static readonly BehaviorKey PropertyChangedTrigger = new BehaviorKey("PropertyChangedTrigger");
-      public static readonly BehaviorKey PreValidationValueCache = new BehaviorKey("PreValidationValueCache");
 
       public static readonly BehaviorKey PropertyValueCache = new BehaviorKey("PropertyValueCache");
       public static readonly BehaviorKey ManualUpdateBehavior = new BehaviorKey("ManualUpdateBehavior");
@@ -52,7 +54,7 @@
 
       public static readonly BehaviorKey ViewModelFactory = new BehaviorKey("ViewModelFactory");
 
-      public static readonly BehaviorKey DescendantValidator = new BehaviorKey("DescendantValidator");
+      //public static readonly BehaviorKey DescendantValidator = new BehaviorKey("DescendantValidator");
 
       public static readonly BehaviorKey ManualUpdateCoordinator = new BehaviorKey("ManualUpdateCoordinator");
 

@@ -264,7 +264,7 @@
                d.SelectedProject = v.VM.Of<ProjectVM>();
                d.Projects = v.Collection.Of<ProjectVM>(new ProjectVMDescriptor());
             })
-            .WithNewValidators(configurationAction)
+            .WithValidators(configurationAction)
             .Build();
       }
 

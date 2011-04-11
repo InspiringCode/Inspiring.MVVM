@@ -17,13 +17,13 @@
          if (!result.Equals(previousResult)) {
             SetOrClearValidationResult(context, result);
 
-            var isViewModelChange = _property == null;
+            var isPropertyChange = _property != null;
             var changeType = ChangeType.ValidationStateChanged;
             var changedVM = context.VM;
 
-            var args = isViewModelChange ?
-               new ChangeArgs(changeType, changedVM) :
-               new ChangeArgs(changeType, changedVM, _property);
+            var args = isPropertyChange ?
+               new ChangeArgs(changeType, changedVM, _property) :
+               new ChangeArgs(changeType, changedVM);
 
             context.NotifyChange(args);
          }

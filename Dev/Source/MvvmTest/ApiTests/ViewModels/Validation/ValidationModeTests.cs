@@ -25,7 +25,7 @@
          protected abstract string PropertyName { get; }
 
          private static ValidationResult InvalidValidationState {
-            get { return CreateValidationState("Validation error"); }
+            get { return CreateValidationResult("Validation error"); }
          }
 
          [TestInitialize]
@@ -206,13 +206,13 @@
                   d.State = v.VM.Of<StateVM>();
                })
                .WithValidators(c => {
-                  c.Check(x => x.Title).Custom((vm, val, args) => {
-                     if (vm.ReturnError) {
+                  c.Check(x => x.Title).Custom(args => {
+                     if (args.Owner.ReturnError) {
                         args.AddError(InvalidValidationState.Errors.Single().Message);
                      }
                   });
-                  c.Check(x => x.State).Custom((vm, val, args) => {
-                     if (vm.ReturnError) {
+                  c.Check(x => x.State).Custom(args => {
+                     if (args.Owner.ReturnError) {
                         args.AddError(InvalidValidationState.Errors.Single().Message);
                      }
                   });

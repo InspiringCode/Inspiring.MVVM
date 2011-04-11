@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.MvvmContribTest.ViewModels.Selection {
    using Inspiring.Mvvm.ViewModels;
-   using Inspiring.MvvmTest.Stubs;
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -15,6 +14,6 @@
 
 
 
-      public class ItemVM : ViewModelStub { }
+      public class ItemVM : Inspiring.MvvmTest.ViewModels.ViewModelStub { }
    }
 }

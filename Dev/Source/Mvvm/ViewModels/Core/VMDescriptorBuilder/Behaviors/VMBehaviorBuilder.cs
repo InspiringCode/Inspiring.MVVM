@@ -64,7 +64,7 @@
          }
 
          /// <inheritdoc />
-         ISinglePropertyBehaviorBuilder<TVM, TValue> ISinglePropertyBehaviorBuilder<TVM, TValue>.AddChangeHandler(Action<TVM, ChangeArgs, InstancePath> changeHandler) {
+         ISinglePropertyBehaviorBuilder<TVM, TValue> ISinglePropertyBehaviorBuilder<TVM, TValue>.AddChangeHandler(Action<TVM, ChangeArgs> changeHandler) {
             // TODO: Make this more official...
             var key = new BehaviorKey("ChangeListener");
             Configuration.ViewModelConfiguration.Append(key);

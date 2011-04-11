@@ -46,7 +46,7 @@
       ///  Warning: This will change soon.
       /// </summary>
       ISinglePropertyBehaviorBuilder<TVM, TValue> AddChangeHandler(
-         Action<TVM, ChangeArgs, InstancePath> changeHandler
+         Action<TVM, ChangeArgs> changeHandler
       );
    }
 }

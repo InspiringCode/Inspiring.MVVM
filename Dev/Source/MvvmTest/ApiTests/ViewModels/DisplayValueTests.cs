@@ -73,7 +73,7 @@
       public void SetDisplayValue_ToInvalidValue_AddsValidationError() {
          VM.RatingDisplayValue = InvalidRatingDisplayValue;
 
-         var expected = CreateValidationState(InvalidDisplayValueValidationError);
+         var expected = CreateValidationResult(InvalidDisplayValueValidationError);
 
          Assert.AreEqual(expected, VM.ValidationState);
       }
@@ -96,7 +96,7 @@
          VM.RatingDisplayValue = InvalidRatingDisplayValue;
          VM.RatingSourceValue = InvalidRatingValue;
 
-         var expected = CreateValidationState(InvalidDisplayValueValidationError, InvalidValueValidationError);
+         var expected = CreateValidationResult(InvalidDisplayValueValidationError, InvalidValueValidationError);
 
          Assert.AreEqual(expected, VM.ValidationState);
       }

@@ -2,7 +2,7 @@
    using System.Collections.Generic;
    using System.Linq;
 
-   public sealed class CollectionResultCache {
+   public class CollectionResultCache {
       private List<KeyValuePair<CollectionResultKey, ValidationResult>> _cache =
          new List<KeyValuePair<CollectionResultKey, ValidationResult>>();
 
@@ -12,7 +12,10 @@
 
       private List<IVMCollection> ValidatedCollections { get; set; }
 
-      public ValidationResult GetCollectionValidationResults(
+      /// <remarks>
+      ///   This method is only virtual to allow unit tests to mock it.
+      /// </remarks>
+      public virtual ValidationResult GetCollectionValidationResults(
          ValidationStep step,
          IViewModel item,
          IVMPropertyDescriptor property
@@ -116,7 +119,7 @@
          private bool PropertyIsInvalid(IViewModel viewModel) {
             return viewModel
                .Kernel
-               .GetValidationState(ValidationStateScope.Self)
+               .GetValidationState(ValidationResultScope.Self)
                .Errors
                .Any(x => x.TargetProperty == _property);
          }

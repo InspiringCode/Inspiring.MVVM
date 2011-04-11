@@ -169,31 +169,6 @@
 
          public List<CollectionChangedArgs<IViewModel>> HandleChangeInvocations { get; private set; }
 
-         // TODO: Remove me!
-         public void CollectionPopulated(IBehaviorContext context, IVMCollection<IViewModel> collection, IViewModel[] previousItems) {
-            throw new System.NotImplementedException();
-         }
-
-         // TODO: Remove me!
-         public void ItemInserted(IBehaviorContext context, IVMCollection<IViewModel> collection, IViewModel item, int index) {
-            throw new System.NotImplementedException();
-         }
-
-         // TODO: Remove me!
-         public void ItemRemoved(IBehaviorContext context, IVMCollection<IViewModel> collection, IViewModel item, int index) {
-            throw new System.NotImplementedException();
-         }
-
-         // TODO: Remove me!
-         public void ItemSet(IBehaviorContext context, IVMCollection<IViewModel> collection, IViewModel previousItem, IViewModel item, int index) {
-            throw new System.NotImplementedException();
-         }
-
-         // TODO: Remove me!
-         public void CollectionCleared(IBehaviorContext context, IVMCollection<IViewModel> collection, IViewModel[] previousItems) {
-            throw new System.NotImplementedException();
-         }
-
          public void HandleChange(IBehaviorContext context, CollectionChangedArgs<IViewModel> args) {
             HandleChangeInvocations.Add(args);
          }

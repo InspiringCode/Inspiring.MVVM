@@ -71,7 +71,7 @@
          );
       }
 
-      public void AddChangeHandler(Action<TVM, ChangeArgs, InstancePath> changeHandler) {
+      public void AddChangeHandler(Action<TVM, ChangeArgs> changeHandler) {
          // TODO: Make this more official...
          var key = new BehaviorKey("ChangeListener");
          _configuration.ViewModelConfiguration.Append(key);

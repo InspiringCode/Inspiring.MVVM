@@ -13,6 +13,10 @@
          get { return _index < _steps.Length; }
       }
 
+      public PathStepType Type {
+         get { return _steps[_index].Type; }
+      }
+
       public bool IsViewModel {
          get { return _steps[_index].Type == PathStepType.ViewModel; }
       }

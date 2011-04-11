@@ -17,7 +17,7 @@
          vm.Projects.Add(p2);
          vm.Projects.Add(p3);
 
-         Assert.IsFalse(vm.GetValidationState(ValidationStateScope.Descendants).IsValid);
+         Assert.IsFalse(vm.GetValidationState(ValidationResultScope.Descendants).IsValid);
       }
 
       private sealed class EmployeeVM : ViewModel<EmployeeVMDescriptor> {
@@ -33,20 +33,17 @@
             })
             .WithValidators(b => {
                b.CheckCollection<ProjectVMDescriptor, bool>(x => x.Projects, x => x.IsSelected)
-                  .Custom<ProjectVM>((vm, list, property, args) => {
+                  .Custom<ProjectVM>(args => {
 
-                     var selectedItems = list
+                     var selectedItems = args
+                        .Items
                         .Where(x => x.IsSelected)
                         .ToArray();
 
                      if (selectedItems.Count() > 1) {
-                        args.AddError("error");
-                     }
-
-                     foreach (ProjectVM p in selectedItems) {
-                        //if (!p.Equals(vm)) {
-                        args.RevalidationQueue.Add(p);
-                        //}
+                        foreach (ProjectVM p in selectedItems) {
+                           args.AddError(p, "error");
+                        }
                      }
                   });
             })

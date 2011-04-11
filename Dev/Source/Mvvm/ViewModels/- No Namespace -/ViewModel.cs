@@ -82,7 +82,7 @@
 
       string IDataErrorInfo.Error {
          get {
-            ValidationResult state = Kernel.GetValidationState(ValidationStateScope.ViewModelValidationsOnly);
+            ValidationResult state = Kernel.GetValidationState(ValidationResultScope.ViewModelValidationsOnly);
             return state.IsValid ?
                null :
                state.Errors.First().Message;
@@ -268,7 +268,7 @@
             .PropertyDescriptors;
       }
 
-      public ValidationResult GetValidationState(ValidationStateScope scope) {
+      public ValidationResult GetValidationState(ValidationResultScope scope) {
          return Kernel.GetValidationState(scope);
       }
 
@@ -292,5 +292,9 @@
       //void IViewModel.SetDisplayValue(IVMProperty property, object value) {
       //   SetDisplayValue(property, value);
       //}
+
+      public void NotifyChange(ChangeArgs args) {
+         throw new NotImplementedException();
+      }
    }
 }
