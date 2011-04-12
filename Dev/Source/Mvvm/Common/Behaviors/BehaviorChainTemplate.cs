@@ -2,6 +2,8 @@
    using System;
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
+   using Inspiring.Mvvm.Common.Behaviors;
+   using Inspiring.Mvvm.Common;
 
    public enum DefaultBehaviorState {
       Disabled,
@@ -21,17 +23,17 @@
    /// </remarks>
    public sealed class BehaviorChainTemplate {
       private readonly List<BehaviorChainItemTemplate> _itemTemplates;
-      private readonly IBehaviorFactoryProvider _behaviorFactory;
+      private readonly IBehaviorFactoryProvider _factoryProvider;
 
       public BehaviorChainTemplate(IBehaviorFactoryProvider behaviorFactory)
          : this(behaviorFactory, new List<BehaviorChainItemTemplate>()) {
       }
 
       private BehaviorChainTemplate(
-         IBehaviorFactoryProvider behaviorFactory,
+         IBehaviorFactoryProvider factoryProvider,
          List<BehaviorChainItemTemplate> itemTemplates
       ) {
-         _behaviorFactory = behaviorFactory;
+         _factoryProvider = factoryProvider;
          _itemTemplates = itemTemplates;
       }
 
@@ -55,7 +57,7 @@
          var itemTemplatesClone = new List<BehaviorChainItemTemplate>(_itemTemplates);
          itemTemplatesClone.Add(new BehaviorChainItemTemplate(key, state));
 
-         return new BehaviorChainTemplate(_behaviorFactory, itemTemplatesClone);
+         return new BehaviorChainTemplate(_factoryProvider, itemTemplatesClone);
       }
 
       /// <summary>
@@ -63,11 +65,11 @@
       ///   behavior chain item templates but with a different <see 
       ///   cref="IBehaviorFactoryProvider"/>.
       /// </summary>
-      public BehaviorChainTemplate OverrideFactory(IBehaviorFactoryProvider factory) {
-         Contract.Requires<ArgumentNullException>(factory != null);
+      public BehaviorChainTemplate OverrideFactoryProvider(IBehaviorFactoryProvider factoryProvider) {
+         Contract.Requires<ArgumentNullException>(factoryProvider != null);
 
          // The _itemTemplates list can be shared because we do not modify it.
-         return new BehaviorChainTemplate(factory, _itemTemplates);
+         return new BehaviorChainTemplate(factoryProvider, _itemTemplates);
       }
 
       /// <summary>
@@ -75,19 +77,21 @@
       ///   template.
       /// </summary>
       // TODO: Comment.
-      internal BehaviorChainConfiguration CreateConfiguration(BehaviorFactoryInvoker factoryInvoker) {
-         Contract.Requires(factoryInvoker != null);
+      internal BehaviorChainConfiguration CreateConfiguration(
+         IBehaviorFactoryConfiguration factoryConfiguration
+      ) {
+         Contract.Requires(factoryConfiguration != null);
          Contract.Ensures(Contract.Result<BehaviorChainConfiguration>() != null);
 
          var config = new BehaviorChainConfiguration();
-
+         IBehaviorFactory factory = factoryConfiguration.GetFactory(_factoryProvider);
          foreach (BehaviorChainItemTemplate itemTemplate in _itemTemplates) {
             BehaviorKey key = itemTemplate.Key;
 
             if (itemTemplate.State == DefaultBehaviorState.DisabledWithoutFactory) {
                config.Append(key);
             } else {
-               IBehavior instance = factoryInvoker.Invoke(_behaviorFactory, key);
+               IBehavior instance = factory.Create(key);
                config.Append(key, instance);
 
                if (itemTemplate.State == DefaultBehaviorState.Enabled) {

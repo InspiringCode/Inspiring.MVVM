@@ -2,6 +2,7 @@
    using System;
    using System.Diagnostics.Contracts;
    using System.Linq;
+   using Inspiring.Mvvm.ViewModels.Core.Behaviors;
 
    // TODO: Document me.
    public sealed class ViewModelBehaviorBuilder<TVM, TDescriptor>
@@ -21,8 +22,8 @@
 
       public void ReplaceConfiguration(BehaviorChainTemplateKey templateKey) {
          var template = BehaviorChainTemplateRegistry.GetTemplate(templateKey);
-         var invoker = ViewModelBehaviorFactory.CreateInvoker<TVM>();
-         var config = template.CreateConfiguration(invoker);
+         var factoryConfiguration = new ViewModelBehaviorFactoryConfiguration<TVM>();
+         var config = template.CreateConfiguration(factoryConfiguration);
 
          _configuration.ViewModelConfiguration = config;
       }

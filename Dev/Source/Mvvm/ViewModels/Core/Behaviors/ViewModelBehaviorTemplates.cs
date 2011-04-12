@@ -3,6 +3,8 @@
    internal class ViewModelBehaviorTemplates {
       public static void RegisterDefaultTemplates() {
          RegisterPropertyTemplate();
+
+         RegisterViewModelTemplate();
       }
 
       private static void RegisterPropertyTemplate() {
@@ -16,6 +18,19 @@
                .Append(PropertyBehaviorKeys.PropertyChangedNotifier)
                .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.TypeDescriptor)
+         );
+      }
+
+      private static void RegisterViewModelTemplate() {
+         BehaviorChainTemplateRegistry.RegisterTemplate(
+            BehaviorChainTemplateKeys.ViewModel,
+            new BehaviorChainTemplate(ViewModelBehaviorFactoryProvider.Default)
+            //.Append(PropertyBehaviorKeys.ManualUpdateCoordinator)
+            //.Append(PropertyBehaviorKeys.Validator, DefaultBehaviorState.Disabled)
+            //.Append(ViewModelBehaviorKeys.ViewModelValidationSource, DefaultBehaviorState.Disabled)
+            //.Append(ViewModelBehaviorKeys.ValidationExecutor, DefaultBehaviorState.Disabled)
+            //.Append(PropertyBehaviorKeys.TypeDescriptor)
+            //.Append(ViewModelBehaviorKeys.UndoRoot, DefaultBehaviorState.Disabled)
          );
       }
    }

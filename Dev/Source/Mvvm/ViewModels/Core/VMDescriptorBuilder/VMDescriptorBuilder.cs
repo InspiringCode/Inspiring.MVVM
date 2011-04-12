@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core.VMDescriptorBuilder {
    using System;
    using System.Diagnostics.Contracts;
+   using Inspiring.Mvvm.ViewModels.Core.Behaviors;
    using Inspiring.Mvvm.ViewModels.Core.VMDescriptorBuilder.Behaviors;
 
    /// <summary>
@@ -170,8 +171,8 @@
 
       private static BehaviorChainConfiguration GetDefaultViewModelConfiguration() {
          var template = BehaviorChainTemplateRegistry.GetTemplate(BehaviorChainTemplateKeys.ViewModel);
-         var invoker = ViewModelBehaviorFactory.CreateInvoker<TVM>();
-         return template.CreateConfiguration(invoker);
+         var factoryConfig = new ViewModelBehaviorFactoryConfiguration<TVM>();
+         return template.CreateConfiguration(factoryConfig);
       }
    }
 }

@@ -2,7 +2,7 @@
    using System;
    using System.Diagnostics.Contracts;
    using Contracts;
-   using Inspiring.Mvvm.Common.Behaviors;
+   using Inspiring.Mvvm.Common;
 
    public interface IBehaviorFactoryConfiguration {
       IBehaviorFactory GetFactory(IBehaviorFactoryProvider factoryProvider);

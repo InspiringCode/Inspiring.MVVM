@@ -5,6 +5,7 @@
    using System.Linq.Expressions;
    using System.Windows.Input;
    using Inspiring.Mvvm.Common;
+   using Inspiring.Mvvm.ViewModels.Core.Behaviors;
 
    internal sealed class VMPropertyBuilder<TVM, TSourceObject> :
       ConfigurationProvider,
@@ -193,7 +194,7 @@
          Func<TSourceObject, bool> canExecute
       ) {
          var commandTemplate = BehaviorChainTemplateRegistry.GetTemplate(BehaviorChainTemplateKeys.CommandBehaviors);
-         var commandConfig = commandTemplate.CreateConfiguration(CommandBehaviorFactory.CreateInvoker<TVM, TSourceObject>());
+         var commandConfig = commandTemplate.CreateConfiguration(new CommandBehaviorFactoryConfiguration<TVM, TSourceObject>());
 
          commandConfig.Enable(
             PropertyBehaviorKeys.CommandExecutor,

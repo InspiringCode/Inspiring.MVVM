@@ -4,6 +4,7 @@
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
+   using Inspiring.Mvvm.ViewModels.Core.Behaviors;
    using Inspiring.MvvmTest.Stubs;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -18,7 +19,7 @@
             BehaviorChainTemplateKeys.ViewModel
          );
 
-         var viewModelConfiguration = template.CreateConfiguration(ViewModelBehaviorFactory.CreateInvoker<EmployeeVM>());
+         var viewModelConfiguration = template.CreateConfiguration(new ViewModelBehaviorFactoryConfiguration<EmployeeVM>());
 
          Configuration = new VMDescriptorConfiguration(viewModelConfiguration);
       }

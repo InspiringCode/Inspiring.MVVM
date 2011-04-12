@@ -1,17 +1,19 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core {
+﻿using Inspiring.Mvvm.ViewModels.Core.Behaviors;
+namespace Inspiring.Mvvm.ViewModels.Core {
    public static partial class BehaviorChainTemplateRegistry {
       static BehaviorChainTemplateRegistry() {
-         ResetToDefaults();
+         ViewModelBehaviorTemplates.RegisterDefaultTemplates();
+         //ResetToDefaults();
       }
 
       public static void ResetToDefaults() {
-         RegisterViewModelTemplate();
-         RegisterPropertyTemplate();
-         RegisterCollectionPropertyTemplate();
-         RegisterCommandPropertyTemplate();
-         RegisterCommandBehaviorsTemplate();
-         RegisterViewModelPropertyTemplate();
-         RegisterCollectionBehaviorsTemplate();
+         //RegisterViewModelTemplate();
+         //RegisterPropertyTemplate();
+         //RegisterCollectionPropertyTemplate();
+         //RegisterCommandPropertyTemplate();
+         //RegisterCommandBehaviorsTemplate();
+         //RegisterViewModelPropertyTemplate();
+         //RegisterCollectionBehaviorsTemplate();
       }
 
       private static void RegisterViewModelTemplate() {

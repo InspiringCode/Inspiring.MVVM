@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.Common.Behaviors {
+﻿namespace Inspiring.Mvvm.Common {
    using System;
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
