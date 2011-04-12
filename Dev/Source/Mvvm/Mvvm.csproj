@@ -167,7 +167,7 @@
     <Compile Include="ViewModels\Core\Behaviors\Keys\PropertyBehaviorKeys.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Keys\PropertyBehaviorKeysBase.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Keys\ViewModelBehaviorKeys.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\ViewModelBehaviorTemplates.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\ViewModelBehaviorChainTemplates.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IItemDescriptorProviderCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IPopulatorCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IModificationCollectionBehavior.cs" />

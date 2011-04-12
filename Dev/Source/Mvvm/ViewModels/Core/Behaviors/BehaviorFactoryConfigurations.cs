@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core.Behaviors {
+   using System;
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.Common.Behaviors;
 
@@ -37,7 +38,7 @@
          return new ChildBehaviorFactoryConfiguration<TOwnerVM, TChildVM, TSourceObject, TChildSource>();
       }
 
-      
+
 
 
       private class SimplePropertyBehaviorFactoryConfiguration<TOwnerVM, TValue, TSourceObject, TValueSource> :
@@ -64,8 +65,12 @@
          where TOwnerVM : IViewModel
          where TChildVM : IViewModel, IHasSourceObject<TChildSource> {
 
-         protected override IBehaviorFactory GetFactory(IChildWithSourceBehaviorFactoryProvider factoryProvider) {
+         protected IBehaviorFactory GetFactory(IChildWithSourceBehaviorFactoryProvider factoryProvider) {
             return factoryProvider.GetFactory<TOwnerVM, TChildVM, TSourceObject, TChildSource>();
+         }
+
+         protected override IBehaviorFactory GetFactory(IChildBehaviorFactoryProvider factoryProvider) {
+            throw new NotImplementedException();
          }
       }
 
@@ -91,7 +96,8 @@
       where TOwner : IViewModel {
 
       protected override IBehaviorFactory GetFactory(PropertyBehaviorFactoryProvider factoryProvider) {
-         return factoryProvider.GetFactory<TOwner, TValue>();
+         //return factoryProvider.GetFactory<TOwner, TValue>();
+         throw new NotImplementedException();
       }
    }
 
@@ -101,7 +107,8 @@
       where TValue : IViewModel {
 
       protected override IBehaviorFactory GetFactory(ViewModelPropertyBehaviorFactoryProvider factoryProvider) {
-         return factoryProvider.GetFactory<TOwnerVM, TValue>();
+         //return factoryProvider.GetFactory<TOwnerVM, TValue>();
+         throw new NotImplementedException();
       }
    }
 
@@ -111,7 +118,8 @@
       where TItemVM : IViewModel {
 
       protected override IBehaviorFactory GetFactory(CollectionPropertyBehaviorFactoryProvider factoryProvider) {
-         return factoryProvider.GetFactory<TOwnerVM, TItemVM>();
+         //return factoryProvider.GetFactory<TOwnerVM, TItemVM>();
+         throw new NotImplementedException();
       }
    }
 
@@ -120,7 +128,8 @@
       where TVM : IViewModel {
 
       protected override IBehaviorFactory GetFactory(ViewModelBehaviorFactoryProvider factoryProvider) {
-         return factoryProvider.GetFactory<TVM>();
+         //return factoryProvider.GetFactory<TVM>();
+         throw new NotImplementedException();
       }
    }
 
@@ -129,7 +138,8 @@
       where TOwnerVM : IViewModel {
 
       protected override IBehaviorFactory GetFactory(CommandBehaviorFactoryProvider factoryProvider) {
-         return factoryProvider.GetFactory<TOwnerVM, TSourceObject>();
+         //return factoryProvider.GetFactory<TOwnerVM, TSourceObject>();
+         throw new NotImplementedException();
       }
    }
 }

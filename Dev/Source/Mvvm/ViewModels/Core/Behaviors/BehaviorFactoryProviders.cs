@@ -25,7 +25,7 @@
    }
 
    public abstract class PropertyBehaviorFactoryProviderBase : IBehaviorFactoryProvider {
-      public abstract BehaviorFactory GetFactory<TOwnerVM, TValue, TSourceObject, TValueSource>()
+      public BehaviorFactory GetFactory<TOwnerVM, TValue, TSourceObject, TValueSource>()
          where TOwnerVM : IViewModel {
 
          return new BehaviorFactory();
@@ -79,29 +79,41 @@
 
 
    public class CollectionPropertyBehaviorFactoryProvider : ChildBehaviorFactoryProvider {
-      public override BehaviorFactory GetFactory<TOwnerVM, TChildVM, TSourceObject, TChildSource>() {
+      public BehaviorFactory GetFactory<TOwnerVM, TChildVM, TSourceObject, TChildSource>() {
          // Add common property behaviors
          // Add view model behaviors
+         throw new NotImplementedException();
+      }
+
+      public override BehaviorFactory GetFactory<TOwnerVM, TChildVM, TSourceObject>() {
          throw new NotImplementedException();
       }
    }
 
    public class CommandPropertyBehaviorFactoryProvider : PropertyBehaviorFactoryProviderBase { // TODO???
 
-      public override BehaviorFactory GetFactory<TOwnerVM, TValue, TSourceObject, TValueSource>() {
+      public BehaviorFactory GetFactory<TOwnerVM, TValue, TSourceObject, TValueSource>() {
          throw new NotImplementedException();
       }
    }
 
 
    public class CollectionBehaviorFactoryProvider : ChildBehaviorFactoryProvider {
-      public override BehaviorFactory GetFactory<TOwnerVM, TChildVM, TSourceObject, TChildSource>() {
+      public BehaviorFactory GetFactory<TOwnerVM, TChildVM, TSourceObject, TChildSource>() {
+         throw new NotImplementedException();
+      }
+
+      public override BehaviorFactory GetFactory<TOwnerVM, TChildVM, TSourceObject>() {
          throw new NotImplementedException();
       }
    }
 
    public class CommandBehaviorFactoryProvider : ChildBehaviorFactoryProvider {
-      public override BehaviorFactory GetFactory<TOwnerVM, TChildVM, TSourceObject, TChildSource>() {
+      public BehaviorFactory GetFactory<TOwnerVM, TChildVM, TSourceObject, TChildSource>() {
+         throw new NotImplementedException();
+      }
+
+      public override BehaviorFactory GetFactory<TOwnerVM, TChildVM, TSourceObject>() {
          throw new NotImplementedException();
       }
    }
