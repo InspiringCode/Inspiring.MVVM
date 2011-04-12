@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Inspiring.Mvvm.Testing.FileDialogResponderSetup">
+    <Position X="0.5" Y="7" Width="2.25" />
+    <Members>
+      <Field Name="_fileName" Hidden="true" />
+      <Method Name="FileDialogResponderSetup" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>EAAAAAQAAAAAAAQAAAAACAAAIAAAIAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Testing\Responders\FileDialogResponderSetup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Inspiring.Mvvm.Testing.ShowDialogResponderSetup&lt;TScreen&gt;">
+    <Position X="7.75" Y="7" Width="2.75" />
+    <Members>
+      <Method Name="ShowDialogResponderSetup" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAQgAABAACAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Testing\Responders\ShowDialogResponderSetup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Inspiring.Mvvm.Testing.MessageBoxResponderSetup">
+    <Position X="4" Y="7" Width="2.5" />
+    <Members>
+      <Method Name="MessageBoxResponderSetup" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>EAQgAAAAAAABAAAAAAAAAAAAAAQAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Testing\Responders\MessageBoxResponderSetup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Inspiring.Mvvm.Testing.ResponderBase">
+    <Position X="5" Y="3.25" Width="3" />
+    <Members>
+      <Method Name="ResponderBase" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>gAAAAABAAAAAAgAAAAAAAAAAQAQAIAAAAAIAAABAAAA=</HashCode>
+      <FileName>Testing\Responders\ResponderBase.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ExpectedInvocation" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Inspiring.Mvvm.Testing.ArgumentValue">
+    <Position X="8.75" Y="0.5" Width="1.75" />
+    <Members>
+      <Method Name="ArgumentValue" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAgAEAAAAAAAAAAAAABAAACAgAAAAAAA=</HashCode>
+      <FileName>Testing\ArgumentValue.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Inspiring.Mvvm.Testing.StringArgumentValue">
+    <Position X="8.75" Y="3.25" Width="1.75" />
+    <Members>
+      <Method Name="StringArgumentValue" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAgAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Testing\ArgumentValue.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="MatchType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Inspiring.Mvvm.Testing.DialogTestService" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="2.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>pJAAgCAAAAQAQAAIECAMAAAAAEAAAAAAAiEAEAIAABA=</HashCode>
+      <FileName>Testing\MessageBoxTestService.new.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_responders" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Inspiring.Mvvm.Testing.DialogServiceInvocation">
+    <Position X="6" Y="0.5" Width="2" />
+    <Members>
+      <Field Name="_parameter" Hidden="true" />
+      <Method Name="DialogServiceInvocation" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAEAAAgQAAAABIAAAAACAAAIAAAAAA=</HashCode>
+      <FileName>Testing\DialogServiceInvocation.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Method" />
+    </ShowAsAssociation>
+  </Class>
+  <Enum Name="Inspiring.Mvvm.Testing.DialogServiceMethod">
+    <Position X="3.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAQAAAAAAABAAAAAAAAAACAAAIEACQAA=</HashCode>
+      <FileName>Testing\Responders\MessageBoxResponderSetup.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Inspiring.Mvvm.Testing.MatchType">
+    <Position X="8.75" Y="5.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAEAAQA=</HashCode>
+      <FileName>Testing\ArgumentValue.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>
