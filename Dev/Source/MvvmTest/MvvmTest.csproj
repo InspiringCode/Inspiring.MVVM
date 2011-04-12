@@ -157,6 +157,7 @@
     <Compile Include="AssertHelper.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Common\Behaviors\BehaviorFactoryConfigurationTests.cs" />
+    <Compile Include="Common\Behaviors\BehaviorFactoryTests.cs" />
     <Compile Include="Common\DelegateUtilsTests.cs" />
     <Compile Include="Common\HashCodeServiceTests.cs" />
     <Compile Include="Common\ServiceRegistryTests.cs" />
