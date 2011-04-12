@@ -5,7 +5,7 @@
    using Inspiring.Mvvm.Common;
 
    public sealed class CollectionPropertyValidatorBuilder<TItemDescriptor, TItemValue>
-      where TItemDescriptor : VMDescriptorBase {
+      where TItemDescriptor : IVMDescriptor {
 
       private ValidatorConfiguration _configuration;
 

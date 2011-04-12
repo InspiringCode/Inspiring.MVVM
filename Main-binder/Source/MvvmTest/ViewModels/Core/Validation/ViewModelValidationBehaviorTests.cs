@@ -203,7 +203,7 @@
 
          [TestMethod]
          public void OnValidating_ChildValidator_GetsCalled() {
-            AddViewModelValidatorSpy(new VMPropertyPath().AddProperty(PropertySelector.Create<VMDescriptorBase>(x => _addressProperty))); // TODO
+            AddViewModelValidatorSpy(new VMPropertyPath().AddProperty(PropertySelector.Create<IVMDescriptor>(x => _addressProperty))); // TODO
 
             InvokeOnValidating(
                withArgs: CreateViewModelValidationArgs(
@@ -217,7 +217,7 @@
 
          [TestMethod]
          public void OnValidating_ChildValidator_GetsNotCalled() {
-            AddViewModelValidatorSpy(new VMPropertyPath().AddProperty(PropertySelector.Create<VMDescriptorBase>(x => _addressProperty))); // TODO
+            AddViewModelValidatorSpy(new VMPropertyPath().AddProperty(PropertySelector.Create<IVMDescriptor>(x => _addressProperty))); // TODO
 
             var anotherVM = new ViewModelStub();
 
@@ -255,7 +255,7 @@
          }
 
          private void AddPropertyValidatorSpy(IVMPropertyDescriptor forProperty, VMPropertyPath path = null) {
-            _behavior.AddValidator(_validator, ValidationType.PropertyValue, path ?? VMPropertyPath.Empty, PropertySelector.Create<VMDescriptorBase>(x => forProperty));
+            _behavior.AddValidator(_validator, ValidationType.PropertyValue, path ?? VMPropertyPath.Empty, PropertySelector.Create<IVMDescriptor>(x => forProperty));
             //_behavior.AddValidator(_validator, ValidationType.PropertyValue, path ?? VMPropertyPath.Empty, forProperty);
          }
 

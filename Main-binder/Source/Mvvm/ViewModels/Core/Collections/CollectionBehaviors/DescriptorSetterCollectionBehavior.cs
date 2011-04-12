@@ -7,14 +7,14 @@
       IItemDescriptorProviderCollectionBehavior
       where TItemVM : IViewModel {
 
-      private VMDescriptorBase _itemDescriptor;
+      private IVMDescriptor _itemDescriptor;
 
-      public ItemDescriptorCollectionBehavior(VMDescriptorBase itemDescriptor) {
+      public ItemDescriptorCollectionBehavior(IVMDescriptor itemDescriptor) {
          Contract.Requires(itemDescriptor != null);
          _itemDescriptor = itemDescriptor;
       }
 
-      public VMDescriptorBase ItemDescriptor {
+      public IVMDescriptor ItemDescriptor {
          get { return _itemDescriptor; }
       }
 

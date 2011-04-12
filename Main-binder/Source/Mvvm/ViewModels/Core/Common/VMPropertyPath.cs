@@ -31,7 +31,7 @@
          return new VMPropertyPath(propertiesClone);
       }
 
-      public IVMPropertyDescriptor GetProperty(int index, VMDescriptorBase declaringDescriptor) {
+      public IVMPropertyDescriptor GetProperty(int index, IVMDescriptor declaringDescriptor) {
          Contract.Requires<ArgumentNullException>(declaringDescriptor != null);
          Contract.Requires<IndexOutOfRangeException>(0 <= index && index < Length);
          Contract.Ensures(Contract.Result<IVMPropertyDescriptor>() != null);

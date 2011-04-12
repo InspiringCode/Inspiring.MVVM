@@ -8,7 +8,7 @@
       /// </summary>
       public static void Initialize(
          this BehaviorChain chain,
-         VMDescriptorBase descriptor,
+         IVMDescriptor descriptor,
          IVMPropertyDescriptor property = null
       ) {
          var context = new BehaviorInitializationContext(descriptor, property);

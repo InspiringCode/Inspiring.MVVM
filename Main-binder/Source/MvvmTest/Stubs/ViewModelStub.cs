@@ -14,7 +14,7 @@
 
       }
 
-      public ViewModelStub(VMDescriptorBase descriptor) {
+      public ViewModelStub(IVMDescriptor descriptor) {
          _fakeValues = new Dictionary<IVMPropertyDescriptor, object>();
          Descriptor = descriptor;
          Kernel = new VMKernel(this, Descriptor, ServiceLocator.Current);
@@ -66,7 +66,7 @@
       }
 
 
-      public VMDescriptorBase Descriptor {
+      public IVMDescriptor Descriptor {
          get;
          set;
       }

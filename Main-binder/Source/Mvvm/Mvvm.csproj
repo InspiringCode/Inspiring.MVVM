@@ -184,6 +184,7 @@
     <Compile Include="ViewModels\Core\Validation\CollectionValidator.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionValidatorState.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\VMDescriptorConfiguration.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptor\IVMDescriptor.cs" />
     <Compile Include="ViewModels\Core\VMDescriptor\IVMDescriptorBuilder.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\CacheBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\CollectionBehaviors\DelegatePopulatorCollectionBehavior.cs" />

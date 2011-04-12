@@ -186,7 +186,7 @@
 
       /// <inheritdoc />
       IVMPropertyDescriptor<IVMCollection<TItemVM>> ICollectionPropertyBuilder<TSourceObject>.Of<TItemVM>(
-         VMDescriptorBase itemDescriptor
+         IVMDescriptor itemDescriptor
       ) {
          return Factory.CreateCollectionProperty<TItemVM>(
             Factory.GetCollectionConfiguration<TItemVM>(itemDescriptor),
@@ -244,7 +244,7 @@
          private VMPropertyFactory<TVM> Factory { get; set; }
 
          IVMPropertyDescriptor<IVMCollection<TItemVM>> ICollectionPropertyBuilderWithSource<TItemSource>.With<TItemVM>(
-            VMDescriptorBase itemDescriptor
+            IVMDescriptor itemDescriptor
          ) {
             var collectionConfiguration = Factory.GetCollectionConfiguration<TItemVM>(itemDescriptor);
 
@@ -314,7 +314,7 @@
 
          private VMPropertyFactory<TVM> Factory { get; set; }
 
-         public IVMPropertyDescriptor<IVMCollection<TItemVM>> With(VMDescriptorBase itemDescriptor) {
+         public IVMPropertyDescriptor<IVMCollection<TItemVM>> With(IVMDescriptor itemDescriptor) {
             var collectionConfiguration = Factory.GetCollectionConfiguration<TItemVM>(itemDescriptor);
 
             collectionConfiguration.Enable(CollectionBehaviorKeys.SourceAccessor, _sourceObjectAccessor);

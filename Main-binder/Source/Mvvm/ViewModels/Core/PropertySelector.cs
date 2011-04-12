@@ -19,14 +19,14 @@
    public abstract class PropertySelector {
       public static PropertySelector Create<TDescriptor>(
          Func<TDescriptor, IVMPropertyDescriptor> propertySelector
-      ) where TDescriptor : VMDescriptorBase {
+      ) where TDescriptor : IVMDescriptor {
          Contract.Requires(propertySelector != null);
          return new NonGenericPropertySelector<TDescriptor>(propertySelector);
       }
 
       public static PropertySelector CreateExactlyTyped<TDescriptor, TValue>(
          Func<TDescriptor, IVMPropertyDescriptor<TValue>> propertySelector
-      ) where TDescriptor : VMDescriptorBase {
+      ) where TDescriptor : IVMDescriptor {
          Contract.Requires(propertySelector != null);
          return new GenericPropertySelector<TDescriptor, TValue>(propertySelector);
       }
@@ -39,13 +39,13 @@
       /// <param name="descriptor">
       ///   The descriptor instance whos VM property instance should be returned.
       /// </param>
-      public abstract IVMPropertyDescriptor GetProperty(VMDescriptorBase descriptor);
+      public abstract IVMPropertyDescriptor GetProperty(IVMDescriptor descriptor);
 
       public abstract object GetPropertyValue(IViewModel viewModel);
 
       private sealed class NonGenericPropertySelector<TDescriptor> :
          PropertySelector
-         where TDescriptor : VMDescriptorBase {
+         where TDescriptor : IVMDescriptor {
 
          private PropertySelector _genericSelector;
          private readonly Func<TDescriptor, IVMPropertyDescriptor> _selector;
@@ -55,7 +55,7 @@
             _selector = selector;
          }
 
-         public override IVMPropertyDescriptor GetProperty(VMDescriptorBase descriptor) {
+         public override IVMPropertyDescriptor GetProperty(IVMDescriptor descriptor) {
             var concreteDescriptor = (TDescriptor)descriptor;
             return _selector(concreteDescriptor);
          }
@@ -83,7 +83,7 @@
          ///   Because the type of the property selected by this object always
          ///   has to be the same, any instance can be used for this purpose.
          /// </param>
-         private void InitializeGenericSelector(VMDescriptorBase arbitraryDescriptor) {
+         private void InitializeGenericSelector(IVMDescriptor arbitraryDescriptor) {
             IVMPropertyDescriptor property = GetProperty(arbitraryDescriptor);
             _genericSelector = CreateGenericSelector(property.PropertyType);
          }
@@ -109,7 +109,7 @@
       /// </summary>
       private sealed class GenericPropertySelector<TDescriptor, TValue> :
          PropertySelector
-         where TDescriptor : VMDescriptorBase {
+         where TDescriptor : IVMDescriptor {
 
          private readonly Func<TDescriptor, IVMPropertyDescriptor> _selector;
 
@@ -118,8 +118,8 @@
             _selector = selector;
          }
 
-         public override IVMPropertyDescriptor GetProperty(VMDescriptorBase descriptor) {
-            var concreteDescriptor = (TDescriptor)descriptor;
+         public override IVMPropertyDescriptor GetProperty(IVMDescriptor descriptor) {
+            var concreteDescriptor = (TDescriptor)(object)descriptor;
             return _selector(concreteDescriptor);
          }
 

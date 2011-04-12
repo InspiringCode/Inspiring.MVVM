@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Inspiring.MvvmTest.ViewModels.Core {
    [TestClass]
-   public class VMDescriptorBaseTests {
+   public class IVMDescriptorTests {
       [TestMethod]
       public void Modify_CallTwoTimes_Succeeds() {
          TestVMDescriptor descriptor = new TestVMDescriptor();

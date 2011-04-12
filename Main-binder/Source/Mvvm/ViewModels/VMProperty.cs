@@ -30,7 +30,7 @@
          PropertyName = propertyName;
       }
 
-      //internal abstract void ConfigureBehaviors(BehaviorConfiguration configuration, VMDescriptorBase descriptor);
+      //internal abstract void ConfigureBehaviors(BehaviorConfiguration configuration, IVMDescriptor descriptor);
 
 
       [Obsolete]
@@ -106,7 +106,7 @@
          : base(typeof(T)) {
       }
 
-      //internal override void ConfigureBehaviors(BehaviorConfiguration configuration, VMDescriptorBase descriptor) {
+      //internal override void ConfigureBehaviors(BehaviorConfiguration configuration, IVMDescriptor descriptor) {
       //   Behaviors = configuration.CreateBehaviorChain<T>();
       //   throw new NotImplementedException();
       //   //((IBehavior)Behaviors).Initialize(new BehaviorInitializationContext(descriptor, this));

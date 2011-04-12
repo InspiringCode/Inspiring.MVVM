@@ -58,7 +58,7 @@
       ///   items. This may be a delegated property that returns a constant list.
       /// </param>
       internal static MultiSelectionVMDescriptor<TItemSource, TItemVM> CreateDescriptor(
-         VMDescriptorBase itemDescriptor,
+         IVMDescriptor itemDescriptor,
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<ICollection<TItemSource>>> selectedSourceItemsPropertyFactory,
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory,
          bool enableValidation

@@ -1,8 +1,9 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using Inspiring.Mvvm.Screens;
+using Inspiring.Mvvm.ViewModels;
 using Inspiring.Mvvm.Views;
-using Inspiring.MvvmTest.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Inspiring.MvvmTest.Views {
@@ -26,7 +27,7 @@ namespace Inspiring.MvvmTest.Views {
 
       // [TestMethod] // TODO
       public void BindCollection() {
-         PersonVM vm = null;
+         Inspiring.MvvmTest.ViewModels.PersonVM vm = null;
          PersonVMView view = new PersonVMView();
          DataGrid grid = new DataGrid();
 
@@ -64,15 +65,45 @@ namespace Inspiring.MvvmTest.Views {
          }
       }
 
-      private class PersonVMView : IView<PersonVM> {
+      private class PersonVMView : IView<Inspiring.MvvmTest.ViewModels.PersonVM> {
 
-         public PersonVM Model {
+         public Inspiring.MvvmTest.ViewModels.PersonVM Model {
             set { throw new System.NotImplementedException(); }
          }
       }
 
       private class PersonScreen : ScreenBase {
-         public PersonVM VM { get; private set; }
+         public Inspiring.MvvmTest.ViewModels.PersonVM VM { get; private set; }
+      }
+
+
+      [TestMethod]
+      public void BindVM_DescriptorInterface_Succeeds() {
+         var view = new PersonInterfaceView();
+
+         ViewBinder.BindVM(view, b => {
+
+         });
+      }
+
+      private interface IPersonDescriptor : IVMDescriptor {
+         IVMPropertyDescriptor<string> Name { get; }
+      }
+
+      private class PersonVMDescriptor : VMDescriptor, IPersonDescriptor {
+         public IVMPropertyDescriptor<string> Name { get; set; }
+      }
+
+      private class PersonVM : ViewModel<PersonVMDescriptor> {
+
+      }
+
+      private class PersonInterfaceView : DependencyObject, IView<IViewModelExpression<IPersonDescriptor>> {
+
+
+         public IViewModelExpression<IPersonDescriptor> Model {
+            set { throw new System.NotImplementedException(); }
+         }
       }
    }
 }

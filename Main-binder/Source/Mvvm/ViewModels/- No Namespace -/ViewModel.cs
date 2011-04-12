@@ -18,7 +18,7 @@
       IViewModelExpression<TDescriptor>,
       INotifyPropertyChanged,
       IDataErrorInfo
-      where TDescriptor : VMDescriptorBase {
+      where TDescriptor : IVMDescriptor {
 
       public ViewModel(IServiceLocator serviceLocator = null) {
          ServiceLocator = serviceLocator ?? Mvvm.ServiceLocator.Current;
@@ -44,7 +44,7 @@
          get { return Kernel; }
       }
 
-      VMDescriptorBase IViewModel.Descriptor {
+      IVMDescriptor IViewModel.Descriptor {
          get { return Descriptor; }
          set { Descriptor = (TDescriptor)value; }
       }

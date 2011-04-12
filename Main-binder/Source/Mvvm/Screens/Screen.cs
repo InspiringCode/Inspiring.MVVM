@@ -12,7 +12,7 @@
    public class ViewModelScreenBase<TDescriptor> :
       ViewModel<TDescriptor>,
       IViewModelScreenBase
-      where TDescriptor : VMDescriptorBase {
+      where TDescriptor : IVMDescriptor {
 
       public ViewModelScreenBase(IServiceLocator serviceLocator = null)
          : base(serviceLocator) {

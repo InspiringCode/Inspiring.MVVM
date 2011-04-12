@@ -79,7 +79,7 @@
       ///   object for which the <see cref="BehaviorChainConfiguration"/> was
       ///   registered.
       /// </summary>
-      internal void ApplyToProperties(VMDescriptorBase parentDescriptor) {
+      internal void ApplyToProperties(IVMDescriptor parentDescriptor) {
          foreach (var pair in _propertyConfigurations) {
             IVMPropertyDescriptor property = pair.Key;
             BehaviorChainConfiguration config = pair.Value;

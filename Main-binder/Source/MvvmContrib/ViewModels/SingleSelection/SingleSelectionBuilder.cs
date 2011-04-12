@@ -63,7 +63,7 @@
       }
 
       public IVMPropertyDescriptor<SingleSelectionVM<TItemSource, TItemVM>> Of<TItemVM>(
-         VMDescriptorBase itemDescriptor
+         IVMDescriptor itemDescriptor
       ) where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
          Contract.Assert(SelectedSourceItemPropertyFactory != null);
 

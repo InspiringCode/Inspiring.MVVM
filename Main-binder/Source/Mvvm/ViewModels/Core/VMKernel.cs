@@ -6,7 +6,7 @@
 
    public sealed class VMKernel : IBehaviorContext {
       private readonly IViewModel _vm;
-      private readonly VMDescriptorBase _descriptor;
+      private readonly IVMDescriptor _descriptor;
       private FieldValueHolder _fieldValues;
 
       private bool _validationStateIsCurrent = false;
@@ -17,7 +17,7 @@
       private ValidationState _descendantsOnlyValidationState = ValidationState.Valid;
       private ValidationState _validationState = ValidationState.Valid;
 
-      public VMKernel(IViewModel vm, VMDescriptorBase descriptor, IServiceLocator serviceLocator) {
+      public VMKernel(IViewModel vm, IVMDescriptor descriptor, IServiceLocator serviceLocator) {
          Contract.Requires<ArgumentNullException>(vm != null);
          Contract.Requires<ArgumentNullException>(descriptor != null);
          Contract.Requires<ArgumentNullException>(serviceLocator != null);

@@ -23,7 +23,7 @@
    public abstract class DefaultViewModelWithSourceBase<TDescriptor, TSourceObject> :
       ViewModel<TDescriptor>,
       IHasSourceObject<TSourceObject>
-      where TDescriptor : VMDescriptorBase {
+      where TDescriptor : IVMDescriptor {
 
       private TSourceObject _source;
 

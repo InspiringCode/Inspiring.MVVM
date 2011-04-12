@@ -5,7 +5,7 @@
 
    public class ValidatorBuilderBase<TVM, TDescriptor>
       where TVM : IViewModel
-      where TDescriptor : VMDescriptorBase {
+      where TDescriptor : IVMDescriptor {
 
       internal ValidatorBuilderBase(ValidatorConfiguration configuration) {
          Contract.Requires(configuration != null);
@@ -36,7 +36,7 @@
       /// </param>
       public ValidatorBuilderBase<IViewModel<TChildDescriptor>, TChildDescriptor> ValidateDescendant<TChildDescriptor>(
          Func<TDescriptor, IVMPropertyDescriptor<IViewModel<TChildDescriptor>>> propertySelector
-      ) where TChildDescriptor : VMDescriptorBase {
+      ) where TChildDescriptor : IVMDescriptor {
          var config = Configuration.ExtendTargetPath(PropertySelector.Create(propertySelector));
          return new ValidatorBuilderBase<IViewModel<TChildDescriptor>, TChildDescriptor>(config);
       }
@@ -51,7 +51,7 @@
       /// </param>
       public ValidatorBuilderBase<IViewModel<TChildDescriptor>, TChildDescriptor> ValidateDescendant<TChildDescriptor>(
          Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModel<TChildDescriptor>>>> propertySelector
-      ) where TChildDescriptor : VMDescriptorBase {
+      ) where TChildDescriptor : IVMDescriptor {
          var config = Configuration.ExtendTargetPath(PropertySelector.Create(propertySelector));
          return new ValidatorBuilderBase<IViewModel<TChildDescriptor>, TChildDescriptor>(config);
       }
@@ -79,7 +79,7 @@
       public CollectionPropertyValidatorBuilder<TItemDescriptor, TItemValue> CheckCollection<TItemDescriptor, TItemValue>(
          Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<TItemDescriptor>>>> collectionSelector,
          Func<TItemDescriptor, IVMPropertyDescriptor<TItemValue>> itemPropertySelector
-      ) where TItemDescriptor : VMDescriptorBase {
+      ) where TItemDescriptor : IVMDescriptor {
          var config = Configuration
             .ExtendTargetPath(PropertySelector.Create(collectionSelector))
             .SetTargetProperty(PropertySelector.CreateExactlyTyped(itemPropertySelector));

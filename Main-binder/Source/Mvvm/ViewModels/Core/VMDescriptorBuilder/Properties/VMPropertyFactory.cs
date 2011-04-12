@@ -186,7 +186,7 @@
       }
 
       internal BehaviorChainConfiguration GetCollectionConfiguration<TItemVM>(
-         VMDescriptorBase itemDescriptor
+         IVMDescriptor itemDescriptor
       ) where TItemVM : IViewModel {
          var template = BehaviorChainTemplateRegistry.GetTemplate(BehaviorChainTemplateKeys.DefaultCollectionBehaviors);
          var invoker = CollectionBehaviorFactory.CreateInvoker<TVM, TItemVM>();

@@ -5,7 +5,7 @@
    public sealed class ValidatorBuilder<TVM, TDescriptor> :
       ValidatorBuilderBase<TVM, TDescriptor>
       where TVM : IViewModel
-      where TDescriptor : VMDescriptorBase {
+      where TDescriptor : IVMDescriptor {
 
       internal ValidatorBuilder(
          VMDescriptorConfiguration descriptorConfiguration,
@@ -53,11 +53,11 @@
       // TODO: This is all messed up a bit. When should we enable what exactly?
       private class RootValidatorConfiguration : ValidatorConfiguration {
          private readonly VMDescriptorConfiguration _descriptorConfiguration;
-         private readonly VMDescriptorBase _descriptor;
+         private readonly IVMDescriptor _descriptor;
 
          internal RootValidatorConfiguration(
             VMDescriptorConfiguration descriptorConfiguration,
-            VMDescriptorBase descriptor
+            IVMDescriptor descriptor
          ) {
             Contract.Requires(descriptorConfiguration != null);
             Contract.Requires(descriptor != null);

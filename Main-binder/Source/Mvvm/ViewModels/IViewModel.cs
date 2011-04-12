@@ -2,18 +2,18 @@
    using Inspiring.Mvvm.ViewModels.Core;
 
 
-   public interface IViewModel<out TDescriptor> : IViewModel where TDescriptor : VMDescriptorBase {
+   public interface IViewModel<out TDescriptor> : IViewModel where TDescriptor : IVMDescriptor {
 
    }
 
-   public interface IViewModelExpression<in TDescriptor> : IViewModel where TDescriptor : VMDescriptorBase {
+   public interface IViewModelExpression<in TDescriptor> : IViewModel where TDescriptor : IVMDescriptor {
 
    }
 
    //[ContractClass(typeof(IViewModelContract))]
    public interface IViewModel {
       VMKernel Kernel { get; }
-      VMDescriptorBase Descriptor { get; set; }
+      IVMDescriptor Descriptor { get; set; }
 
       //T GetValue<T>(IVMProperty<T> property);
 
@@ -57,7 +57,7 @@
       //      throw new System.NotImplementedException();
       //   }
 
-      //   public VMDescriptorBase Descriptor {
+      //   public IVMDescriptor Descriptor {
       //      get {
       //         return null;
       //      }
