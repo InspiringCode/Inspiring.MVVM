@@ -165,6 +165,7 @@
     <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Factories\CommandBehaviorFactory.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Keys\PropertyBehaviorKeys.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Keys\PropertyBehaviorKeysBase.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Keys\ViewModelBehaviorKeys.cs" />
     <Compile Include="ViewModels\Core\Behaviors\ViewModelBehaviorTemplates.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IItemDescriptorProviderCollectionBehavior.cs" />
@@ -367,7 +368,7 @@
     <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\IHandlePropertyChangedBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\IHandlePropertyChangingBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\MappedPropertyBehavior.cs" />
-    <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\PropertyChangedBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\PropertyChangedNotifierBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\DisplayValueAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\ValidationBehavior.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\VMPropertyDescriptor.cs" />

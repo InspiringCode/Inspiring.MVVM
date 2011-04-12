@@ -24,8 +24,8 @@
             return new DisplayValueAccessorBehavior<TValue>();
          }
 
-         if (key == PropertyBehaviorKeys.PropertyChangedTrigger) {
-            return new PropertyChangedBehavior<TValue>();
+         if (key == PropertyBehaviorKeys.PropertyChangedNotifier) {
+            return new PropertyChangedNotifierBehavior<TValue>();
          }
 
          if (key == PropertyBehaviorKeys.TypeDescriptor) {

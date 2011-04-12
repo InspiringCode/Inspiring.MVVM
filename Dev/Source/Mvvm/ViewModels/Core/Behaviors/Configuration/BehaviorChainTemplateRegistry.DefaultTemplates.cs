@@ -39,7 +39,7 @@
                .Append(PropertyBehaviorKeys.ManualUpdateBehavior, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.Validator, DefaultBehaviorState.Disabled)
-               .Append(PropertyBehaviorKeys.PropertyChangedTrigger)
+               .Append(PropertyBehaviorKeys.PropertyChangedNotifier)
                .Append(PropertyBehaviorKeys.PropertyValueCache, DefaultBehaviorState.DisabledWithoutFactory) // TODO!
             //.Append(BehaviorKeys.ManualUpdateBehavior) // TODO: Is this correct?
                .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
@@ -111,7 +111,7 @@
                .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.Validator, DefaultBehaviorState.Disabled)
 
-               .Append(PropertyBehaviorKeys.PropertyChangedTrigger)
+               .Append(PropertyBehaviorKeys.PropertyChangedNotifier)
 
 
                //.Append(PropertyBehaviorKeys.ViewModelSourceSetter, DefaultBehaviorState.DisabledWithoutFactory)

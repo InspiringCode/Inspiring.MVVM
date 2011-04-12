@@ -1,16 +1,13 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
-   public class PropertyBehaviorKeys : BehaviorKeys {
+   public class PropertyBehaviorKeys : PropertyBehaviorKeysBase {
       public static readonly BehaviorKey LazyRefresh = Key(() => LazyRefresh);
 
-      public static readonly BehaviorKey Undo = Key(() => Undo);
 
-      public static readonly BehaviorKey ValueValidationSource = Key(() => ValueValidationSource);
 
       public static readonly BehaviorKey ValueInitializer = Key(() => ValueInitializer);
 
       public static readonly BehaviorKey ParentSetter = Key(() => ParentSetter);
 
-      public static readonly BehaviorKey TypeDescriptor = new BehaviorKey("TypeDescriptor");
 
       public static readonly BehaviorKey ValueCacheNew = Key(() => ValueCacheNew);
 
@@ -20,9 +17,7 @@
 
 
       public static readonly BehaviorKey InvalidDisplayValueCache = new BehaviorKey("InvalidDisplayValueCache");
-      public static readonly BehaviorKey DisplayValueAccessor = new BehaviorKey("DisplayValueAccessor");
       public static readonly BehaviorKey Validator = new BehaviorKey("Validator");
-      public static readonly BehaviorKey PropertyChangedTrigger = new BehaviorKey("PropertyChangedTrigger");
 
       public static readonly BehaviorKey PropertyValueCache = new BehaviorKey("PropertyValueCache");
       public static readonly BehaviorKey ManualUpdateBehavior = new BehaviorKey("ManualUpdateBehavior");
@@ -37,7 +32,6 @@
       /// <summary>
       ///   
       /// </summary>
-      public static readonly BehaviorKey SourceAccessor = new BehaviorKey("SourceAccessor");
 
 
       public static readonly BehaviorKey CollectionFactory = new BehaviorKey("CollectionFactory");
@@ -68,6 +62,5 @@
 
       public static readonly BehaviorKey WaitCursor = new BehaviorKey("WaitCursor");
 
-      public static readonly BehaviorKey UntypedValueAccessor = new BehaviorKey("UntypedValueAccessor");
    }
 }

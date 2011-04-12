@@ -60,8 +60,8 @@
             return new IsLoadedIndicatorBehavior<TChildVM>();
          }
 
-         if (key == PropertyBehaviorKeys.PropertyChangedTrigger) {
-            return new PropertyChangedBehavior<TChildVM>();
+         if (key == PropertyBehaviorKeys.PropertyChangedNotifier) {
+            return new PropertyChangedNotifierBehavior<TChildVM>();
          }
 
          if (key == PropertyBehaviorKeys.UntypedValueAccessor) {
