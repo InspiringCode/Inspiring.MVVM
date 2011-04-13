@@ -16,6 +16,8 @@
 
       public static readonly BehaviorKey DescendantsValidator = Key(() => DescendantsValidator);
 
+      public static readonly BehaviorKey ValueFactory = Key(() => ValueFactory);
+
 
       public static readonly BehaviorKey InvalidDisplayValueCache = new BehaviorKey("InvalidDisplayValueCache");
       public static readonly BehaviorKey Validator = new BehaviorKey("Validator");
@@ -61,6 +63,5 @@
       public static readonly BehaviorKey CommandFactory = new BehaviorKey("CommandFactory");
 
       public static readonly BehaviorKey WaitCursor = new BehaviorKey("WaitCursor");
-
    }
 }

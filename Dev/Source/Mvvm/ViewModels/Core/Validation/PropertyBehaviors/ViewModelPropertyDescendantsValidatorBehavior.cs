@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core.Validation.PropertyBehaviors {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
 
    internal sealed class ViewModelPropertyDescendantsValidatorBehavior<TValue> :
       DescendantsValidatorBehavior

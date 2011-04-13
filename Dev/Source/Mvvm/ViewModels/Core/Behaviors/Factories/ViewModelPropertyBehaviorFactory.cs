@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using Inspiring.Mvvm.ViewModels.Core.Validation.PropertyBehaviors;
 
    public class ViewModelPropertyBehaviorFactory : IBehaviorFactoryProvider {
       public static readonly ViewModelPropertyBehaviorFactory Instance = new ViewModelPropertyBehaviorFactory();

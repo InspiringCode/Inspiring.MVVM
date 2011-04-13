@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core.Validation {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
 

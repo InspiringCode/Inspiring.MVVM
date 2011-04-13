@@ -30,7 +30,7 @@
                .Append(PropertyBehaviorKeys.Undo, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.PropertyChangedNotifier)
-               .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(PropertyBehaviorKeys.ValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.PropertyDescriptorProvider)
          );
       }
@@ -80,11 +80,13 @@
             new BehaviorChainTemplate(DefaultProviders.ViewModelProperty)
                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
+               .Append(PropertyBehaviorKeys.ValueInitializer)
                .Append(PropertyBehaviorKeys.Undo, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.LazyRefresh)
                .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.DescendantsValidator)
                .Append(PropertyBehaviorKeys.PropertyChangedNotifier)
+               .Append(PropertyBehaviorKeys.ValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.PropertyDescriptorProvider)
          );
@@ -96,10 +98,15 @@
             new BehaviorChainTemplate(DefaultProviders.ViewModelProperty)
                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
+               .Append(PropertyBehaviorKeys.ValueInitializer)
                .Append(PropertyBehaviorKeys.Undo, DefaultBehaviorState.Disabled)
+               .Append(PropertyBehaviorKeys.LazyRefresh)
                .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
+               .Append(PropertyBehaviorKeys.DescendantsValidator)
                .Append(PropertyBehaviorKeys.PropertyChangedNotifier)
+               .Append(PropertyBehaviorKeys.ValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(PropertyBehaviorKeys.ValueFactory)
                .Append(PropertyBehaviorKeys.PropertyDescriptorProvider)
          );
       }

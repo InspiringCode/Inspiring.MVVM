@@ -168,6 +168,7 @@
     <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\ISimplePropertyProvider.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\IChildPropertyProvider.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\IViewModelProvider.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\PropertyProvider.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\SimplePropertyProvider.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\ViewModelPropertyProvider.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\ViewModelProvider.cs" />
@@ -221,6 +222,7 @@
     <Compile Include="ViewModels\Core\GeneralBehaviors\ServiceLocatorValueAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\ViewModelProperty\DelegateViewModelAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\ViewModelProperty\ValueInitializerBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\ViewModelProperty\ViewModelInitializerBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\ViewModelProperty\ViewModelPropertyRefreshBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\ViewModelProperty\ViewModelSourceSetterBehavior.cs" />
     <Compile Include="ViewModels\Core\Paths\Definition\PathDefinitionIterator.cs" />

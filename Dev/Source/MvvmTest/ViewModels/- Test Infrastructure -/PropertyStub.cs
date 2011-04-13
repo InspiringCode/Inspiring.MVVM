@@ -43,7 +43,11 @@
       }
 
       public static PropertyStub<object> Build() {
-         return Of<object>();
+         return new PropertyStubBuilder().Build();
+      }
+
+      public static BehaviorContextStub GetContext() {
+         return new PropertyStubBuilder().GetContext();
       }
    }
 
@@ -63,6 +67,16 @@
 
       public PropertyStub<T> Of<T>() {
          return new PropertyStub<T>(_name, _behaviors);
+      }
+
+      public PropertyStub<object> Build() {
+         return Of<object>();
+      }
+
+      public BehaviorContextStub GetContext() {
+         return ViewModelStub
+            .WithProperties(Build())
+            .BuildContext();
       }
    }
 }

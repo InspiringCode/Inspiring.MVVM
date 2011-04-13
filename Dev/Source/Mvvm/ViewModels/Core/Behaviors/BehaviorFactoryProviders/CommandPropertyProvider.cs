@@ -2,9 +2,9 @@
    using Inspiring.Mvvm.Common;
 
    public class CommandPropertyProvider : SimplePropertyProvider {
-      protected override BehaviorFactory GetCommonFactory<TOwnerVM, TValue, TSourceObject>() {
+      protected override BehaviorFactory GetFactoryWithCommonBehaviors<TOwnerVM, TValue, TSourceObject>() {
          return base
-            .GetCommonFactory<TOwnerVM, TValue, TSourceObject>();
+            .GetFactoryWithCommonBehaviors<TOwnerVM, TValue, TSourceObject>();
       }
    }
 }

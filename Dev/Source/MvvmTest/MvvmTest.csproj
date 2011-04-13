@@ -207,8 +207,7 @@
     <Compile Include="ViewModels\Core\Paths\PathFixture.cs" />
     <Compile Include="ViewModels\Core\Paths\PathHelperTests.cs" />
     <Compile Include="ViewModels\Core\Paths\PropertyStepTests.cs" />
-    <Compile Include="ViewModels\Core\PropertyBehaviors\DefaultManualUpdateBehaviorTest.cs" />
-    <Compile Include="ViewModels\Core\PropertyBehaviors\ValidationBehaviorTest.cs" />
+    <Compile Include="ViewModels\Core\PropertyBehaviors\ViewModelInitializerBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\PropertySelectorTests.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\TypeDescriptorServiceTests.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\VMPropertyDescriptorTests.cs" />
@@ -269,7 +268,6 @@
     <Compile Include="ViewModels\Behaviors\CollectionPopulatorTest.cs" />
     <Compile Include="ViewModels\Behaviors\DisplayValueAccessorBehaviorTest.cs" />
     <Compile Include="ViewModels\CommandPropertyTest.cs" />
-    <Compile Include="ViewModels\Core\PropertyBehaviors\PropagateVMContextBehaviorTest.cs" />
     <Compile Include="ViewModels\Behaviors\VMPropertyTest.cs" />
     <Compile Include="ViewModels\Core\Builder\VMPropertyFactoryTest.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\ViewModelFactoryBehaviorTests.cs" />

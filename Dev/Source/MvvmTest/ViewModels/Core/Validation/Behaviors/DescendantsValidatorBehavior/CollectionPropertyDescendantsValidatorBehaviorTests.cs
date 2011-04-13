@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Validation.Behaviors {
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
-   using Inspiring.Mvvm.ViewModels.Core.Validation.PropertyBehaviors;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]

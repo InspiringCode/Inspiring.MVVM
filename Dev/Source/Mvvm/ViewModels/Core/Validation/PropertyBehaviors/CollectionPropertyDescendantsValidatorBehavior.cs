@@ -1,8 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System.Collections.Generic;
    using System.Linq;
-   using Inspiring.Mvvm.ViewModels.Core.Validation;
-   using Inspiring.Mvvm.ViewModels.Core.Validation.PropertyBehaviors;
 
    internal sealed class CollectionPropertyDescendantsValidatorBehavior<TItemVM> :
       DescendantsValidatorBehavior
