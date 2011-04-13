@@ -217,7 +217,6 @@
     <Compile Include="ViewModels\Core\GeneralBehaviors\DynamicFieldAccessor.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\LazyRefreshBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\RefreshBehavior.cs" />
-    <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\ChildScreenBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\UntypedPropertyAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\ServiceLocatorValueAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\ViewModelProperty\DelegateViewModelAccessorBehavior.cs" />
@@ -410,7 +409,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModels\Core\BehaviorInterfaces\CollectionBehaviors\" />
-    <Folder Include="ViewModels\Core\GeneralBehaviors\Legacy\" />
     <Folder Include="Views\TestDoubles\" />
   </ItemGroup>
   <ItemGroup>
