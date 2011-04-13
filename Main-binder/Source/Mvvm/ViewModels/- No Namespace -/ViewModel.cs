@@ -99,13 +99,13 @@
 
                if (parts.Length == 2) {
                   property = Kernel.GetProperty(parts[0]);
-                  value = (IDataErrorInfo)Kernel.GetDisplayValue(property);
+                  value = Kernel.GetDisplayValue(property) as IDataErrorInfo;
                } else {
                   IVMPropertyDescriptor viewModelProp = Kernel.GetProperty(parts[0]);
                   IViewModel viewModel = (IViewModel)Kernel.GetDisplayValue(viewModelProp);
 
                   property = viewModel.Kernel.GetProperty(parts[1]);
-                  value = (IDataErrorInfo)viewModel.Kernel.GetDisplayValue(property);
+                  value = viewModel.Kernel.GetDisplayValue(property) as IDataErrorInfo;
                }
                if (value == null) {
                   return null;
