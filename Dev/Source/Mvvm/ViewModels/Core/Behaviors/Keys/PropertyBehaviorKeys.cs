@@ -21,7 +21,6 @@
       public static readonly BehaviorKey Validator = new BehaviorKey("Validator");
 
       public static readonly BehaviorKey PropertyValueCache = new BehaviorKey("PropertyValueCache");
-      public static readonly BehaviorKey ManualUpdateBehavior = new BehaviorKey("ManualUpdateBehavior");
 
       /// <summary>
       ///   A <see cref="IValueAccessorBehavior"/> gets and sets the actual 

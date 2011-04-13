@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System.Collections.Generic;
+   using System;
 
    // TODO: Test Refresh order etc.!
    internal sealed class LoadOrderBehavior :
@@ -29,7 +30,7 @@
 
       public void UpdateFromSource(IBehaviorContext context, IVMPropertyDescriptor property) {
          RequireInitialized();
-         property.Behaviors.UpdatePropertyFromSourceNext(context);
+         throw new NotImplementedException();
 
          this.UpdateFromSourceNext(context, property);
       }
@@ -45,7 +46,7 @@
 
       public void UpdateSource(IBehaviorContext context, IVMPropertyDescriptor property) {
          RequireInitialized();
-         property.Behaviors.UpdatePropertySourceNext(context);
+         throw new NotImplementedException();
 
          IManualUpdateCoordinatorBehavior next;
          if (TryGetBehavior(out next)) {

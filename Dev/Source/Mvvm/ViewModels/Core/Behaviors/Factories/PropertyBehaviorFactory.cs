@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using Inspiring.Mvvm.ViewModels.Core.Validation.PropertyBehaviors;
 
    public class PropertyBehaviorFactory : IBehaviorFactoryProvider {
       public static readonly PropertyBehaviorFactory Instance = new PropertyBehaviorFactory();
@@ -14,10 +13,6 @@
       public virtual IBehavior Create<TVM, TValue>(BehaviorKey key) where TVM : IViewModel {
          if (key == PropertyBehaviorKeys.LazyRefresh) {
             return new LazyRefreshBehavior();
-         }
-
-         if (key == PropertyBehaviorKeys.InvalidDisplayValueCache) {
-            return new AllowInvalidDisplayValuesBehavior();
          }
 
          if (key == PropertyBehaviorKeys.DisplayValueAccessor) {
@@ -46,10 +41,6 @@
 
          if (key == PropertyBehaviorKeys.CollectionInstanceCache) {
             return new ValueCacheBehaviorOld<TValue>();
-         }
-
-         if (key == PropertyBehaviorKeys.ManualUpdateBehavior) {
-            return new ManualUpdatePropertyBehavior();
          }
 
          if (key == PropertyBehaviorKeys.IsLoadedIndicator) {

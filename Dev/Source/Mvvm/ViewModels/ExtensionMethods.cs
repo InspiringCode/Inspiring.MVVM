@@ -142,26 +142,6 @@
          }
       }
 
-      public static void UpdatePropertyFromSourceNext(
-          this Behavior behavior,
-          IBehaviorContext context
-       ) {
-         IManualUpdateBehavior next;
-         if (behavior.TryGetBehavior(out next)) {
-            next.UpdatePropertyFromSource(context);
-         }
-      }
-
-      public static void UpdatePropertySourceNext(
-         this Behavior behavior,
-         IBehaviorContext context
-      ) {
-         IManualUpdateBehavior next;
-         if (behavior.TryGetBehavior(out next)) {
-            next.UpdatePropertySource(context);
-         }
-      }
-
       public static void UpdateFromSourceNext(
          this Behavior behavior,
          IBehaviorContext context

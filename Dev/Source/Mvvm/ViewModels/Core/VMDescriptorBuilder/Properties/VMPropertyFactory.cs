@@ -43,9 +43,9 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          BehaviorChainConfiguration config = GetPropertyConfiguration<T>(BehaviorChainTemplateKeys.Property);
          config.Enable(PropertyBehaviorKeys.SourceAccessor, sourceValueAccessor);
 
-         if (supportsManualUpdate) {
-            config.Enable(PropertyBehaviorKeys.ManualUpdateBehavior);
-         }
+         //if (supportsManualUpdate) {
+         //   config.Enable(PropertyBehaviorKeys.ManualUpdateBehavior);
+         //}
 
          if (includeRefreshBehavior) {
             config.Enable(PropertyBehaviorKeys.RefreshBehavior, new RefreshBehavior.SimpleProperty<T>());
@@ -84,9 +84,9 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          //   config.Enable(PropertyBehaviorKeys.ViewModelSourceSetter, sourceSetter);
          //}
 
-         if (manualUpdateBehavior != null) {
-            config.Enable(PropertyBehaviorKeys.ManualUpdateBehavior, manualUpdateBehavior);
-         }
+         //if (manualUpdateBehavior != null) {
+         //   config.Enable(PropertyBehaviorKeys.ManualUpdateBehavior, manualUpdateBehavior);
+         //}
 
          if (refreshBehavior != null) {
             config.Enable(PropertyBehaviorKeys.RefreshBehavior, refreshBehavior);
@@ -129,7 +129,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
 
          if (isPopulatable) {
             //config.Enable(BehaviorKeys.CollectionInstanceCache);
-            config.Enable(PropertyBehaviorKeys.ManualUpdateBehavior, new ManualUpdateCollectionPropertyBehavior<TItemVM>());
+            //config.Enable(PropertyBehaviorKeys.ManualUpdateBehavior, new ManualUpdateCollectionPropertyBehavior<TItemVM>());
             config.Enable(PropertyBehaviorKeys.CollectionPopulator, new CollectionPopulatorBehavior<TItemVM>());
          }
 

@@ -151,7 +151,6 @@
          Assert.IsTrue(ContainsBehavior<PropertyDescriptorProviderBehavior>(p));
 
          //Assert.IsFalse(ContainsBehavior<PropertyValidationBehavior<string>>(p));
-         Assert.IsFalse(ContainsBehavior<AllowInvalidDisplayValuesBehavior>(p));
          Assert.IsFalse(ContainsBehavior<RefreshableValueCacheBehavior<string>>(p));
       }
 

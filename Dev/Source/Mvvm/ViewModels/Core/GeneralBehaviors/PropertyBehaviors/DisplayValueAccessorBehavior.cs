@@ -35,6 +35,7 @@
       IDisplayValueAccessorBehavior {
       //IValidationBehavior {
 
+      private static readonly FieldDefinitionGroup ConversionErrorGroup = new FieldDefinitionGroup();
       private FieldDefinition<string> _conversionErrorField;
       private string _propertyName;
 
@@ -86,7 +87,7 @@
 
       public void Initialize(BehaviorInitializationContext context) {
          _conversionErrorField = context.Fields.DefineField<string>(
-            DynamicFieldGroups.ConversionErrorGroup
+            ConversionErrorGroup
          );
          _propertyName = context.Property.PropertyName;
 

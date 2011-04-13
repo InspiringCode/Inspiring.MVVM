@@ -269,7 +269,7 @@
          IVMPropertyDescriptor<TChildVM> IViewModelPropertyBuilderWithSource<TSourceValue>.With<TChildVM>() {
             return Factory.CreateViewModelProperty(
                viewModelAccessor: new WrapperViewModelAccessorBehavior<TChildVM, TSourceValue>(),
-               manualUpdateBehavior: new ManualUpdateViewModelPropertyBehavior<TChildVM, TSourceValue>(),
+               //manualUpdateBehavior: new ManualUpdateViewModelPropertyBehavior<TChildVM, TSourceValue>(),
                sourceAccessor: _sourceValueAccessor,
                //sourceSetter: new ViewModelSourceSetterBehavior<TChildVM, TSourceValue>(),
                needsViewModelFactory: false,
@@ -332,7 +332,7 @@
          return Factory.CreateViewModelProperty(
             viewModelAccessor: viewModelAccessor,
             sourceAccessor: GetSourceObjectAccessor(),
-            manualUpdateBehavior: new ManualUpdateViewModelPropertyBehavior<TChildVM, TChildSource>(),
+            //manualUpdateBehavior: new ManualUpdateViewModelPropertyBehavior<TChildVM, TChildSource>(),
             needsViewModelFactory: true,
             cachesValue: true,
             refreshBehavior: new RefreshBehavior.ViewModelProperty<TChildVM>()

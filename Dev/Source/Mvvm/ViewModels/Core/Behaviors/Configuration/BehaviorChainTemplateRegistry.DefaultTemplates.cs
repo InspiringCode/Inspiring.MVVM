@@ -38,7 +38,6 @@ namespace Inspiring.Mvvm.ViewModels.Core {
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
                .Append(PropertyBehaviorKeys.Undo, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.RefreshBehavior, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(PropertyBehaviorKeys.ManualUpdateBehavior, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.Validator, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.PropertyChangedNotifier)
@@ -56,7 +55,6 @@ namespace Inspiring.Mvvm.ViewModels.Core {
                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
                .Append(PropertyBehaviorKeys.RefreshBehavior, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(PropertyBehaviorKeys.ManualUpdateBehavior, DefaultBehaviorState.DisabledWithoutFactory)
 
                .Append(PropertyBehaviorKeys.Validator, DefaultBehaviorState.Disabled)
 
@@ -102,7 +100,6 @@ namespace Inspiring.Mvvm.ViewModels.Core {
                .Append(PropertyBehaviorKeys.Undo, DefaultBehaviorState.Disabled)
             // TODO: Rethink.
                .Append(PropertyBehaviorKeys.RefreshBehavior, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(PropertyBehaviorKeys.ManualUpdateBehavior, DefaultBehaviorState.DisabledWithoutFactory)
 
                .Append(PropertyBehaviorKeys.DescendantsValidator)
 

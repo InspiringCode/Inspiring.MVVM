@@ -84,13 +84,13 @@
             viewModelAccessor: new SingleSelectionFactory<TItemVM>(descriptor, Filter)
          );
 
-         _sourceObjectPropertyBuilder
-            .Configuration
-            .PropertyConfigurations[property]
-            .Enable(
-               PropertyBehaviorKeys.ManualUpdateBehavior,
-               new ManualUpdateSelectionPropertyBehavior<SingleSelectionVM<TItemSource, TItemVM>, TSourceObject>()
-            );
+         //_sourceObjectPropertyBuilder
+         //   .Configuration
+         //   .PropertyConfigurations[property]
+         //   .Enable(
+         //      PropertyBehaviorKeys.ManualUpdateBehavior,
+         //      new ManualUpdateSelectionPropertyBehavior<SingleSelectionVM<TItemSource, TItemVM>, TSourceObject>()
+         //   );
 
          return property;
       }
@@ -129,13 +129,13 @@
             viewModelAccessor: new SingleSelectionFactory(descriptor, Filter)
          );
 
-         _sourceObjectPropertyBuilder
-            .Configuration
-            .PropertyConfigurations[property]
-            .Enable(
-               PropertyBehaviorKeys.ManualUpdateBehavior,
-               new ManualUpdateSelectionPropertyBehavior<SingleSelectionVM<TItemSource>, TSourceObject>()
-            );
+         //_sourceObjectPropertyBuilder
+         //   .Configuration
+         //   .PropertyConfigurations[property]
+         //   .Enable(
+         //      PropertyBehaviorKeys.ManualUpdateBehavior,
+         //      new ManualUpdateSelectionPropertyBehavior<SingleSelectionVM<TItemSource>, TSourceObject>()
+         //   );
 
          return property;
       }

@@ -84,13 +84,13 @@
             viewModelAccessor: new MultSelectionAccessor<TItemVM>(descriptor, Filter)
          );
 
-         _sourceObjectPropertyBuilder
-            .Configuration
-            .PropertyConfigurations[property]
-            .Enable(
-               PropertyBehaviorKeys.ManualUpdateBehavior,
-               new ManualUpdateSelectionPropertyBehavior<MultiSelectionVM<TItemSource, TItemVM>, TSourceObject>()
-            );
+         //_sourceObjectPropertyBuilder
+         //   .Configuration
+         //   .PropertyConfigurations[property]
+         //   .Enable(
+         //      PropertyBehaviorKeys.ManualUpdateBehavior,
+         //      new ManualUpdateSelectionPropertyBehavior<MultiSelectionVM<TItemSource, TItemVM>, TSourceObject>()
+         //   );
 
          return property;
       }
@@ -129,13 +129,13 @@
             viewModelAccessor: new MultSelectionAccessor(descriptor, Filter)
          );
 
-         _sourceObjectPropertyBuilder
-            .Configuration
-            .PropertyConfigurations[property]
-            .Enable(
-               PropertyBehaviorKeys.ManualUpdateBehavior,
-               new ManualUpdateSelectionPropertyBehavior<MultiSelectionVM<TItemSource>, TSourceObject>()
-            );
+         //_sourceObjectPropertyBuilder
+         //   .Configuration
+         //   .PropertyConfigurations[property]
+         //   .Enable(
+         //      PropertyBehaviorKeys.ManualUpdateBehavior,
+         //      new ManualUpdateSelectionPropertyBehavior<MultiSelectionVM<TItemSource>, TSourceObject>()
+         //   );
 
          return property;
       }

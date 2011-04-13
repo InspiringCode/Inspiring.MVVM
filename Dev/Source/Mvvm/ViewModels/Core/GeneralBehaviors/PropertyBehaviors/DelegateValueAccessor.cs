@@ -3,7 +3,7 @@
    using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.Common;
 
-   // TODO: Null handling, remove manual update stuff
+   // TODO: Null handling
 
    /// <summary>
    ///   A <see cref="IDisplayValueAccessorBehavior"/> that uses the specified delegates
@@ -11,10 +11,8 @@
    /// </summary>
    internal sealed class DelegateValueAccessor<TVM, TSource, TValue> :
       Behavior,
-      IBehaviorInitializationBehavior,
       IValueAccessorBehavior<TValue>,
-      IMutabilityCheckerBehavior,
-      IManualUpdateBehavior {
+      IMutabilityCheckerBehavior {
 
       private static readonly Action<TSource, TValue> ThrowingSetter = delegate {
          throw new InvalidOperationException(ExceptionTexts.NoSetterDelegate);
@@ -23,7 +21,6 @@
       private PropertyPath<TVM, TSource> _sourceObjectPath;
       private Func<TSource, TValue> _getter;
       private Action<TSource, TValue> _setter;
-      private IVMPropertyDescriptor _property;
 
       public DelegateValueAccessor(
          PropertyPath<TVM, TSource> sourceObjectPath,
@@ -38,11 +35,6 @@
          _setter = setter ?? ThrowingSetter;
       }
 
-      public void Initialize(BehaviorInitializationContext context) {
-         _property = context.Property;
-         this.InitializeNext(context);
-      }
-
       public TValue GetValue(IBehaviorContext context) {
          var sourceObject = _sourceObjectPath.GetValue((TVM)context.VM);
          return _getter(sourceObject);
@@ -55,15 +47,6 @@
 
       public bool IsMutable(IBehaviorContext context) {
          return _setter != ThrowingSetter;
-      }
-
-      public void UpdatePropertyFromSource(IBehaviorContext context) {
-         context.NotifyChange(ChangeArgs.PropertyChanged(_property));
-         this.UpdatePropertyFromSourceNext(context);
-      }
-
-      public void UpdatePropertySource(IBehaviorContext vm) {
-         // Nothing to do
       }
    }
 }

@@ -10,6 +10,7 @@
       IBehaviorInitializationBehavior,
       IValueAccessorBehavior<TValue> {
 
+      private static readonly FieldDefinitionGroup BackingFieldGroup = new FieldDefinitionGroup();
       private FieldDefinition<TValue> _backingField;
 
       public TValue GetValue(IBehaviorContext vm) {
@@ -22,7 +23,7 @@
 
       public void Initialize(BehaviorInitializationContext context) {
          _backingField = context.Fields.DefineField<TValue>(
-            DynamicFieldGroups.BackingFieldGroup
+            BackingFieldGroup
          );
 
          this.InitializeNext(context);
