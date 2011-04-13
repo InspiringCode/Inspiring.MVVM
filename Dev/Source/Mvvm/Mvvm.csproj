@@ -177,6 +177,9 @@
     <Compile Include="ViewModels\Core\Behaviors\Keys\PropertyBehaviorKeysBase.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Keys\ViewModelBehaviorKeys.cs" />
     <Compile Include="ViewModels\Core\Behaviors\DefaultTemplates.cs" />
+    <Compile Include="ViewModels\Core\Collections\Behaviors\PopulatedCollectionAccessorBehavior.cs" />
+    <Compile Include="ViewModels\Core\Collections\Behaviors\StoredCollectionAccessorBehavior.cs" />
+    <Compile Include="ViewModels\Core\Collections\Behaviors\WrapperCollectionAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IItemDescriptorProviderCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IPopulatorCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IModificationCollectionBehavior.cs" />
