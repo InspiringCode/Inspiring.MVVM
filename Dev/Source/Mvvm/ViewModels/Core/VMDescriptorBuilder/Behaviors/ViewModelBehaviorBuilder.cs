@@ -21,11 +21,10 @@
       }
 
       public void ReplaceConfiguration(BehaviorChainTemplateKey templateKey) {
-         var template = BehaviorChainTemplateRegistry.GetTemplate(templateKey);
-         var factoryConfiguration = new ViewModelBehaviorFactoryConfiguration<TVM>();
-         var config = template.CreateConfiguration(factoryConfiguration);
-
-         _configuration.ViewModelConfiguration = config;
+         _configuration.ViewModelConfiguration = BehaviorChainConfiguration.GetConfiguration(
+            templateKey,
+            FactoryConfigurations.ForViewModel<TVM>()
+         );
       }
 
       // Todo: Should this be public ?

@@ -2,6 +2,7 @@
    public class PropertyBehaviorKeys : PropertyBehaviorKeysBase {
       public static readonly BehaviorKey LazyRefresh = Key(() => LazyRefresh);
 
+      public static readonly BehaviorKey ValueAccessor = Key(() => ValueAccessor);
 
 
       public static readonly BehaviorKey ValueInitializer = Key(() => ValueInitializer);

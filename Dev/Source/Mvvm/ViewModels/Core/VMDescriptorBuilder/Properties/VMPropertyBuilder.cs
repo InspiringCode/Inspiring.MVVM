@@ -5,7 +5,6 @@
    using System.Linq.Expressions;
    using System.Windows.Input;
    using Inspiring.Mvvm.Common;
-   using Inspiring.Mvvm.ViewModels.Core.Behaviors;
 
    internal sealed class VMPropertyBuilder<TVM, TSourceObject> :
       ConfigurationProvider,
@@ -26,7 +25,7 @@
          Contract.Requires(configuration != null);
 
          _sourceObjectPath = sourceObjectPath;
-         Factory = new VMPropertyFactory<TVM>(configuration);
+         Factory = new VMPropertyFactory<TVM, TSourceObject>(configuration);
       }
 
       /// <inheritdoc />
@@ -44,7 +43,7 @@
          get { return this; }
       }
 
-      private VMPropertyFactory<TVM> Factory { get; set; }
+      private VMPropertyFactory<TVM, TSourceObject> Factory { get; set; }
 
       /// <inheritdoc />
       IVMPropertyDescriptor<T> IValuePropertyBuilder<TSourceObject>.MapsTo<T>(
@@ -73,7 +72,7 @@
             setter
          );
 
-         return Factory.CreateProperty(
+         return Factory.CreateProperty<T>(
             sourceValueAccessor,
             supportsManualUpdate: true,
             includeRefreshBehavior: true
@@ -82,11 +81,7 @@
 
       /// <inheritdoc />
       IVMPropertyDescriptor<T> IValuePropertyBuilder<TSourceObject>.Of<T>() {
-         return Factory.CreateProperty(
-            sourceValueAccessor: new InstancePropertyBehavior<T>(),
-            supportsManualUpdate: false,
-            includeRefreshBehavior: false
-         );
+         return Factory.CreateProperty<T>(new InstancePropertyBehavior<T>());
       }
 
       /// <inheritdoc />
@@ -193,27 +188,31 @@
          Action<TSourceObject> execute,
          Func<TSourceObject, bool> canExecute
       ) {
-         var commandTemplate = BehaviorChainTemplateRegistry.GetTemplate(BehaviorChainTemplateKeys.CommandBehaviors);
-         var commandConfig = commandTemplate.CreateConfiguration(new CommandBehaviorFactoryConfiguration<TVM, TSourceObject>());
+         throw new NotImplementedException();
 
-         commandConfig.Enable(
-            PropertyBehaviorKeys.CommandExecutor,
-            new DelegatingCommandBehavior<TSourceObject>(execute, canExecute)
-         );
+         //var commandConfig = BehaviorChainConfiguration.GetConfiguration(
+         //   BehaviorChainTemplateKeys.CommandBehaviors,
+         //   FactoryConfigurations.ForSimpleProperty<TVM, ICommand, TSourceObject>()
+         //);
 
-         commandConfig.Enable(
-            PropertyBehaviorKeys.SourceAccessor,
-            new MappedPropertyAccessor<TVM, TSourceObject>(_sourceObjectPath)
-         );
+         //commandConfig.Enable(
+         //   PropertyBehaviorKeys.CommandExecutor,
+         //   new DelegatingCommandBehavior<TSourceObject>(execute, canExecute)
+         //);
 
-         var config = Factory.GetPropertyConfiguration<ICommand>(BehaviorChainTemplateKeys.CommandProperty);
+         //commandConfig.Enable(
+         //   PropertyBehaviorKeys.SourceAccessor,
+         //   new MappedPropertyAccessor<TVM, TSourceObject>(_sourceObjectPath)
+         //);
 
-         config.Enable(
-            PropertyBehaviorKeys.CommandFactory,
-            new CommandFactoryBehavior(commandConfig)
-         );
+         //var config = Factory.GetPropertyConfiguration<ICommand>(BehaviorChainTemplateKeys.CommandProperty);
 
-         return Factory.CreateProperty<ICommand>(config);
+         //config.Enable(
+         //   PropertyBehaviorKeys.CommandFactory,
+         //   new CommandFactoryBehavior(commandConfig)
+         //);
+
+         //return Factory.CreateAndRegisterProperty<ICommand>(config);
       }
 
       private MappedPropertyAccessor<TVM, TSourceObject> GetSourceObjectAccessor() {
@@ -226,7 +225,7 @@
          private IValueAccessorBehavior<IEnumerable<TItemSource>> _sourceCollectionAccessor;
 
          public CollectionPropertyBuilderWithSource(
-            VMPropertyFactory<TVM> factory,
+            VMPropertyFactory<TVM, TSourceObject> factory,
             IValueAccessorBehavior<IEnumerable<TItemSource>> sourceCollectionAccessor
          ) {
             Contract.Requires(sourceCollectionAccessor != null);
@@ -234,7 +233,7 @@
             Factory = factory;
          }
 
-         private VMPropertyFactory<TVM> Factory { get; set; }
+         private VMPropertyFactory<TVM, TSourceObject> Factory { get; set; }
 
          IVMPropertyDescriptor<IVMCollection<TItemVM>> ICollectionPropertyBuilderWithSource<TItemSource>.With<TItemVM>(
             VMDescriptorBase itemDescriptor
@@ -263,7 +262,7 @@
          private IValueAccessorBehavior<TSourceValue> _sourceValueAccessor;
 
          public ViewModelPropertyBuilderWithSource(
-            VMPropertyFactory<TVM> factory,
+            VMPropertyFactory<TVM, TSourceObject> factory,
             IValueAccessorBehavior<TSourceValue> sourceValueAccessor
          ) {
             Contract.Requires(sourceValueAccessor != null);
@@ -271,7 +270,7 @@
             Factory = factory;
          }
 
-         private VMPropertyFactory<TVM> Factory { get; set; }
+         private VMPropertyFactory<TVM, TSourceObject> Factory { get; set; }
 
          IVMPropertyDescriptor<TChildVM> IViewModelPropertyBuilderWithSource<TSourceValue>.With<TChildVM>() {
             return Factory.CreateViewModelProperty(
@@ -294,7 +293,7 @@
          private IPopulatorCollectionBehavior<TItemVM> _collectionPopulator;
 
          public PopulatedCollectionPropertyBuilder(
-            VMPropertyFactory<TVM> factory,
+            VMPropertyFactory<TVM, TSourceObject> factory,
             IValueAccessorBehavior<TSourceObject> sourceObjectAccessor,
             IPopulatorCollectionBehavior<TItemVM> collectionPopulator
          ) {
@@ -306,7 +305,7 @@
             Factory = factory;
          }
 
-         private VMPropertyFactory<TVM> Factory { get; set; }
+         private VMPropertyFactory<TVM, TSourceObject> Factory { get; set; }
 
          public IVMPropertyDescriptor<IVMCollection<TItemVM>> With(VMDescriptorBase itemDescriptor) {
             var collectionConfiguration = Factory.GetCollectionConfiguration<TItemVM>(itemDescriptor);

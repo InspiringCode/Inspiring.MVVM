@@ -93,6 +93,14 @@
          return (TBehavior)item.Instance;
       }
 
+      internal static BehaviorChainConfiguration GetConfiguration(
+         BehaviorChainTemplateKey templateKey,
+         IBehaviorFactoryConfiguration factoryConfiguration
+      ) {
+         var template = BehaviorChainTemplateRegistry.GetTemplate(templateKey);
+         return template.CreateConfiguration(factoryConfiguration);
+      }
+
       /// <summary>
       ///   Adds a disabled behavior configuration to the end of the chain.
       /// </summary>

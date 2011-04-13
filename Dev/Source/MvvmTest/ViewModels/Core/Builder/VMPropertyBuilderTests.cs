@@ -10,16 +10,15 @@
 
    // TODO: Clean me up a bit please.
    [TestClass]
-   public class VMPropertyFactoryTests : TestBase {
+   public class VMPropertyBuilderTests : TestBase {
       public VMDescriptorConfiguration Configuration { get; private set; }
 
       [TestInitialize]
       public void Setup() {
-         var template = BehaviorChainTemplateRegistry.GetTemplate(
-            BehaviorChainTemplateKeys.ViewModel
+         var viewModelConfiguration = BehaviorChainConfiguration.GetConfiguration(
+            BehaviorChainTemplateKeys.ViewModel,
+            FactoryConfigurations.ForViewModel<EmployeeVM>()
          );
-
-         var viewModelConfiguration = template.CreateConfiguration(new ViewModelBehaviorFactoryConfiguration<EmployeeVM>());
 
          Configuration = new VMDescriptorConfiguration(viewModelConfiguration);
       }

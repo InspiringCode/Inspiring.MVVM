@@ -163,6 +163,14 @@
     <Compile Include="ViewModels\Core\BehaviorInterfaces\ViewModelBehaviors\IValidationResultAggregatorBehavior.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryConfigurations.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\CommandPropertyProvider.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\DefaultProviders.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\ISimplePropertyProvider.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\IChildPropertyProvider.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\IViewModelProvider.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\SimplePropertyProvider.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\ViewModelPropertyProvider.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\ViewModelProvider.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Factories\CommandBehaviorFactory.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Keys\PropertyBehaviorKeys.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Keys\PropertyBehaviorKeysBase.cs" />

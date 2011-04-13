@@ -170,9 +170,10 @@
 
 
       private static BehaviorChainConfiguration GetDefaultViewModelConfiguration() {
-         var template = BehaviorChainTemplateRegistry.GetTemplate(BehaviorChainTemplateKeys.ViewModel);
-         var factoryConfig = new ViewModelBehaviorFactoryConfiguration<TVM>();
-         return template.CreateConfiguration(factoryConfig);
+         return BehaviorChainConfiguration.GetConfiguration(
+            BehaviorChainTemplateKeys.ViewModel,
+            FactoryConfigurations.ForViewModel<TVM>()
+         );
       }
    }
 }

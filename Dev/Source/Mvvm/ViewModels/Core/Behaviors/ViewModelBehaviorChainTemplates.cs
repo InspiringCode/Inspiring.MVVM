@@ -10,13 +10,13 @@
       private static void RegisterPropertyTemplate() {
          BehaviorChainTemplateRegistry.RegisterTemplate(
             BehaviorChainTemplateKeys.Property,
-            new BehaviorChainTemplate(PropertyBehaviorFactoryProvider.Default)
+            new BehaviorChainTemplate(DefaultProviders.SimpleProperty)
                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
                .Append(PropertyBehaviorKeys.Undo, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.PropertyChangedNotifier)
-               .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(PropertyBehaviorKeys.ValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.TypeDescriptor)
          );
       }
@@ -24,7 +24,7 @@
       private static void RegisterPropertyWithSourceTemplate() {
          BehaviorChainTemplateRegistry.RegisterTemplate(
             BehaviorChainTemplateKeys.Property,
-            new BehaviorChainTemplate(PropertyBehaviorFactoryProvider.Default)
+            new BehaviorChainTemplate(DefaultProviders.SimpleProperty)
                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
                .Append(PropertyBehaviorKeys.Undo, DefaultBehaviorState.Disabled)
@@ -47,7 +47,7 @@
       private static void RegisterViewModelPropertyTemplate() {
          BehaviorChainTemplateRegistry.RegisterTemplate(
             BehaviorChainTemplateKeys.ViewModelProperty,
-            new BehaviorChainTemplate(null)
+            new BehaviorChainTemplate(DefaultProviders.ViewModelProperty)
                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
                .Append(PropertyBehaviorKeys.Undo, DefaultBehaviorState.Disabled)
@@ -61,8 +61,14 @@
       private static void RegisterViewModelWithSourcePropertyTemplate() {
          BehaviorChainTemplateRegistry.RegisterTemplate(
             BehaviorChainTemplateKeys.ViewModelProperty,
-            ViewModelPropertyTemplate
-
+            new BehaviorChainTemplate(DefaultProviders.ViewModelProperty)
+               .Append(PropertyBehaviorKeys.DisplayValueAccessor)
+               .Append(PropertyBehaviorKeys.UntypedValueAccessor)
+               .Append(PropertyBehaviorKeys.Undo, DefaultBehaviorState.Disabled)
+               .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
+               .Append(PropertyBehaviorKeys.PropertyChangedNotifier)
+               .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(PropertyBehaviorKeys.TypeDescriptor)
          );
       }
 
@@ -83,7 +89,7 @@
       private static void RegisterViewModelTemplate() {
          BehaviorChainTemplateRegistry.RegisterTemplate(
             BehaviorChainTemplateKeys.ViewModel,
-            new BehaviorChainTemplate(ViewModelBehaviorFactoryProvider.Default)
+            new BehaviorChainTemplate(DefaultProviders.ViewModel)
             //.Append(PropertyBehaviorKeys.ManualUpdateCoordinator)
             //.Append(PropertyBehaviorKeys.Validator, DefaultBehaviorState.Disabled)
             //.Append(ViewModelBehaviorKeys.ViewModelValidationSource, DefaultBehaviorState.Disabled)
