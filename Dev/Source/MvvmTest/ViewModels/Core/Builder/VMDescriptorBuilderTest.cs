@@ -40,9 +40,9 @@
       // [TestMethod] // TODO
       public void CheckAccessorBehaviors() {
          DelegateValueAccessor<PersonVM, Person, string> calculatedStringBehavior;
-         MappedPropertyAccessor<PersonVM, DateTime> mappedDateTimeBehavior;
-         MappedPropertyAccessor<PersonVM, decimal> mappedDecimalBehavior;
-         InstancePropertyBehavior<bool> boolInstanceBehavior;
+         MappedValueAccessorBehavior<PersonVM, DateTime> mappedDateTimeBehavior;
+         MappedValueAccessorBehavior<PersonVM, decimal> mappedDecimalBehavior;
+         StoredValueAccessorBehavior<bool> boolInstanceBehavior;
          CollectionPopulatorBehavior<PersonVM> collectionPopulator;
 
          Assert.IsTrue(_descriptor.Name.Behaviors.TryGetBehavior(out calculatedStringBehavior));

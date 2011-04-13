@@ -50,15 +50,13 @@
          Expression<Func<TSourceObject, T>> sourcePropertySelector
       ) {
          var path = PropertyPath.Concat(
-            _sourceObjectPath,
-            PropertyPath.CreateWithDefaultValue(sourcePropertySelector)
+            _sourceObjectPath, 
+            PropertyPath.Create(sourcePropertySelector)
          );
 
-         return Factory.CreateProperty(
-            sourceValueAccessor: new MappedPropertyAccessor<TVM, T>(path),
-            supportsManualUpdate: true,
-            includeRefreshBehavior: true
-         );
+         path = path.ReturnDefaultIfNull();
+
+         return Factory.CreatePropertyWithSource(new MappedValueAccessorBehavior<TVM, T>(path));
       }
 
       /// <inheritdoc />
@@ -72,16 +70,12 @@
             setter
          );
 
-         return Factory.CreateProperty<T>(
-            sourceValueAccessor,
-            supportsManualUpdate: true,
-            includeRefreshBehavior: true
-         );
+         return Factory.CreatePropertyWithSource<T>(sourceValueAccessor);
       }
 
       /// <inheritdoc />
       IVMPropertyDescriptor<T> IValuePropertyBuilder<TSourceObject>.Of<T>() {
-         return Factory.CreateProperty<T>(new InstancePropertyBehavior<T>());
+         return Factory.CreateProperty<T>(new StoredValueAccessorBehavior<T>());
       }
 
       /// <inheritdoc />
@@ -95,7 +89,7 @@
 
          return new ViewModelPropertyBuilderWithSource<TSourceValue>(
             Factory,
-            sourceValueAccessor: new MappedPropertyAccessor<TVM, TSourceValue>(path)
+            sourceValueAccessor: new MappedValueAccessorBehavior<TVM, TSourceValue>(path)
          );
       }
 
@@ -136,7 +130,7 @@
       /// <inheritdoc />
       IVMPropertyDescriptor<TChildVM> IViewModelPropertyBuilder<TSourceObject>.Of<TChildVM>() {
          return Factory.CreateViewModelProperty(
-            viewModelAccessor: new InstancePropertyBehavior<TChildVM>(),
+            viewModelAccessor: new StoredValueAccessorBehavior<TChildVM>(),
             needsViewModelFactory: false,
             cachesValue: false,
             refreshBehavior: new RefreshBehavior.ViewModelProperty<TChildVM>()
@@ -215,8 +209,8 @@
          //return Factory.CreateAndRegisterProperty<ICommand>(config);
       }
 
-      private MappedPropertyAccessor<TVM, TSourceObject> GetSourceObjectAccessor() {
-         return new MappedPropertyAccessor<TVM, TSourceObject>(_sourceObjectPath);
+      private MappedValueAccessorBehavior<TVM, TSourceObject> GetSourceObjectAccessor() {
+         return new MappedValueAccessorBehavior<TVM, TSourceObject>(_sourceObjectPath);
       }
 
       private class CollectionPropertyBuilderWithSource<TItemSource> :

@@ -2,7 +2,7 @@
 namespace Inspiring.Mvvm.ViewModels.Core {
    public static partial class BehaviorChainTemplateRegistry {
       static BehaviorChainTemplateRegistry() {
-         ViewModelBehaviorChainTemplates.RegisterDefaultTemplates();
+         DefaultTemplates.RegisterDefaultTemplates();
          //ResetToDefaults();
       }
 
@@ -24,7 +24,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
                .Append(PropertyBehaviorKeys.Validator, DefaultBehaviorState.Disabled)
                .Append(ViewModelBehaviorKeys.ViewModelValidationSource, DefaultBehaviorState.Disabled)
                .Append(ViewModelBehaviorKeys.ValidationExecutor, DefaultBehaviorState.Disabled)
-               .Append(PropertyBehaviorKeys.TypeDescriptor)
+               .Append(PropertyBehaviorKeys.PropertyDescriptorProvider)
                .Append(ViewModelBehaviorKeys.UndoRoot, DefaultBehaviorState.Disabled)
          );
       }
@@ -45,7 +45,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
                .Append(PropertyBehaviorKeys.PropertyValueCache, DefaultBehaviorState.DisabledWithoutFactory) // TODO!
             //.Append(BehaviorKeys.ManualUpdateBehavior) // TODO: Is this correct?
                .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(PropertyBehaviorKeys.TypeDescriptor)
+               .Append(PropertyBehaviorKeys.PropertyDescriptorProvider)
          );
       }
 
@@ -66,7 +66,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
                .Append(PropertyBehaviorKeys.CollectionPopulator, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.ValueCache)
                .Append(PropertyBehaviorKeys.CollectionFactory, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(PropertyBehaviorKeys.TypeDescriptor)
+               .Append(PropertyBehaviorKeys.PropertyDescriptorProvider)
          );
       }
 
@@ -78,7 +78,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
                .Append(PropertyBehaviorKeys.ValueCache)
                .Append(PropertyBehaviorKeys.CommandFactory, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(PropertyBehaviorKeys.TypeDescriptor)
+               .Append(PropertyBehaviorKeys.PropertyDescriptorProvider)
          );
       }
 
@@ -121,7 +121,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
                .Append(PropertyBehaviorKeys.ViewModelAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.ViewModelFactory)
-               .Append(PropertyBehaviorKeys.TypeDescriptor)
+               .Append(PropertyBehaviorKeys.PropertyDescriptorProvider)
          );
       }
 

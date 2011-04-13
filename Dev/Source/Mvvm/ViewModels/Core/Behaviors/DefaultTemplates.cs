@@ -1,6 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core.Behaviors {
 
-   internal class ViewModelBehaviorChainTemplates {
+   internal class DefaultTemplates {
       public static void RegisterDefaultTemplates() {
          RegisterPropertyTemplate();
 
@@ -17,7 +17,7 @@
                .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.PropertyChangedNotifier)
                .Append(PropertyBehaviorKeys.ValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(PropertyBehaviorKeys.TypeDescriptor)
+               .Append(PropertyBehaviorKeys.PropertyDescriptorProvider)
          );
       }
 
@@ -31,7 +31,7 @@
                .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.PropertyChangedNotifier)
                .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(PropertyBehaviorKeys.TypeDescriptor)
+               .Append(PropertyBehaviorKeys.PropertyDescriptorProvider)
          );
       }
 
@@ -42,7 +42,7 @@
          .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
          .Append(PropertyBehaviorKeys.PropertyChangedNotifier)
          .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
-         .Append(PropertyBehaviorKeys.TypeDescriptor);
+         .Append(PropertyBehaviorKeys.PropertyDescriptorProvider);
 
       private static void RegisterViewModelPropertyTemplate() {
          BehaviorChainTemplateRegistry.RegisterTemplate(
@@ -54,7 +54,7 @@
                .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.PropertyChangedNotifier)
                .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(PropertyBehaviorKeys.TypeDescriptor)
+               .Append(PropertyBehaviorKeys.PropertyDescriptorProvider)
          );
       }
 
@@ -68,7 +68,7 @@
                .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.PropertyChangedNotifier)
                .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(PropertyBehaviorKeys.TypeDescriptor)
+               .Append(PropertyBehaviorKeys.PropertyDescriptorProvider)
          );
       }
 

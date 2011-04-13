@@ -43,7 +43,7 @@
       private static TypeDescriptorPropertyDescriptor GetDescriptor(IVMPropertyDescriptor property) {
          return property
             .Behaviors
-            .GetNextBehavior<PropertyDescriptorBehavior>()
+            .GetNextBehavior<PropertyDescriptorProviderBehavior>()
             .PropertyDescriptor;
       }
    }

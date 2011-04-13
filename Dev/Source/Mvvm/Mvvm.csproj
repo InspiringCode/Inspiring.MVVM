@@ -175,7 +175,7 @@
     <Compile Include="ViewModels\Core\Behaviors\Keys\PropertyBehaviorKeys.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Keys\PropertyBehaviorKeysBase.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Keys\ViewModelBehaviorKeys.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\ViewModelBehaviorChainTemplates.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\DefaultTemplates.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IItemDescriptorProviderCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IPopulatorCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IModificationCollectionBehavior.cs" />
@@ -325,7 +325,7 @@
     <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\PropagateVMContextBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\ServiceLocatorValueFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\SimplePropertyDescriptor.cs" />
-    <Compile Include="ViewModels\Core\TypeDescriptor\PropertyDescriptorBehavior.cs" />
+    <Compile Include="ViewModels\Core\TypeDescriptor\PropertyDescriptorProviderBehavior.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\TypeDescriptorBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationResult.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\ViewModelBehaviors\IViewModelBehaviorContext.cs" />
@@ -370,12 +370,12 @@
     <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\ValueCacheBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\DelegateValueAccessor.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\DynamicFieldGroups.cs" />
-    <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\InstancePropertyBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\StoredValueAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IDisplayValueAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\IManualUpdateBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\IHandlePropertyChangedBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\IHandlePropertyChangingBehavior.cs" />
-    <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\MappedPropertyBehavior.cs" />
+    <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\MappedValueAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\PropertyChangedNotifierBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\DisplayValueAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\Legacy\ValidationBehavior.cs" />

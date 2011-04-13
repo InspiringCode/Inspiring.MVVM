@@ -28,8 +28,8 @@
             return new DisplayValueAccessorBehavior<TChildVM>();
          }
 
-         if (key == PropertyBehaviorKeys.TypeDescriptor) {
-            return new PropertyDescriptorBehavior();
+         if (key == PropertyBehaviorKeys.PropertyDescriptorProvider) {
+            return new PropertyDescriptorProviderBehavior();
          }
 
          if (key == PropertyBehaviorKeys.ValueValidationSource) {

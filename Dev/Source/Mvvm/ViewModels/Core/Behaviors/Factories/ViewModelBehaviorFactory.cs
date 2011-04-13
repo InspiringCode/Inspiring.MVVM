@@ -23,7 +23,7 @@
             return new LoadOrderBehavior();
          }
 
-         if (key == PropertyBehaviorKeys.TypeDescriptor) {
+         if (key == PropertyBehaviorKeys.PropertyDescriptorProvider) {
             return new TypeDescriptorBehavior();
          }
 

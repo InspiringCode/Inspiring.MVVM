@@ -23,7 +23,7 @@
       private class EmployeeVMDescriptor : VMDescriptor {
          public EmployeeVMDescriptor() {
             Salary = new VMPropertyDescriptor<int>();
-            Salary.Behaviors.Successor = new InstancePropertyBehavior<int>();
+            Salary.Behaviors.Successor = new StoredValueAccessorBehavior<int>();
             Salary.Behaviors.Initialize(this, Salary);
          }
 

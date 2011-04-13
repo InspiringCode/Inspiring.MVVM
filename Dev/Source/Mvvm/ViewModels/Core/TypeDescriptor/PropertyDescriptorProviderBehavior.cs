@@ -1,7 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System.Diagnostics.Contracts;
 
-   internal sealed class PropertyDescriptorBehavior :
+   internal sealed class PropertyDescriptorProviderBehavior :
       Behavior,
       IBehaviorInitializationBehavior,
       IHandlePropertyChangedBehavior {

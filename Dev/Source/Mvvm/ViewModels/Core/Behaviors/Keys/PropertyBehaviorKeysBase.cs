@@ -6,7 +6,7 @@
       public static readonly BehaviorKey Undo = Key(() => Undo);
       public static readonly BehaviorKey ValueValidationSource = Key(() => ValueValidationSource);
       public static readonly BehaviorKey PropertyChangedNotifier = Key(() => PropertyChangedNotifier);
-      public static readonly BehaviorKey TypeDescriptor = Key(() => TypeDescriptor);
+      public static readonly BehaviorKey PropertyDescriptorProvider = Key(() => PropertyDescriptorProvider);
       public static readonly BehaviorKey SourceAccessor = Key(() => SourceAccessor);
    }
 }

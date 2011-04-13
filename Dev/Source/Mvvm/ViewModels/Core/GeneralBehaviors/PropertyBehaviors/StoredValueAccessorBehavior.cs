@@ -5,7 +5,7 @@
    ///   operation of a <see cref="IVMPropertyDescriptor"/> by using a dynamic field (see 
    ///   <see cref="FieldDefinition"/>) as a backing store for the property target.
    /// </summary>
-   public sealed class InstancePropertyBehavior<TValue> :
+   public sealed class StoredValueAccessorBehavior<TValue> :
       Behavior,
       IBehaviorInitializationBehavior,
       IValueAccessorBehavior<TValue> {

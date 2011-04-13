@@ -14,7 +14,12 @@
 
       protected virtual BehaviorFactory GetCommonFactory<TOwnerVM, TValue, TSourceObject>() {
          return new BehaviorFactory()
-            .RegisterBehavior<DisplayValueAccessorBehavior<TValue>>(PropertyBehaviorKeys.DisplayValueAccessor);
+            .RegisterBehavior<DisplayValueAccessorBehavior<TValue>>(PropertyBehaviorKeys.DisplayValueAccessor)
+            .RegisterBehavior<UntypedPropertyAccessorBehavior<TValue>>(PropertyBehaviorKeys.UntypedValueAccessor)
+            .RegisterBehavior<UndoSetValueBehavior<TValue>>(PropertyBehaviorKeys.Undo)
+            .RegisterBehavior<ValueValidationSourceBehavior<TValue>>(PropertyBehaviorKeys.ValueValidationSource)
+            .RegisterBehavior<PropertyChangedNotifierBehavior<TValue>>(PropertyBehaviorKeys.PropertyChangedNotifier)
+            .RegisterBehavior<PropertyDescriptorProviderBehavior>(PropertyBehaviorKeys.PropertyDescriptorProvider);
       }
    }
 }

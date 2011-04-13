@@ -3,6 +3,8 @@
    using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.Common;
 
+   // TODO: Null handling, remove manual update stuff
+
    /// <summary>
    ///   A <see cref="IDisplayValueAccessorBehavior"/> that uses the specified delegates
    ///   to implement get/set operation of a <see cref="IVMPropertyDescriptor"/>.
