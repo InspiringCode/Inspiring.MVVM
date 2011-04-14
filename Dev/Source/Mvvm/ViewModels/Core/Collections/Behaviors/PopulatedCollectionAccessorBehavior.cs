@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
+   using System;
    using System.Collections.Generic;
 
    internal sealed class PopulatedCollectionAccessorBehavior<TItemVM> :
@@ -6,10 +7,10 @@
       IRefreshBehavior
       where TItemVM : IViewModel {
 
-      protected override IVMCollection<TItemVM> ProvideValue(IBehaviorContext context) {
-         var collection = this.CreateValueNext<IVMCollection<TItemVM>>(context);
-         Repopulate(context, collection);
-         return collection;
+      public override void SetValue(IBehaviorContext context, IVMCollection<TItemVM> value) {
+         throw new NotSupportedException(
+            ExceptionTexts.CannotSetVMCollectionProperties
+         );
       }
 
       public void Refresh(IBehaviorContext context) {
@@ -17,6 +18,12 @@
          Repopulate(context, collection);
 
          this.RefreshNext(context);
+      }
+
+      protected override IVMCollection<TItemVM> ProvideValue(IBehaviorContext context) {
+         var collection = this.CreateValueNext<IVMCollection<TItemVM>>(context);
+         Repopulate(context, collection);
+         return collection;
       }
 
       private void Repopulate(IBehaviorContext context, IVMCollection<TItemVM> collection) {

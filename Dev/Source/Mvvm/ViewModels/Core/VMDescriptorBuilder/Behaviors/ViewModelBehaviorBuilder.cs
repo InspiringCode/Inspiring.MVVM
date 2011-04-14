@@ -95,10 +95,11 @@
       }
 
       private void EnableCollectionBehaviorUndo(BehaviorChainConfiguration propertyConfig) {
-         var collectionConfiguration = propertyConfig
-            .GetBehavior<ICollectionBehaviorConfigurationBehavior>(PropertyBehaviorKeys.CollectionFactory);
+         throw new NotImplementedException();
+         //var collectionConfiguration = propertyConfig
+         //   .GetBehavior<ICollectionBehaviorConfigurationBehavior>(PropertyBehaviorKeys.CollectionFactory);
 
-         collectionConfiguration.CollectionBehaviorConfiguration.Enable(CollectionBehaviorKeys.Undo);
+         //collectionConfiguration.CollectionBehaviorConfiguration.Enable(CollectionBehaviorKeys.Undo);
       }
 
       public void IsUndoRoot() {

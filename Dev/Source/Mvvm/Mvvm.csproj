@@ -180,9 +180,9 @@
     <Compile Include="ViewModels\Core\Collections\Behaviors\PopulatedCollectionAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\Behaviors\StoredCollectionAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\Behaviors\WrapperCollectionAccessorBehavior.cs" />
-    <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IItemDescriptorProviderCollectionBehavior.cs" />
+    <Compile Include="ViewModels\Core\Collections\BehaviorInterfaces\IItemDescriptorProviderBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IPopulatorCollectionBehavior.cs" />
-    <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IModificationCollectionBehavior.cs" />
+    <Compile Include="ViewModels\Core\Collections\BehaviorInterfaces\IModificationCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IDescendantValidationBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IIsLoadedIndicatorBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IValidatedValueAccessorBehavior.cs" />
@@ -209,7 +209,7 @@
     <Compile Include="ViewModels\Core\Behaviors\InitializableBehavior.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Keys\CollectionBehaviorKeys.cs" />
     <Compile Include="ViewModels\Core\Collections\IVMCollectionExpression.cs" />
-    <Compile Include="ViewModels\Core\Commands\CommandFactoryBehavior.cs" />
+    <Compile Include="ViewModels\Core\Commands\CommandAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\Commands\DelegatingCommandBehavior.cs" />
     <Compile Include="ViewModels\Core\Commands\ViewModelCommand.cs" />
     <Compile Include="ViewModels\Core\Commands\WaitCursorBehavior.cs" />
@@ -301,10 +301,10 @@
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\Interfaces\IPopulatedCollectionPropertyBuilder.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\VMPropertyBuilder.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\VMPropertyFactory.cs" />
-    <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\ChangeNotifierCollectionBehavior.cs" />
-    <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\DescriptorSetterCollectionBehavior.cs" />
-    <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\ParentSetterCollectionBehavior.cs" />
-    <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\SynchronizerCollectionBehavior.cs" />
+    <Compile Include="ViewModels\Core\Collections\Behaviors\ChangeNotifierCollectionBehavior.cs" />
+    <Compile Include="ViewModels\Core\Collections\Behaviors\ItemDescriptorProviderBehavior.cs" />
+    <Compile Include="ViewModels\Core\Collections\Behaviors\ItemInitializerBehavior.cs" />
+    <Compile Include="ViewModels\Core\Collections\Behaviors\SynchronizerCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\PopulatorCollectionBehavior.cs" />
     <Compile Include="ViewModels\- No Namespace -\IVMCollection.cs" />
     <Compile Include="ViewModels\Core\Collections\VMCollection.cs" />

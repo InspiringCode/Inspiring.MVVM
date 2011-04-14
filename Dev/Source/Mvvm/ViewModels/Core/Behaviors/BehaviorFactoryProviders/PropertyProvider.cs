@@ -8,7 +8,7 @@
             .RegisterBehavior<UntypedPropertyAccessorBehavior<TValue>>(PropertyBehaviorKeys.UntypedValueAccessor)
             .RegisterBehavior<UndoSetValueBehavior<TValue>>(PropertyBehaviorKeys.Undo)
             .RegisterBehavior<ValueValidationSourceBehavior<TValue>>(PropertyBehaviorKeys.ValueValidationSource)
-            .RegisterBehavior<PropertyChangedNotifierBehavior<TValue>>(PropertyBehaviorKeys.PropertyChangedNotifier)
+            .RegisterBehavior<PropertyChangedNotifierBehavior<TValue>>(PropertyBehaviorKeys.ChangeNotifier)
             .RegisterBehavior<PropertyDescriptorProviderBehavior>(PropertyBehaviorKeys.PropertyDescriptorProvider);
       }
    }

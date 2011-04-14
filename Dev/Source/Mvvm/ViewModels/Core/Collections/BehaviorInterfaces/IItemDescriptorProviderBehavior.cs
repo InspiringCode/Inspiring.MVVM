@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
-
-   public interface IItemDescriptorProviderCollectionBehavior : IBehavior {
+   public interface IItemDescriptorProviderBehavior : IBehavior {
       VMDescriptorBase ItemDescriptor { get; }
    }
 }

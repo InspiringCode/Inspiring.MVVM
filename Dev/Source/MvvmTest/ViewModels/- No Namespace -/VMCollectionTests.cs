@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Inspiring.Mvvm.ViewModels;
+﻿using Inspiring.Mvvm.ViewModels;
 using Inspiring.Mvvm.ViewModels.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace Inspiring.MvvmTest.ViewModels.__No_Namespace__ {
    [TestClass]
@@ -45,13 +42,13 @@ namespace Inspiring.MvvmTest.ViewModels.__No_Namespace__ {
          itemDescriptor.Behaviors.Initialize(itemDescriptor);
 
          var collectionBehaviors = new BehaviorChain();
-         collectionBehaviors.Successor = new ItemDescriptorCollectionBehavior<IViewModel>(itemDescriptor);
+         collectionBehaviors.Successor = new ItemDescriptorProviderBehavior(itemDescriptor);
 
          var collection = new VMCollection<IViewModel>(collectionBehaviors, CreateItem());
 
          Assert.AreSame(itemTypeDescriptorBehavior.PropertyDescriptors, collection.GetItemProperties(null));
       }
-      
+
       private static IViewModel CreateItem() {
          return Mock<IViewModel>();
       }

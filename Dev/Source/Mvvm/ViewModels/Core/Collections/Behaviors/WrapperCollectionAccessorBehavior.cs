@@ -1,16 +1,17 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System.Collections.Generic;
    using System.Linq;
+   using System;
 
    internal sealed class WrapperCollectionAccessorBehavior<TItemVM, TItemSource> :
       CachedAccessorBehavior<IVMCollection<TItemVM>>,
       IRefreshBehavior
       where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
-      protected override IVMCollection<TItemVM> ProvideValue(IBehaviorContext context) {
-         var collection = this.CreateValueNext<IVMCollection<TItemVM>>(context);
-         Repopulate(context, collection);
-         return collection;
+      public override void SetValue(IBehaviorContext context, IVMCollection<TItemVM> value) {
+         throw new NotSupportedException(
+            ExceptionTexts.CannotSetVMCollectionProperties
+         );
       }
 
       public void Refresh(IBehaviorContext context) {
@@ -37,6 +38,12 @@
             .ForEach(x => x.Item.Kernel.Refresh());
 
          this.RefreshNext(context);
+      }
+
+      protected override IVMCollection<TItemVM> ProvideValue(IBehaviorContext context) {
+         var collection = this.CreateValueNext<IVMCollection<TItemVM>>(context);
+         Repopulate(context, collection);
+         return collection;
       }
 
       private void Repopulate(IBehaviorContext context, IVMCollection<TItemVM> collection) {

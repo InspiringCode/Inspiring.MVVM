@@ -21,7 +21,7 @@
          }
 
          if (key == CollectionBehaviorKeys.ParentSetter) {
-            return new ParentSetterCollectionBehavior<TItemVM>();
+            return new ItemInitializerBehavior<TItemVM>();
          }
 
          if (key == CollectionBehaviorKeys.ChangeNotifier) {

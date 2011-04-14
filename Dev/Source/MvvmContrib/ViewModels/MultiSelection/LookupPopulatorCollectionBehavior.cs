@@ -6,12 +6,16 @@
    using Inspiring.Mvvm.ViewModels.Core;
 
    internal sealed class LookupPopulatorCollectionBehavior<TVM, TItemVM, TItemSource> :
-      Behavior,
-      IPopulatorCollectionBehavior<TItemVM>
+      Behavior//,
+      //IPopulatorCollectionBehavior<TItemVM>
       where TVM : IViewModel
       where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
       private Func<TVM, IEnumerable<TItemVM>> _lookupSourceProvider;
+
+      public LookupPopulatorCollectionBehavior() {
+         throw new NotImplementedException();
+      }
 
       public LookupPopulatorCollectionBehavior(Func<TVM, IEnumerable<TItemVM>> lookupSourceProvider) {
          Contract.Requires(lookupSourceProvider != null);

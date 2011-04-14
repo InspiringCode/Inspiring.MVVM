@@ -59,7 +59,7 @@
             return new IsLoadedIndicatorBehavior<TChildVM>();
          }
 
-         if (key == PropertyBehaviorKeys.PropertyChangedNotifier) {
+         if (key == PropertyBehaviorKeys.ChangeNotifier) {
             return new PropertyChangedNotifierBehavior<TChildVM>();
          }
 

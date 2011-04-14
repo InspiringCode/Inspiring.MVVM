@@ -10,7 +10,7 @@
       private DynamicFieldAccessor<TValue> _cache;
       private IVMPropertyDescriptor _property;
 
-      public void Initialize(BehaviorInitializationContext context) {
+      public virtual void Initialize(BehaviorInitializationContext context) {
          _cache = new DynamicFieldAccessor<TValue>(context, ValueCacheGroup);
          _property = context.Property;
          SetInitialized();

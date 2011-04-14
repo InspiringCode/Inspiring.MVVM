@@ -9,7 +9,7 @@
       [TestInitialize]
       public override void Setup() {
          base.Setup();
-         Behavior = new ParentSetterCollectionBehavior<IViewModel>();
+         Behavior = new ItemInitializerBehavior<IViewModel>();
       }
 
       [TestMethod]

@@ -40,7 +40,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
                .Append(PropertyBehaviorKeys.RefreshBehavior, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.Validator, DefaultBehaviorState.Disabled)
-               .Append(PropertyBehaviorKeys.PropertyChangedNotifier)
+               .Append(PropertyBehaviorKeys.ChangeNotifier)
                .Append(PropertyBehaviorKeys.PropertyValueCache, DefaultBehaviorState.DisabledWithoutFactory) // TODO!
             //.Append(BehaviorKeys.ManualUpdateBehavior) // TODO: Is this correct?
                .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
@@ -110,7 +110,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
                .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.Validator, DefaultBehaviorState.Disabled)
 
-               .Append(PropertyBehaviorKeys.PropertyChangedNotifier)
+               .Append(PropertyBehaviorKeys.ChangeNotifier)
 
 
                //.Append(PropertyBehaviorKeys.ViewModelSourceSetter, DefaultBehaviorState.DisabledWithoutFactory)

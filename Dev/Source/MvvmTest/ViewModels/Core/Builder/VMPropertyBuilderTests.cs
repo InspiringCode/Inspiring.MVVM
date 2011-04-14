@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Builder {
+   using System;
    using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.Common;
@@ -98,11 +99,11 @@
          var p = f.Collection.Wraps(x => x.SourcePerson.Projects).With<ProjectVM>(new VMDescriptorStub());
 
          AssertDefaultCollectionPropertyBehaviors(p);
-         Assert.IsTrue(ContainsBehavior<CollectionPopulatorBehavior<ProjectVM>>(p));
+         //Assert.IsTrue(ContainsBehavior<CollectionPopulatorBehavior<ProjectVM>>(p));
          Assert.IsTrue(ContainsBehavior<ValueCacheBehaviorOld<IVMCollection<ProjectVM>>>(p));
          Assert.IsTrue(ContainsBehavior<RefreshBehavior.PopulatedCollectionProperty<ProjectVM>>(p));
 
-         Assert.IsTrue(ContainsCollectionBehavior<PopulatorCollectionBehavior<ProjectVM, Project>>(p));
+         //Assert.IsTrue(ContainsCollectionBehavior<PopulatorCollectionBehavior<ProjectVM, Project>>(p));
          Assert.IsTrue(ContainsCollectionBehavior<ServiceLocatorValueFactoryBehavior<ProjectVM>>(p));
          Assert.IsTrue(ContainsCollectionBehavior<DelegateValueAccessor<EmployeeVM, EmployeeVM, IEnumerable<Project>>>(p));
       }
@@ -113,11 +114,11 @@
          var p = f.Collection.PopulatedWith(x => Enumerable.Empty<ProjectVM>()).With(new VMDescriptorStub());
 
          AssertDefaultCollectionPropertyBehaviors(p);
-         Assert.IsTrue(ContainsBehavior<CollectionPopulatorBehavior<ProjectVM>>(p));
+         //Assert.IsTrue(ContainsBehavior<CollectionPopulatorBehavior<ProjectVM>>(p));
          Assert.IsTrue(ContainsBehavior<ValueCacheBehaviorOld<IVMCollection<ProjectVM>>>(p));
          Assert.IsTrue(ContainsBehavior<RefreshBehavior.PopulatedCollectionProperty<ProjectVM>>(p));
 
-         Assert.IsTrue(ContainsCollectionBehavior<DelegatePopulatorCollectionBehavior<ProjectVM, EmployeeVM>>(p));
+         //Assert.IsTrue(ContainsCollectionBehavior<DelegatePopulatorCollectionBehavior<ProjectVM, EmployeeVM>>(p));
          Assert.IsTrue(ContainsCollectionBehavior<MappedValueAccessorBehavior<EmployeeVM, EmployeeVM>>(p));
          Assert.IsFalse(ContainsCollectionBehavior<ServiceLocatorValueFactoryBehavior<ProjectVM>>(p));
       }
@@ -128,10 +129,10 @@
          var p = f.Collection.Of<ProjectVM>(new VMDescriptorStub());
 
          AssertDefaultCollectionPropertyBehaviors(p);
-         Assert.IsFalse(ContainsBehavior<CollectionPopulatorBehavior<ProjectVM>>(p));
+         //Assert.IsFalse(ContainsBehavior<CollectionPopulatorBehavior<ProjectVM>>(p));
          Assert.IsTrue(ContainsBehavior<RefreshBehavior.CollectionInstanceProperty<ProjectVM>>(p));
 
-         Assert.IsFalse(ContainsCollectionBehavior<PopulatorCollectionBehavior<ProjectVM, Project>>(p));
+         //Assert.IsFalse(ContainsCollectionBehavior<PopulatorCollectionBehavior<ProjectVM, Project>>(p));
          Assert.IsFalse(ContainsCollectionBehavior<MappedValueAccessorBehavior<EmployeeVM, EmployeeVM>>(p));
          Assert.IsFalse(ContainsCollectionBehavior<ServiceLocatorValueFactoryBehavior<ProjectVM>>(p));
       }
@@ -163,11 +164,11 @@
       private void AssertDefaultCollectionPropertyBehaviors(IVMPropertyDescriptor p) {
          Assert.IsTrue(ContainsBehavior<IDisplayValueAccessorBehavior>(p));
          Assert.IsTrue(ContainsBehavior<ValueCacheBehaviorOld<IVMCollection<ProjectVM>>>(p));
-         Assert.IsTrue(ContainsBehavior<CollectionFactoryBehavior<ProjectVM>>(p));
+         //Assert.IsTrue(ContainsBehavior<CollectionFactoryBehavior<ProjectVM>>(p));
          Assert.IsTrue(ContainsBehavior<PropertyDescriptorProviderBehavior>(p));
 
-         Assert.IsTrue(ContainsCollectionBehavior<ItemDescriptorCollectionBehavior<ProjectVM>>(p));
-         Assert.IsTrue(ContainsCollectionBehavior<ParentSetterCollectionBehavior<ProjectVM>>(p));
+         Assert.IsTrue(ContainsCollectionBehavior<ItemDescriptorProviderBehavior>(p));
+         Assert.IsTrue(ContainsCollectionBehavior<ItemInitializerBehavior<ProjectVM>>(p));
          Assert.IsTrue(ContainsCollectionBehavior<ChangeNotifierCollectionBehavior<ProjectVM>>(p));
 
       }
@@ -184,11 +185,13 @@
          var config = Configuration.PropertyConfigurations[property];
          var propertyChain = config.CreateChain();
 
-         var collectionFactory = propertyChain.GetNextBehavior<CollectionFactoryBehavior<ProjectVM>>();
-         var collectionChain = collectionFactory.CollectionBehaviorConfiguration.CreateChain();
+         //var collectionFactory = propertyChain.GetNextBehavior<CollectionFactoryBehavior<ProjectVM>>();
+         //var collectionChain = collectionFactory.CollectionBehaviorConfiguration.CreateChain();
 
-         T behavior;
-         return collectionChain.TryGetBehavior(out behavior);
+         //T behavior;
+         //return collectionChain.TryGetBehavior(out behavior);
+
+         throw new NotImplementedException();
       }
 
       private VMPropertyBuilder<EmployeeVM, EmployeeVM> CreateRootFactory() {

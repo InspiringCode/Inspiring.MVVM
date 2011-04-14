@@ -161,8 +161,8 @@
       ) {
          return new PopulatedCollectionPropertyBuilder<TItemVM>(
             Factory,
-            GetSourceObjectAccessor(),
-            new DelegatePopulatorCollectionBehavior<TItemVM, TSourceObject>(itemsProvider)
+            GetSourceObjectAccessor()
+            //new DelegatePopulatorCollectionBehavior<TItemVM, TSourceObject>(itemsProvider)
          );
       }
 
@@ -237,10 +237,10 @@
             collectionConfiguration.Enable(CollectionBehaviorKeys.SourceSynchronizer, new SynchronizerCollectionBehavior<TItemVM, TItemSource>());
             collectionConfiguration.Enable(CollectionBehaviorKeys.SourceAccessor, _sourceCollectionAccessor);
             collectionConfiguration.Enable(CollectionBehaviorKeys.ViewModelFactory, new ServiceLocatorValueFactoryBehavior<TItemVM>());
-            collectionConfiguration.Enable(
-               CollectionBehaviorKeys.Populator,
-               new PopulatorCollectionBehavior<TItemVM, TItemSource>()
-            );
+            //collectionConfiguration.Enable(
+            //   CollectionBehaviorKeys.Populator,
+            //   //new PopulatorCollectionBehavior<TItemVM, TItemSource>()
+            //);
 
             return Factory.CreateCollectionProperty<TItemVM>(
                collectionConfiguration,
@@ -284,18 +284,18 @@
          where TItemVM : IViewModel {
 
          private IValueAccessorBehavior<TSourceObject> _sourceObjectAccessor;
-         private IPopulatorCollectionBehavior<TItemVM> _collectionPopulator;
+         //private IPopulatorCollectionBehavior<TItemVM> _collectionPopulator;
 
          public PopulatedCollectionPropertyBuilder(
             VMPropertyFactory<TVM, TSourceObject> factory,
-            IValueAccessorBehavior<TSourceObject> sourceObjectAccessor,
-            IPopulatorCollectionBehavior<TItemVM> collectionPopulator
+            IValueAccessorBehavior<TSourceObject> sourceObjectAccessor
+            //IPopulatorCollectionBehavior<TItemVM> collectionPopulator
          ) {
             Contract.Requires(sourceObjectAccessor != null);
-            Contract.Requires(collectionPopulator != null);
+            //Contract.Requires(collectionPopulator != null);
 
             _sourceObjectAccessor = sourceObjectAccessor;
-            _collectionPopulator = collectionPopulator;
+            //_collectionPopulator = collectionPopulator;
             Factory = factory;
          }
 
@@ -305,7 +305,7 @@
             var collectionConfiguration = Factory.GetCollectionConfiguration<TItemVM>(itemDescriptor);
 
             collectionConfiguration.Enable(CollectionBehaviorKeys.SourceAccessor, _sourceObjectAccessor);
-            collectionConfiguration.Enable(CollectionBehaviorKeys.Populator, _collectionPopulator);
+            //collectionConfiguration.Enable(CollectionBehaviorKeys.Populator, _collectionPopulator);
 
             return Factory.CreateCollectionProperty<TItemVM>(
                collectionConfiguration,

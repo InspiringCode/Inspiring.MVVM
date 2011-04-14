@@ -175,7 +175,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          if (isPopulatable) {
             //config.Enable(BehaviorKeys.CollectionInstanceCache);
             //config.Enable(PropertyBehaviorKeys.ManualUpdateBehavior, new ManualUpdateCollectionPropertyBehavior<TItemVM>());
-            config.Enable(PropertyBehaviorKeys.CollectionPopulator, new CollectionPopulatorBehavior<TItemVM>());
+            //config.Enable(PropertyBehaviorKeys.CollectionPopulator, new CollectionPopulatorBehavior<TItemVM>());
          }
 
 
@@ -183,10 +183,10 @@ namespace Inspiring.Mvvm.ViewModels.Core {
             config.Enable(PropertyBehaviorKeys.RefreshBehavior, refreshBehavior);
          }
 
-         config.Enable(
-            PropertyBehaviorKeys.CollectionFactory,
-            new CollectionFactoryBehavior<TItemVM>(collectionConfiguration)
-         );
+         //config.Enable(
+         //   PropertyBehaviorKeys.CollectionFactory,
+         //   //new CollectionFactoryBehavior<TItemVM>(collectionConfiguration)
+         //);
 
          return CreateAndRegisterProperty<IVMCollection<TItemVM>>(config);
       }
@@ -201,7 +201,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
 
          config.Enable(
             CollectionBehaviorKeys.DescriptorSetter,
-            new ItemDescriptorCollectionBehavior<TItemVM>(itemDescriptor)
+            new ItemDescriptorProviderBehavior(itemDescriptor)
          );
 
          return config;

@@ -342,11 +342,16 @@
          }
       }
 
-      public static VMDescriptorBase GetItemDescriptor(this IVMCollection collection) {
-         return collection
-            .Behaviors
-            .GetNextBehavior<IItemDescriptorProviderCollectionBehavior>()
+      public static VMDescriptorBase GetItemDescriptor(
+         this Behavior behavior
+      ) {
+         return behavior
+            .GetNextBehavior<IItemDescriptorProviderBehavior>()
             .ItemDescriptor;
+      }
+
+      public static VMDescriptorBase GetItemDescriptor(this IVMCollection collection) {
+         return collection.Behaviors.GetItemDescriptor();
       }
 
       public static ValidationResult ExecuteValidationRequest(this IViewModel requestTarget, ValidationRequest request) {

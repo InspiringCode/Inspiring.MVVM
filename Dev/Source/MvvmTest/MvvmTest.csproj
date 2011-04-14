@@ -201,10 +201,12 @@
     <Compile Include="ViewModels\Core\Collections\Behaviors\WrapperCollectionAccessorBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\CollectionChangeNotificationBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\CollectionModificationBehaviorTestBase.cs" />
-    <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\CollectionPopulatorBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\CollectionSynchronizerBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\CollectionParentSetterBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Collections\VMCollectionTestBase.cs" />
+    <Compile Include="ViewModels\Core\Commands\CommandAccessorBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\Commands\DelegatingCommandBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\Commands\ViewModelCommandTests.cs" />
     <Compile Include="ViewModels\Core\Common\ChangeArgsTests.cs" />
     <Compile Include="ViewModels\Core\CountingSetTests.cs" />
     <Compile Include="ViewModels\Core\Paths\PathDefinitionTests.cs" />
@@ -268,7 +270,6 @@
     <Compile Include="Screens\ScreenTest.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="ViewModels\Behaviors\BehaviorsTest.cs" />
-    <Compile Include="ViewModels\Core\Collections\PropertyBehaviors\CollectionFactoryBehaviorTests.cs" />
     <Compile Include="ViewModels\Behaviors\CollectionPopulatorTest.cs" />
     <Compile Include="ViewModels\Behaviors\DisplayValueAccessorBehaviorTest.cs" />
     <Compile Include="ViewModels\CommandPropertyTest.cs" />
@@ -307,6 +308,7 @@
     <Folder Include="ApiTests\ViewModels\BasicTests\" />
     <Folder Include="API\" />
     <Folder Include="Shell\" />
+    <Folder Include="ViewModels\Core\Collections\PropertyBehaviors\" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\PersonView.xaml">

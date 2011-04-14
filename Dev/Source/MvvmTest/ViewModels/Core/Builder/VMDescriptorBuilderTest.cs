@@ -43,14 +43,14 @@
          MappedValueAccessorBehavior<PersonVM, DateTime> mappedDateTimeBehavior;
          MappedValueAccessorBehavior<PersonVM, decimal> mappedDecimalBehavior;
          StoredValueAccessorBehavior<bool> boolInstanceBehavior;
-         CollectionPopulatorBehavior<PersonVM> collectionPopulator;
+         //CollectionPopulatorBehavior<PersonVM> collectionPopulator;
 
          Assert.IsTrue(_descriptor.Name.Behaviors.TryGetBehavior(out calculatedStringBehavior));
          Assert.IsTrue(_descriptor.BirthDate.Behaviors.TryGetBehavior(out mappedDateTimeBehavior));
          Assert.IsTrue(_descriptor.Salary.Behaviors.TryGetBehavior(out mappedDecimalBehavior));
          Assert.IsTrue(_descriptor.IsSelected.Behaviors.TryGetBehavior(out boolInstanceBehavior));
-         Assert.IsTrue(_companyDescriptor.Employees.Behaviors.TryGetBehavior(out collectionPopulator));
-         Assert.IsTrue(_companyDescriptor.Customers.Behaviors.TryGetBehavior(out collectionPopulator));
+         //Assert.IsTrue(_companyDescriptor.Employees.Behaviors.TryGetBehavior(out collectionPopulator));
+         //Assert.IsTrue(_companyDescriptor.Customers.Behaviors.TryGetBehavior(out collectionPopulator));
       }
 
       [TestMethod]

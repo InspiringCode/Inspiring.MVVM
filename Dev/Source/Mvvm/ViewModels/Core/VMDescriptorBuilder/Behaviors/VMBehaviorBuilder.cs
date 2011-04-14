@@ -36,12 +36,13 @@
          /// <inheritdoc />
          ISinglePropertyBehaviorBuilder<TVM, TValue> ISinglePropertyBehaviorBuilder<TVM, TValue>.CollectionBehaviors {
             get {
-               // TODO: Refactor this?
-               BehaviorChainConfiguration collectionConfiguration = _propertyConfiguration
-                  .GetBehavior<ICollectionBehaviorConfigurationBehavior>(PropertyBehaviorKeys.CollectionFactory)
-                  .CollectionBehaviorConfiguration;
+               throw new NotImplementedException();
+               //// TODO: Refactor this?
+               //BehaviorChainConfiguration collectionConfiguration = _propertyConfiguration
+               //   .GetBehavior<ICollectionBehaviorConfigurationBehavior>(PropertyBehaviorKeys.CollectionFactory)
+               //   .CollectionBehaviorConfiguration;
 
-               return new SinglePropertyBehaviorBuilder<TValue>(Configuration, collectionConfiguration);
+               //return new SinglePropertyBehaviorBuilder<TValue>(Configuration, collectionConfiguration);
             }
          }
 

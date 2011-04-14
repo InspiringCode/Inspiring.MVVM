@@ -19,7 +19,7 @@
             return new DisplayValueAccessorBehavior<TValue>();
          }
 
-         if (key == PropertyBehaviorKeys.PropertyChangedNotifier) {
+         if (key == PropertyBehaviorKeys.ChangeNotifier) {
             return new PropertyChangedNotifierBehavior<TValue>();
          }
 

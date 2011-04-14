@@ -15,7 +15,7 @@
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
                .Append(PropertyBehaviorKeys.Undo, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
-               .Append(PropertyBehaviorKeys.PropertyChangedNotifier)
+               .Append(PropertyBehaviorKeys.ChangeNotifier)
                .Append(PropertyBehaviorKeys.ValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.PropertyDescriptorProvider)
          );
@@ -29,7 +29,7 @@
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
                .Append(PropertyBehaviorKeys.Undo, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
-               .Append(PropertyBehaviorKeys.PropertyChangedNotifier)
+               .Append(PropertyBehaviorKeys.ChangeNotifier)
                .Append(PropertyBehaviorKeys.ValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.PropertyDescriptorProvider)
          );
@@ -46,7 +46,7 @@
                .Append(PropertyBehaviorKeys.LazyRefresh)
                .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.DescendantsValidator)
-               .Append(PropertyBehaviorKeys.PropertyChangedNotifier)
+               .Append(PropertyBehaviorKeys.ChangeNotifier)
                .Append(PropertyBehaviorKeys.ValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.PropertyDescriptorProvider)
@@ -64,7 +64,7 @@
                .Append(PropertyBehaviorKeys.LazyRefresh)
                .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.DescendantsValidator)
-               .Append(PropertyBehaviorKeys.PropertyChangedNotifier)
+               .Append(PropertyBehaviorKeys.ChangeNotifier)
                .Append(PropertyBehaviorKeys.ValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.ValueFactory)
@@ -78,10 +78,13 @@
             new BehaviorChainTemplate(null)
                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
-            //.Append(PropertyBehaviorKeys.Undo, DefaultBehaviorState.Disabled)
-            //.Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
-            //.Append(PropertyBehaviorKeys.PropertyChangedNotifier)
-            //.Append(PropertyBehaviorKeys.ValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(PropertyBehaviorKeys.ValueInitializer)
+               .Append(PropertyBehaviorKeys.Undo, DefaultBehaviorState.Disabled)
+               .Append(CollectionBehaviorKeys.SourceSynchronizer)
+               .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
+               .Append(PropertyBehaviorKeys.ChangeNotifier)
+               .Append(PropertyBehaviorKeys.ValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.PropertyDescriptorProvider)
          );
       }
@@ -90,8 +93,35 @@
 
       }
 
-      private static void RegisterCommandPropertyTemplate() {
+      /*
+       * 
+       *                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
+               .Append(PropertyBehaviorKeys.UntypedValueAccessor)
+               .Append(PropertyBehaviorKeys.ValueCache)
+               .Append(PropertyBehaviorKeys.CommandFactory, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(PropertyBehaviorKeys.PropertyDescriptorProvider)
+       * 
+       *                .Append(PropertyBehaviorKeys.WaitCursor)
+               .Append(PropertyBehaviorKeys.CommandExecutor, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
+       * 
+       * 
+       * 
+       */
 
+
+      private static void RegisterCommandPropertyTemplate() {
+         BehaviorChainTemplateRegistry.RegisterTemplate(
+            BehaviorChainTemplateKeys.CommandProperty,
+            new BehaviorChainTemplate(DefaultProviders.SimpleProperty)
+               .Append(PropertyBehaviorKeys.DisplayValueAccessor)
+               .Append(PropertyBehaviorKeys.UntypedValueAccessor)
+               .Append(PropertyBehaviorKeys.ValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)
+               // cursor
+               // executor
+               .Append(PropertyBehaviorKeys.SourceAccessor)
+               .Append(PropertyBehaviorKeys.PropertyDescriptorProvider)
+         );
       }
 
 

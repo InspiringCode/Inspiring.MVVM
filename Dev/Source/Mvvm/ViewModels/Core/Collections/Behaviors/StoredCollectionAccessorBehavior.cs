@@ -1,12 +1,15 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
+   using System;
 
    internal sealed class StoredCollectionAccessorBehavior<TItemVM> :
       CachedAccessorBehavior<IVMCollection<TItemVM>>,
       IRefreshBehavior
       where TItemVM : IViewModel {
 
-      protected override IVMCollection<TItemVM> ProvideValue(IBehaviorContext context) {
-         return this.CreateValueNext<IVMCollection<TItemVM>>(context);
+      public override void SetValue(IBehaviorContext context, IVMCollection<TItemVM> value) {
+         throw new NotSupportedException(
+            ExceptionTexts.CannotSetVMCollectionProperties
+         );
       }
 
       public void Refresh(IBehaviorContext context) {
@@ -17,6 +20,10 @@
          }
 
          this.RefreshNext(context);
+      }
+
+      protected override IVMCollection<TItemVM> ProvideValue(IBehaviorContext context) {
+         return this.CreateValueNext<IVMCollection<TItemVM>>(context);
       }
    }
 }
