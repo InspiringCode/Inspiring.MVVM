@@ -62,14 +62,18 @@ namespace Inspiring.Mvvm.ViewModels.Core {
       }
 
 
-
-
-
       public IVMPropertyDescriptor<ICommand> CreateCommandProperty(
          IValueAccessorBehavior<TSourceObject> sourceObjectAccessor,
          IBehavior commandExecutor
       ) {
-         throw new NotImplementedException();
+         return CreateCustomProperty<ICommand>(
+            BehaviorChainTemplateKeys.CommandProperty,
+            FactoryConfigurations.ForSimpleProperty<TOwnerVM, ICommand, TSourceObject>(false),
+            config => {
+               config.Enable(PropertyBehaviorKeys.SourceAccessor, sourceObjectAccessor);
+               config.Enable(CommandPropertyBehaviorKeys.CommandExecutor, commandExecutor);
+            }
+         );
       }
 
       public IVMPropertyDescriptor<TValue> CreateCustomProperty<TValue>(

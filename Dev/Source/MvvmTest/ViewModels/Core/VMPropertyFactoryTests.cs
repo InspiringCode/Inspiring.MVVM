@@ -15,7 +15,6 @@
 
       [TestInitialize]
       public void Setup() {
-
          Config = new VMDescriptorConfiguration(new BehaviorChainConfiguration());
          Factory = new VMPropertyFactory<IViewModel, object>(Config);
       }
@@ -49,6 +48,10 @@
          );
       }
 
+      [TestCleanup]
+      public void Cleanup() {
+         BehaviorChainTemplateRegistry.ResetToDefaults();
+      }
 
 
       private void AssertBehavior(IVMPropertyDescriptor property, BehaviorKey key, Action<IBehavior> assertion) {

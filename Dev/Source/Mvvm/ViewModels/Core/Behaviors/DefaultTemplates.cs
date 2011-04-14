@@ -116,10 +116,10 @@
             new BehaviorChainTemplate(DefaultProviders.SimpleProperty)
                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
-               .Append(PropertyBehaviorKeys.ValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)
-               // cursor
-               // executor
-               .Append(PropertyBehaviorKeys.SourceAccessor)
+               .Append(PropertyBehaviorKeys.ValueAccessor)
+               .Append(CommandPropertyBehaviorKeys.WaitCursor)
+               .Append(CommandPropertyBehaviorKeys.CommandExecutor, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.PropertyDescriptorProvider)
          );
       }

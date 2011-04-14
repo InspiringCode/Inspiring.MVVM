@@ -2,11 +2,11 @@
 namespace Inspiring.Mvvm.ViewModels.Core {
    public static partial class BehaviorChainTemplateRegistry {
       static BehaviorChainTemplateRegistry() {
-         DefaultTemplates.RegisterDefaultTemplates();
-         //ResetToDefaults();
+         ResetToDefaults();
       }
 
       public static void ResetToDefaults() {
+         DefaultTemplates.RegisterDefaultTemplates();
          //RegisterViewModelTemplate();
          //RegisterPropertyTemplate();
          //RegisterCollectionPropertyTemplate();
@@ -75,7 +75,6 @@ namespace Inspiring.Mvvm.ViewModels.Core {
                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
                .Append(PropertyBehaviorKeys.ValueCache)
-               .Append(PropertyBehaviorKeys.CommandFactory, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.PropertyDescriptorProvider)
          );
       }
@@ -84,8 +83,8 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          RegisterTemplate(
             BehaviorChainTemplateKeys.CommandBehaviors,
             new BehaviorChainTemplate(CommandBehaviorFactory.Instance)
-               .Append(PropertyBehaviorKeys.WaitCursor)
-               .Append(PropertyBehaviorKeys.CommandExecutor, DefaultBehaviorState.DisabledWithoutFactory)
+               //.Append(PropertyBehaviorKeys.WaitCursor)
+               //.Append(PropertyBehaviorKeys.CommandExecutor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
          );
       }

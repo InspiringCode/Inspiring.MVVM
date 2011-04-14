@@ -173,6 +173,7 @@
     <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\ViewModelPropertyProvider.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\ViewModelProvider.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Factories\CommandBehaviorFactory.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\Keys\CommandPropertyBehaviorKeys.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Keys\PropertyBehaviorKeys.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Keys\PropertyBehaviorKeysBase.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Keys\ViewModelBehaviorKeys.cs" />
