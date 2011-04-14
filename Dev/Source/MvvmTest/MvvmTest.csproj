@@ -195,6 +195,10 @@
     <Compile Include="ViewModels\Core\Behaviors\PropertyBehaviors\ValueCacheBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Builder\VMPropertyBuilderTests.cs" />
     <Compile Include="ViewModels\Core\Collections\AddNewHelperTests.cs" />
+    <Compile Include="ViewModels\Core\Collections\Behaviors\CollectionAccessorBehaviorFixture.cs" />
+    <Compile Include="ViewModels\Core\Collections\Behaviors\PopulatedCollectionAccessorBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\Collections\Behaviors\StoredCollectionAccessorBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\Collections\Behaviors\WrapperCollectionAccessorBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\CollectionChangeNotificationBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\CollectionModificationBehaviorTestBase.cs" />
     <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\CollectionPopulatorBehaviorTests.cs" />

@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels {
+   using System.Collections.Generic;
    using System.Collections.ObjectModel;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
@@ -24,8 +25,9 @@
          _owner = owner;
       }
 
-      public void ReplaceItems(System.Collections.Generic.IEnumerable<TItemVM> newItems) {
-         throw new System.NotImplementedException();
+      public virtual void ReplaceItems(IEnumerable<TItemVM> newItems) {
+         Clear();
+         newItems.ForEach(Add);
       }
 
       public BehaviorChain Behaviors {

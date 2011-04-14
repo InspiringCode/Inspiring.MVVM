@@ -33,7 +33,7 @@
          TBehavior result;
          if (!TryGetBehavior<TBehavior>(out result)) {
             throw new ArgumentException(
-               ExceptionTexts.BehaviorNotFound.FormatWith(typeof(TBehavior).Name)
+               ExceptionTexts.BehaviorNotFound.FormatWith(TypeService.GetFriendlyName(typeof(TBehavior)))
             );
          }
          return result;
