@@ -139,8 +139,10 @@
          AssertBasicPropertyBehaviors(p);
       }
 
-      private void AssertDefaultCollectionPropertyBehaviors<T>(IVMPropertyDescriptor<T> p) {
-         AssertBasicPropertyBehaviors(p);         
+      private void AssertDefaultCollectionPropertyBehaviors<T>(IVMPropertyDescriptor<IVMCollection<T>> p) where T : IViewModel {
+         AssertBasicPropertyBehaviors<IVMCollection<T>>(p);
+         Assert.IsTrue(ContainsBehavior<CollectionFactoryBehavior<T>>(p));
+         Assert.IsTrue(ContainsBehavior<ItemDescriptorProviderBehavior>(p));
       }
 
       private bool ContainsBehavior<T>(IVMPropertyDescriptor property) where T : IBehavior {

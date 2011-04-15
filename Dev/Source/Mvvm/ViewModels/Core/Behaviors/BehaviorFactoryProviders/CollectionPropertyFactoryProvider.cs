@@ -15,7 +15,7 @@
 
          return GetFactoryWithCommonBehaviors<TOwnerVM, TChildVM, TSourceObject>()
             .RegisterBehavior<SynchronizerCollectionBehavior<TChildVM, TChildSource>>(CollectionPropertyBehaviorKeys.Synchronizer)
-            .RegisterBehavior<ServiceLocatorValueFactoryBehavior<TChildVM>>(PropertyBehaviorKeys.ValueFactory);
+            .RegisterBehavior<ServiceLocatorValueFactoryBehavior<TChildVM>>(CollectionPropertyBehaviorKeys.ItemFactory);
       }
 
       protected virtual new BehaviorFactory GetFactoryWithCommonBehaviors<TOwnerVM, TChildVM, TSourceObject>()
@@ -27,7 +27,8 @@
             .RegisterBehavior<LazyRefreshBehavior>(PropertyBehaviorKeys.LazyRefresh)
             .RegisterBehavior<UndoCollectionModifcationBehavior<TChildVM>>(PropertyBehaviorKeys.Undo)
             .RegisterBehavior<CollectionValidationSourceBehavior<TChildVM>>(PropertyBehaviorKeys.ValueValidationSource)
-            .RegisterBehavior<ChangeNotifierCollectionBehavior<TChildVM>>(PropertyBehaviorKeys.ChangeNotifier);
+            .RegisterBehavior<ChangeNotifierCollectionBehavior<TChildVM>>(PropertyBehaviorKeys.ChangeNotifier)
+            .RegisterBehavior<CollectionFactoryBehavior<TChildVM>>(PropertyBehaviorKeys.ValueFactory);
       }
    }
 }

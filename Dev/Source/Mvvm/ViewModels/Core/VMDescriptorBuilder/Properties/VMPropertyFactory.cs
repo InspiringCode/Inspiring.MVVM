@@ -70,6 +70,7 @@
       }
 
       public IVMPropertyDescriptor<IVMCollection<TChildVM>> CollectionProperty<TChildVM>(
+         VMDescriptorBase itemDescriptor,
          IValueAccessorBehavior<IVMCollection<TChildVM>> valueAccessor,
          IValueAccessorBehavior<IEnumerable<TChildVM>> sourceAccessor = null
       ) where TChildVM : IViewModel {
@@ -79,6 +80,11 @@
             config => {
                config.Enable(PropertyBehaviorKeys.ValueAccessor, valueAccessor);
 
+               config.Enable(
+                  CollectionPropertyBehaviorKeys.ItemDescriptorProvider,
+                  new ItemDescriptorProviderBehavior(itemDescriptor)
+               );
+
                if (sourceAccessor != null) {
                   config.Enable(PropertyBehaviorKeys.SourceAccessor, sourceAccessor);
                }
@@ -87,6 +93,7 @@
       }
 
       public IVMPropertyDescriptor<IVMCollection<TChildVM>> CollectionPropertyWithSource<TChildVM, TChildSource>(
+         VMDescriptorBase itemDescriptor,
          IValueAccessorBehavior<IVMCollection<TChildVM>> valueAccessor,
          IValueAccessorBehavior<IEnumerable<TChildSource>> sourceAccessor = null
       ) where TChildVM : IViewModel, IHasSourceObject<TChildSource> {
@@ -95,6 +102,11 @@
             BehaviorFactoryConfigurations.ForChildProperty<TOwnerVM, TChildVM, TSourceObject, TChildSource>(),
             config => {
                config.Enable(PropertyBehaviorKeys.ValueAccessor, valueAccessor);
+
+               config.Enable(
+                  CollectionPropertyBehaviorKeys.ItemDescriptorProvider,
+                  new ItemDescriptorProviderBehavior(itemDescriptor)
+               );
 
                if (sourceAccessor != null) {
                   config.Enable(PropertyBehaviorKeys.SourceAccessor, sourceAccessor);

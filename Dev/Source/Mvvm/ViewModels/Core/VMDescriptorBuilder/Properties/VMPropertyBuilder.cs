@@ -150,6 +150,7 @@
          VMDescriptorBase itemDescriptor
       ) {
          return Custom.CollectionProperty<TItemVM>(
+            itemDescriptor,
             new StoredCollectionAccessorBehavior<TItemVM>()
          );
       }
@@ -217,6 +218,7 @@
 
          public IVMPropertyDescriptor<IVMCollection<TItemVM>> With(VMDescriptorBase itemDescriptor) {
             return _factory.CollectionProperty(
+               itemDescriptor,
                valueAccessor: new PopulatedCollectionAccessorBehavior<TItemVM>(),
                sourceAccessor: _sourceCollectionAccessor
             );
@@ -241,6 +243,7 @@
             VMDescriptorBase itemDescriptor
          ) {
             return _factory.CollectionPropertyWithSource(
+               itemDescriptor,
                valueAccessor: new WrapperCollectionAccessorBehavior<TItemVM, TItemSource>(),
                sourceAccessor: _sourceCollectionAccessor
             );

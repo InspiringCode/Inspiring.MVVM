@@ -18,6 +18,8 @@
 
    public class CollectionPropertyBehaviorKeys : PropertyBehaviorKeys {
       public static readonly BehaviorKey Synchronizer = Key(() => Synchronizer);
+      public static readonly BehaviorKey ItemFactory = Key(() => ItemFactory);
+      public static readonly BehaviorKey ItemDescriptorProvider = Key(() => ItemDescriptorProvider);
    }
 
    public class CommandPropertyBehaviorKeys : PropertyBehaviorKeys {

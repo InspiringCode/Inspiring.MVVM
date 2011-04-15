@@ -91,7 +91,9 @@
                .Append(PropertyBehaviorKeys.ChangeNotifier)
                .Append(PropertyBehaviorKeys.ValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(PropertyBehaviorKeys.ValueFactory)
                .Append(PropertyBehaviorKeys.PropertyDescriptorProvider)
+               .Append(CollectionPropertyBehaviorKeys.ItemDescriptorProvider, DefaultBehaviorState.DisabledWithoutFactory)
          );
       }
 
@@ -110,7 +112,9 @@
                .Append(PropertyBehaviorKeys.ValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.ValueFactory)
+               .Append(CollectionPropertyBehaviorKeys.ItemFactory)
                .Append(PropertyBehaviorKeys.PropertyDescriptorProvider)
+               .Append(CollectionPropertyBehaviorKeys.ItemDescriptorProvider, DefaultBehaviorState.DisabledWithoutFactory)
          );
       }
 

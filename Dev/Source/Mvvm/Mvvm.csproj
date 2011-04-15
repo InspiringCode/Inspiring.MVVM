@@ -172,6 +172,7 @@
     <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\ViewModelProvider.cs" />
     <Compile Include="ViewModels\Core\Behaviors\DefaultBehaviorKeys.cs" />
     <Compile Include="ViewModels\Core\Behaviors\DefaultTemplates.cs" />
+    <Compile Include="ViewModels\Core\Collections\Behaviors\CollectionFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\Behaviors\PopulatedCollectionAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\Behaviors\StoredCollectionAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\Behaviors\WrapperCollectionAccessorBehavior.cs" />
