@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.ComponentModel;
    using System.Linq.Expressions;
 
    /// <summary>
@@ -80,9 +79,5 @@
       ///   The type of the property (e.g. <see cref="System.String"/>).
       /// </typeparam>
       IVMPropertyDescriptor<T> Of<T>();
-
-      // TODO: Comment
-      [EditorBrowsable(EditorBrowsableState.Never)]
-      IVMPropertyDescriptor<T> Custom<T>(IValueAccessorBehavior<T> sourceValueAccessor);
    }
 }

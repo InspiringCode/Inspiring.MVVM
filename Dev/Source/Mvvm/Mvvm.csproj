@@ -211,7 +211,7 @@
     <Compile Include="ViewModels\Core\Behaviors\Keys\CollectionBehaviorKeys.cs" />
     <Compile Include="ViewModels\Core\Collections\IVMCollectionExpression.cs" />
     <Compile Include="ViewModels\Core\Commands\CommandAccessorBehavior.cs" />
-    <Compile Include="ViewModels\Core\Commands\DelegatingCommandBehavior.cs" />
+    <Compile Include="ViewModels\Core\Commands\DelegateCommandExecutorBehavior.cs" />
     <Compile Include="ViewModels\Core\Commands\ViewModelCommand.cs" />
     <Compile Include="ViewModels\Core\Commands\WaitCursorBehavior.cs" />
     <Compile Include="ViewModels\Core\Common\ICondition.cs" />
@@ -274,6 +274,7 @@
     <Compile Include="ViewModels\Core\Validation\ViewModelBehaviors\ValidationResultAggregatorCacheBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\ViewModelBehaviors\ValidatorExecutorBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\ViewModelBehaviors\ViewModelValidationSourceBehavior.cs" />
+    <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\ICustomPropertyFactory.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Validators\IValidatorBuilderOperationProvider.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Validators\ValidatorBuilderOperation.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Validators\CollectionValidationBuilder.cs" />

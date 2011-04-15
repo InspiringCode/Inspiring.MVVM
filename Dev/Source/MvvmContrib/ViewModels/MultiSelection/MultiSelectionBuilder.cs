@@ -80,8 +80,9 @@
             ValidationIsEnabled
          );
 
-         var property = _sourceObjectPropertyBuilder.VM.Custom(
-            viewModelAccessor: new MultSelectionAccessor<TItemVM>(descriptor, Filter)
+         var property = _sourceObjectPropertyBuilder.Custom.ViewModelProperty(
+            valueAccessor: new MultSelectionAccessor<TItemVM>(descriptor, Filter),
+            sourceAccessor: _sourceObjectPropertyBuilder.Custom.CreateSourceObjectAccessor()
          );
 
          //_sourceObjectPropertyBuilder
@@ -125,8 +126,9 @@
             ValidationIsEnabled
          );
 
-         var property = _sourceObjectPropertyBuilder.VM.Custom(
-            viewModelAccessor: new MultSelectionAccessor(descriptor, Filter)
+         var property = _sourceObjectPropertyBuilder.Custom.ViewModelProperty(
+            valueAccessor: new MultSelectionAccessor(descriptor, Filter),
+            sourceAccessor: _sourceObjectPropertyBuilder.Custom.CreateSourceObjectAccessor()
          );
 
          //_sourceObjectPropertyBuilder
@@ -148,9 +150,7 @@
       /// </summary>
       private Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> CreateLocatingPropertyFactory() {
          return delegate(IVMPropertyBuilder<TSourceObject> factory) {
-            return factory.Property.Custom(
-               sourceValueAccessor: new LocatingItemSourceBehavior()
-            );
+            return factory.Custom.Property(valueAccessor: new LocatingItemSourceBehavior());
          };
       }
 

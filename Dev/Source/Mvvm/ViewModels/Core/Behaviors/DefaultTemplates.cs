@@ -90,7 +90,21 @@
       }
 
       private static void RegisterCollectionPropertyWithSourceTemplate() {
-
+         BehaviorChainTemplateRegistry.RegisterTemplate(
+            BehaviorChainTemplateKeys.CollectionProperty,
+            new BehaviorChainTemplate(null)
+               .Append(PropertyBehaviorKeys.DisplayValueAccessor)
+               .Append(PropertyBehaviorKeys.UntypedValueAccessor)
+               .Append(PropertyBehaviorKeys.ValueInitializer)
+               .Append(PropertyBehaviorKeys.Undo, DefaultBehaviorState.Disabled)
+               .Append(CollectionBehaviorKeys.SourceSynchronizer)
+               .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
+               .Append(PropertyBehaviorKeys.ChangeNotifier)
+               .Append(PropertyBehaviorKeys.ValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(PropertyBehaviorKeys.ValueFactory)
+               .Append(PropertyBehaviorKeys.PropertyDescriptorProvider)
+         );
       }
 
       /*

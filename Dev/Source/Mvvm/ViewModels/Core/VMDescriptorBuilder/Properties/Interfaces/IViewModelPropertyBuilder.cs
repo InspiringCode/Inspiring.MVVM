@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.ComponentModel;
    using System.Linq.Expressions;
 
    /// <summary>
@@ -81,22 +80,5 @@
       ///   The type of the child VM (for example PersonVM).
       /// </typeparam>
       IVMPropertyDescriptor<TChildVM> Of<TChildVM>() where TChildVM : IViewModel;
-
-      // TODO: Comment
-      [EditorBrowsable(EditorBrowsableState.Never)]
-      IVMPropertyDescriptor<TChildVM> Custom<TChildVM>(
-         IValueAccessorBehavior<TChildVM> viewModelAccessor
-      ) where TChildVM : IViewModel;
-
-      //// TODO: Comment
-      IVMPropertyDescriptor<TChildVM> Custom<TChildVM, TChildSource>(
-         IValueAccessorBehavior<TChildVM> viewModelAccessor
-      ) where TChildVM : IViewModel, IHasSourceObject<TChildSource>;
-
-      //// TODO: Comment
-      //[EditorBrowsable(EditorBrowsableState.Never)]
-      //VMProperty<TChildVM> Custom<TChildVM>(
-      //   IViewModelFactoryBehavior<TChildVM> viewModelFactory
-      //) where TChildVM : IViewModel;
    }
 }

@@ -4,8 +4,8 @@
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class DelegatingCommandBehaviorTests : TestBase {
-      private DelegatingCommandBehavior<SourceObject> Behavior { get; set; }
+   public class DelegateCommandExecutorBehaviorTests : TestBase {
+      private DelegateCommandExecutorBehavior<SourceObject> Behavior { get; set; }
       private NextBehavior Next { get; set; }
 
       private DelegateInvocation LastExecuteInvocation { get; set; }
@@ -57,7 +57,7 @@
             LastExecuteInvocation = new DelegateInvocation { SourceObject = so };
          };
 
-         Behavior = new DelegatingCommandBehavior<SourceObject>(executeAction, canExecuteFunction);
+         Behavior = new DelegateCommandExecutorBehavior<SourceObject>(executeAction, canExecuteFunction);
          Next = new NextBehavior();
 
          Context = PropertyStub

@@ -35,6 +35,7 @@
 
       public virtual void SetValue(IBehaviorContext context, TValue value) {
          RequireInitialized();
+         _cache.Set(context, value);
          this.SetValueNext(context, value);
       }
 

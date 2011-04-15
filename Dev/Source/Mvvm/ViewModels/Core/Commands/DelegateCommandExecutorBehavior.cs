@@ -2,7 +2,7 @@
    using System;
    using System.Diagnostics.Contracts;
 
-   internal sealed class DelegatingCommandBehavior<TSourceObject> :
+   internal sealed class DelegateCommandExecutorBehavior<TSourceObject> :
       Behavior,
       ICommandCanExecuteBehavior,
       ICommandExecuteBehavior {
@@ -10,7 +10,7 @@
       private readonly Action<TSourceObject> _executeAction;
       private readonly Func<TSourceObject, bool> _canExecutePredicate;
 
-      public DelegatingCommandBehavior(
+      public DelegateCommandExecutorBehavior(
          Action<TSourceObject> executeAction,
          Func<TSourceObject, bool> canExecutePredicate = null
       ) {

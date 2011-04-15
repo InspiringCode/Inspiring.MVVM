@@ -33,18 +33,32 @@
       ICollectionPropertyBuilder<TSourceObject> Collection { get; }
 
       /// <summary>
+      ///   Provides an API to create properties with custom behaviors. This API
+      ///   is indended for very ADVANCED scenarios and should ONLY be used if you
+      ///   cannot implement your requirements with the standard API or you are
+      ///   extending the framework.
+      /// </summary>
+      ICustomPropertyFactory<TSourceObject> Custom { get; }
+
+      /// <summary>
       ///   Creates a <see cref="IVMPropertyDescriptor"/> of type <see cref="ICommand"/>.
       /// </summary>
-      /// <param name="execute">
+      /// <param name="executeAction">
       ///   A delegate that is called when the command is executed.
       /// </param>
-      /// <param name="canExecute">
+      /// <param name="canExecutePredicate">
       ///   A delegate taht is called to check whether the command can currently
       ///   be executed.
       /// </param>
       IVMPropertyDescriptor<ICommand> Command(
-         Action<TSourceObject> execute,
-         Func<TSourceObject, bool> canExecute = null
+         Action<TSourceObject> executeAction,
+         Func<TSourceObject, bool> canExecutePredicate = null
       );
+   }
+
+   /// <inheritdoc />
+   public interface IVMPropertyBuilder<TOwnerVM, TSourceObject> :
+      IVMPropertyBuilder<TSourceObject>
+      where TOwnerVM : IViewModel {
    }
 }

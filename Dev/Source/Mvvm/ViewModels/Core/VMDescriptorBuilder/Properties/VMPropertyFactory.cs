@@ -1,37 +1,45 @@
-﻿using System;
-using System.Windows.Input;
-using Inspiring.Mvvm.ViewModels.Core.Behaviors;
-namespace Inspiring.Mvvm.ViewModels.Core {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
+   using System;
+   using System.Collections.Generic;
+   using System.Linq.Expressions;
+   using System.Windows.Input;
+   using Inspiring.Mvvm.Common;
+   using Inspiring.Mvvm.ViewModels.Core.Behaviors;
 
-   // TODO: Document and clean up the whole builder stuff a bit.
-   public sealed class VMPropertyFactory<TOwnerVM, TSourceObject> : ConfigurationProvider where TOwnerVM : IViewModel {
-      public VMPropertyFactory(VMDescriptorConfiguration configuration)
+   internal sealed class VMPropertyFactory<TOwnerVM, TSourceObject> : ConfigurationProvider, ICustomPropertyFactory<TSourceObject> where TOwnerVM : IViewModel {
+      private readonly PropertyPath<TOwnerVM, TSourceObject> _sourceObjectPath;
+
+      internal VMPropertyFactory(
+         VMDescriptorConfiguration configuration,
+         PropertyPath<TOwnerVM, TSourceObject> sourceObjectPath
+      )
          : base(configuration) {
+         _sourceObjectPath = sourceObjectPath;
       }
 
-      public IVMPropertyDescriptor<TValue> CreateProperty<TValue>(IValueAccessorBehavior<TValue> valueAccessor) {
-         return CreateCustomProperty<TValue>(
+      public IVMPropertyDescriptor<TValue> Property<TValue>(IValueAccessorBehavior<TValue> valueAccessor) {
+         return CustomProperty<TValue>(
             BehaviorChainTemplateKeys.Property,
             FactoryConfigurations.ForSimpleProperty<TOwnerVM, TValue, TSourceObject>(false),
             config => config.Enable(PropertyBehaviorKeys.ValueAccessor, valueAccessor)
          );
       }
 
-      public IVMPropertyDescriptor<TValue> CreatePropertyWithSource<TValue>(
+      public IVMPropertyDescriptor<TValue> PropertyWithSource<TValue>(
          IValueAccessorBehavior<TValue> valueAccessor
       ) {
-         return CreateCustomProperty<TValue>(
+         return CustomProperty<TValue>(
             BehaviorChainTemplateKeys.Property,
             FactoryConfigurations.ForSimpleProperty<TOwnerVM, TValue, TSourceObject>(true),
             config => config.Enable(PropertyBehaviorKeys.ValueAccessor, valueAccessor)
          );
       }
 
-      public IVMPropertyDescriptor<TChildVM> CreateViewModelProperty<TChildVM>(
+      public IVMPropertyDescriptor<TChildVM> ViewModelProperty<TChildVM>(
          IValueAccessorBehavior<TChildVM> valueAccessor,
-         IValueAccessorBehavior<TChildVM> sourceAccessor = null
+         IBehavior sourceAccessor = null
       ) where TChildVM : IViewModel {
-         return CreateCustomProperty<TChildVM>(
+         return CustomProperty<TChildVM>(
             BehaviorChainTemplateKeys.ViewModelProperty,
             FactoryConfigurations.ForChildProperty<TOwnerVM, TChildVM, TSourceObject>(),
             config => {
@@ -44,11 +52,11 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          );
       }
 
-      public IVMPropertyDescriptor<TChildVM> CreateViewModelProperty<TChildVM, TChildSource>(
+      public IVMPropertyDescriptor<TChildVM> ViewModelPropertyWithSource<TChildVM, TChildSource>(
          IValueAccessorBehavior<TChildVM> valueAccessor,
          IValueAccessorBehavior<TChildSource> sourceAccessor = null
       ) where TChildVM : IViewModel, IHasSourceObject<TChildSource> {
-         return CreateCustomProperty<TChildVM>(
+         return CustomProperty<TChildVM>(
             BehaviorChainTemplateKeys.ViewModelProperty,
             FactoryConfigurations.ForChildProperty<TOwnerVM, TChildVM, TSourceObject, TChildSource>(),
             config => {
@@ -61,12 +69,45 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          );
       }
 
+      public IVMPropertyDescriptor<IVMCollection<TChildVM>> CollectionProperty<TChildVM>(
+         IValueAccessorBehavior<IVMCollection<TChildVM>> valueAccessor,
+         IValueAccessorBehavior<IEnumerable<TChildVM>> sourceAccessor = null
+      ) where TChildVM : IViewModel {
+         return CustomProperty<IVMCollection<TChildVM>>(
+            BehaviorChainTemplateKeys.CollectionProperty,
+            FactoryConfigurations.ForChildProperty<TOwnerVM, TChildVM, TSourceObject>(),
+            config => {
+               config.Enable(PropertyBehaviorKeys.ValueAccessor, valueAccessor);
 
-      public IVMPropertyDescriptor<ICommand> CreateCommandProperty(
+               if (sourceAccessor != null) {
+                  config.Enable(PropertyBehaviorKeys.SourceAccessor, sourceAccessor);
+               }
+            }
+         );
+      }
+
+      public IVMPropertyDescriptor<IVMCollection<TChildVM>> CollectionPropertyWithSource<TChildVM, TChildSource>(
+         IValueAccessorBehavior<IVMCollection<TChildVM>> valueAccessor,
+         IValueAccessorBehavior<IEnumerable<TChildSource>> sourceAccessor = null
+      ) where TChildVM : IViewModel, IHasSourceObject<TChildSource> {
+         return CustomProperty<IVMCollection<TChildVM>>(
+            BehaviorChainTemplateKeys.ViewModelProperty,
+            FactoryConfigurations.ForChildProperty<TOwnerVM, TChildVM, TSourceObject, TChildSource>(),
+            config => {
+               config.Enable(PropertyBehaviorKeys.ValueAccessor, valueAccessor);
+
+               if (sourceAccessor != null) {
+                  config.Enable(PropertyBehaviorKeys.SourceAccessor, sourceAccessor);
+               }
+            }
+         );
+      }
+
+      public IVMPropertyDescriptor<ICommand> CommandProperty(
          IValueAccessorBehavior<TSourceObject> sourceObjectAccessor,
          IBehavior commandExecutor
       ) {
-         return CreateCustomProperty<ICommand>(
+         return CustomProperty<ICommand>(
             BehaviorChainTemplateKeys.CommandProperty,
             FactoryConfigurations.ForSimpleProperty<TOwnerVM, ICommand, TSourceObject>(false),
             config => {
@@ -76,7 +117,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          );
       }
 
-      public IVMPropertyDescriptor<TValue> CreateCustomProperty<TValue>(
+      public IVMPropertyDescriptor<TValue> CustomProperty<TValue>(
          BehaviorChainTemplateKey templateKey,
          IBehaviorFactoryConfiguration factoryConfiguration,
          Action<BehaviorChainConfiguration> chainConfigurationAction
@@ -86,139 +127,33 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          return CreateAndRegisterProperty<TValue>(config);
       }
 
-
-
-      public IVMPropertyDescriptor<T> CreateProperty<T>(IValueAccessorBehavior<T> sourceValueAccessor, bool supportsManualUpdate, bool includeRefreshBehavior) {
-         BehaviorChainConfiguration config = GetPropertyConfiguration<T>(BehaviorChainTemplateKeys.Property);
-         config.Enable(PropertyBehaviorKeys.SourceAccessor, sourceValueAccessor);
-
-         //if (supportsManualUpdate) {
-         //   config.Enable(PropertyBehaviorKeys.ManualUpdateBehavior);
-         //}
-
-         if (includeRefreshBehavior) {
-            config.Enable(PropertyBehaviorKeys.RefreshBehavior, new RefreshBehavior.SimpleProperty<T>());
-         }
-
-         return CreateAndRegisterProperty<T>(config);
-      }
-
-      public IVMPropertyDescriptor<TChildVM> CreateViewModelProperty<TChildVM>(
-         IValueAccessorBehavior<TChildVM> viewModelAccessor,
-         IValueFactoryBehavior<TChildVM> viewModelFactory = null,
-         IBehavior sourceAccessor = null,
-         IBehavior sourceSetter = null,
-         IBehavior manualUpdateBehavior = null,
-         IBehavior refreshBehavior = null,
-         bool needsViewModelFactory = false,
-         bool cachesValue = false
-      ) where TChildVM : IViewModel {
-         BehaviorChainConfiguration config = GetBasicViewModelPropertyConfiguration<TChildVM>();
-
-         config.Enable(PropertyBehaviorKeys.ViewModelAccessor, viewModelAccessor);
-
-         //if (cachesValue) {
-         //   config.Enable(PropertyBehaviorKeys.ValueCache);
-         //}
-
-         if (needsViewModelFactory) {
-            config.Enable(PropertyBehaviorKeys.ViewModelFactory);
-         }
-
-         if (sourceAccessor != null) {
-            config.Enable(PropertyBehaviorKeys.SourceAccessor, sourceAccessor);
-         }
-
-         //if (sourceSetter != null) {
-         //   config.Enable(PropertyBehaviorKeys.ViewModelSourceSetter, sourceSetter);
-         //}
-
-         //if (manualUpdateBehavior != null) {
-         //   config.Enable(PropertyBehaviorKeys.ManualUpdateBehavior, manualUpdateBehavior);
-         //}
-
-         if (refreshBehavior != null) {
-            config.Enable(PropertyBehaviorKeys.RefreshBehavior, refreshBehavior);
-         }
-
-         return CreateAndRegisterProperty<TChildVM>(config);
-      }
-
-      //public VMProperty<TChildVM> CreateViewModelProperty<TChildVM>(
-      //   IValueAccessorBehavior<TChildVM> viewModelAccessor,
-      //   bool withViewModelFactory = false
-      //) where TChildVM : IViewModel {
-      //   BehaviorChainConfiguration config = GetBasicViewModelPropertyConfiguration<TChildVM>();
-
-      //   config.Enable(BehaviorKeys.ValueCache);
-      //   config.Enable(BehaviorKeys.ViewModelAccessor, viewModelAccessor);
-
-      //   if (withViewModelFactory) {
-      //      config.Enable(BehaviorKeys.ViewModelFactory);
-      //   }
-
-      //   return CreateProperty<TChildVM>(config);
-      //}
-
-      private BehaviorChainConfiguration GetBasicViewModelPropertyConfiguration<TChildVM>()
-         where TChildVM : IViewModel {
-
-         return BehaviorChainConfiguration.GetConfiguration(
-            BehaviorChainTemplateKeys.ViewModelProperty,
-            FactoryConfigurations.ForChildProperty<TOwnerVM, TChildVM, TSourceObject>()
+      public IValueAccessorBehavior<TValue> CreateDelegateAccessor<TValue>(
+         Func<TSourceObject, TValue> getter,
+         Action<TSourceObject, TValue> setter = null
+      ) {
+         return new DelegateValueAccessor<TOwnerVM, TSourceObject, TValue>(
+            _sourceObjectPath,
+            getter,
+            setter
          );
       }
 
-      internal IVMPropertyDescriptor<IVMCollection<TItemVM>> CreateCollectionProperty<TItemVM>(
-         BehaviorChainConfiguration collectionConfiguration,
-         bool isPopulatable,
-         IRefreshBehavior refreshBehavior = null
-      ) where TItemVM : IViewModel {
-         var config = GetPropertyConfiguration<IVMCollection<TItemVM>>(BehaviorChainTemplateKeys.CollectionProperty);
-
-         if (isPopulatable) {
-            //config.Enable(BehaviorKeys.CollectionInstanceCache);
-            //config.Enable(PropertyBehaviorKeys.ManualUpdateBehavior, new ManualUpdateCollectionPropertyBehavior<TItemVM>());
-            //config.Enable(PropertyBehaviorKeys.CollectionPopulator, new CollectionPopulatorBehavior<TItemVM>());
-         }
-
-
-         if (refreshBehavior != null) {
-            config.Enable(PropertyBehaviorKeys.RefreshBehavior, refreshBehavior);
-         }
-
-         //config.Enable(
-         //   PropertyBehaviorKeys.CollectionFactory,
-         //   //new CollectionFactoryBehavior<TItemVM>(collectionConfiguration)
-         //);
-
-         return CreateAndRegisterProperty<IVMCollection<TItemVM>>(config);
-      }
-
-      internal BehaviorChainConfiguration GetCollectionConfiguration<TItemVM>(
-         VMDescriptorBase itemDescriptor
-      ) where TItemVM : IViewModel {
-         var config = BehaviorChainConfiguration.GetConfiguration(
-            BehaviorChainTemplateKeys.DefaultCollectionBehaviors,
-            FactoryConfigurations.ForChildProperty<TOwnerVM, TItemVM, TSourceObject>()
+      public IValueAccessorBehavior<TValue> CreateMappedAccessor<TValue>(
+         Expression<Func<TSourceObject, TValue>> valueSelector
+      ) {
+         var path = PropertyPath.Concat(
+            _sourceObjectPath,
+            PropertyPath.CreateWithDefaultValue(valueSelector)
          );
 
-         config.Enable(
-            CollectionBehaviorKeys.DescriptorSetter,
-            new ItemDescriptorProviderBehavior(itemDescriptor)
-         );
-
-         return config;
+         return new MappedValueAccessorBehavior<TOwnerVM, TValue>(path);
       }
 
-      internal BehaviorChainConfiguration GetPropertyConfiguration<TValue>(BehaviorChainTemplateKey key) {
-         return BehaviorChainConfiguration.GetConfiguration(
-            key,
-            FactoryConfigurations.ForSimpleProperty<TOwnerVM, TValue, TSourceObject>(true) // TODO??
-         );
+      public IValueAccessorBehavior<TSourceObject> CreateSourceObjectAccessor() {
+         return new MappedValueAccessorBehavior<TOwnerVM, TSourceObject>(_sourceObjectPath);
       }
 
-      internal IVMPropertyDescriptor<TValue> CreateAndRegisterProperty<TValue>(BehaviorChainConfiguration config) {
+      private IVMPropertyDescriptor<TValue> CreateAndRegisterProperty<TValue>(BehaviorChainConfiguration config) {
          var property = new VMPropertyDescriptor<TValue>();
 
          Configuration

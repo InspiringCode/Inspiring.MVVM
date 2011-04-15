@@ -16,7 +16,7 @@
       [TestInitialize]
       public void Setup() {
          Config = new VMDescriptorConfiguration(new BehaviorChainConfiguration());
-         Factory = new VMPropertyFactory<IViewModel, object>(Config);
+         Factory = new VMPropertyFactory<IViewModel, object>(Config, null);
       }
 
       [TestMethod]
@@ -33,7 +33,7 @@
          factoryProvider.BehaviorForProperty = Mock<IBehavior>();
          var expectedValueAccessor = Mock<IValueAccessorBehavior<string>>();
 
-         var property = Factory.CreateProperty<string>(expectedValueAccessor);
+         var property = Factory.Property<string>(expectedValueAccessor);
 
          AssertBehavior(
             property,
