@@ -3,6 +3,12 @@
    internal class DefaultTemplates {
       public static void RegisterDefaultTemplates() {
          RegisterPropertyTemplate();
+         RegisterPropertyWithSourceTemplate();
+         RegisterViewModelPropertyTemplate();
+         RegisterViewModelWithSourcePropertyTemplate();
+         RegisterCollectionPropertyTemplate();
+         RegisterCollectionPropertyWithSourceTemplate();
+         RegisterCommandPropertyTemplate();
 
          RegisterViewModelTemplate();
       }
@@ -23,7 +29,7 @@
 
       private static void RegisterPropertyWithSourceTemplate() {
          BehaviorChainTemplateRegistry.RegisterTemplate(
-            DefaultBehaviorChainTemplateKeys.Property,
+            DefaultBehaviorChainTemplateKeys.PropertyWithSource,
             new BehaviorChainTemplate(DefaultProviders.SimpleProperty)
                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
@@ -55,7 +61,7 @@
 
       private static void RegisterViewModelWithSourcePropertyTemplate() {
          BehaviorChainTemplateRegistry.RegisterTemplate(
-            DefaultBehaviorChainTemplateKeys.ViewModelProperty,
+            DefaultBehaviorChainTemplateKeys.ViewModelPropertyWithSource,
             new BehaviorChainTemplate(DefaultProviders.ViewModelProperty)
                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
@@ -81,7 +87,6 @@
                .Append(PropertyBehaviorKeys.ValueInitializer)
                .Append(PropertyBehaviorKeys.Undo, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.LazyRefresh)
-               .Append(CollectionPropertyBehaviorKeys.Synchronizer)
                .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.ChangeNotifier)
                .Append(PropertyBehaviorKeys.ValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)
@@ -92,7 +97,7 @@
 
       private static void RegisterCollectionPropertyWithSourceTemplate() {
          BehaviorChainTemplateRegistry.RegisterTemplate(
-            DefaultBehaviorChainTemplateKeys.CollectionProperty,
+            DefaultBehaviorChainTemplateKeys.CollectionPropertyWithSource,
             new BehaviorChainTemplate(DefaultProviders.CollectionProperty)
                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
@@ -112,7 +117,7 @@
       private static void RegisterCommandPropertyTemplate() {
          BehaviorChainTemplateRegistry.RegisterTemplate(
             DefaultBehaviorChainTemplateKeys.CommandProperty,
-            new BehaviorChainTemplate(DefaultProviders.SimpleProperty)
+            new BehaviorChainTemplate(DefaultProviders.CommandProperty)
                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
                .Append(PropertyBehaviorKeys.ValueAccessor)

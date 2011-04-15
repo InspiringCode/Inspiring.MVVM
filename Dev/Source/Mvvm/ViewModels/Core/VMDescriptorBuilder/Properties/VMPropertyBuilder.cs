@@ -160,9 +160,9 @@
       //
 
       /// <inheritdoc />
-      IVMPropertyDescriptor<ICommand> IVMPropertyBuilder<TSourceObject>.Command(
+      public IVMPropertyDescriptor<ICommand> Command(
          Action<TSourceObject> executeAction,
-         Func<TSourceObject, bool> canExecutePredicate
+         Func<TSourceObject, bool> canExecutePredicate = null
       ) {
          return Custom.CommandProperty(
             sourceObjectAccessor: Custom.CreateSourceObjectAccessor(),

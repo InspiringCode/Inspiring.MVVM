@@ -35,8 +35,11 @@
 
    public class DefaultBehaviorChainTemplateKeys : BehaviorChainTemplateKeys {
       public static readonly BehaviorChainTemplateKey Property = Key(() => Property);
+      public static readonly BehaviorChainTemplateKey PropertyWithSource = Key(() => PropertyWithSource);
       public static readonly BehaviorChainTemplateKey ViewModelProperty = Key(() => ViewModelProperty);
+      public static readonly BehaviorChainTemplateKey ViewModelPropertyWithSource = Key(() => ViewModelPropertyWithSource);
       public static readonly BehaviorChainTemplateKey CollectionProperty = Key(() => CollectionProperty);
+      public static readonly BehaviorChainTemplateKey CollectionPropertyWithSource = Key(() => CollectionPropertyWithSource);
       public static readonly BehaviorChainTemplateKey CommandProperty = Key(() => CommandProperty);
       public static readonly BehaviorChainTemplateKey ViewModel = Key(() => ViewModel);
    }

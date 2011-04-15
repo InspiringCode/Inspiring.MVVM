@@ -29,7 +29,7 @@
          IValueAccessorBehavior<TValue> valueAccessor
       ) {
          return CustomProperty<TValue>(
-            DefaultBehaviorChainTemplateKeys.Property,
+            DefaultBehaviorChainTemplateKeys.PropertyWithSource,
             BehaviorFactoryConfigurations.ForSimpleProperty<TOwnerVM, TValue, TSourceObject>(true),
             config => config.Enable(PropertyBehaviorKeys.ValueAccessor, valueAccessor)
          );
@@ -57,7 +57,7 @@
          IValueAccessorBehavior<TChildSource> sourceAccessor = null
       ) where TChildVM : IViewModel, IHasSourceObject<TChildSource> {
          return CustomProperty<TChildVM>(
-            DefaultBehaviorChainTemplateKeys.ViewModelProperty,
+            DefaultBehaviorChainTemplateKeys.ViewModelPropertyWithSource,
             BehaviorFactoryConfigurations.ForChildProperty<TOwnerVM, TChildVM, TSourceObject, TChildSource>(),
             config => {
                config.Enable(PropertyBehaviorKeys.ValueAccessor, valueAccessor);
@@ -91,7 +91,7 @@
          IValueAccessorBehavior<IEnumerable<TChildSource>> sourceAccessor = null
       ) where TChildVM : IViewModel, IHasSourceObject<TChildSource> {
          return CustomProperty<IVMCollection<TChildVM>>(
-            DefaultBehaviorChainTemplateKeys.ViewModelProperty,
+            DefaultBehaviorChainTemplateKeys.CollectionPropertyWithSource,
             BehaviorFactoryConfigurations.ForChildProperty<TOwnerVM, TChildVM, TSourceObject, TChildSource>(),
             config => {
                config.Enable(PropertyBehaviorKeys.ValueAccessor, valueAccessor);

@@ -22,7 +22,8 @@
          where TChildVM : IViewModel {
 
          return base
-            .GetFactoryWithCommonBehaviors<TOwnerVM, TChildVM, TSourceObject>()
+            .GetFactoryWithCommonBehaviors<TOwnerVM, IVMCollection<TChildVM>, TSourceObject>()
+            .RegisterBehavior<ItemInitializerBehavior<TChildVM>>(PropertyBehaviorKeys.ValueInitializer)
             .RegisterBehavior<LazyRefreshBehavior>(PropertyBehaviorKeys.LazyRefresh)
             .RegisterBehavior<UndoCollectionModifcationBehavior<TChildVM>>(PropertyBehaviorKeys.Undo)
             .RegisterBehavior<CollectionValidationSourceBehavior<TChildVM>>(PropertyBehaviorKeys.ValueValidationSource)
