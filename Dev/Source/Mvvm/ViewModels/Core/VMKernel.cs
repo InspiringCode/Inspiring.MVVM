@@ -9,14 +9,6 @@
       private readonly VMDescriptorBase _descriptor;
       private FieldValueHolder _fieldValues;
 
-      private bool _validationStateIsCurrent = false;
-      private bool _isValid = true;
-      private ValidationResult _viewModelValidationState = ValidationResult.Valid;
-      private ValidationResult _propertiesValidationState = ValidationResult.Valid;
-      private ValidationResult _selfOnlyValidationState = ValidationResult.Valid;
-      private ValidationResult _descendantsOnlyValidationState = ValidationResult.Valid;
-      private ValidationResult _validationState = ValidationResult.Valid;
-
       private CountingSet<IVMCollection> _ownerCollections = new CountingSet<IVMCollection>();
       private CountingSet<IViewModel> _parents = new CountingSet<IViewModel>();
 
