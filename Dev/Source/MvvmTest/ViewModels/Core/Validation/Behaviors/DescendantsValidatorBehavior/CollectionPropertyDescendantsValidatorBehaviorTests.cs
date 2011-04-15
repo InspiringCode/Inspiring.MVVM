@@ -14,10 +14,7 @@
          Behavior = new CollectionPropertyDescendantsValidatorBehavior<ViewModelStub>();
 
          ViewModelPropertyAccessor = new ValueAccessorStub<IVMCollection<ViewModelStub>>();
-         ViewModelPropertyAccessor.Value = new VMCollection<ViewModelStub>(
-            new BehaviorChain(),
-            ViewModelStub.Build()
-         );
+         ViewModelPropertyAccessor.Value = VMCollectionStub.Build();
 
          var property = PropertyStub
             .WithBehaviors(Behavior, Next, ViewModelPropertyAccessor)

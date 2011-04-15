@@ -25,7 +25,7 @@
       }
 
       protected static IVMCollection<ItemVM> CreateCollection() {
-         return new VMCollectionStub<ItemVM>();
+         return VMCollectionStub.Build<ItemVM>();
       }
 
       protected static ItemVM CreateItem() {

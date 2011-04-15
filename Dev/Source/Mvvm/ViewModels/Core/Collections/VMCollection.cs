@@ -25,12 +25,12 @@
       ///   The view model instance that holds this collection instance. It is
       ///   the <see cref="IViewModel.Parent"/> of all items.
       /// </param>
-      public VMCollection(BehaviorChain behaviors, IViewModel owner) {
-         Contract.Requires<ArgumentNullException>(behaviors != null);
-         Contract.Requires<ArgumentNullException>(owner != null);
+      public VMCollection(IViewModel ownerVM, IVMPropertyDescriptor ownerProperty) {
+         Contract.Requires<ArgumentNullException>(ownerVM != null);
+         Contract.Requires<ArgumentNullException>(ownerProperty != null);
 
-         Behaviors = behaviors;
-         Owner = owner;
+         OwnerVM = ownerVM;
+         OwnerProperty = ownerProperty;
       }
 
       /// <inheritdoc />
@@ -45,15 +45,12 @@
       }
 
       /// <inheritdoc />
-      public IViewModel Owner {
+      public IViewModel OwnerVM {
          get;
          private set;
       }
 
-      /// <summary>
-      ///   Gets the <see cref="BehaviorChain"/> of this collection.
-      /// </summary>
-      public BehaviorChain Behaviors {
+      public IVMPropertyDescriptor OwnerProperty {
          get;
          private set;
       }
@@ -137,15 +134,15 @@
       }
 
       private void CallBehaviors(CollectionChangedArgs<TItemVM> args) {
-         Behaviors.TryCall<IModificationCollectionBehavior<TItemVM>>(b =>
-            b.HandleChange(Owner.GetContext(), args)
+         OwnerProperty.Behaviors.TryCall<IModificationCollectionBehavior<TItemVM>>(b =>
+            b.HandleChange(OwnerVM.GetContext(), args)
          );
       }
 
       [ContractInvariantMethod]
       private void ObjectInvariant() {
-         Contract.Invariant(Behaviors != null);
-         Contract.Invariant(Owner != null);
+         Contract.Invariant(OwnerProperty != null);
+         Contract.Invariant(OwnerVM != null);
       }
 
       public PropertyDescriptorCollection GetItemProperties(PropertyDescriptor[] listAccessors) {
@@ -174,9 +171,9 @@
          } finally {
             IsPopulating = false;
          }
-         
+
          CallBehaviors(CollectionChangedArgs<TItemVM>.CollectionPopulated(this, oldItems));
-         
+
          //Behaviors.TryCall<IModificationCollectionBehavior<TItemVM>>(b =>
          //   b.CollectionPopulated(Owner.GetContext(), this, previousItems)
          //);

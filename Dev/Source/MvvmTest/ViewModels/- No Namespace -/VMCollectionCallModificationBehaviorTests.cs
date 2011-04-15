@@ -19,7 +19,11 @@
          behaviors.Successor = BehaviorStub;
 
          var owner = new Mock<IViewModel> { DefaultValue = DefaultValue.Mock };
-         Collection = new VMCollection<IViewModel>(behaviors, owner.Object);
+
+         Collection = new VMCollection<IViewModel>(
+            owner.Object,
+            PropertyStub.WithBehaviors(behaviors).Build()
+         );
       }
 
       [TestMethod]

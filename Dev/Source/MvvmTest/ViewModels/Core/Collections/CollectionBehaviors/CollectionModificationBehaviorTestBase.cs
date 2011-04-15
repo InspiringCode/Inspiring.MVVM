@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Collections {
+   using System.Linq;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.MvvmTest.Stubs;
@@ -64,18 +65,24 @@
       }
 
       protected IVMCollection<TItemVM> CreateCollectionStub(int itemCount) {
-         var stub = new VMCollectionStub<TItemVM>(CollectionOwner);
-
-         for (int i = 0; i < itemCount; i++) {
-            stub.Add(CreateAnonymousItem());
-         }
-
-         return stub;
+         return VMCollectionStub
+            .Of<TItemVM>()
+            .WithItems(
+               Enumerable
+                  .Range(0, count: itemCount)
+                  .Select(_ => CreateAnonymousItem()))
+            .WithOwner(CollectionOwner)
+            .Build();
       }
 
       protected IVMCollection<TItemVM> CreateCollectionStub(params TItemVM[] items) {
-         var stub = new VMCollectionStub<TItemVM>(CollectionOwner);
+         var stub = VMCollectionStub
+            .Of<TItemVM>()
+            .WithItems(items)
+            .WithOwner(CollectionOwner)
+            .Build();
 
+         // TODO: Clean up and move to builder
          for (int i = 0; i < items.Length; i++) {
             stub.Add(items[i]);
          }

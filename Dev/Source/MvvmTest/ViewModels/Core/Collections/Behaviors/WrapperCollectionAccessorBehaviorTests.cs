@@ -1,9 +1,9 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Collections.Behaviors {
+   using System.Collections.Generic;
    using System.Linq;
+   using System.Text;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
-   using System.Collections.Generic;
-using System.Text;
 
    [TestClass]
    public class WrapperCollectionAccessorBehaviorTests : CollectionAccessorBehaviorFixture {
@@ -19,12 +19,12 @@ using System.Text;
       [TestMethod]
       public void GetValue_Initially_CreatesAndReturnsPopulatedInstance() {
          Next.SourceCollectionToReturn = new[] { new ItemSource() };
-         
+
          var actual = Behavior.GetValue(Context);
 
          CollectionAssert.AreEqual(
             Next.SourceCollectionToReturn.ToArray(),
-            actual.Select(x => x.Source).ToArray()            
+            actual.Select(x => x.Source).ToArray()
          );
       }
 
@@ -66,18 +66,18 @@ using System.Text;
          };
 
          Next.SourceCollectionToReturn = newSourceItems;
-         Behavior.Refresh(Context); 
+         Behavior.Refresh(Context);
 
          var newVMs = Behavior.GetValue(Context);
-         
+
          CollectionAssert.AreEqual(
             newSourceItems,
-            newVMs.Select(x => x.Source).ToArray()            
+            newVMs.Select(x => x.Source).ToArray()
          );
-         
+
          var expectedSharedItemVM = previousVMs[1];
          var actualSharedItemVM = newVMs[0];
-         
+
          Assert.AreEqual(expectedSharedItemVM, actualSharedItemVM);
          Assert.AreEqual(1, actualSharedItemVM.RefreshInvocations);
 
@@ -112,7 +112,8 @@ using System.Text;
       private class LoggingCollectionStub : VMCollectionStub<ItemVM> {
          private StringBuilder _log;
 
-         public LoggingCollectionStub(StringBuilder log) {
+         public LoggingCollectionStub(StringBuilder log)
+            : base(ViewModelStub.Build(), PropertyStub.Build()) {
             _log = log;
          }
          public override void ReplaceItems(IEnumerable<ItemVM> newItems) {

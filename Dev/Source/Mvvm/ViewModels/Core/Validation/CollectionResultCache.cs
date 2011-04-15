@@ -92,7 +92,7 @@
 
          private ValidationResult InvokeCollectionValidationExecutors(CollectionResultKey key) {
             var requestPath = Path.Empty
-               .Append(key.Collection.Owner)
+               .Append(key.Collection.OwnerVM)
                .Append(key.Collection);
 
             if (key.Property != null) {
@@ -100,7 +100,7 @@
             }
 
             var request = new ValidationRequest(key.Step, requestPath);
-            return key.Collection.Owner.ExecuteValidationRequest(request);
+            return key.Collection.OwnerVM.ExecuteValidationRequest(request);
          }
 
          private IEnumerable<IViewModel> GetPossiblyStaleItems(

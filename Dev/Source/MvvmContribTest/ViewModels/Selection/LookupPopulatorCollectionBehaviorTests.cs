@@ -38,7 +38,10 @@
 
          var behavior = CreateBehavior(lookupCollection, sourceCollection);
 
-         var collection = new VMCollection<ProjectVM>(new BehaviorChain(), context.VM);
+         var collection = VMCollectionStub
+            .Of<ProjectVM>()
+            .WithOwner(context.VM)
+            .Build();
 
          throw new NotImplementedException();
          //behavior.Repopulate(context.Context, collection);

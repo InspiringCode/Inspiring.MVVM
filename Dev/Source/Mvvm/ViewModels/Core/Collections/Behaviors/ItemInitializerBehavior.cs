@@ -12,7 +12,7 @@
          VMDescriptorBase itemDescriptor = this.GetItemDescriptor();
 
          foreach (IViewModel item in args.NewItems) {
-            item.Kernel.Parents.Add(args.Collection.Owner);
+            item.Kernel.Parents.Add(args.Collection.OwnerVM);
             item.Kernel.OwnerCollections.Add(args.Collection);
 
             // TODO: Should we check old descriptor, should the Descriptor property 
@@ -23,7 +23,7 @@
          this.HandleChangeNext(context, args);
 
          foreach (IViewModel item in args.OldItems) {
-            item.Kernel.Parents.Remove(args.Collection.Owner);
+            item.Kernel.Parents.Remove(args.Collection.OwnerVM);
             item.Kernel.OwnerCollections.Remove(args.Collection);
          }
       }

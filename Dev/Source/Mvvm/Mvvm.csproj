@@ -180,7 +180,6 @@
     <Compile Include="ViewModels\Core\Collections\Behaviors\StoredCollectionAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\Behaviors\WrapperCollectionAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\BehaviorInterfaces\IItemDescriptorProviderBehavior.cs" />
-    <Compile Include="ViewModels\Core\Collections\CollectionBehaviorInterfaces\IPopulatorCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\BehaviorInterfaces\IModificationCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IDescendantValidationBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IIsLoadedIndicatorBehavior.cs" />
@@ -298,7 +297,6 @@
     <Compile Include="ViewModels\Core\Collections\Behaviors\ItemDescriptorProviderBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\Behaviors\ItemInitializerBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\Behaviors\SynchronizerCollectionBehavior.cs" />
-    <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\PopulatorCollectionBehavior.cs" />
     <Compile Include="ViewModels\- No Namespace -\IVMCollection.cs" />
     <Compile Include="ViewModels\Core\Collections\VMCollection.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\RefreshableValueCacheBehavior.cs" />
@@ -309,8 +307,6 @@
     <Compile Include="ViewModels\Core\Validation\ValidationError.cs" />
     <Compile Include="ViewModels\Core\- Todo -\ItemCreationController.cs" />
     <Compile Include="ViewModels\Core\VMKernel.cs" />
-    <Compile Include="ViewModels\Core\Collections\PropertyBehaviors\CollectionFactoryBehavior.cs" />
-    <Compile Include="ViewModels\Core\Collections\PropertyBehaviors\CollectionPopulatorBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IMutabilityCheckerBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IViewModelFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\ServiceLocatorValueFactoryBehavior.cs" />
@@ -407,8 +403,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModels\Core\BehaviorInterfaces\CollectionBehaviors\" />
-    <Folder Include="ViewModels\Core\Behaviors\Configuration\" />
-    <Folder Include="ViewModels\Core\Behaviors\Keys\" />
     <Folder Include="Views\TestDoubles\" />
   </ItemGroup>
   <ItemGroup>

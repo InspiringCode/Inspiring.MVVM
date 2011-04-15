@@ -10,7 +10,7 @@ namespace Inspiring.MvvmTest.ViewModels.__No_Namespace__ {
          var item0 = CreateItem();
          var item1 = CreateItem();
 
-         var collection = new VMCollection<IViewModel>(new BehaviorChain(), CreateItem());
+         var collection = CreateCollection();
          collection.Add(item0);
          collection.Add(item1);
 
@@ -24,7 +24,7 @@ namespace Inspiring.MvvmTest.ViewModels.__No_Namespace__ {
          var item0 = CreateItem();
          var item1 = CreateItem();
 
-         var collection = new VMCollection<IViewModel>(new BehaviorChain(), CreateItem());
+         var collection = CreateCollection();
          collection.Add(item0);
          collection.Add(item1);
 
@@ -44,9 +44,13 @@ namespace Inspiring.MvvmTest.ViewModels.__No_Namespace__ {
          var collectionBehaviors = new BehaviorChain();
          collectionBehaviors.Successor = new ItemDescriptorProviderBehavior(itemDescriptor);
 
-         var collection = new VMCollection<IViewModel>(collectionBehaviors, CreateItem());
+         var collection = CreateCollection();
 
          Assert.AreSame(itemTypeDescriptorBehavior.PropertyDescriptors, collection.GetItemProperties(null));
+      }
+
+      private VMCollection<IViewModel> CreateCollection() {
+         return new VMCollection<IViewModel>(ViewModelStub.Build(), PropertyStub.Build());
       }
 
       private static IViewModel CreateItem() {

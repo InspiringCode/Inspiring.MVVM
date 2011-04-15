@@ -351,7 +351,10 @@
       }
 
       public static VMDescriptorBase GetItemDescriptor(this IVMCollection collection) {
-         return collection.Behaviors.GetItemDescriptor();
+         return collection
+            .OwnerProperty
+            .Behaviors
+            .GetItemDescriptor();
       }
 
       public static ValidationResult ExecuteValidationRequest(this IViewModel requestTarget, ValidationRequest request) {
