@@ -1,14 +1,12 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    /// <summary>
-   ///   Creates new instances of the view model type specified with <typeparamref 
+   ///   Creates new instances of the type specified with <typeparamref 
    ///   name="TVM"/> using the <see cref="IBehaviorContext.ServiceLocator"/> of the
    ///   <see cref="IBehaviorContext"/>.
    /// </summary>
    internal sealed class ServiceLocatorValueFactoryBehavior<TVM> :
       Behavior,
-      IViewModelFactoryBehavior<TVM>,
-      IValueFactoryBehavior<TVM>
-      where TVM : IViewModel { // TODO: Remove constraint, update documentation...
+      IValueFactoryBehavior<TVM> {
 
       public TVM CreateInstance(IBehaviorContext vm) {
          return vm.ServiceLocator.GetInstance<TVM>();

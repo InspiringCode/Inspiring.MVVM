@@ -146,16 +146,12 @@
     <Compile Include="ViewModels\- No Namespace -\Validation\ValidationResultScope.cs" />
     <Compile Include="ViewModels\- No Namespace -\ViewModel.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMDescriptorBuilder.cs" />
-    <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\ICollectionFactoryBehavior.cs" />
-    <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\ICommandBehaviorConfigurationBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\ICommandCanExecuteBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\ICommandExecuteBehavior.cs" />
-    <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\ICommandFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IDescendantsValidationResultProviderBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IValueFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IValueInitializerBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IRefreshBehavior.cs" />
-    <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IPopulationBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IUntypedValueGetterBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IUntypedValueSetterBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\ViewModelBehaviors\IChangeHandlerBehavior.cs" />
@@ -207,18 +203,14 @@
     <Compile Include="ViewModels\Core\Common\ICondition.cs" />
     <Compile Include="ViewModels\Core\CountingSet.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\CachedAccessorBehavior.cs" />
-    <Compile Include="ViewModels\Core\GeneralBehaviors\DefaultValueFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\DelegateValueFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\DynamicFieldAccessor.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\LazyRefreshBehavior.cs" />
-    <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\RefreshBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\UntypedPropertyAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\ServiceLocatorValueAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\ViewModelProperty\DelegateViewModelAccessorBehavior.cs" />
-    <Compile Include="ViewModels\Core\GeneralBehaviors\ViewModelProperty\ValueInitializerBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\ViewModelProperty\ViewModelInitializerBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\ViewModelProperty\ViewModelPropertyRefreshBehavior.cs" />
-    <Compile Include="ViewModels\Core\GeneralBehaviors\ViewModelProperty\ViewModelSourceSetterBehavior.cs" />
     <Compile Include="ViewModels\Core\Paths\Definition\PathDefinitionIterator.cs" />
     <Compile Include="ViewModels\Core\Paths\Definition\PathMatch.cs" />
     <Compile Include="ViewModels\Core\Paths\Definition\PropertyStep.cs" />
@@ -273,12 +265,6 @@
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Validators\ValidatorBuilder.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\VMDescriptorConfiguration.cs" />
     <Compile Include="ViewModels\Core\VMDescriptor\IVMDescriptorBuilder.cs" />
-    <Compile Include="ViewModels\Core\GeneralBehaviors\CacheBehavior.cs" />
-    <Compile Include="ViewModels\Core\GeneralBehaviors\CollectionBehaviors\DelegatePopulatorCollectionBehavior.cs" />
-    <Compile Include="ViewModels\Core\GeneralBehaviors\ParentSetterBehavior.cs" />
-    <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\DelegateViewModelFactory.cs" />
-    <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\IsLoadedIndicatorBehavior.cs" />
-    <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\RevalidationBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\ViewModelProperty\WrapperViewModelAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\ViewModelBehaviors\ChangeListenerBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\ViewModelBehaviors\LoadOrderBehavior.cs" />
@@ -299,7 +285,6 @@
     <Compile Include="ViewModels\Core\Collections\Behaviors\SynchronizerCollectionBehavior.cs" />
     <Compile Include="ViewModels\- No Namespace -\IVMCollection.cs" />
     <Compile Include="ViewModels\Core\Collections\VMCollection.cs" />
-    <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\RefreshableValueCacheBehavior.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\ViewModelTypeDescriptor.cs" />
     <Compile Include="ViewModels\Core\Common\ChangeArgs.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\IBehaviorInitializationBehavior.cs" />
@@ -308,7 +293,6 @@
     <Compile Include="ViewModels\Core\- Todo -\ItemCreationController.cs" />
     <Compile Include="ViewModels\Core\VMKernel.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IMutabilityCheckerBehavior.cs" />
-    <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IViewModelFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\ServiceLocatorValueFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\SimplePropertyDescriptor.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\PropertyDescriptorProviderBehavior.cs" />
@@ -352,7 +336,6 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\ICanInitializeFrom.cs" />
-    <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\ValueCacheBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\DelegateValueAccessor.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\StoredValueAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IDisplayValueAccessorBehavior.cs" />

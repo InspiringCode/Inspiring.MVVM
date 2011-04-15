@@ -191,8 +191,6 @@
     <Compile Include="ViewModels\- Test Infrastructure -\VMCollectionStub.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorKeysTests.cs" />
     <Compile Include="ViewModels\Core\Behaviors\PropertyBehaviors\DisplayValueBehaviorTests.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\PropertyBehaviors\RefreshableValueCacheBehaviorTests.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\PropertyBehaviors\ValueCacheBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Builder\VMPropertyBuilderTests.cs" />
     <Compile Include="ViewModels\Core\Collections\AddNewHelperTests.cs" />
     <Compile Include="ViewModels\Core\Collections\Behaviors\CollectionAccessorBehaviorFixture.cs" />

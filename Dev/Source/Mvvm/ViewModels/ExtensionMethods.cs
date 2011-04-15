@@ -257,16 +257,6 @@
          }
       }
 
-      public static void PopulateNext(
-         this Behavior behavior,
-         IBehaviorContext context
-      ) {
-         IPopulationBehavior next;
-         if (behavior.TryGetBehavior(out next)) {
-            next.Populate(context);
-         }
-      }
-
       public static void ExecuteNext(
          this Behavior behavior,
          IBehaviorContext context,
