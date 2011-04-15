@@ -9,7 +9,7 @@
 
       private static void RegisterPropertyTemplate() {
          BehaviorChainTemplateRegistry.RegisterTemplate(
-            BehaviorChainTemplateKeys.Property,
+            DefaultBehaviorChainTemplateKeys.Property,
             new BehaviorChainTemplate(DefaultProviders.SimpleProperty)
                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
@@ -23,7 +23,7 @@
 
       private static void RegisterPropertyWithSourceTemplate() {
          BehaviorChainTemplateRegistry.RegisterTemplate(
-            BehaviorChainTemplateKeys.Property,
+            DefaultBehaviorChainTemplateKeys.Property,
             new BehaviorChainTemplate(DefaultProviders.SimpleProperty)
                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
@@ -37,7 +37,7 @@
 
       private static void RegisterViewModelPropertyTemplate() {
          BehaviorChainTemplateRegistry.RegisterTemplate(
-            BehaviorChainTemplateKeys.ViewModelProperty,
+            DefaultBehaviorChainTemplateKeys.ViewModelProperty,
             new BehaviorChainTemplate(DefaultProviders.ViewModelProperty)
                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
@@ -55,7 +55,7 @@
 
       private static void RegisterViewModelWithSourcePropertyTemplate() {
          BehaviorChainTemplateRegistry.RegisterTemplate(
-            BehaviorChainTemplateKeys.ViewModelProperty,
+            DefaultBehaviorChainTemplateKeys.ViewModelProperty,
             new BehaviorChainTemplate(DefaultProviders.ViewModelProperty)
                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
@@ -74,13 +74,14 @@
 
       private static void RegisterCollectionPropertyTemplate() {
          BehaviorChainTemplateRegistry.RegisterTemplate(
-            BehaviorChainTemplateKeys.CollectionProperty,
-            new BehaviorChainTemplate(null)
+            DefaultBehaviorChainTemplateKeys.CollectionProperty,
+            new BehaviorChainTemplate(DefaultProviders.CollectionProperty)
                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
                .Append(PropertyBehaviorKeys.ValueInitializer)
                .Append(PropertyBehaviorKeys.Undo, DefaultBehaviorState.Disabled)
-               .Append(CollectionBehaviorKeys.SourceSynchronizer)
+               .Append(PropertyBehaviorKeys.LazyRefresh)
+               .Append(CollectionPropertyBehaviorKeys.Synchronizer)
                .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.ChangeNotifier)
                .Append(PropertyBehaviorKeys.ValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)
@@ -91,13 +92,14 @@
 
       private static void RegisterCollectionPropertyWithSourceTemplate() {
          BehaviorChainTemplateRegistry.RegisterTemplate(
-            BehaviorChainTemplateKeys.CollectionProperty,
-            new BehaviorChainTemplate(null)
+            DefaultBehaviorChainTemplateKeys.CollectionProperty,
+            new BehaviorChainTemplate(DefaultProviders.CollectionProperty)
                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
                .Append(PropertyBehaviorKeys.ValueInitializer)
                .Append(PropertyBehaviorKeys.Undo, DefaultBehaviorState.Disabled)
-               .Append(CollectionBehaviorKeys.SourceSynchronizer)
+               .Append(PropertyBehaviorKeys.LazyRefresh)
+               .Append(CollectionPropertyBehaviorKeys.Synchronizer)
                .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.ChangeNotifier)
                .Append(PropertyBehaviorKeys.ValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)
@@ -107,26 +109,9 @@
          );
       }
 
-      /*
-       * 
-       *                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
-               .Append(PropertyBehaviorKeys.UntypedValueAccessor)
-               .Append(PropertyBehaviorKeys.ValueCache)
-               .Append(PropertyBehaviorKeys.CommandFactory, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(PropertyBehaviorKeys.PropertyDescriptorProvider)
-       * 
-       *                .Append(PropertyBehaviorKeys.WaitCursor)
-               .Append(PropertyBehaviorKeys.CommandExecutor, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
-       * 
-       * 
-       * 
-       */
-
-
       private static void RegisterCommandPropertyTemplate() {
          BehaviorChainTemplateRegistry.RegisterTemplate(
-            BehaviorChainTemplateKeys.CommandProperty,
+            DefaultBehaviorChainTemplateKeys.CommandProperty,
             new BehaviorChainTemplate(DefaultProviders.SimpleProperty)
                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
@@ -138,18 +123,15 @@
          );
       }
 
-
-
       private static void RegisterViewModelTemplate() {
          BehaviorChainTemplateRegistry.RegisterTemplate(
-            BehaviorChainTemplateKeys.ViewModel,
+            DefaultBehaviorChainTemplateKeys.ViewModel,
             new BehaviorChainTemplate(DefaultProviders.ViewModel)
-            //.Append(PropertyBehaviorKeys.ManualUpdateCoordinator)
-            //.Append(PropertyBehaviorKeys.Validator, DefaultBehaviorState.Disabled)
-            //.Append(ViewModelBehaviorKeys.ViewModelValidationSource, DefaultBehaviorState.Disabled)
-            //.Append(ViewModelBehaviorKeys.ValidationExecutor, DefaultBehaviorState.Disabled)
-            //.Append(PropertyBehaviorKeys.TypeDescriptor)
-            //.Append(ViewModelBehaviorKeys.UndoRoot, DefaultBehaviorState.Disabled)
+               .Append(ViewModelBehaviorKeys.LoadOrderController)
+               .Append(ViewModelBehaviorKeys.ViewModelValidationSource, DefaultBehaviorState.Disabled)
+               .Append(ViewModelBehaviorKeys.ValidationExecutor, DefaultBehaviorState.Disabled)
+               .Append(ViewModelBehaviorKeys.TypeDescriptorProvider)
+               .Append(ViewModelBehaviorKeys.UndoRoot, DefaultBehaviorState.Disabled)
          );
       }
    }

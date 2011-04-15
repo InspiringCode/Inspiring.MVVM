@@ -79,9 +79,9 @@
             .WithBehaviors(c => {
                // This behavior ensures, that the 'SelectedItems' collection returns the same
                // VM instances (for the same source items) as the 'AllItems' collection.
-               c.For(x => x.SelectedItems).CollectionBehaviors.Enable(
-                  CollectionBehaviorKeys.Populator,
-                  new LookupPopulatorCollectionBehavior<MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>, TItemVM, TItemSource>(
+               c.For(x => x.SelectedItems).Enable(
+                  PropertyBehaviorKeys.ValueAccessor,
+                  new LookupPopulatorCollectionBehavior<MultiSelectionWithSourceVM<TSourceObject, TItemSource>, SelectionItemVM<TItemSource>, TItemSource>(
                      multiSelectionVM => multiSelectionVM.AllItems
                   )
                );
@@ -196,8 +196,8 @@
             .WithBehaviors(c => {
                // This behavior ensures, that the 'SelectedItems' collection returns the same
                // VM instances (for the same source items) as the 'AllItems' collection.
-               c.For(x => x.SelectedItems).CollectionBehaviors.Enable(
-                  CollectionBehaviorKeys.Populator,
+               c.For(x => x.SelectedItems).Enable(
+                  PropertyBehaviorKeys.ValueAccessor,
                   new LookupPopulatorCollectionBehavior<MultiSelectionWithSourceVM<TSourceObject, TItemSource>, SelectionItemVM<TItemSource>, TItemSource>(
                      multiSelectionVM => multiSelectionVM.AllItems
                   )

@@ -23,7 +23,7 @@
       public void ReplaceConfiguration(BehaviorChainTemplateKey templateKey) {
          _configuration.ViewModelConfiguration = BehaviorChainConfiguration.GetConfiguration(
             templateKey,
-            FactoryConfigurations.ForViewModel<TVM>()
+            BehaviorFactoryConfigurations.ForViewModel<TVM>()
          );
       }
 
@@ -49,7 +49,7 @@
          params Func<TDescriptor, IVMPropertyDescriptor>[] orderedProperties
       ) {
          return Configure(
-            PropertyBehaviorKeys.ManualUpdateCoordinator,
+            ViewModelBehaviorKeys.LoadOrderController,
             (LoadOrderBehavior behavior) => {
                behavior.UpdateFromSourceProperties = orderedProperties
                   .Select(selector => selector(_descriptor))
@@ -62,7 +62,7 @@
           params Func<TDescriptor, IVMPropertyDescriptor>[] orderedProperties
        ) {
          return Configure(
-            PropertyBehaviorKeys.ManualUpdateCoordinator,
+            ViewModelBehaviorKeys.LoadOrderController,
             (LoadOrderBehavior behavior) => {
                behavior.UpdateSourceProperties = orderedProperties
                   .Select(selector => selector(_descriptor))

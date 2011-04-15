@@ -19,8 +19,8 @@
 
       public IVMPropertyDescriptor<TValue> Property<TValue>(IValueAccessorBehavior<TValue> valueAccessor) {
          return CustomProperty<TValue>(
-            BehaviorChainTemplateKeys.Property,
-            FactoryConfigurations.ForSimpleProperty<TOwnerVM, TValue, TSourceObject>(false),
+            DefaultBehaviorChainTemplateKeys.Property,
+            BehaviorFactoryConfigurations.ForSimpleProperty<TOwnerVM, TValue, TSourceObject>(false),
             config => config.Enable(PropertyBehaviorKeys.ValueAccessor, valueAccessor)
          );
       }
@@ -29,8 +29,8 @@
          IValueAccessorBehavior<TValue> valueAccessor
       ) {
          return CustomProperty<TValue>(
-            BehaviorChainTemplateKeys.Property,
-            FactoryConfigurations.ForSimpleProperty<TOwnerVM, TValue, TSourceObject>(true),
+            DefaultBehaviorChainTemplateKeys.Property,
+            BehaviorFactoryConfigurations.ForSimpleProperty<TOwnerVM, TValue, TSourceObject>(true),
             config => config.Enable(PropertyBehaviorKeys.ValueAccessor, valueAccessor)
          );
       }
@@ -40,8 +40,8 @@
          IBehavior sourceAccessor = null
       ) where TChildVM : IViewModel {
          return CustomProperty<TChildVM>(
-            BehaviorChainTemplateKeys.ViewModelProperty,
-            FactoryConfigurations.ForChildProperty<TOwnerVM, TChildVM, TSourceObject>(),
+            DefaultBehaviorChainTemplateKeys.ViewModelProperty,
+            BehaviorFactoryConfigurations.ForChildProperty<TOwnerVM, TChildVM, TSourceObject>(),
             config => {
                config.Enable(PropertyBehaviorKeys.ValueAccessor, valueAccessor);
 
@@ -57,8 +57,8 @@
          IValueAccessorBehavior<TChildSource> sourceAccessor = null
       ) where TChildVM : IViewModel, IHasSourceObject<TChildSource> {
          return CustomProperty<TChildVM>(
-            BehaviorChainTemplateKeys.ViewModelProperty,
-            FactoryConfigurations.ForChildProperty<TOwnerVM, TChildVM, TSourceObject, TChildSource>(),
+            DefaultBehaviorChainTemplateKeys.ViewModelProperty,
+            BehaviorFactoryConfigurations.ForChildProperty<TOwnerVM, TChildVM, TSourceObject, TChildSource>(),
             config => {
                config.Enable(PropertyBehaviorKeys.ValueAccessor, valueAccessor);
 
@@ -74,8 +74,8 @@
          IValueAccessorBehavior<IEnumerable<TChildVM>> sourceAccessor = null
       ) where TChildVM : IViewModel {
          return CustomProperty<IVMCollection<TChildVM>>(
-            BehaviorChainTemplateKeys.CollectionProperty,
-            FactoryConfigurations.ForChildProperty<TOwnerVM, TChildVM, TSourceObject>(),
+            DefaultBehaviorChainTemplateKeys.CollectionProperty,
+            BehaviorFactoryConfigurations.ForChildProperty<TOwnerVM, TChildVM, TSourceObject>(),
             config => {
                config.Enable(PropertyBehaviorKeys.ValueAccessor, valueAccessor);
 
@@ -91,8 +91,8 @@
          IValueAccessorBehavior<IEnumerable<TChildSource>> sourceAccessor = null
       ) where TChildVM : IViewModel, IHasSourceObject<TChildSource> {
          return CustomProperty<IVMCollection<TChildVM>>(
-            BehaviorChainTemplateKeys.ViewModelProperty,
-            FactoryConfigurations.ForChildProperty<TOwnerVM, TChildVM, TSourceObject, TChildSource>(),
+            DefaultBehaviorChainTemplateKeys.ViewModelProperty,
+            BehaviorFactoryConfigurations.ForChildProperty<TOwnerVM, TChildVM, TSourceObject, TChildSource>(),
             config => {
                config.Enable(PropertyBehaviorKeys.ValueAccessor, valueAccessor);
 
@@ -108,8 +108,8 @@
          IBehavior commandExecutor
       ) {
          return CustomProperty<ICommand>(
-            BehaviorChainTemplateKeys.CommandProperty,
-            FactoryConfigurations.ForSimpleProperty<TOwnerVM, ICommand, TSourceObject>(false),
+            DefaultBehaviorChainTemplateKeys.CommandProperty,
+            BehaviorFactoryConfigurations.ForSimpleProperty<TOwnerVM, ICommand, TSourceObject>(false),
             config => {
                config.Enable(PropertyBehaviorKeys.SourceAccessor, sourceObjectAccessor);
                config.Enable(CommandPropertyBehaviorKeys.CommandExecutor, commandExecutor);

@@ -20,7 +20,8 @@
             return Enumerable.Empty<ProjectVM>();
          });
 
-         behavior.Repopulate(new ContextTestHelper(employeeVM).Context, new VMCollection<ProjectVM>(new BehaviorChain(), employeeVM));
+         throw new NotImplementedException();
+         //behavior.Repopulate(new ContextTestHelper(employeeVM).Context, new VMCollection<ProjectVM>(new BehaviorChain(), employeeVM));
 
          Assert.AreSame(employeeVM, passedVM);
       }
@@ -39,7 +40,8 @@
 
          var collection = new VMCollection<ProjectVM>(new BehaviorChain(), context.VM);
 
-         behavior.Repopulate(context.Context, collection);
+         throw new NotImplementedException();
+         //behavior.Repopulate(context.Context, collection);
 
          CollectionAssert.AreEquivalent(
             new[] { projectVM },

@@ -24,7 +24,7 @@
          var factoryProvider = new FactoryProviderMock();
 
          BehaviorChainTemplateRegistry.RegisterTemplate(
-            BehaviorChainTemplateKeys.Property,
+            DefaultBehaviorChainTemplateKeys.Property,
             new BehaviorChainTemplate(factoryProvider)
                .Append(TestKey)
                .Append(PropertyBehaviorKeys.ValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)

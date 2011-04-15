@@ -171,8 +171,8 @@
 
       private static BehaviorChainConfiguration GetDefaultViewModelConfiguration() {
          return BehaviorChainConfiguration.GetConfiguration(
-            BehaviorChainTemplateKeys.ViewModel,
-            FactoryConfigurations.ForViewModel<TVM>()
+            DefaultBehaviorChainTemplateKeys.ViewModel,
+            BehaviorFactoryConfigurations.ForViewModel<TVM>()
          );
       }
    }

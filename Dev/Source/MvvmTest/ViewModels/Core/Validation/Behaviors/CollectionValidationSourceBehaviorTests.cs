@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Validation.Behaviors {
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
-   using Inspiring.Mvvm.ViewModels.Core.Validation.CollectionBehaviors;
    using Inspiring.MvvmTest.ViewModels.Core.Collections;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 

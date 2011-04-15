@@ -46,27 +46,27 @@
       }
 
       private static void RegisterCustomCommandTemplate() {
-         BehaviorChainTemplateRegistry.RegisterTemplate(
-            BehaviorChainTemplateKeys.CommandBehaviors,
-            new BehaviorChainTemplate(CustomPropertyBehaviorFactory.Instance)
-               //.Append(PropertyBehaviorKeys.WaitCursor)
-               .Append(TestBehaviorKey)
-               //.Append(PropertyBehaviorKeys.CommandExecutor, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
-         );
+         //BehaviorChainTemplateRegistry.RegisterTemplate(
+         //   BehaviorChainTemplateKeys.CommandBehaviors,
+         //   new BehaviorChainTemplate(CustomPropertyBehaviorFactory.Instance)
+         //      //.Append(PropertyBehaviorKeys.WaitCursor)
+         //      .Append(TestBehaviorKey)
+         //      //.Append(PropertyBehaviorKeys.CommandExecutor, DefaultBehaviorState.DisabledWithoutFactory)
+         //      .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
+         //);
       }
 
-      private class CustomPropertyBehaviorFactory : CommandBehaviorFactory {
-         public static readonly CommandBehaviorFactory Instance = new CustomPropertyBehaviorFactory();
+      //private class CustomPropertyBehaviorFactory : CommandBehaviorFactory {
+      //   public static readonly CommandBehaviorFactory Instance = new CustomPropertyBehaviorFactory();
 
-         public override IBehavior Create<TVM, TValue>(BehaviorKey key) {
-            if (key == TestBehaviorKey) {
-               return new CustomCommandHandler();
-            }
+      //   public override IBehavior Create<TVM, TValue>(BehaviorKey key) {
+      //      if (key == TestBehaviorKey) {
+      //         return new CustomCommandHandler();
+      //      }
 
-            return base.Create<TVM, TValue>(key);
-         }
-      }
+      //      return base.Create<TVM, TValue>(key);
+      //   }
+      //}
 
       private class CustomCommandHandler :
          Behavior,

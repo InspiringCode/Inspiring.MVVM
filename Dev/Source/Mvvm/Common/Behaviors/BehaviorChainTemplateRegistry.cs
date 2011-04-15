@@ -2,6 +2,7 @@
    using System;
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
+   using Inspiring.Mvvm.ViewModels.Core.Behaviors;
 
    /// <summary>
    ///   A registry that holds all available <see cref="BehaviorChainTemplate"/> 
@@ -10,6 +11,10 @@
    public static partial class BehaviorChainTemplateRegistry {
       private static Dictionary<BehaviorChainTemplateKey, BehaviorChainTemplate> _templates
          = new Dictionary<BehaviorChainTemplateKey, BehaviorChainTemplate>();
+
+      static BehaviorChainTemplateRegistry() {
+         ResetToDefaults();
+      }
 
       /// <summary>
       ///   Registers or overrides the given <see cref="BehaviorChainTemplateKey"/>
@@ -32,6 +37,10 @@
          Contract.Requires<ArgumentNullException>(key != null);
 
          return _templates[key];
+      }
+
+      public static void ResetToDefaults() {
+         DefaultTemplates.RegisterDefaultTemplates();
       }
    }
 }

@@ -17,8 +17,8 @@
       [TestInitialize]
       public void Setup() {
          var viewModelConfiguration = BehaviorChainConfiguration.GetConfiguration(
-            BehaviorChainTemplateKeys.ViewModel,
-            FactoryConfigurations.ForViewModel<EmployeeVM>()
+            DefaultBehaviorChainTemplateKeys.ViewModel,
+            BehaviorFactoryConfigurations.ForViewModel<EmployeeVM>()
          );
 
          Configuration = new VMDescriptorConfiguration(viewModelConfiguration);

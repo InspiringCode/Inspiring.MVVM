@@ -94,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArrayUtils.cs" />
+    <Compile Include="Common\Behaviors\BehaviorChainTemplateKeys.cs" />
     <Compile Include="Common\Behaviors\BehaviorFactory.cs" />
     <Compile Include="Common\Behaviors\BehaviorFactoryConfiguration.cs" />
     <Compile Include="Common\Behaviors\IBehaviorFactory.cs" />
@@ -163,8 +164,9 @@
     <Compile Include="ViewModels\Core\BehaviorInterfaces\ViewModelBehaviors\IValidationResultAggregatorBehavior.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryConfigurations.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\CollectionPropertyFactoryProvider.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\CommandPropertyProvider.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\DefaultProviders.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\DefaultProviders.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\ISimplePropertyProvider.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\IChildPropertyProvider.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\IViewModelProvider.cs" />
@@ -172,11 +174,7 @@
     <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\SimplePropertyProvider.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\ViewModelPropertyProvider.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\ViewModelProvider.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\Factories\CommandBehaviorFactory.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\Keys\CommandPropertyBehaviorKeys.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\Keys\PropertyBehaviorKeys.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\Keys\PropertyBehaviorKeysBase.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\Keys\ViewModelBehaviorKeys.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\DefaultBehaviorKeys.cs" />
     <Compile Include="ViewModels\Core\Behaviors\DefaultTemplates.cs" />
     <Compile Include="ViewModels\Core\Collections\Behaviors\PopulatedCollectionAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\Collections\Behaviors\StoredCollectionAccessorBehavior.cs" />
@@ -193,22 +191,15 @@
     <Compile Include="ViewModels\Core\BehaviorInterfaces\ViewModelBehaviors\IManualUpdateCoordinatorBehavior.cs" />
     <Compile Include="Common\Behaviors\BehaviorChain.cs" />
     <Compile Include="Common\Behaviors\BehaviorChainConfiguration.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\Configuration\BehaviorChainConfigurationCollection.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\BehaviorChainConfigurationCollection.cs" />
     <Compile Include="Common\Behaviors\BehaviorChainTemplate.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\Factories\CollectionBehaviorFactory.cs" />
     <Compile Include="Common\Behaviors\IBehaviorFactoryInvoker.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\Factories\ViewModelPropertyBehaviorFactory.cs" />
     <Compile Include="Common\Behaviors\BehaviorChainTemplateKey.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\Keys\BehaviorChainTemplateKeys.cs" />
     <Compile Include="Common\Behaviors\BehaviorChainTemplateRegistry.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\Configuration\BehaviorChainTemplateRegistry.DefaultTemplates.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\Keys\BehaviorKeys.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\Factories\PropertyBehaviorFactory.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\Factories\ViewModelBehaviorFactory.cs" />
+    <Compile Include="Common\Behaviors\BehaviorKeys.cs" />
     <Compile Include="Common\Behaviors\IBehaviorFactoryProvider.cs" />
     <Compile Include="Common\Behaviors\BehaviorKey.cs" />
     <Compile Include="ViewModels\Core\Behaviors\InitializableBehavior.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\Keys\CollectionBehaviorKeys.cs" />
     <Compile Include="ViewModels\Core\Collections\IVMCollectionExpression.cs" />
     <Compile Include="ViewModels\Core\Commands\CommandAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\Commands\DelegateCommandExecutorBehavior.cs" />
@@ -416,6 +407,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModels\Core\BehaviorInterfaces\CollectionBehaviors\" />
+    <Folder Include="ViewModels\Core\Behaviors\Configuration\" />
+    <Folder Include="ViewModels\Core\Behaviors\Keys\" />
     <Folder Include="Views\TestDoubles\" />
   </ItemGroup>
   <ItemGroup>
