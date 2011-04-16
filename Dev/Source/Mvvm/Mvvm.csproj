@@ -334,6 +334,11 @@
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\Interfaces\IVMDependencyConfigurator.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMDescriptor.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMPropertyDescriptor.cs" />
+    <Compile Include="ViewModels\EViewModels.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EViewModels.resx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Binder\BinderBuildStep.cs" />
     <Compile Include="Views\Binder\BinderBuildStepRegistry.cs" />
     <Compile Include="Views\Binder\BinderContext.cs" />
@@ -366,6 +371,10 @@
     <EmbeddedResource Include="ExceptionTexts.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ExceptionTexts.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewModels\EViewModels.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EViewModels.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

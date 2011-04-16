@@ -37,7 +37,7 @@
       }
 
       [TestMethod]
-      public void GetValue_CallingGetValueWithinProvideValue_DoesNotCallValueProvideValueAgain() {
+      public void GetValue_CallingGetValueWithinProvideValue_ThrowsException() {
          PropertyStub<object> property = null;
          var provideValueWasAlreadyCalled = false;
 
@@ -58,7 +58,9 @@
             .WithProperties(property)
             .BuildContext();
 
-         behavior.GetValue(context);
+         AssertHelper.Throws<InvalidOperationException>(() =>
+            behavior.GetValue(context)
+         ).WithMessage(EViewModels.ValueAccessedWithinProvideValue);
 
          Assert.IsTrue(provideValueWasAlreadyCalled);
       }

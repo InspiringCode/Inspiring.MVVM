@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Validation {
+   using System;
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
    using System.Linq;
@@ -52,6 +53,7 @@
          childItem.Revalidate();
 
          var itemBeforeAdditionState = childItem.GetValidationState(ValidationResultScope.All);
+         throw new NotImplementedException("Fix assertion");
          Contract.Assert(!itemBeforeAdditionState.IsValid);
 
          EmployeeVM vm = new EmployeeVM();
@@ -70,6 +72,7 @@
          childItem.Revalidate();
 
          var itemBeforeAdditionState = childItem.GetValidationState(ValidationResultScope.All);
+         throw new NotImplementedException("Fix assertion");
          Contract.Assert(!itemBeforeAdditionState.IsValid);
 
          EmployeeVM vm = new EmployeeVM();
