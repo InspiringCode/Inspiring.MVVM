@@ -1,9 +1,7 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core {
-   using System;
-   using System.Linq;
-   using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
    public class VMDescriptorBuilderTests {
@@ -18,7 +16,7 @@
          Assert.IsNotNull(d);
 
          Assert.IsTrue(ContainsBehavior<LoadOrderBehavior>(d));
-         Assert.IsTrue(ContainsBehavior<TypeDescriptorBehavior>(d));
+         Assert.IsTrue(ContainsBehavior<TypeDescriptorProviderBehavior>(d));
       }
 
       private bool ContainsBehavior<T>(VMDescriptor descriptor) where T : IBehavior {

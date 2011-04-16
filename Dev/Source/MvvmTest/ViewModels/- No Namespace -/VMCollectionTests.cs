@@ -35,7 +35,7 @@ namespace Inspiring.MvvmTest.ViewModels.__No_Namespace__ {
 
       [TestMethod]
       public void GetItemProperties_ReturnsPropertyDescriptorCollection() {
-         var itemTypeDescriptorBehavior = new TypeDescriptorBehavior();
+         var itemTypeDescriptorBehavior = new TypeDescriptorProviderBehavior();
 
          var itemDescriptor = new VMDescriptor();
          itemDescriptor.Behaviors.Successor = itemTypeDescriptorBehavior;

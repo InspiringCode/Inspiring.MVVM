@@ -6,7 +6,7 @@
 
    public class VMDescriptor : VMDescriptorBase {
       public VMDescriptor() {
-         var b = new TypeDescriptorBehavior();
+         var b = new TypeDescriptorProviderBehavior();
          b.Initialize(new BehaviorInitializationContext(this));
          Behaviors.Successor = b;
       }

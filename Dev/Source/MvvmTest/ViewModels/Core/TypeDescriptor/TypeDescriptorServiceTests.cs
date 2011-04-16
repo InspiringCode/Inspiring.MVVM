@@ -9,7 +9,7 @@
    public class TypeDescriptorServiceTests : TestBase {
       [TestMethod]
       public void PropertyDescriptors_ReturnsVMDescriptorProperties() {
-         var behavior = EmployeeVM.ClassDescriptor.Behaviors.GetNextBehavior<TypeDescriptorBehavior>();
+         var behavior = EmployeeVM.ClassDescriptor.Behaviors.GetNextBehavior<TypeDescriptorProviderBehavior>();
 
          PropertyDescriptor returnedDescriptor = behavior
             .PropertyDescriptors
@@ -22,7 +22,7 @@
 
       [TestMethod]
       public void PropertyDescriptors_GetTwice_ReturnsSameCollection() {
-         var behavior = EmployeeVM.ClassDescriptor.Behaviors.GetNextBehavior<TypeDescriptorBehavior>();
+         var behavior = EmployeeVM.ClassDescriptor.Behaviors.GetNextBehavior<TypeDescriptorProviderBehavior>();
 
          // Act
          var first = behavior.PropertyDescriptors;

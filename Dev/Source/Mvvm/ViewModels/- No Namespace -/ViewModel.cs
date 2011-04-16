@@ -209,14 +209,6 @@
          return Kernel;
       }
 
-      void IViewModel.NotifyPropertyChanged(IVMPropertyDescriptor property) {
-         OnPropertyChanged(property);
-      }
-
-      void IViewModel.NotifyValidationStateChanged(IVMPropertyDescriptor property) {
-         OnValidationStateChanged(property);
-      }
-
       protected virtual void OnPropertyChanged(IVMPropertyDescriptor property) {
          OnPropertyChanged(property.PropertyName);
       }
@@ -264,7 +256,7 @@
 
          return Descriptor
             .Behaviors
-            .GetNextBehavior<TypeDescriptorBehavior>()
+            .GetNextBehavior<TypeDescriptorProviderBehavior>()
             .PropertyDescriptors;
       }
 
@@ -309,7 +301,7 @@
          if (!relevantChange) {
             return;
          }
-         
+
          var r = args.ChangedPath.SelectsOnlyPropertyOf(this);
          bool ownPropertyChanged = r.Success;
 

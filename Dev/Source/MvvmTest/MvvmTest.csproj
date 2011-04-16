@@ -212,7 +212,6 @@
     <Compile Include="ViewModels\Core\Paths\PathHelperTests.cs" />
     <Compile Include="ViewModels\Core\Paths\PropertyStepTests.cs" />
     <Compile Include="ViewModels\Core\PropertyBehaviors\ViewModelInitializerBehaviorTests.cs" />
-    <Compile Include="ViewModels\Core\PropertySelectorTests.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\TypeDescriptorServiceTests.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\VMPropertyDescriptorTests.cs" />
     <Compile Include="ViewModels\Core\Validation\Behaviors\CollectionValidationSourceBehaviorTests.cs" />

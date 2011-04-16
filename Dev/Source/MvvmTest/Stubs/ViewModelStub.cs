@@ -78,16 +78,6 @@
          set;
       }
 
-
-      public void NotifyPropertyChanged(IVMPropertyDescriptor property) {
-         throw new NotImplementedException();
-      }
-
-      public void NotifyValidationStateChanged(IVMPropertyDescriptor property) {
-         throw new NotImplementedException();
-      }
-
-
       public T GetValue<T>(IVMPropertyDescriptor<T> property) {
          return (T)GetValue((IVMPropertyDescriptor)property);
       }

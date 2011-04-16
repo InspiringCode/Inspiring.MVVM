@@ -17,7 +17,7 @@ namespace Inspiring.MvvmTest.ViewModels.Core.TypeDescriptor {
       public void Setup() {
          _property = new VMPropertyBaseStub(typeof(object), "Test");
 
-         _descriptor = new TypeDescriptorPropertyDescriptor(_property);
+         _descriptor = new ViewModelPropertyDescriptor(_property);
          _vm = new ViewModelStub();
       }
 
