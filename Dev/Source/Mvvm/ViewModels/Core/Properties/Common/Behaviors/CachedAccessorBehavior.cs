@@ -43,9 +43,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
             _cache.Set(context, value);
             _isProviding.Clear(context);
 
-            _property
-               .Behaviors
-               .InitializeValueNext(context);
+            OnInitialize(context);
          }
 
          return _cache.Get(context);
@@ -64,6 +62,12 @@ namespace Inspiring.Mvvm.ViewModels.Core {
       protected void RefreshCache(IBehaviorContext context) {
          _cache.Clear(context);
          GetValue(context);
+      }
+
+      protected virtual void OnInitialize(IBehaviorContext context) {
+         _property
+            .Behaviors
+            .InitializeValueNext(context);
       }
 
       protected abstract TValue ProvideValue(IBehaviorContext context);
