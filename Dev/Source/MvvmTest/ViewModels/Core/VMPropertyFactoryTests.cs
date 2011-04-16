@@ -21,7 +21,7 @@
 
       [TestMethod]
       public void CreatePropertyWithoutSource_UsesCorrectTemplateAndInsertsAccessor() {
-         var factoryProvider = new FactoryProviderMock();
+         var factoryProvider = new Mocks.FactoryProvider();
 
          BehaviorChainTemplateRegistry.RegisterTemplate(
             DefaultBehaviorChainTemplateKeys.Property,
@@ -66,20 +66,22 @@
             .ConfigureBehavior<TBehavior>(key, assertion);
       }
 
-      private class FactoryProviderMock : SimplePropertyProvider {
-         public IBehavior BehaviorForProperty { get; set; }
-         public IBehavior BehaviorForPropertyWithSource { get; set; }
+      private class Mocks : BehaviorFactoryProviderInterfaces {
+         public class FactoryProvider : ISimplePropertyProvider {
+            public IBehavior BehaviorForProperty { get; set; }
+            public IBehavior BehaviorForPropertyWithSource { get; set; }
 
-         public override BehaviorFactory GetFactory<TOwnerVM, TValue, TSourceObject>() {
-            return BehaviorForProperty != null ?
-               new BehaviorFactory().RegisterBehavior(TestKey, () => BehaviorForProperty) :
-               new BehaviorFactory();
-         }
+            public BehaviorFactory GetFactory<TOwnerVM, TValue, TSourceObject>() where TOwnerVM : IViewModel {
+               return BehaviorForProperty != null ?
+                  new BehaviorFactory().RegisterBehavior(TestKey, () => BehaviorForProperty) :
+                  new BehaviorFactory();
+            }
 
-         public override BehaviorFactory GetFactoryForPropertyWithSource<TOwnerVM, TValue, TSourceObject>() {
-            return BehaviorForPropertyWithSource != null ?
-               new BehaviorFactory().RegisterBehavior(TestKey, () => BehaviorForPropertyWithSource) :
-               new BehaviorFactory();
+            public BehaviorFactory GetFactoryForPropertyWithSource<TOwnerVM, TValue, TSourceObject>() where TOwnerVM : IViewModel {
+               return BehaviorForPropertyWithSource != null ?
+                  new BehaviorFactory().RegisterBehavior(TestKey, () => BehaviorForPropertyWithSource) :
+                  new BehaviorFactory();
+            }
          }
       }
 

@@ -159,17 +159,8 @@
     <Compile Include="ViewModels\Core\BehaviorInterfaces\ViewModelBehaviors\IValidationExecutorBehavior.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\ViewModelBehaviors\IValidationResultAggregatorBehavior.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryConfigurations.cs" />
+    <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviderInterfaces.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\CollectionPropertyFactoryProvider.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\CommandPropertyProvider.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\DefaultProviders.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\ISimplePropertyProvider.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\IChildPropertyProvider.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\IViewModelProvider.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\PropertyProvider.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\SimplePropertyProvider.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\ViewModelPropertyProvider.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\BehaviorFactoryProviders\ViewModelProvider.cs" />
     <Compile Include="ViewModels\Core\Behaviors\DefaultBehaviorKeys.cs" />
     <Compile Include="ViewModels\Core\Behaviors\DefaultTemplates.cs" />
     <Compile Include="ViewModels\Core\Collections\Behaviors\CollectionFactoryBehavior.cs" />
@@ -291,7 +282,6 @@
     <Compile Include="ViewModels\Core\BehaviorInterfaces\IBehaviorInitializationBehavior.cs" />
     <Compile Include="ViewModels\Core\Common\BehaviorInitializationContext.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationError.cs" />
-    <Compile Include="ViewModels\Core\- Todo -\ItemCreationController.cs" />
     <Compile Include="ViewModels\Core\VMKernel.cs" />
     <Compile Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\IMutabilityCheckerBehavior.cs" />
     <Compile Include="ViewModels\Core\GeneralBehaviors\ServiceLocatorValueFactoryBehavior.cs" />
@@ -306,7 +296,6 @@
     <Compile Include="ViewModels\ExtensionMethods.cs" />
     <Compile Include="ViewModels\Core\VMDescriptor\VMDescriptorBase.cs" />
     <Compile Include="ViewModels\Core\VMDescriptor\VMPropertyCollection.cs" />
-    <Compile Include="ViewModels\Core\- Todo -\ICreatableItem.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\IConfigurationProvider.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\Interfaces\ICollectionPropertyBuilder.cs" />
     <Compile Include="ViewModels\Core\VMDescriptorBuilder\Properties\Interfaces\ICollectionPropertyBuilderWithSource.cs" />

@@ -2,7 +2,7 @@
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.Common.Behaviors;
 
-   internal static class BehaviorFactoryConfigurations {
+   internal sealed class BehaviorFactoryConfigurations : BehaviorFactoryProviderInterfaces {
       public static IBehaviorFactoryConfiguration ForSimpleProperty<TOwnerVM, TValue, TSourceObject>(
          bool propertyHasSource
       ) where TOwnerVM : IViewModel {

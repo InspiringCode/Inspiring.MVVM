@@ -16,7 +16,7 @@
       private static void RegisterPropertyTemplate() {
          BehaviorChainTemplateRegistry.RegisterTemplate(
             DefaultBehaviorChainTemplateKeys.Property,
-            new BehaviorChainTemplate(DefaultProviders.SimpleProperty)
+            new BehaviorChainTemplate(BehaviorFactoryProviders.SimpleProperty)
                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
                .Append(PropertyBehaviorKeys.Undo, DefaultBehaviorState.Disabled)
@@ -30,7 +30,7 @@
       private static void RegisterPropertyWithSourceTemplate() {
          BehaviorChainTemplateRegistry.RegisterTemplate(
             DefaultBehaviorChainTemplateKeys.PropertyWithSource,
-            new BehaviorChainTemplate(DefaultProviders.SimpleProperty)
+            new BehaviorChainTemplate(BehaviorFactoryProviders.SimpleProperty)
                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
                .Append(PropertyBehaviorKeys.Undo, DefaultBehaviorState.Disabled)
@@ -44,7 +44,7 @@
       private static void RegisterViewModelPropertyTemplate() {
          BehaviorChainTemplateRegistry.RegisterTemplate(
             DefaultBehaviorChainTemplateKeys.ViewModelProperty,
-            new BehaviorChainTemplate(DefaultProviders.ViewModelProperty)
+            new BehaviorChainTemplate(BehaviorFactoryProviders.ViewModelProperty)
                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
                .Append(PropertyBehaviorKeys.ValueInitializer)
@@ -62,7 +62,7 @@
       private static void RegisterViewModelWithSourcePropertyTemplate() {
          BehaviorChainTemplateRegistry.RegisterTemplate(
             DefaultBehaviorChainTemplateKeys.ViewModelPropertyWithSource,
-            new BehaviorChainTemplate(DefaultProviders.ViewModelProperty)
+            new BehaviorChainTemplate(BehaviorFactoryProviders.ViewModelProperty)
                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
                .Append(PropertyBehaviorKeys.ValueInitializer)
@@ -81,7 +81,7 @@
       private static void RegisterCollectionPropertyTemplate() {
          BehaviorChainTemplateRegistry.RegisterTemplate(
             DefaultBehaviorChainTemplateKeys.CollectionProperty,
-            new BehaviorChainTemplate(DefaultProviders.CollectionProperty)
+            new BehaviorChainTemplate(BehaviorFactoryProviders.CollectionProperty)
                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
                .Append(PropertyBehaviorKeys.ValueInitializer)
@@ -100,7 +100,7 @@
       private static void RegisterCollectionPropertyWithSourceTemplate() {
          BehaviorChainTemplateRegistry.RegisterTemplate(
             DefaultBehaviorChainTemplateKeys.CollectionPropertyWithSource,
-            new BehaviorChainTemplate(DefaultProviders.CollectionProperty)
+            new BehaviorChainTemplate(BehaviorFactoryProviders.CollectionProperty)
                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
                .Append(PropertyBehaviorKeys.ValueInitializer)
@@ -121,7 +121,7 @@
       private static void RegisterCommandPropertyTemplate() {
          BehaviorChainTemplateRegistry.RegisterTemplate(
             DefaultBehaviorChainTemplateKeys.CommandProperty,
-            new BehaviorChainTemplate(DefaultProviders.CommandProperty)
+            new BehaviorChainTemplate(BehaviorFactoryProviders.CommandProperty)
                .Append(PropertyBehaviorKeys.DisplayValueAccessor)
                .Append(PropertyBehaviorKeys.UntypedValueAccessor)
                .Append(PropertyBehaviorKeys.ValueAccessor)
@@ -135,7 +135,7 @@
       private static void RegisterViewModelTemplate() {
          BehaviorChainTemplateRegistry.RegisterTemplate(
             DefaultBehaviorChainTemplateKeys.ViewModel,
-            new BehaviorChainTemplate(DefaultProviders.ViewModel)
+            new BehaviorChainTemplate(BehaviorFactoryProviders.ViewModel)
                .Append(ViewModelBehaviorKeys.LoadOrderController)
                .Append(ViewModelBehaviorKeys.ViewModelValidationSource, DefaultBehaviorState.Disabled)
                .Append(ViewModelBehaviorKeys.ValidationExecutor, DefaultBehaviorState.Disabled)
