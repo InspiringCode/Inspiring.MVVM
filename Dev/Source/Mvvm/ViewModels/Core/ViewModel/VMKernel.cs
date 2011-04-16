@@ -2,7 +2,6 @@
    using System;
    using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.ViewModels;
-   using Inspiring.Mvvm.ViewModels.Core.Validation;
 
    public sealed class VMKernel : IBehaviorContext {
       private readonly IViewModel _vm;

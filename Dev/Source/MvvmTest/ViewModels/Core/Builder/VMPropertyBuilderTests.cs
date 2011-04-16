@@ -1,11 +1,9 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Builder {
-   using System;
    using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
-   using Inspiring.Mvvm.ViewModels.Core.Behaviors;
    using Inspiring.MvvmTest.Stubs;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -19,12 +17,12 @@
       [TestInitialize]
       public void Setup() {
          Configuration = new VMDescriptorConfiguration(new BehaviorChainConfiguration());
-         
+
          SourceObjectFactory = new VMPropertyBuilder<EmployeeVM, Employee>(
             PropertyPath.Create((EmployeeVM x) => x.SourcePerson),
             Configuration
          );
-         
+
          RootFactory = new VMPropertyBuilder<EmployeeVM, EmployeeVM>(
             PropertyPath.Empty<EmployeeVM>(),
             Configuration
@@ -68,13 +66,13 @@
       [TestMethod]
       public void ViewModelProperty_WrapsDelegates_InsertsProperBehaviors() {
          var p = RootFactory.VM.Wraps(x => x.SourcePerson.CurrentProject, setter: null).With<ProjectVM>();
-         
+
          AssertDefaultViewModelBehaviors(p);
          Assert.IsTrue(ContainsBehavior<WrapperViewModelAccessorBehavior<ProjectVM, Project>>(p));
          Assert.IsTrue(ContainsBehavior<DelegateValueAccessor<EmployeeVM, EmployeeVM, Project>>(p));
          Assert.IsTrue(ContainsBehavior<ServiceLocatorValueFactoryBehavior<ProjectVM>>(p));
       }
-      
+
       [TestMethod]
       public void ViewModelProperty_DelegatesTo_InsertsProperBehaviors() {
          var p = RootFactory.VM.DelegatesTo(x => new ProjectVM());

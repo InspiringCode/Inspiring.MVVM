@@ -2,7 +2,6 @@
    using System;
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
-   using Inspiring.Mvvm.ViewModels.Core.Behaviors;
 
    /// <summary>
    ///   A registry that holds all available <see cref="BehaviorChainTemplate"/> 

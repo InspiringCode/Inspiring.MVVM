@@ -3,7 +3,6 @@
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
-   using Inspiring.Mvvm.ViewModels.Core.Behaviors;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]

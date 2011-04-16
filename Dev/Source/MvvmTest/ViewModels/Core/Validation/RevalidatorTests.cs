@@ -2,7 +2,6 @@
    using System.Text;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
-   using Inspiring.Mvvm.ViewModels.Core.Validation;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]

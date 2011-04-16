@@ -1,8 +1,7 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core.VMDescriptorBuilder.Behaviors {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Diagnostics.Contracts;
    using System.Linq;
-   using Inspiring.Mvvm.ViewModels.Core.Behaviors;
 
    // TODO: Document me.
    public sealed class ViewModelBehaviorBuilder<TVM, TDescriptor>

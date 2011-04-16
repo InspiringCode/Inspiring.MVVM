@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using Inspiring.Mvvm.ViewModels.Core.Validation.Validators;
 
    public sealed class PropertyValidatorBuilder<TOwnerVM, TTargetVM, TValue>
       where TOwnerVM : IViewModel

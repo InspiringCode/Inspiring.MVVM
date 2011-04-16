@@ -1,7 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
    using System.Diagnostics.Contracts;
-   using Inspiring.Mvvm.ViewModels.Core.VMDescriptorBuilder;
+   using Inspiring.Mvvm.ViewModels.Core;
 
    /// <summary>
    ///   A fluent builder that creates and configures a <see cref="VMDescriptor"/>

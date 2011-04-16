@@ -1,5 +1,5 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Validation {
-   using Inspiring.Mvvm.ViewModels.Core.Validation.Validators;
+   using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]

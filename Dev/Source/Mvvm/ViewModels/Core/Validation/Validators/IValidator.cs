@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core.Validation.Validators {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
 
    public interface IValidator {
       ValidationResult Execute(ValidationRequest request);

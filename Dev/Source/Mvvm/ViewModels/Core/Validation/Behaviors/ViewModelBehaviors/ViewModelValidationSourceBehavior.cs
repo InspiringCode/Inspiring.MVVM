@@ -1,5 +1,4 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
-   using Inspiring.Mvvm.ViewModels.Core.Validation;
 
    internal sealed class ViewModelValidationSourceBehavior :
       InitializableBehavior,

@@ -3,10 +3,9 @@
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
-   using Inspiring.Mvvm.ViewModels.Core.Validation.Validators;
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
-   using ValidationArgs = Inspiring.Mvvm.ViewModels.Core.Validation.Validators.ValidationArgs;
+   using ValidationArgs = Inspiring.Mvvm.ViewModels.Core.ValidationArgs;
 
    [TestClass]
    public class ValidationTestBase : TestBase {

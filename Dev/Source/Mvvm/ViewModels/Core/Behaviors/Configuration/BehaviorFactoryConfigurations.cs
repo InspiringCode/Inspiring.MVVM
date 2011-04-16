@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core.Behaviors {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.Common.Behaviors;
 

@@ -4,7 +4,6 @@
    using System.Linq.Expressions;
    using System.Windows.Input;
    using Inspiring.Mvvm.Common;
-   using Inspiring.Mvvm.ViewModels.Core.Behaviors;
 
    internal sealed class VMPropertyFactory<TOwnerVM, TSourceObject> : ConfigurationProvider, ICustomPropertyFactory<TSourceObject> where TOwnerVM : IViewModel {
       private readonly PropertyPath<TOwnerVM, TSourceObject> _sourceObjectPath;

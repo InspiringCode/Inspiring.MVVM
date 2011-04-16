@@ -369,13 +369,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ViewModels\Core\BehaviorInterfaces\CollectionBehaviors\" />
-    <Folder Include="ViewModels\Core\BehaviorInterfaces\PropertyBehaviors\" />
-    <Folder Include="ViewModels\Core\BehaviorInterfaces\ViewModelBehaviors\" />
-    <Folder Include="ViewModels\Core\Commands\" />
-    <Folder Include="ViewModels\Core\GeneralBehaviors\PropertyBehaviors\" />
-    <Folder Include="ViewModels\Core\GeneralBehaviors\ViewModelBehaviors\" />
-    <Folder Include="ViewModels\Core\GeneralBehaviors\ViewModelProperty\" />
     <Folder Include="ViewModels\Core\Properties\SimpleProperty\BehaviorInterfaces\" />
     <Folder Include="ViewModels\Core\Properties\SimpleProperty\Behaviors\" />
     <Folder Include="ViewModels\Core\Properties\ViewModelProperty\BehaviorInterfaces\" />

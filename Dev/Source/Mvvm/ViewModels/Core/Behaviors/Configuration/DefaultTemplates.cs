@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core.Behaviors {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
 
    internal class DefaultTemplates {
       public static void RegisterDefaultTemplates() {

@@ -1,8 +1,6 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core.VMDescriptorBuilder {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Diagnostics.Contracts;
-   using Inspiring.Mvvm.ViewModels.Core.Behaviors;
-   using Inspiring.Mvvm.ViewModels.Core.VMDescriptorBuilder.Behaviors;
 
    /// <summary>
    ///   Fluent interface. See <see cref="VMDescriptorBuilder"/>.

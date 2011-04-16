@@ -1,9 +1,8 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Validation.Validators {
    using System;
    using Inspiring.Mvvm.ViewModels.Core;
-   using Inspiring.Mvvm.ViewModels.Core.Validation.Validators;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
-   using ValidationArgs = Inspiring.Mvvm.ViewModels.Core.Validation.Validators.ValidationArgs; // TODO: Remove...
+   using ValidationArgs = Inspiring.Mvvm.ViewModels.Core.ValidationArgs; // TODO: Remove...
 
    [TestClass]
    public class DelegateValidatorTests : TestBase {

@@ -1,10 +1,8 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Validation {
 
-   using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
-   using Inspiring.Mvvm.ViewModels.Core.Validation.Validators;
 
    public class TwoItemListsVM : ViewModel<TwoItemListsVMDescriptor> {
       public static readonly TwoItemListsVMDescriptor ClassDescriptor = VMDescriptorBuilder
@@ -85,7 +83,7 @@
          );
 
          var invalidItems = args.Owner.TestFixture.InvalidItemsOfCollection2ViewModelValidator.ToList();
-         
+
          invalidItems.ForEach(i =>
             args.AddError(i, CollectionResultCacheTests.Collection2ViewModelValidationErrorMessage)
          );

@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core.Behaviors {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using Inspiring.Mvvm.Common;
 
    public abstract class BehaviorFactoryProviderInterfaces {

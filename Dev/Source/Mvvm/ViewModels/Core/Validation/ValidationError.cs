@@ -2,7 +2,6 @@
    using System;
    using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.Common;
-   using Inspiring.Mvvm.ViewModels.Core.Validation.Validators;
 
    /// <summary>
    ///   A <see cref="ValidationError"/> is the result of a failed validation

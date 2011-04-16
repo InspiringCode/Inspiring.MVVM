@@ -3,7 +3,6 @@
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
    using System.Linq;
-   using Inspiring.Mvvm.ViewModels.Core.Validation.Validators;
 
    internal sealed class ValidatorBuilderOperation : IValidatorBuilderOperationProvider {
       public ValidatorBuilderOperation(

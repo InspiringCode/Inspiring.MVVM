@@ -1,6 +1,6 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Validation {
    using Inspiring.Mvvm.ViewModels;
-   using Inspiring.Mvvm.ViewModels.Core.Validation.Validators;
+   using Inspiring.Mvvm.ViewModels.Core;
 
    public class ItemVM : ViewModel<ItemVMDescriptor> {
       public static readonly ItemVMDescriptor ClassDescriptor = VMDescriptorBuilder

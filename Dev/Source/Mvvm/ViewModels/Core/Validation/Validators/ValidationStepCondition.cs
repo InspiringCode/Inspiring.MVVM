@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core.Validation.Validators {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
 
    internal sealed class ValidationStepCondition : ICondition<ValidationRequest> {
