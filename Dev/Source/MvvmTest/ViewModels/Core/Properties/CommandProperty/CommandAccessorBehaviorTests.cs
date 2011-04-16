@@ -1,4 +1,4 @@
-﻿namespace Inspiring.MvvmTest.ViewModels.Core.Commands {
+﻿namespace Inspiring.MvvmTest.ViewModels.Core.Properties.CommandProperty {
    using System.Windows.Input;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;

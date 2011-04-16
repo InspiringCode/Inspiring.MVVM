@@ -1,11 +1,10 @@
-﻿namespace Inspiring.MvvmTest.ViewModels.Core {
+﻿namespace Inspiring.MvvmTest.ViewModels.Core.Common {
    using System.Linq;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
    public class CountingSetTests {
-
       [TestMethod]
       public void RemoveItem_TheSameItemWasAddedTwice_CollectionStillContainsItem() {
          CountingSet<object> coll = new CountingSet<object>();

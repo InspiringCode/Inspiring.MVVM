@@ -1,4 +1,4 @@
-﻿namespace Inspiring.MvvmTest.ViewModels.Core.Builder {
+﻿namespace Inspiring.MvvmTest.ViewModels.Core.FluentDescriptorBuilder {
    using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.Common;
@@ -7,7 +7,6 @@
    using Inspiring.MvvmTest.Stubs;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-   // TODO: Clean me up a bit please.
    [TestClass]
    public class VMPropertyBuilderTests : TestBase {
       private VMDescriptorConfiguration Configuration { get; set; }

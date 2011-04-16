@@ -1,4 +1,4 @@
-﻿namespace Inspiring.MvvmTest.ViewModels.Core {
+﻿namespace Inspiring.MvvmTest.ViewModels.Core.Properties {
    using System;
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.ViewModels;
@@ -83,7 +83,5 @@
             }
          }
       }
-
-      //private class TestBehavior : Behavior { }
    }
 }

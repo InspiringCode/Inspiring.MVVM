@@ -1,4 +1,4 @@
-﻿namespace Inspiring.MvvmTest.ViewModels.Core.Paths {
+﻿namespace Inspiring.MvvmTest.ViewModels.Core.Common.Paths {
    using System;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;

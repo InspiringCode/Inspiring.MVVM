@@ -1,4 +1,4 @@
-﻿namespace Inspiring.MvvmTest.ViewModels.Core {
+﻿namespace Inspiring.MvvmTest.ViewModels.Core.FluentDescriptorBuilder {
    using System;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;

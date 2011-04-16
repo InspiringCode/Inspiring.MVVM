@@ -1,13 +1,13 @@
-﻿namespace Inspiring.MvvmTest.ViewModels.Core.Commands {
+﻿namespace Inspiring.MvvmTest.ViewModels.Core.Properties.CommandProperty {
+   using System;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
    [TestClass]
    public class ViewModelCommandTests : TestBase {
       private ViewModelCommand Command { get; set; }
       private HandlerMock Handler { get; set; }
-      
+
       private PropertyStub<object> OwnerProperty { get; set; }
       private ViewModelStub OwnerVM { get; set; }
 
@@ -30,7 +30,7 @@ using System;
       public void Execute_InvokesExecuteHandlerOfCommandPropertyBehaviorChain() {
          var expectedParameter = new Object();
          var expectedContext = OwnerVM.GetContext();
-         
+
          Command.Execute(expectedParameter);
 
          Assert.IsNotNull(Handler.LastExecuteInvocation);
@@ -55,7 +55,7 @@ using System;
          Handler.ResultToReturn = true;
          Assert.AreEqual(Handler.ResultToReturn, Command.CanExecute(null));
          Handler.ResultToReturn = false;
-         Assert.AreEqual(Handler.ResultToReturn, Command.CanExecute(null));        
+         Assert.AreEqual(Handler.ResultToReturn, Command.CanExecute(null));
       }
 
       private class HandlerMock :

@@ -1,4 +1,4 @@
-﻿namespace Inspiring.MvvmTest.ViewModels.Core {
+﻿namespace Inspiring.MvvmTest.ViewModels.Core.ViewModel.Descriptor {
    using System;
    using Inspiring.Mvvm.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;

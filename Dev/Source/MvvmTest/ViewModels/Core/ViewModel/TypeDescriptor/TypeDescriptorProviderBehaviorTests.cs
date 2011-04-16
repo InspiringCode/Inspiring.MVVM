@@ -1,4 +1,4 @@
-﻿namespace Inspiring.MvvmTest.ViewModels.Core.TypeDescriptor {
+﻿namespace Inspiring.MvvmTest.ViewModels.Core.ViewModel.TypeDescriptor {
    using System.ComponentModel;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
@@ -6,7 +6,7 @@
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class TypeDescriptorServiceTests : TestBase {
+   public class TypeDescriptorProviderBehaviorTests : TestBase {
       [TestMethod]
       public void PropertyDescriptors_ReturnsVMDescriptorProperties() {
          var behavior = EmployeeVM.ClassDescriptor.Behaviors.GetNextBehavior<TypeDescriptorProviderBehavior>();

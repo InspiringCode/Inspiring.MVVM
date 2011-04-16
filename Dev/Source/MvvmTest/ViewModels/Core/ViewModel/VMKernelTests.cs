@@ -1,4 +1,4 @@
-﻿namespace Inspiring.MvvmTest.ViewModels.Core {
+﻿namespace Inspiring.MvvmTest.ViewModels.Core.ViewModel {
    using System.Linq;
    using Inspiring.Mvvm;
    using Inspiring.Mvvm.ViewModels;
@@ -23,14 +23,14 @@
       public void NotifyChange_CallsParentWithExtendedPath() {
          var parentVM = ViewModelStub.Build();
          var vm = ViewModelStub.Build();
-         
-         
+
+
          var parentKernel = CreateKernel(parentVM);
          var kernel = CreateKernel(vm);
          kernel.Parents.Add(parentVM);
 
          IBehaviorContext kernelContext = kernel;
-                  
+
          var args = CreateChangeArgs();
          kernelContext.NotifyChange(args);
 

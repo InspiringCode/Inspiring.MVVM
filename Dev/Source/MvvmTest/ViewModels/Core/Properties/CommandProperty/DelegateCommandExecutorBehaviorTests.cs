@@ -1,4 +1,4 @@
-﻿namespace Inspiring.MvvmTest.ViewModels.Core.Commands {
+﻿namespace Inspiring.MvvmTest.ViewModels.Core.Properties.CommandProperty {
    using System;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;

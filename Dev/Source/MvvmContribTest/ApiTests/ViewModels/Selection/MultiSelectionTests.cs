@@ -6,7 +6,6 @@
    using System.Linq;
    using Inspiring.Mvvm;
    using Inspiring.Mvvm.ViewModels;
-   using Inspiring.MvvmTest.Stubs;
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 

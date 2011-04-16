@@ -1,9 +1,8 @@
-﻿namespace Inspiring.MvvmTest.ViewModels.Core.Behaviors.PropertyBehaviors {
+﻿namespace Inspiring.MvvmTest.ViewModels.Core.Properties.Common {
    using System;
    using Inspiring.Mvvm.ViewModels.Core;
-   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-   [TestClass]
+   //[TestClass]
    public class DisplayValueBehaviorTests : TestBase {
       //[TestMethod]
       public void GetValue_Initially_ReturnsValueOfNextBehavior() {

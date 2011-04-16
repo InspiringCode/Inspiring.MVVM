@@ -1,14 +1,14 @@
-﻿using System;
-using System.ComponentModel;
-using Inspiring.Mvvm.ViewModels;
-using Inspiring.Mvvm.ViewModels.Core;
-using Inspiring.MvvmTest.Stubs;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+﻿namespace Inspiring.MvvmTest.ViewModels.Core.ViewModel.TypeDescriptor {
+   using System;
+   using System.ComponentModel;
+   using Inspiring.Mvvm.ViewModels;
+   using Inspiring.Mvvm.ViewModels.Core;
+   using Inspiring.MvvmTest.Stubs;
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
+   using Moq;
 
-namespace Inspiring.MvvmTest.ViewModels.Core.TypeDescriptor {
    [TestClass]
-   public class TypeDescriptorPropertyDescriptorTests : TestBase {
+   public class ViewModelPropertyDescriptorTests : TestBase {
       private IVMPropertyDescriptor _property;
       private PropertyDescriptor _descriptor;
       private IViewModel _vm;
