@@ -6,7 +6,7 @@
 
    internal sealed class SynchronizerCollectionBehavior<TItemVM, TItemSource> :
       Behavior,
-      IModificationCollectionBehavior<TItemVM>
+      ICollectionChangeHandlerBehavior<TItemVM>
       where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
       public void HandleChange(IBehaviorContext context, CollectionChangedArgs<TItemVM> args) {

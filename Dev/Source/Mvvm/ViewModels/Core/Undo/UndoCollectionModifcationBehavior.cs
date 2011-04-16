@@ -2,7 +2,7 @@
 
    internal sealed class UndoCollectionModifcationBehavior<TItemVM> :
       Behavior,
-      IModificationCollectionBehavior<TItemVM>
+      ICollectionChangeHandlerBehavior<TItemVM>
       where TItemVM : IViewModel {
 
       public void HandleChange(IBehaviorContext context, CollectionChangedArgs<TItemVM> args) {

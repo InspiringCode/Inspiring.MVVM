@@ -14,7 +14,7 @@
    ///   modified when the behavior methods are called. For example a validation behavior
    ///   may invoke validations which access the current state of the collection.
    /// </remarks>
-   public interface IModificationCollectionBehavior<TItemVM> : IBehavior where TItemVM : IViewModel {
+   public interface ICollectionChangeHandlerBehavior<TItemVM> : IBehavior where TItemVM : IViewModel {
       void HandleChange(IBehaviorContext context, CollectionChangedArgs<TItemVM> args);
    }
 
@@ -77,7 +77,7 @@
       ) {
          Contract.Requires(collection != null);
          Contract.Requires(newItem != null);
-         Contract.Requires(0 <= index && index <= collection.Count);
+         Contract.Requires(0 <= index && index < collection.Count);
 
          return new CollectionChangedArgs<TItemVM>(
             CollectionChangeType.ItemAdded,

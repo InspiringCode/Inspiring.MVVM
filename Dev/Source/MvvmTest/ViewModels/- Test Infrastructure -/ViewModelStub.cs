@@ -5,21 +5,25 @@
    using Inspiring.Mvvm.ViewModels.Core;
 
    public class ViewModelStub : ViewModel<VMDescriptorBase> {
+      private string _description;
+
       /// <summary>
       ///   Use the <see cref="ViewModelStubBuilder"/> to create configured 
       ///   instances.
       /// </summary>
-      public ViewModelStub()
-         : this(new DescriptorStub()) {
+      public ViewModelStub(string description = null)
+         : this(new DescriptorStub(), description) {
       }
 
       /// <summary>
       ///   Use the <see cref="ViewModelStubBuilder"/> to create configured 
       ///   instances.
       /// </summary>
-      public ViewModelStub(VMDescriptorBase descriptor)
+      public ViewModelStub(VMDescriptorBase descriptor, string description = null)
          : base(descriptor) {
+
          NotifyChangeInvocations = new List<ChangeArgs>();
+         _description = description;
       }
 
       public new VMKernel Kernel {
@@ -50,6 +54,10 @@
          private set;
       }
 
+      public static ViewModelStubBuilder Named(string description) {
+         return new ViewModelStubBuilder().Named(description);
+      }
+
       public static ViewModelStubBuilder WithProperties(params IVMPropertyDescriptor[] properties) {
          return new ViewModelStubBuilder().WithProperties(properties);
       }
@@ -66,6 +74,10 @@
          return new ViewModelStubBuilder().BuildContext();
       }
 
+      public override string ToString() {
+         return _description ?? base.ToString();
+      }
+
       protected override void OnChange(ChangeArgs args) {
          NotifyChangeInvocations.Add(args);
       }
@@ -73,6 +85,12 @@
 
    public class ViewModelStubBuilder {
       private DescriptorStubBuilder _descriptorBuilder = new DescriptorStubBuilder();
+      private string _description;
+
+      public ViewModelStubBuilder Named(string description) {
+         _description = description;
+         return this;
+      }
 
       public ViewModelStubBuilder WithProperties(params IVMPropertyDescriptor[] properties) {
          _descriptorBuilder.WithProperties(properties);
@@ -86,7 +104,7 @@
 
       public ViewModelStub Build() {
          _descriptorBuilder.WithBehaviors(new ValidationResultAggregatorStub());
-         return new ViewModelStub(_descriptorBuilder.Build());
+         return new ViewModelStub(_descriptorBuilder.Build(), _description);
       }
 
       public BehaviorContextStub BuildContext() {

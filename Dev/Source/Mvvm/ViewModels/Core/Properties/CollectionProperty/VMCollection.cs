@@ -134,7 +134,7 @@
       }
 
       private void CallBehaviors(CollectionChangedArgs<TItemVM> args) {
-         OwnerProperty.Behaviors.TryCall<IModificationCollectionBehavior<TItemVM>>(b =>
+         OwnerProperty.Behaviors.TryCall<ICollectionChangeHandlerBehavior<TItemVM>>(b =>
             b.HandleChange(OwnerVM.GetContext(), args)
          );
       }

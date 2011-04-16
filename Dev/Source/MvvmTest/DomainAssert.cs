@@ -52,6 +52,14 @@
          CollectionAssert.AreEqual(expected.NewItems.ToArray(), actual.NewItems.ToArray());
       }
 
+      public static void AreEqual(ChangeArgs[] expected, ChangeArgs[] actual) {
+         Assert.AreEqual(expected.Length, actual.Length);
+
+         for (int i = 0; i < expected.Length; i++) {
+            DomainAssert.AreEqual(expected[i], actual[i]);
+         }
+      }
+
       private class ValidationErrorCO : ComparisonObject<ValidationError> {
          public ValidationErrorCO(ValidationError error)
             : base(error, x => x.Target, x => x.Message) {

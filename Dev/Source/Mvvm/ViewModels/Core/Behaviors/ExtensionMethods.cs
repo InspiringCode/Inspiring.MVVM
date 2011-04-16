@@ -136,7 +136,7 @@
          IBehaviorContext context,
          CollectionChangedArgs<TItemVM> args
       ) where TItemVM : IViewModel {
-         IModificationCollectionBehavior<TItemVM> next;
+         ICollectionChangeHandlerBehavior<TItemVM> next;
          if (behavior.TryGetBehavior(out next)) {
             next.HandleChange(context, args);
          }

@@ -189,19 +189,18 @@
     <Compile Include="ViewModels\- Test Infrastructure -\ValueAccessorStub.cs" />
     <Compile Include="ViewModels\- Test Infrastructure -\ViewModelStub.cs" />
     <Compile Include="ViewModels\- Test Infrastructure -\VMCollectionStub.cs" />
-    <Compile Include="ViewModels\Core\Behaviors\BehaviorKeysTests.cs" />
+    <Compile Include="Common\BehaviorKeysTests.cs" />
     <Compile Include="ViewModels\Core\Behaviors\PropertyBehaviors\DisplayValueBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Builder\VMPropertyBuilderTests.cs" />
-    <Compile Include="ViewModels\Core\Collections\AddNewHelperTests.cs" />
-    <Compile Include="ViewModels\Core\Collections\Behaviors\CollectionAccessorBehaviorFixture.cs" />
-    <Compile Include="ViewModels\Core\Collections\Behaviors\PopulatedCollectionAccessorBehaviorTests.cs" />
-    <Compile Include="ViewModels\Core\Collections\Behaviors\StoredCollectionAccessorBehaviorTests.cs" />
-    <Compile Include="ViewModels\Core\Collections\Behaviors\WrapperCollectionAccessorBehaviorTests.cs" />
-    <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\CollectionChangeNotificationBehaviorTests.cs" />
-    <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\CollectionModificationBehaviorTestBase.cs" />
-    <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\CollectionSynchronizerBehaviorTests.cs" />
-    <Compile Include="ViewModels\Core\Collections\CollectionBehaviors\CollectionParentSetterBehaviorTests.cs" />
-    <Compile Include="ViewModels\Core\Collections\VMCollectionTestBase.cs" />
+    <Compile Include="ViewModels\Core\Properties\CollectionProperty\Behaviors\CollectionAccessorBehaviorFixture.cs" />
+    <Compile Include="ViewModels\Core\Properties\CollectionProperty\Behaviors\PopulatedCollectionAccessorBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\Properties\CollectionProperty\Behaviors\StoredCollectionAccessorBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\Properties\CollectionProperty\Behaviors\WrapperCollectionAccessorBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\Properties\CollectionProperty\Behaviors\CollectionChangeNotificationBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\CollectionChangeHandlerBehaviorTestBase.cs" />
+    <Compile Include="ViewModels\Core\Properties\CollectionProperty\Behaviors\CollectionSynchronizerBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\Properties\CollectionProperty\Behaviors\ItemInitializerBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\Properties\CollectionProperty\VMCollectionTestBase.cs" />
     <Compile Include="ViewModels\Core\Commands\CommandAccessorBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Commands\DelegateCommandExecutorBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Commands\ViewModelCommandTests.cs" />
@@ -211,7 +210,7 @@
     <Compile Include="ViewModels\Core\Paths\PathFixture.cs" />
     <Compile Include="ViewModels\Core\Paths\PathHelperTests.cs" />
     <Compile Include="ViewModels\Core\Paths\PropertyStepTests.cs" />
-    <Compile Include="ViewModels\Core\PropertyBehaviors\ViewModelInitializerBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\Properties\ViewModelInitializerBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\TypeDescriptorServiceTests.cs" />
     <Compile Include="ViewModels\Core\TypeDescriptor\VMPropertyDescriptorTests.cs" />
     <Compile Include="ViewModels\Core\Validation\Behaviors\CollectionValidationSourceBehaviorTests.cs" />
@@ -273,7 +272,7 @@
     <Compile Include="ViewModels\CommandPropertyTest.cs" />
     <Compile Include="ViewModels\Behaviors\VMPropertyTest.cs" />
     <Compile Include="ViewModels\Core\Builder\VMPropertyFactoryTest.cs" />
-    <Compile Include="ViewModels\Core\PropertyBehaviors\ViewModelFactoryBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\Properties\ViewModelFactoryBehaviorTests.cs" />
     <Compile Include="ViewModels\PersonVM.cs" />
     <Compile Include="ViewModels\TypeDescriptorTest.cs" />
     <Compile Include="ViewModels\ViewModelsTest.cs" />
@@ -307,7 +306,6 @@
     <Folder Include="ApiTests\ViewModels\BasicTests\" />
     <Folder Include="API\" />
     <Folder Include="Shell\" />
-    <Folder Include="ViewModels\Core\Collections\PropertyBehaviors\" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\PersonView.xaml">

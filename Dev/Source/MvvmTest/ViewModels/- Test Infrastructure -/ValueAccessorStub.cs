@@ -12,4 +12,14 @@
          Value = value;
       }
    }
+
+   public class ValueAccessorStub {
+      public static ValueAccessorStub<T> Of<T>() {
+         return new ValueAccessorStub<T>();
+      }
+
+      public static ValueAccessorStub<T> WithInitialValue<T>(T value) {
+         return new ValueAccessorStub<T>() { Value = value };
+      }
+   }
 }

@@ -1,4 +1,4 @@
-﻿namespace Inspiring.MvvmTest.ViewModels.Core.Collections.Behaviors {
+﻿namespace Inspiring.MvvmTest.ViewModels.Core.Properties.CollectionProperty {
    using System;
    using System.Collections.Generic;
    using System.Linq;

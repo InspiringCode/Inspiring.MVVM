@@ -13,6 +13,14 @@
          NotifyChangeInvocations = new List<ChangeArgs>();
       }
 
+      public static BehaviorContextStubBuilder DecoratingContextOf(IViewModel viewModel) {
+         return new BehaviorContextStubBuilder().DecoratingContextOf(viewModel);
+      }
+
+      public static BehaviorContextStub Build() {
+         return new BehaviorContextStubBuilder().Build();
+      }
+
       public List<ChangeArgs> NotifyChangeInvocations {
          get;
          private set;
@@ -33,6 +41,19 @@
       public void NotifyChange(ChangeArgs args) {
          _inner.NotifyChange(args);
          NotifyChangeInvocations.Add(args);
+      }
+   }
+
+   public class BehaviorContextStubBuilder {
+      private IViewModel _decoratedViewModel;
+
+      public BehaviorContextStubBuilder DecoratingContextOf(IViewModel viewModel) {
+         _decoratedViewModel = viewModel;
+         return this;
+      }
+
+      public BehaviorContextStub Build() {
+         return new BehaviorContextStub(_decoratedViewModel);
       }
    }
 }

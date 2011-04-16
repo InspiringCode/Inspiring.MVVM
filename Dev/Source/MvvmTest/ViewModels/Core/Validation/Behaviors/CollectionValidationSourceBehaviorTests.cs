@@ -1,28 +1,26 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Validation.Behaviors {
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
-   using Inspiring.MvvmTest.ViewModels.Core.Collections;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class CollectionValidationSourceBehaviorTests : CollectionModificationBehaviorTestBase<IViewModel> {
+   public class CollectionValidationSourceBehaviorTests : CollectionChangeHandlerBehaviorTestBase<IViewModel> {
       [TestInitialize]
-      public override void Setup() {
-         base.Setup();
+      public void Setup() {
          Behavior = new CollectionValidationSourceBehavior<IViewModel>();
       }
 
       [TestMethod]
       public void ItemInserted_RevalidatesItem() {
          var item = new ViewModelSpy();
-         Behavior_ItemInserted(item);
+         HandleItemInserted(item);
          Assert.IsTrue(item.WasValidated);
       }
 
       [TestMethod]
       public void ItemRemoved_RevalidatesItem() {
          var item = new ViewModelSpy();
-         Behavior_ItemRemoved(item);
+         HandleItemRemoved(item);
          Assert.IsTrue(item.WasValidated);
       }
 
@@ -31,7 +29,7 @@
          var oldItem = new ViewModelSpy();
          var newItem = new ViewModelSpy();
 
-         Behavior_ItemSet(oldItem, newItem);
+         HandleItemSet(oldItem, newItem);
 
          Assert.IsTrue(oldItem.WasValidated);
          Assert.IsTrue(newItem.WasValidated);
@@ -40,7 +38,7 @@
       [TestMethod]
       public void ItemsCleared_ReavlidatesOldItems() {
          var oldItem = new ViewModelSpy();
-         Behavior_ItemsCleared(new[] { oldItem });
+         HandleCollectionCleared(new[] { oldItem });
          Assert.IsTrue(oldItem.WasValidated);
       }
 
@@ -49,15 +47,11 @@
          var oldItem = new ViewModelSpy();
          var newItem = new ViewModelSpy();
 
-         Collection = CreateCollectionStub(oldItem);
-         Behavior_CollectionPopulated(new[] { oldItem });
+         Collection = CreateCollection(oldItem);
+         HandleCollectionPopulated(new[] { oldItem });
 
          Assert.IsFalse(oldItem.WasValidated);
          Assert.IsFalse(newItem.WasValidated);
-      }
-
-      protected override IViewModel CreateAnonymousItem() {
-         return ViewModelStub.Build();
       }
 
       private class ViewModelSpy : ViewModelStub {

@@ -165,7 +165,7 @@
 
       private class ModificationCollectionBehaviorStub :
          Behavior,
-         IModificationCollectionBehavior<IViewModel> {
+         ICollectionChangeHandlerBehavior<IViewModel> {
 
          public ModificationCollectionBehaviorStub() {
             HandleChangeInvocations = new List<CollectionChangedArgs<IViewModel>>();

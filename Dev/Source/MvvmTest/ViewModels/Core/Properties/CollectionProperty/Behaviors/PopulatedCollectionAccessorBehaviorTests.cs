@@ -1,4 +1,4 @@
-﻿namespace Inspiring.MvvmTest.ViewModels.Core.Collections.Behaviors {
+﻿namespace Inspiring.MvvmTest.ViewModels.Core.Properties.CollectionProperty {
    using System.Linq;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;

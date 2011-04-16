@@ -2,7 +2,7 @@
 
    internal sealed class ItemInitializerBehavior<TItemVM> :
       Behavior,
-      IModificationCollectionBehavior<TItemVM>
+      ICollectionChangeHandlerBehavior<TItemVM>
       where TItemVM : IViewModel {
 
       public void HandleChange(IBehaviorContext context, CollectionChangedArgs<TItemVM> args) {
@@ -17,6 +17,7 @@
 
             // TODO: Should we check old descriptor, should the Descriptor property 
             //       handle this, or is it OK as it is now?
+            // TODO: Test this feature.
             item.Descriptor = itemDescriptor;
          }
 

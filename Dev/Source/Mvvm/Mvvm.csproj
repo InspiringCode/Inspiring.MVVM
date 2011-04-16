@@ -145,6 +145,7 @@
     <Compile Include="ViewModels\- No Namespace -\Validation\ValidationResultScope.cs" />
     <Compile Include="ViewModels\- No Namespace -\ViewModel.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMDescriptorBuilder.cs" />
+    <Compile Include="ViewModels\Core\Properties\CollectionProperty\BehaviorInterfaces\ICollectionChangeHandlerBehavior.cs" />
     <Compile Include="ViewModels\Core\Properties\CommandProperty\BehaviorInterfaces\ICommandCanExecuteBehavior.cs" />
     <Compile Include="ViewModels\Core\Properties\CommandProperty\BehaviorInterfaces\ICommandExecuteBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\BehaviorInterfaces\PropertyBehaviors\IDescendantsValidationResultProviderBehavior.cs" />
@@ -167,7 +168,6 @@
     <Compile Include="ViewModels\Core\Properties\CollectionProperty\Behaviors\StoredCollectionAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\Properties\CollectionProperty\Behaviors\WrapperCollectionAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\Properties\CollectionProperty\BehaviorInterfaces\IItemDescriptorProviderBehavior.cs" />
-    <Compile Include="ViewModels\Core\Properties\CollectionProperty\BehaviorInterfaces\IModificationCollectionBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\BehaviorInterfaces\PropertyBehaviors\IDescendantValidationBehavior.cs" />
     <Compile Include="ViewModels\Core\Properties\Common\BehaviorInterfaces\IIsLoadedIndicatorBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\BehaviorInterfaces\PropertyBehaviors\IValidatedValueAccessorBehavior.cs" />
