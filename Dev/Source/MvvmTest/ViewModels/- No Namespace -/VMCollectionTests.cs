@@ -1,8 +1,8 @@
-﻿using Inspiring.Mvvm.ViewModels;
-using Inspiring.Mvvm.ViewModels.Core;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿namespace Inspiring.MvvmTest.ViewModels {
+   using Inspiring.Mvvm.ViewModels;
+   using Inspiring.Mvvm.ViewModels.Core;
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Inspiring.MvvmTest.ViewModels.__No_Namespace__ {
    [TestClass]
    public class VMCollectionTests : TestBase {
       [TestMethod]
@@ -37,14 +37,19 @@ namespace Inspiring.MvvmTest.ViewModels.__No_Namespace__ {
       public void GetItemProperties_ReturnsPropertyDescriptorCollection() {
          var itemTypeDescriptorBehavior = new TypeDescriptorProviderBehavior();
 
-         var itemDescriptor = new VMDescriptor();
-         itemDescriptor.Behaviors.Successor = itemTypeDescriptorBehavior;
-         itemDescriptor.Behaviors.Initialize(itemDescriptor);
+         var itemDescriptor = DescriptorStub
+            .WithBehaviors(itemTypeDescriptorBehavior)
+            .Build();
 
-         var collectionBehaviors = new BehaviorChain();
-         collectionBehaviors.Successor = new ItemDescriptorProviderBehavior(itemDescriptor);
+         var ownerProperty = PropertyStub
+            .WithBehaviors(new ItemDescriptorProviderBehavior(itemDescriptor))
+            .Build();
 
-         var collection = CreateCollection();
+         var ownerVM = ViewModelStub
+            .WithProperties(ownerProperty)
+            .Build();
+
+         var collection = new VMCollection<IViewModel>(ViewModelStub.Build(), ownerProperty);
 
          Assert.AreSame(itemTypeDescriptorBehavior.PropertyDescriptors, collection.GetItemProperties(null));
       }

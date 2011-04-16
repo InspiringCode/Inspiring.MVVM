@@ -1,14 +1,14 @@
-﻿namespace Inspiring.MvvmTest.ViewModels.__No_Namespace__ {
+﻿namespace Inspiring.MvvmTest.ViewModels {
    using Inspiring.Mvvm.ViewModels;
-   using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Inspiring.Mvvm.ViewModels.Core;
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
    public class ViewModelTests {
       private ViewModelMock VM { get; set; }
-      
-      private IViewModel VMInterface { 
-         get { return VM; } 
+
+      private IViewModel VMInterface {
+         get { return VM; }
       }
 
       [TestInitialize]
@@ -19,19 +19,19 @@
       [TestMethod]
       public void NotifyChange_ForOwnProperty_CallsOnPropertyChanged() {
          var property = PropertyStub.Build();
-         
+
          VMInterface.NotifyChange(ChangeArgs
             .PropertyChanged(property)
             .PrependViewModel(VM)
          );
-         
+
          Assert.AreEqual(property, VM.LastOnPropertyChangedInvocation);
       }
 
       [TestMethod]
       public void NotifyChange_ForOwnViewModel_CallsValidationStateChanged() {
          var property = PropertyStub.Build();
-         
+
          VMInterface.NotifyChange(ChangeArgs
             .ValidationStateChanged(property)
             .PrependViewModel(VM)
@@ -43,12 +43,12 @@
       [TestMethod]
       public void NotifyChange_ForOwnProperty_RaisesPropertyChangedForErrorProperty() {
          var counter = new PropertyChangedCounter(VM, "Error");
-         
+
          VMInterface.NotifyChange(ChangeArgs
             .ValidationStateChanged()
             .PrependViewModel(VM)
          );
-         
+
          counter.AssertOneRaise();
       }
 

@@ -5,7 +5,7 @@
    using Moq;
 
    [TestClass]
-   public class DisplayValueAccessorBehaviorTest : TestBase {
+   public class DisplayValueAccessorBehaviorTests : TestBase {
       private DisplayValueAccessorBehavior<int> _behavior;
       private FieldDefinitionCollection _dynamicFields;
       private FieldValueHolder _fieldValues;

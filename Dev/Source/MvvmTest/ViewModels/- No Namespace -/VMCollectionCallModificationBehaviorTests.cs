@@ -1,4 +1,4 @@
-﻿namespace Inspiring.MvvmTest.ViewModels.__No_Namespace__ {
+﻿namespace Inspiring.MvvmTest.ViewModels {
    using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
@@ -14,15 +14,11 @@
       [TestInitialize]
       public void Setup() {
          BehaviorStub = new ModificationCollectionBehaviorStub();
-
-         var behaviors = new BehaviorChain();
-         behaviors.Successor = BehaviorStub;
-
          var owner = new Mock<IViewModel> { DefaultValue = DefaultValue.Mock };
 
          Collection = new VMCollection<IViewModel>(
             owner.Object,
-            PropertyStub.WithBehaviors(behaviors).Build()
+            PropertyStub.WithBehaviors(BehaviorStub).Build()
          );
       }
 

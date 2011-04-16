@@ -23,38 +23,6 @@
       }
 
       [TestMethod]
-      public void AddNewEndNew() {
-         Assert.Inconclusive("Not implemented yet");
-         //var child = _parent.MappedCollectionAccessor.AddNew();
-         //Assert.IsNotNull(child.Source);
-         //Assert.IsFalse(_parentSource.ChildCollection.Contains(child.Source));
-         //Assert.AreEqual(_parentSource, child.Source.Parent);
-         //Assert.IsTrue(_parent.MappedCollectionAccessor.Contains(child));
-
-         //_parent.MappedCollectionAccessor.EndNew(2);
-         //CompareCollections();
-      }
-
-      [TestMethod]
-      public void AddNewCancelNew() {
-         Assert.Inconclusive("Not implemented yet");
-         //var child = _parent.MappedCollectionAccessor.AddNew();
-         //_parent.MappedCollectionAccessor.CancelNew(2);
-         //Assert.AreEqual(2, _parent.MappedCollectionAccessor.Count);
-         //CompareCollections();
-      }
-
-      [TestMethod]
-      public void AddNewRemove() {
-         Assert.Inconclusive("Not implemented yet");
-         //var child = _parent.MappedCollectionAccessor.AddNew();
-
-         //_parent.MappedCollectionAccessor.RemoveAt(0);
-         //Assert.AreEqual(2, _parent.MappedCollectionAccessor.Count);
-         //CompareCollections();
-      }
-
-      [TestMethod]
       public void CheckPrereqisites() {
          CompareCollections();
       }
