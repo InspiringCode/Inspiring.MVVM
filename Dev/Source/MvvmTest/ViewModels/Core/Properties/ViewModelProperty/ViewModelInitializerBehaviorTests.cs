@@ -1,4 +1,4 @@
-﻿namespace Inspiring.MvvmTest.ViewModels.Core.PropertyBehaviors {
+﻿namespace Inspiring.MvvmTest.ViewModels.Core.Properties.ViewModelProperty {
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;

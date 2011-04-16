@@ -8,10 +8,6 @@
       Behavior,
       IValueFactoryBehavior<TVM> {
 
-      public TVM CreateInstance(IBehaviorContext vm) {
-         return vm.ServiceLocator.GetInstance<TVM>();
-      }
-
       public TVM CreateValue(IBehaviorContext context) {
          return context.ServiceLocator.GetInstance<TVM>();
       }

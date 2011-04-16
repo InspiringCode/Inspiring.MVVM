@@ -6,6 +6,7 @@
 
    public class BehaviorContextStub : IBehaviorContext {
       private readonly IBehaviorContext _inner;
+      private IServiceLocator _overriddenServiceLocator;
 
       public BehaviorContextStub(IViewModel viewModel = null) {
          viewModel = viewModel ?? ViewModelStub.Build();
@@ -35,7 +36,8 @@
       }
 
       public IServiceLocator ServiceLocator {
-         get { return _inner.ServiceLocator; }
+         get { return _overriddenServiceLocator ?? _inner.ServiceLocator; }
+         set { _overriddenServiceLocator = value; }
       }
 
       public void NotifyChange(ChangeArgs args) {
