@@ -22,6 +22,7 @@
          WindowService.ShowDialogWindow(s, parent, title);
 
          var dl = DialogLifecycle.GetDialogLifecycle(s);
+         s.Children.Remove(dl);
          var result = dl.ScreenResult ?? new DialogScreenResult(false);
 
          if (result.Data is ExceptionResult) {
