@@ -41,6 +41,56 @@
          DomainAssert.AreEqual(expectedArgs, parentVM.NotifyChangeInvocations.SingleOrDefault());
       }
 
+      [TestMethod]
+      public void NotifyChange_CallsHandlePropertyChangedBehaviorOnlyIfOwnPropertyHasChanged() {
+         var mock = new PropertyChangedMock();
+
+         var property = PropertyStub
+            .WithBehaviors(mock)
+            .Build();
+
+         var vm = ViewModelStub
+            .WithProperties(property)
+            .Build();
+
+         var context = vm.GetContext();
+
+         var args = ChangeArgs.PropertyChanged(property);
+         context.NotifyChange(args);
+         Assert.IsTrue(mock.PropertyChangedWasCalled);
+
+         mock.PropertyChangedWasCalled = false;
+         args = ChangeArgs
+            .PropertyChanged(property)
+            .PrependViewModel(ViewModelStub.Build());
+         context.NotifyChange(args);
+         Assert.IsFalse(mock.PropertyChangedWasCalled);
+
+         mock.PropertyChangedWasCalled = false;
+         args = ChangeArgs.ValidationStateChanged(property);
+         context.NotifyChange(args);
+         Assert.IsFalse(mock.PropertyChangedWasCalled);
+
+         mock.PropertyChangedWasCalled = false;
+         args = ChangeArgs.ItemsAdded(VMCollectionStub.Build(), new[] { ViewModelStub.Build() });
+         context.NotifyChange(args);
+         Assert.IsFalse(mock.PropertyChangedWasCalled);
+      }
+
+      private static bool HandlePropertyChangedBehaviorWasCalled(ChangeArgs args) {
+         var mock = new PropertyChangedMock();
+
+         var vm = ViewModelStub
+            .WithProperties(PropertyStub
+               .WithBehaviors(mock)
+               .Build())
+            .Build();
+
+         vm.GetContext().NotifyChange(args);
+
+         return mock.PropertyChangedWasCalled;
+      }
+
       private static ChangeArgs CreateChangeArgs() {
          return ChangeArgs.PropertyChanged(PropertyStub.Build());
       }
@@ -48,6 +98,14 @@
       private static VMKernel CreateKernel(IViewModel vm = null) {
          vm = vm ?? ViewModelStub.Build();
          return new VMKernel(vm, vm.Descriptor, ServiceLocator.Current);
+      }
+
+      private class PropertyChangedMock : Behavior, IHandlePropertyChangedBehavior {
+         public bool PropertyChangedWasCalled { get; set; }
+
+         public void HandlePropertyChanged(IBehaviorContext context) {
+            PropertyChangedWasCalled = true;
+         }
       }
    }
 }

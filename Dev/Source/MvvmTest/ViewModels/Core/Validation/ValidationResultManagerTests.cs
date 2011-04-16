@@ -1,8 +1,8 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Validation {
    using System.Linq;
+   using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Inspiring.Mvvm.ViewModels;
 
    [TestClass]
    public class ValidationResultManagerTests : ValidationTestBase {

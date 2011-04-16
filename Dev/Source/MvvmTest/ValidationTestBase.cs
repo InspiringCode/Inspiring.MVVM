@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.MvvmTest {
+   using System;
    using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
@@ -9,7 +10,6 @@
 
    [TestClass]
    public class ValidationTestBase : TestBase {
-
       protected static ValidationResult CreateValidationResult(
          params string[] errors
       ) {
@@ -20,8 +20,10 @@
          IViewModel target = null,
          params string[] errors
       ) {
+         target = target ?? NullViewModel.Instance;
+
          IEnumerable<ValidationResult> states = errors
-            .Select(error => new ValidationResult(new ValidationError(Mock<IValidator>(), target, error)));
+            .Select(error => new ValidationResult(new ValidationError(NullValidator.Instance, target, error)));
 
          return ValidationResult.Join(states);
       }
@@ -43,6 +45,29 @@
       protected static void AssertErrors(ValidationArgs args, params ValidationError[] errors) {
          var expected = new ValidationResult(errors);
          Assert.AreEqual(expected, args.Result);
+      }
+
+      private class NullValidator : IValidator {
+         public static readonly NullValidator Instance = new NullValidator();
+
+         public ValidationResult Execute(ValidationRequest request) {
+            throw new NotSupportedException();
+         }
+      }
+
+      private class NullViewModel : IViewModel {
+         public static readonly NullViewModel Instance = new NullViewModel();
+
+         public VMKernel Kernel { get; set; }
+
+         public VMDescriptorBase Descriptor { get; set; }
+
+         public IBehaviorContext GetContext() {
+            throw new NotSupportedException();
+         }
+
+         public void NotifyChange(ChangeArgs args) {
+         }
       }
    }
 }

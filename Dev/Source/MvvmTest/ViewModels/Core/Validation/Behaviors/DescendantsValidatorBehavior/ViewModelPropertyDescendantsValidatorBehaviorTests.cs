@@ -1,4 +1,4 @@
-﻿namespace Inspiring.MvvmTest.ViewModels.Core.Validation {
+﻿namespace Inspiring.MvvmTest.ViewModels.Core.Validation.Behaviors {
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 

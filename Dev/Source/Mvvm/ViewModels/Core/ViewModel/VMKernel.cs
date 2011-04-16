@@ -180,6 +180,10 @@
       }
 
       private void CallPropertyChangedHandlerBehaviors(ChangeArgs args) {
+         if (args.ChangeType != ChangeType.PropertyChanged) {
+            return;
+         }
+
          var result = args
             .ChangedPath
             .SelectsOnlyPropertyOf(_vm);

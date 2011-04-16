@@ -12,22 +12,27 @@
 
       [TestMethod]
       public void ItemInserted_RevalidatesItem() {
-         var item = new ViewModelSpy();
+         var item = new ViewModelSpy("Inserted item");
+         Collection = CreateCollection(item);
+
          HandleItemInserted(item);
          Assert.IsTrue(item.WasValidated);
       }
 
       [TestMethod]
       public void ItemRemoved_RevalidatesItem() {
-         var item = new ViewModelSpy();
+         var item = new ViewModelSpy("Removed item");
+         Collection = CreateCollection();
+
          HandleItemRemoved(item);
          Assert.IsTrue(item.WasValidated);
       }
 
       [TestMethod]
       public void ItemSet_RevalidatesOldAndNewItem() {
-         var oldItem = new ViewModelSpy();
-         var newItem = new ViewModelSpy();
+         var oldItem = new ViewModelSpy("Old item");
+         var newItem = new ViewModelSpy("New item");
+         Collection = CreateCollection(newItem);
 
          HandleItemSet(oldItem, newItem);
 
@@ -37,15 +42,17 @@
 
       [TestMethod]
       public void ItemsCleared_ReavlidatesOldItems() {
-         var oldItem = new ViewModelSpy();
+         var oldItem = new ViewModelSpy("Old item");
+         Collection = CreateCollection();
+
          HandleCollectionCleared(new[] { oldItem });
          Assert.IsTrue(oldItem.WasValidated);
       }
 
       [TestMethod]
       public void CollectionPopulated_DoesNotValidateOldOrNewItems() {
-         var oldItem = new ViewModelSpy();
-         var newItem = new ViewModelSpy();
+         var oldItem = new ViewModelSpy("Old item");
+         var newItem = new ViewModelSpy("New item");
 
          Collection = CreateCollection(oldItem);
          HandleCollectionPopulated(new[] { oldItem });
@@ -57,12 +64,12 @@
       private class ViewModelSpy : ViewModelStub {
          private RevalidationSpy _spy;
 
-         public ViewModelSpy()
-            : this(new RevalidationSpy()) {
+         public ViewModelSpy(string description = null)
+            : this(new RevalidationSpy(), description) {
          }
 
-         private ViewModelSpy(RevalidationSpy spy)
-            : base(DescriptorStub.WithBehaviors(spy).Build()) {
+         private ViewModelSpy(RevalidationSpy spy, string description)
+            : base(DescriptorStub.WithBehaviors(spy).Build(), description) {
             _spy = spy;
          }
 

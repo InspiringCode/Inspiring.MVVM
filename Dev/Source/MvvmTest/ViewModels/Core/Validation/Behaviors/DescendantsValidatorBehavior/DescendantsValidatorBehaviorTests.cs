@@ -1,4 +1,4 @@
-﻿namespace Inspiring.MvvmTest.ViewModels.Core.Validation {
+﻿namespace Inspiring.MvvmTest.ViewModels.Core.Validation.Behaviors {
    using System;
    using System.Text;
    using Inspiring.Mvvm.ViewModels;

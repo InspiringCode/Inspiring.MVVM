@@ -228,8 +228,6 @@
     <Compile Include="ViewModels\Core\Validation\Behaviors\DescendantsValidatorBehavior\DescendantsValidatorBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Validation\PropertyValidationSourceBehaviorBaseTests.cs" />
     <Compile Include="ViewModels\Core\Validation\RevalidatorTests.cs" />
-    <Compile Include="ViewModels\Core\Validation\ValidationContextTests.cs" />
-    <Compile Include="ViewModels\Core\Validation\ValidationErrorCollectionTests.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationOperationTests.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationResultManagerTests.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationStateTests.cs" />
