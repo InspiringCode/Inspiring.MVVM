@@ -112,7 +112,7 @@
          op.Path = op
             .Path
             .Append(collectionSelector)
-            .Append(itemPropertySelector);
+            .AppendCollectionProperty(itemPropertySelector);
 
          var targetPathCondition = new ValidationTargetCondition(op.Path);
 

@@ -42,8 +42,8 @@
       public const string Collection2PropertyValidationErrorMessage = "Error of collection2 property validator";
       public const string Collection3PropertyValidationErrorMessage = "Error of collection3 property validator";
       public const string Collection1ViewModelValidationErrorMessage = "Error of collection1 view model validator";
-      public const string Collection2ViewModelValidationErrorMessage = "Error of collection1 view model validator";
-      public const string Collection3ViewModelValidationErrorMessage = "Error of collection1 view model validator";
+      public const string Collection2ViewModelValidationErrorMessage = "Error of collection2 view model validator";
+      public const string Collection3ViewModelValidationErrorMessage = "Error of collection3 view model validator";
       public const string NamePropertyValidatorErrorMessage = "Error of name property validator";
 
       private const string Item1Name = "Item1";
@@ -156,6 +156,7 @@
 
       [TestMethod]
       public void GetResults_MultipleItemsAreInvalidInSingleCollection_ReturnsOnlyErrorsForSpecifiedItem() {
+         Assert.Inconclusive("What should this test test?");
          ChangeValidatorResult(InvalidItemsOfItemVMPropertyValidator, Item1, false);
          ChangeValidatorResult(InvalidItemsOfItemVMPropertyValidator, Item2, false);
          Item1.Revalidate();
@@ -187,7 +188,7 @@
          );
 
          ResultCache.GetCollectionValidationResults(
-            ValidationStep.Value,
+            ValidationStep.ViewModel,
             Item1,
             null
          );
@@ -217,6 +218,7 @@
       [TestMethod]
       public void GetResults_OtherItemWasPreviouslyInvalid_ValidatesItsUnvalidatedOwnerCollectionsToo() {
          ChangeValidatorResult(InvalidItemsOfItemVMPropertyValidator, Item3, false);
+         Item3.Revalidate();
 
          InvocationLog.ExpectCalls(
             Validator.Collection3PropertyValidator,
@@ -236,6 +238,7 @@
       [TestMethod]
       public void GetResults_OtherItemWasPreviouslyInvalid_DoesNotValidateAlreadyValidatedOwnerCollections() {
          ChangeValidatorResult(InvalidItemsOfItemVMPropertyValidator, Item2, false);
+         Item2.Revalidate();
 
          InvocationLog.ExpectCalls(
             Validator.Collection1ViewModelValidator,
@@ -244,7 +247,7 @@
          );
 
          ResultCache.GetCollectionValidationResults(
-            ValidationStep.Value,
+            ValidationStep.ViewModel,
             Item3,
             null
          );
