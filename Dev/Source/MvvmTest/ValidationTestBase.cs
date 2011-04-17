@@ -10,6 +10,17 @@
 
    [TestClass]
    public class ValidationTestBase : TestBase {
+      protected static ValidationError CreateValidationError(
+         string message = "Validation error",
+         IViewModel target = null,
+         IVMPropertyDescriptor targetProperty = null
+      ) {
+         target = target ?? NullViewModel.Instance;
+         return targetProperty != null ?
+            new ValidationError(NullValidator.Instance, target, targetProperty, message) :
+            new ValidationError(NullValidator.Instance, target, message);
+      }
+
       protected static ValidationResult CreateValidationResult(
          params string[] errors
       ) {
@@ -45,6 +56,34 @@
       protected static void AssertErrors(ValidationArgs args, params ValidationError[] errors) {
          var expected = new ValidationResult(errors);
          Assert.AreEqual(expected, args.Result);
+      }
+
+      protected static ValidationErrorBuilder Error(string errorMessage) {
+         return new ValidationErrorBuilder(errorMessage);
+      }
+
+      protected class ValidationErrorBuilder {
+         private string _errorMessage;
+
+         public ValidationErrorBuilder(string errorMessage) {
+            _errorMessage = errorMessage;
+         }
+
+         public ValidationError For(IViewModel target) {
+            return new ValidationError(NullValidator.Instance, target, _errorMessage);
+         }
+
+         public ValidationError For<T>(
+            IViewModel<T> target,
+            Func<T, IVMPropertyDescriptor> targetPropertySelector
+         ) where T : VMDescriptorBase {
+            var targetProperty = targetPropertySelector((T)target.Descriptor);
+            return new ValidationError(NullValidator.Instance, target, targetProperty, _errorMessage);
+         }
+
+         public ValidationError Anonymous() {
+            return For(NullViewModel.Instance);
+         }
       }
 
       private class NullValidator : IValidator {

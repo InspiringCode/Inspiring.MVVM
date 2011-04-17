@@ -87,7 +87,7 @@
                .Append(PropertyBehaviorKeys.ValueInitializer)
                .Append(PropertyBehaviorKeys.Undo, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.LazyRefresh)
-               .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
+               .Append(PropertyBehaviorKeys.ValueValidationSource)
                .Append(PropertyBehaviorKeys.ChangeNotifier)
                .Append(PropertyBehaviorKeys.ValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
@@ -139,6 +139,8 @@
                .Append(ViewModelBehaviorKeys.LoadOrderController)
                .Append(ViewModelBehaviorKeys.ViewModelValidationSource, DefaultBehaviorState.Disabled)
                .Append(ViewModelBehaviorKeys.ValidationExecutor, DefaultBehaviorState.Disabled)
+               .Append(ViewModelBehaviorKeys.ValidationResultAggregatorCache)
+               .Append(ViewModelBehaviorKeys.ValidationResultAggregator)
                .Append(ViewModelBehaviorKeys.TypeDescriptorProvider)
                .Append(ViewModelBehaviorKeys.UndoRoot, DefaultBehaviorState.Disabled)
          );

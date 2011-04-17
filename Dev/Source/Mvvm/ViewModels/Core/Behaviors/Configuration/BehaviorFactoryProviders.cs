@@ -106,6 +106,8 @@
                .RegisterBehavior<LoadOrderBehavior>(ViewModelBehaviorKeys.LoadOrderController)
                .RegisterBehavior<ViewModelValidationSourceBehavior>(ViewModelBehaviorKeys.ViewModelValidationSource)
                .RegisterBehavior<ValidatorExecutorBehavior>(ViewModelBehaviorKeys.ValidationExecutor)
+               .RegisterBehavior<ValidationResultAggregatorCacheBehavior>(ViewModelBehaviorKeys.ValidationResultAggregatorCache)
+               .RegisterBehavior<ValidationResultAggregatorBehavior>(ViewModelBehaviorKeys.ValidationResultAggregator)
                .RegisterBehavior<TypeDescriptorProviderBehavior>(ViewModelBehaviorKeys.TypeDescriptorProvider)
                .RegisterBehavior<UndoRootBehavior>(ViewModelBehaviorKeys.UndoRoot);
          }

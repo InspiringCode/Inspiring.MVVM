@@ -135,7 +135,7 @@
     <Compile Include="ApiTests\ViewModels\Validation\ValidatorInteractionTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\CustomCollectionValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\DescendantValidationTests.cs" />
-    <Compile Include="ApiTests\ViewModels\Validation\GeneralValidationTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\BasicValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\TypeDescriptorTests.cs" />
     <Compile Include="ApiTests\ViewModels\AccessPropertyTests.cs" />
     <Compile Include="ApiTests\ViewModels\Domain\Area.cs" />
@@ -177,6 +177,7 @@
     <Compile Include="TestUtils\ComparisonObject.cs" />
     <Compile Include="TestUtils\ComparisonObjectTests.cs" />
     <Compile Include="TestUtils\GenericComparisonObjectTests.cs" />
+    <Compile Include="ValidationAssert.cs" />
     <Compile Include="ValidationTestBase.cs" />
     <Compile Include="ValidatorInvocationLog.cs" />
     <Compile Include="ViewModels\- No Namespace -\ViewModelTests.cs" />

@@ -31,6 +31,8 @@
       public static readonly BehaviorKey LoadOrderController = Key(() => LoadOrderController);
       public static readonly BehaviorKey ViewModelValidationSource = Key(() => ViewModelValidationSource);
       public static readonly BehaviorKey ValidationExecutor = Key(() => ValidationExecutor);
+      public static readonly BehaviorKey ValidationResultAggregatorCache = Key(() => ValidationResultAggregatorCache);
+      public static readonly BehaviorKey ValidationResultAggregator = Key(() => ValidationResultAggregator);
       public static readonly BehaviorKey UndoRoot = Key(() => UndoRoot);
       public static readonly BehaviorKey TypeDescriptorProvider = Key(() => TypeDescriptorProvider);
    }

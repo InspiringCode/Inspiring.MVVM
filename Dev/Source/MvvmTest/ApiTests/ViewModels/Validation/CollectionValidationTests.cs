@@ -1,5 +1,4 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Validation {
-   using System;
    using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
@@ -9,7 +8,175 @@
    using ProjectVM = Inspiring.MvvmTest.ApiTests.ViewModels.ProjectVM;
 
    [TestClass]
-   public class CollectionValidationTests : TestBase {
+   public class CollectionValidationTests : ValidationTestBase {
+      private ListVM List { get; set; }
+
+      [TestInitialize]
+      public void Setup() {
+         List = new ListVM();
+      }
+
+      [TestMethod]
+      public void ItemInsertion_PerformsCollectionValidationForAllItems() {
+         var previouslyValid = CreateItem("Valid item");
+         List.Items.Add(previouslyValid);
+
+         var error = Error("Previously valid item error")
+            .For(previouslyValid, x => x.CollectionProperty);
+
+         List.ItemsWithInvalidColletionProperty.Add(previouslyValid, error);
+
+         var newItem = CreateItem("New item");
+         List.Items.Add(newItem);
+
+         ValidationAssert.Errors(error);
+         ValidationAssert.IsValid(newItem);
+      }
+
+      [TestMethod]
+      public void ItemInsertion_PerformsFullValidationForInsertedItem() {
+         var newItem = CreateItem("New item");
+
+         var error = Error("Item property error").For(newItem, x => x.ItemProperty);
+         newItem.ItemPropertyError = error;
+
+         List.Items.Add(newItem);
+
+         ValidationAssert.Errors(error);
+      }
+
+      [TestMethod]
+      public void ItemInserted_PerformsFullValidationForAllCurrentlyInvalidItems() {
+         var currentlyInvalidItem = CreateItem("Currently invalid item");
+         currentlyInvalidItem.ItemPropertyError = Error("Currently invalid error").Anonymous();
+         List.Items.Add(currentlyInvalidItem);
+
+         var currentlyValidItem = CreateItem("Currently valid item");
+         List.Items.Add(currentlyValidItem);
+
+         currentlyInvalidItem.ItemPropertyError = null;
+         currentlyValidItem.ItemPropertyError = Error("Effectless error").Anonymous();
+
+         var newItem = CreateItem("New item");
+         List.Items.Add(newItem);
+
+         ValidationAssert.IsValid(currentlyInvalidItem);
+         ValidationAssert.IsValid(currentlyValidItem);
+      }
+
+      [TestMethod]
+      public void ItemRemoval_PerformsCollectionValidationForAllItems() {
+         /*
+          * add valid item
+          * make collection validation invalid for already added
+          * add new item
+          * assert collection error of old item
+          * 
+          * 
+          */
+      }
+
+      [TestMethod]
+      public void ItemRemoval_PerformsFullValidationForRemovedItem() {
+
+      }
+
+      [TestMethod]
+      public void ItemRemoval_PerformsFullValidationForAllPreviouslyInvalidItems() {
+
+      }
+
+      private ItemVM CreateItem(string name) {
+         return new ItemVM(name);
+      }
+
+      private class ListVM : ViewModel<ListVMDescriptor> {
+         public static readonly ListVMDescriptor ClassDescriptor = VMDescriptorBuilder
+            .OfType<ListVMDescriptor>()
+            .For<ListVM>()
+            .WithProperties((d, b) => {
+               var v = b.GetPropertyBuilder();
+               d.Items = v.Collection.Of<ItemVM>(ItemVM.ClassDescriptor);
+            })
+            .WithValidators(b => {
+               b.CheckCollection(x => x.Items, x => x.CollectionProperty)
+                  .Custom<ItemVM>(args => {
+                     foreach (var invalidItem in args.Owner.ItemsWithInvalidColletionProperty) {
+                        args.AddError(invalidItem.Key, invalidItem.Value.Message);
+                     }
+                  });
+
+               b.CheckCollection(x => x.Items)
+                  .Custom(args => {
+                     foreach (var invalidItem in args.Owner.ItemsWithInvalidViewModelValidation) {
+                        args.AddError(invalidItem.Key, invalidItem.Value.Message);
+                     }
+                  });
+            })
+            .Build();
+
+         public ListVM()
+            : base(ClassDescriptor) {
+            ItemsWithInvalidColletionProperty = new Dictionary<ItemVM, ValidationError>();
+            ItemsWithInvalidViewModelValidation = new Dictionary<ItemVM, ValidationError>();
+         }
+
+         public Dictionary<ItemVM, ValidationError> ItemsWithInvalidColletionProperty { get; private set; }
+         public Dictionary<ItemVM, ValidationError> ItemsWithInvalidViewModelValidation { get; private set; }
+
+         public IVMCollection<ItemVM> Items {
+            get { return GetValue(Descriptor.Items); }
+         }
+      }
+
+      private class ListVMDescriptor : VMDescriptor {
+         public IVMPropertyDescriptor<IVMCollection<ItemVM>> Items { get; set; }
+      }
+
+      private class ItemVM : ViewModel<ItemVMDescriptor> {
+         public static readonly ItemVMDescriptor ClassDescriptor = VMDescriptorBuilder
+            .OfType<ItemVMDescriptor>()
+            .For<ItemVM>()
+            .WithProperties((d, b) => {
+               var v = b.GetPropertyBuilder();
+
+               d.ItemProperty = v.Property.Of<string>();
+               d.CollectionProperty = v.Property.Of<string>();
+            })
+            .WithValidators(b => {
+               b.Check(x => x.ItemProperty).Custom(args => {
+                  var error = args.Owner.ItemPropertyError;
+
+                  if (error != null) {
+                     args.AddError(error.Message);
+                  }
+               });
+            })
+            .Build();
+
+         private string _name;
+
+         public ItemVM(string name)
+            : base(ClassDescriptor) {
+            _name = name;
+         }
+
+         public ValidationError ItemPropertyError { get; set; }
+
+         public override string ToString() {
+            return _name;
+         }
+      }
+
+      private class ItemVMDescriptor : VMDescriptor {
+         public IVMPropertyDescriptor<string> ItemProperty { get; set; }
+         public IVMPropertyDescriptor<string> CollectionProperty { get; set; }
+      }
+   }
+
+
+   [TestClass]
+   public class CollectionValidationTestsOld : TestBase {
       [TestMethod]
       public void ItemValidation_ExecutesItemValueValidator() {
          var firstItem = new ProjectVM { Title = "Project 1" };
@@ -33,7 +200,7 @@
          );
 
          Assert.AreSame(vm, args.ValidationArgs.Owner);
-         throw new NotImplementedException();
+         //throw new NotImplementedException();
          //Assert.AreSame(firstItem, args.ValidationArgs.Target);
       }
 
