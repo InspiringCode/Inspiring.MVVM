@@ -146,6 +146,7 @@
     <Compile Include="ViewModels\- No Namespace -\ViewModel.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMDescriptorBuilder.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\Definition\CollectionPropertyStep.cs" />
+    <Compile Include="ViewModels\Core\Common\Paths\Definition\CollectionStep.cs" />
     <Compile Include="ViewModels\Core\Properties\CollectionProperty\BehaviorInterfaces\ICollectionChangeHandlerBehavior.cs" />
     <Compile Include="ViewModels\Core\Properties\CommandProperty\BehaviorInterfaces\ICommandCanExecuteBehavior.cs" />
     <Compile Include="ViewModels\Core\Properties\CommandProperty\BehaviorInterfaces\ICommandExecuteBehavior.cs" />

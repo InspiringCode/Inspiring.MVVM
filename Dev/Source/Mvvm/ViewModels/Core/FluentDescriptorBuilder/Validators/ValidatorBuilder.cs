@@ -78,7 +78,7 @@
       ) where TItemVM : IViewModel {
          var op = OperationProvider.GetOperation();
 
-         op.Path = op.Path.Append(collectionSelector);
+         op.Path = op.Path.AppendCollection(collectionSelector);
 
          var targetPathCondition = new ValidationTargetCondition(op.Path);
 
@@ -111,7 +111,7 @@
 
          op.Path = op
             .Path
-            .Append(collectionSelector)
+            .AppendCollection(collectionSelector)
             .AppendCollectionProperty(itemPropertySelector);
 
          var targetPathCondition = new ValidationTargetCondition(op.Path);
