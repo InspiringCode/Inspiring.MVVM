@@ -107,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiTests\ViewModels\CommandHandlerTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Core\PathDefintionTests.cs" />
     <Compile Include="ApiTests\ViewModels\Domain\CustomerRepository.cs" />
     <Compile Include="ApiTests\ViewModels\InheritanceTests.cs" />
     <Compile Include="ApiTests\ViewModels\InheritanceWithGenericsTests.cs" />
@@ -191,6 +192,7 @@
     <Compile Include="ViewModels\- Test Infrastructure -\ViewModelStub.cs" />
     <Compile Include="ViewModels\- Test Infrastructure -\VMCollectionStub.cs" />
     <Compile Include="Common\BehaviorKeysTests.cs" />
+    <Compile Include="ViewModels\Core\Common\Paths\CollectionPropertyStepTests.cs" />
     <Compile Include="ViewModels\Core\Properties\Common\CachedAccessorBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Properties\Common\DisplayValueBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\VMPropertyBuilderTests.cs" />

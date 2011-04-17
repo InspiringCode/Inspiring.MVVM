@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
+   using System.Collections;
    using System.Collections.Generic;
 
    /// <summary>
@@ -39,11 +40,15 @@
          }
       }
 
+      public bool Contains(TItem item) {
+         return _items.Contains(item);
+      }
+
       public IEnumerator<TItem> GetEnumerator() {
          return _items.GetEnumerator();
       }
 
-      System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+      IEnumerator IEnumerable.GetEnumerator() {
          return _items.GetEnumerator();
       }
    }

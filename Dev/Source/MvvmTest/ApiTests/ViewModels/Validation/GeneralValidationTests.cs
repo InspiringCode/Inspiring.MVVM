@@ -1,4 +1,4 @@
-﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels {
+﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Validation {
    using System;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;

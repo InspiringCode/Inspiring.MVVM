@@ -44,22 +44,23 @@
       }
 
       [TestMethod]
-      public void Matches_WithMatchingViewModelPlusCollectionPlusItemViewModel_SucceedsAndMatchesTwoPathSteps() {
-         IVMCollection<ProjectVM> collection = VM.GetValue(x => x.Projects);
-         ProjectVM item = collection.First();
+      public void Matches_WithParentViewModelPlusItemViewModel_Succeeds() {
+         var projectsItem = VM
+            .GetValue(x => x.Projects)
+            .First();
 
          AssertMatchIfNextSucceeds(
             CreateStep(x => x.Projects),
-            Path.Empty.Prepend(item).Prepend(collection).Prepend(VM),
-            expectedMatchLength: 2
+            Path.Empty.Append(VM).Append(projectsItem)
          );
       }
 
       [TestMethod]
-      public void Matches_WithMatchingCollectionPlusProperty_Succeeds() {
+      public void Matches_WithMatchingCollectionPlusProperty_Fails() {
+         // Use CollectionPropertyStep for this scenario (only relevant for validation target).
          IVMCollection<ProjectVM> collection = VM.GetValue(x => x.Projects);
 
-         AssertMatchIfNextSucceeds(
+         AssertNoMatch(
             CreateStep((ProjectVMDescriptor x) => x.Name),
             Path.Empty.Prepend(ProjectVM.ClassDescriptor.Name).Prepend(collection)
          );

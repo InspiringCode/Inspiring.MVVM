@@ -30,6 +30,12 @@
          return Append(new PropertyStep<TDescriptor, TValue>(propertySelector));
       }
 
+      public PathDefinition AppendCollectionProperty<TDescriptor, TValue>(
+         Func<TDescriptor, IVMPropertyDescriptor<TValue>> propertySelector
+      ) where TDescriptor : VMDescriptorBase {
+         return Append(new CollectionPropertyStep<TDescriptor, TValue>(propertySelector));
+      }
+
       public PathMatch Matches(Path path) {
          var it = new PathDefinitionIterator(_steps);
          return it.MatchesNext(path.GetIterator());
