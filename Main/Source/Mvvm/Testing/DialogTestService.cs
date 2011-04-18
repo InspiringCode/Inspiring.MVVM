@@ -50,12 +50,23 @@
          }
       }
 
+      public TestScreenResult ShowDialog<TScreen>(
+        IScreenFactory<TScreen> screen
+      ) where TScreen : IScreenBase {
+         IScreenBase s = screen.Create();
+         var lifecycle = new DialogLifecycle();
+         s.Children.Add(lifecycle);
+         return new TestScreenResult(lifecycle);
+      }
+
       DialogScreenResult IDialogService.ShowDialog<TScreen>(IScreenFactory<TScreen> screen, IScreenBase parent, string title) {
          var invocation = new DialogServiceInvocation(DialogServiceMethod.OpenDialog);
          invocation.Caption.SetValue(title);
          invocation.Parent.SetValue(parent);
          return DequeueResponder().ProcessScreenDialogInvocation(invocation, screen);
       }
+
+
 
       bool IDialogService.ShowOpenFileDialog(IScreenBase parent, out string fileName, string filter, string initialDirectory) {
          var invocation = new DialogServiceInvocation(DialogServiceMethod.ShowOpenFileDialog);
