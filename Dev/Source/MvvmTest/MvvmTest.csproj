@@ -106,6 +106,9 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="- Test Infrastructure -\NullValidator.cs" />
+    <Compile Include="- Test Infrastructure -\TestViewModel.cs" />
+    <Compile Include="- Test Infrastructure -\ValidatorSetup.cs" />
     <Compile Include="ApiTests\ViewModels\CommandHandlerTests.cs" />
     <Compile Include="ApiTests\ViewModels\Core\PathDefintionTests.cs" />
     <Compile Include="ApiTests\ViewModels\Domain\CustomerRepository.cs" />
@@ -131,7 +134,10 @@
     <Compile Include="ApiTests\ViewModels\Undo\UndoManagerTests.cs" />
     <Compile Include="ApiTests\ViewModels\Undo\UndoTests.cs" />
     <Compile Include="ApiTests\ViewModels\UntypedPropertyAccessTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\CollectionRevalidationTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\CollectionValidationFixture.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\CollectionValidationTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\CollectionValidationTests.old.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\ValidatorInteractionTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\CustomCollectionValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\DescendantValidationTests.cs" />

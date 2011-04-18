@@ -86,14 +86,6 @@
          }
       }
 
-      private class NullValidator : IValidator {
-         public static readonly NullValidator Instance = new NullValidator();
-
-         public ValidationResult Execute(ValidationRequest request) {
-            throw new NotSupportedException();
-         }
-      }
-
       private class NullViewModel : IViewModel {
          public static readonly NullViewModel Instance = new NullViewModel();
 
