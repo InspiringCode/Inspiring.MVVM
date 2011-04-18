@@ -9,24 +9,48 @@
    public sealed class ValidatorSetup {
       private List<ValidatorResultSetup> _setups = new List<ValidatorResultSetup>();
       private List<ValidatorResultSetup> _actualInvocations = new List<ValidatorResultSetup>();
+      private List<IViewModel> _validViewModels = new List<IViewModel>();
 
-      public void PropertyError(IViewModel target, IVMPropertyDescriptor targetProperty) {
-         Error(ValidatorType.Property, target, targetProperty);
+      public void SetPropertyError(IViewModel target, IVMPropertyDescriptor targetProperty) {
+         SetError(ValidatorType.Property, target, targetProperty);
       }
 
-      public void ViewModelError(IViewModel target) {
-         Error(ValidatorType.ViewModel, target);
+      public void SetViewModelError(IViewModel target) {
+         SetError(ValidatorType.ViewModel, target);
       }
 
-      public void CollectionPropertyError(
+      public void SetCollectionPropertyError(
          IViewModel targetItem,
          IVMPropertyDescriptor targetProperty
       ) {
-         Error(ValidatorType.CollectionProperty, targetItem, targetProperty);
+         SetError(ValidatorType.CollectionProperty, targetItem, targetProperty);
       }
 
-      public void CollectionViewModelError(IViewModel targetItem) {
-         Error(ValidatorType.CollectionViewModel, targetItem);
+      public void SetCollectionViewModelError(IViewModel targetItem) {
+         SetError(ValidatorType.CollectionViewModel, targetItem);
+      }
+
+      public void SetupPropertyError(IViewModel target, IVMPropertyDescriptor targetProperty) {
+         SetupError(ValidatorType.Property, target, targetProperty);
+      }
+
+      public void SetupViewModelError(IViewModel target) {
+         SetupError(ValidatorType.ViewModel, target);
+      }
+
+      public void SetupCollectionPropertyError(
+         IViewModel targetItem,
+         IVMPropertyDescriptor targetProperty
+      ) {
+         SetupError(ValidatorType.CollectionProperty, targetItem, targetProperty);
+      }
+
+      public void SetupCollectionViewModelError(IViewModel targetItem) {
+         SetupError(ValidatorType.CollectionViewModel, targetItem);
+      }
+
+      public void ExpectedValid(IViewModel viewModel) {
+         _validViewModels.Add(viewModel);
       }
 
       public void VerifyAll() {
@@ -50,6 +74,10 @@
             .ToArray();
 
          ValidationAssert.Errors(expectedErrors);
+
+         foreach (IViewModel valid in _validViewModels) {
+            ValidationAssert.IsValid(valid);
+         }
       }
 
       public void ClearActualInvocations() {
@@ -149,7 +177,29 @@
          }
       }
 
-      private void Error(
+      private void SetError(
+         ValidatorType type,
+         IViewModel target,
+         IVMPropertyDescriptor targetProperty = null
+      ) {
+         var setup = new ValidatorResultSetup(type, target, targetProperty);
+         _setups.Add(setup);
+
+         if (targetProperty != null) {
+            Revalidator.RevalidatePropertyValidations(
+               target,
+               targetProperty,
+               ValidationScope.SelfOnly
+            );
+         } else {
+            Revalidator.RevalidateViewModelValidations(target);
+         }
+
+         _setups.Remove(setup);
+         _actualInvocations.Remove(setup);
+      }
+
+      private void SetupError(
          ValidatorType type,
          IViewModel target,
          IVMPropertyDescriptor targetProperty = null
@@ -181,10 +231,18 @@
 
          public ValidationError Error {
             get {
+               if (TargetProperty != null) {
+                  return new ValidationError(
+                     NullValidator.Instance,
+                     Target,
+                     TargetProperty,
+                     this.ToString()
+                  );
+               }
+
                return new ValidationError(
                   NullValidator.Instance,
                   Target,
-                  TargetProperty,
                   this.ToString()
                );
             }
@@ -203,8 +261,8 @@
 
          public override string ToString() {
             return TargetProperty != null ?
-               String.Format("{0} Val of {1}", ValidatorType, Target) :
-               String.Format("{0} Val of {1}.{2}", ValidatorType, Target, TargetProperty);
+               String.Format("{0} of {1}.{2}", ValidatorType, Target, TargetProperty) :
+               String.Format("{0} of {1}", ValidatorType, Target);
          }
       }
    }

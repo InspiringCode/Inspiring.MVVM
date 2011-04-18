@@ -97,6 +97,9 @@
 
       protected abstract void SetValueCore(IBehaviorContext context, object value);
 
+      public override string ToString() {
+         return PropertyName ?? base.ToString();
+      }
 
    }
 

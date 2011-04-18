@@ -138,6 +138,7 @@
     <Compile Include="ApiTests\ViewModels\Validation\CollectionValidationFixture.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\CollectionValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\CollectionValidationTests.old.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\HierarchicalValidationFixture.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\ValidatorInteractionTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\CustomCollectionValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\DescendantValidationTests.cs" />
