@@ -88,7 +88,7 @@
          }
 
          if (nextStep.IsCollection) {
-            return nextStep.Collection == expectedPropertyValue;
+            return false;
          }
 
          throw new NotSupportedException();

@@ -139,6 +139,7 @@
     <Compile Include="ApiTests\ViewModels\Validation\CollectionValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\CollectionValidationTests.old.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\HierarchicalValidationFixture.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\HierarchicalValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\ValidatorInteractionTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\CustomCollectionValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\DescendantValidationTests.cs" />
@@ -224,6 +225,7 @@
     <Compile Include="ViewModels\Core\Common\Paths\PathHelperTests.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\PropertyStepTests.cs" />
     <Compile Include="ViewModels\Core\Properties\ViewModelProperty\ViewModelInitializerBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\Validation\CollectionResultCacheFixture.cs" />
     <Compile Include="ViewModels\Core\ViewModel\TypeDescriptor\TypeDescriptorProviderBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\ViewModel\TypeDescriptor\ViewModelPropertyDescriptorTests.cs" />
     <Compile Include="ViewModels\Core\Validation\Behaviors\CollectionValidationSourceBehaviorTests.cs" />
@@ -233,7 +235,7 @@
     <Compile Include="ViewModels\Core\Validation\Behaviors\DescendantsValidatorBehavior\ViewModelPropertyDescendantsValidatorBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionResultCacheTests\ItemListVM.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionResultCacheTests\ItemVM.cs" />
-    <Compile Include="ViewModels\Core\Validation\CollectionResultCacheTests\CollectionResultCacheTests.cs" />
+    <Compile Include="ViewModels\Core\Validation\CollectionResultCacheTests.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionResultCacheTests\TwoItemListsVM.cs" />
     <Compile Include="ViewModels\Core\Validation\Behaviors\DescendantsValidatorBehavior\DescendantsValidatorBehaviorFixture.cs" />
     <Compile Include="ViewModels\Core\Validation\Behaviors\DescendantsValidatorBehavior\DescendantsValidatorBehaviorTests.cs" />

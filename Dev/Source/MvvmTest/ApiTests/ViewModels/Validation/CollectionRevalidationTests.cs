@@ -8,10 +8,10 @@
          var item = CreateItem();
          List.Items.Add(item);
 
-         Setup.SetupCollectionPropertyError(item, ItemDescriptor.ItemProperty);
+         Setup.ForOwner(List).SetupCollectionPropertyError(item, ItemDescriptor.CollectionProperty);
          item.Revalidate();
 
-         Setup.VerifyAll();
+         Setup.VerifySequenceStrict();
       }
 
       [TestMethod]

@@ -2,14 +2,32 @@
    using System;
    using System.Collections.Generic;
    using System.Linq;
+   using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    public sealed class ValidatorSetup {
       private List<ValidatorResultSetup> _setups = new List<ValidatorResultSetup>();
-      private List<ValidatorResultSetup> _actualInvocations = new List<ValidatorResultSetup>();
+      private List<ValidatorInvocation> _expectedInvocations = new List<ValidatorInvocation>();
+      private List<ValidatorInvocation> _actualInvocations = new List<ValidatorInvocation>();
       private List<IViewModel> _validViewModels = new List<IViewModel>();
+      private IViewModel _defaultOwner;
+
+      public ValidatorSetup() {
+      }
+
+      private ValidatorSetup(IViewModel defaultOwner, ValidatorSetup parent) {
+         _defaultOwner = defaultOwner;
+         _setups = parent._setups;
+         _validViewModels = parent._validViewModels;
+         _actualInvocations = parent._actualInvocations;
+         _expectedInvocations = parent._expectedInvocations;
+      }
+
+      public ValidatorSetup ForOwner(IViewModel owner) {
+         return new ValidatorSetup(owner, this);
+      }
 
       public void SetPropertyError(IViewModel target, IVMPropertyDescriptor targetProperty) {
          SetError(ValidatorType.Property, target, targetProperty);
@@ -49,6 +67,44 @@
          SetupError(ValidatorType.CollectionViewModel, targetItem);
       }
 
+      public void ExpectPropertyValidatorInvocation(IViewModel target, IVMPropertyDescriptor targetProperty) {
+         ExpectInvocation(ValidatorType.Property, target, targetProperty);
+      }
+
+      public void ExpectViewModelValidatorInvocation(IViewModel target) {
+         ExpectInvocation(ValidatorType.ViewModel, target);
+      }
+
+      public void ExpectCollectionPropertyInvocation(
+         IViewModel targetItem,
+         IVMPropertyDescriptor targetProperty
+      ) {
+         ExpectInvocation(ValidatorType.CollectionProperty, targetItem, targetProperty);
+      }
+
+      public void ExpectCollectionViewModelValidatorInvocation(IViewModel targetItem) {
+         ExpectInvocation(ValidatorType.CollectionViewModel, targetItem);
+      }
+
+      public void SetupPropertySuccess(IViewModel target, IVMPropertyDescriptor targetProperty) {
+         SetupSuccess(ValidatorType.Property, target, targetProperty);
+      }
+
+      public void SetupViewModelSuccess(IViewModel target) {
+         SetupSuccess(ValidatorType.ViewModel, target);
+      }
+
+      public void SetupCollectionPropertySuccess(
+         IViewModel targetItem,
+         IVMPropertyDescriptor targetProperty
+      ) {
+         SetupSuccess(ValidatorType.CollectionProperty, targetItem, targetProperty);
+      }
+
+      public void SetupCollectionViewModelSuccess(IViewModel targetItem) {
+         SetupSuccess(ValidatorType.CollectionViewModel, targetItem);
+      }
+
       public void ExpectedValid(IViewModel viewModel) {
          _validViewModels.Add(viewModel);
       }
@@ -58,18 +114,37 @@
          VerifyResults();
       }
 
+      public void VerifyAllStrict() {
+         VerifySequenceStrict();
+         VerifyResults();
+      }
+
       public void VerifySequence() {
-         if (!_setups.SequenceEqual(_actualInvocations)) {
+         throw new NotImplementedException();
+         //var actualInvocationsThatWereSetup = _actualInvocations
+         //   .Where(x => _setups.Contains(x));
+
+         //VerifySequence(actualInvocationsThatWereSetup);
+      }
+
+      public void VerifySequenceStrict() {
+         VerifySequence(_actualInvocations);
+      }
+
+      private void VerifySequence(IEnumerable<ValidatorInvocation> actualInvocations) {
+         if (!_expectedInvocations.SequenceEqual(actualInvocations)) {
             Assert.Fail(
-               "Expected validator invocations »{0}« but was »{1}«.",
-               String.Join(", ", _setups),
-               String.Join(", ", _actualInvocations)
+               "Expected validator invocations{0}\t{1}{0}but was{0}\t{2}{0}.",
+               Environment.NewLine,
+               String.Join(Environment.NewLine + "\t", _expectedInvocations),
+               String.Join(Environment.NewLine + "\t", actualInvocations)
             );
          }
       }
 
       public void VerifyResults() {
          var expectedErrors = _setups
+            .Where(x => x.Error != null) // TODO: Check valids?
             .Select(x => x.Error)
             .ToArray();
 
@@ -96,18 +171,13 @@
          where TTargetVM : IViewModel {
 
          var errors = _setups
-            .Where(s => s.Matches(ValidatorType.Property, args.Target, args.TargetProperty));
+            .Where(s => s.Matches(ValidatorType.Property, args.Owner, args.Target, args.TargetProperty));
 
-         errors.ForEach(s => {
+         errors.Where(x => x.Error != null).ForEach(s => {
             args.AddError(s.Error.Message, s.Error.Details);
-            _actualInvocations.Add(s);
          });
 
-         if (!errors.Any()) {
-            _actualInvocations.Add(
-               new ValidatorResultSetup(ValidatorType.Property, args.Target, args.TargetProperty)
-            );
-         }
+         AddInvocation(ValidatorType.Property, args.Owner, args.Target, args.TargetProperty);
       }
 
       public void PerformValidation<TOwnerVM, TTargetVM>(
@@ -117,18 +187,13 @@
          where TTargetVM : IViewModel {
 
          var errors = _setups
-            .Where(s => s.Matches(ValidatorType.ViewModel, args.Target));
+            .Where(s => s.Matches(ValidatorType.ViewModel, args.Owner, args.Target));
 
-         errors.ForEach(s => {
+         errors.Where(x => x.Error != null).ForEach(s => {
             args.AddError(s.Error.Message, s.Error.Details);
-            _actualInvocations.Add(s);
          });
 
-         if (!errors.Any()) {
-            _actualInvocations.Add(
-               new ValidatorResultSetup(ValidatorType.ViewModel, args.Target, null)
-            );
-         }
+         AddInvocation(ValidatorType.ViewModel, args.Owner, args.Target);
       }
 
       public void PerformValidation<TOwnerVM, TItemVM, TValue>(
@@ -139,18 +204,13 @@
 
          foreach (var item in args.Items) {
             var errors = _setups
-               .Where(s => s.Matches(ValidatorType.CollectionProperty, item, args.TargetProperty));
+               .Where(s => s.Matches(ValidatorType.CollectionProperty, args.Owner, item, args.TargetProperty));
 
-            errors.ForEach(s => {
+            errors.Where(x => x.Error != null).ForEach(s => {
                args.AddError(item, s.Error.Message, s.Error.Details);
-               _actualInvocations.Add(s);
             });
 
-            if (!errors.Any()) {
-               _actualInvocations.Add(
-                  new ValidatorResultSetup(ValidatorType.CollectionProperty, null, null)
-               );
-            }
+            AddInvocation(ValidatorType.CollectionProperty, args.Owner, item, args.TargetProperty);
          }
       }
 
@@ -162,18 +222,13 @@
 
          foreach (var item in args.Items) {
             var errors = _setups
-               .Where(s => s.Matches(ValidatorType.Property, item));
+               .Where(s => s.Matches(ValidatorType.CollectionViewModel, args.Owner, item));
 
-            errors.ForEach(s => {
+            errors.Where(x => x.Error != null).ForEach(s => {
                args.AddError(item, s.Error.Message, s.Error.Details);
-               _actualInvocations.Add(s);
             });
 
-            if (!errors.Any()) {
-               _actualInvocations.Add(
-                  new ValidatorResultSetup(ValidatorType.CollectionViewModel, null, null)
-               );
-            }
+            AddInvocation(ValidatorType.CollectionViewModel, args.Owner, item);
          }
       }
 
@@ -182,7 +237,7 @@
          IViewModel target,
          IVMPropertyDescriptor targetProperty = null
       ) {
-         var setup = new ValidatorResultSetup(type, target, targetProperty);
+         var setup = new ValidatorResultSetup(type, _defaultOwner, target, targetProperty, false);
          _setups.Add(setup);
 
          if (targetProperty != null) {
@@ -196,7 +251,7 @@
          }
 
          _setups.Remove(setup);
-         _actualInvocations.Remove(setup);
+         //_actualInvocations.Remove(setup);
       }
 
       private void SetupError(
@@ -204,7 +259,32 @@
          IViewModel target,
          IVMPropertyDescriptor targetProperty = null
       ) {
-         _setups.Add(new ValidatorResultSetup(type, target, targetProperty));
+         _setups.Add(new ValidatorResultSetup(type, _defaultOwner, target, targetProperty, false));
+      }
+
+      private void ExpectInvocation(
+         ValidatorType type,
+         IViewModel target,
+         IVMPropertyDescriptor targetProperty = null
+      ) {
+         _expectedInvocations.Add(new ValidatorInvocation(type, _defaultOwner, target, targetProperty));
+      }
+
+      private void SetupSuccess(
+         ValidatorType type,
+         IViewModel target,
+         IVMPropertyDescriptor targetProperty = null
+      ) {
+         _setups.Add(new ValidatorResultSetup(type, _defaultOwner, target, targetProperty, true));
+      }
+
+      private void AddInvocation(
+         ValidatorType type,
+         IViewModel owner,
+         IViewModel target,
+         IVMPropertyDescriptor property = null
+      ) {
+         _actualInvocations.Add(new ValidatorInvocation(type, owner, target, property));
       }
 
       private enum ValidatorType {
@@ -214,55 +294,126 @@
          CollectionViewModel
       }
 
-      private class ValidatorResultSetup {
-         public ValidatorResultSetup(
+      private class ValidatorInvocation {
+         public ValidatorInvocation(
             ValidatorType type,
+            IViewModel owner,
             IViewModel target,
             IVMPropertyDescriptor targetProperty
          ) {
-            ValidatorType = type;
+            Type = type;
+            Owner = owner;
             Target = target;
             TargetProperty = targetProperty;
          }
 
+         public ValidatorType Type { get; private set; }
+         public IViewModel Owner { get; private set; }
          public IViewModel Target { get; private set; }
          public IVMPropertyDescriptor TargetProperty { get; private set; }
-         public ValidatorType ValidatorType { get; private set; }
 
-         public ValidationError Error {
-            get {
+         public override bool Equals(object obj) {
+            ValidatorInvocation other = obj as ValidatorInvocation;
+
+            return
+               other != null &&
+               Type == other.Type &&
+               Owner == other.Owner &&
+               Target == other.Target &&
+               TargetProperty == other.TargetProperty;
+         }
+
+         public override int GetHashCode() {
+            return HashCodeService.CalculateHashCode(
+               this,
+               Type,
+               Owner,
+               Target,
+               TargetProperty
+            );
+         }
+
+         public override string ToString() {
+            var ownerPostfix = Owner != null && Owner != Target ?
+               String.Format(" of {0}", Owner) :
+               String.Empty;
+
+            var target = TargetProperty != null ?
+               String.Format("{0}.{1}", Target, TargetProperty) :
+               String.Format("{0}", Target);
+
+            var result = String.Format("{0} for {1}{2}", Type, target, ownerPostfix);
+            return result;
+         }
+      }
+
+      private class ValidatorResultSetup {
+         public ValidatorResultSetup(
+            ValidatorType type,
+            IViewModel owner,
+            IViewModel target,
+            IVMPropertyDescriptor targetProperty,
+            bool validatorResult
+         ) {
+            ValidatorType = type;
+            Owner = owner;
+            Target = target;
+            TargetProperty = targetProperty;
+
+            if (!validatorResult) {
                if (TargetProperty != null) {
-                  return new ValidationError(
+                  Error = new ValidationError(
                      NullValidator.Instance,
                      Target,
                      TargetProperty,
                      this.ToString()
                   );
+               } else {
+                  Error = new ValidationError(
+                     NullValidator.Instance,
+                     Target,
+                     this.ToString()
+                  );
                }
-
-               return new ValidationError(
-                  NullValidator.Instance,
-                  Target,
-                  this.ToString()
-               );
             }
          }
 
+         public IViewModel Owner { get; private set; }
+         public IViewModel Target { get; private set; }
+         public IVMPropertyDescriptor TargetProperty { get; private set; }
+         public ValidatorType ValidatorType { get; private set; }
+
+         public ValidationError Error { get; private set; }
+
          public bool Matches(
             ValidatorType type,
+            IViewModel owner,
             IViewModel target,
             IVMPropertyDescriptor targetProperty = null
          ) {
             return
                ValidatorType == type &&
+               (Owner == owner || Owner == null) &&
                Target == target &&
                TargetProperty == targetProperty;
          }
 
          public override string ToString() {
-            return TargetProperty != null ?
-               String.Format("{0} of {1}.{2}", ValidatorType, Target, TargetProperty) :
-               String.Format("{0} of {1}", ValidatorType, Target);
+            string ownerPostfix = Owner != null && Owner != Target ?
+               String.Format(" of {0}", Owner) :
+               String.Empty;
+
+            string propertyPostfix = TargetProperty != null ?
+               String.Format(".{0}", TargetProperty) :
+               String.Empty;
+
+            return String.Format(
+               "{0} for {1}{2}{3}",
+               ValidatorType,
+               Target,
+               propertyPostfix,
+               ownerPostfix
+            );
          }
       }
    }

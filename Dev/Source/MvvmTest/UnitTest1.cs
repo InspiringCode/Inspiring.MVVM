@@ -1,9 +1,9 @@
-﻿using Inspiring.MvvmTest.ViewModels;
+﻿using Inspiring.Mvvm.Screens;
+using Inspiring.Mvvm.ViewModels;
+using Inspiring.MvvmTest.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Sequences;
-using Inspiring.Mvvm.Screens;
-using Inspiring.Mvvm.ViewModels;
 
 namespace Inspiring.MvvmTest {
    [TestClass]
@@ -68,11 +68,6 @@ namespace Inspiring.MvvmTest {
       //   }
       //}
 
-
-      [TestMethod]
-      public void MyTestMethod() {
-
-      }
 
       [TestMethod]
       public void ThisShouldWork2() {

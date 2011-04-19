@@ -27,7 +27,7 @@
    ///   ]]>                                       
    /// </remarks>
    [TestClass]
-   public class CollectionResultCacheTests {
+   public class CollectionResultCacheTests : CollectionResultCacheFixture {
 
       public enum Validator {
          Collection1PropertyValidator,

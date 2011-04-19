@@ -36,8 +36,9 @@
       }
 
       [TestMethod]
-      public void Matches_WithMatchingViewModelPlusCollection_Succeeds() {
-         AssertMatchIfNextSucceeds(
+      public void Matches_WithMatchingViewModelPlusCollection_Fails() {
+         // Use CollectionStep for this scenario (only relevant for validation target).
+         AssertNoMatch(
             CreateStep(x => x.Projects),
             Path.Empty.Prepend(VM.GetValue(x => x.Projects)).Prepend(VM)
          );

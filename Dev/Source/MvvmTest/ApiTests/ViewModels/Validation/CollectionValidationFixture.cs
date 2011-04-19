@@ -71,6 +71,9 @@
             .WithValidators(b => {
                b.Check(x => x.ItemProperty).Custom(args => args.Owner.Setup.PerformValidation(args));
                b.CheckViewModel(args => args.Owner.Setup.PerformValidation(args));
+
+               b.EnableParentValidation(x => x.CollectionProperty);
+               b.EnableParentViewModelValidation();
             })
             .Build();
 

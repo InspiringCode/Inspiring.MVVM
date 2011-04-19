@@ -23,7 +23,7 @@
       }
 
       /// <summary>
-      ///   Allows ancestor VMs to define validators for this VM.
+      ///   Allows ancestor VMs to define property validators for this VM.
       /// </summary>
       public void EnableParentValidation<TValue>(Func<TDescriptor, IVMPropertyDescriptor<TValue>> propertySelector) {
          Contract.Requires<ArgumentNullException>(propertySelector != null);
@@ -32,6 +32,14 @@
          var property = propertySelector((TDescriptor)op.Descriptor);
 
          op.EnablePropertyValidationSourceBehavior(property);
+         op.EnableViewModelValidationSourceBehavior();
+      }
+
+      /// <summary>
+      ///   Allows ancestor VMs to define view model-level validators for this VM.
+      /// </summary>
+      public void EnableParentViewModelValidation() {
+         var op = OperationProvider.GetOperation();
          op.EnableViewModelValidationSourceBehavior();
       }
 
