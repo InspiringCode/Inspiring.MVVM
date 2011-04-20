@@ -12,24 +12,26 @@
       protected ChildVMDescriptor ChildDescriptor { get; private set; }
       protected ItemVMDescriptor ItemDescriptor { get; private set; }
 
-      protected ValidatorSetup Setup { get; private set; }
+      protected ValidatorMockConfigurationFluent Results { get; private set; }
 
       [TestInitialize]
       public void BaseSetup() {
-         Setup = new ValidatorSetup();
+         Results = new ValidatorMockConfigurationFluent();
+         var initialState = Results.GetState();
+
          ChildDescriptor = ChildVM.ClassDescriptor;
          ItemDescriptor = ItemVM.ClassDescriptor;
 
-         Item = new ItemVM(Setup);
-         Child = new ChildVM(Setup);
-         Parent = new ParentVM(Setup);
-         Grandparent = new GrandparentVM(Setup);
+         Item = new ItemVM(Results);
+         Child = new ChildVM(Results);
+         Parent = new ParentVM(Results);
+         Grandparent = new GrandparentVM(Results);
 
          Child.GetValue(x => x.Items).Add(Item);
          Parent.SetValue(x => x.Child, Child);
          Grandparent.GetValue(x => x.Children).Add(Parent);
 
-         Setup.Reset();
+         initialState.RestoreToState();
       }
 
 
@@ -44,49 +46,49 @@
             .WithValidators(b => {
                b.ValidateDescendant(x => x.Children)
                   .ValidateDescendant(x => x.Child)
-                  .Check(x => x.ChildProperty).Custom(args => args.Owner.Setup.PerformValidation(args));
+                  .Check(x => x.ChildProperty).Custom(args => args.Owner.Results.PerformValidation(args));
 
                b.ValidateDescendant(x => x.Children)
                   .ValidateDescendant(x => x.Child)
                   .ValidateDescendant(x => x.Items)
                   .Check(x => x.ItemProperty)
-                  .Custom(args => args.Owner.Setup.PerformValidation(args));
+                  .Custom(args => args.Owner.Results.PerformValidation(args));
 
 
                b.ValidateDescendant(x => x.Children)
                   .ValidateDescendant(x => x.Child)
                   .CheckCollection(x => x.Items, x => x.ItemProperty)
-                  .Custom<ItemVM>(args => args.Owner.Setup.PerformValidation(args));
+                  .Custom<ItemVM>(args => args.Owner.Results.PerformValidation(args));
 
                b.ValidateDescendant(x => x.Children)
                   .ValidateDescendant(x => x.Child)
                   .CheckCollection(x => x.Items)
-                  .Custom(args => args.Owner.Setup.PerformValidation(args));
+                  .Custom(args => args.Owner.Results.PerformValidation(args));
 
 
-               b.CheckViewModel(args => args.Owner.Setup.PerformValidation(args));
+               b.CheckViewModel(args => args.Owner.Results.PerformValidation(args));
 
                b.ValidateDescendant(x => x.Children)
-                  .CheckViewModel(args => args.Owner.Setup.PerformValidation(args));
+                  .CheckViewModel(args => args.Owner.Results.PerformValidation(args));
 
                b.ValidateDescendant(x => x.Children)
                   .ValidateDescendant(x => x.Child)
-                  .CheckViewModel(args => args.Owner.Setup.PerformValidation(args));
+                  .CheckViewModel(args => args.Owner.Results.PerformValidation(args));
 
                b.ValidateDescendant(x => x.Children)
                   .ValidateDescendant(x => x.Child)
                   .ValidateDescendant(x => x.Items)
-                  .CheckViewModel(args => args.Owner.Setup.PerformValidation(args));
+                  .CheckViewModel(args => args.Owner.Results.PerformValidation(args));
 
             })
             .Build();
 
-         public GrandparentVM(ValidatorSetup setup)
+         public GrandparentVM(ValidatorMockConfigurationFluent results)
             : base(ClassDescriptor) {
-            Setup = setup;
+            Results = results;
          }
 
-         private ValidatorSetup Setup { get; set; }
+         private ValidatorMockConfigurationFluent Results { get; set; }
       }
 
       protected class GrandparentVMDescriptor : VMDescriptor {
@@ -103,40 +105,40 @@
             })
             .WithValidators(b => {
                b.ValidateDescendant(x => x.Child)
-                  .Check(x => x.ChildProperty).Custom(args => args.Owner.Setup.PerformValidation(args));
+                  .Check(x => x.ChildProperty).Custom(args => args.Owner.Results.PerformValidation(args));
 
                b.ValidateDescendant(x => x.Child)
                   .ValidateDescendant(x => x.Items)
                   .Check(x => x.ItemProperty)
-                  .Custom(args => args.Owner.Setup.PerformValidation(args));
+                  .Custom(args => args.Owner.Results.PerformValidation(args));
 
 
                b.ValidateDescendant(x => x.Child)
                   .CheckCollection(x => x.Items, x => x.ItemProperty)
-                  .Custom<ItemVM>(args => args.Owner.Setup.PerformValidation(args));
+                  .Custom<ItemVM>(args => args.Owner.Results.PerformValidation(args));
 
                b.ValidateDescendant(x => x.Child)
                   .CheckCollection(x => x.Items)
-                  .Custom(args => args.Owner.Setup.PerformValidation(args));
+                  .Custom(args => args.Owner.Results.PerformValidation(args));
 
 
-               b.CheckViewModel(args => args.Owner.Setup.PerformValidation(args));
+               b.CheckViewModel(args => args.Owner.Results.PerformValidation(args));
 
                b.ValidateDescendant(x => x.Child)
-                  .CheckViewModel(args => args.Owner.Setup.PerformValidation(args));
+                  .CheckViewModel(args => args.Owner.Results.PerformValidation(args));
 
                b.ValidateDescendant(x => x.Child)
                   .ValidateDescendant(x => x.Items)
-                  .CheckViewModel(args => args.Owner.Setup.PerformValidation(args));
+                  .CheckViewModel(args => args.Owner.Results.PerformValidation(args));
             })
             .Build();
 
-         public ParentVM(ValidatorSetup setup)
+         public ParentVM(ValidatorMockConfigurationFluent results)
             : base(ClassDescriptor) {
-            Setup = setup;
+            Results = results;
          }
 
-         private ValidatorSetup Setup { get; set; }
+         private ValidatorMockConfigurationFluent Results { get; set; }
       }
 
       protected class ParentVMDescriptor : VMDescriptor {
@@ -156,32 +158,32 @@
             })
             .WithValidators(b => {
                b.Check(x => x.ChildProperty)
-                  .Custom(args => args.Owner.Setup.PerformValidation(args));
+                  .Custom(args => args.Owner.Results.PerformValidation(args));
 
                b.ValidateDescendant(x => x.Items)
                   .Check(x => x.ItemProperty)
-                  .Custom(args => args.Owner.Setup.PerformValidation(args));
+                  .Custom(args => args.Owner.Results.PerformValidation(args));
 
                b.CheckCollection(x => x.Items, x => x.ItemProperty)
-                  .Custom<ItemVM>(args => args.Owner.Setup.PerformValidation(args));
+                  .Custom<ItemVM>(args => args.Owner.Results.PerformValidation(args));
 
                b.CheckCollection(x => x.Items)
-                  .Custom(args => args.Owner.Setup.PerformValidation(args));
+                  .Custom(args => args.Owner.Results.PerformValidation(args));
 
 
-               b.CheckViewModel(args => args.Owner.Setup.PerformValidation(args));
+               b.CheckViewModel(args => args.Owner.Results.PerformValidation(args));
 
                b.ValidateDescendant(x => x.Items)
-                  .CheckViewModel(args => args.Owner.Setup.PerformValidation(args));
+                  .CheckViewModel(args => args.Owner.Results.PerformValidation(args));
             })
             .Build();
 
-         public ChildVM(ValidatorSetup setup)
+         public ChildVM(ValidatorMockConfigurationFluent results)
             : base(ClassDescriptor) {
-            Setup = setup;
+            Results = results;
          }
 
-         private ValidatorSetup Setup { get; set; }
+         private ValidatorMockConfigurationFluent Results { get; set; }
       }
 
       protected class ChildVMDescriptor : VMDescriptor {
@@ -202,18 +204,18 @@
                b.EnableParentViewModelValidation();
 
                b.Check(x => x.ItemProperty)
-                  .Custom(args => args.Owner.Setup.PerformValidation(args));
+                  .Custom(args => args.Owner.Results.PerformValidation(args));
 
-               b.CheckViewModel(args => args.Owner.Setup.PerformValidation(args));
+               b.CheckViewModel(args => args.Owner.Results.PerformValidation(args));
             })
             .Build();
 
-         public ItemVM(ValidatorSetup setup)
+         public ItemVM(ValidatorMockConfigurationFluent results)
             : base(ClassDescriptor) {
-            Setup = setup;
+            Results = results;
          }
 
-         private ValidatorSetup Setup { get; set; }
+         private ValidatorMockConfigurationFluent Results { get; set; }
       }
 
       protected class ItemVMDescriptor : VMDescriptor {

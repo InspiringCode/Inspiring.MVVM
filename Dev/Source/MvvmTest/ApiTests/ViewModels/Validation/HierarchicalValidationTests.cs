@@ -5,127 +5,111 @@
    public class HierarchicalValidationTests : HierarchicalValidationFixture {
       [TestMethod]
       public void Revalidate_ExecutesAncestorPropertyValidators() {
-         Setup.ForOwner(Child).SetupPropertyError(Child, ChildDescriptor.ChildProperty);
-         Setup.ForOwner(Parent).SetupPropertyError(Child, ChildDescriptor.ChildProperty);
-         Setup.ForOwner(Grandparent).SetupPropertyError(Child, ChildDescriptor.ChildProperty);
+         Results.SetupFailing.PropertyValidation
+            .Targeting(Child, x => x.ChildProperty)
+            .On(Child, Parent, Grandparent);
 
-         Setup.ForOwner(Child).ExpectPropertyValidatorInvocation(Child, ChildDescriptor.ChildProperty);
-         Setup.ForOwner(Parent).ExpectPropertyValidatorInvocation(Child, ChildDescriptor.ChildProperty);
-         Setup.ForOwner(Grandparent).ExpectPropertyValidatorInvocation(Child, ChildDescriptor.ChildProperty);
+         Results.ExpectInvocationOf.PropertyValidation
+            .Targeting(Child, x => x.ChildProperty)
+            .On(Child, Parent, Grandparent);
 
-         // The view model validation is triggered by the validation state change
-         Setup.ForOwner(Child).ExpectViewModelValidatorInvocation(Child);
-         Setup.ForOwner(Parent).ExpectViewModelValidatorInvocation(Child);
-         Setup.ForOwner(Grandparent).ExpectViewModelValidatorInvocation(Child);
+         ExpectInvocationOfViewModelValidatorsFromChildToGrandparentBecauseValidationStateChanged();
 
-         Setup.ForOwner(Parent).ExpectViewModelValidatorInvocation(Parent);
-         Setup.ForOwner(Grandparent).ExpectViewModelValidatorInvocation(Parent);
-
-         Setup.ForOwner(Grandparent).ExpectViewModelValidatorInvocation(Grandparent);
-
-         Child.Revalidate(ChildDescriptor.ChildProperty);
-         Setup.VerifyAllStrict();
+         Child.Revalidate(x => x.ChildProperty);
+         Results.VerifySequenceAndResults();
       }
+
 
       [TestMethod]
       public void Revalidate_ExecutesAncestorViewModelValidators() {
-         Setup.ForOwner(Child).SetupViewModelError(Child);
-         Setup.ForOwner(Parent).SetupViewModelError(Child);
-         Setup.ForOwner(Grandparent).SetupViewModelError(Child);
+         Results.SetupFailing.ViewModelValidation
+            .Targeting(Child)
+            .On(Child, Parent, Grandparent);
 
-         Setup.ForOwner(Child).ExpectViewModelValidatorInvocation(Child);
-         Setup.ForOwner(Parent).ExpectViewModelValidatorInvocation(Child);
-         Setup.ForOwner(Grandparent).ExpectViewModelValidatorInvocation(Child);
+         Results.ExpectInvocationOf.ViewModelValidation
+            .Targeting(Child)
+            .On(Child, Parent, Grandparent);
 
-         // The second executions are triggered by the validation state change
-         Setup.ForOwner(Child).ExpectViewModelValidatorInvocation(Child);
-         Setup.ForOwner(Parent).ExpectViewModelValidatorInvocation(Child);
-         Setup.ForOwner(Grandparent).ExpectViewModelValidatorInvocation(Child);
-
-         Setup.ForOwner(Parent).ExpectViewModelValidatorInvocation(Parent);
-         Setup.ForOwner(Grandparent).ExpectViewModelValidatorInvocation(Parent);
-
-         Setup.ForOwner(Grandparent).ExpectViewModelValidatorInvocation(Grandparent);
-
+         ExpectInvocationOfViewModelValidatorsFromChildToGrandparentBecauseValidationStateChanged();
 
          Child.RevalidateViewModelValidations();
-         Setup.VerifyAllStrict();
+         Results.VerifySequenceAndResults();
       }
 
       [TestMethod]
       public void Revalidate_ExecutesAncestorCollectionPropertyValidators() {
-         Setup.ForOwner(Child).SetupCollectionPropertyError(Item, ItemDescriptor.ItemProperty);
-         Setup.ForOwner(Parent).SetupCollectionPropertyError(Item, ItemDescriptor.ItemProperty);
-         Setup.ForOwner(Grandparent).SetupCollectionPropertyError(Item, ItemDescriptor.ItemProperty);
+         Results.SetupFailing.CollectionPropertyValidation
+            .Targeting(Item, x => x.ItemProperty)
+            .On(Child, Parent, Grandparent);
 
-         Setup.ForOwner(Item).ExpectPropertyValidatorInvocation(Item, ItemDescriptor.ItemProperty);
-         Setup.ForOwner(Child).ExpectPropertyValidatorInvocation(Item, ItemDescriptor.ItemProperty);
-         Setup.ForOwner(Parent).ExpectPropertyValidatorInvocation(Item, ItemDescriptor.ItemProperty);
-         Setup.ForOwner(Grandparent).ExpectPropertyValidatorInvocation(Item, ItemDescriptor.ItemProperty);
+         Results.ExpectInvocationOf.PropertyValidation
+            .Targeting(Item, x => x.ItemProperty)
+            .On(Item, Child, Parent, Grandparent);
 
-         Setup.ForOwner(Child).ExpectCollectionPropertyInvocation(Item, ItemDescriptor.ItemProperty);
-         Setup.ForOwner(Parent).ExpectCollectionPropertyInvocation(Item, ItemDescriptor.ItemProperty);
-         Setup.ForOwner(Grandparent).ExpectCollectionPropertyInvocation(Item, ItemDescriptor.ItemProperty);
+         Results.ExpectInvocationOf.CollectionPropertyValidation
+            .Targeting(Item, x => x.ItemProperty)
+            .On(Child, Parent, Grandparent);
 
-         // The view model validation is triggered by the validation state change
-         Setup.ForOwner(Item).ExpectViewModelValidatorInvocation(Item);
-         Setup.ForOwner(Child).ExpectViewModelValidatorInvocation(Item);
-         Setup.ForOwner(Parent).ExpectViewModelValidatorInvocation(Item);
-         Setup.ForOwner(Grandparent).ExpectViewModelValidatorInvocation(Item);
+         ExpectInvocationOfViewModelValidatorsFromItemToGrandparentBecauseValidationStateChanged();
 
-         Setup.ForOwner(Child).ExpectCollectionViewModelValidatorInvocation(Item);
-         Setup.ForOwner(Parent).ExpectCollectionViewModelValidatorInvocation(Item);
-         Setup.ForOwner(Grandparent).ExpectCollectionViewModelValidatorInvocation(Item);
-
-         Setup.ForOwner(Child).ExpectViewModelValidatorInvocation(Child);
-         Setup.ForOwner(Parent).ExpectViewModelValidatorInvocation(Child);
-         Setup.ForOwner(Grandparent).ExpectViewModelValidatorInvocation(Child);
-
-         Setup.ForOwner(Parent).ExpectViewModelValidatorInvocation(Parent);
-         Setup.ForOwner(Grandparent).ExpectViewModelValidatorInvocation(Parent);
-
-         Setup.ForOwner(Grandparent).ExpectViewModelValidatorInvocation(Grandparent);
-
-         Item.Revalidate(ItemDescriptor.ItemProperty);
-         Setup.VerifyAllStrict();
+         Item.Revalidate(x => x.ItemProperty);
+         Results.VerifySequenceAndResults();
       }
 
       [TestMethod]
       public void Revalidate_ExecutesAncestorCollectionViewModelValidators() {
-         Setup.ForOwner(Child).SetupCollectionViewModelError(Item);
-         Setup.ForOwner(Parent).SetupCollectionViewModelError(Item);
-         Setup.ForOwner(Grandparent).SetupCollectionViewModelError(Item);
+         Results.SetupFailing.CollectionViewModelValidation
+            .Targeting(Item)
+            .On(Child, Parent, Grandparent);
 
-         Setup.ForOwner(Item).ExpectViewModelValidatorInvocation(Item);
-         Setup.ForOwner(Child).ExpectViewModelValidatorInvocation(Item);
-         Setup.ForOwner(Parent).ExpectViewModelValidatorInvocation(Item);
-         Setup.ForOwner(Grandparent).ExpectViewModelValidatorInvocation(Item);
+         Results.ExpectInvocationOf.ViewModelValidation
+            .Targeting(Item)
+            .On(Item, Child, Parent, Grandparent);
 
-         Setup.ForOwner(Child).ExpectCollectionViewModelValidatorInvocation(Item);
-         Setup.ForOwner(Parent).ExpectCollectionViewModelValidatorInvocation(Item);
-         Setup.ForOwner(Grandparent).ExpectCollectionViewModelValidatorInvocation(Item);
+         Results.ExpectInvocationOf.CollectionViewModelValidation
+            .Targeting(Item)
+            .On(Child, Parent, Grandparent);
 
-         // The second executions are triggered by the validation state change
-         Setup.ForOwner(Item).ExpectViewModelValidatorInvocation(Item);
-         Setup.ForOwner(Child).ExpectViewModelValidatorInvocation(Item);
-         Setup.ForOwner(Parent).ExpectViewModelValidatorInvocation(Item);
-         Setup.ForOwner(Grandparent).ExpectViewModelValidatorInvocation(Item);
-
-         Setup.ForOwner(Child).ExpectCollectionViewModelValidatorInvocation(Item);
-         Setup.ForOwner(Parent).ExpectCollectionViewModelValidatorInvocation(Item);
-         Setup.ForOwner(Grandparent).ExpectCollectionViewModelValidatorInvocation(Item);
-
-         Setup.ForOwner(Child).ExpectViewModelValidatorInvocation(Child);
-         Setup.ForOwner(Parent).ExpectViewModelValidatorInvocation(Child);
-         Setup.ForOwner(Grandparent).ExpectViewModelValidatorInvocation(Child);
-
-         Setup.ForOwner(Parent).ExpectViewModelValidatorInvocation(Parent);
-         Setup.ForOwner(Grandparent).ExpectViewModelValidatorInvocation(Parent);
-
-         Setup.ForOwner(Grandparent).ExpectViewModelValidatorInvocation(Grandparent);
+         ExpectInvocationOfViewModelValidatorsFromItemToGrandparentBecauseValidationStateChanged();
 
          Item.RevalidateViewModelValidations();
-         Setup.VerifyAllStrict();
+         Results.VerifySequenceAndResults();
+      }
+
+      private void ExpectInvocationOfViewModelValidatorsFromChildToGrandparentBecauseValidationStateChanged() {
+         Results.ExpectInvocationOf.ViewModelValidation
+            .Targeting(Child)
+            .On(Child, Parent, Grandparent);
+
+         Results.ExpectInvocationOf.ViewModelValidation
+            .Targeting(Parent)
+            .On(Parent, Grandparent);
+
+         Results.ExpectInvocationOf.ViewModelValidation
+            .Targeting(Grandparent)
+            .On(Grandparent);
+      }
+
+      private void ExpectInvocationOfViewModelValidatorsFromItemToGrandparentBecauseValidationStateChanged() {
+         Results.ExpectInvocationOf.ViewModelValidation
+            .Targeting(Item)
+            .On(Item, Child, Parent, Grandparent);
+
+         Results.ExpectInvocationOf.CollectionViewModelValidation
+            .Targeting(Item)
+            .On(Child, Parent, Grandparent);
+
+         Results.ExpectInvocationOf.ViewModelValidation
+            .Targeting(Child)
+            .On(Child, Parent, Grandparent);
+
+         Results.ExpectInvocationOf.ViewModelValidation
+            .Targeting(Parent)
+            .On(Parent, Grandparent);
+
+         Results.ExpectInvocationOf.ViewModelValidation
+            .Targeting(Grandparent)
+            .On(Grandparent);
       }
    }
 }

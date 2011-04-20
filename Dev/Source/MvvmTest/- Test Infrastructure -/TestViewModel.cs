@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.MvvmTest {
+   using System;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
 
@@ -17,7 +18,8 @@
          base.Revalidate();
       }
 
-      public void Revalidate(IVMPropertyDescriptor property) {
+      public void Revalidate(Func<TDescriptor, IVMPropertyDescriptor> propertySelector) {
+         var property = propertySelector(Descriptor);
          Kernel.Revalidate(property, ValidationMode.CommitValidValues);
       }
 
