@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.MvvmTest {
+   using System;
    using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.Common;
@@ -34,7 +35,7 @@
 
       public static void AreEqual(ValidationResult expectedResult, ValidationResult actualResult) {
          bool errorsEqual = expectedResult.Errors.SequenceEqual(
-            expectedResult.Errors,
+            actualResult.Errors,
             ValidationErrorComparer.Default
          );
 
@@ -78,6 +79,45 @@
                "Expected {0} to be valid but returned result {1}.",
                vm,
                vm.Kernel.GetValidationState()
+            );
+         }
+      }
+
+      public static void IsValid(ValidationResult result) {
+         if (!result.IsValid) {
+            Assert.Fail("Expected result to be valid but was {0}.", result);
+         }
+      }
+
+      public static void IsValid<TDescriptor>(
+         IViewModel<TDescriptor> vm,
+         Func<TDescriptor, IVMPropertyDescriptor> propertySelector
+      ) where TDescriptor : VMDescriptorBase {
+         var property = propertySelector((TDescriptor)vm.Descriptor);
+         IsValid(vm, property);
+      }
+
+      public static void IsValid(IViewModel vm, IVMPropertyDescriptor property) {
+         var propertyResult = vm.Kernel.GetValidationState(property);
+
+         if (!propertyResult.IsValid) {
+            Assert.Fail(
+               "Expected {0}.{1} to be valid but returned result {2}.",
+               vm,
+               property,
+               propertyResult
+            );
+         }
+      }
+
+      public static void ValidViewModelValidationResultIsValid(IViewModel vm) {
+         var result = vm.Kernel.GetValidationState(ValidationResultScope.ViewModelValidationsOnly);
+
+         if (!result.IsValid) {
+            Assert.Fail(
+               "Expected view model validations of {0} to be valid but returned result {1}.",
+               vm,
+               result
             );
          }
       }

@@ -1,227 +1,175 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Validation {
-   using System;
-   using System.Linq;
-   using Microsoft.VisualStudio.TestTools.UnitTesting;
-   using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.Mvvm.ViewModels;
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+   /// <remarks>
+   ///   <![CDATA[                                  
+   ///                                     ___ItemA
+   ///                                   /   
+   ///                                  /       
+   ///                 --> CollectionA  -------       
+   ///                |                 \      |
+   ///               Owner1              \     |    
+   ///                |                   \    |
+   ///                 --> CollectionB ----\--ItemAB
+   ///                                 \    \
+   ///                                  \    \
+   ///                                   \____ItemABC 
+   ///                                             \
+   ///                                              ----- CollectionC <--- Owner2
+   ///                                             /
+   ///                                        ItemC
+   ///   ]]>                                       
+   /// </remarks>
    [TestClass]
    public class CollectionResultCacheFixture : TestBase {
-      public class ItemListVM : ViewModel<ItemListVMDescriptor> {
-         public static readonly ItemListVMDescriptor ClassDescriptor = VMDescriptorBuilder
-            .OfType<ItemListVMDescriptor>()
-            .For<ItemListVM>()
-            .WithProperties((d, c) => {
-               var b = c.GetPropertyBuilder();
+      protected TwoItemListsVM Owner1 { get; private set; }
+      protected ItemListVM Owner2 { get; private set; }
 
-               d.Collection3 = b.Collection.Of<ItemVM>(ItemVM.ClassDescriptor);
-            })
-            .WithValidators(b => {
-               b.CheckCollection(x => x.Collection3)
-                 .Custom(Collection3ViewModelValidator);
+      protected ItemVM ItemA { get; private set; }
+      protected ItemVM ItemAB { get; private set; }
+      protected ItemVM ItemABC { get; private set; }
+      protected ItemVM ItemC { get; private set; }
 
-               b.CheckCollection<ItemVMDescriptor, string>(x => x.Collection3, x => x.Name)
-                  .Custom<ItemVM>(Collection3PropertyValidator);
-            })
-            .Build();
+      protected const string CollectionAValidatorKey = "CollectionA";
+      protected const string CollectionBValidatorKey = "CollectionB";
+      protected const string CollectionCValidatorKey = "CollectionC";
 
-         private readonly CollectionResultCacheTests _testFixture;
-         private readonly ValidatorInvocationLog _invocationLog;
+      protected ValidatorMockConfigurationFluent Results { get; private set; }
 
-         public ItemListVM(CollectionResultCacheTests testFixture, ValidatorInvocationLog invocationLog)
-            : base(ClassDescriptor) {
-            _testFixture = testFixture;
-            _invocationLog = invocationLog;
-         }
+      [TestInitialize]
+      public void FixtureSetup() {
+         Results = new ValidatorMockConfigurationFluent();
+         var initialState = Results.GetState();
 
-         public CollectionResultCacheTests TestFixture {
-            get { return _testFixture; }
-         }
+         Owner1 = new TwoItemListsVM(Results);
+         Owner2 = new ItemListVM(Results);
 
-         private ValidatorInvocationLog InvocationLog {
-            get { return _invocationLog; }
-         }
+         ItemA = new ItemVM(Results, "ItemA");
+         ItemAB = new ItemVM(Results, "ItemAB");
+         ItemABC = new ItemVM(Results, "ItemABC");
+         ItemC = new ItemVM(Results, "ItemC");
 
-         private static void Collection3ViewModelValidator(
-            CollectionValidationArgs<ItemListVM, ItemVM> args
-         ) {
-            args.Owner.InvocationLog.AddCall(
-               CollectionResultCacheTests.Validator.Collection3ViewModelValidator,
-               args
-            );
-            var invalidItems = args.Owner.TestFixture.InvalidItemsOfCollection3ViewModelValidator.ToList();
+         Owner1.CollectionA.Add(ItemA);
+         Owner1.CollectionA.Add(ItemAB);
+         Owner1.CollectionA.Add(ItemABC);
 
-            invalidItems.ForEach(i =>
-               args.AddError(i, CollectionResultCacheTests.Collection3ViewModelValidationErrorMessage)
-            );
-         }
+         Owner1.CollectionB.Add(ItemAB);
+         Owner1.CollectionB.Add(ItemABC);
 
-         private static void Collection3PropertyValidator(
-            CollectionValidationArgs<ItemListVM, ItemVM, string> args
-         ) {
-            args.Owner.InvocationLog.AddCall(
-               CollectionResultCacheTests.Validator.Collection3PropertyValidator,
-               args
-            );
-            var invalidItems = args.Owner.TestFixture.InvalidItemsOfCollection3PropertyValidator.ToList();
+         Owner2.CollectionC.Add(ItemABC);
+         Owner2.CollectionC.Add(ItemC);
 
-            invalidItems.ForEach(i =>
-               args.AddError(i, CollectionResultCacheTests.Collection3PropertyValidationErrorMessage)
-            );
-         }
+         initialState.RestoreToState();
       }
 
-      public class ItemListVMDescriptor : VMDescriptor {
-         public IVMPropertyDescriptor<IVMCollection<ItemVM>> Collection3 { get; set; }
-      }
-
-
-      public class TwoItemListsVM : ViewModel<TwoItemListsVMDescriptor> {
+      public class TwoItemListsVM : TestViewModel<TwoItemListsVMDescriptor> {
          public static readonly TwoItemListsVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<TwoItemListsVMDescriptor>()
             .For<TwoItemListsVM>()
             .WithProperties((d, c) => {
                var b = c.GetPropertyBuilder();
 
-               d.Collection1 = b.Collection.Of<ItemVM>(ItemVM.ClassDescriptor);
-               d.Collection2 = b.Collection.Of<ItemVM>(ItemVM.ClassDescriptor);
+               d.CollectionA = b.Collection.Of<ItemVM>(ItemVM.ClassDescriptor);
+               d.CollectionB = b.Collection.Of<ItemVM>(ItemVM.ClassDescriptor);
             })
             .WithValidators(b => {
-               b.CheckCollection(x => x.Collection1)
-                  .Custom(Collection1ViewModelValidator);
+               b.CheckCollection(x => x.CollectionA)
+                  .Custom(args => args.Owner.Results.PerformValidation(args, CollectionAValidatorKey));
 
-               b.CheckCollection<ItemVMDescriptor, string>(x => x.Collection1, x => x.Name)
-                  .Custom<ItemVM>(Collection1PropertyValidator);
+               b.CheckCollection<ItemVMDescriptor, string>(x => x.CollectionA, x => x.ItemProperty)
+                  .Custom<ItemVM>(args => args.Owner.Results.PerformValidation(args, CollectionAValidatorKey));
 
-               b.CheckCollection(x => x.Collection2)
-                  .Custom(Collection2ViewModelValidator);
+               b.CheckCollection(x => x.CollectionB)
+                  .Custom(args => args.Owner.Results.PerformValidation(args, CollectionBValidatorKey));
 
-               b.CheckCollection<ItemVMDescriptor, string>(x => x.Collection2, x => x.Name)
-                  .Custom<ItemVM>(Collection2PropertyValidator);
+               b.CheckCollection<ItemVMDescriptor, string>(x => x.CollectionB, x => x.ItemProperty)
+                  .Custom<ItemVM>(args => args.Owner.Results.PerformValidation(args, CollectionBValidatorKey));
             })
             .Build();
 
-         private readonly CollectionResultCacheTests _testFixture;
-         private readonly ValidatorInvocationLog _invocationLog;
-
-         public TwoItemListsVM(CollectionResultCacheTests testFixture, ValidatorInvocationLog invocationLog)
+         public TwoItemListsVM(ValidatorMockConfiguration results)
             : base(ClassDescriptor) {
-            _testFixture = testFixture;
-            _invocationLog = invocationLog;
+            Results = results;
          }
 
-         public CollectionResultCacheTests TestFixture {
-            get { return _testFixture; }
+         public IVMCollection<ItemVM> CollectionA {
+            get { return GetValue(Descriptor.CollectionA); }
          }
 
-         private ValidatorInvocationLog InvocationLog {
-            get { return _invocationLog; }
+         public IVMCollection<ItemVM> CollectionB {
+            get { return GetValue(Descriptor.CollectionB); }
          }
 
-         private static void Collection1ViewModelValidator(
-            CollectionValidationArgs<TwoItemListsVM, ItemVM> args
-         ) {
-            args.Owner.InvocationLog.AddCall(
-               CollectionResultCacheTests.Validator.Collection1ViewModelValidator,
-               args
-            );
-            var invalidItems = args.Owner.TestFixture.InvalidItemsOfCollection1ViewModelValidator.ToList();
-
-            invalidItems.ForEach(i =>
-               args.AddError(i, CollectionResultCacheTests.Collection1ViewModelValidationErrorMessage)
-            );
-         }
-
-         private static void Collection1PropertyValidator(
-            CollectionValidationArgs<TwoItemListsVM, ItemVM, string> args
-         ) {
-            args.Owner.InvocationLog.AddCall(
-               CollectionResultCacheTests.Validator.Collection1PropertyValidator,
-               args
-            );
-            var invalidItems = args.Owner.TestFixture.InvalidItemsOfCollection1PropertyValidator.ToList();
-
-            invalidItems.ForEach(i =>
-               args.AddError(i, CollectionResultCacheTests.Collection1PropertyValidationErrorMessage)
-            );
-         }
-
-         private static void Collection2ViewModelValidator(
-            CollectionValidationArgs<TwoItemListsVM, ItemVM> args
-         ) {
-            args.Owner.InvocationLog.AddCall(
-               CollectionResultCacheTests.Validator.Collection2ViewModelValidator,
-               args
-            );
-
-            var invalidItems = args.Owner.TestFixture.InvalidItemsOfCollection2ViewModelValidator.ToList();
-
-            invalidItems.ForEach(i =>
-               args.AddError(i, CollectionResultCacheTests.Collection2ViewModelValidationErrorMessage)
-            );
-         }
-
-         private static void Collection2PropertyValidator(
-            CollectionValidationArgs<TwoItemListsVM, ItemVM, string> args
-         ) {
-            args.Owner.InvocationLog.AddCall(
-               CollectionResultCacheTests.Validator.Collection2PropertyValidator,
-               args
-            );
-            var invalidItems = args.Owner.TestFixture.InvalidItemsOfCollection2PropertyValidator.ToList();
-
-            invalidItems.ForEach(i =>
-               args.AddError(i, CollectionResultCacheTests.Collection2PropertyValidationErrorMessage)
-            );
-         }
+         private ValidatorMockConfiguration Results { get; set; }
       }
 
       public class TwoItemListsVMDescriptor : VMDescriptor {
-         public IVMPropertyDescriptor<IVMCollection<ItemVM>> Collection1 { get; set; }
-         public IVMPropertyDescriptor<IVMCollection<ItemVM>> Collection2 { get; set; }
+         public IVMPropertyDescriptor<IVMCollection<ItemVM>> CollectionA { get; set; }
+         public IVMPropertyDescriptor<IVMCollection<ItemVM>> CollectionB { get; set; }
       }
 
 
-      public class ItemVM : ViewModel<ItemVMDescriptor> {
+      public class ItemListVM : TestViewModel<ItemListVMDescriptor> {
+         public static readonly ItemListVMDescriptor ClassDescriptor = VMDescriptorBuilder
+            .OfType<ItemListVMDescriptor>()
+            .For<ItemListVM>()
+            .WithProperties((d, c) => {
+               var b = c.GetPropertyBuilder();
+
+               d.CollectionC = b.Collection.Of<ItemVM>(ItemVM.ClassDescriptor);
+            })
+            .WithValidators(b => {
+               b.CheckCollection(x => x.CollectionC)
+                 .Custom(args => args.Owner.Results.PerformValidation(args, CollectionCValidatorKey));
+
+               b.CheckCollection<ItemVMDescriptor, string>(x => x.CollectionC, x => x.ItemProperty)
+                  .Custom<ItemVM>(args => args.Owner.Results.PerformValidation(args, CollectionCValidatorKey));
+            })
+            .Build();
+
+         public ItemListVM(ValidatorMockConfiguration results)
+            : base(ClassDescriptor) {
+            Results = results;
+         }
+
+         public IVMCollection<ItemVM> CollectionC {
+            get { return GetValue(Descriptor.CollectionC); }
+         }
+
+         private ValidatorMockConfiguration Results { get; set; }
+      }
+
+      public class ItemListVMDescriptor : VMDescriptor {
+         public IVMPropertyDescriptor<IVMCollection<ItemVM>> CollectionC { get; set; }
+      }
+
+      public class ItemVM : TestViewModel<ItemVMDescriptor> {
          public static readonly ItemVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<ItemVMDescriptor>()
             .For<ItemVM>()
             .WithProperties((d, c) => {
                var b = c.GetPropertyBuilder();
-               d.Name = b.Property.Of<string>();
+               d.ItemProperty = b.Property.Of<string>();
             })
             .WithValidators(b => {
-               b.Check(x => x.Name).Custom(PropertyValidator);
+               b.Check(x => x.ItemProperty)
+                  .Custom(args => args.Owner.Results.PerformValidation(args));
+
+               b.CheckViewModel(args => args.Owner.Results.PerformValidation(args));
             })
             .Build();
 
-         private readonly CollectionResultCacheTests _testFixture;
-
-         public ItemVM(CollectionResultCacheTests testFixture, string name)
-            : base(ClassDescriptor) {
-            _testFixture = testFixture;
-            SetValue(Descriptor.Name, name);
+         public ItemVM(ValidatorMockConfiguration results, string name)
+            : base(ClassDescriptor, name) {
+            Results = results;
          }
 
-         public CollectionResultCacheTests TestFixture {
-            get { return _testFixture; }
-         }
-
-         public void Revalidate() {
-            base.Revalidate();
-         }
-
-         private static void PropertyValidator(
-            PropertyValidationArgs<ItemVM, ItemVM, string> args
-         ) {
-            if (args.Owner.TestFixture.InvalidItemsOfItemVMPropertyValidator.Contains(args.Target)) {
-               args.AddError(CollectionResultCacheTests.NamePropertyValidatorErrorMessage);
-            }
-         }
+         private ValidatorMockConfiguration Results { get; set; }
       }
 
       public class ItemVMDescriptor : VMDescriptor {
-         public IVMPropertyDescriptor<string> Name { get; set; }
+         public IVMPropertyDescriptor<string> ItemProperty { get; set; }
       }
    }
 }

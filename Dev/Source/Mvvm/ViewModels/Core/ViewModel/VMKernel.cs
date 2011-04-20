@@ -107,7 +107,7 @@
       public ValidationResult GetValidationState(ValidationResultScope scope = ValidationResultScope.All) {
          return _descriptor
             .Behaviors
-            .GetValidationResultNext(this, ValidationResultScope.All);
+            .GetValidationResultNext(this, scope);
       }
 
       public ValidationResult GetValidationState(IVMPropertyDescriptor forProperty) {

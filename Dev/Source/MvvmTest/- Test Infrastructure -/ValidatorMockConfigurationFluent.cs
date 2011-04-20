@@ -3,21 +3,22 @@
    using Inspiring.Mvvm.ViewModels;
 
    public sealed class ValidatorMockConfigurationFluent : ValidatorMockConfiguration {
-      public IValidatorTypeSelector SetupFailing {
-         get { return new ValidatorTypeSelector(SetupFailingValidator); }
-      }
-
       public IValidatorTypeSelector SetupSucceeding {
          get { return new ValidatorTypeSelector(SetupSucceedingValidator); }
-      }
-
-      public IValidatorTypeSelector SetFailed {
-         get { return new ValidatorTypeSelector(SetFailedResult); }
       }
 
       public IValidatorTypeSelector ExpectInvocationOf {
          get { return new ValidatorTypeSelector(ExpectInvocation); }
       }
+
+      public IValidatorTypeSelector SetupFailing(string errorDetails = null) {
+         return new ValidatorTypeSelector(x => SetupFailingValidator(x, errorDetails));
+      }
+
+      public IValidatorTypeSelector SetFailed(string errorDetails = null) {
+         return new ValidatorTypeSelector(x => SetFailedResult(x, errorDetails));
+      }
+
 
       public interface IValidatorTypeSelector {
          IValidatorInvocationTargetSelector PropertyValidation { get; }
@@ -58,6 +59,14 @@
          ///   Creates a setup/expectation for each owner in <paramref name="owners"/>.
          /// </summary>
          void On(params IViewModel[] owners);
+
+
+         /// <summary>
+         ///   Creates a setup/expectation for the passed <paramref name="owner"/> that
+         ///   is used if the passed <paramref name="validatorKey"/> is passed to
+         ///   <see cref="ValidatorMockConfiguration.PerformValidation"/>.
+         /// </summary>
+         void On(IViewModel owner, object validatorKey);
       }
 
       private class ValidatorTypeSelector : IValidatorTypeSelector {
@@ -123,6 +132,10 @@
             foreach (IViewModel owner in owners) {
                _additionAction(new ValidatorInvocation(_validatorType, owner, _target, _targetProperty));
             }
+         }
+
+         public void On(IViewModel owner, object validatorKey) {
+            _additionAction(new ValidatorInvocation(_validatorType, owner, _target, _targetProperty, validatorKey));
          }
       }
    }

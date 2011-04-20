@@ -5,7 +5,7 @@
    public class HierarchicalValidationTests : HierarchicalValidationFixture {
       [TestMethod]
       public void Revalidate_ExecutesAncestorPropertyValidators() {
-         Results.SetupFailing.PropertyValidation
+         Results.SetupFailing().PropertyValidation
             .Targeting(Child, x => x.ChildProperty)
             .On(Child, Parent, Grandparent);
 
@@ -22,7 +22,7 @@
 
       [TestMethod]
       public void Revalidate_ExecutesAncestorViewModelValidators() {
-         Results.SetupFailing.ViewModelValidation
+         Results.SetupFailing().ViewModelValidation
             .Targeting(Child)
             .On(Child, Parent, Grandparent);
 
@@ -38,7 +38,7 @@
 
       [TestMethod]
       public void Revalidate_ExecutesAncestorCollectionPropertyValidators() {
-         Results.SetupFailing.CollectionPropertyValidation
+         Results.SetupFailing().CollectionPropertyValidation
             .Targeting(Item, x => x.ItemProperty)
             .On(Child, Parent, Grandparent);
 
@@ -58,7 +58,7 @@
 
       [TestMethod]
       public void Revalidate_ExecutesAncestorCollectionViewModelValidators() {
-         Results.SetupFailing.CollectionViewModelValidation
+         Results.SetupFailing().CollectionViewModelValidation
             .Targeting(Item)
             .On(Child, Parent, Grandparent);
 

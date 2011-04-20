@@ -18,6 +18,14 @@
       protected List<ValidatorInvocation> ExpectedInvocations { get; private set; }
       protected List<ValidatorInvocation> ActualInvocations { get; private set; }
 
+      public IEnumerable<ValidationResult> SetupResults {
+         get {
+            return ValidatorSetups
+               .Select(x => x.Result)
+               .Where(x => !x.IsValid);
+         }
+      }
+
       public void VerifySequenceAndResults() {
          VerifyInvocationSequence();
          VerifyValidationResults();
@@ -31,11 +39,24 @@
 
          ValidationAssert.Errors(expectedErrors);
 
-         var expectedSuccesses = ValidatorSetups
-            .Where(x => x.Result.IsValid);
+         var validViewModelPropertyCombinations = ActualInvocations
+            .GroupBy(x => new { VM = x.Target, Prop = x.TargetProperty })
+            .Where(g =>
+               !ValidatorSetups
+                  .Select(x => new { VM = x.Invocation.Target, Prop = x.Invocation.TargetProperty })
+                  .Contains(g.Key)
+            );
 
-         expectedSuccesses
-            .ForEach(x => ValidationAssert.IsValid(x.Invocation.Target));
+         foreach (var item in validViewModelPropertyCombinations) {
+            var target = item.Key.VM;
+            var targetProperty = item.Key.Prop;
+
+            if (targetProperty != null) {
+               ValidationAssert.IsValid(target, targetProperty);
+            } else {
+               ValidationAssert.ValidViewModelValidationResultIsValid(target);
+            }
+         }
       }
 
       public void VerifyInvocationSequence() {
@@ -54,7 +75,8 @@
       }
 
       public void PerformValidation<TOwnerVM, TTargetVM, TValue>(
-         PropertyValidationArgs<TOwnerVM, TTargetVM, TValue> args
+         PropertyValidationArgs<TOwnerVM, TTargetVM, TValue> args,
+         object validatorKey = null
       )
          where TOwnerVM : IViewModel
          where TTargetVM : IViewModel {
@@ -64,12 +86,14 @@
             ValidatorType.Property,
             args.Owner,
             args.Target,
+            validatorKey,
             args.TargetProperty
          );
       }
 
       public void PerformValidation<TOwnerVM, TTargetVM>(
-         ViewModelValidationArgs<TOwnerVM, TTargetVM> args
+         ViewModelValidationArgs<TOwnerVM, TTargetVM> args,
+         object validatorKey = null
       )
          where TOwnerVM : IViewModel
          where TTargetVM : IViewModel {
@@ -78,12 +102,14 @@
             errorMessage => args.AddError(errorMessage),
             ValidatorType.ViewModel,
             args.Owner,
-            args.Target
+            args.Target,
+            validatorKey
          );
       }
 
       public void PerformValidation<TOwnerVM, TItemVM, TValue>(
-         CollectionValidationArgs<TOwnerVM, TItemVM, TValue> args
+         CollectionValidationArgs<TOwnerVM, TItemVM, TValue> args,
+         object validatorKey = null
       )
          where TOwnerVM : IViewModel
          where TItemVM : IViewModel {
@@ -94,13 +120,15 @@
                ValidatorType.CollectionProperty,
                args.Owner,
                item,
+               validatorKey,
                args.TargetProperty
             );
          }
       }
 
       public void PerformValidation<TOwnerVM, TItemVM>(
-         CollectionValidationArgs<TOwnerVM, TItemVM> args
+         CollectionValidationArgs<TOwnerVM, TItemVM> args,
+         object validatorKey = null
       )
          where TOwnerVM : IViewModel
          where TItemVM : IViewModel {
@@ -110,7 +138,8 @@
                errorMessage => args.AddError(item, errorMessage),
                ValidatorType.CollectionViewModel,
                args.Owner,
-               item
+               item,
+               validatorKey
             );
          }
       }
@@ -120,9 +149,10 @@
          ValidatorType type,
          IViewModel owner,
          IViewModel target,
+         object validatorKey,
          IVMPropertyDescriptor targetProperty = null
       ) {
-         var invocation = new ValidatorInvocation(type, owner, target, targetProperty);
+         var invocation = new ValidatorInvocation(type, owner, target, targetProperty, validatorKey);
 
          var errors = ValidatorSetups
             .Where(x => x.Invocation.Equals(invocation))
@@ -131,23 +161,23 @@
          errors.ForEach(x => addValidationErrorAction(x.Message));
 
          ActualInvocations.Add(
-            new ValidatorInvocation(type, owner, target, targetProperty)
+            new ValidatorInvocation(type, owner, target, targetProperty, validatorKey)
          );
       }
 
 
-      protected void SetupFailingValidator(ValidatorInvocation forInvocation) {
-         ValidatorSetups.Add(ValidatorResultSetup.Failing(forInvocation));
+      protected void SetupFailingValidator(ValidatorInvocation forInvocation, string errorDetails) {
+         ValidatorSetups.Add(ValidatorResultSetup.Failing(forInvocation, errorDetails));
       }
 
       protected void SetupSucceedingValidator(ValidatorInvocation forInvocation) {
          ValidatorSetups.Add(ValidatorResultSetup.Succeeding(forInvocation));
       }
 
-      protected void SetFailedResult(ValidatorInvocation target) {
+      protected void SetFailedResult(ValidatorInvocation target, string errorDetails) {
          var stateBefore = GetState();
 
-         SetupFailingValidator(target);
+         SetupFailingValidator(target, errorDetails);
          if (target.TargetProperty != null) {
             Revalidator.RevalidatePropertyValidations(
                target.Target,
@@ -200,7 +230,7 @@
             };
          }
 
-         public static ValidatorResultSetup Failing(ValidatorInvocation invocation) {
+         public static ValidatorResultSetup Failing(ValidatorInvocation invocation, string errorDetails) {
             var error = invocation.TargetProperty != null ?
                new ValidationError(
                   NullValidator.Instance,
@@ -227,18 +257,21 @@
             ValidatorType type,
             IViewModel owner,
             IViewModel target,
-            IVMPropertyDescriptor targetProperty
+            IVMPropertyDescriptor targetProperty,
+            object validatorKey = null
          ) {
             Type = type;
             Owner = owner;
             Target = target;
             TargetProperty = targetProperty;
+            ValidatorKey = validatorKey;
          }
 
          public ValidatorType Type { get; private set; }
          public IViewModel Owner { get; private set; }
          public IViewModel Target { get; private set; }
          public IVMPropertyDescriptor TargetProperty { get; private set; }
+         public object ValidatorKey { get; private set; }
 
          public override bool Equals(object obj) {
             ValidatorInvocation other = obj as ValidatorInvocation;
@@ -248,7 +281,8 @@
                Type == other.Type &&
                Owner == other.Owner &&
                Target == other.Target &&
-               TargetProperty == other.TargetProperty;
+               TargetProperty == other.TargetProperty &&
+               ValidatorKey == other.ValidatorKey;
          }
 
          public override int GetHashCode() {
@@ -257,11 +291,16 @@
                Type,
                Owner,
                Target,
-               TargetProperty
+               TargetProperty,
+               ValidatorKey
             );
          }
 
          public override string ToString() {
+            return ToString(null);
+         }
+
+         public string ToString(string details) {
             var ownerPostfix = Owner != null && Owner != Target ?
                String.Format(" of {0}", Owner) :
                String.Empty;
@@ -270,7 +309,15 @@
                String.Format("{0}.{1}", Target, TargetProperty) :
                String.Format("{0}", Target);
 
-            return String.Format("{0} for {1}{2}", Type, target, ownerPostfix);
+            var validatorPostfix = ValidatorKey != null ?
+               String.Format(" by {0}", ValidatorKey) :
+               String.Empty;
+
+            var detailsPostfix = details != null ?
+               String.Format(" ({0})", details) :
+               String.Empty;
+
+            return String.Format("{0} for {1}{2}{3}{4}", Type, target, ownerPostfix, validatorPostfix, detailsPostfix);
          }
       }
    }
