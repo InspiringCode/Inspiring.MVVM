@@ -156,6 +156,8 @@
     <Compile Include="ViewModels\Core\Properties\Common\BehaviorInterfaces\IRefreshBehavior.cs" />
     <Compile Include="ViewModels\Core\Properties\Common\BehaviorInterfaces\IUntypedValueGetterBehavior.cs" />
     <Compile Include="ViewModels\Core\Properties\Common\BehaviorInterfaces\IUntypedValueSetterBehavior.cs" />
+    <Compile Include="ViewModels\Core\Validation\BehaviorInterfaces\ViewModelBehaviors\IViewModelRevalidationBehavior.cs" />
+    <Compile Include="ViewModels\Core\Validation\ValidationController.cs" />
     <Compile Include="ViewModels\Core\ViewModel\BehaviorInterfaces\IChangeHandlerBehavior.cs" />
     <Compile Include="ViewModels\Core\ViewModel\BehaviorInterfaces\IRefreshControllerBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\BehaviorInterfaces\ViewModelBehaviors\IValidationExecutorBehavior.cs" />
@@ -174,7 +176,7 @@
     <Compile Include="ViewModels\Core\Properties\Common\BehaviorInterfaces\IIsLoadedIndicatorBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\BehaviorInterfaces\PropertyBehaviors\IValidatedValueAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\Properties\Common\BehaviorInterfaces\IValueAccessorBehavior.cs" />
-    <Compile Include="ViewModels\Core\Validation\BehaviorInterfaces\PropertyBehaviors\IRevalidationBehavior.cs" />
+    <Compile Include="ViewModels\Core\Validation\BehaviorInterfaces\PropertyBehaviors\IPropertyRevalidationBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\BehaviorInterfaces\PropertyBehaviors\IValidationResultProviderBehavior.cs" />
     <Compile Include="ViewModels\Core\ViewModel\BehaviorInterfaces\IManualUpdateCoordinatorBehavior.cs" />
     <Compile Include="Common\Behaviors\BehaviorChain.cs" />

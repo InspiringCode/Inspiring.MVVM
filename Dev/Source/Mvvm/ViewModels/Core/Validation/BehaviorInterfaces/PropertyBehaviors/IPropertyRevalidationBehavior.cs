@@ -2,7 +2,9 @@
    /// <summary>
    ///   A property behavior that can revalidate its property.
    /// </summary>
-   public interface IRevalidationBehavior {
+   public interface IPropertyRevalidationBehavior {
+      void BeginValidation(IBehaviorContext context, ValidationController controller);
       void Revalidate(IBehaviorContext context, CollectionResultCache cache);
+      void EndValidation(IBehaviorContext context);
    }
 }

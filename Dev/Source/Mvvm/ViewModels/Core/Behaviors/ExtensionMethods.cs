@@ -189,7 +189,7 @@
          IBehaviorContext context,
          CollectionResultCache cache
       ) {
-         IRevalidationBehavior next;
+         IPropertyRevalidationBehavior next;
          if (behavior.TryGetBehavior(out next)) {
             next.Revalidate(context, cache);
          }

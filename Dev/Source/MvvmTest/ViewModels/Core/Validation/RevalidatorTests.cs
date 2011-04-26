@@ -130,7 +130,7 @@
          public TestRevalidationBehavior PropertyBehavior { get; private set; }
       }
 
-      private class TestRevalidationBehavior : Behavior, IRevalidationBehavior, IDescendantValidationBehavior {
+      private class TestRevalidationBehavior : Behavior, IPropertyRevalidationBehavior, IDescendantValidationBehavior {
          public TestRevalidationBehavior(StringBuilder log, string revalidateLogText) {
             Log = log;
             RevalidateLogText = revalidateLogText;
@@ -155,6 +155,14 @@
             LastDescendantsContext = context;
             LastDescendantsScope = scope;
             Log.Append(RevalidatorTests.RevalidateDescendants);
+         }
+
+         public void BeginValidation(IBehaviorContext context, ValidationController controller) {
+            throw new System.NotImplementedException();
+         }
+
+         public void EndValidation(IBehaviorContext context) {
+            throw new System.NotImplementedException();
          }
       }
 

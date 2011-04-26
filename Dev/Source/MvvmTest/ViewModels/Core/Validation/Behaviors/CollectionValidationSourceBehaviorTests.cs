@@ -79,11 +79,19 @@
          }
       }
 
-      private class RevalidationSpy : Behavior, IRevalidationBehavior {
+      private class RevalidationSpy : Behavior, IPropertyRevalidationBehavior {
          public bool WasCalled { get; set; }
 
          public void Revalidate(IBehaviorContext context, CollectionResultCache cache) {
             WasCalled = true;
+         }
+
+         public void BeginValidation(IBehaviorContext context, ValidationController controller) {
+            throw new System.NotImplementedException();
+         }
+
+         public void EndValidation(IBehaviorContext context) {
+            throw new System.NotImplementedException();
          }
       }
    }

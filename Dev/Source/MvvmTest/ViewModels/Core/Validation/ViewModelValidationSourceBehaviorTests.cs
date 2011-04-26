@@ -124,7 +124,7 @@
 
       private class NextBehavior :
          Behavior,
-         IRevalidationBehavior,
+         IPropertyRevalidationBehavior,
          IRefreshControllerBehavior,
          IChangeHandlerBehavior {
 
@@ -148,6 +148,14 @@
 
          public void HandleChange(IBehaviorContext context, ChangeArgs args) {
             Log.Append(HandleChangeNext);
+         }
+
+         public void BeginValidation(IBehaviorContext context, ValidationController controller) {
+            throw new System.NotImplementedException();
+         }
+
+         public void EndValidation(IBehaviorContext context) {
+            throw new System.NotImplementedException();
          }
       }
    }

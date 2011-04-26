@@ -228,6 +228,7 @@
     <Compile Include="ViewModels\Core\Common\Paths\PropertyStepTests.cs" />
     <Compile Include="ViewModels\Core\Properties\ViewModelProperty\ViewModelInitializerBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionResultCacheFixture.cs" />
+    <Compile Include="ViewModels\Core\Validation\ValidationControllerTests.cs" />
     <Compile Include="ViewModels\Core\ViewModel\TypeDescriptor\TypeDescriptorProviderBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\ViewModel\TypeDescriptor\ViewModelPropertyDescriptorTests.cs" />
     <Compile Include="ViewModels\Core\Validation\Behaviors\CollectionValidationSourceBehaviorTests.cs" />

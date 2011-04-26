@@ -1,10 +1,11 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
+   using System;
 
    internal abstract class PropertyValidationSourceBehaviorBase<TValue> :
       Behavior,
       IBehaviorInitializationBehavior,
       IValidationResultProviderBehavior,
-      IRevalidationBehavior,
+      IPropertyRevalidationBehavior,
       IHandlePropertyChangedBehavior {
 
       private static readonly FieldDefinitionGroup ValidationResultGroup = new FieldDefinitionGroup();
@@ -87,6 +88,14 @@
 
       private void CachePotentiallyInvalidValue(IBehaviorContext context, TValue value) {
          _invalidValueCache.Set(context, value);
+      }
+
+      public void BeginValidation(IBehaviorContext context, ValidationController controller) {
+         throw new NotImplementedException();
+      }
+
+      public void EndValidation(IBehaviorContext context) {
+         throw new NotImplementedException();
       }
    }
 }

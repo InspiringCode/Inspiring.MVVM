@@ -60,7 +60,7 @@
       }
 
       private void PerformPropertyValidations(IVMPropertyDescriptor property) {
-         IRevalidationBehavior behavior;
+         IPropertyRevalidationBehavior behavior;
 
          bool hasRevalidationBehavior = property
             .Behaviors
@@ -72,7 +72,7 @@
       }
 
       private void PerformViewModelValidations() {
-         IRevalidationBehavior behavior;
+         IPropertyRevalidationBehavior behavior;
 
          bool hasRevalidationBehavior = _viewModel
             .Descriptor
