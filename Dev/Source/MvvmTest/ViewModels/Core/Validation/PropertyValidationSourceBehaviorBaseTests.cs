@@ -155,7 +155,9 @@
       }
 
       private void Revalidate() {
-         Behavior.Revalidate(Context, new CollectionResultCache());
+         var controller = new ValidationController();
+         controller.RequestPropertyRevalidation(Context.VM, Property);
+         controller.ProcessPendingValidations();
       }
 
       private class TestValidationSourceBehavior : PropertyValidationSourceBehaviorBase<string> {
