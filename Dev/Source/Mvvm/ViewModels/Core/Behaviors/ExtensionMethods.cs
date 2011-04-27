@@ -184,7 +184,28 @@
          }
       }
 
-      public static void RevalidateNext(
+      public static void BeginValidationNext(
+         this Behavior behavior,
+         IBehaviorContext context,
+         ValidationController controller
+      ) {
+         IPropertyRevalidationBehavior next;
+         if (behavior.TryGetBehavior(out next)) {
+            next.BeginValidation(context, controller);
+         }
+      }
+
+      public static void EndValidationNext(
+         this Behavior behavior,
+         IBehaviorContext context
+      ) {
+         IPropertyRevalidationBehavior next;
+         if (behavior.TryGetBehavior(out next)) {
+            next.EndValidation(context);
+         }
+      }
+
+      public static void PropertyRevalidateNext(
          this Behavior behavior,
          IBehaviorContext context,
          CollectionResultCache cache
@@ -192,6 +213,17 @@
          IPropertyRevalidationBehavior next;
          if (behavior.TryGetBehavior(out next)) {
             next.Revalidate(context, cache);
+         }
+      }
+
+      public static void ViewModelRevalidateNext(
+         this Behavior behavior,
+         IBehaviorContext context,
+         ValidationController controller
+      ) {
+         IViewModelRevalidationBehavior next;
+         if (behavior.TryGetBehavior(out next)) {
+            next.Revalidate(context, controller);
          }
       }
 
@@ -347,6 +379,7 @@
             .GetItemDescriptor();
       }
 
+      // TODO: Inline this??
       public static ValidationResult ExecuteValidationRequest(this IViewModel requestTarget, ValidationRequest request) {
          IValidationExecutorBehavior executor;
 

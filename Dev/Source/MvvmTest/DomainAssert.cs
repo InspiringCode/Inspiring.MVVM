@@ -1,26 +1,65 @@
 ﻿namespace Inspiring.MvvmTest {
    using System;
+   using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    public static class DomainAssert {
-      // TODO: Better ToString of path?
       public static void AreEqual(Path expected, Path actual) {
-         if (expected.Length != actual.Length) {
+         if (!AreEqualCore(expected, actual)) {
             Assert.Fail("Expected {0} but was {1}.", expected, actual);
-         }
-
-         for (int i = 0; i < expected.Length; i++) {
-            if (!AreEqual(expected[i], actual[i])) {
-               Assert.Fail("Expected {0} but was {1}.", expected, actual);
-            }
          }
       }
 
       public static void AreEqual(ValidationRequest expected, ValidationRequest actual) {
-         Assert.AreEqual(expected.Step, actual.Step);
-         DomainAssert.AreEqual(expected.TargetPath, actual.TargetPath);
+         if (!AreEqualCore(expected, actual)) {
+            Assert.Fail("Expected {0} but was {1}.", expected, actual);
+         }
+      }
+
+      public static void AreEqual(IEnumerable<ValidationRequest> expected, IEnumerable<ValidationRequest> actual) {
+         if (!AreEqualCore(expected, actual)) {
+            Assert.Fail(
+               "Expected [{0}] but was [{1}].",
+               String.Join(", ", expected),
+               String.Join(", ", actual)
+            );
+         }
+      }
+
+      private static bool AreEqualCore(IEnumerable<ValidationRequest> expected, IEnumerable<ValidationRequest> actual) {
+         if (expected.Count() != actual.Count()) {
+            return false;
+         }
+
+         for (int i = 0; i < expected.Count(); i++) {
+            if (!AreEqualCore(expected.ElementAt(i), actual.ElementAt(i))) {
+               return false;
+            }
+         }
+
+         return true;
+      }
+
+      private static bool AreEqualCore(ValidationRequest expected, ValidationRequest actual) {
+         return
+            actual.Step == expected.Step &&
+            AreEqualCore(expected.TargetPath, actual.TargetPath);
+      }
+
+      private static bool AreEqualCore(Path expected, Path actual) {
+         if (expected.Length != actual.Length) {
+            return false;
+         }
+
+         for (int i = 0; i < expected.Length; i++) {
+            if (!AreEqual(expected[i], actual[i])) {
+               return false;
+            }
+         }
+
+         return true;
       }
 
       private static bool AreEqual(PathStep first, PathStep second) {

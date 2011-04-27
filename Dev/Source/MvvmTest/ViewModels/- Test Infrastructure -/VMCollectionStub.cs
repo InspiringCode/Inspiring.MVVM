@@ -29,7 +29,11 @@
    }
 
    public class VMCollectionStub {
-      public VMCollectionStubBuilder<T> WithItems<T>(IEnumerable<T> items) {
+      public static VMCollectionStubBuilder<T> WithItems<T>(IEnumerable<T> items) {
+         return new VMCollectionStubBuilder<T>().WithItems(items);
+      }
+
+      public static VMCollectionStubBuilder<T> WithItems<T>(params T[] items) {
          return new VMCollectionStubBuilder<T>().WithItems(items);
       }
 
@@ -82,7 +86,13 @@
 
       public VMCollectionStub<T> Build() {
          var c = new VMCollectionStub<T>(_ownerVM, _ownerProperty);
+
          c.ReplaceItems(_items);
+
+         _items
+            .Cast<IViewModel>()
+            .ForEach(x => x.Kernel.OwnerCollections.Add(c));
+
          return c;
       }
    }

@@ -100,5 +100,25 @@
          public void NotifyChange(ChangeArgs args) {
          }
       }
+
+      protected class ValidationExecutorStub : Behavior, IValidationExecutorBehavior {
+         public ValidationExecutorStub() {
+            Requests = new List<ValidationRequest>();
+            ResultToReturn = ValidationResult.Valid;
+         }
+
+         public ValidationResult ResultToReturn { get; set; }
+
+         public List<ValidationRequest> Requests { get; private set; }
+
+         public bool WasCalled {
+            get { return Requests.Any(); }
+         }
+
+         public ValidationResult Validate(IBehaviorContext context, ValidationRequest request) {
+            Requests.Add(request);
+            return ResultToReturn;
+         }
+      }
    }
 }

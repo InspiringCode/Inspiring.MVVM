@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
+   using System;
    using System.Diagnostics.Contracts;
 
    public sealed class ValidationRequest {
@@ -39,6 +40,10 @@
       public IViewModel Target { get; private set; }
 
       public IVMPropertyDescriptor TargetProperty { get; private set; }
+
+      public override string ToString() {
+         return String.Format("{{Step = {0}, Path = {1}}}", Step, TargetPath);
+      }
 
       internal ValidationRequest PrependAncestor(IViewModel ancestor) {
          return new ValidationRequest(

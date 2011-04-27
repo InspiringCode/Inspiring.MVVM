@@ -45,7 +45,7 @@
             _invalidValueCache.Clear(context);
             SetValueNext(context, previouslyInvalidValue);
          } else {
-            this.RevalidateNext(context, cache);
+            this.PropertyRevalidateNext(context, cache);
          }
 
          _resultManager.UpdateValidationResult(context, result);

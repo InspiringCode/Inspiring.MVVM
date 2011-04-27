@@ -24,7 +24,7 @@
          var result = ValidationOperation.PerformViewModelValidation(cache, context.VM);
          _resultManager.UpdateValidationResult(context, result);
 
-         this.RevalidateNext(context, cache);
+         this.PropertyRevalidateNext(context, cache);
       }
 
       public void Refresh(IBehaviorContext context) {

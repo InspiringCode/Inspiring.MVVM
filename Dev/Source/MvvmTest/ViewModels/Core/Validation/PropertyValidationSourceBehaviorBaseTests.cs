@@ -1,5 +1,4 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Validation {
-   using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -7,7 +6,7 @@
    // TODO: Test if next behaviors are called correctly!
 
    [TestClass]
-   public class PropertyValidationSourceBehaviorBaseTests : TestBase {
+   public class PropertyValidationSourceBehaviorBaseTests : ValidationTestBase {
       private ValidationResult Error { get; set; }
 
       private TestValidationSourceBehavior Behavior { get; set; }
@@ -183,22 +182,6 @@
 
          protected override void SetValueNext(IBehaviorContext context, string value) {
             LastSetNextValue = value;
-         }
-      }
-
-      private class ValidationExecutorStub : Behavior, IValidationExecutorBehavior {
-         public ValidationExecutorStub() {
-            Requests = new List<ValidationRequest>();
-            ResultToReturn = ValidationResult.Valid;
-         }
-
-         public ValidationResult ResultToReturn { get; set; }
-
-         public List<ValidationRequest> Requests { get; private set; }
-
-         public ValidationResult Validate(IBehaviorContext context, ValidationRequest request) {
-            Requests.Add(request);
-            return ResultToReturn;
          }
       }
    }
