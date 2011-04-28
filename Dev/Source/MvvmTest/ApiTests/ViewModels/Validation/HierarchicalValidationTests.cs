@@ -47,7 +47,7 @@
             .On(Item, Child, Parent, Grandparent);
 
          Results.ExpectInvocationOf.CollectionPropertyValidation
-            .Targeting(Item, x => x.ItemProperty)
+            .Targeting(Child.Items, x => x.ItemProperty)
             .On(Child, Parent, Grandparent);
 
          ExpectInvocationOfViewModelValidatorsFromItemToGrandparentBecauseValidationStateChanged();
@@ -67,7 +67,7 @@
             .On(Item, Child, Parent, Grandparent);
 
          Results.ExpectInvocationOf.CollectionViewModelValidation
-            .Targeting(Item)
+            .Targeting(Child.Items)
             .On(Child, Parent, Grandparent);
 
          ExpectInvocationOfViewModelValidatorsFromItemToGrandparentBecauseValidationStateChanged();
@@ -96,7 +96,7 @@
             .On(Item, Child, Parent, Grandparent);
 
          Results.ExpectInvocationOf.CollectionViewModelValidation
-            .Targeting(Item)
+            .Targeting(Child.Items)
             .On(Child, Parent, Grandparent);
 
          Results.ExpectInvocationOf.ViewModelValidation

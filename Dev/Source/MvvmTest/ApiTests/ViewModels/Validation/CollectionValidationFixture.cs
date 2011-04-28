@@ -5,13 +5,13 @@
 
    [TestClass]
    public class CollectionValidationFixture {
-      protected ValidatorSetup Setup { get; private set; }
+      protected ValidatorMockConfigurationFluent Setup { get; private set; }
       protected ListVM List { get; private set; }
       protected ItemVMDescriptor ItemDescriptor { get; private set; }
 
       [TestInitialize]
       public void BaseSetup() {
-         Setup = new ValidatorSetup();
+         Setup = new ValidatorMockConfigurationFluent();
          List = new ListVM(Setup);
          ItemDescriptor = ItemVM.ClassDescriptor;
       }
@@ -42,12 +42,12 @@
             })
             .Build();
 
-         public ListVM(ValidatorSetup setup)
+         public ListVM(ValidatorMockConfiguration setup)
             : base(ClassDescriptor) {
             Setup = setup;
          }
 
-         private ValidatorSetup Setup { get; set; }
+         private ValidatorMockConfiguration Setup { get; set; }
 
          public IVMCollection<ItemVM> Items {
             get { return GetValue(Descriptor.Items); }
@@ -70,6 +70,7 @@
             })
             .WithValidators(b => {
                b.Check(x => x.ItemProperty).Custom(args => args.Owner.Setup.PerformValidation(args));
+               b.Check(x => x.CollectionProperty).Custom(args => args.Owner.Setup.PerformValidation(args));
                b.CheckViewModel(args => args.Owner.Setup.PerformValidation(args));
 
                b.EnableParentValidation(x => x.CollectionProperty);
@@ -79,7 +80,7 @@
 
          private readonly string _name;
 
-         public ItemVM(ValidatorSetup setup, string name)
+         public ItemVM(ValidatorMockConfiguration setup, string name)
             : base(ClassDescriptor) {
             _name = name;
             Setup = setup;
@@ -87,7 +88,7 @@
 
          public ValidationError ItemPropertyError { get; set; }
 
-         private ValidatorSetup Setup { get; set; }
+         private ValidatorMockConfiguration Setup { get; set; }
 
          public override string ToString() {
             return _name;

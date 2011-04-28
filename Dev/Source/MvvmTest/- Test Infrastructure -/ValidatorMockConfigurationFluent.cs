@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.MvvmTest {
    using System;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.Mvvm.ViewModels.Core;
 
    public sealed class ValidatorMockConfigurationFluent : ValidatorMockConfiguration {
       public IValidatorTypeSelector SetupSucceeding {
@@ -50,6 +51,23 @@
          /// </param>
          IValidatorInvocationBuilder Targeting<TDescriptor>(
             IViewModel<TDescriptor> target,
+            Func<TDescriptor, IVMPropertyDescriptor> targetPropertySelector
+         ) where TDescriptor : VMDescriptorBase;
+
+         /// <summary>
+         ///   Specifies for which validation target the setup/expection is used.
+         /// </summary>
+         IValidatorInvocationBuilder Targeting(IVMCollection target);
+
+         /// <summary>
+         ///   Specifies for which validation target the setup/expection is used.
+         /// </summary>
+         /// <param name="targetPropertySelector">
+         ///   The value that <see cref="ValidationArgs"/>.TargetProperty must have 
+         ///   in order that this setup/expection is used.
+         /// </param>
+         IValidatorInvocationBuilder Targeting<TDescriptor>(
+            IVMCollectionExpression<IViewModel<TDescriptor>> target,
             Func<TDescriptor, IVMPropertyDescriptor> targetPropertySelector
          ) where TDescriptor : VMDescriptorBase;
       }
@@ -104,6 +122,7 @@
          private readonly Action<ValidatorInvocation> _additionAction;
          private ValidatorType _validatorType;
          private IViewModel _target;
+         private IVMCollection _targetCollection;
          private IVMPropertyDescriptor _targetProperty;
 
          public ValidatorInvocationBuilder(
@@ -128,14 +147,29 @@
             return this;
          }
 
+
+         public IValidatorInvocationBuilder Targeting(IVMCollection target) {
+            _targetCollection = target;
+            return this;
+         }
+
+         public IValidatorInvocationBuilder Targeting<TDescriptor>(
+            IVMCollectionExpression<IViewModel<TDescriptor>> target,
+            Func<TDescriptor, IVMPropertyDescriptor> targetPropertySelector
+         ) where TDescriptor : VMDescriptorBase {
+            _targetCollection = (IVMCollection)target;
+            _targetProperty = targetPropertySelector((TDescriptor)_targetCollection.GetItemDescriptor());
+            return this;
+         }
+
          public void On(params IViewModel[] owners) {
             foreach (IViewModel owner in owners) {
-               _additionAction(new ValidatorInvocation(_validatorType, owner, _target, _targetProperty));
+               _additionAction(new ValidatorInvocation(_validatorType, owner, _target, _targetCollection, _targetProperty));
             }
          }
 
          public void On(IViewModel owner, object validatorKey) {
-            _additionAction(new ValidatorInvocation(_validatorType, owner, _target, _targetProperty, validatorKey));
+            _additionAction(new ValidatorInvocation(_validatorType, owner, _target, _targetCollection, _targetProperty, validatorKey));
          }
       }
    }

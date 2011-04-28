@@ -183,6 +183,10 @@
             Results = results;
          }
 
+         public IVMCollection<ItemVM> Items {
+            get { return GetValue(Descriptor.Items); }
+         }
+
          private ValidatorMockConfigurationFluent Results { get; set; }
       }
 
