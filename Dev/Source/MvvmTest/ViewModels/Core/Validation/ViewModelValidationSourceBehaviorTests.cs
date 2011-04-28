@@ -76,7 +76,6 @@
 
       [TestMethod]
       public void Revalidate_InvokesExecutorWithCorrectArguments() {
-         var cache = new CollectionResultCache();
          InvokeRevalidate();
 
          Assert.AreEqual(Validate + RevalidateNext, ActionLog);

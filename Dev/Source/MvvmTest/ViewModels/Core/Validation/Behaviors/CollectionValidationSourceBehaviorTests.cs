@@ -82,7 +82,7 @@
       private class RevalidationSpy : Behavior, IPropertyRevalidationBehavior {
          public bool WasCalled { get; set; }
 
-         public void Revalidate(IBehaviorContext context, CollectionResultCache cache) {
+         public void Revalidate(IBehaviorContext context) {
             WasCalled = true;
          }
 

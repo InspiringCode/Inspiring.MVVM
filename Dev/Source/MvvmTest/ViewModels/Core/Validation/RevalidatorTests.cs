@@ -160,7 +160,7 @@
             Log.Append(RevalidatorTests.RevalidateViewModel);
          }
 
-         public void Revalidate(IBehaviorContext context, CollectionResultCache cache) {
+         public void Revalidate(IBehaviorContext context) {
             LastRevalidateContext = context;
             Log.Append(RevalidateLogText);
          }

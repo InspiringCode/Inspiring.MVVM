@@ -40,7 +40,7 @@
          this.BeginValidationNext(context, controller);
       }
 
-      public void Revalidate(IBehaviorContext context, CollectionResultCache cache) {
+      public void Revalidate(IBehaviorContext context) {
          ValidationController controller = _validationController.Get(context);
          var validationResult = controller.GetResult(_step, context.VM, _property);
 
@@ -53,7 +53,7 @@
             _invalidValueCache.Clear(context);
             SetValueNext(context, previouslyInvalidValue);
          } else {
-            this.PropertyRevalidateNext(context, cache);
+            this.PropertyRevalidateNext(context);
          }
 
          _resultManager.UpdateValidationResult(context, validationResult);

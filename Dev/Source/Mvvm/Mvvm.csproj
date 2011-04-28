@@ -234,7 +234,6 @@
     <Compile Include="ViewModels\Core\Validation\Behaviors\PropertyBehaviors\PropertyValidationSourceBehaviorBase.cs" />
     <Compile Include="ViewModels\Core\Validation\Behaviors\PropertyBehaviors\ViewModelPropertyDescendantsValidatorBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\Revalidator.cs" />
-    <Compile Include="ViewModels\Core\Validation\ValidationOperation.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationRequest.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationResultManager.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationStep.cs" />

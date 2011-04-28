@@ -3,7 +3,7 @@
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class ValidationStateTests : ValidationTestBase {
+   public class ValidationResultTests : ValidationTestBase {
       [TestMethod]
       public void IsValid_NoErrors_ReturnsTrue() {
          var state = ValidationResult.Valid;

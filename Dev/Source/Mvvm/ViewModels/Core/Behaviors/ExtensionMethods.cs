@@ -205,14 +205,10 @@
          }
       }
 
-      public static void PropertyRevalidateNext(
-         this Behavior behavior,
-         IBehaviorContext context,
-         CollectionResultCache cache
-      ) {
+      public static void PropertyRevalidateNext(this Behavior behavior, IBehaviorContext context) {
          IPropertyRevalidationBehavior next;
          if (behavior.TryGetBehavior(out next)) {
-            next.Revalidate(context, cache);
+            next.Revalidate(context);
          }
       }
 

@@ -38,6 +38,22 @@
       }
 
       [TestMethod]
+      public void GetResult_ForProperty_ReturnsErrorsOfPropertyAndCollectionValidators() {
+         var setup = SetupItemInCollection();
+
+         var itemResult = CreateValidationResult(setup.Item, "Property error");
+         var collectionResult = CreateValidationResult(setup.Item, "Collection error");
+
+         setup.ItemExecutor.ResultToReturn = itemResult;
+         setup.CollectionOwnerExecutor.ResultToReturn = collectionResult;
+
+         var expected = ValidationResult.Join(itemResult, collectionResult);
+         var actual = Controller.GetResult(ValidationStep.Value, setup.Item, setup.ItemProperty);
+
+         Assert.AreEqual(expected, actual);
+      }
+
+      [TestMethod]
       public void GetResult_ForViewModel_ExecutesViewModelValidatorsAndCollectionValidators() {
          var setup = SetupItemInCollection();
 
@@ -52,6 +68,22 @@
 
          DomainAssert.AreEqual(new[] { propertyRequest }, setup.ItemExecutor.Requests);
          DomainAssert.AreEqual(new[] { collectionRequest }, setup.CollectionOwnerExecutor.Requests);
+      }
+
+      [TestMethod]
+      public void GetResult_ForViewModel_ReturnsErrorsOfViewModelAndCollectionValidators() {
+         var setup = SetupItemInCollection();
+
+         var viewModelResult = CreateValidationResult(setup.Item, "View model error");
+         var collectionResult = CreateValidationResult(setup.Item, "Collection error");
+
+         setup.ItemExecutor.ResultToReturn = viewModelResult;
+         setup.CollectionOwnerExecutor.ResultToReturn = collectionResult;
+
+         var expected = ValidationResult.Join(viewModelResult, collectionResult);
+         var actual = Controller.GetResult(ValidationStep.ViewModel, setup.Item);
+
+         Assert.AreEqual(expected, actual);
       }
 
       [TestMethod]
@@ -216,7 +248,7 @@
             Log.Append(BeginValidationLog);
          }
 
-         public void Revalidate(IBehaviorContext context, CollectionResultCache cache) {
+         public void Revalidate(IBehaviorContext context) {
             Log.Append(PropertyRevalidateLog);
          }
 

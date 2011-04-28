@@ -182,7 +182,7 @@
             bool targetsProperty = Property != null;
             if (targetsProperty) {
                Property.Behaviors.BeginValidationNext(context, controller);
-               Property.Behaviors.PropertyRevalidateNext(context, null);
+               Property.Behaviors.PropertyRevalidateNext(context);
                Property.Behaviors.EndValidationNext(context);
             }
 
