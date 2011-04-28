@@ -6,7 +6,9 @@
 
       protected override void RevalidateDescendantsCore(IBehaviorContext context, ValidationScope scope) {
          var childVM = this.GetValueNext<TValue>(context);
-         Revalidator.Revalidate(childVM, scope);
+         if (childVM != null) {
+            Revalidator.Revalidate(childVM, scope);
+         }
       }
 
       protected override ValidationResult GetDescendantsValidationResultCore(IBehaviorContext context) {
