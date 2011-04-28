@@ -7,7 +7,7 @@
    // TODO: Write these tests...
 
    [TestClass]
-   public class PathDefintionTests : TestBase {
+   public class PathDefinitionTests : TestBase {
       private Path PropertyPath { get; set; }
       private Path ViewModelDescendantPropertPath { get; set; }
       private Path CollectionDescendantPropertyPath { get; set; }
@@ -61,6 +61,19 @@
 
          ViewModelDescendantPropertPath = PropertyPath.Prepend(Project);
       }
+
+      //[TestMethod]
+      //public void MyTestMethod() {
+      //   var path = PathDefinition.Empty
+      //      .Append((EmployeeVMDescriptor x) => x.SelectedProject)
+      //      .Append((ProjectVMDescriptor x) => x.Name);
+
+      //   Project.SetValue(x => x.Name, "ProjectName");
+
+      //   var step1 = Employee.GetValue(((PropertyStep<EmployeeVMDescriptor, ProjectVM>)path.Steps[0])._propertySelector);
+      //   var name = step1.GetValue(((PropertyStep<ProjectVMDescriptor, string>)path.Steps[1])._propertySelector);
+
+      //}
 
 
       private class EmployeeVM : ViewModel<EmployeeVMDescriptor> {
