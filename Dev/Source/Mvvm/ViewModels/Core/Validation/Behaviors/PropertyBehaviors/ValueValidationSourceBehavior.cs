@@ -18,7 +18,7 @@
       }
 
       public void SetValue(IBehaviorContext context, TValue value) {
-         SetValueIfValidationSucceeds(context, value);
+         SetValueNextIfValidationSucceeds(context, value);
       }
 
       protected override TValue GetValueNext(IBehaviorContext context) {

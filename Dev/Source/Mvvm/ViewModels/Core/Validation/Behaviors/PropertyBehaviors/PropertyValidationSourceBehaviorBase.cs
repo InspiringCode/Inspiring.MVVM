@@ -42,11 +42,10 @@
 
       public void Revalidate(IBehaviorContext context, CollectionResultCache cache) {
          ValidationController controller = _validationController.Get(context);
-
-         var result = controller.GetResult(_step, context.VM, _property);
+         var validationResult = controller.GetResult(_step, context.VM, _property);
 
          bool valueWasInvalid = _invalidValueCache.HasValue(context);
-         bool valueIsNotInvalidAnymore = result.IsValid;
+         bool valueIsNotInvalidAnymore = validationResult.IsValid;
 
          if (valueWasInvalid && valueIsNotInvalidAnymore) {
             TValue previouslyInvalidValue = _invalidValueCache.Get(context);
@@ -57,23 +56,7 @@
             this.PropertyRevalidateNext(context, cache);
          }
 
-         _resultManager.UpdateValidationResult(context, result);
-
-         //var result = ValidationOperation.PerformPropertyValidation(cache, _step, context.VM, _property);
-
-         //bool valueWasInvalid = _invalidValueCache.HasValue(context);
-         //bool valueIsNotInvalidAnymore = result.IsValid;
-
-         //if (valueWasInvalid && valueIsNotInvalidAnymore) {
-         //   TValue previouslyInvalidValue = _invalidValueCache.Get(context);
-
-         //   _invalidValueCache.Clear(context);
-         //   SetValueNext(context, previouslyInvalidValue);
-         //} else {
-         //   this.PropertyRevalidateNext(context, cache);
-         //}
-
-         //_resultManager.UpdateValidationResult(context, result);
+         _resultManager.UpdateValidationResult(context, validationResult);
       }
 
       public void EndValidation(IBehaviorContext context) {
@@ -91,22 +74,15 @@
             _invalidValueCache.Get(context) :
             GetValueNext(context);
       }
-
-
-      protected void SetValueIfValidationSucceeds(IBehaviorContext context, TValue value) {
+      
+      protected void SetValueNextIfValidationSucceeds(IBehaviorContext context, TValue value) {
          CachePotentiallyInvalidValue(context, value);
 
-         if (_validationController.HasValue(context)) {
-            ValidationController controller = _validationController.Get(context);
-            SetValueIfValidationSucceeds(context, controller);
+         ValidationController controller;
+         if (_validationController.TryGet(context, out controller)) {
+            ValidateAndSetValueWithExistingController(context, controller);
          } else {
-            var controller = new ValidationController();
-
-            controller.ManuallyBeginValidation(context.VM, _property);
-            SetValueIfValidationSucceeds(context, controller);
-            controller.ManuallyEndValidation(context.VM, _property);
-
-            controller.ProcessPendingValidations();
+            ValidateAndSetValueWithNewController(context);
          }
       }
 
@@ -114,37 +90,26 @@
 
       protected abstract void SetValueNext(IBehaviorContext context, TValue value);
 
+      private void ValidateAndSetValueWithNewController(IBehaviorContext context) {
+         var controller = new ValidationController();
 
-      private void SetValueIfValidationSucceeds(IBehaviorContext context, ValidationController controller) {
-         TValue newValue = _invalidValueCache.Get(context);
+         controller.ManuallyBeginValidation(context.VM, _property);
+         ValidateAndSetValueWithExistingController(context, controller);
+         controller.ManuallyEndValidation(context.VM, _property);
 
-         ValidationResult result = controller.GetResult(_step, context.VM, _property);
+         controller.ProcessPendingValidations();
+      }
 
-         if (result.IsValid) {
+      private void ValidateAndSetValueWithExistingController(IBehaviorContext context, ValidationController controller) {
+         ValidationResult validationResult = controller.GetResult(_step, context.VM, _property);
+
+         if (validationResult.IsValid) {
+            TValue newValue = _invalidValueCache.Get(context);
             _invalidValueCache.Clear(context);
             SetValueNext(context, newValue);
          }
 
-         _resultManager.UpdateValidationResult(context, result);
-
-
-         //TValue previousValue = GetValueNext(context);
-
-         //CachePotentiallyInvalidValue(context, newValue);
-
-         //var result = ValidationOperation.PerformPropertyValidation(
-         //   new CollectionResultCache(),
-         //   _step,
-         //   context.VM,
-         //   _property
-         //);
-
-         //if (result.IsValid) {
-         //   _invalidValueCache.Clear(context);
-         //   SetValueNext(context, newValue);
-         //}
-
-         //_resultManager.UpdateValidationResult(context, result);
+         _resultManager.UpdateValidationResult(context, validationResult);
       }
 
       private void CachePotentiallyInvalidValue(IBehaviorContext context, TValue value) {

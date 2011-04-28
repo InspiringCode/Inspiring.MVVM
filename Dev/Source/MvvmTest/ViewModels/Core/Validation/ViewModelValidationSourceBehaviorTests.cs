@@ -77,7 +77,7 @@
       [TestMethod]
       public void Revalidate_InvokesExecutorWithCorrectArguments() {
          var cache = new CollectionResultCache();
-         Behavior.Revalidate(Context, cache);
+         InvokeRevalidate();
 
          Assert.AreEqual(Validate + RevalidateNext, ActionLog);
          Assert.IsNotNull(Executor.LastContext);
@@ -88,11 +88,11 @@
       [TestMethod]
       public void Revalidate_UpdatesValidationResult() {
          Executor.ResultToReturn = CreateValidationResult("Validation error");
-         Behavior.Revalidate(Context, new CollectionResultCache());
+         InvokeRevalidate();
          Assert.IsFalse(Behavior.GetValidationResult(Context).IsValid);
 
          Executor.ResultToReturn = ValidationResult.Valid;
-         Behavior.Revalidate(Context, new CollectionResultCache());
+         InvokeRevalidate();
          Assert.IsTrue(Behavior.GetValidationResult(Context).IsValid);
       }
 
@@ -100,6 +100,11 @@
       public void Refresh_PerformsViewModelValidations() {
          Behavior.Refresh(Context);
          Assert.AreEqual(RefreshNext + Validate + RevalidateNext, ActionLog);
+      }
+
+      private void InvokeRevalidate() {
+         var controller = new ValidationController();
+         Behavior.Revalidate(Context, controller);
       }
 
       private class TestExecutor : Behavior, IValidationExecutorBehavior {
@@ -124,7 +129,7 @@
 
       private class NextBehavior :
          Behavior,
-         IPropertyRevalidationBehavior,
+         IViewModelRevalidationBehavior,
          IRefreshControllerBehavior,
          IChangeHandlerBehavior {
 
@@ -142,20 +147,12 @@
             Log.Append(RefreshNextProperty);
          }
 
-         public void Revalidate(IBehaviorContext context, CollectionResultCache cache) {
+         public void Revalidate(IBehaviorContext context, ValidationController controller) {
             Log.Append(RevalidateNext);
          }
 
          public void HandleChange(IBehaviorContext context, ChangeArgs args) {
             Log.Append(HandleChangeNext);
-         }
-
-         public void BeginValidation(IBehaviorContext context, ValidationController controller) {
-            throw new System.NotImplementedException();
-         }
-
-         public void EndValidation(IBehaviorContext context) {
-            throw new System.NotImplementedException();
          }
       }
    }

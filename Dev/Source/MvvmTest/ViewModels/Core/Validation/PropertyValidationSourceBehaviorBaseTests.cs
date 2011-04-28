@@ -175,7 +175,7 @@
          }
 
          public void SetValue(IBehaviorContext context, string value) {
-            SetValueIfValidationSucceeds(context, value);
+            SetValueNextIfValidationSucceeds(context, value);
          }
 
          protected override string GetValueNext(IBehaviorContext context) {

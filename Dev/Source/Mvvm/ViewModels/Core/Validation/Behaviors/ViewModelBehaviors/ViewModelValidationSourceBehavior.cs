@@ -1,12 +1,11 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
-   using System;
 
    internal sealed class ViewModelValidationSourceBehavior :
       InitializableBehavior,
       IBehaviorInitializationBehavior,
       IChangeHandlerBehavior,
       IValidationResultProviderBehavior,
-      IPropertyRevalidationBehavior, // TODO: Replace with IViewModelRevalidationBehavior.
+      IViewModelRevalidationBehavior,
       IRefreshControllerBehavior {
 
       private ValidationResultManager _resultManager;
@@ -18,13 +17,13 @@
          this.InitializeNext(context);
       }
 
-      public void Revalidate(IBehaviorContext context, CollectionResultCache cache) {
+      public void Revalidate(IBehaviorContext context, ValidationController controller) {
          RequireInitialized();
 
-         var result = ValidationOperation.PerformViewModelValidation(cache, context.VM);
+         ValidationResult result = controller.GetResult(ValidationStep.ViewModel, context.VM);
          _resultManager.UpdateValidationResult(context, result);
 
-         this.PropertyRevalidateNext(context, cache);
+         this.ViewModelRevalidateNext(context, controller);
       }
 
       public void Refresh(IBehaviorContext context) {
@@ -48,14 +47,6 @@
       public void HandleChange(IBehaviorContext context, ChangeArgs args) {
          this.HandleChangedNext(context, args);
          Revalidator.RevalidateViewModelValidations(context.VM);
-      }
-
-      public void BeginValidation(IBehaviorContext context, ValidationController controller) {
-         throw new NotImplementedException(); // TODO: Remove this implementation
-      }
-
-      public void EndValidation(IBehaviorContext context) {
-         throw new NotImplementedException(); // TODO: Remove this implementation
       }
    }
 }

@@ -7,7 +7,7 @@
    [TestClass]
    public class RevalidatorTests : ValidationTestBase {
       private const string RevalidateProperty = "Revalidate(Property) ";
-      private const string RevalidateViewModel = "Revalidate(Property) ";
+      private const string RevalidateViewModel = "Revalidate(ViewModel) ";
       private const string RevalidateDescendants = "RevalidateDescendants(Property) ";
 
       private TestViewModel VM { get; set; }
@@ -29,7 +29,7 @@
 
          Assert.AreEqual(RevalidateProperty, ActionLog);
          Assert.AreEqual(VM.GetContext(), VM.PropertyBehavior.LastRevalidateContext);
-         Assert.IsNotNull(VM.PropertyBehavior.LastRevalidateCache);
+         Assert.IsNotNull(VM.PropertyBehavior.LastRevalidateContext);
       }
 
       [TestMethod]
@@ -49,7 +49,7 @@
 
          Assert.AreEqual(RevalidateViewModel, ActionLog);
          Assert.AreEqual(VM.GetContext(), VM.ViewModelBehavior.LastRevalidateContext);
-         Assert.IsNotNull(VM.ViewModelBehavior.LastRevalidateCache);
+         Assert.IsNotNull(VM.ViewModelBehavior.LastValidationController);
       }
 
       [TestMethod]
@@ -64,12 +64,16 @@
 
          Revalidator.RevalidateItems(items, ValidationScope.FullSubtree);
 
-         var perItemSequence = RevalidateDescendants + RevalidateProperty + RevalidateViewModel;
-         Assert.AreEqual(perItemSequence + perItemSequence, ActionLog);
+         var expectedSequence =
+            RevalidateDescendants + RevalidateDescendants +
+            RevalidateProperty + RevalidateProperty +
+            RevalidateViewModel + RevalidateViewModel;
+
+         Assert.AreEqual(expectedSequence, ActionLog);
       }
 
       [TestMethod]
-      public void RevalidateItems_PassesSameCacheInstanceToAllItems() {
+      public void RevalidateItems_PassesSameValidationControllerToAllItems() {
          var first = CreateVM();
          var second = CreateVM();
          var items = new[] { first, second };
@@ -77,13 +81,13 @@
          Revalidator.RevalidateItems(items, ValidationScope.FullSubtree);
 
          Assert.AreEqual(
-            first.PropertyBehavior.LastRevalidateCache,
-            second.PropertyBehavior.LastRevalidateCache
+            first.PropertyBehavior.LastValidationController,
+            second.PropertyBehavior.LastValidationController
          );
 
          Assert.AreEqual(
-            first.ViewModelBehavior.LastRevalidateCache,
-            second.ViewModelBehavior.LastRevalidateCache
+            first.ViewModelBehavior.LastValidationController,
+            second.ViewModelBehavior.LastValidationController
          );
       }
 
@@ -130,14 +134,19 @@
          public TestRevalidationBehavior PropertyBehavior { get; private set; }
       }
 
-      private class TestRevalidationBehavior : Behavior, IPropertyRevalidationBehavior, IDescendantValidationBehavior {
+      private class TestRevalidationBehavior :
+         Behavior,
+         IPropertyRevalidationBehavior,
+         IDescendantValidationBehavior,
+         IViewModelRevalidationBehavior {
+
          public TestRevalidationBehavior(StringBuilder log, string revalidateLogText) {
             Log = log;
             RevalidateLogText = revalidateLogText;
          }
 
          public IBehaviorContext LastRevalidateContext { get; set; }
-         public CollectionResultCache LastRevalidateCache { get; set; }
+         public ValidationController LastValidationController { get; set; }
 
          public IBehaviorContext LastDescendantsContext { get; set; }
          public ValidationScope LastDescendantsScope { get; set; }
@@ -145,9 +154,14 @@
          private StringBuilder Log { get; set; }
          private string RevalidateLogText { get; set; }
 
+         public void Revalidate(IBehaviorContext context, ValidationController controller) {
+            LastRevalidateContext = context;
+            LastValidationController = controller;
+            Log.Append(RevalidatorTests.RevalidateViewModel);
+         }
+
          public void Revalidate(IBehaviorContext context, CollectionResultCache cache) {
             LastRevalidateContext = context;
-            LastRevalidateCache = cache;
             Log.Append(RevalidateLogText);
          }
 
@@ -158,11 +172,10 @@
          }
 
          public void BeginValidation(IBehaviorContext context, ValidationController controller) {
-            throw new System.NotImplementedException();
+            LastValidationController = controller;
          }
 
          public void EndValidation(IBehaviorContext context) {
-            throw new System.NotImplementedException();
          }
       }
 
