@@ -46,8 +46,8 @@
       ///      cref="INotifyPropertyChanged"/> and <see cref="INotifyCollectionChanged"/>
       ///      in our domain models because the VM takes care of this concern.</para>
       /// </remarks>
-      IVMDescriptorBuilderWithProperties<TDescriptor, TVM> WithPropertyDependencies(
-         Action<IVMDependencyConfigurator<TDescriptor>> dependencyConfigurator
+      IVMDescriptorBuilderWithProperties<TDescriptor, TVM> WithDependencies(
+         Action<IVMDependencyBuilder<TVM, TDescriptor>> dependencyConfigurator
       );
 
       /// <summary>

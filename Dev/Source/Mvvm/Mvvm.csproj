@@ -147,6 +147,10 @@
     <Compile Include="ViewModels\- No Namespace -\VMDescriptorBuilder.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\Definition\CollectionPropertyStep.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\Definition\CollectionStep.cs" />
+    <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\Interfaces\IDependencyActionBuilder.cs" />
+    <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\Interfaces\IDependencySourceBuilder.cs" />
+    <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\Interfaces\IDependencyTargetBuilder.cs" />
+    <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\VMDependencyBuilder.cs" />
     <Compile Include="ViewModels\Core\Properties\CollectionProperty\BehaviorInterfaces\ICollectionChangeHandlerBehavior.cs" />
     <Compile Include="ViewModels\Core\Properties\CommandProperty\BehaviorInterfaces\ICommandCanExecuteBehavior.cs" />
     <Compile Include="ViewModels\Core\Properties\CommandProperty\BehaviorInterfaces\ICommandExecuteBehavior.cs" />
@@ -337,7 +341,7 @@
     <Compile Include="ViewModels\Core\Properties\Common\Behaviors\DisplayValueAccessorBehavior.cs" />
     <Compile Include="ViewModels\- No Namespace -\IVMValueConverter.cs" />
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\IVMPropertyBuilderProvider.cs" />
-    <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\Interfaces\IVMDependencyConfigurator.cs" />
+    <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\Interfaces\IVMDependencyBuilder.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMDescriptor.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMPropertyDescriptor.cs" />
     <Compile Include="ViewModels\EViewModels.Designer.cs">

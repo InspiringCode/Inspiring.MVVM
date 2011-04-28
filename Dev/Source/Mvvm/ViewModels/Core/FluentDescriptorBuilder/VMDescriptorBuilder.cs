@@ -69,7 +69,7 @@
       private Action<RootValidatorBuilder<TVM, TVM, TDescriptor>> _validatorConfigurator;
       private Action<IVMBehaviorBuilder<TVM, TDescriptor>> _behaviorConfigurator;
       private Action<ViewModelBehaviorBuilder<TVM, TDescriptor>> _viewModelBehaviorConfigurator;
-      private Action<IVMDependencyConfigurator<TDescriptor>> _dependencyConfigurator;
+      private Action<IVMDependencyBuilder<TVM, TDescriptor>> _dependencyConfigurator;
 
       internal VMDescriptorBuilder(IVMDescriptorBuilder baseBuilder) {
          _baseBuilder = baseBuilder;
@@ -85,8 +85,8 @@
       }
 
       /// <inheritdoc />
-      public IVMDescriptorBuilderWithProperties<TDescriptor, TVM> WithPropertyDependencies(
-         Action<IVMDependencyConfigurator<TDescriptor>> dependencyConfigurator
+      public IVMDescriptorBuilderWithProperties<TDescriptor, TVM> WithDependencies(
+         Action<IVMDependencyBuilder<TVM, TDescriptor>> dependencyConfigurator
       ) {
          Contract.Requires<ArgumentNullException>(dependencyConfigurator != null);
          _dependencyConfigurator = dependencyConfigurator;
