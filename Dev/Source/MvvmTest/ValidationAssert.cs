@@ -17,6 +17,23 @@
          }
       }
 
+      public static void ErrorMessages(ValidationResult actualResult, params string[] expectedMessages) {
+         var orderedExpected = expectedMessages.OrderBy(x => x);
+
+         var orderedActual = actualResult
+            .Errors
+            .Select(x => x.Message)
+            .OrderBy(x => x);
+
+         if (!orderedExpected.SequenceEqual(orderedActual)) {
+            Assert.Fail(
+               "Expected error messages [{0}] but got [{1}].",
+               String.Join(", ", orderedExpected),
+               String.Join(", ", orderedActual)
+            );
+         }
+      }
+
       public static void HasValidationResult(IViewModel vm, ValidationError singleExpectedError) {
          AreEqual(singleExpectedError, vm.Kernel.GetValidationState(ValidationResultScope.All));
       }

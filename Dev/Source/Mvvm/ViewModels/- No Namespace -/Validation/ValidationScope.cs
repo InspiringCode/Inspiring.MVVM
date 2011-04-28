@@ -7,12 +7,12 @@
       ///   Only the current VM itself is validated. All validations that 
       ///   ancestors define for this VM are also performed.
       /// </summary>
-      SelfOnly,
+      Self,
 
       /// <summary>
       ///   The current VM and all its descendants are revalidated.
       /// </summary>
-      FullSubtree,
+      SelfAndAllDescendants,
 
       /// <summary>
       ///   The current VM is revalidated and all children, for which the 

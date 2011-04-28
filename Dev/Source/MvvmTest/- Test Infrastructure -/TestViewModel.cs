@@ -14,13 +14,21 @@
          _name = name;
       }
 
-      public void Revalidate() {
-         base.Revalidate();
+      public void Load(Func<TDescriptor, IVMPropertyDescriptor> propertySelector) {
+         Load(propertySelector(Descriptor));
       }
 
-      public void Revalidate(Func<TDescriptor, IVMPropertyDescriptor> propertySelector) {
+      public bool IsLoaded(Func<TDescriptor, IVMPropertyDescriptor> propertySelector) {
+         return Kernel.IsLoaded(propertySelector(Descriptor));
+      }
+
+      public void Revalidate(ValidationScope scope = ValidationScope.Self) {
+         base.Revalidate(scope);
+      }
+
+      public void Revalidate(Func<TDescriptor, IVMPropertyDescriptor> propertySelector, ValidationScope scope = ValidationScope.Self) {
          var property = propertySelector(Descriptor);
-         Kernel.Revalidate(property, ValidationMode.CommitValidValues);
+         Kernel.Revalidate(property, ValidationMode.CommitValidValues, scope);
       }
 
       public void RevalidateViewModelValidations() {

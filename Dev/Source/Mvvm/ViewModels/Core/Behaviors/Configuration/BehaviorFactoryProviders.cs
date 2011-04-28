@@ -85,6 +85,7 @@
                .RegisterBehavior<LazyRefreshBehavior>(PropertyBehaviorKeys.LazyRefresh)
                .RegisterBehavior<UndoCollectionModifcationBehavior<TChildVM>>(PropertyBehaviorKeys.Undo)
                .RegisterBehavior<CollectionValidationSourceBehavior<TChildVM>>(PropertyBehaviorKeys.ValueValidationSource)
+               .RegisterBehavior<CollectionPropertyDescendantsValidatorBehavior<TChildVM>>(PropertyBehaviorKeys.DescendantsValidator)
                .RegisterBehavior<ChangeNotifierCollectionBehavior<TChildVM>>(PropertyBehaviorKeys.ChangeNotifier)
                .RegisterBehavior<CollectionFactoryBehavior<TChildVM>>(PropertyBehaviorKeys.ValueFactory);
          }

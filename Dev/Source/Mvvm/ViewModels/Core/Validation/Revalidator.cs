@@ -29,7 +29,7 @@
       }
 
       public static void RevalidateItems(IEnumerable<IViewModel> items, ValidationScope scope) {
-         if (scope != ValidationScope.SelfOnly) {
+         if (scope != ValidationScope.Self) {
             foreach (var item in items) {
                foreach (var property in item.Descriptor.Properties) {
                   PerformDescendantValidations(item, property, scope);
@@ -57,7 +57,7 @@
          IVMPropertyDescriptor property,
          ValidationScope scope
       ) {
-         if (scope != ValidationScope.SelfOnly) {
+         if (scope != ValidationScope.Self) {
             property.Behaviors.RevalidateDescendantsNext(
                target.GetContext(),
                scope

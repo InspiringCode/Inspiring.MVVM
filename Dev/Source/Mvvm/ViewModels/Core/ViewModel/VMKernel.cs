@@ -163,7 +163,7 @@
       public void Revalidate(
          IVMPropertyDescriptor property,
          ValidationMode mode,
-         ValidationScope scope = ValidationScope.SelfOnly
+         ValidationScope scope = ValidationScope.Self
       ) {
          Revalidator.RevalidatePropertyValidations(_vm, property, scope);
       }

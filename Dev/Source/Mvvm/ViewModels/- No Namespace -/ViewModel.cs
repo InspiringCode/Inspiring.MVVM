@@ -40,6 +40,10 @@
          get { return Kernel.IsValid; }
       }
 
+      public ValidationResult ValidationResult {
+         get { return Kernel.GetValidationState(); }
+      }
+
       public UndoManager UndoManager {
          get { return Kernel.UndoManager; }
       }
@@ -153,7 +157,7 @@
       }
 
       protected void Revalidate(
-         ValidationScope scope = ValidationScope.SelfOnly,
+         ValidationScope scope = ValidationScope.Self,
          ValidationMode mode = ValidationMode.CommitValidValues
       ) {
          Kernel.Revalidate(scope, mode);

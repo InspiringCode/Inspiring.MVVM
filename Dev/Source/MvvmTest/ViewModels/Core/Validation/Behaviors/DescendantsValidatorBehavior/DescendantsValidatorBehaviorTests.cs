@@ -45,9 +45,9 @@
       [TestMethod]
       public void RevalidateForAllDescendants_OnUnloadedDescendant_RevalidatesOnce() {
          SetupUnloaded();
-         Behavior.RevalidateDescendants(Context, ValidationScope.FullSubtree);
+         Behavior.RevalidateDescendants(Context, ValidationScope.SelfAndAllDescendants);
          Assert.AreEqual(RevalidateCore + InitializeValueNext + RevalidateNext, ActionLog);
-         Assert.AreEqual(ValidationScope.FullSubtree, Behavior.LastValidationScope);
+         Assert.AreEqual(ValidationScope.SelfAndAllDescendants, Behavior.LastValidationScope);
       }
 
       [TestMethod]
@@ -77,9 +77,9 @@
       [TestMethod]
       public void RevalidateForAllDescendants_OnUnloadedValidatedDescendant_RevalidatesOnce() {
          SetupUnloadedAndValidated();
-         Behavior.RevalidateDescendants(Context, ValidationScope.FullSubtree);
+         Behavior.RevalidateDescendants(Context, ValidationScope.SelfAndAllDescendants);
          Assert.AreEqual(RevalidateCore + InitializeValueNext + RevalidateNext, ActionLog);
-         Assert.AreEqual(ValidationScope.FullSubtree, Behavior.LastValidationScope);
+         Assert.AreEqual(ValidationScope.SelfAndAllDescendants, Behavior.LastValidationScope);
       }
 
       [TestMethod]
@@ -93,7 +93,7 @@
       public void Refresh_OnLoadedAndValidatedDescendant_RevalidatesOnceWithLastScope() {
          var relevantScopes = new[] {
             ValidationScope.SelfAndLoadedDescendants, 
-            ValidationScope.FullSubtree 
+            ValidationScope.SelfAndAllDescendants 
          };
 
          foreach (var lastScope in relevantScopes) {
@@ -109,7 +109,7 @@
       public void Revalidate_OnLoadedAndValidatedDescendant_RevalidatesOnce() {
          var relevantScopes = new[] {
             ValidationScope.SelfAndLoadedDescendants, 
-            ValidationScope.FullSubtree 
+            ValidationScope.SelfAndAllDescendants 
          };
 
          foreach (var scope in relevantScopes) {

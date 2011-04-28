@@ -79,7 +79,7 @@
             get { return GetValue(Descriptor.Projects); }
          }
 
-         public void Revalidate(ValidationScope scope = ValidationScope.SelfOnly) {
+         public void Revalidate(ValidationScope scope = ValidationScope.Self) {
             Revalidate(scope, ValidationMode.DiscardInvalidValues);
          }
       }
@@ -118,7 +118,7 @@
             set { SetValue(Descriptor.Customer, value); }
          }
 
-         public void Revalidate(ValidationScope scope = ValidationScope.SelfOnly) {
+         public void Revalidate(ValidationScope scope = ValidationScope.Self) {
             Revalidate(scope, ValidationMode.DiscardInvalidValues);
          }
       }
@@ -149,7 +149,7 @@
 
          public ValidatorInvocationLog Log { get; set; }
 
-         public void Revalidate(ValidationScope scope = ValidationScope.SelfOnly) {
+         public void Revalidate(ValidationScope scope = ValidationScope.Self) {
             Revalidate(scope, ValidationMode.DiscardInvalidValues);
          }
       }

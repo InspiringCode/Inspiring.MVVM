@@ -36,7 +36,7 @@
          ActionLogBuilder.Clear();
       }
 
-      protected void SetupLoadedAndValidated(ValidationScope lastScope = ValidationScope.FullSubtree) {
+      protected void SetupLoadedAndValidated(ValidationScope lastScope = ValidationScope.SelfAndAllDescendants) {
          Next.IsLoadedResult = true;
          GetConcreteBehavior().RevalidateDescendants(GetContext(), lastScope);
          ActionLogBuilder.Clear();

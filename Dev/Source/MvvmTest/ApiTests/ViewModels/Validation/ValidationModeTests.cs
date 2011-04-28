@@ -257,7 +257,7 @@
             public List<string> PropertyChangedLog { get; set; }
 
             public void Revalidate(ValidationMode mode) {
-               Revalidate(ValidationScope.SelfOnly, mode);
+               Revalidate(ValidationScope.Self, mode);
             }
 
             protected override void OnPropertyChanged(IVMPropertyDescriptor property) {

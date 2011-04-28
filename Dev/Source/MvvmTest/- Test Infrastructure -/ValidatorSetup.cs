@@ -235,7 +235,7 @@
             Revalidator.RevalidatePropertyValidations(
                target,
                targetProperty,
-               ValidationScope.SelfOnly
+               ValidationScope.Self
             );
          } else {
             Revalidator.RevalidateViewModelValidations(target);

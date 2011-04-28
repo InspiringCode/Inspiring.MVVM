@@ -39,8 +39,8 @@
                TransitionToValidated(context, scope);
                break;
             case StateType.ValidateOnFirstAccess:
-               if (scope == ValidationScope.FullSubtree) {
-                  TransitionToValidated(context, ValidationScope.FullSubtree);
+               if (scope == ValidationScope.SelfAndAllDescendants) {
+                  TransitionToValidated(context, ValidationScope.SelfAndAllDescendants);
                }
                break;
          }

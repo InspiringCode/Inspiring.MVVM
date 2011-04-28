@@ -25,7 +25,7 @@
 
       [TestMethod]
       public void RevalidatePropertyValidationsSelfOnly_CallsRevalidationBehaviorOfProperty() {
-         Revalidator.RevalidatePropertyValidations(VM, VM.Property, ValidationScope.SelfOnly);
+         Revalidator.RevalidatePropertyValidations(VM, VM.Property, ValidationScope.Self);
 
          Assert.AreEqual(RevalidateProperty, ActionLog);
          Assert.AreEqual(VM.GetContext(), VM.PropertyBehavior.LastRevalidateContext);
@@ -34,7 +34,7 @@
 
       [TestMethod]
       public void RevalidatePropertyValidationsDescendants_CallsRevalidationAndDescendantsValidationBehavior() {
-         var scope = ValidationScope.FullSubtree;
+         var scope = ValidationScope.SelfAndAllDescendants;
 
          Revalidator.RevalidatePropertyValidations(VM, VM.Property, scope);
 
@@ -54,7 +54,7 @@
 
       [TestMethod]
       public void Revalidate_PerformsPropertyAndViewModelValidation() {
-         Revalidator.Revalidate(VM, ValidationScope.FullSubtree);
+         Revalidator.Revalidate(VM, ValidationScope.SelfAndAllDescendants);
          Assert.AreEqual(RevalidateDescendants + RevalidateProperty + RevalidateViewModel, ActionLog);
       }
 
@@ -62,7 +62,7 @@
       public void RevalidateItems_PerformsPropertyAndViewModelValidationsForAllItems() {
          var items = new[] { CreateVM(), CreateVM() };
 
-         Revalidator.RevalidateItems(items, ValidationScope.FullSubtree);
+         Revalidator.RevalidateItems(items, ValidationScope.SelfAndAllDescendants);
 
          var expectedSequence =
             RevalidateDescendants + RevalidateDescendants +
@@ -78,7 +78,7 @@
          var second = CreateVM();
          var items = new[] { first, second };
 
-         Revalidator.RevalidateItems(items, ValidationScope.FullSubtree);
+         Revalidator.RevalidateItems(items, ValidationScope.SelfAndAllDescendants);
 
          Assert.AreEqual(
             first.PropertyBehavior.LastValidationController,

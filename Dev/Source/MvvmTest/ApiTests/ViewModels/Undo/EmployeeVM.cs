@@ -43,7 +43,7 @@
       }
 
       internal void Revalidate() {
-         Kernel.Revalidate(ValidationScope.FullSubtree, ValidationMode.CommitValidValues);
+         Kernel.Revalidate(ValidationScope.SelfAndAllDescendants, ValidationMode.CommitValidValues);
       }
 
       internal void SetSource(Employee emp, Action action) {

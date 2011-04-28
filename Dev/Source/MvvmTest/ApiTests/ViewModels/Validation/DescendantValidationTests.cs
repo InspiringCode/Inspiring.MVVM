@@ -170,7 +170,7 @@
          public bool WasValidated { get; set; }
 
          public void Revalidate() {
-            base.Revalidate(ValidationScope.FullSubtree, ValidationMode.DiscardInvalidValues);
+            base.Revalidate(ValidationScope.SelfAndAllDescendants, ValidationMode.DiscardInvalidValues);
          }
       }
 
