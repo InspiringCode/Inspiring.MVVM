@@ -144,15 +144,11 @@
     <Compile Include="ApiTests\ViewModels\Validation\HierarchicalValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\RevalidateTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\ValidatorInteractionTests.cs" />
-    <Compile Include="ApiTests\ViewModels\Validation\CustomCollectionValidationTests.cs" />
-    <Compile Include="ApiTests\ViewModels\Validation\DescendantValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\BasicValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\TypeDescriptorTests.cs" />
     <Compile Include="ApiTests\ViewModels\AccessPropertyTests.cs" />
     <Compile Include="ApiTests\ViewModels\Domain\Area.cs" />
     <Compile Include="ApiTests\ViewModels\Domain\AreaRepository.cs" />
-    <Compile Include="ApiTests\ViewModels\Validation\HierarchyValidationFixture.cs" />
-    <Compile Include="ApiTests\ViewModels\Validation\ParentValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\ValidationEventTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\ValidationScopeTests.cs" />
     <Compile Include="ApiTests\ViewModels\ViewModelPropertyTests.cs" />
@@ -189,7 +185,6 @@
     <Compile Include="TestUtils\GenericComparisonObjectTests.cs" />
     <Compile Include="ValidationAssert.cs" />
     <Compile Include="ValidationTestBase.cs" />
-    <Compile Include="ValidatorInvocationLog.cs" />
     <Compile Include="ViewModels\- No Namespace -\ViewModelTests.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMCollectionCallModificationBehaviorTests.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMCollectionTests.cs" />
