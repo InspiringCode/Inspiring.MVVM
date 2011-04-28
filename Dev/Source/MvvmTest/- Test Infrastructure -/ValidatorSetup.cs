@@ -110,21 +110,12 @@
       }
 
       public void VerifyAll() {
-         VerifySequence();
-         VerifyResults();
+         VerifyAllStrict(); // TODO: Remove this method?
       }
 
       public void VerifyAllStrict() {
          VerifySequenceStrict();
          VerifyResults();
-      }
-
-      public void VerifySequence() {
-         throw new NotImplementedException();
-         //var actualInvocationsThatWereSetup = _actualInvocations
-         //   .Where(x => _setups.Contains(x));
-
-         //VerifySequence(actualInvocationsThatWereSetup);
       }
 
       public void VerifySequenceStrict() {

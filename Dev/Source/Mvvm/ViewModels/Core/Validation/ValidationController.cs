@@ -27,8 +27,13 @@
 
       public void ProcessPendingValidations() {
          while (_validationQueue.Any()) {
-            RevalidationRequest r = _validationQueue.Dequeue();
+            // We dequeue the request after the revalidation to avoid that the same
+            // request that is currently processed is added to the queue again.
+
+            RevalidationRequest r = _validationQueue.Peek();
             r.PerformRevalidation(this);
+
+            _validationQueue.Dequeue();
          }
       }
 
