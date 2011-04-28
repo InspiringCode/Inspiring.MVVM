@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
+   using System;
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
    using System.Linq;
@@ -180,6 +181,14 @@
             ChangeType,
             ChangedVM,
             ChangedProperty
+         );
+      }
+
+      public override string ToString() {
+         return String.Format(
+            "{{ChangeArgs {0}, Path = {1}}}",
+            ChangeType,
+            ChangedPath
          );
       }
 

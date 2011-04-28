@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.MvvmTest {
    using System;
+   using System.Collections.Generic;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
 
@@ -12,6 +13,12 @@
       public TestViewModel(TDescriptor descriptor, string name = null)
          : base(descriptor) {
          _name = name;
+         NotifyChangeInvocations = new List<ChangeArgs>();
+      }
+
+      public List<ChangeArgs> NotifyChangeInvocations {
+         get;
+         private set;
       }
 
       public void Load(Func<TDescriptor, IVMPropertyDescriptor> propertySelector) {
@@ -37,6 +44,10 @@
 
       public override string ToString() {
          return _name ?? GetType().Name;
+      }
+
+      protected override void OnChange(ChangeArgs args) {
+         NotifyChangeInvocations.Add(args);
       }
    }
 }

@@ -142,6 +142,7 @@
     <Compile Include="ApiTests\ViewModels\Validation\CollectionValidationTests.old.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\HierarchicalValidationFixture.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\HierarchicalValidationTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\RevalidateTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\ValidatorInteractionTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\CustomCollectionValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\DescendantValidationTests.cs" />
@@ -153,7 +154,6 @@
     <Compile Include="ApiTests\ViewModels\Validation\HierarchyValidationFixture.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\ParentValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\ValidationEventTests.cs" />
-    <Compile Include="ApiTests\ViewModels\Validation\ValidationModeTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\ValidationScopeTests.cs" />
     <Compile Include="ApiTests\ViewModels\ViewModelPropertyTests.cs" />
     <Compile Include="ApiTests\ViewModels\VMs\AreaVM.cs" />

@@ -78,24 +78,49 @@
       }
 
       public static void AreEqual(ChangeArgs expected, ChangeArgs actual) {
-         if (Object.ReferenceEquals(expected, actual)) {
-            return;
+         if (!AreEqualCore(expected, actual)) {
+            Assert.Fail("Expected {0} but was {1}.", expected, actual);
          }
-
-         Assert.IsNotNull(expected);
-         Assert.IsNotNull(actual);
-
-         Assert.AreEqual(expected.ChangeType, actual.ChangeType);
-         DomainAssert.AreEqual(expected.ChangedPath, actual.ChangedPath);
-         CollectionAssert.AreEqual(expected.OldItems.ToArray(), actual.OldItems.ToArray());
-         CollectionAssert.AreEqual(expected.NewItems.ToArray(), actual.NewItems.ToArray());
       }
 
-      public static void AreEqual(ChangeArgs[] expected, ChangeArgs[] actual) {
-         Assert.AreEqual(expected.Length, actual.Length);
+      private static bool AreEqualCore(ChangeArgs expected, ChangeArgs actual) {
+         if (Object.ReferenceEquals(expected, actual)) {
+            return true;
+         }
 
-         for (int i = 0; i < expected.Length; i++) {
-            DomainAssert.AreEqual(expected[i], actual[i]);
+         if (expected == null || actual == null) {
+            return false;
+         }
+
+         return
+            expected.ChangeType == actual.ChangeType &&
+            AreEqualCore(expected.ChangedPath, actual.ChangedPath) &&
+            expected.OldItems.SequenceEqual(actual.OldItems) &&
+            expected.NewItems.SequenceEqual(actual.NewItems);
+      }
+
+      private static bool AreEqualCore(IEnumerable<ChangeArgs> expected, IEnumerable<ChangeArgs> actual) {
+         if (expected.Count() != actual.Count()) {
+            return false;
+         }
+
+
+         for (int i = 0; i < expected.Count(); i++) {
+            if (!AreEqualCore(expected.ElementAt(i), actual.ElementAt(i))) {
+               return false;
+            }
+         }
+
+         return true;
+      }
+
+      public static void AreEqual(IEnumerable<ChangeArgs> expected, IEnumerable<ChangeArgs> actual) {
+         if (!AreEqualCore(expected, actual)) {
+            Assert.Fail(
+               "Expected [{0}] but was [{1}].",
+               String.Join(", ", expected),
+               String.Join(", ", actual)
+            );
          }
       }
 

@@ -83,7 +83,7 @@
       }
 
       private void AssertChangeArgs(params ChangeArgs[] expected) {
-         DomainAssert.AreEqual(expected, Context.NotifyChangeInvocations.ToArray());
+         DomainAssert.AreEqual(expected, Context.NotifyChangeInvocations);
       }
    }
 }
