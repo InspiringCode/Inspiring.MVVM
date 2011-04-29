@@ -52,7 +52,6 @@
 
             return base
                .GetFactoryWithCommonBehaviors<TOwnerVM, TValue, TSourceObject>()
-               .RegisterBehavior<ViewModelPropertyDescendantsValidatorBehavior<TValue>>(PropertyBehaviorKeys.ValueValidationSource)
                .RegisterBehavior<ViewModelInitializerBehavior<TValue>>(PropertyBehaviorKeys.ValueInitializer)
                .RegisterBehavior<LazyRefreshBehavior>(PropertyBehaviorKeys.LazyRefresh)
                .RegisterBehavior<ViewModelPropertyDescendantsValidatorBehavior<TValue>>(PropertyBehaviorKeys.DescendantsValidator)

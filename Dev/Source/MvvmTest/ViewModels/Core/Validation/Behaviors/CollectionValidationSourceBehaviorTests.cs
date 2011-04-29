@@ -79,19 +79,11 @@
          }
       }
 
-      private class RevalidationSpy : Behavior, IPropertyRevalidationBehavior {
+      private class RevalidationSpy : Behavior, IViewModelRevalidationBehavior {
          public bool WasCalled { get; set; }
 
-         public void Revalidate(IBehaviorContext context) {
+         public void Revalidate(IBehaviorContext context, ValidationController controller) {
             WasCalled = true;
-         }
-
-         public void BeginValidation(IBehaviorContext context, ValidationController controller) {
-            throw new System.NotImplementedException();
-         }
-
-         public void EndValidation(IBehaviorContext context) {
-            throw new System.NotImplementedException();
          }
       }
    }
