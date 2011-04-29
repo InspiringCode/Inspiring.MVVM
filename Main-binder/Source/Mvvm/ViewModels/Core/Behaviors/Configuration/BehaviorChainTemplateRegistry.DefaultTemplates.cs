@@ -80,7 +80,6 @@
             BehaviorChainTemplateKeys.CommandBehaviors,
             new BehaviorChainTemplate(CommandBehaviorFactory.Instance)
                .Append(BehaviorKeys.WaitCursor)
-               .Append(BehaviorKeys.CanExecuteChecker)
                .Append(BehaviorKeys.CommandExecutor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(BehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
          );
