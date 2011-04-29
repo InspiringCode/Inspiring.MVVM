@@ -276,4 +276,7 @@
   <data name="RollbackPointNotFound" xml:space="preserve">
     <value>The 'UndoManager' does not contain the rollback point.</value>
   </data>
+  <data name="GetDescaedantsWrongPropertyStepType" xml:space="preserve">
+    <value>Descendants can only requested for view model or collection properties.</value>
+  </data>
 </root>

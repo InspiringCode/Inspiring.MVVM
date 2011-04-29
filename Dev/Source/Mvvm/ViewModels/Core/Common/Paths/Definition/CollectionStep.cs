@@ -106,6 +106,13 @@
          //}
       }
 
+      public override IViewModel[] GetDescendants(
+         PathDefinitionIterator definitionSteps,
+         IViewModel rootVM
+      ) {
+         throw new NotSupportedException();
+      }
+
       public override string ToString() {
          return String.Format(
             "{0} -> {1}",

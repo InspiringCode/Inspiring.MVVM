@@ -16,7 +16,9 @@
       [TestInitialize]
       public void Setup() {
          VM = new EmployeeVM();
-         VM.GetValue(x => x.Projects).Add(new ProjectVM());
+         var projectVM = new ProjectVM();
+         VM.GetValue(x => x.Projects).Add(projectVM);
+         VM.SetValue(x => x.SelectedProject, projectVM);
       }
 
       [TestMethod]

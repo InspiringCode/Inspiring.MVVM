@@ -1,5 +1,4 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
-   using System;
 
    internal struct PathDefinitionIterator {
       private readonly PathDefinitionStep[] _steps;
@@ -24,6 +23,13 @@
             PathTerminationStep.Instance;
 
          return nextDefinitionStep.Matches(MoveNext(), step);
+      }
+
+      public IViewModel[] GetDescendantNext(IViewModel rootVM) {
+         var nextDefinitionStep = HasStep ?
+            Current :
+            PathTerminationStep.Instance;
+         return nextDefinitionStep.GetDescendants(MoveNext(), rootVM);
       }
 
       private PathDefinitionIterator MoveNext() {

@@ -6,7 +6,7 @@
    using Moq;
 
    [TestClass]
-   public class PathFixture {
+   public abstract class PathFixture {
       //
       // ASSERT HELPERS
       // 
@@ -147,9 +147,6 @@
 
          public EmployeeVM()
             : base(ClassDescriptor) {
-            var project = new ProjectVM();
-            SetValue(Descriptor.SelectedProject, project);
-            GetValue(Descriptor.Projects).Add(project);
          }
       }
 
@@ -168,6 +165,8 @@
                var v = b.GetPropertyBuilder();
                d.Name = v.Property.Of<string>();
                d.EndDate = v.Property.Of<DateTime>();
+               d.SelectedCustomer = v.VM.Of<CustomerVM>();
+               d.Customers = v.Collection.Of<CustomerVM>(CustomerVM.ClassDescriptor);
             })
             .Build();
 
@@ -179,6 +178,27 @@
       protected sealed class ProjectVMDescriptor : VMDescriptor {
          public IVMPropertyDescriptor<string> Name { get; set; }
          public IVMPropertyDescriptor<DateTime> EndDate { get; set; }
+         public IVMPropertyDescriptor<CustomerVM> SelectedCustomer { get; set; }
+         public IVMPropertyDescriptor<IVMCollection<CustomerVM>> Customers { get; set; }
+      }
+
+      protected sealed class CustomerVM : ViewModel<CustomerVMDescriptor> {
+         public static readonly CustomerVMDescriptor ClassDescriptor = VMDescriptorBuilder
+            .OfType<CustomerVMDescriptor>()
+            .For<CustomerVM>()
+            .WithProperties((d, b) => {
+               var v = b.GetPropertyBuilder();
+               d.Name = v.Property.Of<string>();
+            })
+            .Build();
+
+         public CustomerVM()
+            : base(ClassDescriptor) {
+         }
+      }
+
+      protected sealed class CustomerVMDescriptor : VMDescriptor {
+         public IVMPropertyDescriptor<string> Name { get; set; }
       }
    }
 }

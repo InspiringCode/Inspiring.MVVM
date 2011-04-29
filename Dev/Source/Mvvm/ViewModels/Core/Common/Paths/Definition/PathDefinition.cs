@@ -50,6 +50,11 @@
          return it.MatchesNext(path.GetIterator());
       }
 
+      public IViewModel[] GetDescendants(IViewModel rootVM) {
+         var it = new PathDefinitionIterator(_steps);
+         return it.GetDescendantNext(rootVM);
+      }
+
       public override string ToString() {
          IEnumerable<PathDefinitionStep> steps = _steps;
 

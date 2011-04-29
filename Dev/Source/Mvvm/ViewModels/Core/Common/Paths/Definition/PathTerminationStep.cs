@@ -18,5 +18,12 @@
             PathMatch.Fail() :
             PathMatch.Succeed(length: matchedSteps);
       }
+
+      public override IViewModel[] GetDescendants(
+         PathDefinitionIterator definitionSteps,
+         IViewModel rootVM
+      ) {
+         return new IViewModel[] { rootVM };
+      }
    }
 }

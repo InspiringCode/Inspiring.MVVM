@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Diagnostics.Contracts;
+   using System.Linq;
    using Inspiring.Mvvm.Common;
 
    internal sealed class PropertyStep<TDescriptor, TValue> :
@@ -40,6 +41,27 @@
          } else {
             return PathMatch.Fail();
          }
+      }
+
+      public override IViewModel[] GetDescendants(
+         PathDefinitionIterator definitionSteps,
+         IViewModel rootVM
+      ) {
+         var property = _propertySelector((TDescriptor)rootVM.Descriptor);
+         var instance = property.GetValue(rootVM.GetContext());
+
+         if (instance is IVMCollection) {
+            var collection = (IVMCollection)instance;
+            return ((IVMCollection)instance)
+               .Cast<IViewModel>()
+               .SelectMany(x => definitionSteps.GetDescendantNext(x))
+               .ToArray();
+
+         } else if (instance is IViewModel) {
+            return definitionSteps.GetDescendantNext((IViewModel)instance);
+         }
+
+         throw new NotSupportedException(ExceptionTexts.GetDescaedantsWrongPropertyStepType);
       }
 
       public override string ToString() {
