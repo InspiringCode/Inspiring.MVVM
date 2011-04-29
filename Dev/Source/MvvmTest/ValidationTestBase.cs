@@ -58,7 +58,7 @@
          Assert.AreEqual(expected, args.Result);
       }
 
-      protected static ValidationErrorBuilder Error(string errorMessage) {
+      protected static ValidationErrorBuilder Error(string errorMessage = "Error") {
          return new ValidationErrorBuilder(errorMessage);
       }
 

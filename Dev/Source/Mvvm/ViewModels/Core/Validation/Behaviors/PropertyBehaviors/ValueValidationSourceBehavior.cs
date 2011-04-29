@@ -1,6 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
 
-   internal sealed class ValueValidationSourceBehavior<TValue> :
+   internal class ValueValidationSourceBehavior<TValue> :
       PropertyValidationSourceBehaviorBase<TValue>,
       IValueAccessorBehavior<TValue>,
       IValidatedValueAccessorBehavior<TValue> {

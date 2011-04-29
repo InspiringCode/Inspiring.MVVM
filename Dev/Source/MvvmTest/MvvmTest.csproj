@@ -136,10 +136,10 @@
     <Compile Include="ApiTests\ViewModels\Undo\UndoManagerTests.cs" />
     <Compile Include="ApiTests\ViewModels\Undo\UndoTests.cs" />
     <Compile Include="ApiTests\ViewModels\UntypedPropertyAccessTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\ViewModelPropertyValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\CollectionRevalidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\CollectionValidationFixture.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\CollectionValidationTests.cs" />
-    <Compile Include="ApiTests\ViewModels\Validation\CollectionValidationTests.old.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\HierarchicalValidationFixture.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\HierarchicalValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\RevalidateTests.cs" />

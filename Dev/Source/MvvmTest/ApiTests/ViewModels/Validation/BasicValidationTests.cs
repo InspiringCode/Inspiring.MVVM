@@ -21,27 +21,28 @@
       }
 
       [TestMethod]
-      public void SetValue_PropertyValidationSucceeds_PerformsPropertyValidation() {
+      public void SetValue_PropertyValidationSucceeds_RemovesPreviousErrorFromProperty() {
          VM.ExpectedNameError = NamePropertyValidationError;
-         VM.SetValue(x => x.Name, ArbitraryString);
+         VM.SetValue(x => x.Name, "Value 1");
+
          VM.ExpectedNameError = null;
-         VM.SetValue(x => x.Name, ArbitraryString);
+         VM.SetValue(x => x.Name, "Value 2");
 
          Assert.IsTrue(VM.IsValid);
       }
 
       [TestMethod]
-      public void SetValue_PropertyValidationFails_PerformsPropertyValidation() {
+      public void SetValue_PropertyValidationFails_AddsValidationErrorToProperty() {
          VM.ExpectedNameError = NamePropertyValidationError;
-         VM.SetValue(x => x.Name, ArbitraryString);
+         VM.SetValue(x => x.Name, "New value");
 
          ValidationAssert.Errors(NamePropertyValidationError);
       }
 
       [TestMethod]
-      public void SetValue_ViewModelValidationFails_PerformsViewModelValidation() {
+      public void SetValue_ViewModelValidationFails_AddsValidationErrorToViewModel() {
          VM.ExpectedViewModelError = ViewModelValidationError;
-         VM.SetValue(x => x.Name, ArbitraryString);
+         VM.SetValue(x => x.Name, "New value");
 
          ValidationAssert.Errors(ViewModelValidationError);
       }
@@ -50,7 +51,7 @@
       public void SetValue_PropertyAndViewModelValidationFail_ValidationResultContainsBothErrors() {
          VM.ExpectedNameError = NamePropertyValidationError;
          VM.ExpectedViewModelError = ViewModelValidationError;
-         VM.SetValue(x => x.Name, ArbitraryString);
+         VM.SetValue(x => x.Name, "New value");
 
          ValidationAssert.Errors(NamePropertyValidationError, ViewModelValidationError);
       }
@@ -89,7 +90,6 @@
          }
 
          public ValidationError ExpectedNameError { get; set; }
-         public ValidationError ExpectedSelectedProjectError { get; set; } // TODO: Remove test case?
          public ValidationError ExpectedViewModelError { get; set; }
 
          public override string ToString() {

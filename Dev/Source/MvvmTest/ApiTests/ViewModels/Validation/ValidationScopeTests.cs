@@ -3,6 +3,8 @@
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
+   using System;
+   using Inspiring.Mvvm.ViewModels.Core;
 
    [TestClass]
    public class ValidationScopeTests : TestBase {
@@ -26,6 +28,11 @@
                ChildPropertyError = UnloadedChildError,
                Items = new List<GrandchildSource> {
                   new GrandchildSource { GrandchildError = UnloadedGrandChildError }
+               }
+            },
+            ChildWithPropertyValidatorSource = new ChildSource {
+               Items = new List<GrandchildSource>() {
+                  new GrandchildSource()
                }
             }
          };
@@ -68,6 +75,29 @@
             LoadedChildError,
             LoadedGrandChildError
          );
+      }
+
+      [TestMethod]
+      public void RevalidateSelf_ForChildVMPropertyWithPropertyValidator_ExecutesValidator() {
+         bool propertyValidatorWasExecuted = false;
+         VM.PropertyValidationAction = (args) => { propertyValidatorWasExecuted = true; };
+         
+         VM.Revalidate(ValidationScope.Self);
+         Assert.IsTrue(propertyValidatorWasExecuted);
+      }
+
+      [TestMethod]
+      public void RevalidateSelf_ForChildPropertyWithPropertyValidator_LoadsChildOnlyIfAccessedByValidator() {
+         VM.PropertyValidationAction = (args) => { };
+         VM.Revalidate(ValidationScope.Self);
+         Assert.IsFalse(VM.IsLoaded(x => x.ChildWithPropertyValidator));
+
+         ChildVM propertyWhileValidatingValue = null;
+         VM.PropertyValidationAction = (args) => { propertyWhileValidatingValue = args.Value; };
+         VM.Revalidate(ValidationScope.Self);
+         
+         Assert.IsTrue(VM.IsLoaded(x => x.ChildWithPropertyValidator));
+         Assert.AreEqual(VM.GetValue(x => x.ChildWithPropertyValidator), propertyWhileValidatingValue);
       }
 
       [TestMethod]
@@ -151,21 +181,31 @@
 
                d.LoadedChild = v.VM.Wraps(x => x.LoadedChildSource).With<ChildVM>();
                d.UnloadedChild = v.VM.Wraps(x => x.UnloadedChildSource).With<ChildVM>();
-
+               d.ChildWithPropertyValidator = v.VM.Wraps(x => x.ChildWithPropertyValidatorSource).With<ChildVM>();
+            })
+            .WithValidators(b => {
+               b.Check(x => x.ChildWithPropertyValidator).Custom(args => {
+                  args.Owner.PropertyValidationAction(args);
+               });
             })
             .Build();
 
          public RootVM()
             : base(ClassDescriptor) {
+            PropertyValidationAction = (args) => { };
          }
 
          public ChildSource LoadedChildSource { get; set; }
          public ChildSource UnloadedChildSource { get; set; }
+         public ChildSource ChildWithPropertyValidatorSource { get; set; }
+
+         public Action<PropertyValidationArgs<RootVM, RootVM, ChildVM>> PropertyValidationAction { get; set; }
       }
 
       private sealed class RootVMDescriptor : VMDescriptor {
          public IVMPropertyDescriptor<ChildVM> LoadedChild { get; set; }
          public IVMPropertyDescriptor<ChildVM> UnloadedChild { get; set; }
+         public IVMPropertyDescriptor<ChildVM> ChildWithPropertyValidator { get; set; }
       }
 
       private sealed class ChildVM : TestViewModel<ChildVMDescriptor>, IHasSourceObject<ChildSource> {
@@ -184,7 +224,10 @@
             })
             .WithValidators(b => {
                b.Check(x => x.ChildProperty).Custom(args => {
-                  args.AddError(args.Owner.Source.ChildPropertyError);
+                  string error = args.Owner.Source.ChildPropertyError;
+                  if (error != null) {
+                     args.AddError(error);
+                  }
                });
             })
             .Build();
@@ -210,7 +253,10 @@
             })
             .WithValidators(b => {
                b.CheckViewModel(args => {
-                  args.AddError(args.Owner.Source.GrandchildError);
+                  string error = args.Owner.Source.GrandchildError;
+                  if (error != null) {
+                     args.AddError(error);
+                  };
                });
             })
             .Build();
