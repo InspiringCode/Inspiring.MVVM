@@ -32,6 +32,7 @@
 
       [TestMethod]
       public void Execute_RelativePropertyFactory_CallsSource() {
+         Source.CanExecuteResult = true;
          VM.RelativeCommand.Execute(null);
          Assert.AreEqual(1, Source.ExecuteInvokationCount);
       }

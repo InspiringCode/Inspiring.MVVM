@@ -175,6 +175,7 @@
     <Compile Include="ViewModels\Core\Behaviors\InitializableBehavior.cs" />
     <Compile Include="ViewModels\Core\Behaviors\Keys\CollectionBehaviorKeys.cs" />
     <Compile Include="ViewModels\Core\Collections\IVMCollectionExpression.cs" />
+    <Compile Include="ViewModels\Core\Commands\CanExecuteCheckerBehavior.cs" />
     <Compile Include="ViewModels\Core\Commands\CommandFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\Commands\DelegatingCommandBehavior.cs" />
     <Compile Include="ViewModels\Core\Commands\ViewModelCommand.cs" />

@@ -80,6 +80,7 @@
             BehaviorChainTemplateKeys.CommandBehaviors,
             new BehaviorChainTemplate(CommandBehaviorFactory.Instance)
                .Append(BehaviorKeys.WaitCursor)
+               .Append(BehaviorKeys.CanExecuteChecker)
                .Append(BehaviorKeys.CommandExecutor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(BehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
          );
@@ -120,7 +121,7 @@
                .Append(CollectionBehaviorKeys.DescriptorSetter, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(CollectionBehaviorKeys.ParentSetter)
                .Append(CollectionBehaviorKeys.SourceSynchronizer, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(CollectionBehaviorKeys.ChangeNotifier)               
+               .Append(CollectionBehaviorKeys.ChangeNotifier)
                .Append(CollectionBehaviorKeys.Populator, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(CollectionBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(CollectionBehaviorKeys.ViewModelFactory, DefaultBehaviorState.Disabled)

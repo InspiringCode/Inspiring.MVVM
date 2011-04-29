@@ -15,6 +15,10 @@
             return new WaitCursorBehavior();
          }
 
+         if (key == BehaviorKeys.CanExecuteChecker) {
+            return new CanExecuteCheckerBehavior();
+         }
+
          throw new NotSupportedException(
             ExceptionTexts.BehaviorNotSupportedByFactory.FormatWith(key)
          );

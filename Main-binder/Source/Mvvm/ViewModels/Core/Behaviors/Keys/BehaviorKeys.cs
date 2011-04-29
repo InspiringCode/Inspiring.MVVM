@@ -57,5 +57,7 @@
       public static readonly BehaviorKey CommandFactory = new BehaviorKey("CommandFactory");
 
       public static readonly BehaviorKey WaitCursor = new BehaviorKey("WaitCursor");
+
+      public static readonly BehaviorKey CanExecuteChecker = new BehaviorKey("CanExecuteChecker");
    }
 }
