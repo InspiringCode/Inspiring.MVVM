@@ -45,8 +45,8 @@
          set { SetValue(Descriptor.Title, value); }
       }
 
-      public void UpdateCustomerFromSource() {
-         Kernel.UpdateFromSource(Descriptor.Customer);
+      public void RefreshCustomer() {
+         Kernel.Refresh(Descriptor.Customer);
       }
 
       public void Revalidate() {

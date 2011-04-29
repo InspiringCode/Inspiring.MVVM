@@ -46,9 +46,9 @@
          }
 
          [TestMethod]
-         public void UpdateFromSource_RecreatesViewModel() {
+         public void Refresh_RecreatesViewModel() {
             Source.Customer = new Customer();
-            VM.UpdateCustomerFromSource();
+            VM.RefreshCustomer();
             Assert.AreEqual(Source.Customer, VM.Customer.CustomerSource);
          }
 
