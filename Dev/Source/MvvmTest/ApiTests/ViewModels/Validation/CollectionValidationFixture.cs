@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Validation {
    using Inspiring.Mvvm.ViewModels;
-   using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
@@ -85,8 +84,6 @@
             _name = name;
             Setup = setup;
          }
-
-         public ValidationError ItemPropertyError { get; set; }
 
          private ValidatorMockConfiguration Setup { get; set; }
 

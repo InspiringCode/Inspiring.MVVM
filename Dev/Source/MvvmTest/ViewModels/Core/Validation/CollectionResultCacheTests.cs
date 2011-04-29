@@ -28,7 +28,7 @@
             property: null
          );
 
-         Results.VerifyValidationResults();
+         Results.VerifySetupValidationResults();
          ValidationAssert.IsValid(result);
       }
 

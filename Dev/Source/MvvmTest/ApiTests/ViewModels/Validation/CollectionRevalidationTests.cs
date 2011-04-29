@@ -79,7 +79,7 @@
 
          one.Revalidate(x => x.CollectionProperty);
 
-         Setup.VerifyValidationResults();
+         Setup.VerifySetupValidationResults();
       }
 
       [TestMethod]
@@ -99,7 +99,7 @@
 
          one.RevalidateViewModelValidations();
 
-         Setup.VerifyValidationResults();
+         Setup.VerifySetupValidationResults();
       }
 
       [TestMethod]
@@ -122,7 +122,7 @@
 
          one.Revalidate(x => x.CollectionProperty);
 
-         Setup.VerifyValidationResults();
+         Setup.VerifySetupValidationResults();
       }
 
       [TestMethod]
@@ -164,7 +164,7 @@
 
          one.RevalidateViewModelValidations();
 
-         Setup.VerifyValidationResults();
+         Setup.VerifySetupValidationResults();
       }
 
       [TestMethod]

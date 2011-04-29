@@ -18,7 +18,7 @@
          _initialState = GetState();
       }
 
-      protected List<ValidatorResultSetup> ValidatorSetups { get; private set; }
+      public List<ValidatorResultSetup> ValidatorSetups { get; private set; }
       protected List<ValidatorInvocation> ExpectedInvocations { get; private set; }
       public List<ValidatorInvocation> ActualInvocations { get; private set; }
 
@@ -32,10 +32,10 @@
 
       public void VerifySequenceAndResults() {
          VerifyInvocationSequence();
-         VerifyValidationResults();
+         VerifySetupValidationResults();
       }
 
-      public void VerifyValidationResults() {
+      public void VerifySetupValidationResults() {
          var expectedErrors = ValidatorSetups
             .Where(x => !x.Result.IsValid)
             .SelectMany(x => x.Result.Errors)
@@ -267,7 +267,7 @@
          CollectionViewModel
       }
 
-      protected class ValidatorResultSetup {
+      public class ValidatorResultSetup {
          public static ValidatorResultSetup Succeeding(ValidatorInvocation invocation) {
             return new ValidatorResultSetup {
                Invocation = invocation,
@@ -281,11 +281,11 @@
                   NullValidator.Instance,
                   invocation.TargetVM,
                   invocation.TargetProperty,
-                  invocation.ToString()) :
+                  invocation.ToString(errorDetails)) :
                new ValidationError(
                   NullValidator.Instance,
                   invocation.TargetVM,
-                  invocation.ToString());
+                  invocation.ToString(errorDetails));
 
             return new ValidatorResultSetup {
                Invocation = invocation,
