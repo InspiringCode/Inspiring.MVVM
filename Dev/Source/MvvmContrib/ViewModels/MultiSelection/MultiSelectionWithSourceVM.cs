@@ -81,7 +81,7 @@
                // VM instances (for the same source items) as the 'AllItems' collection.
                c.For(x => x.SelectedItems).Enable(
                   PropertyBehaviorKeys.ValueAccessor,
-                  new LookupPopulatorCollectionBehavior<MultiSelectionWithSourceVM<TSourceObject, TItemSource>, SelectionItemVM<TItemSource>, TItemSource>(
+                  new LookupPopulatorCollectionBehavior<MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>, TItemVM, TItemSource>(
                      multiSelectionVM => multiSelectionVM.AllItems
                   )
                );

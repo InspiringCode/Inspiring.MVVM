@@ -229,7 +229,7 @@
             eventSequence += ("ListChanged" + "|");
          };
 
-         vm.UpdateGroupsFromSource();
+         vm.RefreshGroups();
 
          Assert.IsTrue(eventSequence.Contains("|ListChanged|PropertyChanged|")); // TODO: Investigate why so many events are raised.
       }
@@ -237,7 +237,7 @@
       [TestMethod]
       public void UpdateFromSource() {
          UserVM vm = CreateUserVMWithItems();
-         vm.UpdateGroupsFromSource();
+         vm.RefreshGroups();
       }
 
       /// <summary>

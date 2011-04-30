@@ -1,5 +1,4 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Properties.ViewModelProperty {
-   using System.Linq;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -28,6 +27,13 @@
       }
 
       [TestMethod]
+      public void InitializeValue_WhenInitialValueIsNull_DoesNothing() {
+         ViewModelStub initialValue = null;
+         Next.ValueToReturn = initialValue;
+         Behavior.InitializeValue(Context);
+      }
+
+      [TestMethod]
       public void SetValue_PreviousValueWasNull_AddsParentToNewValue() {
          var newValue = new ViewModelStub();
          Next.ValueToReturn = null;
@@ -36,7 +42,7 @@
       }
 
       [TestMethod]
-      public void SetValue_RemovesParentFromPreviousValue() {
+      public void SetValue_ToNull_RemovesParentFromPreviousValue() {
          var previousValue = new ViewModelStub();
          previousValue.Kernel.Parents.Add(Context.VM);
          Next.ValueToReturn = previousValue;

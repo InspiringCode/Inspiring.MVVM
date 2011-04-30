@@ -1,11 +1,36 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels {
+   using System;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
    public class ViewModelPropertyTests : TestBase {
+      [TestMethod]
+      public void GetValueOfDelegatingViewModelProperty_WhenGetterDelegateReturnsNull_ReturnsNull() {
+         var vm = CreateVM(x => x.VM.DelegatesTo(v => (CustomerVM)null));
+         Assert.IsNull(vm.Customer);
+      }
+
+      private ProjectVM CreateVM(
+         Func<IVMPropertyBuilder<ProjectVM>, IVMPropertyDescriptor<CustomerVM>> propertyDefinitionAction
+      ) {
+         var descriptor = VMDescriptorBuilder
+            .OfType<ProjectVMDescriptor>()
+            .For<ProjectVM>()
+            .WithProperties((d, c) => {
+               var v = c.GetPropertyBuilder();
+
+               d.Title = v.Property.Of<string>();
+               d.Customer = propertyDefinitionAction(v);
+            })
+            .Build();
+
+         return new ProjectVM(descriptor);
+      }
+
 
       [TestClass]
       public abstract class BaseTests {
@@ -50,6 +75,13 @@
             Source.Customer = new Customer();
             VM.RefreshCustomer();
             Assert.AreEqual(Source.Customer, VM.Customer.CustomerSource);
+         }
+
+         [TestMethod]
+         public void GetValue_WhenSourceIsNull_ReturnsNull() {
+            var vm = CreateVM();
+            vm.InitializeFrom(new Project { Customer = null });
+            Assert.IsNull(vm.Customer);
          }
 
          protected abstract ProjectVM CreateVM();

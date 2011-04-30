@@ -12,13 +12,14 @@
          VMDescriptorBase itemDescriptor = this.GetItemDescriptor();
 
          foreach (IViewModel item in args.NewItems) {
-            item.Kernel.Parents.Add(args.Collection.OwnerVM);
-            item.Kernel.OwnerCollections.Add(args.Collection);
-
             // TODO: Should we check old descriptor, should the Descriptor property 
             //       handle this, or is it OK as it is now?
             // TODO: Test this feature.
+            // The 'Descriptor' must be set before accessing the 'Kernel'!
             item.Descriptor = itemDescriptor;
+
+            item.Kernel.Parents.Add(args.Collection.OwnerVM);
+            item.Kernel.OwnerCollections.Add(args.Collection);
          }
 
          this.HandleChangeNext(context, args);

@@ -45,7 +45,7 @@
       [TestMethod]
       public void UpdateFromSource() {
          UserVM vm = new UserVM();
-         vm.UpdateFromSource(UserVM.ClassDescriptor.Department);
+         vm.Refresh(UserVM.ClassDescriptor.Department);
       }
 
       internal sealed class UserVM : DefaultViewModelWithSourceBase<UserVMDescriptor, User> {
@@ -81,8 +81,8 @@
             get { return GetValue(Descriptor.Department); }
          }
 
-         public new void UpdateFromSource(IVMPropertyDescriptor property) {
-            base.UpdateFromSource(property);
+         public new void Refresh(IVMPropertyDescriptor property) {
+            base.Refresh(property);
          }
       }
 

@@ -12,15 +12,9 @@
       public void SetValue(IBehaviorContext context, TValue value) {
          TValue previousValue = this.GetValueNext<TValue>(context);
 
-         if (value != null) {
-            HandleAddedToHierarchy(context, value);
-         }
-
+         HandleAddedToHierarchy(context, value);
          this.SetValueNext(context, value);
-
-         if (previousValue != null) {
-            HandleRemovedFromHierarchy(context, previousValue);
-         }
+         HandleRemovedFromHierarchy(context, previousValue);
       }
 
       public void InitializeValue(IBehaviorContext context) {
@@ -31,11 +25,15 @@
       }
 
       private void HandleAddedToHierarchy(IBehaviorContext context, TValue viewModel) {
-         viewModel.Kernel.Parents.Add(context.VM);
+         if (viewModel != null) {
+            viewModel.Kernel.Parents.Add(context.VM);
+         }
       }
 
       private void HandleRemovedFromHierarchy(IBehaviorContext context, TValue viewModel) {
-         viewModel.Kernel.Parents.Remove(context.VM);
+         if (viewModel != null) {
+            viewModel.Kernel.Parents.Remove(context.VM);
+         }
       }
    }
 }

@@ -19,8 +19,8 @@
          get { return GetValue(Descriptor.Department); }
       }
 
-      public void UpdateGroupsFromSource() {
-         CopyFromSource(Descriptor.Groups);
+      public void RefreshGroups() {
+         Refresh(Descriptor.Groups);
       }
    }
 
