@@ -46,6 +46,10 @@
          Action<BehaviorChainConfiguration> chainConfigurationAction
       );
 
+      IVMPropertyDescriptor<TValue> CustomProperty<TValue>(
+         BehaviorChainConfiguration behaviorChain
+      );
+
       IValueAccessorBehavior<TValue> CreateDelegateAccessor<TValue>(
          Func<TSourceObject, TValue> getter,
          Action<TSourceObject, TValue> setter = null

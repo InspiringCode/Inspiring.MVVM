@@ -14,6 +14,12 @@
          Assert.IsNull(vm.Customer);
       }
 
+      [TestMethod]
+      public void GetValueOfWrapperProperty_WhenSourceValueIsNull_ReturnsNull() {
+         var vm = CreateVM(x => x.VM.Wraps(v => (Customer)null, (v, val) => { }).With<CustomerVM>());
+         Assert.IsNull(vm.Customer);
+      }
+
       private ProjectVM CreateVM(
          Func<IVMPropertyBuilder<ProjectVM>, IVMPropertyDescriptor<CustomerVM>> propertyDefinitionAction
       ) {

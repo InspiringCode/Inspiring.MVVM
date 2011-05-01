@@ -42,6 +42,11 @@
          Revalidator.RevalidateViewModelValidations(this);
       }
 
+      public void Refresh(Func<TDescriptor, IVMPropertyDescriptor> propertySelector) {
+         var property = propertySelector(Descriptor);
+         base.Refresh(property);
+      }
+
       public override string ToString() {
          return _name ?? GetType().Name;
       }

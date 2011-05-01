@@ -5,7 +5,10 @@
    using System.Windows.Input;
    using Inspiring.Mvvm.Common;
 
-   internal sealed class VMPropertyFactory<TOwnerVM, TSourceObject> : ConfigurationProvider, ICustomPropertyFactory<TSourceObject> where TOwnerVM : IViewModel {
+   internal sealed class VMPropertyFactory<TOwnerVM, TSourceObject> :
+      ConfigurationProvider,
+      ICustomPropertyFactory<TSourceObject> where TOwnerVM : IViewModel {
+
       private readonly PropertyPath<TOwnerVM, TSourceObject> _sourceObjectPath;
 
       internal VMPropertyFactory(
@@ -135,7 +138,17 @@
       ) {
          var config = BehaviorChainConfiguration.GetConfiguration(templateKey, factoryConfiguration);
          chainConfigurationAction(config);
-         return CreateAndRegisterProperty<TValue>(config);
+         return CustomProperty<TValue>(config);
+      }
+
+      public IVMPropertyDescriptor<TValue> CustomProperty<TValue>(BehaviorChainConfiguration behaviorChain) {
+         var property = new VMPropertyDescriptor<TValue>();
+
+         Configuration
+           .PropertyConfigurations
+           .RegisterProperty(property, behaviorChain);
+
+         return property;
       }
 
       public IValueAccessorBehavior<TValue> CreateDelegateAccessor<TValue>(
@@ -162,16 +175,6 @@
 
       public IValueAccessorBehavior<TSourceObject> CreateSourceObjectAccessor() {
          return new MappedValueAccessorBehavior<TOwnerVM, TSourceObject>(_sourceObjectPath);
-      }
-
-      private IVMPropertyDescriptor<TValue> CreateAndRegisterProperty<TValue>(BehaviorChainConfiguration config) {
-         var property = new VMPropertyDescriptor<TValue>();
-
-         Configuration
-           .PropertyConfigurations
-           .RegisterProperty(property, config);
-
-         return property;
       }
    }
 }

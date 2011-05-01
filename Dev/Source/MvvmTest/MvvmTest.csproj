@@ -128,6 +128,10 @@
     <Compile Include="ApiTests\ViewModels\PerformanceTests.cs" />
     <Compile Include="ApiTests\ViewModels\PropertyDependencyTests.cs" />
     <Compile Include="ApiTests\ViewModels\RefreshTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Refresh\CollectionPropertyRefreshTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Refresh\RefreshFixture.cs" />
+    <Compile Include="ApiTests\ViewModels\Refresh\SimplePropertyRefreshTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Refresh\ViewModelPropertyRefreshTests.cs" />
     <Compile Include="ApiTests\ViewModels\TestCollectionWithInheritance.cs" />
     <Compile Include="ApiTests\ViewModels\Undo\CustomerVM.cs" />
     <Compile Include="ApiTests\ViewModels\Undo\DomainObjects.cs" />
@@ -222,6 +226,7 @@
     <Compile Include="ViewModels\Core\Common\Paths\PathFixture.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\PathHelperTests.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\PropertyStepTests.cs" />
+    <Compile Include="ViewModels\Core\Properties\ViewModelProperty\StoredViewModelAccessorBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Properties\ViewModelProperty\ViewModelInitializerBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionResultCacheFixture.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationControllerTests.cs" />

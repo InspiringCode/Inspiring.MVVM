@@ -15,15 +15,35 @@
       public void Refresh(IBehaviorContext context) {
          RequireInitialized();
 
-         TValue child = GetValue(context);
-         SetSourceOnViewModel(context, child);
+         TSource source = this.GetValueNext<TSource>(context);
+         TValue childVM = GetValue(context);
+
+         if (source != null) {
+            if (childVM != null) {
+               childVM.Source = source;
+               childVM.Kernel.Refresh();
+            } else {
+               childVM = CreateViewModel(context);
+               childVM.Source = source;
+               SetValue(context, childVM);
+            }
+         } else {
+            SetValue(context, default(TValue));
+         }
+
          this.RefreshNext(context);
       }
 
       protected override TValue ProvideValue(IBehaviorContext context) {
-         TValue child = CreateViewModel(context);
-         SetSourceOnViewModel(context, child);
-         return child;
+         TSource source = this.GetValueNext<TSource>(context);
+         TValue childVM = default(TValue);
+
+         if (source != null) {
+            childVM = CreateViewModel(context);
+            childVM.Source = source;
+         }
+
+         return childVM;
       }
 
       private TValue CreateViewModel(IBehaviorContext context) {

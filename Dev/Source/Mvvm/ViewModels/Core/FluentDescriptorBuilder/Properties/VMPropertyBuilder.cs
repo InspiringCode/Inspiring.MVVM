@@ -116,7 +116,7 @@
       /// <inheritdoc />
       IVMPropertyDescriptor<TChildVM> IViewModelPropertyBuilder<TSourceObject>.Of<TChildVM>() {
          return Custom.ViewModelProperty(
-            valueAccessor: new StoredValueAccessorBehavior<TChildVM>()
+            valueAccessor: new StoredViewModelAccessorBehavior<TChildVM>()
          );
       }
 
