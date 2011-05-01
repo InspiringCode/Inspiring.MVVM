@@ -26,17 +26,12 @@
             : base(ClassDescriptor) {
          }
 
-         public bool WasRefreshed {
-            get { return GetDetector().WasCalled; }
-            set { GetDetector().WasCalled = value; }
+         public ChildVM(ChildSource source)
+            : base(ClassDescriptor) {
+            InitializeFrom(source);
          }
 
-         private RefreshDetectorBehavior GetDetector() {
-            return Descriptor
-               .RefreshDetectionProperty
-               .Behaviors
-               .GetNextBehavior<RefreshDetectorBehavior>();
-         }
+         public bool WasRefreshed { get; set; }
 
          private static BehaviorChainConfiguration CreateRefreshDetectionPropertyChain() {
             var key = new BehaviorKey("RefreshDetector");
@@ -55,7 +50,8 @@
          public bool WasCalled { get; set; }
 
          public void Refresh(IBehaviorContext context) {
-            WasCalled = true;
+            var vm = (ChildVM)context.VM;
+            vm.WasRefreshed = true;
          }
       }
    }

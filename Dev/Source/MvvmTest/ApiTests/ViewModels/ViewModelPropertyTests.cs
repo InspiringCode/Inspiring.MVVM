@@ -8,6 +8,13 @@
 
    [TestClass]
    public class ViewModelPropertyTests : TestBase {
+      private RootVM VM { get; set; }
+
+      [TestInitialize]
+      public void Setup() {
+         VM = new RootVM();
+      }
+
       [TestMethod]
       public void GetValueOfDelegatingViewModelProperty_WhenGetterDelegateReturnsNull_ReturnsNull() {
          var vm = CreateVM(x => x.VM.DelegatesTo(v => (CustomerVM)null));
@@ -18,6 +25,15 @@
       public void GetValueOfWrapperProperty_WhenSourceValueIsNull_ReturnsNull() {
          var vm = CreateVM(x => x.VM.Wraps(v => (Customer)null, (v, val) => { }).With<CustomerVM>());
          Assert.IsNull(vm.Customer);
+      }
+
+      [TestMethod]
+      public void SetValueOfWrapperProperty_ToNull_SetsSourceToNull() {
+         VM.WrapperPropertySource = new ChildSource();
+         VM.Load(x => x.WrapperProperty);
+
+         VM.SetValue(x => x.WrapperProperty, null);
+         Assert.IsNull(VM.WrapperPropertySource);
       }
 
       private ProjectVM CreateVM(
@@ -35,6 +51,56 @@
             .Build();
 
          return new ProjectVM(descriptor);
+      }
+
+      private sealed class RootVM : TestViewModel<RootVMDescriptor> {
+         public static readonly RootVMDescriptor ClassDescriptor = VMDescriptorBuilder
+            .OfType<RootVMDescriptor>()
+            .For<RootVM>()
+            .WithProperties((d, b) => {
+               var v = b.GetPropertyBuilder();
+
+               d.InstanceProperty = v.VM.Of<ChildVM>();
+               d.WrapperProperty = v.VM.Wraps(x => x.WrapperPropertySource).With<ChildVM>();
+               d.DelegateProperty = v.VM.DelegatesTo(
+                  x => x.DelegatePropertyResult,
+                  (x, val) => x.DelegatePropertyResult = val
+               );
+            })
+            .Build();
+
+         public RootVM()
+            : base(ClassDescriptor) {
+         }
+
+         public ChildSource WrapperPropertySource { get; set; }
+         public ChildVM DelegatePropertyResult { get; set; }
+      }
+
+      private sealed class RootVMDescriptor : VMDescriptor {
+         public IVMPropertyDescriptor<ChildVM> InstanceProperty { get; set; }
+         public IVMPropertyDescriptor<ChildVM> WrapperProperty { get; set; }
+         public IVMPropertyDescriptor<ChildVM> DelegateProperty { get; set; }
+      }
+
+      protected class ChildSource {
+      }
+
+      protected class ChildVM : DefaultViewModelWithSourceBase<ChildVMDescriptor, ChildSource> {
+         public static readonly ChildVMDescriptor ClassDescriptor = VMDescriptorBuilder
+            .OfType<ChildVMDescriptor>()
+            .For<ChildVM>()
+            .WithProperties((d, b) => {
+               var v = b.GetPropertyBuilder();
+            })
+            .Build();
+
+         public ChildVM()
+            : base(ClassDescriptor) {
+         }
+      }
+
+      protected class ChildVMDescriptor : VMDescriptor {
       }
 
 

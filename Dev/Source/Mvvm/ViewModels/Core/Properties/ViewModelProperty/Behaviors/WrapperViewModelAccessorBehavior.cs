@@ -8,7 +8,11 @@
       public override void SetValue(IBehaviorContext context, TValue value) {
          RequireInitialized();
 
-         UpdateSource(context, value.Source);
+         var newSourceValue = value != null ?
+            value.Source :
+            default(TSource);
+
+         UpdateSource(context, newSourceValue);
          base.SetValue(context, value);
       }
 

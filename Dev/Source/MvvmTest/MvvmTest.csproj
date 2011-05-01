@@ -107,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="- Test Infrastructure -\NullValidator.cs" />
+    <Compile Include="- Test Infrastructure -\ParameterizedTest.cs" />
     <Compile Include="- Test Infrastructure -\TestViewModel.cs" />
     <Compile Include="- Test Infrastructure -\ValidatorMockConfiguration.cs" />
     <Compile Include="- Test Infrastructure -\ValidatorMockConfigurationFluent.cs" />
@@ -228,6 +229,8 @@
     <Compile Include="ViewModels\Core\Common\Paths\PropertyStepTests.cs" />
     <Compile Include="ViewModels\Core\Properties\ViewModelProperty\StoredViewModelAccessorBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Properties\ViewModelProperty\ViewModelInitializerBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\Properties\ViewModelProperty\ViewModelPropertyAccessorFixture.cs" />
+    <Compile Include="ViewModels\Core\Properties\ViewModelProperty\WrapperViewModelAccessorBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionResultCacheFixture.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationControllerTests.cs" />
     <Compile Include="ViewModels\Core\ViewModel\TypeDescriptor\TypeDescriptorProviderBehaviorTests.cs" />

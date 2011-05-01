@@ -16,6 +16,10 @@
          NotifyChangeInvocations = new List<ChangeArgs>();
       }
 
+      public new TDescriptor Descriptor {
+         get { return base.Descriptor; }
+      }
+
       public List<ChangeArgs> NotifyChangeInvocations {
          get;
          private set;

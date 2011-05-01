@@ -1,10 +1,9 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Properties.ViewModelProperty {
-   using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class StoredViewModelAccessorBehaviorTests {
+   public class StoredViewModelAccessorBehaviorTests : ViewModelPropertyAccessorFixture {
       private StoredViewModelAccessorBehavior<ChildVM> Behavior { get; set; }
       private BehaviorContextStub Context { get; set; }
 
@@ -30,26 +29,6 @@
       [TestMethod]
       public void Refresh_WhenValueIsNull_DoesNothing() {
          Behavior.Refresh(Context);
-      }
-
-      private class ChildVM : ViewModelStub {
-         public ChildVM(RefreshDetectorBehavior behavior)
-            : base(DescriptorStub
-               .WithBehaviors(behavior)
-               .Build()) {
-         }
-      }
-
-      private class RefreshDetectorBehavior : Behavior, IRefreshControllerBehavior {
-         public bool WasCalled { get; set; }
-
-         public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property) {
-            WasCalled = true;
-         }
-
-         public void Refresh(IBehaviorContext context) {
-            WasCalled = true;
-         }
       }
    }
 }

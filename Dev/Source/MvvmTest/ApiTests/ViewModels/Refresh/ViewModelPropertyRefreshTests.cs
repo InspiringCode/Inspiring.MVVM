@@ -1,4 +1,6 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Refresh {
+   using System;
+   using System.Collections.Generic;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -22,6 +24,12 @@
       }
 
       [TestMethod]
+      public void Refresh_OfInstanceProperty_DoesNotCallNotifyChange() {
+         VM.Refresh(x => x.InstanceProperty);
+         DomainAssert.AreEqual(new ChangeArgs[0], VM.NotifyChangeInvocations);
+      }
+
+      [TestMethod]
       public void Refresh_OfWrapperProperty_SetsSourceOnChildAndRefreshesChild() {
          VM.WrapperPropertySource = new ChildSource();
          var childVM = VM.GetValue(x => x.WrapperProperty);
@@ -32,6 +40,15 @@
          VM.Refresh(x => x.WrapperProperty);
          Assert.AreEqual(newSource, childVM.Source);
          Assert.IsTrue(childVM.WasRefreshed);
+      }
+
+      [TestMethod]
+      public void Refresh_OfWrapperProperty_DoesNotCallNotifyChange() {
+         VM.SetValue(x => x.WrapperProperty, new ChildVM());
+         VM.NotifyChangeInvocations.Clear();
+
+         VM.Refresh(x => x.WrapperProperty);
+         DomainAssert.AreEqual(new ChangeArgs[0], VM.NotifyChangeInvocations);
       }
 
       [TestMethod]
@@ -93,6 +110,22 @@
          Assert.IsFalse(VM.IsLoaded(x => x.DelegateProperty));
       }
 
+      [TestMethod]
+      public void Refresh_OfViewModelProperty_RevalidatesPropertyValue() {
+         ParameterizedTest
+            .TestCase("InstanceProperty", new Func<RootVMDescriptor, IVMPropertyDescriptor>(x => x.InstanceProperty))
+            .TestCase("MappedProperty", x => x.WrapperProperty)
+            .TestCase("DelegateProperty", x => x.DelegateProperty)
+            .Run(propertySelector => {
+               var property = propertySelector(VM.Descriptor);
+               var expectedError = "Validation error";
+               VM.ValidationErrors[property] = expectedError;
+
+               VM.Refresh(propertySelector);
+               ValidationAssert.ErrorMessages(VM.GetValidationState(property), expectedError);
+            });
+      }
+
       private sealed class RootVM : TestViewModel<RootVMDescriptor> {
          public static readonly RootVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<RootVMDescriptor>()
@@ -107,14 +140,29 @@
                   (x, val) => x.DelegatePropertyResult = val
                );
             })
+            .WithValidators(b => {
+               b.Check(x => x.InstanceProperty).Custom(PerformValidation);
+               b.Check(x => x.WrapperProperty).Custom(PerformValidation);
+               b.Check(x => x.DelegateProperty).Custom(PerformValidation);
+            })
             .Build();
 
          public RootVM()
             : base(ClassDescriptor) {
+            ValidationErrors = new Dictionary<IVMPropertyDescriptor, string>();
          }
 
          public ChildSource WrapperPropertySource { get; set; }
          public ChildVM DelegatePropertyResult { get; set; }
+
+         public Dictionary<IVMPropertyDescriptor, string> ValidationErrors { get; private set; }
+
+         private static void PerformValidation(PropertyValidationArgs<RootVM, RootVM, ChildVM> args) {
+            string errorMessage;
+            if (args.Owner.ValidationErrors.TryGetValue(args.TargetProperty, out errorMessage)) {
+               args.AddError(errorMessage);
+            }
+         }
       }
 
       private sealed class RootVMDescriptor : VMDescriptor {
