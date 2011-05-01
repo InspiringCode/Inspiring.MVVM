@@ -1,1 +1,3 @@
 // TODO: Test refresh behaviors against null values.
+// TODO: Add validation logic to refresh feature (avoid that collection validations are called n times!)
+// TODO: Fix standard validations
