@@ -247,7 +247,9 @@
          var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
 
          // Act
-         EmployeeVM.Projects.Add(new ProjectVM());
+         var newProject = new ProjectVM();
+         newProject.InitializeFrom(new Project());
+         EmployeeVM.Projects.Add(newProject);
 
          EmployeeVM.Name = "ModifiedName";
 
@@ -295,7 +297,9 @@
          // Act - Assert
          var employeeVMRollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
 
-         EmployeeVM.Projects.Add(new ProjectVM());
+         var newProject = new ProjectVM();
+         newProject.InitializeFrom(new Project());
+         EmployeeVM.Projects.Add(newProject);
 
          EmployeeVM.Name = "ModifiedName";
 

@@ -86,19 +86,7 @@
             if (config.Contains(PropertyBehaviorKeys.Undo)) {
                config.Enable(PropertyBehaviorKeys.Undo);
             }
-
-            if (PropertyTypeHelper.IsCollectionPropertyDescriptor(property.GetType())) {
-               EnableCollectionBehaviorUndo(config);
-            }
          }
-      }
-
-      private void EnableCollectionBehaviorUndo(BehaviorChainConfiguration propertyConfig) {
-         throw new NotImplementedException();
-         //var collectionConfiguration = propertyConfig
-         //   .GetBehavior<ICollectionBehaviorConfigurationBehavior>(PropertyBehaviorKeys.CollectionFactory);
-
-         //collectionConfiguration.CollectionBehaviorConfiguration.Enable(CollectionBehaviorKeys.Undo);
       }
 
       public void IsUndoRoot() {
