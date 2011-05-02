@@ -145,8 +145,10 @@
     <Compile Include="ViewModels\- No Namespace -\Validation\ValidationResultScope.cs" />
     <Compile Include="ViewModels\- No Namespace -\ViewModel.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMDescriptorBuilder.cs" />
+    <Compile Include="ViewModels\Core\Common\Paths\Definition\AnyPropertyStep.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\Definition\CollectionPropertyStep.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\Definition\CollectionStep.cs" />
+    <Compile Include="ViewModels\Core\Common\Paths\Definition\OptionalStep.cs" />
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\Interfaces\IDependencyActionBuilder.cs" />
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\Interfaces\IDependencySourceBuilder.cs" />
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\Interfaces\IDependencyTargetBuilder.cs" />

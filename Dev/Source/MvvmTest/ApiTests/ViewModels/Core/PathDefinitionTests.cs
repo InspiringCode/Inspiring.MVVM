@@ -75,6 +75,55 @@
 
       //}
 
+      [TestMethod]
+      public void Matches_OptionalStepWithAnyPropertyStep_MatchesProperty() {
+         var definition = PathDefinition
+            .Empty
+            .Append(new OptionalStep(new AnyPropertyStep<EmployeeVMDescriptor>()));
+
+         var path = Path
+            .Empty
+            .Append(new EmployeeVM())
+            .Append(EmployeeVM.ClassDescriptor.Name);
+
+         var match = definition.Matches(path);
+
+         Assert.IsTrue(match.Success);
+      }
+
+      [TestMethod]
+      public void Matches_OptionalStepWithAnyPropertyStep_MatchesRootViewModel() {
+         var definition = PathDefinition
+            .Empty
+            .Append(new OptionalStep(new AnyPropertyStep<EmployeeVMDescriptor>()));
+
+         var path = Path
+            .Empty
+            .Append(new EmployeeVM());
+
+         var match = definition.Matches(path);
+
+         Assert.IsTrue(match.Success);
+      }
+
+      [TestMethod]
+      public void Matches_OptionalStepWithAnyPropertyStep_DoesNotMatchPropertyOfChildViewModel() {
+         var definition = PathDefinition
+            .Empty
+            .Append(new OptionalStep(new AnyPropertyStep<EmployeeVMDescriptor>()));
+
+         var rootVM = new EmployeeVM();
+
+         var path = Path
+            .Empty
+            .Append(rootVM)
+            .Append(EmployeeVM.ClassDescriptor.SelectedProject)
+            .Append(ProjectVM.ClassDescriptor.Name);
+
+         var match = definition.Matches(path);
+
+         Assert.IsFalse(match.Success);
+      }
 
       private class EmployeeVM : ViewModel<EmployeeVMDescriptor> {
          public static readonly EmployeeVMDescriptor ClassDescriptor = VMDescriptorBuilder

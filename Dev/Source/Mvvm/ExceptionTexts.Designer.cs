@@ -376,6 +376,15 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Next property step is invalid. Property is not contained by parent descriptor..
+        /// </summary>
+        internal static string PropertyIsNotContainedByParentDescriptor {
+            get {
+                return ResourceManager.GetString("PropertyIsNotContainedByParentDescriptor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot set the value of property path &apos;{0}&apos; because the property &apos;{1}&apos; does not have a setter..
         /// </summary>
         internal static string PropertyIsReadonly {

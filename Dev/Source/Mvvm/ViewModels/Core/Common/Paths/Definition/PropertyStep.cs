@@ -31,9 +31,9 @@
             return PathMatch.Fail();
          }
 
-         bool currenStepMatches = Matches(parentStep.ViewModel, step);
+         bool currentStepMatches = Matches(parentStep.ViewModel, step);
 
-         if (currenStepMatches) {
+         if (currentStepMatches) {
             PathMatch result = PathMatch.Succeed(length: 1);
             PathMatch nextResult = definitionSteps.MatchesNext(step);
 

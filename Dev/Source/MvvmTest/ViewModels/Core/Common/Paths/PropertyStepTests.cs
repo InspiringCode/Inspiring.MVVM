@@ -6,20 +6,7 @@
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class PropertyStepTests : PathFixture {
-      private EmployeeVM VM { get; set; }
-
-      private EmployeeVMDescriptor Descriptor {
-         get { return EmployeeVM.ClassDescriptor; }
-      }
-
-      [TestInitialize]
-      public void Setup() {
-         VM = new EmployeeVM();
-         var projectVM = new ProjectVM();
-         VM.GetValue(x => x.Projects).Add(projectVM);
-         VM.SetValue(x => x.SelectedProject, projectVM);
-      }
+   public class PropertyStepTests : StepFixture {
 
       [TestMethod]
       public void Matches_WithMatchingViewModelPlusProperty_Succeeds() {

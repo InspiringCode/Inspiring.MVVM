@@ -279,4 +279,7 @@
   <data name="GetDescaedantsWrongPropertyStepType" xml:space="preserve">
     <value>Descendants can only requested for view model or collection properties.</value>
   </data>
+  <data name="PropertyIsNotContainedByParentDescriptor" xml:space="preserve">
+    <value>Next property step is invalid. Property is not contained by parent descriptor.</value>
+  </data>
 </root>
