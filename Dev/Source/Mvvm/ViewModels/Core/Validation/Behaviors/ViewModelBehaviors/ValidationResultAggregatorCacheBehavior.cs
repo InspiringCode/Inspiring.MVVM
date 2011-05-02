@@ -58,7 +58,7 @@
       }
 
       public void HandleChange(IBehaviorContext context, ChangeArgs args) {
-         bool validationStateChanged = args.ChangeType == ChangeType.ValidationStateChanged;
+         bool validationResultChanged = args.ChangeType == ChangeType.ValidationResultChanged;
 
          bool collectionChanged =
             args.ChangeType == ChangeType.AddedToCollection ||
@@ -69,7 +69,7 @@
             PropertyTypeHelper.IsViewModel(args.ChangedProperty.PropertyType) :
             false;
 
-         if (validationStateChanged || collectionChanged || viewModelPropertyChanged) {
+         if (validationResultChanged || collectionChanged || viewModelPropertyChanged) {
             GetCache(context).Invalidate();
          }
 

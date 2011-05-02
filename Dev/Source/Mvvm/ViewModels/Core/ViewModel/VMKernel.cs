@@ -50,7 +50,7 @@
 
 
       public bool IsValid {
-         get { return GetValidationState(ValidationResultScope.All).IsValid; }
+         get { return GetValidationResult(ValidationResultScope.All).IsValid; }
       }
 
       public UndoManager UndoManager {
@@ -104,13 +104,13 @@
          return property.Behaviors.GetValidatedValueNext<T>(this);
       }
 
-      public ValidationResult GetValidationState(ValidationResultScope scope = ValidationResultScope.All) {
+      public ValidationResult GetValidationResult(ValidationResultScope scope = ValidationResultScope.All) {
          return _descriptor
             .Behaviors
             .GetValidationResultNext(this, scope);
       }
 
-      public ValidationResult GetValidationState(IVMPropertyDescriptor forProperty) {
+      public ValidationResult GetValidationResult(IVMPropertyDescriptor forProperty) {
          // TODO: Is it a good idea to extract the state for a property from the _propertiesValidationState?
          // It would be faster, but would it preserve all sematics and so?
          return forProperty.Behaviors.GetValidationResultNext(this);

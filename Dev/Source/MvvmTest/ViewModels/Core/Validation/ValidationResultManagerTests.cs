@@ -58,7 +58,7 @@
          Manager.UpdateValidationResult(Context, oldResult);
 
          DomainAssert.AreEqual(
-            ChangeArgs.ValidationStateChanged(),
+            ChangeArgs.ValidationResultChanged(),
             Context.NotifyChangeInvocations.LastOrDefault()
          );
       }
@@ -72,7 +72,7 @@
          Manager.UpdateValidationResult(Context, oldResult);
 
          DomainAssert.AreEqual(
-            ChangeArgs.ValidationStateChanged(Property),
+            ChangeArgs.ValidationResultChanged(Property),
             Context.NotifyChangeInvocations.LastOrDefault()
          );
       }

@@ -87,7 +87,7 @@
 
          Behavior.HandleChange(
             Context,
-            ChangeArgs.ValidationStateChanged().PrependViewModel(ViewModelStub.Build())
+            ChangeArgs.ValidationResultChanged().PrependViewModel(ViewModelStub.Build())
          );
 
          var actualResult = Behavior.GetValidationResult(Context, ValidationResultScope.All);

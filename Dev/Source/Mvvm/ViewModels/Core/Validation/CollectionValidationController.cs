@@ -36,7 +36,7 @@
       ) {
          return item
             .Kernel
-            .GetValidationState(ValidationResultScope.Self)
+            .GetValidationResult(ValidationResultScope.Self)
             .Errors
             .Any(x => x.TargetProperty == property);
       }

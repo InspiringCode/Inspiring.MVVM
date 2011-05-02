@@ -285,8 +285,8 @@
             return "{" + GetValue(Descriptor.Name) + "}";
          }
 
-         protected override void OnValidationStateChanged(IVMPropertyDescriptor property) {
-            base.OnValidationStateChanged(property);
+         protected override void OnValidationResultChanged(IVMPropertyDescriptor property) {
+            base.OnValidationResultChanged(property);
             ValidationStateChangedEvents.Add(property);
          }
 

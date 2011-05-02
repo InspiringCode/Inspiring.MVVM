@@ -33,7 +33,7 @@
          var property = PropertyStub.Build();
 
          VMInterface.NotifyChange(ChangeArgs
-            .ValidationStateChanged(property)
+            .ValidationResultChanged(property)
             .PrependViewModel(VM)
          );
 
@@ -45,7 +45,7 @@
          var counter = new PropertyChangedCounter(VM, "Error");
 
          VMInterface.NotifyChange(ChangeArgs
-            .ValidationStateChanged()
+            .ValidationResultChanged()
             .PrependViewModel(VM)
          );
 
@@ -61,8 +61,8 @@
             LastOnPropertyChangedInvocation = property;
          }
 
-         protected override void OnValidationStateChanged(IVMPropertyDescriptor property) {
-            base.OnValidationStateChanged(property);
+         protected override void OnValidationResultChanged(IVMPropertyDescriptor property) {
+            base.OnValidationResultChanged(property);
             LastOnValidationStateChangedInvocation = property;
          }
       }

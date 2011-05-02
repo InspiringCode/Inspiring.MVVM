@@ -57,7 +57,7 @@
                .PropertyChanged(TestVM.ClassDescriptor.Property)
                .PrependViewModel(VM),
             ChangeArgs
-               .ValidationStateChanged(TestVM.ClassDescriptor.Property)
+               .ValidationResultChanged(TestVM.ClassDescriptor.Property)
                .PrependViewModel(VM)
          };
 
@@ -98,7 +98,7 @@
 
          var expectedChangeNotifications = new[] {
             ChangeArgs
-               .ValidationStateChanged(TestVM.ClassDescriptor.Property)
+               .ValidationResultChanged(TestVM.ClassDescriptor.Property)
                .PrependViewModel(VM)
          };
 

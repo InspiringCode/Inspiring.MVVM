@@ -122,7 +122,7 @@
          where TDescriptor : VMDescriptorBase {
 
          builder.CheckViewModel((args) => {
-            if (!args.Owner.Kernel.GetValidationState(ValidationResultScope.Descendants).IsValid) {
+            if (!args.Owner.Kernel.GetValidationResult(ValidationResultScope.Descendants).IsValid) {
                args.AddError(errorMessage);
             }
          });
@@ -152,7 +152,7 @@
          where TDescriptor : VMDescriptorBase {
 
          builder.CheckViewModel((args) => {
-            if (!args.Owner.Kernel.GetValidationState(ValidationResultScope.PropertiesOnly).IsValid) {
+            if (!args.Owner.Kernel.GetValidationResult(ValidationResultScope.PropertiesOnly).IsValid) {
                args.AddError(errorMessage);
             }
          });

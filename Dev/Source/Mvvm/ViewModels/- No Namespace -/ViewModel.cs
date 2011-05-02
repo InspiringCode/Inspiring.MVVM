@@ -41,7 +41,7 @@
       }
 
       public ValidationResult ValidationResult {
-         get { return Kernel.GetValidationState(); }
+         get { return Kernel.GetValidationResult(); }
       }
 
       public UndoManager UndoManager {
@@ -86,7 +86,7 @@
 
       string IDataErrorInfo.Error {
          get {
-            ValidationResult state = Kernel.GetValidationState(ValidationResultScope.ViewModelValidationsOnly);
+            ValidationResult state = Kernel.GetValidationResult(ValidationResultScope.ViewModelValidationsOnly);
             return state.IsValid ?
                null :
                state.Errors.First().Message;
@@ -121,7 +121,7 @@
                return value[parts[columnNameIndex]];
             } else {
                IVMPropertyDescriptor property = Kernel.GetProperty(propertyName: columnName);
-               ValidationResult state = Kernel.GetValidationState(property);
+               ValidationResult state = Kernel.GetValidationResult(property);
                return state.IsValid ?
                   null :
                   state.Errors.First().Message;
@@ -217,7 +217,7 @@
          OnPropertyChanged(property.PropertyName);
       }
 
-      protected virtual void OnValidationStateChanged(IVMPropertyDescriptor property) {
+      protected virtual void OnValidationResultChanged(IVMPropertyDescriptor property) {
          if (property != null) {
             OnPropertyChanged("Item[]");
 
@@ -264,12 +264,12 @@
             .PropertyDescriptors;
       }
 
-      public ValidationResult GetValidationState(ValidationResultScope scope) {
-         return Kernel.GetValidationState(scope);
+      public ValidationResult GetValidationResult(ValidationResultScope scope) {
+         return Kernel.GetValidationResult(scope);
       }
 
-      public ValidationResult GetValidationState(IVMPropertyDescriptor property) {
-         return Kernel.GetValidationState(property);
+      public ValidationResult GetValidationResult(IVMPropertyDescriptor property) {
+         return Kernel.GetValidationResult(property);
       }
 
       protected void Load(IVMPropertyDescriptor property) {
@@ -300,7 +300,7 @@
       protected virtual void OnChange(ChangeArgs args) {
          bool relevantChange =
             args.ChangeType == ChangeType.PropertyChanged ||
-            args.ChangeType == ChangeType.ValidationStateChanged;
+            args.ChangeType == ChangeType.ValidationResultChanged;
 
          if (!relevantChange) {
             return;
@@ -314,15 +314,15 @@
                case ChangeType.PropertyChanged:
                   OnPropertyChanged(r.Property);
                   break;
-               case ChangeType.ValidationStateChanged:
-                  OnValidationStateChanged(r.Property);
+               case ChangeType.ValidationResultChanged:
+                  OnValidationResultChanged(r.Property);
                   break;
             }
          } else {
             r = args.ChangedPath.SelectsOnly(this);
             bool selfChanged = r.Success;
 
-            if (selfChanged && args.ChangeType == ChangeType.ValidationStateChanged) {
+            if (selfChanged && args.ChangeType == ChangeType.ValidationResultChanged) {
                OnPropertyChanged("Error");
             }
          }

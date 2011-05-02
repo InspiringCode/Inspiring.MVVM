@@ -18,8 +18,8 @@
             SetOrClearValidationResult(context, result);
 
             var args = _property != null ?
-               ChangeArgs.ValidationStateChanged(_property) :
-               ChangeArgs.ValidationStateChanged();
+               ChangeArgs.ValidationResultChanged(_property) :
+               ChangeArgs.ValidationResultChanged();
 
             context.NotifyChange(args);
          }

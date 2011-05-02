@@ -35,15 +35,15 @@
       }
 
       public static void HasValidationResult(IViewModel vm, ValidationError singleExpectedError) {
-         AreEqual(singleExpectedError, vm.Kernel.GetValidationState(ValidationResultScope.All));
+         AreEqual(singleExpectedError, vm.Kernel.GetValidationResult(ValidationResultScope.All));
       }
 
       public static void HasPropertyValidationResult(IViewModel vm, ValidationError singleExpectedError, IVMPropertyDescriptor property) {
-         AreEqual(singleExpectedError, vm.Kernel.GetValidationState(property));
+         AreEqual(singleExpectedError, vm.Kernel.GetValidationResult(property));
       }
 
       public static void HasViewModelValidationResult(IViewModel vm, ValidationError singleExpectedError) {
-         AreEqual(singleExpectedError, vm.Kernel.GetValidationState(ValidationResultScope.ViewModelValidationsOnly));
+         AreEqual(singleExpectedError, vm.Kernel.GetValidationResult(ValidationResultScope.ViewModelValidationsOnly));
       }
 
       public static void AreEqual(ValidationError singleExpectedError, ValidationResult actualResult) {
@@ -62,7 +62,7 @@
       }
 
       private static void HasResult(ValidationResult expectedResult, IViewModel vm) {
-         var actualResult = vm.Kernel.GetValidationState(ValidationResultScope.Self);
+         var actualResult = vm.Kernel.GetValidationResult(ValidationResultScope.Self);
 
          bool errorsEqual = expectedResult.Errors.SequenceEqual(
             actualResult.Errors,
@@ -95,7 +95,7 @@
             Assert.Fail(
                "Expected {0} to be valid but returned result {1}.",
                vm,
-               vm.Kernel.GetValidationState()
+               vm.Kernel.GetValidationResult()
             );
          }
       }
@@ -115,7 +115,7 @@
       }
 
       public static void IsValid(IViewModel vm, IVMPropertyDescriptor property) {
-         var propertyResult = vm.Kernel.GetValidationState(property);
+         var propertyResult = vm.Kernel.GetValidationResult(property);
 
          if (!propertyResult.IsValid) {
             Assert.Fail(
@@ -128,7 +128,7 @@
       }
 
       public static void ValidViewModelValidationResultIsValid(IViewModel vm) {
-         var result = vm.Kernel.GetValidationState(ValidationResultScope.ViewModelValidationsOnly);
+         var result = vm.Kernel.GetValidationResult(ValidationResultScope.ViewModelValidationsOnly);
 
          if (!result.IsValid) {
             Assert.Fail(

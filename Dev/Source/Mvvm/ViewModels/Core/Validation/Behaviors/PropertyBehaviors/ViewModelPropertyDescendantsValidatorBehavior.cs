@@ -34,7 +34,7 @@
          var childVM = this.GetValueNext<TValue>(context);
 
          return childVM != null ?
-            childVM.Kernel.GetValidationState() :
+            childVM.Kernel.GetValidationResult() :
             ValidationResult.Valid;
       }
    }

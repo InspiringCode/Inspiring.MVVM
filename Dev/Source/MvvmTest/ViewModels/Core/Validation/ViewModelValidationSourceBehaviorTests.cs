@@ -50,13 +50,13 @@
 
       [TestMethod]
       public void HandleChange_OwnValidationStateChanged_PerformsViewModelValidation() {
-         Behavior.HandleChange(Context, ChangeArgs.ValidationStateChanged().PrependViewModel(VM));
+         Behavior.HandleChange(Context, ChangeArgs.ValidationResultChanged().PrependViewModel(VM));
          Assert.AreEqual(HandleChangeNext + Validate + RevalidateNext, ActionLog);
       }
 
       [TestMethod]
       public void HandleChange_DescendantValidationStateChanged_PerformsViewModelValidation() {
-         var args = ChangeArgs.ValidationStateChanged()
+         var args = ChangeArgs.ValidationResultChanged()
             .PrependViewModel(VM)
             .PrependViewModel(ViewModelStub.Build());
 

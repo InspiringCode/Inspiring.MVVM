@@ -147,7 +147,7 @@
          public string ChangedPropertyName { get; set; }
 
          public ValidationResult ValidationState {
-            get { return Kernel.GetValidationState(Descriptor.Rating); }
+            get { return Kernel.GetValidationResult(Descriptor.Rating); }
          }
 
          protected override void OnPropertyChanged(string propertyName) {

@@ -122,7 +122,7 @@
                VM.ValidationErrors[property] = expectedError;
 
                VM.Refresh(propertySelector);
-               ValidationAssert.ErrorMessages(VM.GetValidationState(property), expectedError);
+               ValidationAssert.ErrorMessages(VM.GetValidationResult(property), expectedError);
             });
       }
 

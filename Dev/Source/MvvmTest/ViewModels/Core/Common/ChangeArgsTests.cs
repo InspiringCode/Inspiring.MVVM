@@ -7,13 +7,13 @@
    public class ChangeArgsTests {
       [TestMethod]
       public void ValidationStateChange_SetsChangeTypeAndChangedPath() {
-         var args = ChangeArgs.ValidationStateChanged();
-         Assert.AreEqual(ChangeType.ValidationStateChanged, args.ChangeType);
+         var args = ChangeArgs.ValidationResultChanged();
+         Assert.AreEqual(ChangeType.ValidationResultChanged, args.ChangeType);
          DomainAssert.AreEqual(Path.Empty, args.ChangedPath);
 
          var property = PropertyStub.Build();
-         args = ChangeArgs.ValidationStateChanged(property);
-         Assert.AreEqual(ChangeType.ValidationStateChanged, args.ChangeType);
+         args = ChangeArgs.ValidationResultChanged(property);
+         Assert.AreEqual(ChangeType.ValidationResultChanged, args.ChangeType);
          DomainAssert.AreEqual(Path.Empty.Append(property), args.ChangedPath);
       }
 

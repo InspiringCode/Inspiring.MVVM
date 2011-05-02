@@ -7,7 +7,7 @@
 
    public enum ChangeType {
       PropertyChanged,
-      ValidationStateChanged,
+      ValidationResultChanged,
       AddedToCollection,
       RemovedFromCollection
    }
@@ -126,18 +126,18 @@
          );
       }
 
-      internal static ChangeArgs ValidationStateChanged() {
+      internal static ChangeArgs ValidationResultChanged() {
          return new ChangeArgs(
-            ChangeType.ValidationStateChanged,
+            ChangeType.ValidationResultChanged,
             Path.Empty
          );
       }
 
-      internal static ChangeArgs ValidationStateChanged(IVMPropertyDescriptor property) {
+      internal static ChangeArgs ValidationResultChanged(IVMPropertyDescriptor property) {
          Contract.Requires(property != null);
 
          return new ChangeArgs(
-            ChangeType.ValidationStateChanged,
+            ChangeType.ValidationResultChanged,
             Path.Empty.Append(property)
          );
       }

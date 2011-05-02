@@ -67,7 +67,7 @@
          Assert.IsFalse(mock.PropertyChangedWasCalled);
 
          mock.PropertyChangedWasCalled = false;
-         args = ChangeArgs.ValidationStateChanged(property);
+         args = ChangeArgs.ValidationResultChanged(property);
          context.NotifyChange(args);
          Assert.IsFalse(mock.PropertyChangedWasCalled);
 

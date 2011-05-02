@@ -14,7 +14,7 @@
 
       protected override ValidationResult GetDescendantsValidationResultCore(IBehaviorContext context) {
          var items = this.GetValueNext<IVMCollection<TItemVM>>(context);
-         var descendantsResult = ValidationResult.Join(items.Select(x => x.Kernel.GetValidationState()));
+         var descendantsResult = ValidationResult.Join(items.Select(x => x.Kernel.GetValidationResult()));
          return descendantsResult;
       }
    }

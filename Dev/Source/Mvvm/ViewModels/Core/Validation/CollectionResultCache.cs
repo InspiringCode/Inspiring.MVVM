@@ -119,7 +119,7 @@
          private bool PropertyIsInvalid(IViewModel viewModel) {
             return viewModel
                .Kernel
-               .GetValidationState(ValidationResultScope.Self)
+               .GetValidationResult(ValidationResultScope.Self)
                .Errors
                .Any(x => x.TargetProperty == _property);
          }

@@ -104,7 +104,7 @@
          ValidationAssert.IsValid(vm.ValidationResult);
 
          vm.Children.Add(invalidItem);
-         var actualParentValidationState = vm.GetValidationState(ValidationResultScope.Self);
+         var actualParentValidationState = vm.GetValidationResult(ValidationResultScope.Self);
          ValidationAssert.ErrorMessages(actualParentValidationState, error);
       }
 
@@ -143,7 +143,7 @@
          propertyValid = false;
          vm.Revalidate();
 
-         var viewModelOnlyResult = vm.GetValidationState(ValidationResultScope.ViewModelValidationsOnly);
+         var viewModelOnlyResult = vm.GetValidationResult(ValidationResultScope.ViewModelValidationsOnly);
          ValidationAssert.ErrorMessages(viewModelOnlyResult, error);
       }
 
