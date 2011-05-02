@@ -229,7 +229,7 @@
     <Compile Include="ViewModels\Core\Common\Paths\PathFixture.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\PathHelperTests.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\PropertyStepTests.cs" />
-    <Compile Include="ViewModels\Core\Properties\SimpleProperty\SimplePropertyRefreshBehaviorTests.cs" />
+    <Compile Include="ViewModels\Core\Properties\SimpleProperty\RefreshablePropertyChangedNotifierBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Properties\ViewModelProperty\DelegateViewModelAccessorBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Properties\ViewModelProperty\StoredViewModelAccessorBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Properties\ViewModelProperty\ViewModelInitializerBehaviorTests.cs" />

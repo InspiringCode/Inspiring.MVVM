@@ -1,14 +1,14 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
 
-   internal sealed class PropertyChangedNotifierBehavior<TValue> :
+   internal class PropertyChangedNotifierBehavior<TValue> :
       InitializableBehavior,
       IBehaviorInitializationBehavior,
       IValueAccessorBehavior<TValue> {
 
       private IVMPropertyDescriptor _property;
 
-      public void Initialize(BehaviorInitializationContext context) {
+      public virtual void Initialize(BehaviorInitializationContext context) {
          _property = context.Property;
          this.InitializeNext(context);
          SetInitialized();

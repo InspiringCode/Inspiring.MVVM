@@ -15,7 +15,6 @@
                .RegisterBehavior<UntypedPropertyAccessorBehavior<TValue>>(PropertyBehaviorKeys.UntypedValueAccessor)
                .RegisterBehavior<UndoSetValueBehavior<TValue>>(PropertyBehaviorKeys.Undo)
                .RegisterBehavior<ValueValidationSourceBehavior<TValue>>(PropertyBehaviorKeys.ValueValidationSource)
-               .RegisterBehavior<PropertyChangedNotifierBehavior<TValue>>(PropertyBehaviorKeys.ChangeNotifier)
                .RegisterBehavior<PropertyDescriptorProviderBehavior>(PropertyBehaviorKeys.PropertyDescriptorProvider);
          }
       }
@@ -29,6 +28,12 @@
          public virtual BehaviorFactory GetFactoryForPropertyWithSource<TOwnerVM, TValue, TSourceObject>()
             where TOwnerVM : IViewModel {
             return GetFactoryWithCommonBehaviors<TOwnerVM, TValue, TSourceObject>();
+         }
+
+         protected override BehaviorFactory GetFactoryWithCommonBehaviors<TOwnerVM, TValue, TSourceObject>() {
+            return base
+               .GetFactoryWithCommonBehaviors<TOwnerVM, TValue, TSourceObject>()
+               .RegisterBehavior<RefreshablePropertyChangedNotifierBehavior<TValue>>(PropertyBehaviorKeys.ChangeNotifier);
          }
       }
 
@@ -55,7 +60,8 @@
                .RegisterBehavior<ViewModelInitializerBehavior<TValue>>(PropertyBehaviorKeys.ValueInitializer)
                .RegisterBehavior<LazyRefreshBehavior>(PropertyBehaviorKeys.LazyRefresh)
                .RegisterBehavior<ViewModelPropertyDescendantsValidatorBehavior<TValue>>(PropertyBehaviorKeys.DescendantsValidator)
-               .RegisterBehavior<ServiceLocatorValueFactoryBehavior<TValue>>(PropertyBehaviorKeys.ValueFactory);
+               .RegisterBehavior<ServiceLocatorValueFactoryBehavior<TValue>>(PropertyBehaviorKeys.ValueFactory)
+               .RegisterBehavior<PropertyChangedNotifierBehavior<TValue>>(PropertyBehaviorKeys.ChangeNotifier);
          }
       }
 

@@ -156,7 +156,7 @@
     <Compile Include="ViewModels\Core\Properties\CollectionProperty\BehaviorInterfaces\ICollectionChangeHandlerBehavior.cs" />
     <Compile Include="ViewModels\Core\Properties\CommandProperty\BehaviorInterfaces\ICommandCanExecuteBehavior.cs" />
     <Compile Include="ViewModels\Core\Properties\CommandProperty\BehaviorInterfaces\ICommandExecuteBehavior.cs" />
-    <Compile Include="ViewModels\Core\Properties\SimpleProperty\Behaviors\SimplePropertyChangeNotifierBehavior.cs" />
+    <Compile Include="ViewModels\Core\Properties\SimpleProperty\Behaviors\RefreshablePropertyChangedNotifierBehavior.cs" />
     <Compile Include="ViewModels\Core\Properties\ViewModelProperty\Behaviors\StoredViewModelAccessorBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\BehaviorInterfaces\PropertyBehaviors\IDescendantsValidationResultProviderBehavior.cs" />
     <Compile Include="ViewModels\Core\Properties\Common\BehaviorInterfaces\IValueFactoryBehavior.cs" />

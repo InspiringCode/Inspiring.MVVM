@@ -1,20 +1,18 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Properties.SimpleProperty {
-   using System;
-   using System.Linq;
+   using Inspiring.Mvvm.ViewModels;
+   using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Inspiring.Mvvm.ViewModels.Core;
-using Inspiring.Mvvm.ViewModels;
 
    [TestClass]
    public class SimplePropertyChangeNotifierBehaviorTests {
-      private SimplePropertyChangeNotifierBehavior Behavior { get; set; }
+      private RefreshablePropertyChangedNotifierBehavior<object> Behavior { get; set; }
       private BehaviorContextStub Context { get; set; }
       private IVMPropertyDescriptor Property { get; set; }
 
       [TestInitialize]
       public void Setup() {
-         Behavior = new SimplePropertyChangeNotifierBehavior();
-         
+         Behavior = new RefreshablePropertyChangedNotifierBehavior<object>();
+
          Property = PropertyStub
             .WithBehaviors(Behavior)
             .Build();

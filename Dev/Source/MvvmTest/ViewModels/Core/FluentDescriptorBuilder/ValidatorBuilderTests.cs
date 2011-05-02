@@ -56,12 +56,14 @@
             .Custom(validationAction)
          );
 
+         var collectionSelector = new Func<EmployeeVMDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<ProjectVMDescriptor>>>>(x => null);
+
          AssertStandardValidators(
             d,
             ValidationStep.Value,
             PathDefinition
                .Empty
-               .Append(CollectionSelector<EmployeeVMDescriptor, ProjectVMDescriptor>())
+               .Append(collectionSelector)
                .Append((ProjectVMDescriptor x) => x.EndDate),
             DelegateValidator.For(validationAction)
          );
@@ -81,7 +83,7 @@
             ValidationStep.ViewModel,
             PathDefinition
                .Empty
-               .Append(new Func<EmployeeVMDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<ProjectVM>>>(x => x.Projects)),
+               .Append(new Func<EmployeeVMDescriptor, IVMPropertyDescriptor<IVMCollection<ProjectVM>>>(x => x.Projects)),
             DelegateValidator.For(validationAction)
          );
       }
@@ -95,12 +97,14 @@
             .Custom(validationAction)
          );
 
+         var collectionSelector = new Func<EmployeeVMDescriptor, IVMPropertyDescriptor<IVMCollection<IViewModelExpression<ProjectVMDescriptor>>>>(x => null);
+
          AssertStandardValidators(
             d,
             ValidationStep.Value,
             PathDefinition
                .Empty
-               .Append(CollectionSelector<EmployeeVMDescriptor, ProjectVMDescriptor>())
+               .Append(collectionSelector)
                .Append((ProjectVMDescriptor x) => x.EndDate),
             DelegateValidator.For(validationAction)
          );
@@ -206,13 +210,13 @@
          return d.Behaviors.TryGetBehavior(out b);
       }
 
-      private static Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<TItemDescriptor>>>>
-         CollectionSelector<TDescriptor, TItemDescriptor>()
-         where TDescriptor : VMDescriptorBase
-         where TItemDescriptor : VMDescriptorBase {
+      //private static Func<TDescriptor, IVMPropertyDescriptor<IVMCollection<IViewModelExpression<TItemDescriptor>>>>
+      //   CollectionSelector<TDescriptor, TItemDescriptor>()
+      //   where TDescriptor : VMDescriptorBase
+      //   where TItemDescriptor : VMDescriptorBase {
 
-         return new Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<TItemDescriptor>>>>(x => null);
-      }
+      //   return new Func<TDescriptor, IVMPropertyDescriptor<IVMCollection<IViewModelExpression<TItemDescriptor>>>>(x => null);
+      //}
 
       private static Func<TDescriptor, IVMPropertyDescriptor<IViewModel<TChildDescriptor>>>
          ViewModelSelector<TDescriptor, TChildDescriptor>()
