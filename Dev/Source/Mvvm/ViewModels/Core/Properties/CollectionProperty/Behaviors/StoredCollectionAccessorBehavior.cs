@@ -16,7 +16,7 @@
          var collection = GetValue(context);
 
          foreach (TItemVM item in collection) {
-            item.Kernel.Refresh();
+            item.Kernel.RefreshWithoutValidation();
          }
 
          this.RefreshNext(context);

@@ -35,7 +35,7 @@
 
          newItems
             .Where(x => x.IsReusedItem)
-            .ForEach(x => x.Item.Kernel.Refresh());
+            .ForEach(x => x.Item.Kernel.RefreshWithoutValidation());
 
          this.RefreshNext(context);
       }

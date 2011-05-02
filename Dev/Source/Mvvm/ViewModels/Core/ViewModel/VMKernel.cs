@@ -141,11 +141,22 @@
       }
 
       public void Refresh() {
+         RefreshWithoutValidation();
+         Revalidator.Revalidate(_vm, ValidationScope.SelfAndLoadedDescendants);
+      }
+
+      public void RefreshWithoutValidation() {
          _descriptor.Behaviors.ViewModelRefreshNext(this);
       }
 
       public void Refresh(IVMPropertyDescriptor property) {
          _descriptor.Behaviors.ViewModelRefreshNext(this, property);
+
+         Revalidator.RevalidatePropertyValidations(
+            _vm,
+            property,
+            ValidationScope.SelfAndLoadedDescendants
+         );
       }
 
       public void AddParent(IViewModel parent) {

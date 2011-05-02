@@ -19,6 +19,10 @@
                d.RefreshDetectionProperty = v.Custom.CustomProperty<object>(
                   CreateRefreshDetectionPropertyChain()
                );
+               d.ChildProperty = v.Property.Of<string>();
+            })
+            .WithValidators(b => {
+               b.EnableParentValidation(x => x.ChildProperty);
             })
             .Build();
 
@@ -40,10 +44,15 @@
             b.Enable(key);
             return b;
          }
+
+         public override string ToString() {
+            return "ChildVM";
+         }
       }
 
       protected class ChildVMDescriptor : VMDescriptor {
          public IVMPropertyDescriptor<object> RefreshDetectionProperty { get; set; }
+         public IVMPropertyDescriptor<string> ChildProperty { get; set; }
       }
 
       private class RefreshDetectorBehavior : Behavior, IRefreshBehavior {

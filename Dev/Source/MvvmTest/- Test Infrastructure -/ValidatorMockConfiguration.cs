@@ -242,21 +242,21 @@
 
       public class ValidatorMockConfigurationState {
          private ValidatorMockConfiguration _config;
-         private Tuple<List<ValidatorResultSetup>, List<ValidatorInvocation>, List<ValidatorInvocation>> _state;
+         private Tuple<ValidatorResultSetup[], ValidatorInvocation[], ValidatorInvocation[]> _state;
 
          public ValidatorMockConfigurationState(ValidatorMockConfiguration config) {
             _config = config;
             _state = Tuple.Create(
-               config.ValidatorSetups.ToList(),
-               config.ExpectedInvocations.ToList(),
-               config.ActualInvocations.ToList()
+               config.ValidatorSetups.ToArray(),
+               config.ExpectedInvocations.ToArray(),
+               config.ActualInvocations.ToArray()
             );
          }
 
          public void RestoreToState() {
-            _config.ValidatorSetups = _state.Item1;
-            _config.ExpectedInvocations = _state.Item2;
-            _config.ActualInvocations = _state.Item3;
+            _config.ValidatorSetups = _state.Item1.ToList();
+            _config.ExpectedInvocations = _state.Item2.ToList();
+            _config.ActualInvocations = _state.Item3.ToList();
          }
       }
 

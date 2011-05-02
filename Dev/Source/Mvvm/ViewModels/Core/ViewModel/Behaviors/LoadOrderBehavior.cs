@@ -1,6 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
-   using System.Collections.Generic;
    using System;
+   using System.Collections.Generic;
 
    // TODO: Test Refresh order etc.!
    internal sealed class LoadOrderBehavior :

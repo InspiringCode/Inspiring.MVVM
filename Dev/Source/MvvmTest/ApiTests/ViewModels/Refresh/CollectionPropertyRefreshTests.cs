@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Refresh {
+   using System;
    using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
@@ -144,6 +145,53 @@
          Assert.IsFalse(VM.IsLoaded(x => x.PopulatedProperty));
       }
 
+      [TestMethod]
+      public void Refresh_OfCollectionProperty_RevalidatesItems() {
+         ParameterizedTest
+            .TestCase("InstanceProperty", new Func<RootVMDescriptor, IVMPropertyDescriptor<IVMCollection<ChildVM>>>(x => x.InstanceProperty))
+            .TestCase("WrapperProperty", x => x.WrapperProperty)
+            .TestCase("PopulatedProperty", x => x.PopulatedProperty)
+            .Run(propertySelector => {
+               var collection = VM.GetValue(propertySelector);
+               var item = new ChildVM(new ChildSource());
+               collection.Add(item);
+               VM.PopulatedPropertyResult = new List<ChildVM> { item };
+
+               VM.ValidatorResults.Reset();
+               VM.Refresh(propertySelector);
+               VM.ValidatorResults.VerifySetupValidationResults();
+
+               VM.ValidatorResults.SetupFailing().CollectionPropertyValidation
+                  .Targeting(item, x => x.ChildProperty)
+                  .On(VM);
+               VM.Refresh(propertySelector);
+               VM.ValidatorResults.VerifySetupValidationResults();
+            });
+      }
+
+      [TestMethod]
+      public void Refresh_OfCollectionProperty_CallCollectionValidatorOnlyOnceForAllItems() {
+         ParameterizedTest
+            .TestCase("InstanceProperty", new Func<RootVMDescriptor, IVMPropertyDescriptor<IVMCollection<ChildVM>>>(x => x.InstanceProperty))
+            .TestCase("WrapperProperty", x => x.WrapperProperty)
+            .TestCase("PopulatedProperty", x => x.PopulatedProperty)
+            .Run(propertySelector => {
+               var collection = VM.GetValue(propertySelector);
+               var firstItem = new ChildVM(new ChildSource());
+               var secondItem = new ChildVM(new ChildSource());
+               collection.Add(firstItem);
+               collection.Add(secondItem);
+               VM.PopulatedPropertyResult = new List<ChildVM> { firstItem, secondItem };
+
+               VM.ValidatorResults.Reset();
+               VM.ValidatorResults.ExpectInvocationOf.CollectionPropertyValidation
+                  .Targeting(collection, x => x.ChildProperty)
+                  .On(VM);
+               VM.Refresh(propertySelector);
+               VM.ValidatorResults.VerifyInvocationSequence();
+            });
+      }
+
       private sealed class RootVM : TestViewModel<RootVMDescriptor> {
          public static readonly RootVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<RootVMDescriptor>()
@@ -163,16 +211,32 @@
                   .PopulatedWith(x => x.PopulatedPropertyResult)
                   .With(ChildVM.ClassDescriptor);
             })
+            .WithValidators(b => {
+               b.CheckCollection(x => x.InstanceProperty, x => x.ChildProperty).Custom<ChildVM>(args =>
+                  args.Owner.ValidatorResults.PerformValidation(args)
+               );
+
+               b.CheckCollection(x => x.WrapperProperty, x => x.ChildProperty).Custom<ChildVM>(args =>
+                  args.Owner.ValidatorResults.PerformValidation(args)
+               );
+
+               b.CheckCollection(x => x.PopulatedProperty, x => x.ChildProperty).Custom<ChildVM>(args =>
+                  args.Owner.ValidatorResults.PerformValidation(args)
+               );
+            })
             .Build();
 
          public RootVM()
             : base(ClassDescriptor) {
             WrapperPropertySource = new List<ChildSource>();
             PopulatedPropertyResult = new List<ChildVM>();
+            ValidatorResults = new ValidatorMockConfigurationFluent();
          }
 
          public IList<ChildSource> WrapperPropertySource { get; set; }
          public IList<ChildVM> PopulatedPropertyResult { get; set; }
+
+         public ValidatorMockConfigurationFluent ValidatorResults { get; private set; }
 
          public IVMCollection<ChildVM> InstanceProperty {
             get { return GetValue(Descriptor.InstanceProperty); }

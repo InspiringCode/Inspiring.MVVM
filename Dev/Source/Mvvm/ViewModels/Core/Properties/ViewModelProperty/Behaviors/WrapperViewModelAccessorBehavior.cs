@@ -25,7 +25,7 @@
          if (source != null) {
             if (childVM != null) {
                childVM.Source = source;
-               childVM.Kernel.Refresh();
+               childVM.Kernel.RefreshWithoutValidation();
             } else {
                childVM = CreateViewModel(context);
                childVM.Source = source;

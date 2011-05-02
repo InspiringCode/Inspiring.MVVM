@@ -9,7 +9,7 @@
          TValue childVM = GetValue(context);
 
          if (childVM != null) {
-            childVM.Kernel.Refresh();
+            childVM.Kernel.RefreshWithoutValidation();
          }
 
          this.RefreshNext(context);
