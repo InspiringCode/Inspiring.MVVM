@@ -24,7 +24,7 @@
          State s = GetState(context);
 
          switch (s.Type) {
-            case StateType.Unvalidated:
+            case StateType.Initial:
                bool isUnloaded = !this.IsLoadedNext(context);
                bool validateOnlyLoadedDescendants = scope == ValidationScope.SelfAndLoadedDescendants;
 
@@ -73,13 +73,20 @@
       public ValidationResult GetDescendantsValidationResult(IBehaviorContext context) {
          var nextResult = this.GetDescendantsValidationResultNext(context);
 
-         State s = GetState(context);
-         switch (s.Type) {
-            case StateType.Validated:
-               var result = GetDescendantsValidationResultCore(context);
-               return ValidationResult.Join(result, nextResult);
-            default:
-               return nextResult;
+         // Note: We cannot use our 'State' to determin wheter we should get
+         //       the descendant validaton state because we cannot possibly
+         //       know if the descendants were already validated. A SetValue
+         //       on a descendant for example validates a collection but our
+         //       behavior has not chance to detect this, so our state is 
+         //       still 'Initial' until some actually calss Revalidate 
+         //       manually.
+         bool isLoaded = this.IsLoadedNext(context);
+
+         if (isLoaded) {
+            var result = GetDescendantsValidationResultCore(context);
+            return ValidationResult.Join(result, nextResult);
+         } else {
+            return nextResult;
          }
       }
 
@@ -100,11 +107,11 @@
       }
 
       private State GetState(IBehaviorContext context) {
-         return _state.GetWithDefault(context, State.Unvalidated());
+         return _state.GetWithDefault(context, State.Initial());
       }
 
       private enum StateType {
-         Unvalidated,
+         Initial,
          Validated,
          ValidateOnFirstAccess
       }
@@ -121,8 +128,8 @@
             get { return _scope.Value; }
          }
 
-         public static State Unvalidated() {
-            return new State { _type = StateType.Unvalidated };
+         public static State Initial() {
+            return new State { _type = StateType.Initial };
          }
 
          public static State Validated(ValidationScope scope) {

@@ -26,7 +26,7 @@
       Populated
    }
 
-   public class CollectionChangedArgs<TItemVM> {
+   public class CollectionChangedArgs<TItemVM> where TItemVM : IViewModel {
       private CollectionChangedArgs(
          CollectionChangeType type,
          IVMCollection<TItemVM> collection,

@@ -1,8 +1,52 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Validation {
    using Microsoft.VisualStudio.TestTools.UnitTesting;
+   using System.Linq;
+   using Inspiring.Mvvm.ViewModels.Core;
 
    [TestClass]
    public class HierarchicalValidationTests : HierarchicalValidationFixture {
+      [TestMethod]
+      public void Revalidate_WhenDescendantAddsValidationError_AddsErrorToAncestorValidationResult() {
+         Results.SetupFailing().PropertyValidation
+            .Targeting(Child, x => x.ChildProperty)
+            .On(Child);
+
+         Results.SetupFailing().ViewModelValidation
+            .Targeting(Child)
+            .On(Child);
+
+         Child.Revalidate(x => x.ChildProperty);
+
+         Results.VerifySetupValidationResults();
+
+         var expectedAncestorResult = new ValidationResult(
+            Results.ValidatorSetups.SelectMany(x => x.Result.Errors)
+         );
+
+         ValidationAssert.AreEqual(expectedAncestorResult, Grandparent.ValidationResult);
+      }
+
+      [TestMethod]
+      public void Revalidate_WhenDescendantAddsCollectionValidationError_AddsErrorToAncestorValidationResult() {
+         Results.SetupFailing().CollectionPropertyValidation
+            .Targeting(Item, x => x.ItemProperty)
+            .On(Child);
+
+         Results.SetupFailing().CollectionViewModelValidation
+            .Targeting(Item)
+            .On(Child);
+
+         Item.Revalidate(x => x.ItemProperty);
+
+         Results.VerifySetupValidationResults();
+
+         var expectedAncestorResult = new ValidationResult(
+            Results.ValidatorSetups.SelectMany(x => x.Result.Errors)
+         );
+
+         ValidationAssert.AreEqual(expectedAncestorResult, Grandparent.ValidationResult);
+      }
+
       [TestMethod]
       public void Revalidate_ExecutesAncestorPropertyValidators() {
          Results.SetupFailing().PropertyValidation

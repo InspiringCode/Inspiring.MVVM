@@ -43,7 +43,7 @@
       [TestMethod]
       public void Equals_DifferentNumberOfElements_ReturnsFalse() {
          var s1 = CreateValidationResult("Error 1");
-         var s2 = CreateValidationResult();
+         var s2 = ValidationResult.Valid;
 
          Assert.IsFalse(s1.Equals(s2));
       }

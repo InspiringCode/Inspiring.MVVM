@@ -15,12 +15,20 @@
       IVMPropertyDescriptor OwnerProperty { get; }
    }
 
+   // TODO: Should this interface replace IVMCollectionExpression?
+   public interface IVMCollectionBase<out TItemVM> :
+      IVMCollection,
+      IEnumerable<TItemVM>,
+      IVMCollectionExpression<TItemVM>
+      where TItemVM : IViewModel {
+   }
+
    /// <summary>
    ///   An interface that should be implemented by collection classes that are
    ///   be used in VMs to hold a collection of child VMs. This interface is
    ///   especially required by the predefined collection behaviors.
    /// </summary>
-   public interface IVMCollection<TItemVM> : IVMCollection, IList<TItemVM>, IList, IVMCollectionExpression<TItemVM> {
+   public interface IVMCollection<TItemVM> : IVMCollectionBase<TItemVM>, IList<TItemVM>, IList where TItemVM : IViewModel {
       int Count { get; }
       void Clear();
       void RemoveAt(int index);

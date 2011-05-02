@@ -16,6 +16,13 @@
          return new Mock<T>().Object;
       }
 
+
+      protected static ValidationResult CreateValidationResult(
+         params ValidationError[] errors
+      ) {
+         return new ValidationResult(errors);
+      }
+
       [TestInitialize]
       public void SetupBase() {
          ServiceLocator.SetServiceLocator(new ReflectionServiceLocator());

@@ -191,7 +191,7 @@
          Action<TItemVM, string, object> addValidationErrorAction,
          ValidatorType type,
          IViewModel owner,
-         IVMCollection<TItemVM> targetCollection,
+         IVMCollectionBase<TItemVM> targetCollection,
          object validatorKey,
          IVMPropertyDescriptor targetProperty = null
       ) where TItemVM : IViewModel {

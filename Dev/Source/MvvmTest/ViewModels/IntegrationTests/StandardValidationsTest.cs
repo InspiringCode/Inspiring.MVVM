@@ -6,175 +6,175 @@
 
    [TestClass]
    public class StandardValidationsTest : ValidationTestBase {
-
       [TestMethod]
-      public void HasValue_PropertyHasNoValue_InvalidatesViewModel() {
-         ChildVM vm = new ChildVM();
-         vm.StringProperty = String.Empty;
+      public void HasValue_PropertyHasNoValue_AddsValidationErrorToProperty() {
+         var error = "Value required";
+         var vm = CreateChild(b => b.Check(x => x.StringProperty).HasValue(error));
 
-         var expectedResult = CreateValidationResult(ChildVM.HasValueValidationErrorMessage);
-         var actualResult = vm.GetValidationState(ChildVM.ClassDescriptor.StringProperty);
-         DomainAssert.AreEqual(expectedResult, actualResult);
+         vm.StringProperty = "Valid value";
+         ValidationAssert.IsValid(vm);
+
+         vm.StringProperty = String.Empty;
+         ValidationAssert.ErrorMessages(vm.ValidationResult, error);
       }
 
       [TestMethod]
-      public void CheckLength_PropertyLengthExceedsMaximumLength_InvalidatesViewModel() {
-         ChildVM vm = new ChildVM();
-         vm.StringProperty = "Wert";
+      public void CheckLength_PropertyLengthExceedsMaximumLength_AddsValidationErrorToProperty() {
+         var error = "Value too long";
+         var vm = CreateChild(b => b.Check(x => x.StringProperty).Length(4, error));
 
-         Assert.IsTrue(vm.IsValid);
+         vm.StringProperty = "1234";
+         ValidationAssert.IsValid(vm);
 
-         vm.StringProperty = "Wert!";
-
-         var expectedErrorMessage = String.Format(
-            ChildVM.LengthValidationErrorMessage,
-            ChildVM.MaxStringPropertyLength
-         );
-
-         var expectedResult = CreateValidationResult(expectedErrorMessage);
-         var actualResult = vm.GetValidationState(ChildVM.ClassDescriptor.StringProperty);
-         DomainAssert.AreEqual(expectedResult, actualResult);
+         vm.StringProperty = "12345";
+         ValidationAssert.ErrorMessages(vm.ValidationResult, error);
       }
 
       [TestMethod]
       public void IsUnique_WithDuplicateStringProperties_InvalidatesViewModel() {
-         ParentVM vm = new ParentVM();
+         var error = "Duplicate item";
+         var vm = CreateParent(b => b
+            .CheckCollection(x => x.Children, x => x.StringProperty)
+            .IsUnique(StringComparison.CurrentCultureIgnoreCase, error)
+         );
 
-         ChildVM child1 = new ChildVM() { StringProperty = "Val1" };
-         ChildVM child2 = new ChildVM() { StringProperty = "Val2" };
-         ChildVM child3 = new ChildVM() { StringProperty = "Val3" };
+         var item1 = new ChildVM() { StringProperty = "VAL1" };
+         var item2 = new ChildVM() { StringProperty = "VAL2" };
+         var item3 = new ChildVM() { StringProperty = "VAL3" };
 
-         vm.Children.Add(child1);
-         vm.Children.Add(child2);
-         vm.Children.Add(child3);
+         vm.Children.Add(item1);
+         vm.Children.Add(item2);
+         vm.Children.Add(item3);
 
-         Assert.IsTrue(vm.IsValid);
+         ValidationAssert.IsValid(vm);
+         item3.StringProperty = "VAL2";
 
-         child1.StringProperty = "Val1";
-         child2.StringProperty = "Val2";
-         child3.StringProperty = "Val2";
+         var expectedResult = CreateValidationResult(
+            Error(error).For(item2, x => x.StringProperty),
+            Error(error).For(item3, x => x.StringProperty)
+         );
 
-         var child2Result = CreateValidationResult(child2, ParentVM.DuplicateStringPropertyValidationErrorMessage);
-         var child3Result = CreateValidationResult(child2, ParentVM.DuplicateStringPropertyValidationErrorMessage);
-
-         var expectedResult = ValidationResult.Join(child2Result, child3Result);
-
-         var actualResult = vm.GetValidationState(ParentVM.ClassDescriptor.Children);
-         DomainAssert.AreEqual(expectedResult, actualResult);
+         ValidationAssert.AreEqual(expectedResult, vm.ValidationResult);
       }
 
       [TestMethod]
       public void IsUnique_WithDuplicateIntegerProperties_InvalidatesViewModel() {
-         ParentVM vm = new ParentVM();
+         var error = "Duplicate item";
+         var vm = CreateParent(b => b
+            .CheckCollection(x => x.Children, x => x.IntegerProperty)
+            .IsUnique(error)
+         );
 
-         ChildVM child1 = new ChildVM() { StringProperty = "Val1", IntegerProperty = 1 };
-         ChildVM child2 = new ChildVM() { StringProperty = "Val2", IntegerProperty = 2 };
-         ChildVM child3 = new ChildVM() { StringProperty = "Val3", IntegerProperty = 3 };
+         var item1 = new ChildVM() { IntegerProperty = 1 };
+         var item2 = new ChildVM() { IntegerProperty = 2 };
+         var item3 = new ChildVM() { IntegerProperty = 3 };
 
-         vm.Children.Add(child1);
-         vm.Children.Add(child2);
-         vm.Children.Add(child3);
+         vm.Children.Add(item1);
+         vm.Children.Add(item2);
+         vm.Children.Add(item3);
 
          Assert.IsTrue(vm.IsValid);
 
-         child2.IntegerProperty = 1;
+         item2.IntegerProperty = 1;
 
-         var child1Result = CreateValidationResult(child1, ParentVM.DuplicateIntegerPropertyValidationErrorMessage);
-         var child2Result = CreateValidationResult(child2, ParentVM.DuplicateIntegerPropertyValidationErrorMessage);
+         var expectedResult = CreateValidationResult(
+            Error(error).For(item1, x => x.IntegerProperty),
+            Error(error).For(item2, x => x.IntegerProperty)
+         );
 
-         var expectedResult = ValidationResult.Join(child1Result, child2Result);
-
-         var actualResult = vm.GetValidationState(ParentVM.ClassDescriptor.Children);
-         DomainAssert.AreEqual(expectedResult, actualResult);
+         ValidationAssert.AreEqual(expectedResult, vm.ValidationResult);
       }
 
       [TestMethod]
       public void PropagateChildErrors_WithInvalidChildren_ParentHasError() {
-         ParentVM vm = new ParentVM();
+         var error = "Child records are invalid";
 
-         ChildVM child1 = new ChildVM() { StringProperty = "Val1" };
-         ChildVM child2 = new ChildVM() { StringProperty = "Val2" };
+         var validItem = new ChildVM();
+         var invalidItem = new ChildVM();
 
-         vm.Children.Add(child1);
-         vm.Children.Add(child2);
+         var childDescriptor = CreateChildDescriptor(b => b.CheckViewModel(args => {
+            if (args.Target == invalidItem) {
+               args.AddError("Item error");
+            }
+         }));
 
-         Assert.IsTrue(vm.IsValid);
+         ParentVM vm = CreateParent(b => b.PropagateChildErrors(error), childDescriptor);
 
-         child2.StringProperty = String.Empty;
+         vm.Children.Add(validItem);
+         ValidationAssert.IsValid(vm.ValidationResult);
 
-         var expectedResult = CreateValidationResult(ParentVM.ChildValidationErrorMessage);
-         var actualResult = vm.GetValidationState(ValidationResultScope.ViewModelValidationsOnly);
-         DomainAssert.AreEqual(expectedResult, actualResult);
+         vm.Children.Add(invalidItem);
+         var actualParentValidationState = vm.GetValidationState(ValidationResultScope.Self);
+         ValidationAssert.ErrorMessages(actualParentValidationState, error);
       }
 
       [TestMethod]
       public void RegexValidation_RegexPatternMatches_InvalidatesViewModel() {
-         ChildVM vm = new ChildVM();
+         var error = "Invalid number";
+         var vm = CreateChild(b => b
+            .Check(x => x.StringProperty)
+            .RegexValidation(@"\d+", error)
+         );
 
-         vm.StringProperty = "RegexPattern";
+         vm.StringProperty = "1234";
+         ValidationAssert.IsValid(vm);
 
-         var expectedResult = CreateValidationResult(ChildVM.RegexValidationErrorMessage);
-         var actualResult = vm.GetValidationState(ChildVM.ClassDescriptor.StringProperty);
-         DomainAssert.AreEqual(expectedResult, actualResult);
+         vm.StringProperty = "AnInvalidNumber";
+         ValidationAssert.ErrorMessages(vm.ValidationResult, error);
       }
 
       [TestMethod]
       public void ValidateProperties_InvalidProperty_InvalidatesViewModel() {
-         ChildVM vm = new ChildVM();
+         var propertyValid = true;
 
-         vm.StringProperty = String.Empty;
+         var error = "Some fields are invalid";
+         var vm = CreateChild(b => {
+            b.ValidateProperties(error);
+            b.Check(x => x.StringProperty).Custom(x => {
+               if (!propertyValid) {
+                  x.AddError("Property error");
+               }
+            });
+         });
 
-         var expectedResult = CreateValidationResult(ChildVM.ValidatePropertiesErrorMessage);
-         var actualResult = vm.GetValidationState(ValidationResultScope.ViewModelValidationsOnly);
-         DomainAssert.AreEqual(expectedResult, actualResult);
+         vm.Revalidate();
+         ValidationAssert.IsValid(vm);
+
+         propertyValid = false;
+         vm.Revalidate();
+
+         var viewModelOnlyResult = vm.GetValidationState(ValidationResultScope.ViewModelValidationsOnly);
+         ValidationAssert.ErrorMessages(viewModelOnlyResult, error);
       }
 
-      private class ParentVM : ViewModel<ParentVMDescriptor> {
-         public const string ChildValidationErrorMessage = "Child invalid";
-         public const string DuplicateStringPropertyValidationErrorMessage = "Duplicate string";
-         public const string DuplicateIntegerPropertyValidationErrorMessage = "Duplicate string";
+      private static ParentVM CreateParent(
+         Action<RootValidatorBuilder<ParentVM, ParentVM, ParentVMDescriptor>> validatorConfigurationAction,
+         ChildVMDescriptor childDescriptor = null
+      ) {
+         var descriptor = VMDescriptorBuilder
+           .OfType<ParentVMDescriptor>()
+           .For<ParentVM>()
+           .WithProperties((d, c) => {
+              var v = c.GetPropertyBuilder();
+              d.Children = v.Collection.Of<ChildVM>(childDescriptor ?? ChildVM.ClassDescriptor);
+           })
+           .WithValidators(validatorConfigurationAction)
+           .Build();
 
-         public static readonly ParentVMDescriptor ClassDescriptor = VMDescriptorBuilder
-            .OfType<ParentVMDescriptor>()
-            .For<ParentVM>()
-            .WithProperties((d, c) => {
-               var v = c.GetPropertyBuilder();
-               d.Children = v.Collection.Of<ChildVM>(ChildVM.ClassDescriptor);
-            })
-            .WithValidators(c => {
-               c.CheckCollection(x => x.Children, x => x.StringProperty).IsUnique(
-                  StringComparison.CurrentCultureIgnoreCase,
-                  DuplicateStringPropertyValidationErrorMessage
-               );
-               c.CheckCollection(x => x.Children, x => x.IntegerProperty).IsUnique(
-                  DuplicateIntegerPropertyValidationErrorMessage
-               );
-               c.PropagateChildErrors(ChildValidationErrorMessage);
-            })
-            .Build();
-
-         public ParentVM()
-            : base(ClassDescriptor) {
-         }
-
-         public IVMCollection<ChildVM> Children {
-            get { return GetValue(Descriptor.Children); }
-            set { SetValue(Descriptor.Children, value); }
-         }
-
-         public bool IsValid {
-            get { return Kernel.GetValidationState().IsValid; }
-         }
+         return new ParentVM(descriptor);
       }
 
-      private class ChildVM : ViewModel<ChildVMDescriptor> {
-         public const string HasValueValidationErrorMessage = "No value";
-         public const int MaxStringPropertyLength = 4;
-         public const string LengthValidationErrorMessage = "Max length {0}";
-         public const string RegexValidationErrorMessage = "Regex error";
-         public const string ValidatePropertiesErrorMessage = "Property validation error message";
+      private static ChildVM CreateChild(
+         Action<RootValidatorBuilder<ChildVM, ChildVM, ChildVMDescriptor>> validatorConfigurationAction
+      ) {
+         var descriptor = CreateChildDescriptor(validatorConfigurationAction);
+         return new ChildVM(descriptor);
+      }
 
-         public static readonly ChildVMDescriptor ClassDescriptor = VMDescriptorBuilder
+      private static ChildVMDescriptor CreateChildDescriptor(
+         Action<RootValidatorBuilder<ChildVM, ChildVM, ChildVMDescriptor>> validatorConfigurationAction
+      ) {
+         return VMDescriptorBuilder
             .OfType<ChildVMDescriptor>()
             .For<ChildVM>()
             .WithProperties((d, c) => {
@@ -182,16 +182,36 @@
                d.StringProperty = v.Property.Of<string>();
                d.IntegerProperty = v.Property.Of<int>();
             })
-            .WithValidators(c => {
-               c.ValidateProperties(ValidatePropertiesErrorMessage);
-               c.Check(x => x.StringProperty).HasValue(HasValueValidationErrorMessage);
-               c.Check(x => x.StringProperty).Length(MaxStringPropertyLength, LengthValidationErrorMessage);
-               c.Check(x => x.StringProperty).RegexValidation(@"RegexPattern", RegexValidationErrorMessage);
-            })
+            .WithValidators(validatorConfigurationAction)
             .Build();
+      }
+
+
+
+      private class ParentVM : TestViewModel<ParentVMDescriptor> {
+         public ParentVM(ParentVMDescriptor descriptor)
+            : base(descriptor) {
+         }
+
+         public IVMCollection<ChildVM> Children {
+            get { return GetValue(Descriptor.Children); }
+            set { SetValue(Descriptor.Children, value); }
+         }
+      }
+
+      private class ChildVM : TestViewModel<ChildVMDescriptor> {
+         public static readonly ChildVMDescriptor ClassDescriptor = CreateChildDescriptor(b => {
+            b.EnableParentValidation(x => x.StringProperty);
+            b.EnableParentValidation(x => x.IntegerProperty);
+            b.EnableParentViewModelValidation();
+         });
 
          public ChildVM()
-            : base(ClassDescriptor) {
+            : this(ClassDescriptor) {
+         }
+
+         public ChildVM(ChildVMDescriptor descriptor)
+            : base(descriptor) {
          }
 
          public string StringProperty {
@@ -202,10 +222,6 @@
          public int IntegerProperty {
             get { return GetValue(Descriptor.IntegerProperty); }
             set { SetValue(Descriptor.IntegerProperty, value); }
-         }
-
-         public bool IsValid {
-            get { return Kernel.GetValidationState().IsValid; }
          }
       }
 

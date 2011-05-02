@@ -53,7 +53,7 @@
       public CollectionValidationArgs(
          IValidator validator,
          TOwnerVM owner,
-         IVMCollection<TItemVM> items,
+         IVMCollectionBase<TItemVM> items,
          IVMPropertyDescriptor<TValue> property
       )
          : base(validator, owner) {
@@ -65,7 +65,7 @@
          TargetProperty = property;
       }
 
-      public IVMCollection<TItemVM> Items { get; private set; }
+      public IVMCollectionBase<TItemVM> Items { get; private set; }
 
       public IVMPropertyDescriptor<TValue> TargetProperty { get; private set; }
 
@@ -84,7 +84,7 @@
          var path = request.TargetPath;
 
          var owner = (TOwnerVM)path[0].ViewModel;
-         var collection = (IVMCollection<TItemVM>)path[path.Length - 2].Collection;
+         var collection = (IVMCollectionBase<TItemVM>)path[path.Length - 2].Collection;
          var property = (IVMPropertyDescriptor<TValue>)path[path.Length - 1].Property;
 
          return new CollectionValidationArgs<TOwnerVM, TItemVM, TValue>(

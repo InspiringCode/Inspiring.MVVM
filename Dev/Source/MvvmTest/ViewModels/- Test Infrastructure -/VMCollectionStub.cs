@@ -4,7 +4,7 @@
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
 
-   public class VMCollectionStub<TItemVM> : Collection<TItemVM>, IVMCollection<TItemVM> {
+   public class VMCollectionStub<TItemVM> : Collection<TItemVM>, IVMCollection<TItemVM> where TItemVM : IViewModel {
       private readonly IViewModel _owner;
 
       public VMCollectionStub(IViewModel ownerVM, IVMPropertyDescriptor ownerProperty) {
@@ -29,11 +29,11 @@
    }
 
    public class VMCollectionStub {
-      public static VMCollectionStubBuilder<T> WithItems<T>(IEnumerable<T> items) {
+      public static VMCollectionStubBuilder<T> WithItems<T>(IEnumerable<T> items) where T : IViewModel {
          return new VMCollectionStubBuilder<T>().WithItems(items);
       }
 
-      public static VMCollectionStubBuilder<T> WithItems<T>(params T[] items) {
+      public static VMCollectionStubBuilder<T> WithItems<T>(params T[] items) where T : IViewModel {
          return new VMCollectionStubBuilder<T>().WithItems(items);
       }
 
@@ -45,7 +45,7 @@
          return new VMCollectionStubBuilder<ViewModelStub>().WithOwnerProperty(property);
       }
 
-      public static VMCollectionStubBuilder<T> Of<T>() {
+      public static VMCollectionStubBuilder<T> Of<T>() where T : IViewModel {
          return new VMCollectionStubBuilder<T>();
       }
 
@@ -53,12 +53,12 @@
          return new VMCollectionStubBuilder<ViewModelStub>().Build();
       }
 
-      public static VMCollectionStub<T> Build<T>() {
+      public static VMCollectionStub<T> Build<T>() where T : IViewModel {
          return new VMCollectionStubBuilder<T>().Build();
       }
    }
 
-   public class VMCollectionStubBuilder<T> {
+   public class VMCollectionStubBuilder<T> where T : IViewModel {
       private IViewModel _ownerVM;
       private IVMPropertyDescriptor _ownerProperty;
       private IEnumerable<T> _items;

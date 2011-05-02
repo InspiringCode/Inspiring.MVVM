@@ -1,9 +1,10 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Validation {
    using Inspiring.Mvvm.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
+   using Inspiring.MvvmTest.ViewModels;
 
    [TestClass]
-   public class HierarchicalValidationFixture {
+   public class HierarchicalValidationFixture : TestBase {
       protected GrandparentVM Grandparent { get; private set; }
       protected ParentVM Parent { get; private set; }
       protected ChildVM Child { get; private set; }
