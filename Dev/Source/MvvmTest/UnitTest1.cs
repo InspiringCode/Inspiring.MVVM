@@ -1,5 +1,4 @@
-﻿using System;
-using Inspiring.MvvmTest.ViewModels;
+﻿using Inspiring.MvvmTest.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Sequences;
@@ -7,16 +6,6 @@ using Moq.Sequences;
 namespace Inspiring.MvvmTest {
    [TestClass]
    public class UnitTest1 : TestBase {
-      [TestMethod]
-      public void MyTestMethod() {
-         try {
-            Assert.AreEqual("Foobar", "bla");
-         } catch (Exception ex) {
-            Assert.Fail(ex.Message);
-         }
-      }
-
-
       [TestMethod]
       public void ThisShouldWork2() {
          var a = new Mock<IFoo>(MockBehavior.Strict);

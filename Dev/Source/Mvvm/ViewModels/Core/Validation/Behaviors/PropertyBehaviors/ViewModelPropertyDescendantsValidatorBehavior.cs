@@ -32,7 +32,10 @@
 
       protected override ValidationResult GetDescendantsValidationResultCore(IBehaviorContext context) {
          var childVM = this.GetValueNext<TValue>(context);
-         return childVM.Kernel.GetValidationState();
+
+         return childVM != null ?
+            childVM.Kernel.GetValidationState() :
+            ValidationResult.Valid;
       }
    }
 }

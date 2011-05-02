@@ -50,6 +50,13 @@
       }
 
       [TestMethod]
+      public void GetDescendantsValidationResult_IfChildVMIsNull_ReturnsValidResult() {
+         ViewModelPropertyAccessor.Value = null;
+         SetupLoadedAndValidated();
+         Assert.AreEqual(ValidationResult.Valid, Behavior.GetDescendantsValidationResult(Context));
+      }
+
+      [TestMethod]
       public void SetValueNext_PreviousValueWasNull_RevalidatesNewChildVM() {
          ChildVM oldChild = null;
          ChildVM newChild = new ChildVM();
