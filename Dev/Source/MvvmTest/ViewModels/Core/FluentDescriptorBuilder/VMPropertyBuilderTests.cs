@@ -140,6 +140,7 @@
          AssertBasicPropertyBehaviors<IVMCollection<T>>(p);
          Assert.IsTrue(ContainsBehavior<CollectionFactoryBehavior<T>>(p));
          Assert.IsTrue(ContainsBehavior<ItemDescriptorProviderBehavior>(p));
+         Assert.IsTrue(ContainsBehavior<CollectionValidationSourceBehavior<T>>(p));
       }
 
       private bool ContainsBehavior<T>(IVMPropertyDescriptor property) where T : IBehavior {

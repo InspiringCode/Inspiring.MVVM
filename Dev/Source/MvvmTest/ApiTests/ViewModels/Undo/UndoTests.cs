@@ -352,8 +352,6 @@
 
       [TestMethod]
       public void RollbackTo_CollectionModificationInvalidatesViewModel_RollbackValidatesViewModel() {
-         Assert.Inconclusive("Waiting for new collection validation");
-
          var project1Title = "Title of project1";
          var project1 = CreateProject(project1Title);
 

@@ -108,7 +108,7 @@
                .Append(PropertyBehaviorKeys.Undo, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.LazyRefresh)
                .Append(CollectionPropertyBehaviorKeys.Synchronizer)
-               .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
+               .Append(PropertyBehaviorKeys.ValueValidationSource)
                .Append(PropertyBehaviorKeys.DescendantsValidator)
                .Append(PropertyBehaviorKeys.ChangeNotifier)
                .Append(PropertyBehaviorKeys.ValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)
