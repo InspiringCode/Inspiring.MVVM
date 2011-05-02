@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Properties.ViewModelProperty {
+   using System.Linq;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -14,7 +15,7 @@
          Behavior = new WrapperViewModelAccessorBehavior<ChildVM, ChildSource>();
 
          Context = PropertyStub
-            .WithBehaviors(Behavior, SourceAccessor)
+            .WithBehaviors(Behavior, SourceAccessor, new ServiceLocatorValueFactoryBehavior<ChildVM>())
             .GetContext();
       }
 
@@ -23,6 +24,14 @@
          SourceAccessor.Value = new ChildSource();
          Behavior.SetValue(Context, null);
          Assert.IsNull(SourceAccessor.Value);
+      }
+
+      [TestMethod]
+      public void Refresh_DoesNotRaiseNotifyChange() {
+         SourceAccessor.Value = new ChildSource();
+         Behavior.GetValue(Context);
+         Behavior.Refresh(Context);
+         Assert.IsFalse(Context.NotifyChangeInvocations.Any());
       }
    }
 }

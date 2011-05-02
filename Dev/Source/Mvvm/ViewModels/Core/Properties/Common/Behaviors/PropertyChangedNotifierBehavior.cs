@@ -4,8 +4,7 @@
    internal sealed class PropertyChangedNotifierBehavior<TValue> :
       InitializableBehavior,
       IBehaviorInitializationBehavior,
-      IValueAccessorBehavior<TValue>,
-      IRefreshBehavior {
+      IValueAccessorBehavior<TValue> {
 
       private IVMPropertyDescriptor _property;
 
@@ -29,11 +28,6 @@
          if (!Object.Equals(value, oldValue)) {
             context.NotifyChange(ChangeArgs.PropertyChanged(_property));
          }
-      }
-
-      public void Refresh(IBehaviorContext context) {
-         this.RefreshNext(context);
-         context.NotifyChange(ChangeArgs.PropertyChanged(_property));
       }
    }
 }

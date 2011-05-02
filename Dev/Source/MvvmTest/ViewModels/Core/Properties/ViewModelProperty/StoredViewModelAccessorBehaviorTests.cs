@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Properties.ViewModelProperty {
+   using System.Linq;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -29,6 +30,12 @@
       [TestMethod]
       public void Refresh_WhenValueIsNull_DoesNothing() {
          Behavior.Refresh(Context);
+      }
+
+      [TestMethod]
+      public void Refresh_DoesNotRaiseNotifyPropertyChanged() {
+         Behavior.Refresh(Context);
+         Assert.IsFalse(Context.NotifyChangeInvocations.Any());
       }
    }
 }
