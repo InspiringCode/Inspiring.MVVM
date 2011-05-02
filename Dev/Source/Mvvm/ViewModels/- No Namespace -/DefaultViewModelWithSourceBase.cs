@@ -57,7 +57,7 @@
       /// </remarks>
       public virtual void InitializeFrom(TSourceObject source) {
          SetSource(source);
-         Revalidate();
+         Revalidate(ValidationScope.SelfAndLoadedDescendants);
       }
 
       /// <summary>

@@ -61,8 +61,6 @@
 
       [TestMethod]
       public void AllItems_WithNonExistingSelectedItems_ReturnsAllItemsIncludingSelectedAndIsInvalid() {
-         Assert.Inconclusive("FIX ME!!!!!!");
-
          var allGroups = new[] { Group1 };
          var selectableGroups = new[] { Group1, Group2 };
 
@@ -76,14 +74,12 @@
             new[] { Group2 },
             vm.Groups.SelectedSourceItems.ToArray()
          );
-         // TODO: Fix it when validation is refactored.
+
          Assert.IsFalse(vm.IsValid);
       }
 
       [TestMethod]
       public void AllItems_WithFilteredAndNonExistingSelectedItems_ReturnsFilteredItemsIncludingSelectedAndIsInvalid() {
-         Assert.Inconclusive("FIX ME!!!!!!");
-
          var allGroups = new[] { Group1, InactiveGroup };
          var selectableGroups = new[] { Group1, Group2 };
 
@@ -111,7 +107,6 @@
          ServiceLocator.SetServiceLocator(locator);
 
          var vm = CreateUserVM();
-
          AssertAllItemsAreEqual(vm, allItems);
       }
 
