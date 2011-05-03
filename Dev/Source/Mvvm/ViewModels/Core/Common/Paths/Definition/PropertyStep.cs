@@ -16,12 +16,8 @@
       }
 
       public override PathMatch Matches(PathDefinitionIterator definitionSteps, PathIterator step) {
-         if (!step.HasStep || step.IsCollection) {
+         if (!step.HasStep || step.IsCollection || step.IsProperty) {
             return PathMatch.Fail();
-         }
-
-         if (step.IsProperty) {
-            ThrowUnexpectedStepTypeException(step.GetIndex(), PathStepType.ViewModel, PathStepType.Collection);
          }
 
          PathIterator parentStep = step;

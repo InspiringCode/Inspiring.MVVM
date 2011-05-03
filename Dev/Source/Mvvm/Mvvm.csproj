@@ -146,6 +146,7 @@
     <Compile Include="ViewModels\- No Namespace -\ViewModel.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMDescriptorBuilder.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\Definition\AnyPropertyStep.cs" />
+    <Compile Include="ViewModels\Core\Common\Paths\Definition\AnyStepsStep.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\Definition\CollectionPropertyStep.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\Definition\CollectionStep.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\Definition\OptionalStep.cs" />

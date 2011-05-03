@@ -14,11 +14,11 @@
       }
 
       [TestMethod]
-      public void Matches_PathStartsWithProperty_ThrowsArgumentException() {
+      public void Matches_PathStartsWithProperty_Fails() {
          var pathDefinition = new AnyPropertyStep<EmployeeVMDescriptor>();
          var wrongPath = Path.Empty.Append(ProjectVM.ClassDescriptor.EndDate);
 
-         AssertException(pathDefinition, wrongPath);
+         AssertNoMatch(pathDefinition, wrongPath);
       }
 
       [TestMethod]
@@ -71,7 +71,7 @@
       }
 
       [TestMethod]
-      public void Matches_ViewModelPlusPropertyFromOtherDescriptor_Fails() {
+      public void Matches_ViewModelPlusPropertyFromOtherDescriptor_ThrowsException() {
          var path = Path
             .Empty
             .Prepend(CustomerVM.ClassDescriptor.Name)

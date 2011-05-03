@@ -83,8 +83,8 @@
       }
 
       [TestMethod]
-      public void Matches_WithSingleMatchingPropertyOnly_ThrowsException() {
-         AssertException(
+      public void Matches_WithSingleMatchingPropertyOnly_Fails() {
+         AssertNoMatch(
             CreateStep(x => x.SelectedProject),
             Path.Empty.Prepend(Descriptor.SelectedProject)
          );
@@ -129,10 +129,10 @@
       }
 
       [TestMethod]
-      public void Matches_WithSingleProperty_ThrowsException() {
+      public void Matches_WithSingleProperty_Fails() {
          // I couldn't think of an valid definition/path constellation where this
          // makes sense.
-         AssertException(
+         AssertNoMatch(
             CreateStep<ProjectVMDescriptor, string>(x => x.Name),
             Path.Empty.Prepend(Descriptor.Projects)
          );

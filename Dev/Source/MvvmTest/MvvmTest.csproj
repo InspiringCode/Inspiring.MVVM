@@ -202,6 +202,7 @@
     <Compile Include="ViewModels\- Test Infrastructure -\ViewModelStub.cs" />
     <Compile Include="ViewModels\- Test Infrastructure -\VMCollectionStub.cs" />
     <Compile Include="Common\BehaviorKeysTests.cs" />
+    <Compile Include="ViewModels\Core\Common\Paths\AnyStepsStepTests.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\CollectionPropertyStepTests.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\CollectionStepTests.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\AnyPropertyStepTests.cs" />

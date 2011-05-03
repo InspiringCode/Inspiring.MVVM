@@ -125,6 +125,28 @@
          Assert.IsFalse(match.Success);
       }
 
+      [TestMethod]
+      public void Matches_ChildViewModelPlusOptionalStepWithAnyPropertyStep_MacthesPropertyOfChildViewModel() {
+         var definition = PathDefinition
+            .Empty
+            .Append((EmployeeVMDescriptor x) => x.SelectedProject)
+            .Append(new OptionalStep(new AnyPropertyStep<ProjectVMDescriptor>()));
+
+         var projectVM = new ProjectVM();
+         var rootVM = new EmployeeVM();
+         rootVM.SetValue(x => x.SelectedProject, projectVM);
+
+         var path = Path
+            .Empty
+            .Append(rootVM)
+            .Append(rootVM.GetValue(x => x.SelectedProject))
+            .Append(ProjectVM.ClassDescriptor.Name);
+
+         var match = definition.Matches(path);
+
+         Assert.IsTrue(match.Success);
+      }
+
       private class EmployeeVM : ViewModel<EmployeeVMDescriptor> {
          public static readonly EmployeeVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<EmployeeVMDescriptor>()
