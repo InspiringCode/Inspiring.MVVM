@@ -4,8 +4,6 @@
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-   // TODO: Write these tests...
-
    [TestClass]
    public class PathDefinitionTests : TestBase {
       private Path PropertyPath { get; set; }
@@ -61,19 +59,6 @@
 
          ViewModelDescendantPropertPath = PropertyPath.Prepend(Project);
       }
-
-      //[TestMethod]
-      //public void MyTestMethod() {
-      //   var path = PathDefinition.Empty
-      //      .Append((EmployeeVMDescriptor x) => x.SelectedProject)
-      //      .Append((ProjectVMDescriptor x) => x.Name);
-
-      //   Project.SetValue(x => x.Name, "ProjectName");
-
-      //   var step1 = Employee.GetValue(((PropertyStep<EmployeeVMDescriptor, ProjectVM>)path.Steps[0])._propertySelector);
-      //   var name = step1.GetValue(((PropertyStep<ProjectVMDescriptor, string>)path.Steps[1])._propertySelector);
-
-      //}
 
       [TestMethod]
       public void Matches_OptionalStepWithAnyPropertyStep_MatchesProperty() {
@@ -141,6 +126,68 @@
             .Append(rootVM)
             .Append(rootVM.GetValue(x => x.SelectedProject))
             .Append(ProjectVM.ClassDescriptor.Name);
+
+         var match = definition.Matches(path);
+
+         Assert.IsTrue(match.Success);
+      }
+
+      [TestMethod]
+      public void Matches_OptionalStepWithAnyStepsStep_MatchesRootViewMode() {
+         var definition = PathDefinition
+            .Empty
+            .Append(new OptionalStep(new AnyStepsStep<EmployeeVMDescriptor>()));
+
+         var path = Path
+            .Empty
+            .Append(new EmployeeVM())
+            .Append(EmployeeVM.ClassDescriptor.Name);
+
+         var match = definition.Matches(path);
+
+         Assert.IsTrue(match.Success);
+      }
+
+      [TestMethod]
+      public void Matches_OptionalStepWithAnyStepsStep_MatchesPropertyOfChildViewModel() {
+         var definition = PathDefinition
+            .Empty
+            .Append(new OptionalStep(new AnyStepsStep<EmployeeVMDescriptor>()));
+
+         var rootVM = new EmployeeVM();
+
+         var pathLength = 3;
+         var path = Path
+            .Empty
+            .Append(rootVM)
+            .Append(EmployeeVM.ClassDescriptor.SelectedProject)
+            .Append(ProjectVM.ClassDescriptor.Name);
+
+         var match = definition.Matches(path);
+
+         Assert.IsTrue(match.Success);
+         Assert.AreEqual(pathLength, match.Length);
+      }
+
+      [TestMethod]
+      public void Matches_ChildViewModelPlusOptionalStepWithAnyStepsStep_MacthesPropertyOfChildChildViewModel() {
+         var definition = PathDefinition
+            .Empty
+            .Append((EmployeeVMDescriptor x) => x.SelectedProject)
+            .Append(new OptionalStep(new AnyStepsStep<ProjectVMDescriptor>()));
+
+         var customerVM = new CustomerVM();
+         var projectVM = new ProjectVM();
+         projectVM.SetValue(x => x.SelectedCustomer, customerVM);
+         var rootVM = new EmployeeVM();
+         rootVM.SetValue(x => x.SelectedProject, projectVM);
+
+         var path = Path
+            .Empty
+            .Append(rootVM)
+            .Append(rootVM.GetValue(x => x.SelectedProject))
+            .Append(projectVM.GetValue(x => x.SelectedCustomer))
+            .Append(CustomerVM.ClassDescriptor.Name);
 
          var match = definition.Matches(path);
 

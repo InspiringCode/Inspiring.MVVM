@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Common.Paths {
    using Inspiring.Mvvm.ViewModels.Core;
-   using Inspiring.Mvvm.ViewModels.Core.Common.Paths.Definition;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]

@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core.Common.Paths.Definition {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Linq;
    using Inspiring.Mvvm.Common;
@@ -43,16 +43,10 @@
       }
 
       private bool Matches(IViewModel parent, PathIterator nextStep) {
-         if (!nextStep.HasStep) {
+         if (!nextStep.HasStep || !(parent.Descriptor is TDescriptor)) {
             return false;
          }
-         if (!(parent.Descriptor is TDescriptor)) {
-            return false;
-         }
-         if (!nextStep.IsProperty) {
-            return false;
-         }
-         if (!parent.Descriptor.Properties.Contains(nextStep.Property)) {
+         if (nextStep.Property != null && !parent.Descriptor.Properties.Contains(nextStep.Property)) {
             throw new ArgumentException(ExceptionTexts.PropertyIsNotContainedByParentDescriptor);
          }
          return true;
