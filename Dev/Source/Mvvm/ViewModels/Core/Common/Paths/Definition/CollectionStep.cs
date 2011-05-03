@@ -34,8 +34,13 @@
             return PathMatch.Fail();
          }
 
-         var collectionProperty = _propertySelector(descriptor);
-         var expectedCollection = parentViewModel.Kernel.GetValue((IVMPropertyDescriptor)collectionProperty); // HACK ATTACK
+         var collectionProperty = (IVMPropertyDescriptor)_propertySelector(descriptor); // HACK ATTACK
+
+         if (!parentViewModel.Kernel.IsLoaded(collectionProperty)) {
+            return PathMatch.Fail();
+         }
+
+         var expectedCollection = parentViewModel.Kernel.GetValue(collectionProperty);
 
          if (step.Collection == expectedCollection) {
             PathMatch result = PathMatch.Succeed(length: 1);
