@@ -14,7 +14,7 @@
       public static void BindVM<TDescriptor>(
          IBindableView<IViewModelExpression<TDescriptor>> view,
          Action<IVMBinder<TDescriptor>> bindingConfigurator
-      ) where TDescriptor : VMDescriptor {
+      ) where TDescriptor : IVMDescriptor {
          if (DesignerProperties.GetIsInDesignMode((DependencyObject)view)) {
             return;
          }
@@ -26,7 +26,7 @@
 
       public static void BindVM<TDescriptor>(
          Action<IVMBinder<TDescriptor>> bindingConfigurator
-      ) where TDescriptor : VMDescriptor {
+      ) where TDescriptor : IVMDescriptor {
          VMPropertyBinder<TDescriptor> binder = new VMPropertyBinder<TDescriptor>();
          bindingConfigurator(binder);
          binder.Execute();
