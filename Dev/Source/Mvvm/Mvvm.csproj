@@ -134,6 +134,7 @@
     <Compile Include="Screens\ScreenFactory.cs" />
     <Compile Include="ServiceLocator.cs" />
     <Compile Include="Testing\ArgumentValue.cs" />
+    <Compile Include="Testing\TestScreenResult.cs" />
     <Compile Include="Testing\Responders\FileDialogResponderSetup.cs" />
     <Compile Include="Testing\DialogServiceInvocation.cs" />
     <Compile Include="Testing\Responders\MessageBoxResponderSetup.cs" />
