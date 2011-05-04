@@ -110,6 +110,7 @@
 
                d.Caption = s.Property.DelegatesTo(captionGetter);
             })
+            .WithValidators(b => b.EnableParentViewModelValidation())
             .Build();
 
 

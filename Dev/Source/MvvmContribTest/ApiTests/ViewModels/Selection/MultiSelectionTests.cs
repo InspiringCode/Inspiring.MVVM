@@ -75,6 +75,8 @@
             vm.Groups.SelectedSourceItems.ToArray()
          );
 
+         var lazyLoadDummy = vm.Groups.SelectedItems;
+
          Assert.IsFalse(vm.IsValid);
       }
 
@@ -94,7 +96,8 @@
             new[] { Group2 },
             vm.Groups.SelectedSourceItems.ToArray()
          );
-         // TODO: Fix it when validation is refactored.
+
+         var lazyLoadDummy = vm.Groups.SelectedItems;
          Assert.IsFalse(vm.IsValid);
       }
 

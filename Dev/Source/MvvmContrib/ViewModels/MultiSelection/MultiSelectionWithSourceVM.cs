@@ -216,18 +216,18 @@
             })
             .WithValidators(b => {
                b.CheckCollection(x => x.SelectedItems).Custom(args => {
-                  //var invalidItems = args
-                  //   .Items
-                  //   .Where(i => args
-                  //      .Owner
-                  //      .NonExistingSelectedSourceItems
-                  //      .Contains(i.Source));
+                  var invalidItems = args
+                     .Items
+                     .Where(i => args
+                        .Owner
+                        .NonExistingSelectedSourceItems
+                        .Contains(i.Source));
 
 
-                  //foreach (var item in invalidItems) {
-                  //   // TODO: Let the user specify the message.
-                  //   args.AddError(item, "Das gewählte Element ist nicht vorhanden.");
-                  //}
+                  foreach (var item in invalidItems) {
+                     // TODO: Let the user specify the message.
+                     args.AddError(item, "Das gewählte Element ist nicht vorhanden.");
+                  }
                });
             });
 
