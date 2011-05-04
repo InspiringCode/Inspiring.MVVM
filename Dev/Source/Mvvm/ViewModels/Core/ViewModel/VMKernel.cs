@@ -5,13 +5,13 @@
 
    public sealed class VMKernel : IBehaviorContext {
       private readonly IViewModel _vm;
-      private readonly VMDescriptorBase _descriptor;
+      private readonly IVMDescriptor _descriptor;
       private FieldValueHolder _fieldValues;
 
       private CountingSet<IVMCollection> _ownerCollections = new CountingSet<IVMCollection>();
       private CountingSet<IViewModel> _parents = new CountingSet<IViewModel>();
 
-      public VMKernel(IViewModel vm, VMDescriptorBase descriptor, IServiceLocator serviceLocator) {
+      public VMKernel(IViewModel vm, IVMDescriptor descriptor, IServiceLocator serviceLocator) {
          Contract.Requires<ArgumentNullException>(vm != null);
          Contract.Requires<ArgumentNullException>(descriptor != null);
          Contract.Requires<ArgumentNullException>(serviceLocator != null);

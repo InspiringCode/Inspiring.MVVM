@@ -5,7 +5,7 @@
 
    // TODO: Document me.
    public sealed class ViewModelBehaviorBuilder<TVM, TDescriptor>
-      where TDescriptor : VMDescriptorBase
+      where TDescriptor : IVMDescriptor
       where TVM : IViewModel {
 
       private VMDescriptorConfiguration _configuration;

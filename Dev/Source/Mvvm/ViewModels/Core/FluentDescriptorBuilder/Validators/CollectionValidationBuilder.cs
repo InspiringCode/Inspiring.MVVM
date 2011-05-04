@@ -34,7 +34,7 @@
 
    public sealed class CollectionValidatorBuilder<TOwnerVM, TItemDescriptor, TValue>
       where TOwnerVM : IViewModel
-      where TItemDescriptor : VMDescriptorBase {
+      where TItemDescriptor : IVMDescriptor {
 
       private readonly ValidatorBuilderOperation _operation;
 

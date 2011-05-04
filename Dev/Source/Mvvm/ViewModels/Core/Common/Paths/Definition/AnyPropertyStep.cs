@@ -5,7 +5,7 @@
 
    internal sealed class AnyPropertyStep<TDescriptor> :
       PathDefinitionStep
-      where TDescriptor : VMDescriptorBase {
+      where TDescriptor : IVMDescriptor {
 
       public override PathMatch Matches(PathDefinitionIterator definitionSteps, PathIterator step) {
          if (!step.HasStep || step.IsCollection || step.IsProperty) {

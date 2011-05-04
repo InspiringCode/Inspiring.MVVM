@@ -26,7 +26,7 @@
       ///   cref="BehaviorChainConfiguration"/>s and assigns them to the <paramref 
       ///   name="descriptor"/> and its VM properties.
       /// </summary>
-      internal void ApplyTo(VMDescriptorBase descriptor) {
+      internal void ApplyTo(IVMDescriptor descriptor) {
          Contract.Ensures(descriptor.Behaviors != null);
 
          var chain = ViewModelConfiguration.CreateChain();

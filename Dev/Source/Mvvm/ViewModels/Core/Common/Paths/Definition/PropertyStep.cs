@@ -6,7 +6,7 @@
 
    internal sealed class PropertyStep<TDescriptor, TValue> :
       PathDefinitionStep
-      where TDescriptor : VMDescriptorBase {
+      where TDescriptor : IVMDescriptor {
 
       private Func<TDescriptor, IVMPropertyDescriptor<TValue>> _propertySelector;
 
@@ -73,11 +73,11 @@
             return false;
          }
 
-         TDescriptor descriptor = parent.Descriptor as TDescriptor;
-
-         if (descriptor == null) {
+         if (!(parent.Descriptor is TDescriptor)) {
             return false;
          }
+
+         TDescriptor descriptor = (TDescriptor)parent.Descriptor;
 
          IVMPropertyDescriptor expectedProperty = _propertySelector(descriptor);
 

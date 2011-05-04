@@ -150,7 +150,7 @@
 
       private PathDefinitionStep CreateStep<TDescriptor, TValue>(
          Func<TDescriptor, IVMPropertyDescriptor<TValue>> propertySelector
-      ) where TDescriptor : VMDescriptorBase {
+      ) where TDescriptor : IVMDescriptor {
          return new PropertyStep<TDescriptor, TValue>(propertySelector);
       }
    }

@@ -9,7 +9,7 @@
          // The parent is set first and cleared last to allow proper propagation of
          // validation and change notification.
 
-         VMDescriptorBase itemDescriptor = this.GetItemDescriptor();
+         IVMDescriptor itemDescriptor = this.GetItemDescriptor();
 
          foreach (IViewModel item in args.NewItems) {
             // TODO: Should we check old descriptor, should the Descriptor property 

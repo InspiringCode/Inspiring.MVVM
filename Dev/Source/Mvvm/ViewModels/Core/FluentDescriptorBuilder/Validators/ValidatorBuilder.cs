@@ -4,7 +4,7 @@
    public class ValidatorBuilder<TOwnerVM, TTarget, TDescriptor>
       where TOwnerVM : IViewModel
       where TTarget : IViewModel
-      where TDescriptor : VMDescriptorBase {
+      where TDescriptor : class, IVMDescriptor {
 
       private readonly TDescriptor _descriptor;
 
@@ -106,7 +106,7 @@
       public CollectionValidatorBuilder<TOwnerVM, TItemDescriptor, TValue> CheckCollection<TItemDescriptor, TValue>(
          Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<TItemDescriptor>>>> collectionSelector,
          Func<TItemDescriptor, IVMPropertyDescriptor<TValue>> itemPropertySelector
-      ) where TItemDescriptor : VMDescriptorBase {
+      ) where TItemDescriptor : IVMDescriptor {
          var op = OperationProvider.GetOperation();
 
          op.Path = op
@@ -140,7 +140,7 @@
       /// </typeparam>
       public ValidatorBuilder<TOwnerVM, IViewModel<C>, C> ValidateDescendant<C>(
          Func<TDescriptor, IVMPropertyDescriptor<IViewModel<C>>> propertySelector
-      ) where C : VMDescriptorBase {
+      ) where C : class, IVMDescriptor {
          var op = OperationProvider.GetOperation();
          op.Path = op.Path.Append(propertySelector);
 
@@ -160,7 +160,7 @@
       /// </typeparam>
       public ValidatorBuilder<TOwnerVM, IViewModel<C>, C> ValidateDescendant<C>(
          Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<C>>>> propertySelector
-      ) where C : VMDescriptorBase {
+      ) where C : class, IVMDescriptor {
          var op = OperationProvider.GetOperation();
          op.Path = op.Path.Append(propertySelector);
 

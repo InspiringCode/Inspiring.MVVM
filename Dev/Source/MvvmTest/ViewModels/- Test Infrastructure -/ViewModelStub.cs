@@ -4,7 +4,7 @@
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
 
-   public class ViewModelStub : ViewModel<VMDescriptorBase> {
+   public class ViewModelStub : ViewModel<IVMDescriptor> {
       private string _description;
 
       /// <summary>
@@ -19,7 +19,7 @@
       ///   Use the <see cref="ViewModelStubBuilder"/> to create configured 
       ///   instances.
       /// </summary>
-      public ViewModelStub(VMDescriptorBase descriptor, string description = null)
+      public ViewModelStub(IVMDescriptor descriptor, string description = null)
          : base(descriptor) {
 
          NotifyChangeInvocations = new List<ChangeArgs>();
@@ -30,7 +30,7 @@
          get { return base.Kernel; }
       }
 
-      public new VMDescriptorBase Descriptor {
+      public new IVMDescriptor Descriptor {
          get { return base.Descriptor; }
       }
 

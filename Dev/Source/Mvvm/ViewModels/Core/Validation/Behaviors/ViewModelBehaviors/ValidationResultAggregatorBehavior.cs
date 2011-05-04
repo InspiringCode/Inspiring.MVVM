@@ -7,7 +7,7 @@
       IBehaviorInitializationBehavior,
       IValidationResultAggregatorBehavior {
 
-      private VMDescriptorBase _descriptor;
+      private IVMDescriptor _descriptor;
 
       public void Initialize(BehaviorInitializationContext context) {
          _descriptor = context.Descriptor;

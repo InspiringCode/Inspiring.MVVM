@@ -4,8 +4,8 @@
    public interface IDependencySourceBuilder<TRootVM, TSourceVM, TRootDescriptor, TSourceDescriptor>
       where TRootVM : IViewModel
       where TSourceVM : IViewModel
-      where TRootDescriptor : VMDescriptorBase
-      where TSourceDescriptor : VMDescriptorBase {
+      where TRootDescriptor : IVMDescriptor
+      where TSourceDescriptor : IVMDescriptor {
 
       /// <summary>
       ///   Selects one or more properties for attaching a change action.
@@ -27,7 +27,7 @@
       /// </typeparam>
       IDependencySourceOrAnyDescendantBuilder<TRootVM, IViewModel<D>, TRootDescriptor, D> Descendant<D>(
          Func<TSourceDescriptor, IVMPropertyDescriptor<IViewModel<D>>> viewModelSelector
-      ) where D : VMDescriptorBase;
+      ) where D : IVMDescriptor;
 
       /// <summary>
       ///   Selects a collection VM to specifiy which change of one or more of its properties or any descandants
@@ -42,11 +42,11 @@
       /// </typeparam>
       IDependencySourceOrAnyDescendantBuilder<TRootVM, IViewModel<D>, TRootDescriptor, D> Descendant<D>(
          Func<TSourceDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<D>>>> collectionSelector
-      ) where D : VMDescriptorBase;
+      ) where D : IVMDescriptor;
 
       IDependencyActionBuilder<TRootVM, TRootDescriptor> Collection<D>(
          Func<TSourceDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<D>>>> collectionSelector
-      ) where D : VMDescriptorBase;
+      ) where D : IVMDescriptor;
 
       //IChangeActionBuilder<TRootVM, TRootDescriptor> AnyProperty { get; }
 

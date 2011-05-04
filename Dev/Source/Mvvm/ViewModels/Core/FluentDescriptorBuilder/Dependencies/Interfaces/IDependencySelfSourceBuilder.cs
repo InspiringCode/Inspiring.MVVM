@@ -4,8 +4,8 @@
       IDependencySourceBuilder<TRootVM, TSourceVM, TRootDescriptor, TSourceDescriptor>
       where TRootVM : IViewModel
       where TSourceVM : IViewModel
-      where TRootDescriptor : VMDescriptorBase
-      where TSourceDescriptor : VMDescriptorBase {
+      where TRootDescriptor : IVMDescriptor
+      where TSourceDescriptor : IVMDescriptor {
 
       IActionOrAnyDescendantBuilder<TRootVM, TRootDescriptor> Self { get; }
    }

@@ -6,7 +6,7 @@
 
    internal sealed class ValidatorBuilderOperation : IValidatorBuilderOperationProvider {
       public ValidatorBuilderOperation(
-         VMDescriptorBase descriptor,
+         IVMDescriptor descriptor,
          VMDescriptorConfiguration config
       ) {
          Descriptor = descriptor;
@@ -16,7 +16,7 @@
          ActionArgs = new Stack<IValidator>();
       }
 
-      public VMDescriptorBase Descriptor { get; private set; }
+      public IVMDescriptor Descriptor { get; private set; }
       public VMDescriptorConfiguration Config { get; private set; }
       public PathDefinition Path { get; set; }
       public Stack<Action> BuildActions { get; private set; }
@@ -62,12 +62,12 @@
    }
 
    internal sealed class ValidatorBuilderOperationCollection : IValidatorBuilderOperationProvider {
-      private readonly VMDescriptorBase _descriptor;
+      private readonly IVMDescriptor _descriptor;
       private readonly VMDescriptorConfiguration _config;
       private readonly List<ValidatorBuilderOperation> _operations = new List<ValidatorBuilderOperation>();
 
       public ValidatorBuilderOperationCollection(
-         VMDescriptorBase descriptor,
+         IVMDescriptor descriptor,
          VMDescriptorConfiguration config
       ) {
          _descriptor = descriptor;

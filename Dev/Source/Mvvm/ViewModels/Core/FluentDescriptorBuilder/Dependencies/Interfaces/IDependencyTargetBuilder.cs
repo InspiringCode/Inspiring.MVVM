@@ -4,8 +4,8 @@
    public interface IDependencyTargetBuilder<TRootVM, TSourceVM, TRootDescriptor, TSourceDescriptor>
       where TRootVM : IViewModel
       where TSourceVM : IViewModel
-      where TRootDescriptor : VMDescriptorBase
-      where TSourceDescriptor : VMDescriptorBase {
+      where TRootDescriptor : IVMDescriptor
+      where TSourceDescriptor : IVMDescriptor {
 
       void Properties(params Func<TSourceDescriptor, IVMPropertyDescriptor>[] targetPropertySelectors);
 
@@ -19,7 +19,7 @@
       /// </typeparam>
       IDependencyTargetBuilder<TRootVM, IViewModel<D>, TRootDescriptor, D> Descendant<D>(
          Func<TSourceDescriptor, IVMPropertyDescriptor<IViewModel<D>>> viewModelSelector
-      ) where D : VMDescriptorBase;
+      ) where D : IVMDescriptor;
 
       /// <summary>
       /// </summary>
@@ -31,7 +31,7 @@
       /// </typeparam>
       IDependencyTargetBuilder<TRootVM, IViewModel<D>, TRootDescriptor, D> Descendant<D>(
          Func<TSourceDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<D>>>> collectionSelector
-      ) where D : VMDescriptorBase;
+      ) where D : IVMDescriptor;
 
       void ViewModel();
    }

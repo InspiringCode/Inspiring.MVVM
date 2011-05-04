@@ -8,7 +8,7 @@
       /// </summary>
       public static void Initialize(
          this BehaviorChain chain,
-         VMDescriptorBase descriptor,
+         IVMDescriptor descriptor,
          IVMPropertyDescriptor property = null
       ) {
          var context = new BehaviorInitializationContext(descriptor, property);
@@ -360,7 +360,7 @@
          }
       }
 
-      public static VMDescriptorBase GetItemDescriptor(
+      public static IVMDescriptor GetItemDescriptor(
          this Behavior behavior
       ) {
          return behavior
@@ -368,7 +368,7 @@
             .ItemDescriptor;
       }
 
-      public static VMDescriptorBase GetItemDescriptor(this IVMCollection collection) {
+      public static IVMDescriptor GetItemDescriptor(this IVMCollection collection) {
          return collection
             .OwnerProperty
             .Behaviors

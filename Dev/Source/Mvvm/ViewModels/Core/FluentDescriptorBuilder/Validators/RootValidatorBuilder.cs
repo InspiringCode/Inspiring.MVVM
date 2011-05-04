@@ -6,7 +6,7 @@
       ValidatorBuilder<TOwner, TTarget, TDescriptor>
       where TOwner : IViewModel
       where TTarget : IViewModel
-      where TDescriptor : VMDescriptorBase {
+      where TDescriptor : class, IVMDescriptor {
 
       private ValidatorBuilderOperationCollection _operations;
 

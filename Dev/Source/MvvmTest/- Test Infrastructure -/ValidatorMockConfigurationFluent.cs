@@ -52,7 +52,7 @@
          IValidatorInvocationBuilder Targeting<TDescriptor>(
             IViewModel<TDescriptor> target,
             Func<TDescriptor, IVMPropertyDescriptor> targetPropertySelector
-         ) where TDescriptor : VMDescriptorBase;
+         ) where TDescriptor : IVMDescriptor;
 
          /// <summary>
          ///   Specifies for which validation target the setup/expection is used.
@@ -69,7 +69,7 @@
          IValidatorInvocationBuilder Targeting<TDescriptor>(
             IVMCollectionExpression<IViewModel<TDescriptor>> target,
             Func<TDescriptor, IVMPropertyDescriptor> targetPropertySelector
-         ) where TDescriptor : VMDescriptorBase;
+         ) where TDescriptor : IVMDescriptor;
       }
 
       public interface IValidatorInvocationBuilder {
@@ -141,7 +141,7 @@
          public IValidatorInvocationBuilder Targeting<TDescriptor>(
             IViewModel<TDescriptor> target,
             Func<TDescriptor, IVMPropertyDescriptor> targetPropertySelector
-         ) where TDescriptor : VMDescriptorBase {
+         ) where TDescriptor : IVMDescriptor {
             _target = target;
             _targetProperty = targetPropertySelector((TDescriptor)target.Descriptor);
             return this;
@@ -156,7 +156,7 @@
          public IValidatorInvocationBuilder Targeting<TDescriptor>(
             IVMCollectionExpression<IViewModel<TDescriptor>> target,
             Func<TDescriptor, IVMPropertyDescriptor> targetPropertySelector
-         ) where TDescriptor : VMDescriptorBase {
+         ) where TDescriptor : IVMDescriptor {
             _targetCollection = (IVMCollection)target;
             _targetProperty = targetPropertySelector((TDescriptor)_targetCollection.GetItemDescriptor());
             return this;

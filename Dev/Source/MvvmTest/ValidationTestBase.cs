@@ -76,7 +76,7 @@
          public ValidationError For<T>(
             IViewModel<T> target,
             Func<T, IVMPropertyDescriptor> targetPropertySelector
-         ) where T : VMDescriptorBase {
+         ) where T : IVMDescriptor {
             var targetProperty = targetPropertySelector((T)target.Descriptor);
             return new ValidationError(NullValidator.Instance, target, targetProperty, _errorMessage);
          }
@@ -91,7 +91,7 @@
 
          public VMKernel Kernel { get; set; }
 
-         public VMDescriptorBase Descriptor { get; set; }
+         public IVMDescriptor Descriptor { get; set; }
 
          public IBehaviorContext GetContext() {
             throw new NotSupportedException();

@@ -6,7 +6,7 @@
 
    public class TestViewModel<TDescriptor> :
       ViewModel<TDescriptor>
-      where TDescriptor : VMDescriptorBase {
+      where TDescriptor : IVMDescriptor {
 
       private string _name;
 

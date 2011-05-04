@@ -109,7 +109,7 @@
       public static void IsValid<TDescriptor>(
          IViewModel<TDescriptor> vm,
          Func<TDescriptor, IVMPropertyDescriptor> propertySelector
-      ) where TDescriptor : VMDescriptorBase {
+      ) where TDescriptor : IVMDescriptor {
          var property = propertySelector((TDescriptor)vm.Descriptor);
          IsValid(vm, property);
       }

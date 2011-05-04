@@ -3,7 +3,7 @@
 
    public sealed class BehaviorInitializationContext {
       public BehaviorInitializationContext(
-         VMDescriptorBase descriptor,
+         IVMDescriptor descriptor,
          IVMPropertyDescriptor property = null
       ) {
          Contract.Requires(descriptor != null);
@@ -15,7 +15,7 @@
 
       public FieldDefinitionCollection Fields { get; private set; }
 
-      public VMDescriptorBase Descriptor { get; private set; }
+      public IVMDescriptor Descriptor { get; private set; }
 
       public IVMPropertyDescriptor Property { get; private set; }
 

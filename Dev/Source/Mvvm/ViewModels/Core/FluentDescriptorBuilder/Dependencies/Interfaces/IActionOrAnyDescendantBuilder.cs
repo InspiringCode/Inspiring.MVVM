@@ -3,7 +3,7 @@
    public interface IActionOrAnyDescendantBuilder<TRootVM, TRootDescriptor> :
       IDependencyActionBuilder<TRootVM, TRootDescriptor>
       where TRootVM : IViewModel
-      where TRootDescriptor : VMDescriptorBase {
+      where TRootDescriptor : IVMDescriptor {
 
       IDependencyActionBuilder<TRootVM, TRootDescriptor> OrAnyDescendant { get; }
    }

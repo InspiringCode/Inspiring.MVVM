@@ -26,14 +26,14 @@
 
       public PathDefinition Append<TDescriptor, TValue>(
          Func<TDescriptor, IVMPropertyDescriptor<TValue>> propertySelector
-      ) where TDescriptor : VMDescriptorBase {
+      ) where TDescriptor : IVMDescriptor {
          return Append(new PropertyStep<TDescriptor, TValue>(propertySelector));
       }
 
       public PathDefinition AppendCollection<TDescriptor, TItemVM>(
          Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<TItemVM>>> collectionPropertySelector
       )
-         where TDescriptor : VMDescriptorBase
+         where TDescriptor : IVMDescriptor
          where TItemVM : IViewModel {
 
          return Append(new CollectionStep<TDescriptor, TItemVM>(collectionPropertySelector));
@@ -41,7 +41,7 @@
 
       public PathDefinition AppendCollectionProperty<TDescriptor, TValue>(
          Func<TDescriptor, IVMPropertyDescriptor<TValue>> propertySelector
-      ) where TDescriptor : VMDescriptorBase {
+      ) where TDescriptor : IVMDescriptor {
          return Append(new CollectionPropertyStep<TDescriptor, TValue>(propertySelector));
       }
 

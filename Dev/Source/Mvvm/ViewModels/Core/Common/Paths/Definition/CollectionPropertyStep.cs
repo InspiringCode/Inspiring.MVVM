@@ -6,7 +6,7 @@
 
    internal sealed class CollectionPropertyStep<TDescriptor, TValue> :
       PathDefinitionStep
-      where TDescriptor : VMDescriptorBase {
+      where TDescriptor : IVMDescriptor {
 
       private Func<TDescriptor, IVMPropertyDescriptor<TValue>> _propertySelector;
 
@@ -27,11 +27,11 @@
             return PathMatch.Fail();
          }
 
-         var itemDescriptor = parentCollection.GetItemDescriptor() as TDescriptor;
-
-         if (itemDescriptor == null) {
+         if (!(parentCollection.GetItemDescriptor() is TDescriptor)) {
             return PathMatch.Fail();
          }
+
+         var itemDescriptor = (TDescriptor)parentCollection.GetItemDescriptor();
 
          var expectedProperty = _propertySelector(itemDescriptor);
 
@@ -107,11 +107,11 @@
             return false;
          }
 
-         TDescriptor descriptor = parent.Descriptor as TDescriptor;
-
-         if (descriptor == null) {
+         if (!(parent.Descriptor is TDescriptor)) {
             return false;
          }
+
+         TDescriptor descriptor = (TDescriptor)parent.Descriptor;
 
          IVMPropertyDescriptor expectedProperty = _propertySelector(descriptor);
 
@@ -139,11 +139,11 @@
             return false;
          }
 
-         TDescriptor itemDescriptor = collection.GetItemDescriptor() as TDescriptor;
-
-         if (itemDescriptor == null) {
+         if (!(collection.GetItemDescriptor() is TDescriptor)) {
             return false;
          }
+
+         TDescriptor itemDescriptor = (TDescriptor)collection.GetItemDescriptor();
 
          return _propertySelector(itemDescriptor) == nextStep.Property;
       }

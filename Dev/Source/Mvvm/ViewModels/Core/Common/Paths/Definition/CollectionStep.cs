@@ -6,7 +6,7 @@
 
    internal sealed class CollectionStep<TDescriptor, TItemVM> :
       PathDefinitionStep
-      where TDescriptor : VMDescriptorBase
+      where TDescriptor : IVMDescriptor
       where TItemVM : IViewModel {
 
       private Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<TItemVM>>> _propertySelector;
@@ -28,11 +28,11 @@
             return PathMatch.Fail();
          }
 
-         var descriptor = parentViewModel.Descriptor as TDescriptor;
-
-         if (descriptor == null) {
+         if (!(parentViewModel.Descriptor is TDescriptor)) {
             return PathMatch.Fail();
          }
+
+         var descriptor = (TDescriptor)parentViewModel.Descriptor;
 
          var collectionProperty = (IVMPropertyDescriptor)_propertySelector(descriptor); // HACK ATTACK
 
@@ -131,11 +131,11 @@
             return false;
          }
 
-         TDescriptor descriptor = parent.Descriptor as TDescriptor;
-
-         if (descriptor == null) {
+         if (!(parent.Descriptor is TDescriptor)) {
             return false;
          }
+
+         TDescriptor descriptor = (TDescriptor)parent.Descriptor;
 
          IVMPropertyDescriptor expectedProperty = _propertySelector(descriptor);
 
@@ -163,11 +163,11 @@
             return false;
          }
 
-         TDescriptor itemDescriptor = collection.GetItemDescriptor() as TDescriptor;
-
-         if (itemDescriptor == null) {
+         if (!(collection.GetItemDescriptor() is TDescriptor)) {
             return false;
          }
+
+         TDescriptor itemDescriptor = (TDescriptor)collection.GetItemDescriptor();
 
          return _propertySelector(itemDescriptor) == nextStep.Property;
       }

@@ -147,7 +147,7 @@
 
       /// <inheritdoc />
       IVMPropertyDescriptor<IVMCollection<TItemVM>> ICollectionPropertyBuilder<TSourceObject>.Of<TItemVM>(
-         VMDescriptorBase itemDescriptor
+         IVMDescriptor itemDescriptor
       ) {
          return Custom.CollectionProperty<TItemVM>(
             itemDescriptor,
@@ -216,7 +216,7 @@
             _sourceCollectionAccessor = sourceCollectionAccessor;
          }
 
-         public IVMPropertyDescriptor<IVMCollection<TItemVM>> With(VMDescriptorBase itemDescriptor) {
+         public IVMPropertyDescriptor<IVMCollection<TItemVM>> With(IVMDescriptor itemDescriptor) {
             return _factory.CollectionProperty(
                itemDescriptor,
                valueAccessor: new PopulatedCollectionAccessorBehavior<TItemVM>(),
@@ -240,7 +240,7 @@
          }
 
          IVMPropertyDescriptor<IVMCollection<TItemVM>> ICollectionPropertyBuilderWithSource<TItemSource>.With<TItemVM>(
-            VMDescriptorBase itemDescriptor
+            IVMDescriptor itemDescriptor
          ) {
             return _factory.CollectionPropertyWithSource(
                itemDescriptor,

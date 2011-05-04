@@ -5,14 +5,14 @@
 
    /// <summary>
    ///   A view model behavior that caches all <see cref="ViewModelPropertyDescriptor"/> 
-   ///   objects of a <see cref="VMDescriptorBase"/> object.
+   ///   objects of a <see cref="IVMDescriptor"/> object.
    /// </summary>
    public sealed class TypeDescriptorProviderBehavior :
       Behavior,
       IBehaviorInitializationBehavior {
 
       private PropertyDescriptorCollection _propertyDescriptors;
-      private VMDescriptorBase _vmDescriptor;
+      private IVMDescriptor _vmDescriptor;
 
       public PropertyDescriptorCollection PropertyDescriptors {
          get {

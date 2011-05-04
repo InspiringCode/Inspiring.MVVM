@@ -5,13 +5,13 @@
       Behavior,
       IItemDescriptorProviderBehavior {
 
-      private VMDescriptorBase _itemDescriptor;
+      private IVMDescriptor _itemDescriptor;
 
-      public ItemDescriptorProviderBehavior(VMDescriptorBase itemDescriptor) {
+      public ItemDescriptorProviderBehavior(IVMDescriptor itemDescriptor) {
          Contract.Requires(itemDescriptor != null);
          ItemDescriptor = itemDescriptor;
       }
 
-      public VMDescriptorBase ItemDescriptor { get; private set; }
+      public IVMDescriptor ItemDescriptor { get; private set; }
    }
 }

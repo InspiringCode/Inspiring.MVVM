@@ -113,7 +113,7 @@
       private PathDefinitionStep CreateStep<TDescriptor, TItemVM>(
          Func<TDescriptor, IVMPropertyDescriptor<IVMCollection<TItemVM>>> propertySelector
       )
-         where TDescriptor : VMDescriptorBase
+         where TDescriptor : IVMDescriptor
          where TItemVM : IViewModel {
          return new CollectionStep<TDescriptor, TItemVM>(propertySelector);
       }

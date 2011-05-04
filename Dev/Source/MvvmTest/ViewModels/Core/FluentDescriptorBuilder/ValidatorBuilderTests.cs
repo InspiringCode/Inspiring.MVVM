@@ -220,14 +220,14 @@
 
       private static Func<TDescriptor, IVMPropertyDescriptor<IViewModel<TChildDescriptor>>>
          ViewModelSelector<TDescriptor, TChildDescriptor>()
-         where TDescriptor : VMDescriptorBase
-         where TChildDescriptor : VMDescriptorBase {
+         where TDescriptor : IVMDescriptor
+         where TChildDescriptor : IVMDescriptor {
 
          return new Func<TDescriptor, IVMPropertyDescriptor<IViewModel<TChildDescriptor>>>(x => null);
       }
 
       private void AssertStandardValidators(
-         VMDescriptorBase descriptor,
+         IVMDescriptor descriptor,
          ValidationStep step,
          PathDefinition targetPath,
          IValidator validator

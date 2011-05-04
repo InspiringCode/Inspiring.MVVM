@@ -5,8 +5,8 @@
       IActionOrAnyDescendantBuilder<TRootVM, TRootDescriptor>
       where TRootVM : IViewModel
       where TSourceVM : IViewModel
-      where TRootDescriptor : VMDescriptorBase
-      where TSourceDescriptor : VMDescriptorBase {
+      where TRootDescriptor : IVMDescriptor
+      where TSourceDescriptor : IVMDescriptor {
 
    }
 }

@@ -6,7 +6,7 @@
       public static void ExecuteCommand<TDescriptor>(
          this IViewModel<TDescriptor> viewModel,
          Func<TDescriptor, IVMPropertyDescriptor<ICommand>> commandPropertySelector
-      ) where TDescriptor : VMDescriptorBase {
+      ) where TDescriptor : IVMDescriptor {
          if (viewModel == null) {
             throw new ArgumentNullException("viewModel");
          }
@@ -23,7 +23,7 @@
       public static bool CanExecuteCommand<TDescriptor>(
          this IViewModel<TDescriptor> viewModel,
          Func<TDescriptor, IVMPropertyDescriptor<ICommand>> commandPropertySelector
-      ) where TDescriptor : VMDescriptorBase {
+      ) where TDescriptor : IVMDescriptor {
          if (viewModel == null) {
             throw new ArgumentNullException("viewModel");
          }
@@ -40,7 +40,7 @@
       public static T GetValue<TDescriptor, T>(
          this IViewModel<TDescriptor> viewModel,
          Func<TDescriptor, IVMPropertyDescriptor<T>> propertySelector
-      ) where TDescriptor : VMDescriptorBase {
+      ) where TDescriptor : IVMDescriptor {
          if (viewModel == null) {
             throw new ArgumentNullException("viewModel");
          }
@@ -57,7 +57,7 @@
          this IViewModel<TDescriptor> viewModel,
          Func<TDescriptor, IVMPropertyDescriptor<T>> propertySelector,
          T value
-      ) where TDescriptor : VMDescriptorBase {
+      ) where TDescriptor : IVMDescriptor {
          if (viewModel == null) {
             throw new ArgumentNullException("viewModel");
          }

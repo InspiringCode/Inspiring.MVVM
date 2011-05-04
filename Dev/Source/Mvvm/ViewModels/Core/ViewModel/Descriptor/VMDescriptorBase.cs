@@ -3,7 +3,7 @@
    using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.ViewModels.Core;
 
-   public abstract class VMDescriptorBase {
+   public abstract class VMDescriptorBase : IVMDescriptor {
       private VMPropertyCollection _properties;
       private readonly FieldDefinitionCollection _fields;
 
@@ -29,7 +29,7 @@
          }
       }
 
-      public BehaviorChain Behaviors { get; internal set; }
+      public BehaviorChain Behaviors { get; set; }
 
       public bool IsSealed { get; private set; }
 

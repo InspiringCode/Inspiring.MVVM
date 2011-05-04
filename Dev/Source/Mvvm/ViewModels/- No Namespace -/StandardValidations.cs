@@ -44,7 +44,7 @@
          string errorMessage
       )
          where TOwnerVM : IViewModel
-         where TItemDescriptor : VMDescriptorBase {
+         where TItemDescriptor : IVMDescriptor {
 
          builder.Custom<IViewModel<TItemDescriptor>>((args) => {
             args
@@ -64,7 +64,7 @@
          string errorMessage
       )
          where TOwnerVM : IViewModel
-         where TItemDescriptor : VMDescriptorBase {
+         where TItemDescriptor : IVMDescriptor {
 
          builder.Custom<IViewModel<TItemDescriptor>>((args) => {
             args
@@ -119,7 +119,7 @@
       )
          where TOwnerVM : IViewModel
          where TTargetVM : IViewModel
-         where TDescriptor : VMDescriptorBase {
+         where TDescriptor : class, IVMDescriptor {
 
          builder.CheckViewModel((args) => {
             if (!args.Owner.Kernel.GetValidationResult(ValidationResultScope.Descendants).IsValid) {
@@ -149,7 +149,7 @@
       )
          where TOwnerVM : IViewModel
          where TTargetVM : IViewModel
-         where TDescriptor : VMDescriptorBase {
+         where TDescriptor : class, IVMDescriptor {
 
          builder.CheckViewModel((args) => {
             if (!args.Owner.Kernel.GetValidationResult(ValidationResultScope.PropertiesOnly).IsValid) {

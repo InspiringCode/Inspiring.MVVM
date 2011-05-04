@@ -59,7 +59,7 @@
       ///   items. All items must have the same descriptor.
       /// </param>
       IVMPropertyDescriptor<IVMCollection<TItemVM>> Of<TItemVM>(
-         VMDescriptorBase itemDescriptor
+         IVMDescriptor itemDescriptor
       ) where TItemVM : IViewModel;
    }
 }

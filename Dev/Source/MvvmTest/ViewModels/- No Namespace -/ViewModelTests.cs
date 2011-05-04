@@ -52,7 +52,7 @@
          counter.AssertOneRaise();
       }
 
-      private class ViewModelMock : ViewModel<VMDescriptorBase> {
+      private class ViewModelMock : ViewModel<IVMDescriptor> {
          public IVMPropertyDescriptor LastOnPropertyChangedInvocation { get; set; }
          public IVMPropertyDescriptor LastOnValidationStateChangedInvocation { get; set; }
 

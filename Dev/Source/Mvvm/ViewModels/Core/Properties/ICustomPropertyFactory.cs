@@ -24,13 +24,13 @@
       ) where TChildVM : IViewModel, IHasSourceObject<TChildSource>;
 
       IVMPropertyDescriptor<IVMCollection<TChildVM>> CollectionProperty<TChildVM>(
-         VMDescriptorBase itemDescriptor,
+         IVMDescriptor itemDescriptor,
          IValueAccessorBehavior<IVMCollection<TChildVM>> valueAccessor,
          IValueAccessorBehavior<IEnumerable<TChildVM>> sourceAccessor = null
       ) where TChildVM : IViewModel;
 
       IVMPropertyDescriptor<IVMCollection<TChildVM>> CollectionPropertyWithSource<TChildVM, TChildSource>(
-         VMDescriptorBase itemDescriptor,
+         IVMDescriptor itemDescriptor,
          IValueAccessorBehavior<IVMCollection<TChildVM>> valueAccessor,
          IValueAccessorBehavior<IEnumerable<TChildSource>> sourceAccessor = null
       ) where TChildVM : IViewModel, IHasSourceObject<TChildSource>;

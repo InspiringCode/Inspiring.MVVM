@@ -19,6 +19,6 @@
       ///   Specifies the VM descriptor that should be used for the collection 
       ///   items. All items must have the same descriptor.
       /// </param>
-      IVMPropertyDescriptor<IVMCollection<TItemVM>> With(VMDescriptorBase itemDescriptor);
+      IVMPropertyDescriptor<IVMCollection<TItemVM>> With(IVMDescriptor itemDescriptor);
    }
 }
