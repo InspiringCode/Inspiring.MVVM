@@ -14,6 +14,7 @@
 
       [TestMethod]
       public void TestValidationWithInheritance() {
+         Assert.Inconclusive("TODO: Think about inheritance and IViewModel implementation.");
          SourceList = CustomerRepository.GetCustomers();
          VM = new CollectionOfCustomerWithBaseVM();
          VM.InitializeFrom(SourceList);
@@ -23,7 +24,7 @@
 
       [TestMethod]
       public void TestAccessInheritedProperty() {
-         Assert.Inconclusive("FIX ME!!!!!!!");
+         Assert.Inconclusive("TODO: Think about inheritance and IViewModel implementation.");
          SourceList = CustomerRepository.GetCustomers();
          VM = new CollectionOfCustomerWithBaseVM();
          VM.InitializeFrom(SourceList);

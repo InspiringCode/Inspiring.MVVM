@@ -156,7 +156,8 @@
       }
 
       private class MultSelectionAccessor<TItemVM> :
-         CachedAccessorBehavior<MultiSelectionVM<TItemSource, TItemVM>>
+         CachedAccessorBehavior<MultiSelectionVM<TItemSource, TItemVM>>,
+         IRefreshBehavior
          where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
          private MultiSelectionVMDescriptor<TItemSource, TItemVM> _descriptor;
@@ -198,10 +199,17 @@
 
             return vm;
          }
+
+         public void Refresh(IBehaviorContext context) {
+            IViewModel vm = GetValue(context);
+            vm.Kernel.Refresh();
+            this.RefreshNext(context);
+         }
       }
 
       private class MultSelectionAccessor :
-         CachedAccessorBehavior<MultiSelectionVM<TItemSource>> {
+         CachedAccessorBehavior<MultiSelectionVM<TItemSource>>,
+         IRefreshBehavior{
 
          private MultiSelectionVMDescriptor<TItemSource> _descriptor;
          private Func<TItemSource, bool> _filter;
@@ -241,6 +249,12 @@
             vm.InitializeFrom(sourceObject);
 
             return vm;
+         }
+
+         public void Refresh(IBehaviorContext context) {
+            IViewModel vm = GetValue(context);
+            vm.Kernel.Refresh();
+            this.RefreshNext(context);
          }
       }
 

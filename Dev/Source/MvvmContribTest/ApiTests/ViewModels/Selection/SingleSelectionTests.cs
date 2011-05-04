@@ -22,6 +22,15 @@
       }
 
       [TestMethod]
+      public void GetValueOfSingleSelectionProperty_AlwaysReturnsSameInstance() {
+         var vm = CreateUserVM();
+         var first = vm.Department;
+         var second = vm.Department;
+
+         Assert.AreEqual(first, second);
+      }
+
+      [TestMethod]
       public void AllItems_WithoutFilter_ReturnsAllSourceItems() {
          var departments = new[] { Department1, InactiveDepartment };
          var vm = CreateUserVM(allDepartments: departments);

@@ -156,8 +156,8 @@
       }
 
       private class SingleSelectionFactory<TItemVM> :
-         Behavior,
-         IValueAccessorBehavior<SingleSelectionVM<TItemSource, TItemVM>>
+         CachedAccessorBehavior<SingleSelectionVM<TItemSource, TItemVM>>,
+         IRefreshBehavior
          where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
          private SingleSelectionVMDescriptor<TItemSource, TItemVM> _descriptor;
@@ -168,7 +168,11 @@
             _filter = filter;
          }
 
-         public SingleSelectionVM<TItemSource, TItemVM> GetValue(IBehaviorContext context) {
+         public override void SetValue(IBehaviorContext context, SingleSelectionVM<TItemSource, TItemVM> value) {
+            throw new NotSupportedException();
+         }
+
+         protected override SingleSelectionVM<TItemSource, TItemVM> ProvideValue(IBehaviorContext context) {
             TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context);
 
             var vm = new SingleSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>(
@@ -182,14 +186,16 @@
             return vm;
          }
 
-         public void SetValue(IBehaviorContext context, SingleSelectionVM<TItemSource, TItemVM> value) {
-            throw new NotSupportedException();
+         public void Refresh(IBehaviorContext context) {
+            IViewModel vm = GetValue(context);
+            vm.Kernel.Refresh();
+            this.RefreshNext(context);
          }
       }
 
       private class SingleSelectionFactory :
-         Behavior,
-         IValueAccessorBehavior<SingleSelectionVM<TItemSource>> {
+         CachedAccessorBehavior<SingleSelectionVM<TItemSource>>,
+         IRefreshBehavior {
 
          private SingleSelectionVMDescriptor<TItemSource> _descriptor;
          private Func<TItemSource, bool> _filter;
@@ -199,7 +205,7 @@
             _filter = filter;
          }
 
-         public SingleSelectionVM<TItemSource> GetValue(IBehaviorContext context) {
+         protected override SingleSelectionVM<TItemSource> ProvideValue(IBehaviorContext context) {
             TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context);
 
             var vm = new SingleSelectionWithSourceVM<TSourceObject, TItemSource>(
@@ -213,8 +219,14 @@
             return vm;
          }
 
-         public void SetValue(IBehaviorContext context, SingleSelectionVM<TItemSource> value) {
+         public override void SetValue(IBehaviorContext context, SingleSelectionVM<TItemSource> value) {
             throw new NotSupportedException();
+         }
+
+         public void Refresh(IBehaviorContext context) {
+            IViewModel vm = GetValue(context);
+            vm.Kernel.Refresh();
+            this.RefreshNext(context);
          }
       }
 

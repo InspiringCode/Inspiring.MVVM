@@ -233,6 +233,30 @@
       }
 
       [TestMethod]
+      public void RefreshOfMultiSelectionProperty_RefreshesAllItemsAndSelectedItems() {
+         var allGroups = new List<Group> { Group1 };
+         var selectedGroups = new List<Group> { Group1 };
+
+         UserVM vm = CreateUserVM(
+            allGroupsSelector: x => allGroups,
+            selectedGroupsSelector: x => selectedGroups
+         );
+
+         Assert.AreEqual(1, vm.Groups.SelectedItems.Count); // Trigger initial load
+
+         allGroups = new List<Group> { Group2 };
+         selectedGroups = new List<Group> { Group2 };
+
+         vm.RefreshGroups();
+
+         AssertAllItemsAreEqual(vm, allGroups);
+         CollectionAssert.AreEqual(
+            selectedGroups,
+            vm.Groups.SelectedItems.Select(x => x.Source).ToArray()
+         );
+      }
+
+      [TestMethod]
       public void UpdateFromSource() {
          UserVM vm = CreateUserVMWithItems();
          vm.RefreshGroups();
