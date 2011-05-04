@@ -6,6 +6,6 @@
       where TRootVM : IViewModel
       where TRootDescriptor : VMDescriptor {
 
-      IDependencySourceBuilder<TRootVM, TRootVM, TRootDescriptor, TRootDescriptor> OnChangeOf { get; }
+      IDependencySelfSourceBuilder<TRootVM, TRootVM, TRootDescriptor, TRootDescriptor> OnChangeOf { get; }
    }
 }

@@ -19,8 +19,6 @@
          d = BuildDescriptor(b => b
             .OnChangeOf
             .Descendant(x => x.SelectedProject)
-            .Descendant(x => x.Customer)
-            .Properties(x => x.Rating)
             .Refresh
             .Properties(x => x.Name)
          );
@@ -50,6 +48,32 @@
             .Revalidate
             .Descendant(x => x.Projects)
             .Properties(x => x.EndDate)
+         );
+
+         d = BuildDescriptor(b => b
+            .OnChangeOf
+            .Self
+            .Execute(() => { })
+         );
+
+         d = BuildDescriptor(b => b
+            .OnChangeOf
+            .Self
+            .OrAnyDescendant
+            .Execute(() => { })
+         );
+
+         d = BuildDescriptor(b => b
+            .OnChangeOf
+            .Collection(x => x.Projects)
+            .Execute(() => { })
+         );
+
+         d = BuildDescriptor(b => b
+            .OnChangeOf
+            .Descendant(x => x.SelectedProject)
+            .OrAnyDescendant
+            .Execute(() => { })
          );
       }
 

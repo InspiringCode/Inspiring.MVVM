@@ -25,7 +25,7 @@
       /// <typeparam name="D">
       ///   The descriptor type of the child VM. Can be inferred by the compiler.
       /// </typeparam>
-      IDependencySourceBuilder<TRootVM, IViewModel<D>, TRootDescriptor, D> Descendant<D>(
+      IDependencySourceOrAnyDescendantBuilder<TRootVM, IViewModel<D>, TRootDescriptor, D> Descendant<D>(
          Func<TSourceDescriptor, IVMPropertyDescriptor<IViewModel<D>>> viewModelSelector
       ) where D : VMDescriptorBase;
 
@@ -40,7 +40,11 @@
       /// <typeparam name="D">
       ///   The descriptor type of the collection VM. Can be inferred by the compiler.
       /// </typeparam>
-      IDependencySourceBuilder<TRootVM, IViewModel<D>, TRootDescriptor, D> Descendant<D>(
+      IDependencySourceOrAnyDescendantBuilder<TRootVM, IViewModel<D>, TRootDescriptor, D> Descendant<D>(
+         Func<TSourceDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<D>>>> collectionSelector
+      ) where D : VMDescriptorBase;
+
+      IDependencyActionBuilder<TRootVM, TRootDescriptor> Collection<D>(
          Func<TSourceDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<D>>>> collectionSelector
       ) where D : VMDescriptorBase;
 
@@ -48,8 +52,8 @@
 
       //IChangeActionBuilder<TRootVM, TRootDescriptor> AnyPropertyOrDescendant { get; }
 
-      IDependencyActionBuilder<TRootVM, TRootDescriptor> Self { get; }
+      //IDependencyActionBuilder<TRootVM, TRootDescriptor> Self { get; }
 
-      IDependencyActionBuilder<TRootVM, TRootDescriptor> SelfOrDescendant { get; }
+      //IDependencyActionBuilder<TRootVM, TRootDescriptor> SelfOrDescendant { get; }
    }
 }

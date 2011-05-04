@@ -5,7 +5,8 @@
       where TVM : IViewModel
       where TDescriptor : VMDescriptor {
 
-      public IDependencySourceBuilder<TVM, TVM, TDescriptor, TDescriptor> OnChangeOf {
+
+      public IDependencySelfSourceBuilder<TVM, TVM, TDescriptor, TDescriptor> OnChangeOf {
          get { throw new System.NotImplementedException(); }
       }
    }
