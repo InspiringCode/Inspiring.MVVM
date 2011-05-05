@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Validation {
    using Inspiring.Mvvm.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
    /// <remarks>
    ///   <![CDATA[                                  
@@ -9,22 +10,22 @@
    ///                                  /       
    ///                 --> CollectionA  -------       
    ///                |                 \      |
-   ///               Owner1              \     |    
+   ///               OwnerOfAB           \     |    
    ///                |                   \    |
    ///                 --> CollectionB ----\--ItemAB
    ///                                 \    \
    ///                                  \    \
    ///                                   \____ItemABC 
    ///                                             \
-   ///                                              ----- CollectionC <--- Owner2
+   ///                                              ----- CollectionC <--- OwnerOfC
    ///                                             /
    ///                                        ItemC
    ///   ]]>                                       
    /// </remarks>
    [TestClass]
    public class CollectionResultCacheFixture : TestBase {
-      protected TwoItemListsVM Owner1 { get; private set; }
-      protected ItemListVM Owner2 { get; private set; }
+      protected TwoItemListsVM OwnerOfAB { get; private set; }
+      protected ItemListVM OwnerOfC { get; private set; }
 
       protected ItemVM ItemA { get; private set; }
       protected ItemVM ItemAB { get; private set; }
@@ -35,35 +36,92 @@
       protected const string CollectionBValidatorKey = "CollectionB";
       protected const string CollectionCValidatorKey = "CollectionC";
 
-      protected ValidatorMockConfigurationFluent Results { get; private set; }
+      protected CustomValidatorMockConfiguration Results { get; private set; }
 
       [TestInitialize]
       public void FixtureSetup() {
-         Results = new ValidatorMockConfigurationFluent();
+         Results = new CustomValidatorMockConfiguration();
          var initialState = Results.GetState();
 
-         Owner1 = new TwoItemListsVM(Results);
-         Owner2 = new ItemListVM(Results);
+         OwnerOfAB = new TwoItemListsVM(Results);
+         OwnerOfC = new ItemListVM(Results);
 
          ItemA = new ItemVM(Results, "ItemA");
          ItemAB = new ItemVM(Results, "ItemAB");
          ItemABC = new ItemVM(Results, "ItemABC");
          ItemC = new ItemVM(Results, "ItemC");
 
-         Owner1.CollectionA.Add(ItemA);
-         Owner1.CollectionA.Add(ItemAB);
-         Owner1.CollectionA.Add(ItemABC);
+         OwnerOfAB.CollectionA.Add(ItemA);
+         OwnerOfAB.CollectionA.Add(ItemAB);
+         OwnerOfAB.CollectionA.Add(ItemABC);
 
-         Owner1.CollectionB.Add(ItemAB);
-         Owner1.CollectionB.Add(ItemABC);
+         OwnerOfAB.CollectionB.Add(ItemAB);
+         OwnerOfAB.CollectionB.Add(ItemABC);
 
-         Owner2.CollectionC.Add(ItemABC);
-         Owner2.CollectionC.Add(ItemC);
+         OwnerOfC.CollectionC.Add(ItemABC);
+         OwnerOfC.CollectionC.Add(ItemC);
 
          initialState.RestoreToState();
       }
 
-      public class TwoItemListsVM : TestViewModel<TwoItemListsVMDescriptor> {
+      protected class CustomValidatorMockConfiguration : ValidatorMockConfigurationFluent {
+         public CustomValidatorMockConfiguration() {
+            EnabledValidators = ValidatorTypes.Both;
+         }
+
+         public ValidatorTypes EnabledValidators { get; set; }
+
+         protected override void PerformValidation(
+            Action<string> addValidationErrorAction, 
+            ValidatorType type, 
+            IViewModel owner, 
+            IViewModel targetVM, 
+            object validatorKey, 
+            IVMPropertyDescriptor targetProperty = null
+         ) {
+            bool validate = false;
+
+            switch (type) {
+               case ValidatorType.Property:
+                  if ((EnabledValidators & ValidatorTypes.Property) == ValidatorTypes.Property) {
+                     validate = true;
+                  }
+                  break;
+               case ValidatorType.ViewModel:
+                  if ((EnabledValidators & ValidatorTypes.ViewModel) == ValidatorTypes.ViewModel) {
+                     validate = true;
+                  }
+                  break;
+            }
+
+            if (validate) {
+               base.PerformValidation(addValidationErrorAction, type, owner, targetVM, validatorKey, targetProperty);
+            }
+         }
+
+         protected override void PerformCollectionValidation<TItemVM>(Action<TItemVM, string, object> addValidationErrorAction, ValidatorType type, IViewModel owner, IVMCollectionBase<TItemVM> targetCollection, object validatorKey, IVMPropertyDescriptor targetProperty = null) {
+            bool validate = false;
+
+            switch (type) {
+               case ValidatorType.CollectionProperty:
+                  if ((EnabledValidators & ValidatorTypes.Property) == ValidatorTypes.Property) {
+                     validate = true;
+                  }
+                  break;
+               case ValidatorType.CollectionViewModel:
+                  if ((EnabledValidators & ValidatorTypes.ViewModel) == ValidatorTypes.ViewModel) {
+                     validate = true;
+                  }
+                  break;
+            }
+
+            if (validate) {
+               base.PerformCollectionValidation<TItemVM>(addValidationErrorAction, type, owner, targetCollection, validatorKey, targetProperty);
+            }
+         }
+      }
+
+      protected class TwoItemListsVM : TestViewModel<TwoItemListsVMDescriptor> {
          public static readonly TwoItemListsVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<TwoItemListsVMDescriptor>()
             .For<TwoItemListsVM>()
@@ -104,13 +162,13 @@
          private ValidatorMockConfiguration Results { get; set; }
       }
 
-      public class TwoItemListsVMDescriptor : VMDescriptor {
+      protected class TwoItemListsVMDescriptor : VMDescriptor {
          public IVMPropertyDescriptor<IVMCollection<ItemVM>> CollectionA { get; set; }
          public IVMPropertyDescriptor<IVMCollection<ItemVM>> CollectionB { get; set; }
       }
 
 
-      public class ItemListVM : TestViewModel<ItemListVMDescriptor> {
+      protected class ItemListVM : TestViewModel<ItemListVMDescriptor> {
          public static readonly ItemListVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<ItemListVMDescriptor>()
             .For<ItemListVM>()
@@ -140,11 +198,11 @@
          private ValidatorMockConfiguration Results { get; set; }
       }
 
-      public class ItemListVMDescriptor : VMDescriptor {
+      protected class ItemListVMDescriptor : VMDescriptor {
          public IVMPropertyDescriptor<IVMCollection<ItemVM>> CollectionC { get; set; }
       }
 
-      public class ItemVM : TestViewModel<ItemVMDescriptor> {
+      protected class ItemVM : TestViewModel<ItemVMDescriptor> {
          public static readonly ItemVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<ItemVMDescriptor>()
             .For<ItemVM>()
@@ -168,8 +226,15 @@
          private ValidatorMockConfiguration Results { get; set; }
       }
 
-      public class ItemVMDescriptor : VMDescriptor {
+      protected class ItemVMDescriptor : VMDescriptor {
          public IVMPropertyDescriptor<string> ItemProperty { get; set; }
+      }
+
+      [Flags]
+      protected enum ValidatorTypes {
+         Property = 1,
+         ViewModel = 2,
+         Both = Property | ViewModel
       }
    }
 }

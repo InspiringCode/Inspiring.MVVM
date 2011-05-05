@@ -22,21 +22,49 @@
 
       [TestMethod]
       public void GetResults_ItemIsValid_ReturnsNoError() {
-         var result = ResultCache.GetCollectionValidationResults(
-            ValidationStep.Value,
-            ItemABC,
-            property: null
-         );
-
-         Results.VerifySetupValidationResults();
-         ValidationAssert.IsValid(result);
+         ItemAB.Revalidate();
+         ValidationAssert.IsValid(ItemAB);
       }
+
+      [TestMethod]
+      public void ItemIsValid_ValidatesOnlyOwnerCollectionsOfThatItem() {
+         Results.EnabledValidators = ValidatorTypes.Property;
+
+         ItemAB.Revalidate();
+
+         ExpectInvocationOfItemPropertyValidatorOf(ItemAB);
+
+         Results.ExpectInvocationOf.CollectionPropertyValidation
+            .Targeting(OwnerOfAB.CollectionA, x => x.ItemProperty)
+            .On(OwnerOfAB, CollectionAValidatorKey);
+
+         Results.ExpectInvocationOf.CollectionPropertyValidation
+            .Targeting(OwnerOfAB.CollectionB, x => x.ItemProperty)
+            .On(OwnerOfAB, CollectionBValidatorKey);
+
+         Results.VerifyInvocationSequence();
+      }
+
+      private void ExpectInvocationOfItemPropertyValidatorOf(ItemVM item) {
+         Results.ExpectInvocationOf.PropertyValidation
+            .Targeting(item, x => x.ItemProperty)
+            .On(item);
+      }
+
+      private void ExpectInvocationOfViewModelValidatorOf(ItemVM item) {
+         Results.ExpectInvocationOf.ViewModelValidation
+            .Targeting(item)
+            .On(item);
+      }
+
+
+
 
       [TestMethod]
       public void GetResults_ItemIsInvalidInSingleCollection_ReturnsError() {
          Results.SetupFailing().CollectionPropertyValidation
             .Targeting(ItemAB, x => x.ItemProperty)
-            .On(Owner1, CollectionAValidatorKey);
+            .On(OwnerOfAB, CollectionAValidatorKey);
 
          var result = ResultCache.GetCollectionValidationResults(
             ValidationStep.Value,
@@ -67,15 +95,15 @@
       public void GetResults_ItemIsInvalidInMultipleCollections_ReturnsErrorsForAllCollections() {
          Results.SetupFailing().CollectionPropertyValidation
             .Targeting(ItemABC, x => x.ItemProperty)
-            .On(Owner1, CollectionAValidatorKey);
+            .On(OwnerOfAB, CollectionAValidatorKey);
 
          Results.SetupFailing().CollectionPropertyValidation
             .Targeting(ItemABC, x => x.ItemProperty)
-            .On(Owner1, CollectionBValidatorKey);
+            .On(OwnerOfAB, CollectionBValidatorKey);
 
          Results.SetupFailing().CollectionPropertyValidation
             .Targeting(ItemABC, x => x.ItemProperty)
-            .On(Owner2, CollectionCValidatorKey);
+            .On(OwnerOfC, CollectionCValidatorKey);
 
          //ChangeValidatorResult(InvalidItemsOfCollection1PropertyValidator, ItemABC, false);
          //ChangeValidatorResult(InvalidItemsOfCollection2PropertyValidator, ItemABC, false);
@@ -104,11 +132,11 @@
 
          Results.SetupFailing().CollectionPropertyValidation
             .Targeting(ItemA, x => x.ItemProperty)
-            .On(Owner1, CollectionAValidatorKey);
+            .On(OwnerOfAB, CollectionAValidatorKey);
 
          Results.SetupFailing().CollectionPropertyValidation
             .Targeting(ItemAB, x => x.ItemProperty)
-            .On(Owner1, CollectionAValidatorKey);
+            .On(OwnerOfAB, CollectionAValidatorKey);
 
          var result = ResultCache.GetCollectionValidationResults(
            ValidationStep.Value,
@@ -148,19 +176,19 @@
       public void GetResults_OtherItemBecomesInvalid_ValidatesItsUnvalidatedOwnerCollectionsToo() {
          Results.SetupFailing().CollectionViewModelValidation
             .Targeting(ItemABC)
-            .On(Owner1, CollectionAValidatorKey);
+            .On(OwnerOfAB, CollectionAValidatorKey);
 
          Results.ExpectInvocationOf.CollectionViewModelValidation
             .Targeting(ItemA)
-            .On(Owner1, CollectionAValidatorKey);
+            .On(OwnerOfAB, CollectionAValidatorKey);
 
          Results.ExpectInvocationOf.CollectionViewModelValidation
             .Targeting(ItemAB)
-            .On(Owner1, CollectionAValidatorKey);
+            .On(OwnerOfAB, CollectionAValidatorKey);
 
          Results.ExpectInvocationOf.CollectionViewModelValidation
             .Targeting(ItemABC)
-            .On(Owner1, CollectionAValidatorKey);
+            .On(OwnerOfAB, CollectionAValidatorKey);
 
 
          Results.ExpectInvocationOf.ViewModelValidation
@@ -170,20 +198,20 @@
 
          Results.ExpectInvocationOf.CollectionViewModelValidation
             .Targeting(ItemAB)
-            .On(Owner1, CollectionBValidatorKey);
+            .On(OwnerOfAB, CollectionBValidatorKey);
 
          Results.ExpectInvocationOf.CollectionViewModelValidation
             .Targeting(ItemABC)
-            .On(Owner1, CollectionBValidatorKey);
+            .On(OwnerOfAB, CollectionBValidatorKey);
 
-         
+
          Results.ExpectInvocationOf.CollectionViewModelValidation
             .Targeting(ItemABC)
-            .On(Owner2, CollectionCValidatorKey);
+            .On(OwnerOfC, CollectionCValidatorKey);
 
          Results.ExpectInvocationOf.CollectionViewModelValidation
             .Targeting(ItemC)
-            .On(Owner2, CollectionCValidatorKey);
+            .On(OwnerOfC, CollectionCValidatorKey);
 
 
          ResultCache.GetCollectionValidationResults(

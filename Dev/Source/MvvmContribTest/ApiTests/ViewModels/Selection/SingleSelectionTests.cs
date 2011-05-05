@@ -23,7 +23,7 @@
 
       [TestMethod]
       public void GetValueOfSingleSelectionProperty_AlwaysReturnsSameInstance() {
-         var vm = CreateUserVM();
+         var vm = CreateUserVMWithItems();
          var first = vm.Department;
          var second = vm.Department;
 

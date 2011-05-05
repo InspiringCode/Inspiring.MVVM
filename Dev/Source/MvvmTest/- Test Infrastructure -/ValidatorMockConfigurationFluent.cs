@@ -3,7 +3,7 @@
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
 
-   public sealed class ValidatorMockConfigurationFluent : ValidatorMockConfiguration {
+   public class ValidatorMockConfigurationFluent : ValidatorMockConfiguration {
       public IValidatorTypeSelector SetupSucceeding {
          get { return new ValidatorTypeSelector(SetupSucceedingValidator); }
       }

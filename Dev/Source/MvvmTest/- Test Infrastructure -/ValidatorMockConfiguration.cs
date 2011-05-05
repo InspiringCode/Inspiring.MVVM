@@ -166,7 +166,7 @@
          );
       }
 
-      protected void PerformValidation(
+      protected virtual void PerformValidation(
          Action<string> addValidationErrorAction,
          ValidatorType type,
          IViewModel owner,
@@ -187,7 +187,7 @@
          );
       }
 
-      protected void PerformCollectionValidation<TItemVM>(
+      protected virtual void PerformCollectionValidation<TItemVM>(
          Action<TItemVM, string, object> addValidationErrorAction,
          ValidatorType type,
          IViewModel owner,
