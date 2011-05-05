@@ -17,37 +17,26 @@
          _descriptor = descriptor;
       }
 
-      public ISinglePropertyBehaviorBuilder<TVM, TValue> For<TValue>(Func<TDescriptor, IVMPropertyDescriptor<TValue>> propertySelector) {
+      public ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> Property<TValue>(Func<TDescriptor, IVMPropertyDescriptor<TValue>> propertySelector) {
          var property = propertySelector(_descriptor);
          var propertyConfiguration = Configuration.PropertyConfigurations[property];
-         return new SinglePropertyBehaviorBuilder<TValue>(Configuration, propertyConfiguration);
+         return new SinglePropertyBehaviorBuilder<TValue>(Configuration, propertyConfiguration, _descriptor);
       }
 
       /// <inheritdoc />
-      private class SinglePropertyBehaviorBuilder<TValue> : ConfigurationProvider, ISinglePropertyBehaviorBuilder<TVM, TValue> {
-         private BehaviorChainConfiguration _propertyConfiguration;
+      private class SinglePropertyBehaviorBuilder<TValue> : ConfigurationProvider, ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> {
+         private readonly BehaviorChainConfiguration _propertyConfiguration;
+         private readonly TDescriptor _descriptor;
 
-         public SinglePropertyBehaviorBuilder(VMDescriptorConfiguration configuration, BehaviorChainConfiguration propertyConfiguration)
+         public SinglePropertyBehaviorBuilder(VMDescriptorConfiguration configuration, BehaviorChainConfiguration propertyConfiguration, TDescriptor descriptor)
             : base(configuration) {
             Contract.Requires(propertyConfiguration != null);
             _propertyConfiguration = propertyConfiguration;
+            _descriptor = descriptor;
          }
 
          /// <inheritdoc />
-         ISinglePropertyBehaviorBuilder<TVM, TValue> ISinglePropertyBehaviorBuilder<TVM, TValue>.CollectionBehaviors {
-            get {
-               throw new NotImplementedException();
-               //// TODO: Refactor this?
-               //BehaviorChainConfiguration collectionConfiguration = _propertyConfiguration
-               //   .GetBehavior<ICollectionBehaviorConfigurationBehavior>(PropertyBehaviorKeys.CollectionFactory)
-               //   .CollectionBehaviorConfiguration;
-
-               //return new SinglePropertyBehaviorBuilder<TValue>(Configuration, collectionConfiguration);
-            }
-         }
-
-         /// <inheritdoc />
-         ISinglePropertyBehaviorBuilder<TVM, TValue> ISinglePropertyBehaviorBuilder<TVM, TValue>.Enable(
+         ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue>.Enable(
             BehaviorKey key,
             IBehavior behaviorInstance
          ) {
@@ -56,7 +45,7 @@
          }
 
          /// <inheritdoc />
-         ISinglePropertyBehaviorBuilder<TVM, TValue> ISinglePropertyBehaviorBuilder<TVM, TValue>.Configure<TBehavior>(
+         ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue>.Configure<TBehavior>(
             BehaviorKey key,
             Action<TBehavior> configurationAction
          ) {
@@ -65,7 +54,7 @@
          }
 
          /// <inheritdoc />
-         ISinglePropertyBehaviorBuilder<TVM, TValue> ISinglePropertyBehaviorBuilder<TVM, TValue>.AddChangeHandler(Action<TVM, ChangeArgs> changeHandler) {
+         ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue>.AddChangeHandler(Action<TVM, ChangeArgs> changeHandler) {
             // TODO: Make this more official...
             var key = new BehaviorKey("ChangeListener");
             Configuration.ViewModelConfiguration.Append(key);
@@ -73,6 +62,20 @@
                key,
                new ChangeListenerBehavior<TVM>(changeHandler)
             );
+
+            return this;
+         }
+
+         ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue>.RequiresLoadedProperty(
+            Func<TDescriptor, IVMPropertyDescriptor> requiredPropertySelector
+         ) {
+            IVMPropertyDescriptor requiredProperty = requiredPropertySelector(_descriptor);
+
+            _propertyConfiguration
+               .ConfigureBehavior<PropertyPreloaderBehavior<TValue>>(
+                  PropertyBehaviorKeys.PropertyPreloader,
+                  x => x.PreloadedProperties.Add(requiredProperty)
+               );
 
             return this;
          }

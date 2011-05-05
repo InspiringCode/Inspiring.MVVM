@@ -76,6 +76,10 @@
          return property.Behaviors.IsLoadedNext(this);
       }
 
+      public void Load(IVMPropertyDescriptor property) {
+         var dummyValue = GetValue(property);
+      }
+
       public object GetDisplayValue(IVMPropertyDescriptor property) {
          return property.Behaviors.GetDisplayValueNext(this);
       }

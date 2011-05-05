@@ -14,6 +14,7 @@
       public static readonly BehaviorKey DescendantsValidator = Key(() => DescendantsValidator);
       public static readonly BehaviorKey ValueInitializer = Key(() => ValueInitializer);
       public static readonly BehaviorKey ValueFactory = Key(() => ValueFactory);
+      public static readonly BehaviorKey PropertyPreloader = Key(() => PropertyPreloader);
    }
 
    public class CollectionPropertyBehaviorKeys : PropertyBehaviorKeys {

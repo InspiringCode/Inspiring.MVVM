@@ -8,7 +8,7 @@
    /// <typeparam name="TValue">
    ///   The type of the property (such as String or EmployeeVM).
    /// </typeparam>
-   public interface ISinglePropertyBehaviorBuilder<TVM, TValue> {
+   public interface ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> {
       /// <summary>
       ///   Enables the behavior with the given key.
       /// </summary>
@@ -18,15 +18,10 @@
       ///   the template has defined the behavior with the <see 
       ///   cref="DefaultBehaviorState.DisabledWithoutFactory"/> option.
       /// </param>
-      ISinglePropertyBehaviorBuilder<TVM, TValue> Enable(
+      ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> Enable(
          BehaviorKey key,
          IBehavior behaviorInstance = null
       );
-
-      /// <summary>
-      ///   Configures the collection behaviors of a collection property.
-      /// </summary>
-      ISinglePropertyBehaviorBuilder<TVM, TValue> CollectionBehaviors { get; }
 
       /// <summary>
       ///   Calls the '<paramref name="configurationAction"/>' with the behavior
@@ -36,7 +31,7 @@
       ///   The type of the behavior to configure. This may be the concrete type
       ///   of the behavior or a base type/interface.
       /// </typeparam>
-      ISinglePropertyBehaviorBuilder<TVM, TValue> Configure<TBehavior>(
+      ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> Configure<TBehavior>(
          BehaviorKey key,
          Action<TBehavior> configurationAction
       ) where TBehavior : IBehavior;
@@ -45,8 +40,12 @@
       /// <summary>
       ///  Warning: This will change soon.
       /// </summary>
-      ISinglePropertyBehaviorBuilder<TVM, TValue> AddChangeHandler(
+      ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> AddChangeHandler(
          Action<TVM, ChangeArgs> changeHandler
+      );
+
+      ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> RequiresLoadedProperty(
+         Func<TDescriptor, IVMPropertyDescriptor> requiredPropertySelector
       );
    }
 }

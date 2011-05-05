@@ -15,7 +15,8 @@
                .RegisterBehavior<UntypedPropertyAccessorBehavior<TValue>>(PropertyBehaviorKeys.UntypedValueAccessor)
                .RegisterBehavior<UndoSetValueBehavior<TValue>>(PropertyBehaviorKeys.Undo)
                .RegisterBehavior<ValueValidationSourceBehavior<TValue>>(PropertyBehaviorKeys.ValueValidationSource)
-               .RegisterBehavior<PropertyDescriptorProviderBehavior>(PropertyBehaviorKeys.PropertyDescriptorProvider);
+               .RegisterBehavior<PropertyDescriptorProviderBehavior>(PropertyBehaviorKeys.PropertyDescriptorProvider)
+               .RegisterBehavior<PropertyPreloaderBehavior<TValue>>(PropertyBehaviorKeys.PropertyPreloader);
          }
       }
 

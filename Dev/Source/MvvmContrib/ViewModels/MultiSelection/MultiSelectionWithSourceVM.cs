@@ -79,7 +79,7 @@
             .WithBehaviors(c => {
                // This behavior ensures, that the 'SelectedItems' collection returns the same
                // VM instances (for the same source items) as the 'AllItems' collection.
-               c.For(x => x.SelectedItems).Enable(
+               c.Property(x => x.SelectedItems).Enable(
                   PropertyBehaviorKeys.ValueAccessor,
                   new LookupPopulatorCollectionBehavior<MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>, TItemVM, TItemSource>(
                      multiSelectionVM => multiSelectionVM.AllItems
@@ -88,12 +88,12 @@
 
                // This behavior allows a bound comobox to assign a new list to the 'SelectedItems'
                // property every time the selection changes.
-               c.For(x => x.SelectedItems).Enable(
+               c.Property(x => x.SelectedItems).Enable(
                   PropertyBehaviorKeys.DisplayValueAccessor,
                   new SettableListDisplayValueBehavior<TItemVM>()
                );
 
-               c.For(x => x.SelectedItems).AddChangeHandler((vm, args) => {
+               c.Property(x => x.SelectedItems).AddChangeHandler((vm, args) => {
                   vm.OnPropertyChanged("SelectedItems"); // HACK!
                });
             })
@@ -196,7 +196,7 @@
             .WithBehaviors(c => {
                // This behavior ensures, that the 'SelectedItems' collection returns the same
                // VM instances (for the same source items) as the 'AllItems' collection.
-               c.For(x => x.SelectedItems).Enable(
+               c.Property(x => x.SelectedItems).Enable(
                   PropertyBehaviorKeys.ValueAccessor,
                   new LookupPopulatorCollectionBehavior<MultiSelectionWithSourceVM<TSourceObject, TItemSource>, SelectionItemVM<TItemSource>, TItemSource>(
                      multiSelectionVM => multiSelectionVM.AllItems
@@ -205,12 +205,12 @@
 
                // This behavior allows a bound comobox to assign a new list to the 'SelectedItems'
                // property every time the selection changes.
-               c.For(x => x.SelectedItems).Enable(
+               c.Property(x => x.SelectedItems).Enable(
                   PropertyBehaviorKeys.DisplayValueAccessor,
                   new SettableListDisplayValueBehavior<SelectionItemVM<TItemSource>>()
                );
 
-               c.For(x => x.SelectedItems).AddChangeHandler((vm, args) => {
+               c.Property(x => x.SelectedItems).AddChangeHandler((vm, args) => {
                   vm.OnPropertyChanged("SelectedItems"); // HACK!
                });
             })

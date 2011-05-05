@@ -81,6 +81,9 @@
                      (vm, value) => vm.SelectedSourceItem = value != null ? value.Source : default(TItemSource)
                );
             })
+            .WithBehaviors(b => {
+               b.Property(x => x.SelectedItem).RequiresLoadedProperty(x => x.AllItems);
+            })
             .WithViewModelBehaviors(b => {
                b.OverrideUpdateFromSourceProperties(
                   x => x.AllSourceItems,
@@ -193,6 +196,9 @@
                     default(SelectionItemVM<TItemSource>),
                  (vm, value) => vm.SelectedSourceItem = value != null ? value.Source : default(TItemSource)
               );
+            })
+            .WithBehaviors(b => {
+               b.Property(x => x.SelectedItem).RequiresLoadedProperty(x => x.AllItems);
             })
             .WithViewModelBehaviors(b => {
                b.OverrideUpdateFromSourceProperties(

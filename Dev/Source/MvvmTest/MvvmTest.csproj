@@ -117,6 +117,7 @@
     <Compile Include="ApiTests\ViewModels\Domain\CustomerRepository.cs" />
     <Compile Include="ApiTests\ViewModels\InheritanceTests.cs" />
     <Compile Include="ApiTests\ViewModels\InheritanceWithGenericsTests.cs" />
+    <Compile Include="ApiTests\ViewModels\LoadOrderTests.cs" />
     <Compile Include="ApiTests\ViewModels\LocalPropertyTests.cs" />
     <Compile Include="ApiTests\ViewModels\CollectionTests.cs" />
     <Compile Include="ApiTests\ViewModels\CommandPropertyTests.cs" />

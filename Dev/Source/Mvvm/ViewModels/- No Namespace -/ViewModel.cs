@@ -273,7 +273,7 @@
       }
 
       protected void Load(IVMPropertyDescriptor property) {
-         GetDisplayValue(property);
+         Kernel.Load(property);
       }
 
       //T IViewModel.GetValue<T>(IVMProperty<T> property) {

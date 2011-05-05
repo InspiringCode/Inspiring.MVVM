@@ -20,6 +20,10 @@
          get { return base.Descriptor; }
       }
 
+      public new VMKernel Kernel {
+         get { return base.Kernel; }
+      }
+
       public List<ChangeArgs> NotifyChangeInvocations {
          get;
          private set;
