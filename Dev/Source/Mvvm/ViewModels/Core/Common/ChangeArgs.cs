@@ -70,12 +70,10 @@
 
       private ChangeArgs(
          ChangeType changeType,
-         //IViewModel changedVM,
          IVMPropertyDescriptor changedProperty,
          Path changedPath
       ) {
          ChangeType = changeType;
-         //ChangedVM = changedVM;
          ChangedProperty = changedProperty;
 
          ChangedPath = changedPath;
@@ -144,9 +142,6 @@
 
       public ChangeType ChangeType { get; private set; }
 
-      //public IViewModel ChangedVM { get; private set; }
-
-      [Obsolete("Should be replaced with declarative dependencies")]
       public IViewModel ChangedVM {
          get {
             for (int nI = ChangedPath.Length - 1; nI > 0; nI--) {
@@ -170,7 +165,6 @@
       internal ChangeArgs PrependViewModel(IViewModel viewModel) {
          return new ChangeArgs(
             ChangeType,
-            /*ChangedVM,*/
             ChangedProperty,
             ChangedPath.Prepend(viewModel)
          ) {
