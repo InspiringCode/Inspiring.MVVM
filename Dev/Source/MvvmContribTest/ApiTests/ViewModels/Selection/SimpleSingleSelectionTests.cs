@@ -48,6 +48,19 @@
          vm.Refresh(UserVM.ClassDescriptor.Department);
       }
 
+      [TestMethod]
+      public void SingleSelection_WithEnableValidations_EnablesParentValidation() {
+         Department department = new Department("First department");
+
+         UserVM vm = new UserVM(new[] { department });
+
+         var lazyLoadTrigger = vm.Department.SelectedItem;
+
+         vm.Revalidate(ValidationScope.SelfAndAllDescendants);
+
+         Assert.IsFalse(vm.IsValid);
+      }
+
       internal sealed class UserVM : DefaultViewModelWithSourceBase<UserVMDescriptor, User> {
          public static UserVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<UserVMDescriptor>()
@@ -59,9 +72,15 @@
                d.Name = s.Property.MapsTo(x => x.Name);
                d.Department = v
                   .SingleSelection(x => x.Source.Department)
+                  .EnableValidations()
                   .WithItems(x => x.AllSourceDepartments)
                   .WithFilter(x => x.IsActive)
                   .WithCaption(x => x.Name);
+            })
+            .WithValidators(b => {
+               b.ValidateDescendant(x => x.Department)
+                  .Check(x => x.SelectedItem)
+                  .HasValue(string.Empty);
             })
             .Build();
 
@@ -83,6 +102,10 @@
 
          public new void Refresh(IVMPropertyDescriptor property) {
             base.Refresh(property);
+         }
+
+         public new void Revalidate(ValidationScope scope) {
+            base.Revalidate(scope);
          }
       }
 
