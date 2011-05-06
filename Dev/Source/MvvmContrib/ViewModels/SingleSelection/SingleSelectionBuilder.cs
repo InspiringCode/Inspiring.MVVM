@@ -102,16 +102,20 @@
          Contract.Requires<ArgumentNullException>(captionGetter != null);
          Contract.Assert(SelectedSourceItemPropertyFactory != null);
 
-         SelectionItemVMDescriptor itemDescriptor = VMDescriptorBuilder
+         var builder = VMDescriptorBuilder
             .OfType<SelectionItemVMDescriptor>()
             .For<SelectionItemVM<TItemSource>>()
             .WithProperties((d, c) => {
                var s = c.GetPropertyBuilder(x => x.Source);
 
                d.Caption = s.Property.DelegatesTo(captionGetter);
-            })
-            .Build();
+            });
 
+         if (ValidationIsEnabled) {
+            builder = builder.WithValidators(b => b.EnableParentValidation(x => x.Caption));
+         }
+
+         SelectionItemVMDescriptor itemDescriptor = builder.Build();
 
          var allSourceItemsPropertyFactory =
             AllSourceItemsPropertyFactory ??
