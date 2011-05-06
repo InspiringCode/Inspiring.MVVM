@@ -74,8 +74,8 @@
          Contract.Requires<ArgumentNullException>(childScreen != null);
 
          T screen = Children.AddNew(childScreen);
-         SetDisplayValue(screenProperty, screen);
          screen.Activate();
+         SetDisplayValue(screenProperty, screen);
       }
 
       protected bool CloseChildScreen(IVMPropertyDescriptor<IScreenBase> screenProperty) {
