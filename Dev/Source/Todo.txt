@@ -3,3 +3,5 @@
 // TODO: Write unit test for path lazy loading
 // TODO: Test UI visualization for multi selection validation error (element not valid).
 // TODO: Make error message of property can not be accessed while loading more user friendly. Test who recursively defined properties behave.
+// TODO: Make collection refresh work for source collections with duplicate items.
+// TODO: Make CollectionResultCache tests better and also test view model validation case...

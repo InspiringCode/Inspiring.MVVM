@@ -1,7 +1,8 @@
-﻿namespace Inspiring.MvvmTest.ViewModels.Core.Validation {
+﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Validation {
+   using System;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
    /// <remarks>
    ///   <![CDATA[                                  
@@ -23,7 +24,7 @@ using System;
    ///   ]]>                                       
    /// </remarks>
    [TestClass]
-   public class CollectionResultCacheFixture : TestBase {
+   public class MultipleOwnerCollectionsValidationFixture : TestBase {
       protected TwoItemListsVM OwnerOfAB { get; private set; }
       protected ItemListVM OwnerOfC { get; private set; }
 
@@ -72,11 +73,11 @@ using System;
          public ValidatorTypes EnabledValidators { get; set; }
 
          protected override void PerformValidation(
-            Action<string> addValidationErrorAction, 
-            ValidatorType type, 
-            IViewModel owner, 
-            IViewModel targetVM, 
-            object validatorKey, 
+            Action<string> addValidationErrorAction,
+            ValidatorType type,
+            IViewModel owner,
+            IViewModel targetVM,
+            object validatorKey,
             IVMPropertyDescriptor targetProperty = null
          ) {
             bool validate = false;
@@ -138,10 +139,16 @@ using System;
                b.CheckCollection<ItemVMDescriptor, string>(x => x.CollectionA, x => x.ItemProperty)
                   .Custom<ItemVM>(args => args.Owner.Results.PerformValidation(args, CollectionAValidatorKey));
 
+               b.CheckCollection<ItemVMDescriptor, string>(x => x.CollectionA, x => x.SecondItemProperty)
+                  .Custom<ItemVM>(args => args.Owner.Results.PerformValidation(args, CollectionAValidatorKey));
+
                b.CheckCollection(x => x.CollectionB)
                   .Custom(args => args.Owner.Results.PerformValidation(args, CollectionBValidatorKey));
 
                b.CheckCollection<ItemVMDescriptor, string>(x => x.CollectionB, x => x.ItemProperty)
+                  .Custom<ItemVM>(args => args.Owner.Results.PerformValidation(args, CollectionBValidatorKey));
+
+               b.CheckCollection<ItemVMDescriptor, string>(x => x.CollectionB, x => x.SecondItemProperty)
                   .Custom<ItemVM>(args => args.Owner.Results.PerformValidation(args, CollectionBValidatorKey));
             })
             .Build();
@@ -183,6 +190,9 @@ using System;
 
                b.CheckCollection<ItemVMDescriptor, string>(x => x.CollectionC, x => x.ItemProperty)
                   .Custom<ItemVM>(args => args.Owner.Results.PerformValidation(args, CollectionCValidatorKey));
+
+               b.CheckCollection<ItemVMDescriptor, string>(x => x.CollectionC, x => x.SecondItemProperty)
+                  .Custom<ItemVM>(args => args.Owner.Results.PerformValidation(args, CollectionCValidatorKey));
             })
             .Build();
 
@@ -208,10 +218,15 @@ using System;
             .For<ItemVM>()
             .WithProperties((d, c) => {
                var b = c.GetPropertyBuilder();
+
                d.ItemProperty = b.Property.Of<string>();
+               d.SecondItemProperty = b.Property.Of<string>();
             })
             .WithValidators(b => {
                b.Check(x => x.ItemProperty)
+                  .Custom(args => args.Owner.Results.PerformValidation(args));
+
+               b.Check(x => x.SecondItemProperty)
                   .Custom(args => args.Owner.Results.PerformValidation(args));
 
                b.CheckViewModel(args => args.Owner.Results.PerformValidation(args));
@@ -228,6 +243,7 @@ using System;
 
       protected class ItemVMDescriptor : VMDescriptor {
          public IVMPropertyDescriptor<string> ItemProperty { get; set; }
+         public IVMPropertyDescriptor<string> SecondItemProperty { get; set; }
       }
 
       [Flags]

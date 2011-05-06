@@ -237,7 +237,7 @@
     <Compile Include="ViewModels\Core\Properties\ViewModelProperty\ViewModelInitializerBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Properties\ViewModelProperty\ViewModelPropertyAccessorFixture.cs" />
     <Compile Include="ViewModels\Core\Properties\ViewModelProperty\WrapperViewModelAccessorBehaviorTests.cs" />
-    <Compile Include="ViewModels\Core\Validation\CollectionResultCacheFixture.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\MultipleOwnerCollectionsValidationFixture.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationControllerTests.cs" />
     <Compile Include="ViewModels\Core\ViewModel\TypeDescriptor\TypeDescriptorProviderBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\ViewModel\TypeDescriptor\ViewModelPropertyDescriptorTests.cs" />
@@ -248,7 +248,7 @@
     <Compile Include="ViewModels\Core\Validation\Behaviors\DescendantsValidatorBehavior\ViewModelPropertyDescendantsValidatorBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionResultCacheTests\ItemListVM.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionResultCacheTests\ItemVM.cs" />
-    <Compile Include="ViewModels\Core\Validation\CollectionResultCacheTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\MultipleOwnerCollectionsValidationTests.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionResultCacheTests\TwoItemListsVM.cs" />
     <Compile Include="ViewModels\Core\Validation\Behaviors\DescendantsValidatorBehavior\DescendantsValidatorBehaviorFixture.cs" />
     <Compile Include="ViewModels\Core\Validation\Behaviors\DescendantsValidatorBehavior\DescendantsValidatorBehaviorTests.cs" />
