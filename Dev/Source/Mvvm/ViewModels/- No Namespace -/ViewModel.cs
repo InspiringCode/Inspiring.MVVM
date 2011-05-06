@@ -156,11 +156,8 @@
          Kernel.SetDisplayValue(property, value);
       }
 
-      protected void Revalidate(
-         ValidationScope scope = ValidationScope.Self,
-         ValidationMode mode = ValidationMode.CommitValidValues
-      ) {
-         Kernel.Revalidate(scope, mode);
+      protected void Revalidate(ValidationScope scope = ValidationScope.Self) {
+         Kernel.Revalidate(scope);
       }
 
       protected void CopyFromSource() {

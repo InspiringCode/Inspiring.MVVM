@@ -50,7 +50,7 @@
       }
 
       public void Revalidate() {
-         Kernel.Revalidate(ValidationScope.Self, ValidationMode.DiscardInvalidValues);
+         Kernel.Revalidate(ValidationScope.Self);
       }
    }
 

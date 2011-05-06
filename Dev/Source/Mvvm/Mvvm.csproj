@@ -141,7 +141,6 @@
     <Compile Include="Testing\DialogTestService.cs" />
     <Compile Include="Testing\Responders\ResponderBase.cs" />
     <Compile Include="Testing\Responders\ShowDialogResponderSetup.cs" />
-    <Compile Include="ViewModels\- No Namespace -\Validation\ValidationMode.cs" />
     <Compile Include="ViewModels\- No Namespace -\Validation\ValidationScope.cs" />
     <Compile Include="ViewModels\- No Namespace -\Validation\ValidationResultScope.cs" />
     <Compile Include="ViewModels\- No Namespace -\ViewModel.cs" />
@@ -242,7 +241,6 @@
     <Compile Include="ViewModels\Core\Undo\UndoRootBehavior.cs" />
     <Compile Include="ViewModels\Core\Undo\UndoSetValueBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\Behaviors\CollectionBehaviors\CollectionValidationSourceBehavior.cs" />
-    <Compile Include="ViewModels\Core\Validation\CollectionResultCache.cs" />
     <Compile Include="ViewModels\Core\Validation\Behaviors\PropertyBehaviors\CollectionPropertyDescendantsValidatorBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\Behaviors\PropertyBehaviors\DescendantsValidatorBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\Behaviors\PropertyBehaviors\ValueValidationSourceBehavior.cs" />

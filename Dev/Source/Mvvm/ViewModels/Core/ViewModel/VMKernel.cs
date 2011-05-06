@@ -171,13 +171,12 @@
          Parents.Remove(parent);
       }
 
-      public void Revalidate(ValidationScope scope, ValidationMode mode) {
+      public void Revalidate(ValidationScope scope) {
          Revalidator.Revalidate(_vm, scope);
       }
 
       public void Revalidate(
          IVMPropertyDescriptor property,
-         ValidationMode mode,
          ValidationScope scope = ValidationScope.Self
       ) {
          Revalidator.RevalidatePropertyValidations(_vm, property, scope);

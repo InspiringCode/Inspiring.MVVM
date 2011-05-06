@@ -43,7 +43,7 @@
 
       public void Revalidate(Func<TDescriptor, IVMPropertyDescriptor> propertySelector, ValidationScope scope = ValidationScope.Self) {
          var property = propertySelector(Descriptor);
-         Kernel.Revalidate(property, ValidationMode.CommitValidValues, scope);
+         Kernel.Revalidate(property, scope);
       }
 
       public void RevalidateViewModelValidations() {

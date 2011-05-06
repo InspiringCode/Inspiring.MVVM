@@ -84,7 +84,7 @@
 
          public void Initialize() {
             Employees.Add(new EmployeeVM());
-            Revalidate(ValidationScope.SelfAndAllDescendants, ValidationMode.DiscardInvalidValues);
+            Revalidate(ValidationScope.SelfAndAllDescendants);
          }
       }
 

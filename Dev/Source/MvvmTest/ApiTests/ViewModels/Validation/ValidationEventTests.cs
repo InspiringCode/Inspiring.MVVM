@@ -81,7 +81,7 @@
          }
 
          private void Revalidate() {
-            Revalidate(ValidationScope.Self, ValidationMode.DiscardInvalidValues);
+            Revalidate(ValidationScope.Self);
          }
       }
 
