@@ -53,6 +53,23 @@
          return viewModel.Kernel.GetValue(property);
       }
 
+      public static IVMPropertyDescriptor<T> GetProperty<TDescriptor, T>(
+          this IViewModel<TDescriptor> viewModel,
+          Func<TDescriptor, IVMPropertyDescriptor<T>> propertySelector
+       ) where TDescriptor : IVMDescriptor {
+         if (viewModel == null) {
+            throw new ArgumentNullException("viewModel");
+         }
+
+         if (propertySelector == null) {
+            throw new ArgumentNullException("propertySelector");
+         }
+
+         var property = propertySelector((TDescriptor)viewModel.Descriptor);
+         return property;
+      }
+
+
       public static void SetValue<TDescriptor, T>(
          this IViewModel<TDescriptor> viewModel,
          Func<TDescriptor, IVMPropertyDescriptor<T>> propertySelector,

@@ -18,16 +18,32 @@
          ValidationResult collectionResult,
          ICollectionValidationTarget target
       ) {
-         var previouslyInvalidItems = target
+         var slowPreviouslyInvalidItems = target
             .Collection
             .Cast<IViewModel>()
             .Where(item => IsInvalid(item, target.Property));
+
+         var allDescendantsErrors = target
+            .Collection
+            .OwnerVM
+            .Kernel
+            .GetValidationResult(ValidationResultScope.Descendants)
+            .Errors;
+
+         var fastPreviouslyInvalidItems = allDescendantsErrors
+            .Where(e => e.OriginatedFrom(target))
+            .Select(e => e.Target.VM);
+
+         var tooLess = slowPreviouslyInvalidItems.Except(fastPreviouslyInvalidItems).ToArray();
+         var tooMuch = fastPreviouslyInvalidItems.Except(slowPreviouslyInvalidItems).ToArray();
+
+         //Contract.Assert(!tooLess.Any() && !tooMuch.Any());
 
          var failedItems = collectionResult
             .Errors
             .Select(x => x.Target.VM);
 
-         return previouslyInvalidItems.Union(failedItems);
+         return slowPreviouslyInvalidItems.Union(failedItems);
       }
 
       private static bool IsInvalid(

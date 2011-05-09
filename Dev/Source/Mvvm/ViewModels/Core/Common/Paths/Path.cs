@@ -19,6 +19,10 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          get { return _steps[index]; }
       }
 
+      public PathStep Last {
+         get { return _steps[_steps.Length - 1]; }
+      }
+
       public Path Prepend(IViewModel viewModel) {
          return Prepend(new PathStep(viewModel));
       }

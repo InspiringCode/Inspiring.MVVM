@@ -24,6 +24,13 @@
          return ValidationResult.Join(result, parentResults);
       }
 
+      public override string ToString() {
+         return String.Format(
+            "ValidatorExecutor: {0}",
+            _compositeValidator
+         );
+      }
+
       private ValidationResult InvokeParentBehaviorsOf(IViewModel vm, ValidationRequest request) {
          var result = ValidationResult.Valid;
 
@@ -44,15 +51,6 @@
          }
 
          return result;
-      }
-
-
-
-      public override string ToString() {
-         return String.Format(
-            "ValidatorExecutor: {0}",
-            _compositeValidator
-         );
       }
    }
 }

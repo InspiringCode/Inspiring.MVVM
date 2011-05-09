@@ -63,5 +63,14 @@
       public override string ToString() {
          return Message;
       }
+
+      internal bool OriginatedFrom(ICollectionValidationTarget target) {
+         Contract.Requires(target != null);
+
+         return
+            Target.Step == target.Step &&
+            Target.Collection == target.Collection &&
+            Target.Property == target.Property;
+      }
    }
 }

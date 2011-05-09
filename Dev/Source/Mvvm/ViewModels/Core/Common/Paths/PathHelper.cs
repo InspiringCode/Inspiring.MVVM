@@ -49,5 +49,12 @@
             PathHelperResult.Succeeded(vm: singleViewModel) :
             PathHelperResult.Failed();
       }
+
+      public static bool SelectsAncestor(this Path path) {
+         return
+            path.Length >= 2 &&
+            path[0].Type == PathStepType.ViewModel &&
+            path[1].Type == PathStepType.ViewModel;
+      }
    }
 }

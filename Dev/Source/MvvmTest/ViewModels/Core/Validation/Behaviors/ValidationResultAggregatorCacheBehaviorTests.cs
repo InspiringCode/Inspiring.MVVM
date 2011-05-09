@@ -143,6 +143,43 @@
          Assert.AreEqual(expectedResult, actualResult);
       }
 
+      [TestMethod]
+      public void ValidationResultChanged_OfDescendant_DoesNotInvalidateCache() {
+         var expectedResult = Behavior.GetValidationResult(Context, ValidationResultScope.All);
+         ChangeNextResultsAndReturnJoinedResults();
+
+         Behavior.HandleChange(
+            Context,
+            ChangeArgs.ValidationResultChanged()
+               .PrependViewModel(ViewModelStub.Build())
+               .PrependViewModel(ViewModelStub.Build())
+         );
+
+         var actualResult = Behavior.GetValidationResult(Context, ValidationResultScope.All);
+         Assert.AreEqual(expectedResult, actualResult);
+      }
+
+      [TestMethod]
+      public void HandleChange_AlsoRefreshesParentCaches() {
+         Behavior.GetValidationResult(Context, ValidationResultScope.All);
+         var newResult = ChangeNextResultsAndReturnJoinedResults();
+
+         var childBehavior = new ValidationResultAggregatorCacheBehavior();
+         var childVM = ViewModelStub
+            .WithBehaviors(childBehavior, new ValidationResultAggregatorStub())
+            .Build();
+
+         childVM.Kernel.Parents.Add(Context.VM);
+
+         childBehavior.HandleChange(
+            childVM.GetContext(),
+            ChangeArgs.ValidationResultChanged().PrependViewModel(ViewModelStub.Build())
+         );
+
+         var actualResult = Behavior.GetValidationResult(Context, ValidationResultScope.All);
+         Assert.AreEqual(newResult, actualResult);
+      }
+
       private ValidationResult ChangeNextResultsAndReturnJoinedResults() {
          var propertyResult = CreateValidationResult("New property error");
          var viewModelResult = CreateValidationResult("New view model error");

@@ -146,10 +146,10 @@
             DefaultBehaviorChainTemplateKeys.ViewModel,
             new BehaviorChainTemplate(BehaviorFactoryProviders.ViewModel)
                .Append(ViewModelBehaviorKeys.LoadOrderController)
-               .Append(ViewModelBehaviorKeys.ViewModelValidationSource, DefaultBehaviorState.Disabled)
-               .Append(ViewModelBehaviorKeys.ValidationExecutor, DefaultBehaviorState.Disabled)
                .Append(ViewModelBehaviorKeys.ValidationResultAggregatorCache)
                .Append(ViewModelBehaviorKeys.ValidationResultAggregator)
+               .Append(ViewModelBehaviorKeys.ViewModelValidationSource, DefaultBehaviorState.Disabled)
+               .Append(ViewModelBehaviorKeys.ValidationExecutor, DefaultBehaviorState.Disabled)
                .Append(ViewModelBehaviorKeys.TypeDescriptorProvider)
                .Append(ViewModelBehaviorKeys.UndoRoot, DefaultBehaviorState.Disabled)
          );

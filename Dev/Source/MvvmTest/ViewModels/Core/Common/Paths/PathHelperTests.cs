@@ -96,6 +96,41 @@
          Assert.IsFalse(r.Success);
       }
 
+      [TestMethod]
+      public void SelectsAncestor_ForTwoViewModel_Succeeds() {
+         var path = Path.Empty
+            .Append(CreateVM())
+            .Append(CreateVM());
+
+         Assert.IsTrue(path.SelectsAncestor());
+      }
+
+      [TestMethod]
+      public void SelectAncestor_ForTwoViewModelsAndProperty_Succeeds() {
+         var path = Path.Empty
+            .Append(CreateVM())
+            .Append(CreateVM())
+            .Append(CreateProperty());
+
+         Assert.IsTrue(path.SelectsAncestor());
+      }
+
+      [TestMethod]
+      public void SelectsAncestor_ForPathWithOneViewModel_Fails() {
+         var path = Path.Empty.Append(CreateVM());
+         Assert.IsFalse(path.SelectsAncestor());
+      }
+
+      [TestMethod]
+      public void SelectsAncestor_ForPathWithViewModelAndProperty_Fails() {
+         var path = Path.Empty
+            .Append(CreateVM())
+            .Append(CreateProperty());
+
+         Assert.IsFalse(path.SelectsAncestor());
+      }
+
+
       private ViewModelStub CreateVM() {
          return new ViewModelStub();
       }
