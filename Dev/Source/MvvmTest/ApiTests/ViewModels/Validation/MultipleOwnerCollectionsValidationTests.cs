@@ -202,11 +202,11 @@
       public void Revalidate_OtherItemWasPreviouslyInvalid_ValidatesUnvalidatedCollectionsOfOtherItem() {
          Results.EnabledValidators = ValidatorTypes.Property;
 
-         Results.SetFailed("Previous error").PropertyValidation
+         Results.SetFailed("Previous error").CollectionPropertyValidation
             .Targeting(ItemABC, x => x.ItemProperty)
-            .On(ItemABC);
+            .On(OwnerOfAB, CollectionAValidatorKey);
 
-         ItemA.Revalidate(x => x.ItemProperty); ;
+         ItemA.Revalidate(x => x.ItemProperty);
 
          ExpectItemPropertyValidationOf(ItemA);
          ExpectCollectionPropertyValidationOf(OwnerOfAB.CollectionA);

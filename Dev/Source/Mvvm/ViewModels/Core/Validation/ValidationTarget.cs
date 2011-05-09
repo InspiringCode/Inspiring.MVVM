@@ -125,8 +125,8 @@
          return String.Format(
             "{{ValidationTarget: Step = {0}, VM = {1}, Collection = {2}, Property = {3}}}",
             Step,
-            ToStringOrNullLiteral(Collection),
             ToStringOrNullLiteral(VM),
+            ToStringOrNullLiteral(Collection),
             ToStringOrNullLiteral(Property)
          );
       }
