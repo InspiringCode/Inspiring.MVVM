@@ -6,6 +6,7 @@
    using System.Linq;
    using Inspiring.Mvvm;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -260,6 +261,25 @@
       public void UpdateFromSource() {
          UserVM vm = CreateUserVMWithItems();
          vm.RefreshGroups();
+      }
+
+      [TestMethod]
+      public void EnableUndo_EnablesUndoSetValueBehavior() {
+         UserVM vm = CreateUserVMWithItems();
+
+         IViewModel department = vm.GetValue(x => x.Department);
+
+         foreach (var property in department.Descriptor.Properties) {
+            bool found = false;
+            for (IBehavior b = property.Behaviors; b != null; b = b.Successor) {
+               if (b.GetType().Name.Contains("UndoSetValueBehavior") ||
+                   b.GetType().Name.Contains("UndoCollectionModifcationBehavior")) {
+                  found = true;
+                  break;
+               }
+            }
+            Assert.IsTrue(found);
+         }
       }
 
       /// <summary>

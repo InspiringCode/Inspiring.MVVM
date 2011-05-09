@@ -2,6 +2,7 @@
    using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -49,7 +50,7 @@
       }
 
       [TestMethod]
-      public void SingleSelection_WithEnableValidations_EnablesParentValidation() {
+      public void EnableValidations_EnablesParentValidation() {
          Department department = new Department("First department");
 
          UserVM vm = new UserVM(new[] { department });
@@ -59,6 +60,25 @@
          vm.Revalidate(ValidationScope.SelfAndAllDescendants);
 
          Assert.IsFalse(vm.IsValid);
+      }
+
+      [TestMethod]
+      public void EnableUndo_EnablesUndoSetValueBehavior() {
+         UserVM vm = new UserVM();
+
+         IViewModel department = vm.GetValue(x => x.Department);
+
+         foreach (var property in department.Descriptor.Properties) {
+            bool found = false;
+            for (IBehavior b = property.Behaviors; b != null; b = b.Successor) {
+               if (b.GetType().Name.Contains("UndoSetValueBehavior") ||
+                   b.GetType().Name.Contains("UndoCollectionModifcationBehavior")) {
+                  found = true;
+                  break;
+               }
+            }
+            Assert.IsTrue(found);
+         }
       }
 
       internal sealed class UserVM : DefaultViewModelWithSourceBase<UserVMDescriptor, User> {
@@ -73,6 +93,7 @@
                d.Department = v
                   .SingleSelection(x => x.Source.Department)
                   .EnableValidations()
+                  .EnableUndo()
                   .WithItems(x => x.AllSourceDepartments)
                   .WithFilter(x => x.IsActive)
                   .WithCaption(x => x.Name);
@@ -106,6 +127,14 @@
 
          public new void Revalidate(ValidationScope scope) {
             base.Revalidate(scope);
+         }
+
+         public IRollbackPoint GetRollbackPoint() {
+            return Kernel.UndoManager.GetRollbackPoint();
+         }
+
+         public void RollbackTo(IRollbackPoint point) {
+            Kernel.UndoManager.RollbackTo(point);
          }
       }
 

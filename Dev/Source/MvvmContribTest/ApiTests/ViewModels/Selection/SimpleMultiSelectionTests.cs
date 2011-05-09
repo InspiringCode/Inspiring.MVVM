@@ -2,6 +2,7 @@
    using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -31,6 +32,25 @@
          Assert.AreEqual(group.Name, groupVM.Caption);
       }
 
+      [TestMethod]
+      public void EnableUndo_EnablesUndoSetValueBehavior() {
+         UserVM vm = new UserVM(null);
+
+         IViewModel department = vm.GetValue(x => x.Groups);
+
+         foreach (var property in department.Descriptor.Properties) {
+            bool found = false;
+            for (IBehavior b = property.Behaviors; b != null; b = b.Successor) {
+               if (b.GetType().Name.Contains("UndoSetValueBehavior") ||
+                   b.GetType().Name.Contains("UndoCollectionModifcationBehavior")) {
+                  found = true;
+                  break;
+               }
+            }
+            Assert.IsTrue(found);
+         }
+      }
+
       internal sealed class UserVM : DefaultViewModelWithSourceBase<UserVMDescriptor, User> {
          public static UserVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<UserVMDescriptor>()
@@ -42,6 +62,7 @@
                d.Name = s.Property.MapsTo(x => x.Name);
                d.Groups = v
                   .MultiSelection(x => x.Source.Groups)
+                  .EnableUndo()
                   .WithItems(x => x.AllSourceGroups)
                   .WithFilter(x => x.IsActive)
                   .WithCaption(x => x.Name);

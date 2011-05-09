@@ -4,6 +4,7 @@
    using System.Linq;
    using Inspiring.Mvvm;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -128,6 +129,25 @@
          Assert.IsNull(vm.Source.Department);
       }
 
+      [TestMethod]
+      public void EnableUndo_EnablesUndoSetValueBehavior() {
+         UserVM vm = CreateUserVMWithItems();
+
+         IViewModel department = vm.GetValue(x => x.Department);
+
+         foreach (var property in department.Descriptor.Properties) {
+            bool found = false;
+            for (IBehavior b = property.Behaviors; b != null; b = b.Successor) {
+               if (b.GetType().Name.Contains("UndoSetValueBehavior") ||
+                   b.GetType().Name.Contains("UndoCollectionModifcationBehavior")) {
+                  found = true;
+                  break;
+               }
+            }
+            Assert.IsTrue(found);
+         }
+      }
+
       /// <summary>
       ///   Asserts that the source departments of the 'AllItems' property of the
       ///   selection VM are equal to the given source items.
@@ -162,7 +182,7 @@
             .WithProperties((d, c) => {
                var u = c.GetPropertyBuilder(x => x.Source);
 
-               var builder = u.SingleSelection(x => x.Department);
+               var builder = u.SingleSelection(x => x.Department).EnableUndo();
 
                if (filter != null) {
                   builder = builder.WithFilter(filter);

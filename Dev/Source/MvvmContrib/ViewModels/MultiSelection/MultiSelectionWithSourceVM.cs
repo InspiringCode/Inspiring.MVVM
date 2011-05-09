@@ -62,7 +62,8 @@
          IVMDescriptor itemDescriptor,
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<ICollection<TItemSource>>> selectedSourceItemsPropertyFactory,
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory,
-         bool enableValidation
+         bool enableValidation,
+         bool enableUndo
       ) {
          var builder = VMDescriptorBuilder
             .OfType<MultiSelectionVMDescriptor<TItemSource, TItemVM>>()
@@ -131,6 +132,9 @@
             b.OverrideUpdateSourceProperties(
                x => x.SelectedSourceItems
             );
+            if (enableUndo) {
+               b.EnableUndo();
+            }
          })
          .Build();
       }
@@ -180,7 +184,8 @@
          SelectionItemVMDescriptor itemDescriptor,
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<ICollection<TItemSource>>> selectedSourceItemsPropertyFactory,
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory,
-         bool enableValidation
+         bool enableValidation,
+         bool enableUndo
       ) {
          var builder = VMDescriptorBuilder
             .OfType<MultiSelectionVMDescriptor<TItemSource>>()
@@ -249,6 +254,10 @@
             b.OverrideUpdateSourceProperties(
                x => x.SelectedSourceItems // TODO: Is this enough? Rethink disconnected SelectionVMs...
             );
+
+            if (enableUndo) {
+               b.EnableUndo();
+            }
          })
          .Build();
       }

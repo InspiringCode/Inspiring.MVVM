@@ -42,8 +42,18 @@
          private set;
       }
 
+      internal bool UndoIsEnabled {
+         get;
+         private set;
+      }
+
       public MultiSelectionBuilder<TSourceObject, TItemSource> EnableValidations() {
          ValidationIsEnabled = true;
+         return this;
+      }
+
+      public MultiSelectionBuilder<TSourceObject, TItemSource> EnableUndo() {
+         UndoIsEnabled = true;
          return this;
       }
 
@@ -77,7 +87,8 @@
             itemDescriptor,
             SelectedSourceItemsPropertyFactory,
             allSourceItemsPropertyFactory,
-            ValidationIsEnabled
+            ValidationIsEnabled,
+            UndoIsEnabled
          );
 
          var property = _sourceObjectPropertyBuilder.Custom.ViewModelProperty(
@@ -124,7 +135,8 @@
             itemDescriptor,
             SelectedSourceItemsPropertyFactory,
             allSourceItemsPropertyFactory,
-            ValidationIsEnabled
+            ValidationIsEnabled,
+            UndoIsEnabled
          );
 
          var property = _sourceObjectPropertyBuilder.Custom.ViewModelProperty(
@@ -209,7 +221,7 @@
 
       private class MultSelectionAccessor :
          CachedAccessorBehavior<MultiSelectionVM<TItemSource>>,
-         IRefreshBehavior{
+         IRefreshBehavior {
 
          private MultiSelectionVMDescriptor<TItemSource> _descriptor;
          private Func<TItemSource, bool> _filter;
