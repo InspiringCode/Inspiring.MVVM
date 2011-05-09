@@ -42,8 +42,18 @@
          private set;
       }
 
+      internal bool UndoIsEnabled {
+         get;
+         private set;
+      }
+
       public SingleSelectionBuilder<TSourceObject, TItemSource> EnableValidations() {
          ValidationIsEnabled = true;
+         return this;
+      }
+
+      public SingleSelectionBuilder<TSourceObject, TItemSource> EnableUndo() {
+         UndoIsEnabled = true;
          return this;
       }
 
@@ -77,7 +87,8 @@
             itemDescriptor,
             SelectedSourceItemPropertyFactory,
             allSourceItemsPropertyFactory,
-            ValidationIsEnabled
+            ValidationIsEnabled,
+            UndoIsEnabled
          );
 
          var property = _sourceObjectPropertyBuilder.Custom.ViewModelProperty(
@@ -127,7 +138,8 @@
             itemDescriptor,
             SelectedSourceItemPropertyFactory,
             allSourceItemsPropertyFactory,
-            ValidationIsEnabled
+            ValidationIsEnabled,
+            UndoIsEnabled
          );
 
          var property = _sourceObjectPropertyBuilder.Custom.ViewModelProperty(

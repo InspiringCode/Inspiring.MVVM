@@ -62,7 +62,8 @@
          IVMDescriptor itemDescriptor,
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<TItemSource>> selectedSourceItemPropertyFactory,
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory,
-         bool enableValidation
+         bool enableValidation,
+         bool enableUndo
       ) {
          var builder = VMDescriptorBuilder
             .OfType<SingleSelectionVMDescriptor<TItemSource, TItemVM>>()
@@ -110,6 +111,12 @@
          if (enableValidation) {
             builder = builder.WithValidators(b => {
                b.EnableParentValidation(x => x.SelectedItem);
+            });
+         }
+
+         if (enableUndo) {
+            builder = builder.WithViewModelBehaviors(b => {
+               b.EnableUndo();
             });
          }
          //.WithBehaviors(c => {
@@ -178,7 +185,8 @@
          SelectionItemVMDescriptor itemDescriptor,
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<TItemSource>> selectedSourceItemsPropertyFactory,
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory,
-         bool enableValidation
+         bool enableValidation,
+         bool enableUndo
       ) {
          var builder = VMDescriptorBuilder
             .OfType<SingleSelectionVMDescriptor<TItemSource>>()
@@ -228,6 +236,14 @@
                b.EnableParentValidation(x => x.SelectedItem);
             });
          }
+
+         if (enableUndo) {
+            builder = builder.WithViewModelBehaviors(b => {
+               b.EnableUndo();
+            });
+         }
+
+
          //.WithBehaviors(c => {
          //   // This behavior ensures, that the 'SelectedItems' collection returns the same
          //   // VM instances (for the same source items) as the 'AllItems' collection.
