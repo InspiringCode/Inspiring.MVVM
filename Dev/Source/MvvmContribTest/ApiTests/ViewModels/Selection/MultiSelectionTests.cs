@@ -267,9 +267,14 @@
       public void EnableUndo_EnablesUndoSetValueBehavior() {
          UserVM vm = CreateUserVMWithItems();
 
-         IViewModel department = vm.GetValue(x => x.Department);
+         var department = vm.GetValue(x => x.Groups);
 
-         foreach (var property in department.Descriptor.Properties) {
+         var relevantProperties = new[] { 
+            department.GetProperty(x => x.AllItems), 
+            department.GetProperty(x => x.SelectedItems)
+         };
+
+         foreach (var property in relevantProperties) {
             bool found = false;
             for (IBehavior b = property.Behaviors; b != null; b = b.Successor) {
                if (b.GetType().Name.Contains("UndoSetValueBehavior") ||
@@ -363,6 +368,8 @@
                if (allGroupsSelector != null) {
                   builder = builder.WithItems(allGroupsSelector);
                }
+
+               builder = builder.EnableUndo();
 
                d.Name = u.Property.MapsTo(x => x.Name);
                d.Groups = builder.Of<GroupVM>(GroupVM.ClassDescriptor);
