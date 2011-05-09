@@ -41,8 +41,8 @@
       public void GetResult_ForProperty_ReturnsErrorsOfPropertyAndCollectionValidators() {
          var setup = SetupItemInCollection();
 
-         var itemResult = CreateValidationResult(setup.Item, "Property error");
-         var collectionResult = CreateValidationResult(setup.Item, "Collection error");
+         var itemResult = CreateValidationResult(setup.Item, setup.ItemProperty, "Property error");
+         var collectionResult = CreateValidationResult(setup.Item, setup.ItemProperty, "Collection error");
 
          setup.ItemExecutor.ResultToReturn = itemResult;
          setup.CollectionOwnerExecutor.ResultToReturn = collectionResult;

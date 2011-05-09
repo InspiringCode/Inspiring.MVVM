@@ -111,7 +111,6 @@
     <Compile Include="- Test Infrastructure -\TestViewModel.cs" />
     <Compile Include="- Test Infrastructure -\ValidatorMockConfiguration.cs" />
     <Compile Include="- Test Infrastructure -\ValidatorMockConfigurationFluent.cs" />
-    <Compile Include="- Test Infrastructure -\ValidatorSetup.cs" />
     <Compile Include="ApiTests\ViewModels\CommandHandlerTests.cs" />
     <Compile Include="ApiTests\ViewModels\Core\PathDefinitionTests.cs" />
     <Compile Include="ApiTests\ViewModels\Domain\CustomerRepository.cs" />

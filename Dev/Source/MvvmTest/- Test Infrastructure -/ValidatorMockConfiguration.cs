@@ -276,16 +276,11 @@
          }
 
          public static ValidatorResultSetup Failing(ValidatorInvocation invocation, string errorDetails) {
-            var error = invocation.TargetProperty != null ?
-               new ValidationError(
-                  NullValidator.Instance,
-                  invocation.TargetVM,
-                  invocation.TargetProperty,
-                  invocation.ToString(errorDetails)) :
-               new ValidationError(
-                  NullValidator.Instance,
-                  invocation.TargetVM,
-                  invocation.ToString(errorDetails));
+            var error = new ValidationError(
+               NullValidator.Instance,
+               invocation.GetValidationTarget(),
+               invocation.ToString(errorDetails)
+            );
 
             return new ValidatorResultSetup {
                Invocation = invocation,
@@ -320,6 +315,30 @@
          public IVMCollection TargetCollection { get; private set; }
          public IVMPropertyDescriptor TargetProperty { get; private set; }
          public object ValidatorKey { get; private set; }
+
+         public ValidationStep Step {
+            get {
+               switch (Type) {
+                  case ValidatorType.Property:
+                  case ValidatorType.CollectionProperty:
+                     return ValidationStep.Value;
+                  case ValidatorType.ViewModel:
+                  case ValidatorType.CollectionViewModel:
+                     return ValidationStep.ViewModel;
+                  default:
+                     throw new NotSupportedException();
+               }
+            }
+         }
+
+         public IValidationErrorTarget GetValidationTarget() {
+            return ValidationTarget.ForError(
+               Step,
+               TargetVM,
+               TargetCollection,
+               TargetProperty
+            );
+         }
 
          public override bool Equals(object obj) {
             ValidatorInvocation other = obj as ValidatorInvocation;

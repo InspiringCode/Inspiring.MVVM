@@ -126,7 +126,7 @@
 
       private class ValidationErrorCO : ComparisonObject<ValidationError> {
          public ValidationErrorCO(ValidationError error)
-            : base(error, x => x.Target, x => x.Message) {
+            : base(error, x => x.Target.VM, x => x.Message) {
          }
       }
    }

@@ -11,6 +11,7 @@
          var employeeName = "Test name";
          var owner = Mock<IViewModel>();
          var target = new EmployeeVM(employeeName);
+         var validator = Mock<IValidator>();
 
          var args = CreateArgs(owner, target);
 
@@ -23,6 +24,7 @@
       [TestMethod]
       public void Create_RequestWithSingleViewModelAndProperty_SetsOwnerAndTargetToSameViewModel() {
          var targetAndOwner = new EmployeeVM();
+         var validator = Mock<IValidator>();
 
          var args = CreateArgs(owner: targetAndOwner, target: targetAndOwner);
 
@@ -33,6 +35,8 @@
       [TestMethod]
       public void Create_DoesNotAccessTargetProperty() {
          var target = new EmployeeVM();
+         var validator = Mock<IValidator>();
+
          var args = CreateArgs(target, target);
 
          Assert.AreEqual(
@@ -45,21 +49,38 @@
       [TestMethod]
       public void AddError_CreatesAndAddsCorrectError() {
          var target = new EmployeeVM();
+         var validator = Mock<IValidator>();
+         var step = ValidationStep.Value;
 
          var message = "Test error message";
          var details = new Object();
 
-         var args = CreateArgs(target, target);
+         var args = CreateArgs(target, target, step, validator);
          args.AddError(message, details);
 
-         var expectedError = new ValidationError(args.Validator, args.Target, args.TargetProperty, message, details);
-         AssertErrors(args, expectedError);
+         var expectedError = new ValidationError(
+            validator,
+            ValidationTarget.ForError(
+               step,
+               target,
+               null,
+               EmployeeVM.ClassDescriptor.Name
+            ),
+            message, 
+            details
+         );
+
+         ValidationAssert.HasErrors(args.Result, ValidationAssert.FullErrorComparer, expectedError);
       }
 
       private static PropertyValidationArgs<IViewModel, EmployeeVM, string> CreateArgs(
          IViewModel owner,
-         EmployeeVM target
+         EmployeeVM target,
+         ValidationStep step = ValidationStep.Value,
+         IValidator validator = null         
       ) {
+         validator = validator ?? Mock<IValidator>();
+
          var path = Path.Empty.Append(owner);
 
          if (target != owner) {
@@ -69,8 +90,8 @@
          path = path.Append(EmployeeVM.ClassDescriptor.Name);
 
          return PropertyValidationArgs<IViewModel, EmployeeVM, string>.Create(
-            Mock<IValidator>(),
-            CreateRequest(path)
+            validator,
+            new ValidationRequest(step, path)
          );
       }
    }

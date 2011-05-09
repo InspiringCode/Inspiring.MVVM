@@ -22,7 +22,7 @@
       public ValidationResult GetResultFor(IViewModel item) {
          var itemErrors = _result
             .Errors
-            .Where(x => x.Target == item);
+            .Where(x => x.Target.VM == item);
 
          return new ValidationResult(itemErrors);
       }

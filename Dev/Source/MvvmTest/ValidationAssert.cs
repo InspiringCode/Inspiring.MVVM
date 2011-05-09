@@ -8,8 +8,11 @@
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    internal static class ValidationAssert {
+      public static readonly IEqualityComparer<ValidationError> EssentialErrorComparer = new EssentialValidationErrorComparer();
+      public static readonly IEqualityComparer<ValidationError> FullErrorComparer = new FullValidationErrorComparer();
+
       public static void Errors(params ValidationError[] expectedErrors) {
-         var errorsPerVM = expectedErrors.GroupBy(x => x.Target);
+         var errorsPerVM = expectedErrors.GroupBy(x => x.Target.VM);
 
          foreach (var errorGroup in errorsPerVM) {
             var expectedResult = new ValidationResult(errorGroup);
@@ -35,25 +38,36 @@
       }
 
       public static void HasValidationResult(IViewModel vm, ValidationError singleExpectedError) {
-         AreEqual(singleExpectedError, vm.Kernel.GetValidationResult(ValidationResultScope.All));
+         HasErrors(vm.Kernel.GetValidationResult(ValidationResultScope.All), singleExpectedError);
       }
 
       public static void HasPropertyValidationResult(IViewModel vm, ValidationError singleExpectedError, IVMPropertyDescriptor property) {
-         AreEqual(singleExpectedError, vm.Kernel.GetValidationResult(property));
+         HasErrors(vm.Kernel.GetValidationResult(property), singleExpectedError);
       }
 
       public static void HasViewModelValidationResult(IViewModel vm, ValidationError singleExpectedError) {
-         AreEqual(singleExpectedError, vm.Kernel.GetValidationResult(ValidationResultScope.ViewModelValidationsOnly));
+         HasErrors(vm.Kernel.GetValidationResult(ValidationResultScope.ViewModelValidationsOnly), singleExpectedError);
       }
 
-      public static void AreEqual(ValidationError singleExpectedError, ValidationResult actualResult) {
-         AreEqual(new ValidationResult(singleExpectedError), actualResult);
+      public static void HasErrors(ValidationResult actualResult, params ValidationError[] expectedErrors) {
+         HasErrors(actualResult, EssentialErrorComparer, expectedErrors);
       }
 
-      public static void AreEqual(ValidationResult expectedResult, ValidationResult actualResult) {
+      public static void HasErrors(
+         ValidationResult actualResult,
+         IEqualityComparer<ValidationError> comparer,
+         params ValidationError[] expectedErrors
+      ) {
+         var expectedResult = new ValidationResult(expectedErrors);
+         AreEqual(expectedResult, actualResult, comparer);
+      }
+
+      public static void AreEqual(ValidationResult expectedResult, ValidationResult actualResult, IEqualityComparer<ValidationError> comparer = null) {
+         comparer = comparer ?? EssentialErrorComparer;
+
          bool errorsEqual = expectedResult.Errors.SequenceEqual(
             actualResult.Errors,
-            ValidationErrorComparer.Default
+            comparer
          );
 
          if (!errorsEqual) {
@@ -66,7 +80,7 @@
 
          bool errorsEqual = expectedResult.Errors.SequenceEqual(
             actualResult.Errors,
-            ValidationErrorComparer.Default
+            EssentialErrorComparer
          );
 
          if (!errorsEqual) {
@@ -74,21 +88,43 @@
          }
       }
 
-      private class ValidationErrorComparer : IEqualityComparer<ValidationError> {
-         public static readonly ValidationErrorComparer Default = new ValidationErrorComparer();
-
+      private class EssentialValidationErrorComparer : IEqualityComparer<ValidationError> {
          public bool Equals(ValidationError x, ValidationError y) {
             return
+               x.Details == y.Details &&
                x.Message == y.Message &&
-               x.Target == y.Target &&
-               x.TargetProperty == y.TargetProperty;
+               x.Target.VM == y.Target.VM &&
+               x.Target.Property == y.Target.Property;
          }
 
          public int GetHashCode(ValidationError obj) {
-            return HashCodeService.CalculateHashCode(obj, obj.Message, obj.Target, obj.TargetProperty);
+            return HashCodeService.CalculateHashCode(
+               obj,
+               obj.Details,
+               obj.Message,
+               obj.Target.VM,
+               obj.Target.Property
+            );
          }
       }
 
+      private class FullValidationErrorComparer : IEqualityComparer<ValidationError> {
+         public bool Equals(ValidationError x, ValidationError y) {
+            return
+               x.Details == y.Details &&
+               x.Message == y.Message &&
+               Object.Equals(x.Target, y.Target);
+         }
+
+         public int GetHashCode(ValidationError obj) {
+            return HashCodeService.CalculateHashCode(
+               obj,
+               obj.Details,
+               obj.Message,
+               obj.Target
+            );
+         }
+      }
 
       public static void IsValid(IViewModel vm) {
          if (!vm.Kernel.IsValid) {

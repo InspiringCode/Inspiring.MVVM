@@ -9,11 +9,12 @@
 
       public PropertyValidationArgs(
          IValidator validator,
+         ValidationStep step,
          TOwnerVM owner,
          TTargetVM target,
          IVMPropertyDescriptor<TValue> targetProperty
       )
-         : base(validator, owner) {
+         : base(step, validator, owner) {
          Contract.Requires(target != null);
          Contract.Requires(targetProperty != null);
 
@@ -32,8 +33,10 @@
       public void AddError(string message, object details = null) {
          Contract.Requires<ArgumentNullException>(message != null);
 
-         var e = new ValidationError(Validator, Target, TargetProperty, message, details);
-         AddError(e);
+         var target = ValidationTarget.ForError(Step, Target, null, TargetProperty);
+         var error = new ValidationError(Validator, target, message, details);
+
+         AddError(error);
       }
 
       internal static PropertyValidationArgs<TOwnerVM, TTargetVM, TValue> Create(
@@ -43,10 +46,16 @@
          Path path = request.TargetPath;
 
          var owner = (TOwnerVM)path[0].ViewModel;
-         var target = (TTargetVM)path[path.Length - 2].ViewModel;
-         var property = (IVMPropertyDescriptor<TValue>)path[path.Length - 1].Property;
+         var targetVM = (TTargetVM)path[path.Length - 2].ViewModel;
+         var targetProperty = (IVMPropertyDescriptor<TValue>)path[path.Length - 1].Property;
 
-         return new PropertyValidationArgs<TOwnerVM, TTargetVM, TValue>(validator, owner, target, property);
+         return new PropertyValidationArgs<TOwnerVM, TTargetVM, TValue>(
+            validator,
+            request.Step,
+            owner,
+            targetVM,
+            targetProperty
+         );
       }
    }
 }

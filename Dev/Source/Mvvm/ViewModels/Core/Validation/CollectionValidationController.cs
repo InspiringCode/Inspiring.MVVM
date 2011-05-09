@@ -25,7 +25,7 @@
 
          var failedItems = collectionResult
             .Errors
-            .Select(x => x.Target);
+            .Select(x => x.Target.VM);
 
          return previouslyInvalidItems.Union(failedItems);
       }
@@ -38,7 +38,7 @@
             .Kernel
             .GetValidationResult(ValidationResultScope.Self)
             .Errors
-            .Any(x => x.TargetProperty == property);
+            .Any(x => x.Target.Property == property);
       }
    }
 }

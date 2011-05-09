@@ -6,35 +6,53 @@
    using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
-   using ValidationArgs = Inspiring.Mvvm.ViewModels.Core.ValidationArgs;
 
    [TestClass]
    public class ValidationTestBase : TestBase {
       protected static ValidationError CreateValidationError(
          string message = "Validation error",
-         IViewModel target = null,
+         IViewModel targetVM = null,
          IVMPropertyDescriptor targetProperty = null
       ) {
-         target = target ?? NullViewModel.Instance;
-         return targetProperty != null ?
-            new ValidationError(NullValidator.Instance, target, targetProperty, message) :
-            new ValidationError(NullValidator.Instance, target, message);
+         targetVM = targetVM ?? NullViewModel.Instance;
+         var step = targetProperty != null ?
+            ValidationStep.Value :
+            ValidationStep.ViewModel;
+
+         return new ValidationError(
+            NullValidator.Instance,
+            ValidationTarget.ForError(step, targetVM, null, targetProperty),
+            message
+         );
       }
 
       protected static ValidationResult CreateValidationResult(
          params string[] errors
       ) {
-         return CreateValidationResult(target: null, errors: errors);
+         return CreateValidationResult(NullViewModel.Instance, null, errors: errors);
       }
 
       protected static ValidationResult CreateValidationResult(
-         IViewModel target = null,
+         IViewModel target,
+         IVMPropertyDescriptor targetProperty,
          params string[] errors
       ) {
          target = target ?? NullViewModel.Instance;
 
          IEnumerable<ValidationResult> states = errors
-            .Select(error => new ValidationResult(new ValidationError(NullValidator.Instance, target, error)));
+            .Select(error => new ValidationResult(CreateValidationError(error, target, targetProperty)));
+
+         return ValidationResult.Join(states);
+      }
+
+      protected static ValidationResult CreateValidationResult(
+         IViewModel target,
+         params string[] errors
+      ) {
+         target = target ?? NullViewModel.Instance;
+
+         IEnumerable<ValidationResult> states = errors
+            .Select(error => new ValidationResult(CreateValidationError(error, target, null)));
 
          return ValidationResult.Join(states);
       }
@@ -43,7 +61,6 @@
          return new ValidationRequest(ValidationStep.Value, targetPath ?? Path.Empty);
       }
 
-
       protected static ViewModelStub CreateInvalidVM(ValidationResult validationResult) {
          var behavior = new ValidationResultAggregatorStub();
          behavior.ReturnedValidationResults[ValidationResultScope.All] = validationResult;
@@ -51,11 +68,6 @@
          return ViewModelStub
             .WithBehaviors(behavior)
             .Build();
-      }
-
-      protected static void AssertErrors(ValidationArgs args, params ValidationError[] errors) {
-         var expected = new ValidationResult(errors);
-         Assert.AreEqual(expected, args.Result);
       }
 
       protected static ValidationErrorBuilder Error(string errorMessage = "Error") {
@@ -69,16 +81,31 @@
             _errorMessage = errorMessage;
          }
 
-         public ValidationError For(IViewModel target) {
+         public ValidationError For(IViewModel targetVM) {
+            var target = ValidationTarget.ForError(
+               ValidationStep.ViewModel,
+               targetVM,
+               null,
+               null
+            );
+
             return new ValidationError(NullValidator.Instance, target, _errorMessage);
          }
 
          public ValidationError For<T>(
-            IViewModel<T> target,
+            IViewModel<T> targetVM,
             Func<T, IVMPropertyDescriptor> targetPropertySelector
          ) where T : IVMDescriptor {
-            var targetProperty = targetPropertySelector((T)target.Descriptor);
-            return new ValidationError(NullValidator.Instance, target, targetProperty, _errorMessage);
+            var targetProperty = targetPropertySelector((T)targetVM.Descriptor);
+
+            var target = ValidationTarget.ForError(
+               ValidationStep.ViewModel,
+               targetVM,
+               null,
+               targetProperty
+            );
+
+            return new ValidationError(NullValidator.Instance, target, _errorMessage);
          }
 
          public ValidationError Anonymous() {

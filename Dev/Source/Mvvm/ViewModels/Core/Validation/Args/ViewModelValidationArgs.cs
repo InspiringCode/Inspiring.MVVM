@@ -8,7 +8,7 @@
       where TTargetVM : IViewModel {
 
       public ViewModelValidationArgs(IValidator validator, TOwnerVM owner, TTargetVM target)
-         : base(validator, owner) {
+         : base(ValidationStep.ViewModel, validator, owner) {
 
          Contract.Requires(target != null);
          Target = target;
@@ -19,7 +19,8 @@
       public void AddError(string message, object details = null) {
          Contract.Requires<ArgumentNullException>(message != null);
 
-         var error = new ValidationError(Validator, Target, message, details);
+         var target = ValidationTarget.ForError(Step, Target, null, null);
+         var error = new ValidationError(Validator, target, message, details);
          AddError(error);
       }
 

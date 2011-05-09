@@ -12,7 +12,7 @@
          TOwnerVM owner,
          IVMCollection<TItemVM> items
        )
-         : base(validator, owner) {
+         : base(ValidationStep.ViewModel, validator, owner) {
 
          Contract.Requires(items != null);
          Items = items;
@@ -24,7 +24,8 @@
          Contract.Requires<ArgumentNullException>(item != null);
          Contract.Requires<ArgumentNullException>(message != null);
 
-         var error = new ValidationError(Validator, item, message, details);
+         var target = ValidationTarget.ForError(Step, item, Items, null);
+         var error = new ValidationError(Validator, target, message, details);
          AddError(error);
       }
 
@@ -51,12 +52,13 @@
       where TItemVM : IViewModel {
 
       public CollectionValidationArgs(
+         ValidationStep step,
          IValidator validator,
          TOwnerVM owner,
          IVMCollectionBase<TItemVM> items,
          IVMPropertyDescriptor<TValue> property
       )
-         : base(validator, owner) {
+         : base(step, validator, owner) {
 
          Contract.Requires(items != null);
          Contract.Requires(property != null);
@@ -73,7 +75,8 @@
          Contract.Requires<ArgumentNullException>(item != null);
          Contract.Requires<ArgumentNullException>(message != null);
 
-         var error = new ValidationError(Validator, item, TargetProperty, message, details);
+         var target = ValidationTarget.ForError(Step, item, Items, TargetProperty);
+         var error = new ValidationError(Validator, target, message, details);
          AddError(error);
       }
 
@@ -88,6 +91,7 @@
          var property = (IVMPropertyDescriptor<TValue>)path[path.Length - 1].Property;
 
          return new CollectionValidationArgs<TOwnerVM, TItemVM, TValue>(
+            request.Step,
             validator,
             owner,
             collection,

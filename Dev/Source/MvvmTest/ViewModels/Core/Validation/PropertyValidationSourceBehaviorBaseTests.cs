@@ -18,7 +18,7 @@
 
       [TestInitialize]
       public void Setup() {
-         Error = new ValidationResult(new ValidationError("Test error"));
+         Error = CreateValidationResult("Error");
 
          Behavior = new TestValidationSourceBehavior(ValidationStep.Value);
          Property = PropertyStub.WithBehaviors(Behavior).Of<string>();

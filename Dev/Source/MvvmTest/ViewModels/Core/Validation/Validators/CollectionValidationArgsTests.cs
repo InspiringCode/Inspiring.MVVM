@@ -30,6 +30,7 @@
       public void AddError_ArgsWithoutProperty_CreatesAndAddsCorrectError() {
          var item = new EmployeeVM();
          var owner = new EmployeeListVM(item);
+         var validator = Mock<IValidator>();
 
          var message = "Test error message";
          var details = new Object();
@@ -37,49 +38,79 @@
          var args = CreateArgs(owner);
          args.AddError(item, message, details);
 
-         var expectedError = new ValidationError(args.Validator, item, message, details);
-         AssertErrors(args, expectedError);
+         var expectedError = new ValidationError(
+            validator,
+            ValidationTarget.ForError(
+               ValidationStep.ViewModel,
+               item,
+               owner.GetValue(x => x.Employees)
+            ),
+            message,
+            details
+         );
+
+         ValidationAssert.HasErrors(args.Result, ValidationAssert.FullErrorComparer, expectedError);
       }
 
       [TestMethod]
       public void AddError_ArgsWithProperty_CreatesAndAddsCorrectError() {
          var item = new EmployeeVM();
          var owner = new EmployeeListVM(item);
+         var validator = Mock<IValidator>();
+         var step = ValidationStep.Value;
 
          var message = "Test error message";
          var details = new Object();
 
-         var args = CreateArgsWithProperty(owner);
+         var args = CreateArgsWithProperty(owner, step, validator);
          args.AddError(item, message, details);
 
-         var expectedError = new ValidationError(args.Validator, item, EmployeeVM.ClassDescriptor.Name, message, details);
-         AssertErrors(args, expectedError);
+         var expectedError = new ValidationError(
+            validator,
+            ValidationTarget.ForError(
+               step,
+               item,
+               owner.GetValue(x => x.Employees),
+               EmployeeVM.ClassDescriptor.Name
+            ),
+            message,
+            details
+         );
+
+         ValidationAssert.HasErrors(args.Result, ValidationAssert.FullErrorComparer, expectedError);
       }
 
       private static CollectionValidationArgs<IViewModel, EmployeeVM> CreateArgs(
-         EmployeeListVM owner
+         EmployeeListVM owner,
+         IValidator validator = null
       ) {
+         validator = validator ?? Mock<IValidator>();
+
          var path = Path.Empty
             .Append(owner)
             .Append(owner.GetValue(x => x.Employees));
 
          return CollectionValidationArgs<IViewModel, EmployeeVM>.Create(
-            Mock<IValidator>(),
-            CreateRequest(path)
+            validator,
+            new ValidationRequest(ValidationStep.ViewModel, path)
          );
       }
 
       private static CollectionValidationArgs<IViewModel, EmployeeVM, string> CreateArgsWithProperty(
-         EmployeeListVM owner
+         EmployeeListVM owner,
+         ValidationStep step = ValidationStep.Value,
+         IValidator validator = null
       ) {
+         validator = validator ?? Mock<IValidator>();
+
          var path = Path.Empty
             .Append(owner)
             .Append(owner.GetValue(x => x.Employees))
             .Append(EmployeeVM.ClassDescriptor.Name);
 
          return CollectionValidationArgs<IViewModel, EmployeeVM, string>.Create(
-            Mock<IValidator>(),
-            CreateRequest(path)
+            validator,
+            new ValidationRequest(step, path)
          );
       }
 

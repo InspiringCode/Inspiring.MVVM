@@ -51,7 +51,7 @@
 
       private class TestArgs : ValidationArgs {
          public TestArgs()
-            : base(Mock<IValidator>()) {
+            : base(ValidationStep.Value, Mock<IValidator>()) {
          }
       }
    }

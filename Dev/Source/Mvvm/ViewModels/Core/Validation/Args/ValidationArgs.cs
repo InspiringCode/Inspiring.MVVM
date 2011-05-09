@@ -34,11 +34,15 @@
    /// </remarks>
 
    public abstract class ValidationArgs {
-      protected ValidationArgs(IValidator validator) {
+      protected ValidationArgs(ValidationStep step, IValidator validator) {
          Contract.Requires(validator != null);
+
+         Step = step;
          Validator = validator;
          Result = ValidationResult.Valid;
       }
+
+      internal ValidationStep Step { get; private set; }
 
       internal IValidator Validator { get; private set; }
 
@@ -52,8 +56,8 @@
    public abstract class ValidationArgs<TOwnerVM> : ValidationArgs
       where TOwnerVM : IViewModel {
 
-      protected ValidationArgs(IValidator validator, TOwnerVM owner)
-         : base(validator) {
+      protected ValidationArgs(ValidationStep step, IValidator validator, TOwnerVM owner)
+         : base(step, validator) {
 
          Contract.Requires(owner != null);
          Owner = owner;
