@@ -7,7 +7,7 @@
       private readonly ValidationResult _result;
 
       public CollectionResult(
-         CollectionResultTarget target,
+         ICollectionValidationTarget target,
          ValidationResult result,
          IEnumerable<IViewModel> possiblyStaleItems
       ) {
@@ -16,7 +16,7 @@
          PossiblyStaleItems = possiblyStaleItems;
       }
 
-      public CollectionResultTarget Target { get; private set; }
+      public ICollectionValidationTarget Target { get; private set; }
       public IEnumerable<IViewModel> PossiblyStaleItems { get; private set; }
 
       public ValidationResult GetResultFor(IViewModel item) {

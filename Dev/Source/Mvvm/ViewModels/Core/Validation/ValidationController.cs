@@ -76,7 +76,7 @@
          IViewModel target,
          IVMPropertyDescriptor targetProperty = null
       ) {
-         var t = new ValidationTarget(step, target, targetProperty);
+         var t = ValidationTarget.ForInstance(step, target, targetProperty);
 
          var request = t.CreateValidationRequest();
          var result = t.VM.ExecuteValidationRequest(request);
@@ -86,12 +86,12 @@
          return ValidationResult.Join(result, collectionResult);
       }
 
-      private ValidationResult GetCollectionItemResults(ValidationTarget item) {
+      private ValidationResult GetCollectionItemResults(IInstanceValidationTarget item) {
          var result = ValidationResult.Valid;
 
          foreach (var ownerCollection in item.VM.Kernel.OwnerCollections) {
             CollectionResult collectionResult = ValidateCollectionIfNotInCache(
-               new CollectionResultTarget(
+               ValidationTarget.ForCollection(
                   item.Step,
                   ownerCollection,
                   item.Property
@@ -105,7 +105,7 @@
          return result;
       }
 
-      private CollectionResult ValidateCollectionIfNotInCache(CollectionResultTarget target) {
+      private CollectionResult ValidateCollectionIfNotInCache(ICollectionValidationTarget target) {
          CollectionResult cachedResult = _cachedCollectionResults
             .FirstOrDefault(cached => target.Equals(cached.Target));
 
@@ -125,50 +125,6 @@
       private void EnqueueRevalidation(RevalidationRequest target) {
          if (!_validationQueue.Contains(target) && !_currentlyValidating.Contains(target)) {
             _validationQueue.Enqueue(target);
-         }
-      }
-
-      private class ValidationTarget {
-         public ValidationTarget(
-            ValidationStep step,
-            IViewModel vm,
-            IVMPropertyDescriptor property = null
-         ) {
-            Step = step;
-            VM = vm;
-            Property = property;
-         }
-
-         public ValidationStep Step { get; private set; }
-         public IViewModel VM { get; private set; }
-         public IVMPropertyDescriptor Property { get; private set; }
-
-         public ValidationRequest CreateValidationRequest() {
-            var requestPath = Path.Empty
-               .Append(VM);
-
-            if (Property != null) {
-               requestPath = requestPath.Append(Property);
-            }
-
-            return new ValidationRequest(Step, requestPath);
-         }
-
-         public override string ToString() {
-            if (Property != null) {
-               return String.Format(
-                  "{{Property target:  Step = {0}, VM = {1}, Property = {2}}}",
-                  Step,
-                  VM,
-                  Property
-               );
-            } else {
-               return String.Format(
-                  "{{View model target:  Step = {0}, VM = {1}}}",
-                  Step,
-                  VM
-               );
-            }
          }
       }
 

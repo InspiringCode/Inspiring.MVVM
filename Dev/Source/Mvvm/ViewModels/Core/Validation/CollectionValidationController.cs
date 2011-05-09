@@ -3,7 +3,7 @@
    using System.Linq;
 
    internal static class CollectionValidationController {
-      public static CollectionResult Validate(CollectionResultTarget target) {
+      public static CollectionResult Validate(ICollectionValidationTarget target) {
          ValidationResult collectionResult = target
             .Collection
             .OwnerVM
@@ -16,7 +16,7 @@
 
       private static IEnumerable<IViewModel> GetPossiblyStaleItems(
          ValidationResult collectionResult,
-         CollectionResultTarget target
+         ICollectionValidationTarget target
       ) {
          var previouslyInvalidItems = target
             .Collection

@@ -171,7 +171,6 @@
     <Compile Include="ViewModels\Core\Properties\Common\BehaviorInterfaces\IUntypedValueSetterBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\BehaviorInterfaces\ViewModelBehaviors\IViewModelRevalidationBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionResult.cs" />
-    <Compile Include="ViewModels\Core\Validation\CollectionResultTarget.cs" />
     <Compile Include="ViewModels\Core\Validation\CollectionValidationController.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationController.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationTarget.cs" />
