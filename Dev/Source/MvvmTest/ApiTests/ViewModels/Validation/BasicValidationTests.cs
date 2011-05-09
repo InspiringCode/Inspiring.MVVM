@@ -1,96 +1,138 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Validation {
+   using System;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
    public class BasicValidationTests : ValidationTestBase {
-      private const string ErrorMessage = "Test";
+      private const string ExpectedNamePropertyError = "Name property error";
+      private const string ExpectedViewModelError = "View model error";
 
-      private ValidationError NamePropertyValidationError { get; set; }
-      private ValidationError ViewModelValidationError { get; set; }
-
-      private EmployeeVM VM { get; set; }
-
-      [TestInitialize]
-      public void Setup() {
-         VM = new EmployeeVM();
-
-         NamePropertyValidationError = Error("Property error").For(VM, x => x.Name);
-         ViewModelValidationError = Error("View model error").For(VM);
-      }
+      private string NamePropertyErrorToReturn { get; set; }
+      private string ViewModelErrorToReturn { get; set; }
 
       [TestMethod]
       public void SetValue_PropertyValidationSucceeds_RemovesPreviousErrorFromProperty() {
-         VM.ExpectedNameError = NamePropertyValidationError;
-         VM.SetValue(x => x.Name, "Value 1");
+         var vm = EmployeeVM.Create(WithPropertyAndViewModelValidation);
 
-         VM.ExpectedNameError = null;
-         VM.SetValue(x => x.Name, "Value 2");
+         NamePropertyErrorToReturn = ExpectedNamePropertyError;
+         vm.SetValue(x => x.Name, "Value 1");
 
-         Assert.IsTrue(VM.IsValid);
+         NamePropertyErrorToReturn = null;
+         vm.SetValue(x => x.Name, "Value 2");
+
+         Assert.IsTrue(vm.IsValid);
       }
 
       [TestMethod]
       public void SetValue_PropertyValidationFails_AddsValidationErrorToProperty() {
-         VM.ExpectedNameError = NamePropertyValidationError;
-         VM.SetValue(x => x.Name, "New value");
+         var vm = EmployeeVM.Create(WithPropertyAndViewModelValidation);
 
-         ValidationAssert.Errors(NamePropertyValidationError);
+         NamePropertyErrorToReturn = ExpectedNamePropertyError;
+         vm.SetValue(x => x.Name, "New value");
+
+         ValidationAssert.ErrorMessages(vm.ValidationResult, ExpectedNamePropertyError);
       }
 
       [TestMethod]
       public void SetValue_ViewModelValidationFails_AddsValidationErrorToViewModel() {
-         VM.ExpectedViewModelError = ViewModelValidationError;
-         VM.SetValue(x => x.Name, "New value");
+         var vm = EmployeeVM.Create(WithPropertyAndViewModelValidation);
 
-         ValidationAssert.Errors(ViewModelValidationError);
+         ViewModelErrorToReturn = ExpectedViewModelError;
+         vm.SetValue(x => x.Name, "New value");
+
+         ValidationAssert.ErrorMessages(vm.ValidationResult, ExpectedViewModelError);
       }
 
       [TestMethod]
       public void SetValue_PropertyAndViewModelValidationFail_ValidationResultContainsBothErrors() {
-         VM.ExpectedNameError = NamePropertyValidationError;
-         VM.ExpectedViewModelError = ViewModelValidationError;
-         VM.SetValue(x => x.Name, "New value");
+         var vm = EmployeeVM.Create(WithPropertyAndViewModelValidation);
 
-         ValidationAssert.Errors(NamePropertyValidationError, ViewModelValidationError);
+         NamePropertyErrorToReturn = ExpectedNamePropertyError;
+         ViewModelErrorToReturn = ExpectedViewModelError;
+         vm.SetValue(x => x.Name, "New value");
+
+         ValidationAssert.ErrorMessages(vm.ValidationResult, ExpectedNamePropertyError, ExpectedViewModelError);
+      }
+
+      [TestMethod]
+      public void PropertyValidationDefinedOnParent_IsPerformedIfChildOnlyCallsEnableParentValidation() {
+         var error = "Parent added error";
+
+         var parent = EmployeeVM.Create(b => {
+            b.ValidateDescendant(x => x.SelectedProject)
+               .Check(x => x.Name)
+               .Custom(args => args.AddError(error));
+         });
+
+         var child = ProjectVM.Create(b => {
+            b.EnableParentValidation(x => x.Name);
+         });
+
+         parent.SetValue(x => x.SelectedProject, child);
+
+         parent.Revalidate(ValidationScope.SelfAndAllDescendants);
+         ValidationAssert.ErrorMessages(child.ValidationResult, error);
+      }
+
+      [TestMethod]
+      public void ViewModelValidationDefinedOnParent_IsPerformedIfChildOnlyCallsEnableParentValidation() {
+         var error = "Parent added error";
+
+         var parent = EmployeeVM.Create(b => {
+            b.ValidateDescendant(x => x.SelectedProject)
+               .CheckViewModel(args => args.AddError(error));
+         });
+
+         var child = ProjectVM.Create(b => {
+            b.EnableParentViewModelValidation();
+         });
+
+         parent.SetValue(x => x.SelectedProject, child);
+
+         parent.Revalidate(ValidationScope.SelfAndAllDescendants);
+         ValidationAssert.ErrorMessages(child.ValidationResult, error);
+      }
+
+      private void WithPropertyAndViewModelValidation(
+         RootValidatorBuilder<EmployeeVM, EmployeeVM, EmployeeVMDescriptor> builder
+      ) {
+         builder.Check(x => x.Name).Custom(args => {
+            if (NamePropertyErrorToReturn != null) {
+               args.AddError(NamePropertyErrorToReturn);
+            }
+         });
+
+         builder.CheckViewModel(args => {
+            if (ViewModelErrorToReturn != null) {
+               args.AddError(ViewModelErrorToReturn);
+            }
+         });
       }
 
       private class EmployeeVM : ViewModel<EmployeeVMDescriptor> {
-         public static EmployeeVMDescriptor ClassDescriptor = VMDescriptorBuilder
-            .OfType<EmployeeVMDescriptor>()
-            .For<EmployeeVM>()
-            .WithProperties((d, c) => {
-               var vm = c.GetPropertyBuilder();
-
-               d.Name = vm.Property.Of<string>();
-               d.SelectedProject = vm.VM.Of<ProjectVM>();
-            })
-            .WithValidators(c => {
-               c.Check(x => x.Name).Custom(args => {
-                  var error = args.Owner.ExpectedNameError;
-
-                  if (error != null) {
-                     args.AddError(error.Message);
-                  }
-               });
-
-               c.CheckViewModel(args => {
-                  var error = args.Owner.ExpectedViewModelError;
-
-                  if (error != null) {
-                     args.AddError(error.Message);
-                  }
-               });
-            })
-            .Build();
-
-         public EmployeeVM()
-            : base(ClassDescriptor) {
+         private EmployeeVM(EmployeeVMDescriptor descriptor)
+            : base(descriptor) {
          }
 
-         public ValidationError ExpectedNameError { get; set; }
-         public ValidationError ExpectedViewModelError { get; set; }
+         public static EmployeeVM Create(
+            Action<RootValidatorBuilder<EmployeeVM, EmployeeVM, EmployeeVMDescriptor>> validationConfigurationAction
+         ) {
+            var descriptor = VMDescriptorBuilder
+               .OfType<EmployeeVMDescriptor>()
+               .For<EmployeeVM>()
+               .WithProperties((d, c) => {
+                  var vm = c.GetPropertyBuilder();
+
+                  d.Name = vm.Property.Of<string>();
+                  d.SelectedProject = vm.VM.Of<ProjectVM>();
+               })
+               .WithValidators(validationConfigurationAction)
+               .Build();
+
+            return new EmployeeVM(descriptor);
+         }
 
          public override string ToString() {
             return "EmployeeVM";
@@ -103,17 +145,29 @@
       }
 
       private class ProjectVM : ViewModel<ProjectVMDescriptor> {
-         public static readonly ProjectVMDescriptor ClassDescriptor = VMDescriptorBuilder
-            .OfType<ProjectVMDescriptor>()
-            .For<ProjectVM>()
-            .WithProperties((d, b) => { })
-            .Build();
+         private ProjectVM(ProjectVMDescriptor descriptor)
+            : base(descriptor) {
+         }
 
-         public ProjectVM()
-            : base(ClassDescriptor) {
+         public static ProjectVM Create(
+            Action<RootValidatorBuilder<ProjectVM, ProjectVM, ProjectVMDescriptor>> validatorConfigurationAction
+         ) {
+            var descriptor = VMDescriptorBuilder
+               .OfType<ProjectVMDescriptor>()
+               .For<ProjectVM>()
+               .WithProperties((d, b) => {
+                  var v = b.GetPropertyBuilder();
+                  d.Name = v.Property.Of<string>();
+               })
+               .WithValidators(validatorConfigurationAction)
+               .Build();
+
+            return new ProjectVM(descriptor);
          }
       }
 
-      private class ProjectVMDescriptor : VMDescriptor { }
+      private class ProjectVMDescriptor : VMDescriptor {
+         public IVMPropertyDescriptor<string> Name { get; set; }
+      }
    }
 }

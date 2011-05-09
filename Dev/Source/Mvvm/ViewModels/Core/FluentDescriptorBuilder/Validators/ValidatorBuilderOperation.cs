@@ -23,12 +23,16 @@
       public Stack<IValidator> ActionArgs { get; private set; }
 
       public void EnableViewModelValidationSourceBehavior() {
+         EnableValidationExecutorBehavior();
+
          Config
             .ViewModelConfiguration
             .Enable(ViewModelBehaviorKeys.ViewModelValidationSource);
       }
 
       public void EnablePropertyValidationSourceBehavior(IVMPropertyDescriptor property) {
+         EnableValidationExecutorBehavior();
+
          Config
             .PropertyConfigurations[property]
             .Enable(PropertyBehaviorKeys.ValueValidationSource);
@@ -58,6 +62,17 @@
                ViewModelBehaviorKeys.ValidationExecutor,
                b => b.AddValidator(validator)
             );
+      }
+
+      /// <summary>
+      ///   Note: We have to enable the validation executor behavior even if we have NO
+      ///   validators defined on a VM because otherwise validation requests would not
+      ///   be forwarded to potential parents!
+      /// </summary>
+      private void EnableValidationExecutorBehavior() {
+         Config
+            .ViewModelConfiguration
+            .Enable(ViewModelBehaviorKeys.ValidationExecutor);
       }
    }
 

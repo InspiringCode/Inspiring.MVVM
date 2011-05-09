@@ -97,6 +97,7 @@
                   vm.OnPropertyChanged("SelectedItems"); // HACK!
                });
             })
+            // TODO: Make this configurable?
             .WithValidators(b => {
                b.CheckCollection(x => x.SelectedItems).Custom(args => {
                   var invalidItems = args
@@ -114,11 +115,11 @@
                });
             });
 
-         if (enableValidation) {
-            builder = builder.WithValidators(b => {
-               b.EnableParentValidation(x => x.SelectedItems);
-            });
-         }
+         //if (enableValidation) {
+         //   builder = builder.WithValidators(b => {
+         //      b.EnableParentValidation(x => x.SelectedItems);
+         //   });
+         //}
 
          return builder.WithViewModelBehaviors(b => {
             b.OverrideUpdateFromSourceProperties(
@@ -214,6 +215,7 @@
                   vm.OnPropertyChanged("SelectedItems"); // HACK!
                });
             })
+            // TODO: Make this configurable?
             .WithValidators(b => {
                b.CheckCollection(x => x.SelectedItems).Custom(args => {
                   var invalidItems = args
@@ -231,11 +233,11 @@
                });
             });
 
-         if (enableValidation) {
-            builder = builder.WithValidators(b => {
-               b.EnableParentValidation(x => x.SelectedItems);
-            });
-         }
+         //if (enableValidation) {
+         //   builder = builder.WithValidators(b => {
+         //      b.EnableParentValidation(x => x.SelectedItems);
+         //   });
+         //}
 
          return builder.WithViewModelBehaviors(b => {
             b.OverrideUpdateFromSourceProperties(

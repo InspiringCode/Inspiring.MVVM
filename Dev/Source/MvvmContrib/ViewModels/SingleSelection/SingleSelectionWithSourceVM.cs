@@ -96,6 +96,7 @@
                   x => x.SelectedSourceItem
                );
             })
+            // TODO: Make this configurable?
             .WithValidators(b => {
                b.Check(x => x.SelectedItem).Custom(args => {
                   if (args.Value != null &&
@@ -108,11 +109,11 @@
                });
             });
 
-         if (enableValidation) {
-            builder = builder.WithValidators(b => {
-               b.EnableParentValidation(x => x.SelectedItem);
-            });
-         }
+         //if (enableValidation) {
+         //   builder = builder.WithValidators(b => {
+         //      b.EnableParentValidation(x => x.SelectedItem);
+         //   });
+         //}
 
          if (enableUndo) {
             builder = builder.WithViewModelBehaviors(b => {
@@ -219,6 +220,7 @@
                   x => x.SelectedSourceItem
                );
             })
+            // TODO: Make this configurable?
             .WithValidators(b => {
                b.Check(x => x.SelectedItem).Custom(args => {
                   if (args.Value != null &&
@@ -231,11 +233,11 @@
                });
             });
 
-         if (enableValidation) {
-            builder = builder.WithValidators(b => {
-               b.EnableParentValidation(x => x.SelectedItem);
-            });
-         }
+         //if (enableValidation) {
+         //   builder = builder.WithValidators(b => {
+         //      b.EnableParentValidation(x => x.SelectedItem);
+         //   });
+         //}
 
          if (enableUndo) {
             builder = builder.WithViewModelBehaviors(b => {
