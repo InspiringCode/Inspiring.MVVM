@@ -9,8 +9,8 @@
 
    [TestClass]
    public class PerformanceTests : TestBase {
-      private const int EmploymentTypeCount = 20;
-      private const int EmployeeCount = 100;
+      private const int EmploymentTypeCount = 5;
+      private const int EmployeeCount = 1;
       private static readonly List<EmploymentType> AllEmploymentTypes = GenerateEmploymentTypes(EmploymentTypeCount);
       private static readonly Random Random = new Random();
 
@@ -48,7 +48,7 @@
       public void TestPerformanceOfGetValidationResult() {
          IEnumerable<Employee> source = GenerateEmployees();
          var list = new EmployeeListVM();
-         
+
          list = new EmployeeListVM();
          list.Source = source;
          //list.Revalidate(ValidationScope.SelfAndAllDescendants);
