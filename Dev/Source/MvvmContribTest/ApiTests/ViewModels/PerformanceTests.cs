@@ -10,7 +10,7 @@
    [TestClass]
    public class PerformanceTests : TestBase {
       private const int EmploymentTypeCount = 20;
-      private const int EmployeeCount = 300;
+      private const int EmployeeCount = 100;
       private static readonly List<EmploymentType> AllEmploymentTypes = GenerateEmploymentTypes(EmploymentTypeCount);
       private static readonly Random Random = new Random();
 
@@ -42,6 +42,29 @@
          sw.Stop();
 
          Console.WriteLine("Time [ms]: " + sw.ElapsedMilliseconds);
+      }
+
+      [TestMethod]
+      public void TestPerformanceOfGetValidationResult() {
+         IEnumerable<Employee> source = GenerateEmployees();
+         var list = new EmployeeListVM();
+         
+         list = new EmployeeListVM();
+         list.Source = source;
+         //list.Revalidate(ValidationScope.SelfAndAllDescendants);
+
+         foreach (EmployeeVM item in list.GetValue(x => x.Employees)) {
+            var selection = item.GetValue(x => x.EmploymentType);
+            object simulatedBindingAccess = item.GetValue(x => x.Name);
+            simulatedBindingAccess = selection.GetValue(x => x.AllItems);
+            simulatedBindingAccess = selection.GetValue(x => x.SelectedItem);
+         }
+
+         //var sw = Stopwatch.StartNew();
+         //var result = list.GetValidationResult(ValidationResultScope.All);
+         //sw.Stop();
+
+         //Console.WriteLine("Time [ms]: " + sw.ElapsedMilliseconds);
       }
 
       private static IEnumerable<Employee> GenerateEmployees() {
