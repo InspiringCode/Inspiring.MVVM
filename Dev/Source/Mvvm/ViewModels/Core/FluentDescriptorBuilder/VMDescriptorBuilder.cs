@@ -149,6 +149,7 @@
          var viewModeBehaviorBulider = new ViewModelBehaviorBuilder<TVM, TDescriptor>(configuration, descriptor);
          var validatorBuilder = new RootValidatorBuilder<TVM, TVM, TDescriptor>(configuration, descriptor);
          var behaviorBuilder = new VMBehaviorBuilder<TVM, TDescriptor>(configuration, descriptor);
+         var dependencyBuilder = new VMDependencyBuilder<TVM, TDescriptor>(configuration.ViewModelConfiguration);
 
          _propertyConfigurator(descriptor, propertyBuilderProvider);
 
@@ -163,6 +164,10 @@
 
          if (_behaviorConfigurator != null) {
             _behaviorConfigurator(behaviorBuilder);
+         }
+
+         if (_dependencyConfigurator != null) {
+            _dependencyConfigurator(dependencyBuilder);
          }
       }
 

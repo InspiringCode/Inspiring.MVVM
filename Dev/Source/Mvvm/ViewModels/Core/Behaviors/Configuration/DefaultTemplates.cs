@@ -152,6 +152,7 @@
                .Append(ViewModelBehaviorKeys.ValidationExecutor, DefaultBehaviorState.Disabled)
                .Append(ViewModelBehaviorKeys.TypeDescriptorProvider)
                .Append(ViewModelBehaviorKeys.UndoRoot, DefaultBehaviorState.Disabled)
+               .Append(ViewModelBehaviorKeys.DeclarativeDependencies, DefaultBehaviorState.Disabled)
          );
       }
    }

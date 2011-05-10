@@ -44,7 +44,7 @@
          IViewModel rootVM
       ) {
          var property = _propertySelector((TDescriptor)rootVM.Descriptor);
-         var instance = property.GetValue(rootVM.GetContext());
+         var instance = rootVM.Kernel.GetValue(property);
 
          if (instance is IVMCollection) {
             var collection = (IVMCollection)instance;

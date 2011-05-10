@@ -91,7 +91,9 @@
       }
 
       protected override void OnClose() {
-         _screens.CloseAll();
+         while (_screens.Items.Any()) {
+            ImmediateCloseScreen(_screens.Items.Last());
+         }
       }
 
       private ScreenCreationBehavior GetCreationBehavior(Type screenType) {

@@ -36,6 +36,7 @@
       public static readonly BehaviorKey ValidationResultAggregator = Key(() => ValidationResultAggregator);
       public static readonly BehaviorKey UndoRoot = Key(() => UndoRoot);
       public static readonly BehaviorKey TypeDescriptorProvider = Key(() => TypeDescriptorProvider);
+      public static readonly BehaviorKey DeclarativeDependencies = Key(() => DeclarativeDependencies);
    }
 
    public class DefaultBehaviorChainTemplateKeys : BehaviorChainTemplateKeys {

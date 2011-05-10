@@ -7,75 +7,83 @@
    [TestClass]
    public class DependencyBuilderTests {
 
-      [TestMethod]
-      public void MyTestMethod() {
-         var d = BuildDescriptor(b => b
-            .OnChangeOf
-            .Properties(x => x.Name, x => x.LastName)
-            .Refresh
-            .Properties(x => x.Projects)
-         );
+      //[TestMethod]
+      //public void MyTestMethod() {
+      //   var d = BuildDescriptor(b => b
+      //      .OnChangeOf
+      //      .Self
+      //      .Execute(() => { })
+      //   );
+      //}
 
-         d = BuildDescriptor(b => b
-            .OnChangeOf
-            .Descendant(x => x.SelectedProject)
-            .Refresh
-            .Properties(x => x.Name)
-         );
+      //public void MyTestMethod() {
+      //   var d = BuildDescriptor(b => b
+      //      .OnChangeOf
+      //      .Properties(x => x.Name, x => x.LastName)
+      //      .Refresh
+      //      .Properties(x => x.Projects)
+      //   );
 
-         d = BuildDescriptor(b => b
-            .OnChangeOf
-            .Descendant(x => x.Projects)
-            .Descendant(x => x.Customer)
-            .Properties(x => x.Rating)
-            .Refresh
-            .Properties(x => x.Name)
-         );
+      //   d = BuildDescriptor(b => b
+      //      .OnChangeOf
+      //      .Descendant(x => x.SelectedProject)
+      //      .Refresh
+      //      .Properties(x => x.Name)
+      //   );
 
-         d = BuildDescriptor(b => b
-            .OnChangeOf
-            .Descendant(x => x.Projects)
-            .Properties(x => x.Customer)
-            .Revalidate
-            .Descendant(x => x.SelectedProject)
-            .Properties(x => x.EndDate)
-         );
+      //   d = BuildDescriptor(b => b
+      //      .OnChangeOf
+      //      .Descendant(x => x.Projects)
+      //      .Descendant(x => x.Customer)
+      //      .Properties(x => x.Rating)
+      //      .Refresh
+      //      .Properties(x => x.Name)
+      //   );
 
-         d = BuildDescriptor(b => b
-            .OnChangeOf
-            .Descendant(x => x.Projects)
-            .Properties(x => x.Customer)
-            .Revalidate
-            .Descendant(x => x.Projects)
-            .Properties(x => x.EndDate)
-         );
+      //   d = BuildDescriptor(b => b
+      //      .OnChangeOf
+      //      .Descendant(x => x.Projects)
+      //      .Properties(x => x.Customer)
+      //      .Revalidate
+      //      .Descendant(x => x.SelectedProject)
+      //      .Properties(x => x.EndDate)
+      //   );
 
-         d = BuildDescriptor(b => b
-            .OnChangeOf
-            .Self
-            .Execute(() => { })
-         );
+      //   d = BuildDescriptor(b => b
+      //      .OnChangeOf
+      //      .Descendant(x => x.Projects)
+      //      .Properties(x => x.Customer)
+      //      .Revalidate
+      //      .Descendant(x => x.Projects)
+      //      .Properties(x => x.EndDate)
+      //   );
 
-         d = BuildDescriptor(b => b
-            .OnChangeOf
-            .Self
-            .OrAnyDescendant
-            .Execute(() => { })
-         );
+      //   d = BuildDescriptor(b => b
+      //      .OnChangeOf
+      //      .Self
+      //      .Execute(() => { })
+      //   );
 
-         d = BuildDescriptor(b => b
-            .OnChangeOf
-            .Collection(x => x.Projects)
-            .Execute(() => { })
-         );
+      //   d = BuildDescriptor(b => b
+      //      .OnChangeOf
+      //      .Self
+      //      .OrAnyDescendant
+      //      .Execute(() => { })
+      //   );
 
-         d = BuildDescriptor(b => b
-            .OnChangeOf
-            .Descendant(x => x.SelectedProject)
-            .OrAnyDescendant
-            .Execute(() => { })
-         );
-      }
+      //   d = BuildDescriptor(b => b
+      //      .OnChangeOf
+      //      .Collection(x => x.Projects)
+      //      .Execute(() => { })
+      //   );
+
+      //   d = BuildDescriptor(b => b
+      //      .OnChangeOf
+      //      .Descendant(x => x.SelectedProject)
+      //      .OrAnyDescendant
+      //      .Execute(() => { })
+      //   );
+      //}
 
       private EmployeeVMDescriptor BuildDescriptor(
          Action<IVMDependencyBuilder<EmployeeVM, EmployeeVMDescriptor>> configurationAction

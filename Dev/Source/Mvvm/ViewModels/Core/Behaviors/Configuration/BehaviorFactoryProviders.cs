@@ -117,7 +117,8 @@
                .RegisterBehavior<ValidationResultAggregatorCacheBehavior>(ViewModelBehaviorKeys.ValidationResultAggregatorCache)
                .RegisterBehavior<ValidationResultAggregatorBehavior>(ViewModelBehaviorKeys.ValidationResultAggregator)
                .RegisterBehavior<TypeDescriptorProviderBehavior>(ViewModelBehaviorKeys.TypeDescriptorProvider)
-               .RegisterBehavior<UndoRootBehavior>(ViewModelBehaviorKeys.UndoRoot);
+               .RegisterBehavior<UndoRootBehavior>(ViewModelBehaviorKeys.UndoRoot)
+               .RegisterBehavior<DeclarativeDependencyBehavior>(ViewModelBehaviorKeys.DeclarativeDependencies);
          }
       }
    }
