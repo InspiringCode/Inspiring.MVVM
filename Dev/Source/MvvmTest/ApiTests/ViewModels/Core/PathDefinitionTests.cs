@@ -1,4 +1,7 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Core {
+   using System;
+   using System.Linq;
+   using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.MvvmTest.ViewModels;
@@ -194,6 +197,109 @@
          Assert.IsTrue(match.Success);
       }
 
+      [TestMethod]
+      public void Matches_OrStepWithTwoPropertySteps_MatchesIfOneOfThePropertiesMatches() {
+         var selectedProjectStep = CreatePropertyStep((EmployeeVMDescriptor x) => x.SelectedProject);
+         var nameStep = CreatePropertyStep((EmployeeVMDescriptor x) => x.Name);
+
+         var orStep = new OrStep(selectedProjectStep, nameStep);
+
+         var definition = PathDefinition
+            .Empty
+            .Append(orStep);
+
+         var projectVM = new ProjectVM();
+         var rootVM = new EmployeeVM();
+         rootVM.SetValue(x => x.SelectedProject, projectVM);
+
+         var namePath = Path
+            .Empty
+            .Append(rootVM)
+            .Append(EmployeeVM.ClassDescriptor.Name);
+
+         var match = definition.Matches(namePath);
+
+         Assert.IsTrue(match.Success);
+
+         var selectedProjectPath = Path
+            .Empty
+            .Append(rootVM)
+            .Append(EmployeeVM.ClassDescriptor.SelectedProject);
+
+         match = definition.Matches(namePath);
+
+         Assert.IsTrue(match.Success);
+      }
+
+      [TestMethod]
+      public void Matches_OrStepWithTwoPropertySteps_MatchesIfNoThePropertiesMatches() {
+         var selectedProjectStep = CreatePropertyStep((EmployeeVMDescriptor x) => x.SelectedProject);
+         var nameStep = CreatePropertyStep((EmployeeVMDescriptor x) => x.Name);
+
+         var orStep = new OrStep(selectedProjectStep, nameStep);
+
+         var definition = PathDefinition
+            .Empty
+            .Append(orStep);
+
+         var projectVM = new ProjectVM();
+         var rootVM = new EmployeeVM();
+
+         var projectPath = Path
+            .Empty
+            .Append(rootVM)
+            .Append(EmployeeVM.ClassDescriptor.Projects);
+
+         var match = definition.Matches(projectPath);
+
+         Assert.IsFalse(match.Success);
+      }
+
+      [TestMethod]
+      public void Matches_ComplexOrStep() {
+         var projectsStep = CreatePropertyStep((EmployeeVMDescriptor x) => x.Projects);
+         var anotherProjects = CreatePropertyStep((EmployeeVMDescriptor x) => x.AnotherProjects);
+
+         var orStep = new OrStep(projectsStep, anotherProjects);
+
+         var definition = PathDefinition
+            .Empty
+            .Append(orStep)
+            .Append((ProjectVMDescriptor x) => x.Name);
+
+         var projectVM1 = new ProjectVM();
+         var projectVM2 = new ProjectVM();
+         var rootVM = new EmployeeVM();
+         rootVM.GetValue(x => x.Projects).Add(projectVM1);
+         rootVM.GetValue(x => x.AnotherProjects).Add(projectVM2);
+
+         var projectPath = Path
+            .Empty
+            .Append(rootVM)
+            .Append(rootVM.GetValue(x => x.Projects).First())
+            .Append(ProjectVM.ClassDescriptor.Name);
+
+         var match = definition.Matches(projectPath);
+
+         Assert.IsTrue(match.Success);
+
+         var anotherProjectPath = Path
+            .Empty
+            .Append(rootVM)
+            .Append(rootVM.GetValue(x => x.AnotherProjects).First())
+            .Append(ProjectVM.ClassDescriptor.Name);
+
+         match = definition.Matches(anotherProjectPath);
+
+         Assert.IsTrue(match.Success);
+      }
+
+      private PropertyStep<TDescriptor> CreatePropertyStep<TDescriptor, TValue>(
+         Func<TDescriptor, IVMPropertyDescriptor<TValue>> propertySelector
+      ) where TDescriptor : IVMDescriptor {
+         return new PropertyStep<TDescriptor>(propertySelector, TypeService.GetFriendlyName(typeof(TValue)));
+      }
+
       private class EmployeeVM : ViewModel<EmployeeVMDescriptor> {
          public static readonly EmployeeVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<EmployeeVMDescriptor>()
@@ -204,6 +310,7 @@
                d.Name = v.Property.Of<string>();
                d.SelectedProject = v.VM.Of<ProjectVM>();
                d.Projects = v.Collection.Of<ProjectVM>(ProjectVM.ClassDescriptor);
+               d.AnotherProjects = v.Collection.Of<ProjectVM>(ProjectVM.ClassDescriptor);
             })
             .Build();
 
@@ -219,12 +326,17 @@
          public IVMCollection<ProjectVM> Projects {
             get { return GetValue(Descriptor.Projects); }
          }
+
+         public IVMCollection<ProjectVM> AnotherProjects {
+            get { return GetValue(Descriptor.AnotherProjects); }
+         }
       }
 
       private class EmployeeVMDescriptor : VMDescriptor {
          public IVMPropertyDescriptor<string> Name { get; set; }
          public IVMPropertyDescriptor<ProjectVM> SelectedProject { get; set; }
          public IVMPropertyDescriptor<IVMCollection<ProjectVM>> Projects { get; set; }
+         public IVMPropertyDescriptor<IVMCollection<ProjectVM>> AnotherProjects { get; set; }
       }
 
       private class ProjectVM : ViewModel<ProjectVMDescriptor> {

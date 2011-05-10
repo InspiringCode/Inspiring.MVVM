@@ -4,15 +4,20 @@
    using System.Linq;
    using Inspiring.Mvvm.Common;
 
-   internal sealed class PropertyStep<TDescriptor, TValue> :
+   internal sealed class PropertyStep<TDescriptor> :
       PathDefinitionStep
       where TDescriptor : IVMDescriptor {
 
-      private Func<TDescriptor, IVMPropertyDescriptor<TValue>> _propertySelector;
+      private readonly Func<TDescriptor, IVMPropertyDescriptor> _propertySelector;
+      private readonly string _propertyNameHint;
 
-      public PropertyStep(Func<TDescriptor, IVMPropertyDescriptor<TValue>> propertySelector) {
+      public PropertyStep(
+         Func<TDescriptor, IVMPropertyDescriptor> propertySelector,
+         string propertyNameHint = "IVMPropertyDescriptor"
+      ) {
          Contract.Requires(propertySelector != null);
          _propertySelector = propertySelector;
+         _propertyNameHint = propertyNameHint;
       }
 
       public override PathMatch Matches(PathDefinitionIterator definitionSteps, PathIterator step) {
@@ -64,7 +69,7 @@
          return String.Format(
             "{0} -> {1}",
             TypeService.GetFriendlyName(typeof(TDescriptor)),
-            TypeService.GetFriendlyName(typeof(TValue))
+            _propertyNameHint
          );
       }
 

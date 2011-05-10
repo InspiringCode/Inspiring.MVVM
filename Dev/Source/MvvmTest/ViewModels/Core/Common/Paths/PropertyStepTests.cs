@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Common.Paths {
    using System;
    using System.Linq;
+   using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -151,7 +152,7 @@
       private PathDefinitionStep CreateStep<TDescriptor, TValue>(
          Func<TDescriptor, IVMPropertyDescriptor<TValue>> propertySelector
       ) where TDescriptor : IVMDescriptor {
-         return new PropertyStep<TDescriptor, TValue>(propertySelector);
+         return new PropertyStep<TDescriptor>(propertySelector, TypeService.GetFriendlyName(typeof(TValue)));
       }
    }
 }

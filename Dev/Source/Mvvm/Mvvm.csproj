@@ -150,6 +150,7 @@
     <Compile Include="ViewModels\Core\Common\Paths\Definition\CollectionPropertyStep.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\Definition\CollectionStep.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\Definition\OptionalStep.cs" />
+    <Compile Include="ViewModels\Core\Common\Paths\Definition\OrStep.cs" />
     <Compile Include="ViewModels\Core\ViewModel\Behaviors\DeclarativeDependencyBehavior.cs" />
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\Interfaces\IActionOrAnyDescendantBuilder.cs" />
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\Interfaces\IDependencyActionBuilder.cs" />

@@ -2,6 +2,7 @@
    using System;
    using System.Collections.Generic;
    using System.Linq;
+   using Inspiring.Mvvm.Common;
 
    internal sealed class PathDefinition {
       public static readonly PathDefinition Empty = new PathDefinition(new PathDefinitionStep[0]);
@@ -27,7 +28,7 @@
       public PathDefinition Append<TDescriptor, TValue>(
          Func<TDescriptor, IVMPropertyDescriptor<TValue>> propertySelector
       ) where TDescriptor : IVMDescriptor {
-         return Append(new PropertyStep<TDescriptor, TValue>(propertySelector));
+         return Append(new PropertyStep<TDescriptor>(propertySelector, TypeService.GetFriendlyName(typeof(TValue))));
       }
 
       public PathDefinition AppendCollection<TDescriptor, TItemVM>(

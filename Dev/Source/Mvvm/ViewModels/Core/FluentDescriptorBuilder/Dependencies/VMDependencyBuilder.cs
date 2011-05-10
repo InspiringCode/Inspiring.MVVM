@@ -28,19 +28,27 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          get { throw new System.NotImplementedException(); }
       }
 
-      public IDependencyActionBuilder<TRootVM, TRootDescriptor> Properties(params Func<TSourceDescriptor, IVMPropertyDescriptor>[] sourcePropertySelectors) {
+      public IDependencyActionBuilder<TRootVM, TRootDescriptor> Properties(
+         params Func<TSourceDescriptor, IVMPropertyDescriptor>[] sourcePropertySelectors
+      ) {
          throw new System.NotImplementedException();
       }
 
-      public IDependencySourceOrAnyDescendantBuilder<TRootVM, IViewModel<D>, TRootDescriptor, D> Descendant<D>(System.Func<TSourceDescriptor, IVMPropertyDescriptor<IViewModel<D>>> viewModelSelector) where D : IVMDescriptor {
+      public IDependencySourceOrAnyDescendantBuilder<TRootVM, IViewModel<D>, TRootDescriptor, D> Descendant<D>(
+         Func<TSourceDescriptor, IVMPropertyDescriptor<IViewModel<D>>> viewModelSelector
+      ) where D : IVMDescriptor {
          throw new System.NotImplementedException();
       }
 
-      public IDependencySourceOrAnyDescendantBuilder<TRootVM, IViewModel<D>, TRootDescriptor, D> Descendant<D>(System.Func<TSourceDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<D>>>> collectionSelector) where D : IVMDescriptor {
+      public IDependencySourceOrAnyDescendantBuilder<TRootVM, IViewModel<D>, TRootDescriptor, D> Descendant<D>(
+         Func<TSourceDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<D>>>> collectionSelector
+      ) where D : IVMDescriptor {
          throw new System.NotImplementedException();
       }
 
-      public IDependencyActionBuilder<TRootVM, TRootDescriptor> Collection<D>(Func<TSourceDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<D>>>> collectionSelector) where D : IVMDescriptor {
+      public IDependencyActionBuilder<TRootVM, TRootDescriptor> Collection<D>(
+         Func<TSourceDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<D>>>> collectionSelector
+      ) where D : IVMDescriptor {
          throw new System.NotImplementedException();
       }
    }
