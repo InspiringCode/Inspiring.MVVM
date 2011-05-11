@@ -282,4 +282,10 @@
   <data name="PropertyIsNotContainedByParentDescriptor" xml:space="preserve">
     <value>Next property step is invalid. Property is not contained by parent descriptor.</value>
   </data>
+  <data name="IncompleteDependencySetupMissingAction" xml:space="preserve">
+    <value>Dependency configuration is incomplete.  No action specified.</value>
+  </data>
+  <data name="IncompleteDependencySetupMissingTargetPath" xml:space="preserve">
+    <value>Dependency configuration is incomplete. For validation and refresh actions a target path is required.</value>
+  </data>
 </root>

@@ -83,7 +83,7 @@
             ValidationStep.ViewModel,
             PathDefinition
                .Empty
-               .Append(new Func<EmployeeVMDescriptor, IVMPropertyDescriptor<IVMCollection<ProjectVM>>>(x => x.Projects)),
+               .AppendCollection(new Func<EmployeeVMDescriptor, IVMPropertyDescriptor<IVMCollection<ProjectVM>>>(x => x.Projects)),
             DelegateValidator.For(validationAction)
          );
       }
@@ -104,8 +104,8 @@
             ValidationStep.Value,
             PathDefinition
                .Empty
-               .Append(collectionSelector)
-               .Append((ProjectVMDescriptor x) => x.EndDate),
+               .AppendCollection(collectionSelector)
+               .AppendCollectionProperty((ProjectVMDescriptor x) => x.EndDate),
             DelegateValidator.For(validationAction)
          );
       }

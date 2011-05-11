@@ -32,7 +32,5 @@
       IDependencyTargetBuilder<TRootVM, IViewModel<D>, TRootDescriptor, D> Descendant<D>(
          Func<TSourceDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<D>>>> collectionSelector
       ) where D : IVMDescriptor;
-
-      void ViewModel();
    }
 }

@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
+   using System.Collections.Generic;
    using System.Diagnostics.Contracts;
    using System.Linq;
 
@@ -23,6 +24,14 @@
 
       public override IViewModel[] GetDescendants(PathDefinitionIterator definitionSteps, IViewModel rootVM) {
          throw new NotSupportedException();
+      }
+
+      public override string ToString() {
+         IEnumerable<PathDefinitionStep> steps = _steps;
+         return String.Format(
+            "OrStep[{0}]",
+             String.Join(", ", steps)
+         );
       }
    }
 }

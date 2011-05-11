@@ -12,12 +12,20 @@
       private readonly string _propertyNameHint;
 
       public PropertyStep(
-         Func<TDescriptor, IVMPropertyDescriptor> propertySelector,
-         string propertyNameHint = "IVMPropertyDescriptor"
+         Func<TDescriptor, IVMPropertyDescriptor> propertySelector
       ) {
          Contract.Requires(propertySelector != null);
          _propertySelector = propertySelector;
-         _propertyNameHint = propertyNameHint;
+         _propertyNameHint = "IVMPropertyDescriptor";
+      }
+
+      public PropertyStep(
+         Func<TDescriptor, IVMPropertyDescriptor> propertySelector,
+         Type propertyHint
+      ) {
+         Contract.Requires(propertySelector != null);
+         _propertySelector = propertySelector;
+         _propertyNameHint = String.Format("IVMPropertyDescriptor<{0}>", TypeService.GetFriendlyName(propertyHint));
       }
 
       public override PathMatch Matches(PathDefinitionIterator definitionSteps, PathIterator step) {

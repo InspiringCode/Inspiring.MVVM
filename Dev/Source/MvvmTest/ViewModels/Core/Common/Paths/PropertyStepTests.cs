@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Common.Paths {
    using System;
    using System.Linq;
-   using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -142,7 +141,7 @@
       [TestMethod]
       public void ToString_ReturnsDescriptorNameAndPropertyType() {
          var step = CreateStep(x => x.Projects);
-         Assert.AreEqual("EmployeeVMDescriptor -> IVMCollection<ProjectVM>", step.ToString());
+         Assert.AreEqual("EmployeeVMDescriptor -> IVMPropertyDescriptor<IVMCollection<ProjectVM>>", step.ToString());
       }
 
       private PathDefinitionStep CreateStep<TValue>(Func<EmployeeVMDescriptor, IVMPropertyDescriptor<TValue>> propertySelector) {
@@ -152,7 +151,7 @@
       private PathDefinitionStep CreateStep<TDescriptor, TValue>(
          Func<TDescriptor, IVMPropertyDescriptor<TValue>> propertySelector
       ) where TDescriptor : IVMDescriptor {
-         return new PropertyStep<TDescriptor>(propertySelector, TypeService.GetFriendlyName(typeof(TValue)));
+         return new PropertyStep<TDescriptor>(propertySelector, typeof(TValue));
       }
    }
 }

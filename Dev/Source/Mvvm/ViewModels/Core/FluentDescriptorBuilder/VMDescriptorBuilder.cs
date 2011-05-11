@@ -168,6 +168,7 @@
 
          if (_dependencyConfigurator != null) {
             _dependencyConfigurator(dependencyBuilder);
+            dependencyBuilder.Execute();
          }
       }
 
