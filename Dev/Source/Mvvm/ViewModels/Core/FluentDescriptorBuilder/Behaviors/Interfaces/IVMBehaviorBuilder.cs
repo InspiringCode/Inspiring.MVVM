@@ -15,5 +15,10 @@
       ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> Property<TValue>(
          Func<TDescriptor, IVMPropertyDescriptor<TValue>> propertySelector
       );
+
+      void AddBehavior(
+         IBehavior behaviorInstance,
+         BehaviorKey key = null
+      );
    }
 }

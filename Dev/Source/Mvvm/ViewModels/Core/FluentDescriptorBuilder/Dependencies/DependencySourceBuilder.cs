@@ -52,7 +52,7 @@
       public IDependencyActionBuilder<TRootVM, TRootDescriptor> Collection<D>(
          Func<TSourceDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<D>>>> collectionSelector
       ) where D : IVMDescriptor {
-         _context.AddCollectionStep<TSourceDescriptor, IVMCollectionExpression<IViewModelExpression<D>>, D>(
+         _context.AddCollectionStep<TSourceDescriptor, IViewModelExpression<D>, D>(
             collectionSelector
          );
          return new DependencySourceBuilder<TRootVM, IViewModel<D>, TRootDescriptor, D>(_context);
@@ -60,7 +60,7 @@
 
       public IDependencyActionBuilder<TRootVM, TRootDescriptor> OrAnyDescendant {
          get {
-            _context.AddAnyStepsStep<TRootDescriptor>();
+            _context.AddAnyStepsStep<TSourceDescriptor>();
             return this;
          }
       }
@@ -83,8 +83,8 @@
          }
       }
 
-      public void Execute(Action changeAction) {
-         _context.AddExecuteAction(changeAction);
+      public void Execute(Action<TRootVM, ChangeArgs> changeAction) {
+         _context.AddExecuteAction<TRootVM>(changeAction);
       }
    }
 }

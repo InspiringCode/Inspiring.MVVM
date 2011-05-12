@@ -19,7 +19,7 @@
          get { return _targetProperties; }
       }
 
-      public override void Execute(ChangeArgs args) {
+      public override void Execute(IViewModel ownerVM, ChangeArgs args) {
          throw new System.NotImplementedException();
       }
    }

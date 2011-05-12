@@ -144,8 +144,8 @@
 
       public IViewModel ChangedVM {
          get {
-            for (int nI = ChangedPath.Length - 1; nI > 0; nI--) {
-               var step = ChangedPath[nI];
+            for (int i = ChangedPath.Length - 1; i > 0; i--) {
+               var step = ChangedPath[i];
                if (step.Type == PathStepType.ViewModel) {
                   return step.ViewModel;
                }

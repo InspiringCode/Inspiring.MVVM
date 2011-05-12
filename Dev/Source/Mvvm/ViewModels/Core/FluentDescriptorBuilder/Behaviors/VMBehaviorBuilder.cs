@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Diagnostics.Contracts;
+   using Inspiring.Mvvm.Common;
 
    internal sealed class VMBehaviorBuilder<TVM, TDescriptor> :
       ConfigurationProvider,
@@ -23,6 +24,18 @@
          return new SinglePropertyBehaviorBuilder<TValue>(Configuration, propertyConfiguration, _descriptor);
       }
 
+      public void AddBehavior(IBehavior behaviorInstance, BehaviorKey key = null) {
+         string keyString = String.Format(
+              "{0} (manually configured)",
+              TypeService.GetFriendlyTypeName(behaviorInstance)
+           );
+
+         key = key ?? new BehaviorKey(keyString);
+
+         Configuration.ViewModelConfiguration.Append(key, behaviorInstance);
+         Configuration.ViewModelConfiguration.Enable(key, behaviorInstance);
+      }
+
       /// <inheritdoc />
       private class SinglePropertyBehaviorBuilder<TValue> : ConfigurationProvider, ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> {
          private readonly BehaviorChainConfiguration _propertyConfiguration;
@@ -41,6 +54,21 @@
             IBehavior behaviorInstance
          ) {
             _propertyConfiguration.Enable(key, behaviorInstance);
+            return this;
+         }
+
+         ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue>.AddBehavior(
+            IBehavior behaviorInstance,
+            BehaviorKey key = null
+         ) {
+            string keyString = String.Format(
+               "{0} (manually configured)",
+               TypeService.GetFriendlyTypeName(behaviorInstance)
+            );
+
+            key = key ?? new BehaviorKey(keyString);
+
+            _propertyConfiguration.Append(key, behaviorInstance);
             return this;
          }
 

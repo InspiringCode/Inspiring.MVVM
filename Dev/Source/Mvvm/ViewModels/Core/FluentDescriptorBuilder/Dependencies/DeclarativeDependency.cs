@@ -29,7 +29,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          get { return _action; }
       }
 
-      public void HandleChange(ChangeArgs args) {
+      public void HandleChange(IViewModel ownerVM, ChangeArgs args) {
          bool isExpectedChangeType = _changeTypes.Contains(args.ChangeType);
          if (!isExpectedChangeType) {
             return;
@@ -37,7 +37,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
 
          PathMatch sourcePathMatch = _sourcePath.Matches(args.ChangedPath);
          if (sourcePathMatch.Success) {
-            _action.Execute(args);
+            _action.Execute(ownerVM, args);
          }
       }
    }

@@ -7,6 +7,6 @@
 
       IDependencyTargetBuilder<TRootVM, TRootVM, TRootDescriptor, TRootDescriptor> Refresh { get; }
       IDependencyTargetBuilder<TRootVM, TRootVM, TRootDescriptor, TRootDescriptor> Revalidate { get; }
-      void Execute(Action changeAction);
+      void Execute(Action<TRootVM, ChangeArgs> changeAction);
    }
 }

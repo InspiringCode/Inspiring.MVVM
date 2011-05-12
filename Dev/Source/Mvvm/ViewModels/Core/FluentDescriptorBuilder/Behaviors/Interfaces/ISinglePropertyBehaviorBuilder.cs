@@ -23,6 +23,11 @@
          IBehavior behaviorInstance = null
       );
 
+      ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> AddBehavior(
+         IBehavior behaviorInstance,
+         BehaviorKey key = null
+      );
+
       /// <summary>
       ///   Calls the '<paramref name="configurationAction"/>' with the behavior
       ///   specified by '<paramref name="key"/>' and enables it.

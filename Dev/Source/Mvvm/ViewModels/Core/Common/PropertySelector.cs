@@ -14,7 +14,7 @@
          return _propertySelector(desriptor);
       }
 
-      public IVMPropertyDescriptor GetProperty(IVMPropertyDescriptor descriptor) {
+      public IVMPropertyDescriptor GetProperty(IVMDescriptor descriptor) {
          return GetProperty((TDescriptor)descriptor);
       }
    }

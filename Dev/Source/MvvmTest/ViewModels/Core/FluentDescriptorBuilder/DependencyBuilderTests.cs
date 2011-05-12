@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.FluentDescriptorBuilder {
    using System;
-   using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
@@ -8,6 +7,22 @@
 
    [TestClass]
    public class DependencyBuilderTests {
+
+      [TestMethod]
+      public void DependencyWithRefreshAction_ForPropertiesOnRootVM_SetupDependencyWithEmptyTargetPath() {
+         var descriptor = BuildDescriptor(b => b
+            .OnChangeOf
+            .Properties(x => x.Name)
+            .Refresh
+            .Properties(x => x.SelectedProject)
+         );
+
+         var behavior = descriptor.Behaviors.GetNextBehavior<DeclarativeDependencyBehavior>();
+
+         var action = behavior.Dependencies.First().Action as RefreshAction;
+
+         Assert.IsTrue(action.TargetPath.IsEmpty);
+      }
 
       [TestMethod]
       public void Dependency_WithIncompleteConfiguration_ThrowsException() {
@@ -24,16 +39,19 @@
          var descriptor = BuildDescriptor(b => b
             .OnChangeOf
             .Self
-            .Execute(() => { })
+            .Execute((vm, args) => { })
          );
 
          var expectedSourcePath = PathDefinition
             .Empty
             .Append(new OptionalStep(new AnyPropertyStep<EmployeeVMDescriptor>()));
 
-         var expectedChangeTypes = AllChangeTypes();
+         var expectedChangeTypes = new ChangeType[] { 
+            ChangeType.PropertyChanged, 
+            ChangeType.ValidationResultChanged 
+         };
 
-         AssertDependencySetup<ExecuteAction>(
+         AssertDependencySetup<ExecuteAction<EmployeeVM>>(
             descriptor,
             expectedSourcePath,
             expectedChangeTypes
@@ -51,7 +69,7 @@
 
          var expectedSourcePath = PathDefinition
             .Empty
-            .Append<EmployeeVMDescriptor, IVMCollectionExpression<IViewModelExpression<ProjectVMDescriptor>>>(
+            .AppendCollection<EmployeeVMDescriptor, IViewModelExpression<ProjectVMDescriptor>>(
                x => x.Projects
             );
 
@@ -74,12 +92,133 @@
          );
       }
 
-      private ChangeType[] AllChangeTypes() {
-         List<ChangeType> types = new List<ChangeType>();
-         foreach (ChangeType type in Enum.GetValues(typeof(ChangeType))) {
-            types.Add(type);
+      [TestMethod]
+      public void Dependency_ForSelfOrAnyDescendantWithValidationActionForProperties_SetupsBehaviorProperly() {
+         var descriptor = BuildDescriptor(b => b
+            .OnChangeOf
+            .Self
+            .OrAnyDescendant
+            .Revalidate
+            .Descendant(x => x.Projects)
+            .Properties(x => x.Customer, x => x.EndDate)
+         );
+
+         var expectedSourcePath = PathDefinition
+            .Empty
+            .Append(new OptionalStep(new AnyStepsStep<EmployeeVMDescriptor>()));
+
+         var expectedChangeTypes = new ChangeType[] { 
+            ChangeType.PropertyChanged, 
+            ChangeType.ValidationResultChanged 
+         };
+
+         var expectedTargetPath = PathDefinition
+            .Empty
+            .Append<EmployeeVMDescriptor, IVMCollectionExpression<IViewModelExpression<ProjectVMDescriptor>>>(
+               x => x.Projects
+            );
+
+         var behavior = descriptor.Behaviors.GetNextBehavior<DeclarativeDependencyBehavior>();
+         DependencyAction action = behavior.Dependencies.First().Action;
+         foreach (var propertySelector in ((ValidationAction)action).TargetProperties) {
+            var property = propertySelector.GetProperty(new ProjectVMDescriptor());
+            if (property != null) {
+               var x = 1;
+            }
          }
-         return types.ToArray();
+
+         var expectedProperties = new IPropertySelector[] {
+            CreatePropertySelector((ProjectVMDescriptor x) => x.Customer),
+            CreatePropertySelector((ProjectVMDescriptor x) => x.EndDate)
+         };
+
+         AssertDependencySetup<ValidationAction>(
+            descriptor,
+            expectedSourcePath,
+            expectedChangeTypes,
+            expectedTargetPath
+         );
+      }
+
+      [TestMethod]
+      public void Dependency_ForPropertiesWithExecuteAction_SetupsBehaviorProperly() {
+         var descriptor = BuildDescriptor(b => b
+           .OnChangeOf
+           .Properties(x => x.LastName, x => x.Name)
+           .Execute((vm, args) => { })
+         );
+
+         var lastNameStep = CreatePropertyStep((EmployeeVMDescriptor x) => x.LastName);
+         var nameStep = CreatePropertyStep((EmployeeVMDescriptor x) => x.Name);
+
+         var expectedSourcePath = PathDefinition
+            .Empty
+            .Append(new OrStep(lastNameStep, nameStep));
+
+         var expectedChangeTypes = new ChangeType[] { 
+            ChangeType.PropertyChanged, 
+            ChangeType.ValidationResultChanged 
+         };
+
+         AssertDependencySetup<ExecuteAction<EmployeeVM>>(
+            descriptor,
+            expectedSourcePath,
+            expectedChangeTypes
+         );
+      }
+
+      [TestMethod]
+      public void Dependency_ForDescendantOfDescendantWithExecuteAction_SetupsBehaviorProperly() {
+         var descriptor = BuildDescriptor(b => b
+           .OnChangeOf
+           .Descendant(x => x.Projects)
+           .Descendant(x => x.Customer)
+           .Execute((vm, args) => { })
+         );
+
+         var lastNameStep = CreatePropertyStep((EmployeeVMDescriptor x) => x.LastName);
+         var nameStep = CreatePropertyStep((EmployeeVMDescriptor x) => x.Name);
+
+         var expectedSourcePath = PathDefinition
+            .Empty
+            .Append<EmployeeVMDescriptor, IVMCollectionExpression<IViewModelExpression<ProjectVMDescriptor>>>(
+               x => x.Projects
+            )
+            .Append<ProjectVMDescriptor, IViewModel<CustomerVMDescriptor>>(
+               x => x.Customer
+            )
+            .Append(new OptionalStep(new AnyPropertyStep<CustomerVMDescriptor>()));
+
+         var expectedChangeTypes = new ChangeType[] { 
+            ChangeType.PropertyChanged, 
+            ChangeType.ValidationResultChanged 
+         };
+
+         AssertDependencySetup<ExecuteAction<EmployeeVM>>(
+            descriptor,
+            expectedSourcePath,
+            expectedChangeTypes
+         );
+      }
+
+      //private ChangeType[] AllChangeTypes() {
+      //   List<ChangeType> types = new List<ChangeType>();
+      //   foreach (ChangeType type in Enum.GetValues(typeof(ChangeType))) {
+      //      types.Add(type);
+      //   }
+      //   return types.ToArray();
+      //}
+
+      private PropertySelector<TDescriptor> CreatePropertySelector<TDescriptor>(
+         Func<TDescriptor, IVMPropertyDescriptor> propertySelector
+      ) where TDescriptor : IVMDescriptor {
+         return new PropertySelector<TDescriptor>(propertySelector);
+      }
+
+      private PropertyStep<TDescriptor> CreatePropertyStep<TDescriptor>(
+         Func<TDescriptor, IVMPropertyDescriptor> propertySelector
+      ) where TDescriptor : IVMDescriptor {
+         return new PropertyStep<TDescriptor>(propertySelector);
       }
 
       private void AssertDependencySetup<TAction>(
@@ -123,75 +262,6 @@
          }
       }
 
-      //public void MyTestMethod() {
-      //   var d = BuildDescriptor(b => b
-      //      .OnChangeOf
-      //      .Properties(x => x.Name, x => x.LastName)
-      //      .Refresh
-      //      .Properties(x => x.Projects)
-      //   );
-
-      //   d = BuildDescriptor(b => b
-      //      .OnChangeOf
-      //      .Descendant(x => x.SelectedProject)
-      //      .Refresh
-      //      .Properties(x => x.Name)
-      //   );
-
-      //   d = BuildDescriptor(b => b
-      //      .OnChangeOf
-      //      .Descendant(x => x.Projects)
-      //      .Descendant(x => x.Customer)
-      //      .Properties(x => x.Rating)
-      //      .Refresh
-      //      .Properties(x => x.Name)
-      //   );
-
-      //   d = BuildDescriptor(b => b
-      //      .OnChangeOf
-      //      .Descendant(x => x.Projects)
-      //      .Properties(x => x.Customer)
-      //      .Revalidate
-      //      .Descendant(x => x.SelectedProject)
-      //      .Properties(x => x.EndDate)
-      //   );
-
-      //   d = BuildDescriptor(b => b
-      //      .OnChangeOf
-      //      .Descendant(x => x.Projects)
-      //      .Properties(x => x.Customer)
-      //      .Revalidate
-      //      .Descendant(x => x.Projects)
-      //      .Properties(x => x.EndDate)
-      //   );
-
-      //   d = BuildDescriptor(b => b
-      //      .OnChangeOf
-      //      .Self
-      //      .Execute(() => { })
-      //   );
-
-      //   d = BuildDescriptor(b => b
-      //      .OnChangeOf
-      //      .Self
-      //      .OrAnyDescendant
-      //      .Execute(() => { })
-      //   );
-
-      //   d = BuildDescriptor(b => b
-      //      .OnChangeOf
-      //      .Collection(x => x.Projects)
-      //      .Execute(() => { })
-      //   );
-
-      //   d = BuildDescriptor(b => b
-      //      .OnChangeOf
-      //      .Descendant(x => x.SelectedProject)
-      //      .OrAnyDescendant
-      //      .Execute(() => { })
-      //   );
-      //}
-
       private EmployeeVMDescriptor BuildDescriptor(
          Action<IVMDependencyBuilder<EmployeeVM, EmployeeVMDescriptor>> configurationAction
       ) {
@@ -209,7 +279,6 @@
             .WithDependencies(configurationAction)
             .Build();
       }
-
 
       private sealed class EmployeeVM : ViewModel<EmployeeVMDescriptor> { }
 

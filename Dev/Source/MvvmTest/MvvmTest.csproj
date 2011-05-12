@@ -113,6 +113,9 @@
     <Compile Include="- Test Infrastructure -\ValidatorMockConfigurationFluent.cs" />
     <Compile Include="ApiTests\ViewModels\CommandHandlerTests.cs" />
     <Compile Include="ApiTests\ViewModels\Core\PathDefinitionTests.cs" />
+    <Compile Include="ApiTests\ViewModels\DeclarativeDeendencies\DependencyExecuteActionTests.cs" />
+    <Compile Include="ApiTests\ViewModels\DeclarativeDeendencies\DependencyRefreshActionTests.cs" />
+    <Compile Include="ApiTests\ViewModels\DeclarativeDeendencies\DependencyTestBase.cs" />
     <Compile Include="ApiTests\ViewModels\Domain\CustomerRepository.cs" />
     <Compile Include="ApiTests\ViewModels\InheritanceTests.cs" />
     <Compile Include="ApiTests\ViewModels\InheritanceWithGenericsTests.cs" />

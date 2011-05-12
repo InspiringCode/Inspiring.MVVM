@@ -9,7 +9,9 @@ namespace Inspiring.Mvvm.ViewModels.Core {
       private List<DeclarativeDependency> _dependencies = new List<DeclarativeDependency>();
 
       public void HandleChange(IBehaviorContext context, ChangeArgs args) {
-         throw new System.NotImplementedException();
+         foreach (var depedency in _dependencies) {
+            depedency.HandleChange(context.VM, args);
+         }
       }
 
       public void AddDependency(DeclarativeDependency dependency) {

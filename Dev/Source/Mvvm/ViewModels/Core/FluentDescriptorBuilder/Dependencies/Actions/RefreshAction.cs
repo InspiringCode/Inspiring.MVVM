@@ -19,8 +19,13 @@
          get { return _targetProperties; }
       }
 
-      public override void Execute(ChangeArgs args) {
-         throw new System.NotImplementedException();
+      public override void Execute(IViewModel ownerVM, ChangeArgs args) {
+         if (TargetPath.IsEmpty) {
+            foreach (var propertySelector in _targetProperties) {
+               var property = propertySelector.GetProperty(ownerVM.Descriptor);
+               ownerVM.Kernel.Refresh(property);
+            }
+         }
       }
    }
 }

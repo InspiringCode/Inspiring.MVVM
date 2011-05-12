@@ -32,11 +32,12 @@
       }
 
       public void AddCollectionStep<TDescriptor, TDescendant, TDescendantDescriptor>(
-         Func<TDescriptor, IVMPropertyDescriptor<TDescendant>> collectionPropertySelector
+         Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<TDescendant>>> collectionPropertySelector
       )
          where TDescriptor : IVMDescriptor
+         where TDescendant : IViewModel
          where TDescendantDescriptor : IVMDescriptor {
-         _sourcePath = _sourcePath.Append(collectionPropertySelector);
+         _sourcePath = _sourcePath.AppendCollection(collectionPropertySelector);
          _isProperlyTerminated = true;
          _changesTypes.Add(ChangeType.AddedToCollection);
          _changesTypes.Add(ChangeType.RemovedFromCollection);
@@ -57,7 +58,8 @@
          where TDescriptor : IVMDescriptor {
          _sourcePath = _sourcePath.Append(new OptionalStep(new AnyStepsStep<TDescriptor>()));
          _isProperlyTerminated = true;
-         AddAllChangeTypes();
+         _changesTypes.Add(ChangeType.PropertyChanged);
+         _changesTypes.Add(ChangeType.ValidationResultChanged);
       }
 
       public void AddDescendantTargetStep<TDescriptor, TDescendant, TDescendantDescriptor>(
@@ -78,9 +80,9 @@
 
       public void AddValidationAction() {
          _actionCreator = () => {
-            if (_targetPath.IsEmpty) {
-               throw new ArgumentException(ExceptionTexts.IncompleteDependencySetupMissingTargetPath);
-            }
+            //if (_targetPath.IsEmpty) {
+            //   throw new ArgumentException(ExceptionTexts.IncompleteDependencySetupMissingTargetPath);
+            //}
 
             return new ValidationAction(_targetPath, _targetProperties);
          };
@@ -88,17 +90,19 @@
 
       public void AddRefreshAction() {
          _actionCreator = () => {
-            if (_targetPath.IsEmpty) {
-               throw new ArgumentException(ExceptionTexts.IncompleteDependencySetupMissingTargetPath);
-            }
+            //if (_targetPath.IsEmpty) {
+            //   throw new ArgumentException(ExceptionTexts.IncompleteDependencySetupMissingTargetPath);
+            //}
 
             return new RefreshAction(_targetPath, _targetProperties);
          };
       }
 
-      public void AddExecuteAction(Action action) {
+      public void AddExecuteAction<TOwnerVM>(
+         Action<TOwnerVM, ChangeArgs> action
+      ) where TOwnerVM : IViewModel {
          _actionCreator = () => {
-            return new ExecuteAction(action);
+            return new ExecuteAction<TOwnerVM>(action);
          };
       }
 
@@ -119,7 +123,8 @@
       private PathDefinition GetSourcePath() {
          if (!_isProperlyTerminated) {
             _sourcePath = _sourcePath.Append(_terminatingAnyPropertyStep);
-            AddAllChangeTypes();
+            _changesTypes.Add(ChangeType.PropertyChanged);
+            _changesTypes.Add(ChangeType.ValidationResultChanged);
          }
 
          return _sourcePath;
@@ -130,11 +135,11 @@
          return new OptionalStep(new AnyPropertyStep<TDescriptor>());
       }
 
-      private void AddAllChangeTypes() {
-         foreach (ChangeType type in Enum.GetValues(typeof(ChangeType))) {
-            _changesTypes.Add(type);
-         }
-      }
+      //private void AddAllChangeTypes() {
+      //   foreach (ChangeType type in Enum.GetValues(typeof(ChangeType))) {
+      //      _changesTypes.Add(type);
+      //   }
+      //}
 
       private DeclarativeDependency CreateDependency() {
          if (_actionCreator == null) {
