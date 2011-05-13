@@ -54,7 +54,7 @@
       [TestMethod]
       public void DependencyOnCollectionTarget_RefreshesAllViewModelsInCollection() {
          var refreshMock = new RefreshControllerBehaviorMock();
-         var projectVMDescriptor = ProjectVM.CreateDescriptor(refreshMock, null, null, null, null, true);
+         var projectVMDescriptor = ProjectVM.CreateDescriptor(refreshMock, true);
 
          var employeeVM = CreateEmployeeVM(
             b => b
@@ -79,7 +79,7 @@
       [TestMethod]
       public void DependencyOnTargetPropertiesOfDescendantOfDescendantCollection_RefreshesSpecifiedPropertiesDescendantsInCollection() {
          var refreshMock = new RefreshControllerBehaviorMock();
-         var projectVMDescriptor = ProjectVM.CreateDescriptor(refreshMock, null, null, null, null, true);
+         var projectVMDescriptor = ProjectVM.CreateDescriptor(refreshMock, true);
 
          var employeeVM = CreateEmployeeVM(
             b => b
@@ -134,7 +134,7 @@
       [TestMethod]
       public void DependencyOnTargetDescendantOfDescendantCollection_RefreshesAllViewModelsInCollection() {
          var refreshMock = new RefreshControllerBehaviorMock();
-         var projectVMDescriptor = ProjectVM.CreateDescriptor(refreshMock, null, null, null, null, true);
+         var projectVMDescriptor = ProjectVM.CreateDescriptor(refreshMock, true);
 
          var employeeVM = CreateEmployeeVM(
             b => b
@@ -174,7 +174,7 @@
       [TestMethod]
       public void DependencyOnTargetPropertiesOfDescendantCollection_RefreshesAllPropertiesOfAllViewModelsInCollection() {
          var refreshMock = new RefreshControllerBehaviorMock();
-         var projectVMDescriptor = ProjectVM.CreateDescriptor(refreshMock, null, null, null, null, true);
+         var projectVMDescriptor = ProjectVM.CreateDescriptor(refreshMock, true);
          var employeeVM = CreateEmployeeVM(
             b => b
                .OnChangeOf
@@ -209,16 +209,16 @@
          Action<IVMDependencyBuilder<EmployeeVM, EmployeeVMDescriptor>> dependencyConfigurationAction,
          ProjectVMDescriptor projectVMDescriptor = null
       ) {
-         projectVMDescriptor = projectVMDescriptor ?? ProjectVM.CreateDescriptor(null, null, null, null, null, false);
-         return new EmployeeVM(dependencyConfigurationAction, projectVMDescriptor, true);
+         projectVMDescriptor = projectVMDescriptor ?? ProjectVM.CreateDescriptor(null, false);
+         return new EmployeeVM(dependencyConfigurationAction, projectVMDescriptor, true, Results);
       }
 
       private ProjectVM CreateProjectVM() {
-         return new ProjectVM(true);
+         return new ProjectVM(true, Results);
       }
 
       private CustomerVM CreateCustomerVM() {
-         return new CustomerVM(true);
+         return new CustomerVM(true, Results);
       }
    }
 }

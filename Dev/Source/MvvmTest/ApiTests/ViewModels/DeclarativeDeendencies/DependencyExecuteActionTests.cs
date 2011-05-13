@@ -25,8 +25,8 @@
 
          actionWasCalled = false;
 
-         string invalidName = string.Empty;
-         employeeVM.Name = invalidName;
+         employeeVM.InvalidateNameProperty = true;
+         employeeVM.Kernel.Revalidate(employeeVM.Descriptor.Name);
          Assert.IsTrue(actionWasCalled);
       }
 
@@ -49,8 +49,8 @@
 
          actionWasCalled = false;
 
-         string invalidName = string.Empty;
-         employeeVM.Name = invalidName;
+         employeeVM.InvalidateNameProperty = true;
+         employeeVM.Kernel.Revalidate(employeeVM.Descriptor.Name);
          Assert.IsFalse(actionWasCalled);
       }
 
@@ -195,16 +195,16 @@
       private EmployeeVM CreateEmployeeVM(
          Action<IVMDependencyBuilder<EmployeeVM, EmployeeVMDescriptor>> dependencyConfigurationAction
       ) {
-         var projectVMDescriptor = ProjectVM.CreateDescriptor(null, null, null, null, null, false);
-         return new EmployeeVM(dependencyConfigurationAction, projectVMDescriptor, false);
+         var projectVMDescriptor = ProjectVM.CreateDescriptor(null, false);
+         return new EmployeeVM(dependencyConfigurationAction, projectVMDescriptor, false, Results);
       }
 
       private ProjectVM CreateProjectVM() {
-         return new ProjectVM(false);
+         return new ProjectVM(false, Results);
       }
 
       private CustomerVM CreateCustomerVM() {
-         return new CustomerVM(false);
+         return new CustomerVM(false, Results);
       }
    }
 }

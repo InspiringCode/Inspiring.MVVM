@@ -4,37 +4,37 @@
    using System.Collections.ObjectModel;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+   [TestClass]
    public abstract class DependencyTestBase {
+      protected ValidatorMockConfigurationFluent Results { get; private set; }
+
+      [TestInitialize]
+      public void InitilaizeTest() {
+         Results = new ValidatorMockConfigurationFluent();
+      }
 
       internal sealed class EmployeeVM : TestViewModel<EmployeeVMDescriptor> {
          public EmployeeVM(
             Action<IVMDependencyBuilder<EmployeeVM, EmployeeVMDescriptor>> dependencyConfigurationAction,
             ProjectVMDescriptor projectVMDescriptor,
-            bool useMockBehaviors
+            bool useMockBehaviors,
+            ValidatorMockConfigurationFluent results
          )
             : this(
                dependencyConfigurationAction,
                projectVMDescriptor,
                new RefreshControllerBehaviorMock(),
-               new DescendantValidationBehaviorMock(),
-               new ViewModelRevalidationBehaviorMock(),
-               new PropertyRevalidationBehaviorMock(),
-               new PropertyRevalidationBehaviorMock(),
-               new PropertyRevalidationBehaviorMock(),
                useMockBehaviors
             ) {
+            Results = results;
          }
 
          private EmployeeVM(
                Action<IVMDependencyBuilder<EmployeeVM, EmployeeVMDescriptor>> dependencyConfigurationAction,
                ProjectVMDescriptor projectVMDescriptor,
                RefreshControllerBehaviorMock refreshControllerBehavior,
-               DescendantValidationBehaviorMock descendantValidationBehavior,
-               ViewModelRevalidationBehaviorMock viewModelRevalidationBehavior,
-               PropertyRevalidationBehaviorMock namePropertyRevalidationBehaviorMock,
-               PropertyRevalidationBehaviorMock projectsPropertyRevalidationBehaviorMock,
-               PropertyRevalidationBehaviorMock selectedProjectPropertyRevalidationBehaviorMock,
                bool useMockBehaviors
          )
             : base(
@@ -42,28 +42,13 @@
                   dependencyConfigurationAction,
                   projectVMDescriptor,
                   refreshControllerBehavior,
-                  descendantValidationBehavior,
-                  viewModelRevalidationBehavior,
-                  namePropertyRevalidationBehaviorMock,
-                  projectsPropertyRevalidationBehaviorMock,
-                  selectedProjectPropertyRevalidationBehaviorMock,
                   useMockBehaviors
                 )
             ) {
             RefreshControllerBehaviorMock = refreshControllerBehavior;
-            DescendantValidationBehavioMock = descendantValidationBehavior;
-            ViewModelRevalidationBehaviorMock = viewModelRevalidationBehavior;
-            NamePropertyRevalidationBehaviorMock = namePropertyRevalidationBehaviorMock;
-            ProjectsPropertyRevalidationBehaviorMock = projectsPropertyRevalidationBehaviorMock;
-            SelectedProjectPropertyRevalidationBehaviorMock = selectedProjectPropertyRevalidationBehaviorMock;
          }
 
          internal RefreshControllerBehaviorMock RefreshControllerBehaviorMock { get; private set; }
-         internal DescendantValidationBehaviorMock DescendantValidationBehavioMock { get; private set; }
-         internal ViewModelRevalidationBehaviorMock ViewModelRevalidationBehaviorMock { get; private set; }
-         internal PropertyRevalidationBehaviorMock NamePropertyRevalidationBehaviorMock { get; private set; }
-         internal PropertyRevalidationBehaviorMock ProjectsPropertyRevalidationBehaviorMock { get; private set; }
-         internal PropertyRevalidationBehaviorMock SelectedProjectPropertyRevalidationBehaviorMock { get; private set; }
 
          internal string Name {
             get { return GetValue(Descriptor.Name); }
@@ -80,15 +65,14 @@
             set { SetValue(Descriptor.Projects, value); }
          }
 
+         internal bool InvalidateNameProperty { get; set; }
+
+         private ValidatorMockConfigurationFluent Results { get; set; }
+
          private static EmployeeVMDescriptor CreateDescriptor(
             Action<IVMDependencyBuilder<EmployeeVM, EmployeeVMDescriptor>> dependencyConfigurationAction,
             ProjectVMDescriptor projectVMDescriptor,
             RefreshControllerBehaviorMock refreshControllerBehavior,
-            DescendantValidationBehaviorMock descendantValidationBehavior,
-            ViewModelRevalidationBehaviorMock viewModelRevalidationBehavior,
-            PropertyRevalidationBehaviorMock namePropertyRevalidationBehaviorMock,
-            PropertyRevalidationBehaviorMock projectsPropertyRevalidationBehaviorMock,
-            PropertyRevalidationBehaviorMock selectedProjectPropertyRevalidationBehaviorMock,
             bool useMockBehaviors
          ) {
             return VMDescriptorBuilder
@@ -103,9 +87,13 @@
                })
                .WithValidators(b => {
                   b.Check(x => x.Name)
-                     .HasValue(String.Empty);
-                  b.CheckCollection(x => x.Projects, x => x.Title)
-                     .IsUnique(string.Empty);
+                     .Custom((args) => {
+                        if (args.Owner.InvalidateNameProperty) {
+                           args.AddError("Test triggered failure");
+                        }
+                     });
+                  b.Check(x => x.SelectedProject)
+                     .Custom(args => args.Owner.Results.PerformValidation(args));
                })
                .WithDependencies(
                   dependencyConfigurationAction
@@ -114,21 +102,6 @@
                   if (useMockBehaviors) {
                      if (refreshControllerBehavior != null) {
                         b.AddBehavior(refreshControllerBehavior);
-                     }
-                     if (viewModelRevalidationBehavior != null) {
-                        b.AddBehavior(viewModelRevalidationBehavior);
-                     }
-                     if (descendantValidationBehavior != null) {
-                        b.AddBehavior(descendantValidationBehavior);
-                     }
-                     if (namePropertyRevalidationBehaviorMock != null) {
-                        b.Property(x => x.Name).AddBehavior(namePropertyRevalidationBehaviorMock);
-                     }
-                     if (projectsPropertyRevalidationBehaviorMock != null) {
-                        b.Property(x => x.SelectedProject).AddBehavior(selectedProjectPropertyRevalidationBehaviorMock);
-                     }
-                     if (selectedProjectPropertyRevalidationBehaviorMock != null) {
-                        b.Property(x => x.Projects).AddBehavior(projectsPropertyRevalidationBehaviorMock);
                      }
                   }
                })
@@ -143,47 +116,28 @@
       }
 
       internal sealed class ProjectVM : TestViewModel<ProjectVMDescriptor> {
-         public ProjectVM(bool useMockBehaviors)
+         public ProjectVM(bool useMockBehaviors, ValidatorMockConfigurationFluent results)
             : this(
                new RefreshControllerBehaviorMock(),
-               new DescendantValidationBehaviorMock(),
-               new ViewModelRevalidationBehaviorMock(),
-               new PropertyRevalidationBehaviorMock(),
-               new PropertyRevalidationBehaviorMock(),
                useMockBehaviors
             ) {
+            Results = results;
          }
 
          private ProjectVM(
             RefreshControllerBehaviorMock refreshControllerBehavior,
-            DescendantValidationBehaviorMock descendantValidationBehavior,
-            ViewModelRevalidationBehaviorMock viewModelRevalidationBehavior,
-            PropertyRevalidationBehaviorMock titlePropertyRevalidationBehavior,
-            PropertyRevalidationBehaviorMock customerPropertyRevalidationBehavior,
             bool useMockBehaviors
          )
             : base(
                CreateDescriptor(
                   refreshControllerBehavior,
-                  descendantValidationBehavior,
-                  viewModelRevalidationBehavior,
-                  titlePropertyRevalidationBehavior,
-                  customerPropertyRevalidationBehavior,
                   useMockBehaviors
                )
             ) {
             RefreshControllerBehaviorMock = refreshControllerBehavior;
-            DescendantValidationBehavioMock = descendantValidationBehavior;
-            ViewModelRevalidationBehaviorMock = viewModelRevalidationBehavior;
-            TitelPropertyRevalidationBehaviorMock = titlePropertyRevalidationBehavior;
-            CustomerPropertyRevalidationBehaviorMock = customerPropertyRevalidationBehavior;
          }
 
          internal RefreshControllerBehaviorMock RefreshControllerBehaviorMock { get; private set; }
-         internal DescendantValidationBehaviorMock DescendantValidationBehavioMock { get; private set; }
-         internal ViewModelRevalidationBehaviorMock ViewModelRevalidationBehaviorMock { get; private set; }
-         internal PropertyRevalidationBehaviorMock TitelPropertyRevalidationBehaviorMock { get; private set; }
-         internal PropertyRevalidationBehaviorMock CustomerPropertyRevalidationBehaviorMock { get; private set; }
 
          internal string Title {
             get { return GetValue(Descriptor.Title); }
@@ -195,12 +149,10 @@
             set { SetValue(Descriptor.Customer, value); }
          }
 
+         private ValidatorMockConfigurationFluent Results { get; set; }
+
          internal static ProjectVMDescriptor CreateDescriptor(
             RefreshControllerBehaviorMock refreshControllerBehavior,
-            DescendantValidationBehaviorMock descendantValidationBehavior,
-            ViewModelRevalidationBehaviorMock viewModelRevalidationBehavior,
-            PropertyRevalidationBehaviorMock titlePropertyRevalidationBehavior,
-            PropertyRevalidationBehaviorMock customerPropertyRevalidationBehavior,
             bool useMockBehaviors
          ) {
             return VMDescriptorBuilder
@@ -214,23 +166,16 @@
                })
                .WithValidators(b => {
                   b.EnableParentValidation(x => x.Title);
+                  b.Check(x => x.Title)
+                     .Custom(args => args.Owner.Results.PerformValidation(args));
+                  b.Check(x => x.Customer)
+                     .Custom(args => args.Owner.Results.PerformValidation(args));
+
                })
                .WithBehaviors(b => {
                   if (useMockBehaviors) {
                      if (refreshControllerBehavior != null) {
                         b.AddBehavior(refreshControllerBehavior);
-                     }
-                     if (viewModelRevalidationBehavior != null) {
-                        b.AddBehavior(viewModelRevalidationBehavior);
-                     }
-                     if (descendantValidationBehavior != null) {
-                        b.AddBehavior(descendantValidationBehavior);
-                     }
-                     if (titlePropertyRevalidationBehavior != null) {
-                        b.Property(x => x.Title).AddBehavior(titlePropertyRevalidationBehavior);
-                     }
-                     if (customerPropertyRevalidationBehavior != null) {
-                        b.Property(x => x.Customer).AddBehavior(customerPropertyRevalidationBehavior);
                      }
                   }
                })
@@ -244,51 +189,26 @@
       }
 
       internal sealed class CustomerVM : TestViewModel<CustomerVMDescriptor> {
-         public CustomerVM(bool useMockBehaviors)
+         public CustomerVM(bool useMockBehaviors, ValidatorMockConfigurationFluent results)
             : this(
                new RefreshControllerBehaviorMock(),
-               new DescendantValidationBehaviorMock(),
-               new ViewModelRevalidationBehaviorMock(),
-               new PropertyRevalidationBehaviorMock(),
-               new PropertyRevalidationBehaviorMock(),
-               new PropertyRevalidationBehaviorMock(),
                useMockBehaviors) {
+            Results = results;
          }
 
          private CustomerVM(
             RefreshControllerBehaviorMock refreshControllerBehavior,
-            DescendantValidationBehaviorMock descendantValidationBehavior,
-            ViewModelRevalidationBehaviorMock viewModelRevalidationBehavior,
-            PropertyRevalidationBehaviorMock namePopertyRevalidationBehavior,
-            PropertyRevalidationBehaviorMock addressPropertyRevalidationBehavior,
-            PropertyRevalidationBehaviorMock ratingPropertyRevalidationBehavior,
             bool useMockBehaviors)
             : base(
                CreateDescriptor(
                   refreshControllerBehavior,
-                  descendantValidationBehavior,
-                  viewModelRevalidationBehavior,
-                  namePopertyRevalidationBehavior,
-                  addressPropertyRevalidationBehavior,
-                  ratingPropertyRevalidationBehavior,
                   useMockBehaviors
                )
             ) {
             RefreshControllerBehaviorMock = refreshControllerBehavior;
-            DescendantValidationBehavioMock = descendantValidationBehavior;
-            ViewModelRevalidationBehaviorMock = viewModelRevalidationBehavior;
-            NamePropertyRevalidationBehaviorMock = namePopertyRevalidationBehavior;
-            AddressPropertyRevalidationBehaviorMock = addressPropertyRevalidationBehavior;
-            RatingPropertyRevalidationBehaviorMock = ratingPropertyRevalidationBehavior;
          }
 
          internal RefreshControllerBehaviorMock RefreshControllerBehaviorMock { get; private set; }
-         internal DescendantValidationBehaviorMock DescendantValidationBehavioMock { get; private set; }
-         internal ViewModelRevalidationBehaviorMock ViewModelRevalidationBehaviorMock { get; private set; }
-         internal PropertyRevalidationBehaviorMock NamePropertyRevalidationBehaviorMock { get; private set; }
-         internal PropertyRevalidationBehaviorMock AddressPropertyRevalidationBehaviorMock { get; private set; }
-         internal PropertyRevalidationBehaviorMock RatingPropertyRevalidationBehaviorMock { get; private set; }
-
 
          internal string Name {
             get { return GetValue(Descriptor.Name); }
@@ -305,13 +225,10 @@
             set { SetValue(Descriptor.Address, value); }
          }
 
+         private ValidatorMockConfigurationFluent Results { get; set; }
+
          private static CustomerVMDescriptor CreateDescriptor(
             RefreshControllerBehaviorMock refreshControllerBehavior,
-            DescendantValidationBehaviorMock descendantValidationBehavior,
-            ViewModelRevalidationBehaviorMock viewModelRevalidationBehavior,
-            PropertyRevalidationBehaviorMock namePopertyRevalidationBehavior,
-            PropertyRevalidationBehaviorMock addressPropertyRevalidationBehavior,
-            PropertyRevalidationBehaviorMock ratingPropertyRevalidationBehavior,
             bool useMockBehaviors
          ) {
             return VMDescriptorBuilder
@@ -326,27 +243,15 @@
                })
                .WithValidators(b => {
                   b.Check(x => x.Name)
-                     .HasValue(String.Empty);
+                    .Custom(args => args.Owner.Results.PerformValidation(args));
+                  b.Check(x => x.Rating)
+                    .Custom(args => args.Owner.Results.PerformValidation(args));
+
                })
                .WithBehaviors(b => {
                   if (useMockBehaviors) {
                      if (refreshControllerBehavior != null) {
                         b.AddBehavior(refreshControllerBehavior);
-                     }
-                     if (viewModelRevalidationBehavior != null) {
-                        b.AddBehavior(viewModelRevalidationBehavior);
-                     }
-                     if (descendantValidationBehavior != null) {
-                        b.AddBehavior(descendantValidationBehavior);
-                     }
-                     if (ratingPropertyRevalidationBehavior != null) {
-                        b.Property(x => x.Name).AddBehavior(ratingPropertyRevalidationBehavior);
-                     }
-                     if (addressPropertyRevalidationBehavior != null) {
-                        b.Property(x => x.Address).AddBehavior(addressPropertyRevalidationBehavior);
-                     }
-                     if (ratingPropertyRevalidationBehavior != null) {
-                        b.Property(x => x.Rating).AddBehavior(ratingPropertyRevalidationBehavior);
                      }
                   }
                })
@@ -359,7 +264,6 @@
          public IVMPropertyDescriptor<int> Rating { get; set; }
          public IVMPropertyDescriptor<string> Address { get; set; }
       }
-
 
       internal class RefreshControllerBehaviorMock :
          Behavior,
@@ -382,54 +286,6 @@
 
          public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property) {
             _refreshedProperties.Add(property);
-         }
-      }
-
-      internal class DescendantValidationBehaviorMock :
-         Behavior,
-         IDescendantValidationBehavior {
-
-         public void RevalidateDescendants(IBehaviorContext context, ValidationScope scope) {
-
-         }
-      }
-
-      internal class ViewModelRevalidationBehaviorMock :
-         Behavior,
-         IBehaviorInitializationBehavior,
-         IViewModelRevalidationBehavior {
-
-         public void Revalidate(IBehaviorContext context, ValidationController controller) {
-
-         }
-
-         public void Initialize(BehaviorInitializationContext context) {
-
-         }
-      }
-
-      internal class PropertyRevalidationBehaviorMock :
-         Behavior,
-         IBehaviorInitializationBehavior,
-         IPropertyRevalidationBehavior {
-         private IVMPropertyDescriptor _property;
-
-         public void Initialize(BehaviorInitializationContext context) {
-            _property = context.Property;
-         }
-
-         internal bool WasRevalidated { get; private set; }
-
-         public void BeginValidation(IBehaviorContext context, ValidationController controller) {
-            WasRevalidated = true;
-         }
-
-         public void Revalidate(IBehaviorContext context) {
-
-         }
-
-         public void EndValidation(IBehaviorContext context) {
-
          }
       }
    }
