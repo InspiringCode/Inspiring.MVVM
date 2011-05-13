@@ -195,7 +195,7 @@
       private EmployeeVM CreateEmployeeVM(
          Action<IVMDependencyBuilder<EmployeeVM, EmployeeVMDescriptor>> dependencyConfigurationAction
       ) {
-         var projectVMDescriptor = ProjectVM.CreateDescriptor(null, null, null, null, false);
+         var projectVMDescriptor = ProjectVM.CreateDescriptor(null, null, null, null, null, false);
          return new EmployeeVM(dependencyConfigurationAction, projectVMDescriptor, false);
       }
 

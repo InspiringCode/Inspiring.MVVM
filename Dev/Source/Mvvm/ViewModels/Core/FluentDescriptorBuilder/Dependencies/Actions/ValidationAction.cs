@@ -20,7 +20,27 @@
       }
 
       public override void Execute(IViewModel ownerVM, ChangeArgs args) {
-         throw new System.NotImplementedException();
+         if (TargetPath.IsEmpty) {
+            RevalidateProperties(ownerVM);
+         } else {
+            var viewModels = TargetPath.GetDescendants(ownerVM);
+
+            foreach (var viewModel in viewModels) {
+               if (_targetProperties.Count > 0) {
+                  RevalidateProperties(viewModel);
+               } else {
+                  viewModel.Kernel.Revalidate(ValidationScope.SelfAndLoadedDescendants);
+               }
+            }
+         }
       }
+
+      private void RevalidateProperties(IViewModel ownerVM) {
+         foreach (var propertySelector in _targetProperties) {
+            var property = propertySelector.GetProperty(ownerVM.Descriptor);
+            ownerVM.Kernel.Revalidate(property);
+         }
+      }
+
    }
 }

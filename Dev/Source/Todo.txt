@@ -8,3 +8,4 @@
 // TODO: Cleanup Validation error creations and assertions in tests.
 // TODO: Declarative dependendcies: rethink collection change handling
 // TODO: Behavior configuration: think of poition in chain when manually adding behaviors
+// TODO: Declarative dependendcies: Make ValidationScope adjustable
