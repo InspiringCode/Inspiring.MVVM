@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.FluentDescriptorBuilder {
    using System;
+   using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
@@ -118,20 +119,6 @@
                x => x.Projects
             );
 
-         var behavior = descriptor.Behaviors.GetNextBehavior<DeclarativeDependencyBehavior>();
-         DependencyAction action = behavior.Dependencies.First().Action;
-         foreach (var propertySelector in ((ValidationAction)action).TargetProperties) {
-            var property = propertySelector.GetProperty(new ProjectVMDescriptor());
-            if (property != null) {
-               var x = 1;
-            }
-         }
-
-         var expectedProperties = new IPropertySelector[] {
-            CreatePropertySelector((ProjectVMDescriptor x) => x.Customer),
-            CreatePropertySelector((ProjectVMDescriptor x) => x.EndDate)
-         };
-
          AssertDependencySetup<ValidationAction>(
             descriptor,
             expectedSourcePath,
@@ -201,13 +188,13 @@
          );
       }
 
-      //private ChangeType[] AllChangeTypes() {
-      //   List<ChangeType> types = new List<ChangeType>();
-      //   foreach (ChangeType type in Enum.GetValues(typeof(ChangeType))) {
-      //      types.Add(type);
-      //   }
-      //   return types.ToArray();
-      //}
+      private ChangeType[] AllChangeTypes() {
+         List<ChangeType> types = new List<ChangeType>();
+         foreach (ChangeType type in Enum.GetValues(typeof(ChangeType))) {
+            types.Add(type);
+         }
+         return types.ToArray();
+      }
 
       private PropertySelector<TDescriptor> CreatePropertySelector<TDescriptor>(
          Func<TDescriptor, IVMPropertyDescriptor> propertySelector
