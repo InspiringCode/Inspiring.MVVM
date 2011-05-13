@@ -69,6 +69,7 @@
             key = key ?? new BehaviorKey(keyString);
 
             _propertyConfiguration.Append(key, behaviorInstance);
+            _propertyConfiguration.Enable(key, behaviorInstance);
             return this;
          }
 

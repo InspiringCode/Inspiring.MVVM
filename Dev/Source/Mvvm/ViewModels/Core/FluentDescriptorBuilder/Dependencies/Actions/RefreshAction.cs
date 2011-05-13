@@ -21,10 +21,24 @@
 
       public override void Execute(IViewModel ownerVM, ChangeArgs args) {
          if (TargetPath.IsEmpty) {
-            foreach (var propertySelector in _targetProperties) {
-               var property = propertySelector.GetProperty(ownerVM.Descriptor);
-               ownerVM.Kernel.Refresh(property);
+            RefreshProperties(ownerVM);
+         } else {
+            var viewModels = TargetPath.GetDescendants(ownerVM);
+
+            foreach (var viewModel in viewModels) {
+               if (_targetProperties.Count > 0) {
+                  RefreshProperties(viewModel);
+               } else {
+                  viewModel.Kernel.Refresh();
+               }
             }
+         }
+      }
+
+      private void RefreshProperties(IViewModel ownerVM) {
+         foreach (var propertySelector in _targetProperties) {
+            var property = propertySelector.GetProperty(ownerVM.Descriptor);
+            ownerVM.Kernel.Refresh(property);
          }
       }
    }

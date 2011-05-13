@@ -81,6 +81,8 @@
       public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property) {
          RequireInitialized();
          property.Behaviors.RefreshNext(context);
+
+         this.ViewModelRefreshNext(context, property);
       }
    }
 }

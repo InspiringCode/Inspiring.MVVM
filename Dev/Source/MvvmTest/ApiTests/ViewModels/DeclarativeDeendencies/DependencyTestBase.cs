@@ -1,5 +1,7 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.DeclarativeDeendencies {
    using System;
+   using System.Collections.Generic;
+   using System.Collections.ObjectModel;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
 
@@ -284,16 +286,23 @@
          Behavior,
          IRefreshControllerBehavior {
 
-         private IViewModel _refreshedViewModel;
+         private List<IViewModel> _refreshedViewModels = new List<IViewModel>();
+         private List<IVMPropertyDescriptor> _refreshedProperties = new List<IVMPropertyDescriptor>();
 
-         internal IViewModel RefreshedViewModel { get { return _refreshedViewModel; } }
+         internal ReadOnlyCollection<IViewModel> RefreshedViewModels {
+            get { return _refreshedViewModels.AsReadOnly(); }
+         }
+
+         internal ReadOnlyCollection<IVMPropertyDescriptor> RefreshedProperties {
+            get { return _refreshedProperties.AsReadOnly(); }
+         }
 
          public void Refresh(IBehaviorContext context) {
-            _refreshedViewModel = context.VM;
+            _refreshedViewModels.Add(context.VM);
          }
 
          public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property) {
-
+            _refreshedProperties.Add(property);
          }
       }
 

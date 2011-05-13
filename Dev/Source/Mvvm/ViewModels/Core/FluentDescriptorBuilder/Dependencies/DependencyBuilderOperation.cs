@@ -80,20 +80,12 @@
 
       public void AddValidationAction() {
          _actionCreator = () => {
-            //if (_targetPath.IsEmpty) {
-            //   throw new ArgumentException(ExceptionTexts.IncompleteDependencySetupMissingTargetPath);
-            //}
-
             return new ValidationAction(_targetPath, _targetProperties);
          };
       }
 
       public void AddRefreshAction() {
          _actionCreator = () => {
-            //if (_targetPath.IsEmpty) {
-            //   throw new ArgumentException(ExceptionTexts.IncompleteDependencySetupMissingTargetPath);
-            //}
-
             return new RefreshAction(_targetPath, _targetProperties);
          };
       }
@@ -134,12 +126,6 @@
          where TDescriptor : IVMDescriptor {
          return new OptionalStep(new AnyPropertyStep<TDescriptor>());
       }
-
-      //private void AddAllChangeTypes() {
-      //   foreach (ChangeType type in Enum.GetValues(typeof(ChangeType))) {
-      //      _changesTypes.Add(type);
-      //   }
-      //}
 
       private DeclarativeDependency CreateDependency() {
          if (_actionCreator == null) {
