@@ -17,7 +17,7 @@
       }
 
       [TestMethod]
-      public void NotifyChange_ForOwnProperty_CallsOnPropertyChanged() {
+      public void NotifyChange_WithPropertyChangeForOwnProperty_CallsOnPropertyChanged() {
          var property = PropertyStub.Build();
 
          VMInterface.NotifyChange(ChangeArgs
@@ -29,7 +29,7 @@
       }
 
       [TestMethod]
-      public void NotifyChange_ForOwnViewModel_CallsValidationStateChanged() {
+      public void NotifyChange_WithValidationResultChangeForOwnProperty_CallsValidationResultChanged() {
          var property = PropertyStub.Build();
 
          VMInterface.NotifyChange(ChangeArgs
@@ -38,6 +38,53 @@
          );
 
          Assert.AreEqual(property, VM.LastOnValidationStateChangedInvocation);
+      }
+
+      [TestMethod]
+      public void NotifyChange_WithValidationResultChangeForOwnViewModel_CallsValidationResultChanged() {
+         VMInterface.NotifyChange(ChangeArgs
+            .ValidationResultChanged()
+            .PrependViewModel(VM)
+         );
+
+         Assert.IsTrue(VM.OnValidationStateChangedWasCalled);
+         Assert.IsNull(VM.LastOnValidationStateChangedInvocation);
+      }
+
+      [TestMethod]
+      public void NotifyChange_WithPropertyChangeForDescendantProperty_DoesNothing() {
+         VMInterface.NotifyChange(ChangeArgs
+            .PropertyChanged(PropertyStub.Build())
+            .PrependViewModel(ViewModelStub.Build())
+            .PrependViewModel(VM)
+         );
+
+         Assert.IsNull(VM.LastOnPropertyChangedInvocation);
+         Assert.IsNull(VM.LastOnValidationStateChangedInvocation);
+      }
+
+      [TestMethod]
+      public void NotifyChange_WithValidationResultChangeForDescendantProperty_DoesNothing() {
+         VMInterface.NotifyChange(ChangeArgs
+            .ValidationResultChanged(PropertyStub.Build())
+            .PrependViewModel(ViewModelStub.Build())
+            .PrependViewModel(VM)
+         );
+
+         Assert.IsNull(VM.LastOnPropertyChangedInvocation);
+         Assert.IsNull(VM.LastOnValidationStateChangedInvocation);
+      }
+
+      [TestMethod]
+      public void NotifyChange_WithPropertyChangeForDescendantViewModel_DoesNothing() {
+         VMInterface.NotifyChange(ChangeArgs
+            .ValidationResultChanged()
+            .PrependViewModel(ViewModelStub.Build())
+            .PrependViewModel(VM)
+         );
+
+         Assert.IsNull(VM.LastOnPropertyChangedInvocation);
+         Assert.IsNull(VM.LastOnValidationStateChangedInvocation);
       }
 
       [TestMethod]
@@ -55,6 +102,7 @@
       private class ViewModelMock : ViewModel<IVMDescriptor> {
          public IVMPropertyDescriptor LastOnPropertyChangedInvocation { get; set; }
          public IVMPropertyDescriptor LastOnValidationStateChangedInvocation { get; set; }
+         public bool OnValidationStateChangedWasCalled { get; set; }
 
          protected override void OnPropertyChanged(IVMPropertyDescriptor property) {
             base.OnPropertyChanged(property);
@@ -63,6 +111,7 @@
 
          protected override void OnValidationResultChanged(IVMPropertyDescriptor property) {
             base.OnValidationResultChanged(property);
+            OnValidationStateChangedWasCalled = true;
             LastOnValidationStateChangedInvocation = property;
          }
       }

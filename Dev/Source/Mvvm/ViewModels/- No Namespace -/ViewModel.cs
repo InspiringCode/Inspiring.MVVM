@@ -320,7 +320,7 @@
             bool selfChanged = r.Success;
 
             if (selfChanged && args.ChangeType == ChangeType.ValidationResultChanged) {
-               OnPropertyChanged("Error");
+               OnValidationResultChanged(null);
             }
          }
       }
