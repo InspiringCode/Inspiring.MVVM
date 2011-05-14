@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Common.Paths {
+   using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.MvvmTest.Stubs;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -97,6 +98,40 @@
       }
 
       [TestMethod]
+      public void SelectsOnlyCollectionOf_PathWithSingleViewModelAndCollection_ReturnsSuccess() {
+         var vm = CreateVM();
+         var collection = CreateCollection();
+         var path = Path.Empty.Append(vm).Append(collection);
+         var r = path.SelectsOnlyCollectionOf(vm);
+
+         Assert.IsTrue(r.Success);
+         Assert.AreEqual(vm, r.VM);
+         Assert.AreEqual(collection, r.Collection);
+      }
+
+
+      [TestMethod]
+      public void SelectsOnlyCollectionOf_PathWithTwoViewModelsAndCollection_ReturnsFailure() {
+         var firstVM = CreateVM();
+         var secondVM = CreateVM();
+         var path = Path.Empty.Append(firstVM).Append(secondVM).Append(CreateCollection());
+
+         var r = path.SelectsOnlyCollectionOf(firstVM);
+         Assert.IsFalse(r.Success);
+
+         r = path.SelectsOnlyCollectionOf(secondVM);
+         Assert.IsFalse(r.Success);
+      }
+
+      [TestMethod]
+      public void SelectsOnlyCollectionOf_PathWithCollection_ReturnsFailure() {
+         var path = Path.Empty.Append(CreateCollection());
+         var r = path.SelectsOnlyCollectionOf(CreateVM());
+
+         Assert.IsFalse(r.Success);
+      }
+
+      [TestMethod]
       public void SelectsAncestor_ForTwoViewModel_Succeeds() {
          var path = Path.Empty
             .Append(CreateVM())
@@ -137,6 +172,10 @@
 
       private PropertyStub<string> CreateProperty() {
          return PropertyStub.Of<string>();
+      }
+
+      private IVMCollection CreateCollection() {
+         return VMCollectionStub.Build();
       }
    }
 }

@@ -63,14 +63,21 @@
 
       [TestMethod]
       public void Refresh_OfDelegateProperty_CallsNotifyChangeWhenViewModelInstanceHasChanged() {
-         VM.SetValue(x => x.DelegateProperty, new ChildVM());
-         VM.DelegatePropertyResult = new ChildVM();
+         var oldChild = new ChildVM();
+         var newChild = new ChildVM();
+         VM.DelegatePropertyResult = oldChild;
+         VM.Load(x => x.DelegateProperty);
+
+         VM.DelegatePropertyResult = newChild;
          VM.NotifyChangeInvocations.Clear();
 
          VM.Refresh(x => x.DelegateProperty);
 
          var expectedArgs = ChangeArgs
-            .PropertyChanged(RootVM.ClassDescriptor.DelegateProperty)
+            .ViewModelPropertyChanged(
+               RootVM.ClassDescriptor.DelegateProperty,
+               oldChild,
+               newChild)
             .PrependViewModel(VM);
 
          DomainAssert.AreEqual(

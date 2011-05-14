@@ -12,7 +12,12 @@
       ///   instances.
       /// </summary>
       public ViewModelStub(string description = null)
-         : this(new DescriptorStub(), description) {
+         : this(
+            DescriptorStub
+               .WithBehaviors(new ValidationResultAggregatorStub())
+               .Build(),
+            description
+         ) {
       }
 
       /// <summary>
@@ -32,6 +37,12 @@
 
       public new IVMDescriptor Descriptor {
          get { return base.Descriptor; }
+         set { ((IViewModel)this).Descriptor = value; }
+      }
+
+      public new ValidationResult ValidationResult {
+         get { return base.ValidationResult; }
+         set { ReturnedValidationResults[ValidationResultScope.All] = value; }
       }
 
       public Dictionary<ValidationResultScope, ValidationResult> ReturnedValidationResults {

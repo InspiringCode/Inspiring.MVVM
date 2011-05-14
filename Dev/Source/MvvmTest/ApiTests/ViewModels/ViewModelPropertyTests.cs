@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels {
    using System;
+   using System.Linq;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
@@ -34,6 +35,21 @@
 
          VM.SetValue(x => x.WrapperProperty, null);
          Assert.IsNull(VM.WrapperPropertySource);
+      }
+
+      [TestMethod]
+      public void SetValue_CallsNotifyChange() {
+         var oldChild = new ChildVM();
+         var newChild = new ChildVM();
+         VM.SetValue(x => x.InstanceProperty, oldChild);
+
+         VM.NotifyChangeInvocations.Clear();
+         VM.SetValue(x => x.InstanceProperty, newChild);
+
+         var args = VM.NotifyChangeInvocations.FirstOrDefault();
+         Assert.IsNotNull(args);
+         CollectionAssert.AreEqual(new[] { oldChild }, args.OldItems.ToArray());
+         CollectionAssert.AreEqual(new[] { newChild }, args.NewItems.ToArray());
       }
 
       private ProjectVM CreateVM(

@@ -46,6 +46,13 @@
 
       private class ParameterizedTestCase {
          public ParameterizedTestCase(string name = null, params object[] parameters) {
+            if (name == null) {
+               name = String.Format(
+                  "Test case with parameters {0}",
+                  String.Join(", ", parameters)
+               );
+            }
+
             Name = name;
             Parameters = parameters;
          }

@@ -3,7 +3,8 @@ namespace Inspiring.Mvvm.ViewModels.Core {
 
    internal sealed class DelegateViewModelAccessorBehavior<TValue> :
       CachedAccessorBehavior<TValue>,
-      IRefreshBehavior {
+      IRefreshBehavior
+      where TValue : IViewModel {
 
       private IVMPropertyDescriptor _property;
 
@@ -20,7 +21,13 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          var newValue = GetValue(context);
 
          if (!Object.Equals(newValue, previousValue)) {
-            context.NotifyChange(ChangeArgs.PropertyChanged(_property));
+            var args = ChangeArgs.ViewModelPropertyChanged(
+               _property,
+               previousValue,
+               newValue
+            );
+
+            context.NotifyChange(args);
          }
 
          this.RefreshNext(context);

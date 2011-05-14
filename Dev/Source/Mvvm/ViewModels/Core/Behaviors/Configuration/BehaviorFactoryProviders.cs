@@ -62,7 +62,7 @@
                .RegisterBehavior<LazyRefreshBehavior>(PropertyBehaviorKeys.LazyRefresh)
                .RegisterBehavior<ViewModelPropertyDescendantsValidatorBehavior<TValue>>(PropertyBehaviorKeys.DescendantsValidator)
                .RegisterBehavior<ServiceLocatorValueFactoryBehavior<TValue>>(PropertyBehaviorKeys.ValueFactory)
-               .RegisterBehavior<PropertyChangedNotifierBehavior<TValue>>(PropertyBehaviorKeys.ChangeNotifier);
+               .RegisterBehavior<ViewModelPropertyChangedNotifierBehavior<TValue>>(PropertyBehaviorKeys.ChangeNotifier);
          }
       }
 

@@ -27,12 +27,15 @@
 
       [TestMethod]
       public void Refresh_ViewModelInstanceHasChanged_RaisesNotifyChange() {
-         ValueAccessor.Value = new ChildVM();
+         var oldChild = new ChildVM();
+         var newChild = new ChildVM();
+
+         ValueAccessor.Value = oldChild;
          Behavior.GetValue(Context);
-         ValueAccessor.Value = new ChildVM();
+         ValueAccessor.Value = newChild;
          Behavior.Refresh(Context);
 
-         var expectedChangeArgs = ChangeArgs.PropertyChanged(Property);
+         var expectedChangeArgs = ChangeArgs.ViewModelPropertyChanged(Property, oldChild, newChild);
          DomainAssert.AreEqual(new[] { expectedChangeArgs }, Context.NotifyChangeInvocations);
       }
 

@@ -26,8 +26,17 @@
          this.SetValueNext(context, value);
 
          if (!Object.Equals(value, oldValue)) {
-            context.NotifyChange(ChangeArgs.PropertyChanged(_property));
+            var args = CreateChangeArgs(_property, oldValue, value);
+            context.NotifyChange(args);
          }
+      }
+
+      protected virtual ChangeArgs CreateChangeArgs(
+         IVMPropertyDescriptor property,
+         TValue oldValue,
+         TValue newValue
+      ) {
+         return ChangeArgs.PropertyChanged(_property);
       }
    }
 }

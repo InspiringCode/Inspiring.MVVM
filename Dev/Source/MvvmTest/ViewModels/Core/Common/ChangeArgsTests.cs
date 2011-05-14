@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.Core.Common {
    using System.Linq;
+   using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -48,6 +49,25 @@
          CollectionAssert.AreEqual(oldItems, args.OldItems.ToArray());
          Assert.IsFalse(args.NewItems.Any());
          DomainAssert.AreEqual(Path.Empty.Append(collection), args.ChangedPath);
+      }
+
+      [TestMethod]
+      public void ViewModelPropertyChanged_SetsChangeTypeAndChangedPathToProperty() {
+         var property = PropertyStub.Build();
+         var args = ChangeArgs.ViewModelPropertyChanged(property, null, null);
+
+         Assert.AreEqual(ChangeType.PropertyChanged, args.ChangeType);
+         DomainAssert.AreEqual(Path.Empty.Append(property), args.ChangedPath);
+      }
+
+      [TestMethod]
+      public void ViewModelPropertyChanged_SetsOldAndNewItems() {
+         var property = PropertyStub.Build();
+         var newValue = ViewModelStub.Build();
+         var args = ChangeArgs.ViewModelPropertyChanged(property, null, newValue);
+
+         CollectionAssert.AreEqual(new IViewModel[0], args.OldItems.ToArray());
+         CollectionAssert.AreEqual(new IViewModel[] { newValue }, args.NewItems.ToArray());
       }
    }
 }

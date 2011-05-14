@@ -100,6 +100,27 @@
          ) { ChangedProperty = property };// TODO: Remove
       }
 
+      internal static ChangeArgs ViewModelPropertyChanged(
+         IVMPropertyDescriptor property,
+         IViewModel oldValue,
+         IViewModel newValue
+      ) {
+         var oldItems = oldValue != null ?
+            new[] { oldValue } :
+            null;
+
+         var newItems = newValue != null ?
+            new[] { newValue } :
+            null;
+
+         return new ChangeArgs(
+            ChangeType.PropertyChanged,
+            Path.Empty.Append(property),
+            oldItems: oldItems,
+            newItems: newItems
+         ) { ChangedProperty = property };// TODO: Remove
+      }
+
       internal static ChangeArgs ItemsAdded(IVMCollection collection, IEnumerable<IViewModel> newItems) {
          Contract.Requires(collection != null);
          Contract.Requires(newItems != null);
