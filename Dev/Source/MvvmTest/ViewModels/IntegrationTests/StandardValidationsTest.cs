@@ -38,9 +38,9 @@
             .IsUnique(StringComparison.CurrentCultureIgnoreCase, error)
          );
 
-         var item1 = new ChildVM() { StringProperty = "VAL1" };
-         var item2 = new ChildVM() { StringProperty = "VAL2" };
-         var item3 = new ChildVM() { StringProperty = "VAL3" };
+         var item1 = new ChildVM("Item 1") { StringProperty = "VAL1" };
+         var item2 = new ChildVM("Item 2") { StringProperty = "VAL2" };
+         var item3 = new ChildVM("Item 3") { StringProperty = "VAL3" };
 
          vm.Children.Add(item1);
          vm.Children.Add(item2);
@@ -50,8 +50,8 @@
          item3.StringProperty = "VAL2";
 
          var expectedResult = CreateValidationResult(
-            Error(error).For(item2, x => x.StringProperty),
-            Error(error).For(item3, x => x.StringProperty)
+            Error(error).For(item3, x => x.StringProperty),
+            Error(error).For(item2, x => x.StringProperty)
          );
 
          ValidationAssert.AreEqual(expectedResult, vm.ValidationResult);
@@ -78,8 +78,8 @@
          item2.IntegerProperty = 1;
 
          var expectedResult = CreateValidationResult(
-            Error(error).For(item1, x => x.IntegerProperty),
-            Error(error).For(item2, x => x.IntegerProperty)
+            Error(error).For(item2, x => x.IntegerProperty),
+            Error(error).For(item1, x => x.IntegerProperty)
          );
 
          ValidationAssert.AreEqual(expectedResult, vm.ValidationResult);
@@ -206,12 +206,12 @@
             b.EnableParentViewModelValidation();
          });
 
-         public ChildVM()
-            : this(ClassDescriptor) {
+         public ChildVM(string description = null)
+            : this(ClassDescriptor, description) {
          }
 
-         public ChildVM(ChildVMDescriptor descriptor)
-            : base(descriptor) {
+         public ChildVM(ChildVMDescriptor descriptor, string description = null)
+            : base(descriptor, description) {
          }
 
          public string StringProperty {

@@ -34,6 +34,7 @@
       public static readonly BehaviorKey ValidationExecutor = Key(() => ValidationExecutor);
       public static readonly BehaviorKey ValidationResultAggregatorCache = Key(() => ValidationResultAggregatorCache);
       public static readonly BehaviorKey ValidationResultAggregator = Key(() => ValidationResultAggregator);
+      public static readonly BehaviorKey FastValidationResultAggregator = Key(() => FastValidationResultAggregator);
       public static readonly BehaviorKey UndoRoot = Key(() => UndoRoot);
       public static readonly BehaviorKey TypeDescriptorProvider = Key(() => TypeDescriptorProvider);
       public static readonly BehaviorKey DeclarativeDependencies = Key(() => DeclarativeDependencies);

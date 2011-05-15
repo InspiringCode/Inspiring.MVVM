@@ -9,7 +9,7 @@
 
    [TestClass]
    public class PerformanceTests : TestBase {
-      private const int EmploymentTypeCount = 5;
+      private const int EmploymentTypeCount = 1;
       private const int EmployeeCount = 1;
       private static readonly List<EmploymentType> AllEmploymentTypes = GenerateEmploymentTypes(EmploymentTypeCount);
       private static readonly Random Random = new Random();
