@@ -18,9 +18,14 @@
             context.NotifyChange(a);
          }
 
-         if (newItems.Any()) {
-            var a = ChangeArgs.ItemsAdded(c, newItems);
+         if (args.Type == CollectionChangeType.Populated) {
+            var a = ChangeArgs.CollectionPopulated(c);
             context.NotifyChange(a);
+         } else {
+            if (newItems.Any()) {
+               var a = ChangeArgs.ItemsAdded(c, newItems);
+               context.NotifyChange(a);
+            }
          }
 
          this.HandleChangeNext(context, args);

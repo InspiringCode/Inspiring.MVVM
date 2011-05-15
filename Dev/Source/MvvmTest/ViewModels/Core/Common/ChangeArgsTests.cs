@@ -39,6 +39,22 @@
          DomainAssert.AreEqual(Path.Empty.Append(collection), args.ChangedPath);
       }
 
+
+      [TestMethod]
+      public void CollectionPopulated_SetsChangeTypeAndNewItemsAndChangedPathToCollection() {
+         var collection = VMCollectionStub
+            .WithItems(ViewModelStub.Build())
+            .Build();
+
+         var newItems = collection.ToArray();
+         var args = ChangeArgs.CollectionPopulated(collection);
+
+         Assert.AreEqual(ChangeType.CollectionPopulated, args.ChangeType);
+         CollectionAssert.AreEqual(newItems, args.NewItems.ToArray());
+         Assert.IsFalse(args.OldItems.Any());
+         DomainAssert.AreEqual(Path.Empty.Append(collection), args.ChangedPath);
+      }
+
       [TestMethod]
       public void ItemsRemoved_SetsChangedPathToEmpty() {
          var collection = VMCollectionStub.Build();

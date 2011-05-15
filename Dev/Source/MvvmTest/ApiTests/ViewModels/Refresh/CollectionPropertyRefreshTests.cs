@@ -82,7 +82,7 @@
                .ItemsRemoved(VM.WrapperProperty, oldItems)
                .PrependViewModel(VM),
             ChangeArgs
-               .ItemsAdded(VM.WrapperProperty, newItems)
+               .CollectionPopulated(VM.WrapperProperty)
                .PrependViewModel(VM)
          };
 
@@ -122,7 +122,7 @@
                .ItemsRemoved(VM.PopulatedProperty, oldItems)
                .PrependViewModel(VM),
             ChangeArgs
-               .ItemsAdded(VM.PopulatedProperty, newItems)
+               .CollectionPopulated(VM.PopulatedProperty)
                .PrependViewModel(VM)
          };
 

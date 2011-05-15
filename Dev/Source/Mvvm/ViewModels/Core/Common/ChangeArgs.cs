@@ -8,6 +8,7 @@
    public enum ChangeType {
       PropertyChanged,
       ValidationResultChanged,
+      CollectionPopulated,
       AddedToCollection,
       RemovedFromCollection
    }
@@ -119,6 +120,18 @@
             oldItems: oldItems,
             newItems: newItems
          ) { ChangedProperty = property };// TODO: Remove
+      }
+
+      internal static ChangeArgs CollectionPopulated(IVMCollection collection) {
+         Contract.Requires(collection != null);
+
+         var newItems = (IEnumerable<IViewModel>)collection;
+
+         return new ChangeArgs(
+            ChangeType.CollectionPopulated,
+            Path.Empty.Append(collection),
+            newItems: newItems
+         );
       }
 
       internal static ChangeArgs ItemsAdded(IVMCollection collection, IEnumerable<IViewModel> newItems) {

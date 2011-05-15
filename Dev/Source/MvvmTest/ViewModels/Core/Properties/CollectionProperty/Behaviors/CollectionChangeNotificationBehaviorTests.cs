@@ -78,7 +78,7 @@
 
          AssertChangeArgs(
             ChangeArgs.ItemsRemoved(Collection, oldItems: oldItems),
-            ChangeArgs.ItemsAdded(Collection, newItems: newItems)
+            ChangeArgs.CollectionPopulated(Collection)
          );
       }
 
