@@ -98,6 +98,7 @@
       IOptionsExpression<T> PropertyChanged();
       IOptionsExpression<T> With(IValueConverter converter, object parameter = null);
       IOptionsExpression<T> FallbackValue(object value);
+      IOptionsExpression<T> StringFormat(string format);
    }
 
    public interface IBindCollectionExpression<TDescriptor> {
