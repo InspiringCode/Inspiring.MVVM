@@ -67,6 +67,52 @@
          //Console.WriteLine("Time [ms]: " + sw.ElapsedMilliseconds);
       }
 
+      [TestMethod]
+      public void TestValidationPerformanceOfSimpleList() {
+         var itemCount = 1;
+         var itemsSource = new List<SimpleListItemVM>(itemCount);
+
+         PerformanceTest.MeasureCodeBlock(
+            "Create and add item VMs to source list",
+            () => {
+               for (int i = 0; i < itemCount; i++) {
+                  itemsSource.Add(new SimpleListItemVM() { StringProperty = "Item " + i });
+               }
+            }
+         );
+
+         SimpleListVM list = null;
+
+         PerformanceTest.MeasureCodeBlock(
+            "Create and set source of list VM",
+            () => {
+               list = new SimpleListVM();
+               list.ItemsSource = itemsSource;
+            }
+         );
+
+         PerformanceTest.MeasureCodeBlock(
+            "First access of list",
+            () => {
+               list.Load(x => x.Items);
+            }
+         );
+
+         PerformanceTest.MeasureCodeBlock(
+            "Revalidate AllDescendants",
+            () => {
+               list.Revalidate(ValidationScope.SelfAndAllDescendants);
+            }
+         );
+
+         PerformanceTest.MeasureCodeBlock(
+            "Revalidate AllDescendants second time",
+            () => {
+               list.Revalidate(ValidationScope.SelfAndAllDescendants);
+            }
+         );
+      }
+
       private static IEnumerable<Employee> GenerateEmployees() {
          return Enumerable
             .Range(1, EmployeeCount)
@@ -91,6 +137,89 @@
 
          return list;
       }
+
+      private class PerformanceTest {
+         public static void MeasureCodeBlock(Action action) {
+            MeasureCodeBlock(null, action);
+         }
+
+         public static void MeasureCodeBlock(string description, Action action) {
+            var sw = Stopwatch.StartNew();
+            action();
+            sw.Stop();
+
+            if (description != null) {
+               description = "\"" + description + "\"";
+            }
+
+            Console.WriteLine(
+               "Code block {0} took {1} ms.",
+               description,
+               sw.ElapsedMilliseconds
+            );
+         }
+      }
+
+
+      private class SimpleListVM : ViewModel<SimpleListVMDescriptor> {
+         public static readonly SimpleListVMDescriptor ClassDescriptor = VMDescriptorBuilder
+            .OfType<SimpleListVMDescriptor>()
+            .For<SimpleListVM>()
+            .WithProperties((d, b) => {
+               var v = b.GetPropertyBuilder();
+               d.Items = v
+                  .Collection
+                  .PopulatedWith(x => x.ItemsSource)
+                  .With(SimpleListItemVM.ClassDescriptor);
+            })
+            .WithValidators(b => {
+               b.CheckCollection(x => x.Items, x => x.StringProperty).IsUnique("Duplicate item");
+            })
+            .Build();
+
+         public SimpleListVM()
+            : base(ClassDescriptor) {
+            ItemsSource = new List<SimpleListItemVM>();
+         }
+
+         public IVMCollection<SimpleListItemVM> Items {
+            get { return GetValue(Descriptor.Items); }
+         }
+
+         public IEnumerable<SimpleListItemVM> ItemsSource { get; set; }
+      }
+
+      private class SimpleListVMDescriptor : VMDescriptor {
+         public IVMPropertyDescriptor<IVMCollection<SimpleListItemVM>> Items { get; set; }
+      }
+
+      private class SimpleListItemVM : ViewModel<SimpleListItemVMDescriptor> {
+         public static readonly SimpleListItemVMDescriptor ClassDescriptor = VMDescriptorBuilder
+            .OfType<SimpleListItemVMDescriptor>()
+            .For<SimpleListItemVM>()
+            .WithProperties((d, b) => {
+               var v = b.GetPropertyBuilder();
+               d.StringProperty = v.Property.Of<string>();
+            })
+            .WithValidators(b => {
+               b.EnableParentValidation(x => x.StringProperty);
+            })
+            .Build();
+
+         public SimpleListItemVM()
+            : base(ClassDescriptor) {
+         }
+
+         public string StringProperty {
+            get { return GetValue(Descriptor.StringProperty); }
+            set { SetValue(Descriptor.StringProperty, value); }
+         }
+      }
+
+      private class SimpleListItemVMDescriptor : VMDescriptor {
+         public IVMPropertyDescriptor<string> StringProperty { get; set; }
+      }
+
 
 
       private class EmployeeListVM : ViewModel<EmployeeListVMDescriptor> {
