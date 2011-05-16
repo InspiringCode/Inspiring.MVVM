@@ -212,6 +212,13 @@
          return this;
       }
 
+      public IOptionsExpression<T> StringFormat(string format) {
+         BinderExpression.ExposeContext(this, c => {
+            c.Binding.StringFormat = format;
+         });
+
+         return this;
+      }
 
       public IOptionsExpression<T> FallbackValue(object value) {
          BinderExpression.ExposeContext(this, c => {
