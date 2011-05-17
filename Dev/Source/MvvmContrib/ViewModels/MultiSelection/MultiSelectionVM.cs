@@ -45,6 +45,26 @@
 
       public ICollection<TItemSource> SelectedSourceItems {
          get { return GetValue(Descriptor.SelectedSourceItems); }
+         set {
+            var selectedSourceItems = GetValue(Descriptor.SelectedSourceItems);
+            selectedSourceItems.Clear();
+
+            if (value != null) {
+               var newItemsContainedByAllSourceItems = value
+                  .All(x => AllSourceItems.Contains(x));
+
+               if (!newItemsContainedByAllSourceItems) {
+                  throw new ArgumentException(ExceptionTexts.SourceItemNotContainedByAllSourceItems);
+               }
+
+               foreach (var item in value) {
+                  selectedSourceItems.Add(item);
+               }
+            }
+
+            Kernel.Refresh(Descriptor.AllItems);
+            Kernel.Refresh(Descriptor.SelectedItems);
+         }
       }
 
       public IVMCollection<TItemVM> AllItems {

@@ -7,9 +7,9 @@
       where TItemVM : IViewModel {
 
       public IVMPropertyDescriptor<IEnumerable<TItemSource>> AllSourceItems { get; set; }
-      public IVMPropertyDescriptor<ICollection<TItemSource>> SelectedSourceItems { get; set; }
+      internal IVMPropertyDescriptor<ICollection<TItemSource>> SelectedSourceItems { get; set; }
       public IVMPropertyDescriptor<IVMCollection<TItemVM>> AllItems { get; set; }
-      public IVMPropertyDescriptor<IVMCollection<TItemVM>> SelectedItems { get; set; }
+      internal IVMPropertyDescriptor<IVMCollection<TItemVM>> SelectedItems { get; set; }
    }
 
    public class MultiSelectionVMDescriptor<TItemSource> :

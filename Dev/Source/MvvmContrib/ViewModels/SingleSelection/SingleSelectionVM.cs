@@ -43,7 +43,17 @@
 
       public TItemSource SelectedSourceItem {
          get { return GetValue(Descriptor.SelectedSourceItem); }
-         set { SetValue(Descriptor.SelectedSourceItem, value); }
+         set {
+            if (value != null && !AllSourceItems.Contains(value)) {
+               throw new ArgumentException(ExceptionTexts.SourceItemNotContainedByAllSourceItems);
+            }
+
+            SetValue(Descriptor.SelectedSourceItem, value);
+
+            Kernel.Refresh(Descriptor.AllItems);
+            Kernel.Refresh(Descriptor.SelectedItem);
+
+         }
       }
 
       public IVMCollection<TItemVM> AllItems {

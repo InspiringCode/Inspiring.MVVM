@@ -129,6 +129,9 @@
   <data name="NoValue" xml:space="preserve">
     <value>No value.</value>
   </data>
+  <data name="SourceItemNotContainedByAllSourceItems" xml:space="preserve">
+    <value>The source item to set have to be contained by all source items.</value>
+  </data>
   <data name="TypeNotEnum" xml:space="preserve">
     <value>T must be an enumeration.</value>
   </data>

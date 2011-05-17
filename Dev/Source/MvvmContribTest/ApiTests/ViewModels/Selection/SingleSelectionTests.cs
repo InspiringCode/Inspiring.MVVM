@@ -148,6 +148,39 @@
          }
       }
 
+      [TestMethod]
+      public void SetSelectedSourceItem_ThatIsNotContainedByAllSourceItems_ThrowsException() {
+         var vm = CreateUserVMWithItems();
+         var notContainedSourceItem = new Department("notContainedDepartment");
+
+         AssertHelper.Throws<ArgumentException>(() => {
+            vm.Department.SelectedSourceItem = notContainedSourceItem;
+         });
+      }
+
+      [TestMethod]
+      public void SetSelectedSourceItem_ThatIsContainedByAllSourceItems_SetsSelectedItem() {
+         var vm = CreateUserVMWithItems();
+
+         vm.Department.SelectedSourceItem = Department1;
+
+         var expectedSelectedItem = vm
+            .Department
+            .AllItems
+            .Single(y => y.Source.Equals(Department1));
+
+         Assert.AreSame(expectedSelectedItem, vm.Department.SelectedItem);
+      }
+
+      [TestMethod]
+      public void SetSelectedSourceItem_ToNull_SetsSelectedItemToNull() {
+         var vm = CreateUserVMWithItems();
+
+         vm.Department.SelectedSourceItem = null;
+
+         Assert.IsNull(vm.Department.SelectedSourceItem);
+      }
+
       /// <summary>
       ///   Asserts that the source departments of the 'AllItems' property of the
       ///   selection VM are equal to the given source items.

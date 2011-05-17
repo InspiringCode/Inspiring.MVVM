@@ -14,12 +14,14 @@
    public class MultiSelectionTests : TestBase {
       private Group Group1 { get; set; }
       private Group Group2 { get; set; }
+      private Group Group3 { get; set; }
       private Group InactiveGroup { get; set; }
 
       [TestInitialize]
       public void Setup() {
          Group1 = new Group("Group 1");
          Group2 = new Group("Group 2");
+         Group3 = new Group("Group 3");
          InactiveGroup = new Group("Inactive Group", isActive: false);
       }
 
@@ -287,6 +289,43 @@
          }
       }
 
+      [TestMethod]
+      public void SetSelectedSourceItems_SetsSelectedItems() {
+         UserVM vm = CreateUserVMWithItems();
+
+         var newSelectedSourceItems = new Group[] { Group2, Group3 };
+
+         vm.Groups.SelectedSourceItems = newSelectedSourceItems;
+
+         var expectedSelectedItems = vm.Groups
+            .AllItems
+            .Where(x => x.Source.Equals(Group2) || x.Source.Equals(Group3))
+            .ToArray();
+
+         CollectionAssert.AreEquivalent(expectedSelectedItems, vm.Groups.SelectedItems);
+      }
+
+      [TestMethod]
+      public void SetSelectedSourceItems_ToNull_ClearsSelectedItems() {
+         UserVM vm = CreateUserVMWithItems();
+
+         vm.Groups.SelectedSourceItems = null;
+
+         Assert.AreEqual(0, vm.Groups.SelectedItems.Count);
+      }
+
+      [TestMethod]
+      public void SetSelectedSourceItems_ThatAreNotContainedByAllSourceItems_ThrowsException() {
+         UserVM vm = CreateUserVMWithItems();
+
+         var notContainedGroup = new Group("notContainedGroup");
+         var newSelectedSourceItems = new Group[] { notContainedGroup, Group3 };
+
+         AssertHelper.Throws<ArgumentException>(() => {
+            vm.Groups.SelectedSourceItems = newSelectedSourceItems;
+         });
+      }
+
       /// <summary>
       ///   Asserts that the source groups of the 'AllItems' property of the
       ///   selection VM are equal to the given source items.
@@ -329,7 +368,7 @@
 
       private UserVM CreateUserVMWithItems() {
          return CreateUserVM(
-            allGroups: new[] { Group1, Group2, InactiveGroup },
+            allGroups: new[] { Group1, Group2, Group3, InactiveGroup },
             selectedGroups: new[] { Group1, Group2 }
          );
       }
