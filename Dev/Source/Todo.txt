@@ -7,5 +7,6 @@
 // TODO: Make CollectionResultCache tests better and also test view model validation case...
 // TODO: Cleanup Validation error creations and assertions in tests.
 // TODO: Declarative dependendcies: rethink collection change handling
-// TODO: Behavior configuration: think of poition in chain when manually adding behaviors
+// TODO: Behavior configuration: think of position in chain when manually adding behaviors
 // TODO: Declarative dependendcies: Make ValidationScope adjustable
+// TODO: Undo: Invalid Value handling (DisplayValue)
