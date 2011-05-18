@@ -7,7 +7,7 @@
 
    public sealed class ValidationController {
       private readonly List<CollectionResult> _cachedCollectionResults = new List<CollectionResult>();
-      private readonly Queue<RevalidationRequest> _validationQueue = new Queue<RevalidationRequest>();
+      private readonly ValidationQueue _validationQueue = new ValidationQueue();
       private readonly List<RevalidationRequest> _currentlyValidating = new List<RevalidationRequest>();
 
       public void RequestPropertyRevalidation(
@@ -26,7 +26,7 @@
       }
 
       public void ProcessPendingValidations() {
-         while (_validationQueue.Any()) {
+         while (_validationQueue.HasRequests) {
             // We dequeue the request after the revalidation to avoid that the same
             // request that is currently processed is added to the queue again.
 
@@ -123,7 +123,7 @@
       }
 
       private void EnqueueRevalidation(RevalidationRequest target) {
-         if (!_validationQueue.Contains(target) && !_currentlyValidating.Contains(target)) {
+         if (!_currentlyValidating.Contains(target)) {
             _validationQueue.Enqueue(target);
          }
       }
@@ -166,6 +166,33 @@
             return Property != null ?
                String.Format("{{RevalidationRequest for {0}.{1}}}", VM, Property) :
                String.Format("{{RevalidationRequest for {0}}}", VM);
+         }
+      }
+
+      private class ValidationQueue {
+         private HashSet<RevalidationRequest> _set = new HashSet<RevalidationRequest>();
+         private Queue<RevalidationRequest> _queue = new Queue<RevalidationRequest>();
+
+         public bool HasRequests {
+            get { return _queue.Count > 0; }
+         }
+
+         public void Enqueue(RevalidationRequest request) {
+            if (_set.Contains(request)) {
+               return;
+            }
+
+            _set.Add(request);
+            _queue.Enqueue(request);
+         }
+
+         public RevalidationRequest Peek() {
+            return _queue.Peek();
+         }
+
+         public void Dequeue() {
+            var r = _queue.Dequeue();
+            _set.Remove(r);
          }
       }
    }
