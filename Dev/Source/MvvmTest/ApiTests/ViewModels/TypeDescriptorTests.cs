@@ -3,6 +3,7 @@
    using System.ComponentModel;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -89,6 +90,22 @@
          Assert.AreEqual(newPropertyValue, actualValueInCallback, "GetValue should already return the new property value in the callback.");
       }
 
+      [TestMethod]
+      public void GetProperties_WhenViewModelTypeWithClassDescriptorAttributeIsPassed_ReturnsProperties() {
+         var actualProperties = TypeDescriptor.GetProperties(typeof(ViewModelWithClassDescriptorAttributeVM));
+         
+         ICustomTypeDescriptor customTypeDescriptor = new ViewModelWithClassDescriptorAttributeVM();
+         var expectedProperties = customTypeDescriptor.GetProperties();
+         
+         Assert.AreSame(expectedProperties, actualProperties);
+      }
+
+      [TestMethod]
+      public void GetProperties_WhenViewModelTypeWithoutClassDescriptorAttributeIsPassed_ReturnsEmptyPropertyCollection() {
+         var actualProperties = TypeDescriptor.GetProperties(typeof(MovieReviewVM));
+         Assert.AreEqual(0, actualProperties.Count);
+      }
+
       /// <summary>
       ///   Calls 'TypeDescriptor.GetProperties' and returns the 'PropertyDescriptor' 
       ///   with the specified 'propertyName'.
@@ -161,6 +178,27 @@
       private sealed class MovieReviewVMDescriptor : VMDescriptor {
          public IVMPropertyDescriptor<int> Rating { get; set; }
          public IVMPropertyDescriptor<string> Comment { get; set; }
+      }
+
+
+      private class ViewModelWithClassDescriptorAttributeVM : ViewModel<ViewModelWithClassDescriptorAttributeVMDescriptor> {
+         [ClassDescriptor]
+         public static readonly ViewModelWithClassDescriptorAttributeVMDescriptor ClassDescriptor = VMDescriptorBuilder
+            .OfType<ViewModelWithClassDescriptorAttributeVMDescriptor>()
+            .For<ViewModelWithClassDescriptorAttributeVM>()
+            .WithProperties((d, b) => {
+               var v = b.GetPropertyBuilder();
+               d.DummyProperty = v.Property.Of<string>();
+            })
+            .Build();
+
+         public ViewModelWithClassDescriptorAttributeVM()
+            : base(ClassDescriptor) {
+         }
+      }
+
+      private class ViewModelWithClassDescriptorAttributeVMDescriptor : VMDescriptor {
+         public IVMPropertyDescriptor<string> DummyProperty { get; set; }
       }
    }
 }

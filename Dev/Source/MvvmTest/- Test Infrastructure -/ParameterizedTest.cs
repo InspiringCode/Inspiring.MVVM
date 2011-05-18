@@ -10,15 +10,26 @@
    internal sealed class ParameterizedTest {
       private readonly List<ParameterizedTestCase> _testCases = new List<ParameterizedTestCase>();
 
+      public static ITestCaseBuilder<T> TestCase<T>(T firstParameter) {
+         return new TestCaseBuilder<T>(new ParameterizedTest())
+            .TestCase(firstParameter);
+      }
+
       public static ITestCaseBuilder<T> TestCase<T>(string testCaseName, T firstParameter) {
          return new TestCaseBuilder<T>(new ParameterizedTest())
             .TestCase(testCaseName, firstParameter);
       }
 
-      public static ITestCaseBuilder<T> TestCase<T>(T firstParameter) {
-         return new TestCaseBuilder<T>(new ParameterizedTest())
-            .TestCase(firstParameter);
+      public static ITestCaseBuilder<T1, T2> TestCase<T1, T2>(T1 firstParameter, T2 secondParameter) {
+         return new TestCaseBuilder<T1, T2>(new ParameterizedTest())
+            .TestCase(firstParameter, secondParameter);
       }
+
+      public static ITestCaseBuilder<T1, T2> TestCase<T1, T2>(string testCaseName, T1 firstParameter, T2 secondParameter) {
+         return new TestCaseBuilder<T1, T2>(new ParameterizedTest())
+            .TestCase(testCaseName, firstParameter, secondParameter);
+      }
+
 
       private void AddCase(string name, params object[] parameters) {
          AddCase(new ParameterizedTestCase(name, parameters));
@@ -118,11 +129,39 @@
             _test.RunTests(testAction);
          }
       }
+
+      private class TestCaseBuilder<T1, T2> : ITestCaseBuilder<T1, T2> {
+         private readonly ParameterizedTest _test;
+
+         public TestCaseBuilder(ParameterizedTest test) {
+            _test = test;
+         }
+
+         public ITestCaseBuilder<T1, T2> TestCase(string testCaseName, T1 firstParameter, T2 secondParameter) {
+            _test.AddCase(testCaseName, firstParameter, secondParameter);
+            return this;
+         }
+
+         public ITestCaseBuilder<T1, T2> TestCase(T1 firstParameter, T2 secondParameter) {
+            _test.AddCase(null, firstParameter, secondParameter);
+            return this;
+         }
+
+         public void Run(Action<T1, T2> testAction) {
+            _test.RunTests(testAction);
+         }
+      }
    }
 
    internal interface ITestCaseBuilder<T> {
       ITestCaseBuilder<T> TestCase(string testCaseName, T firstParameter);
       ITestCaseBuilder<T> TestCase(T firstParameter);
       void Run(Action<T> testCode);
+   }
+
+   internal interface ITestCaseBuilder<T1, T2> {
+      ITestCaseBuilder<T1, T2> TestCase(string testCaseName, T1 firstParameter, T2 secondParameter);
+      ITestCaseBuilder<T1, T2> TestCase(T1 firstParameter, T2 secondParameter);
+      void Run(Action<T1, T2> testCode);
    }
 }

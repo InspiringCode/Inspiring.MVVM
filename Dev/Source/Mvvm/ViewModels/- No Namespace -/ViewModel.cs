@@ -12,8 +12,9 @@
       public static readonly FieldDefinitionGroup GeneralFieldGroup = new FieldDefinitionGroup();
    }
 
+   [TypeDescriptionProvider(typeof(ViewModelTypeDescriptionProvider))]
    public abstract class ViewModel<TDescriptor> :
-      ViewModelTypeDescriptor,
+      ViewModelWithTypeDescriptor,
       IViewModel,
       IViewModel<TDescriptor>,
       IViewModelExpression<TDescriptor>,

@@ -245,6 +245,7 @@
     <Compile Include="ViewModels\Core\Common\Paths\PathStep.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\Definition\PathTerminationStep.cs" />
     <Compile Include="ViewModels\Core\ViewModel\Descriptor\IVMDescriptor.cs" />
+    <Compile Include="ViewModels\Core\ViewModel\TypeDescriptor\ClassDescriptorAttribute.cs" />
     <Compile Include="ViewModels\Core\ViewModel\TypeDescriptor\ViewModelPropertyDescriptor.cs" />
     <Compile Include="ViewModels\Core\Undo\Actions\CollectionModificationAction.cs" />
     <Compile Include="ViewModels\Core\Undo\Actions\InitialPseudoAction.cs" />
@@ -307,7 +308,9 @@
     <Compile Include="ViewModels\Core\Properties\CollectionProperty\Behaviors\SynchronizerCollectionBehavior.cs" />
     <Compile Include="ViewModels\- No Namespace -\IVMCollection.cs" />
     <Compile Include="ViewModels\Core\Properties\CollectionProperty\VMCollection.cs" />
+    <Compile Include="ViewModels\Core\ViewModel\TypeDescriptor\ViewModelTypeDescriptionProvider.cs" />
     <Compile Include="ViewModels\Core\ViewModel\TypeDescriptor\ViewModelTypeDescriptor.cs" />
+    <Compile Include="ViewModels\Core\ViewModel\TypeDescriptor\ViewModelWithTypeDescriptor.cs" />
     <Compile Include="ViewModels\Core\Common\ChangeArgs.cs" />
     <Compile Include="ViewModels\Core\Behaviors\IBehaviorInitializationBehavior.cs" />
     <Compile Include="ViewModels\Core\Behaviors\BehaviorInitializationContext.cs" />
@@ -316,8 +319,8 @@
     <Compile Include="ViewModels\Core\Properties\Common\BehaviorInterfaces\IMutabilityCheckerBehavior.cs" />
     <Compile Include="ViewModels\Core\Properties\Common\Behaviors\ServiceLocatorValueFactoryBehavior.cs" />
     <Compile Include="ViewModels\Core\ViewModel\TypeDescriptor\SimplePropertyDescriptor.cs" />
-    <Compile Include="ViewModels\Core\ViewModel\TypeDescriptor\PropertyDescriptorProviderBehavior.cs" />
-    <Compile Include="ViewModels\Core\ViewModel\TypeDescriptor\TypeDescriptorProviderBehavior.cs" />
+    <Compile Include="ViewModels\Core\ViewModel\TypeDescriptor\Behaviors\PropertyDescriptorProviderBehavior.cs" />
+    <Compile Include="ViewModels\Core\ViewModel\TypeDescriptor\Behaviors\TypeDescriptorProviderBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationResult.cs" />
     <Compile Include="ViewModels\Core\Behaviors\IBehaviorContext.cs" />
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\VMDescriptorBuilder.cs" />
