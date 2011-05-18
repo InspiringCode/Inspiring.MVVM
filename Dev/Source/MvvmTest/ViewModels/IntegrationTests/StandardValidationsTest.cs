@@ -1,5 +1,7 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
    using System;
+   using System.Collections.Generic;
+   using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -147,6 +149,88 @@
          ValidationAssert.ErrorMessages(viewModelOnlyResult, error);
       }
 
+      [TestMethod]
+      public void IsUnique_WithCustomDuplicateKey_InvalidatesViewModel() {
+         var error = "Duplicate item";
+         var vm = CreateParent(b => b
+            .CheckCollection(x => x.Children)
+            .IsUnique(x => Tuple.Create(x.IntegerProperty, x.StringProperty), error)
+         );
+
+         var item1 = new ChildVM() { IntegerProperty = 1, StringProperty = "Item1" };
+         var item2 = new ChildVM() { IntegerProperty = 2, StringProperty = "Item2" };
+         var item3 = new ChildVM() { IntegerProperty = 3, StringProperty = "Item3" };
+
+         vm.Children.Add(item1);
+         vm.Children.Add(item2);
+         vm.Children.Add(item3);
+
+         Assert.IsTrue(vm.IsValid);
+
+         item2.IntegerProperty = 1;
+         item2.StringProperty = "Item1";
+
+         var expectedResult = CreateValidationResult(
+           Error(error).For(item2),
+           Error(error).For(item1)
+         );
+
+         ValidationAssert.AreEqual(expectedResult, vm.ValidationResult);
+      }
+
+      [TestMethod]
+      public void IsUnique_WithCustomDuplicateEqualityComparer_InvalidatesViewModel() {
+         var error = "Duplicate item";
+         var vm = CreateParent(b => b
+            .CheckCollection(x => x.Children)
+            .IsUnique(new CustomChildVMComparer(), error)
+         );
+
+         var item1 = new ChildVM() { IntegerProperty = 1, StringProperty = "Item1" };
+         var item2 = new ChildVM() { IntegerProperty = 2, StringProperty = "Item2" };
+         var item3 = new ChildVM() { IntegerProperty = 3, StringProperty = "Item3" };
+
+         vm.Children.Add(item1);
+         vm.Children.Add(item2);
+         vm.Children.Add(item3);
+
+         Assert.IsTrue(vm.IsValid);
+
+         item2.IntegerProperty = 1;
+         item2.StringProperty = "Item1";
+
+         var expectedResult = CreateValidationResult(
+           Error(error).For(item2),
+           Error(error).For(item1)
+         );
+
+         ValidationAssert.AreEqual(expectedResult, vm.ValidationResult);
+      }
+
+      [TestMethod]
+      public void IsUnique_WithDuplicateItemViewModels_InvalidatesDuplicateItems() {
+         var error = "Duplicate item";
+         var vm = CreateParent(b => b
+            .CheckCollection(x => x.Children)
+            .IsUnique(error)
+         );
+
+         var item1 = new ChildVM() { IntegerProperty = 1, StringProperty = "Item1" };
+
+         vm.Children.Add(item1);
+
+         Assert.IsTrue(vm.IsValid);
+
+         vm.Children.Add(item1);
+
+         var expectedResult = CreateValidationResult(
+           Error(error).For(item1),
+           Error(error).For(item1)
+         );
+
+         ValidationAssert.AreEqual(expectedResult, vm.ValidationResult);
+      }
+
       private static ParentVM CreateParent(
          Action<RootValidatorBuilder<ParentVM, ParentVM, ParentVMDescriptor>> validatorConfigurationAction,
          ChildVMDescriptor childDescriptor = null
@@ -232,6 +316,22 @@
       private class ChildVMDescriptor : VMDescriptor {
          public IVMPropertyDescriptor<string> StringProperty { get; set; }
          public IVMPropertyDescriptor<int> IntegerProperty { get; set; }
+      }
+
+      private class CustomChildVMComparer : IEqualityComparer<ChildVM> {
+
+         public bool Equals(ChildVM x, ChildVM y) {
+            return x.IntegerProperty == y.IntegerProperty &&
+                   x.StringProperty == x.StringProperty;
+         }
+
+         public int GetHashCode(ChildVM obj) {
+            return HashCodeService.CalculateHashCode(
+               obj,
+               obj.IntegerProperty,
+               obj.StringProperty
+            );
+         }
       }
    }
 }

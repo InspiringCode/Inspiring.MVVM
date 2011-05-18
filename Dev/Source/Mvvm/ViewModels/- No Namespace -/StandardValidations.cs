@@ -78,6 +78,60 @@
          });
       }
 
+      public static void IsUnique<TOwnerVM, TItemVM, TKey>(
+         this CollectionValidatorBuilder<TOwnerVM, TItemVM> builder,
+         Func<TItemVM, TKey> keySelector,
+         string errorMessage
+      )
+         where TOwnerVM : IViewModel
+         where TItemVM : IViewModel {
+
+         builder.Custom(args => {
+            args
+               .Items
+               .GroupBy(keySelector)
+               .Where(g => g.Count() > 1)
+               .SelectMany(g => g)
+               .ForEach(item => {
+                  args.AddError(item, errorMessage);
+               });
+         });
+      }
+
+      public static void IsUnique<TOwnerVM, TItemVM>(
+         this CollectionValidatorBuilder<TOwnerVM, TItemVM> builder,
+         IEqualityComparer<TItemVM> comparer,
+         string errorMessage
+      )
+         where TOwnerVM : IViewModel
+         where TItemVM : IViewModel {
+
+         builder.Custom(args => {
+            args
+               .Items
+               .GroupBy(x => x, comparer)
+               .Where(g => g.Count() > 1)
+               .SelectMany(g => g)
+               .ForEach(item => {
+                  args.AddError(item, errorMessage);
+               });
+         });
+      }
+
+      public static void IsUnique<TOwnerVM, TItemVM>(
+         this CollectionValidatorBuilder<TOwnerVM, TItemVM> builder,
+         string errorMessage
+      )
+         where TOwnerVM : IViewModel
+         where TItemVM : IViewModel {
+
+         IsUnique(
+            builder,
+            x => x,
+            errorMessage
+         );
+      }
+
       private static IEqualityComparer<string> GetStringComparer(StringComparison comparisonType) {
          switch (comparisonType) {
             case StringComparison.CurrentCulture:
