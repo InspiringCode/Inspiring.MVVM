@@ -10,7 +10,7 @@
    ///   
    /// </summary>
    public class VMCollection<TItemVM> :
-      BindingList<TItemVM>,
+      TypedBindingList<TItemVM>,
       ITypedList,
       IVMCollection<TItemVM>,
       IVMCollectionExpression<TItemVM>
@@ -145,19 +145,13 @@
          Contract.Invariant(OwnerVM != null);
       }
 
-      public PropertyDescriptorCollection GetItemProperties(PropertyDescriptor[] listAccessors) {
+      public override PropertyDescriptorCollection GetItemProperties(PropertyDescriptor[] listAccessors) {
+         if (listAccessors != null && listAccessors.Any()) {
+            return base.GetItemProperties(listAccessors);
+         }
+
          var itemDescriptor = this.GetItemDescriptor();
-
-         return itemDescriptor
-            .Behaviors
-            .GetNextBehavior<TypeDescriptorProviderBehavior>() // TODO: Maybe define interface for it?
-            .PropertyDescriptors;
-      }
-
-      public string GetListName(PropertyDescriptor[] listAccessors) {
-         // This method is used only in the design-time framework and by the 
-         // obsolete DataGrid control.
-         return GetType().Name;
+         return itemDescriptor.GetPropertyDescriptors();
       }
 
       /// <inheritdoc />

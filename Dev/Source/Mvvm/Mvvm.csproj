@@ -245,7 +245,9 @@
     <Compile Include="ViewModels\Core\Common\Paths\PathStep.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\Definition\PathTerminationStep.cs" />
     <Compile Include="ViewModels\Core\ViewModel\Descriptor\IVMDescriptor.cs" />
+    <Compile Include="ViewModels\Core\ViewModel\TypeDescriptor\BehaviorInterfaces\IPropertyDescriptorProviderBehavior.cs" />
     <Compile Include="ViewModels\Core\ViewModel\TypeDescriptor\ClassDescriptorAttribute.cs" />
+    <Compile Include="ViewModels\Core\ViewModel\TypeDescriptor\TypedBindingList.cs" />
     <Compile Include="ViewModels\Core\ViewModel\TypeDescriptor\ViewModelPropertyDescriptor.cs" />
     <Compile Include="ViewModels\Core\Undo\Actions\CollectionModificationAction.cs" />
     <Compile Include="ViewModels\Core\Undo\Actions\InitialPseudoAction.cs" />

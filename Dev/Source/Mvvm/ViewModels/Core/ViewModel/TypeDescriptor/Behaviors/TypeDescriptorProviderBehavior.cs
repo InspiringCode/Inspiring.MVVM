@@ -40,10 +40,10 @@
          Contract.Assert(_vmDescriptor != null, "Behavior is not initalized.");
       }
 
-      private static ViewModelPropertyDescriptor GetDescriptor(IVMPropertyDescriptor property) {
+      private static PropertyDescriptor GetDescriptor(IVMPropertyDescriptor property) {
          return property
             .Behaviors
-            .GetNextBehavior<PropertyDescriptorProviderBehavior>()
+            .GetNextBehavior<IPropertyDescriptorProviderBehavior>()
             .PropertyDescriptor;
       }
    }

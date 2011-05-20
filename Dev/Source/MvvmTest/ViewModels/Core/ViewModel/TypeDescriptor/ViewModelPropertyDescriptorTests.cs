@@ -9,15 +9,15 @@
 
    [TestClass]
    public class ViewModelPropertyDescriptorTests : TestBase {
-      private IVMPropertyDescriptor _property;
+      private IVMPropertyDescriptor<object> _property;
       private PropertyDescriptor _descriptor;
       private IViewModel _vm;
 
       [TestInitialize]
       public void Setup() {
-         _property = new VMPropertyBaseStub(typeof(object), "Test");
+         _property = PropertyStub.Named("Test").Of<object>();
 
-         _descriptor = new ViewModelPropertyDescriptor(_property);
+         _descriptor = new ViewModelPropertyDescriptor<object>(_property);
          _vm = new ViewModelStub();
       }
 

@@ -127,7 +127,7 @@
       }
 
       private void AssertBasicPropertyBehaviors<T>(IVMPropertyDescriptor<T> p) {
-         Assert.IsTrue(ContainsBehavior<PropertyDescriptorProviderBehavior>(p));
+         Assert.IsTrue(ContainsBehavior<PropertyDescriptorProviderBehavior<T>>(p));
          Assert.IsTrue(ContainsBehavior<DisplayValueAccessorBehavior<T>>(p));
          Assert.IsTrue(ContainsBehavior<UntypedPropertyAccessorBehavior<T>>(p));
       }

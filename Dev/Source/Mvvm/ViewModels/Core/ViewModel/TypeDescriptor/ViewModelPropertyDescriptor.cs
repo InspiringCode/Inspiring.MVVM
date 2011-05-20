@@ -8,8 +8,6 @@
    ///   wrapper is defined on the ViewModel class.
    /// </summary>
    internal class ViewModelPropertyDescriptor : SimplePropertyDescriptor {
-      private IVMPropertyDescriptor _property;
-
       public ViewModelPropertyDescriptor(IVMPropertyDescriptor property)
          // We have to use Object as type because we describe the 'DisplayValue'
          // of the property, which is of type object. This is necessary to allow
@@ -23,17 +21,19 @@
          ) {
          Contract.Requires(property != null);
 
-         _property = property;
+         Property = property;
       }
+
+      public IVMPropertyDescriptor Property { get; private set; }
 
       public override object GetValue(object component) {
          IViewModel vm = CastComponent(component);
-         return vm.Kernel.GetDisplayValue(_property);
+         return vm.Kernel.GetDisplayValue(Property);
       }
 
       public override void SetValue(object component, object value) {
          IViewModel vm = CastComponent(component);
-         vm.Kernel.SetDisplayValue(_property, value);
+         vm.Kernel.SetDisplayValue(Property, value);
       }
 
       public void RaiseValueChanged(IViewModel vm) {
@@ -53,6 +53,12 @@
          }
 
          return vm;
+      }
+   }
+
+   internal class ViewModelPropertyDescriptor<TValue> : ViewModelPropertyDescriptor {
+      public ViewModelPropertyDescriptor(IVMPropertyDescriptor<TValue> property)
+         : base(property) {
       }
    }
 }

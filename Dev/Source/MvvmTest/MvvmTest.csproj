@@ -137,6 +137,7 @@
     <Compile Include="ApiTests\ViewModels\Refresh\SimplePropertyRefreshTests.cs" />
     <Compile Include="ApiTests\ViewModels\Refresh\ViewModelPropertyRefreshTests.cs" />
     <Compile Include="ApiTests\ViewModels\TestCollectionWithInheritance.cs" />
+    <Compile Include="ApiTests\ViewModels\TypedBindingListTests.cs" />
     <Compile Include="ApiTests\ViewModels\Undo\CustomerVM.cs" />
     <Compile Include="ApiTests\ViewModels\Undo\DomainObjects.cs" />
     <Compile Include="ApiTests\ViewModels\Undo\EmployeeVM.cs" />

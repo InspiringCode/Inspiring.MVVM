@@ -256,10 +256,7 @@
             ExceptionTexts.DescriptorNotSet
          );
 
-         return Descriptor
-            .Behaviors
-            .GetNextBehavior<TypeDescriptorProviderBehavior>()
-            .PropertyDescriptors;
+         return Descriptor.GetPropertyDescriptors();
       }
 
       public ValidationResult GetValidationResult(ValidationResultScope scope) {

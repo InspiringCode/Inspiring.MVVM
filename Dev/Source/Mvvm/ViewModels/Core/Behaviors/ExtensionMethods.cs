@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
+   using System.ComponentModel;
    using Inspiring.Mvvm.ViewModels.Core;
 
    public static class ExtensionMethods {
@@ -373,6 +374,13 @@
             .OwnerProperty
             .Behaviors
             .GetItemDescriptor();
+      }
+
+      internal static PropertyDescriptorCollection GetPropertyDescriptors(this IVMDescriptor descriptor) {
+         return descriptor
+            .Behaviors
+            .GetNextBehavior<TypeDescriptorProviderBehavior>()
+            .PropertyDescriptors;
       }
 
       // TODO: Inline this??
