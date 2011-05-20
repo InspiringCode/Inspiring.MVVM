@@ -137,7 +137,7 @@
     <Compile Include="ApiTests\ViewModels\Refresh\SimplePropertyRefreshTests.cs" />
     <Compile Include="ApiTests\ViewModels\Refresh\ViewModelPropertyRefreshTests.cs" />
     <Compile Include="ApiTests\ViewModels\TestCollectionWithInheritance.cs" />
-    <Compile Include="ApiTests\ViewModels\TypedBindingListTests.cs" />
+    <Compile Include="ApiTests\ViewModels\BrowsableViewModelListTests.cs" />
     <Compile Include="ApiTests\ViewModels\Undo\CustomerVM.cs" />
     <Compile Include="ApiTests\ViewModels\Undo\DomainObjects.cs" />
     <Compile Include="ApiTests\ViewModels\Undo\EmployeeVM.cs" />
@@ -245,6 +245,7 @@
     <Compile Include="ApiTests\ViewModels\Validation\MultipleOwnerCollectionsValidationFixture.cs" />
     <Compile Include="ViewModels\Core\Validation\Behaviors\CachingValidationResultAggregatorBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\Validation\ValidationControllerTests.cs" />
+    <Compile Include="ViewModels\Core\ViewModel\TypeDescriptor\ClassDescriptorAttributeTests.cs" />
     <Compile Include="ViewModels\Core\ViewModel\TypeDescriptor\TypeDescriptorProviderBehaviorTests.cs" />
     <Compile Include="ViewModels\Core\ViewModel\TypeDescriptor\ViewModelPropertyDescriptorTests.cs" />
     <Compile Include="ViewModels\Core\Validation\Behaviors\CollectionValidationSourceBehaviorTests.cs" />

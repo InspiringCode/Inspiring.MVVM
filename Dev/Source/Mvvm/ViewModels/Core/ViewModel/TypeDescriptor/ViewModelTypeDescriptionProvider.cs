@@ -1,8 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.ComponentModel;
-   using System.Linq;
-   using System.Reflection;
 
    /// <summary>
    ///   Returns a <see cref="ViewModelTypeDescriptor"/> for the <see cref="VMDescriptor"/>
@@ -16,14 +14,9 @@
          }
 
          if (objectType != null) {
-            FieldInfo classDescriptorField = objectType
-               .GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static)
-               .Where(field => Attribute.IsDefined(field, typeof(ClassDescriptorAttribute)))
-               .FirstOrDefault();
-
-            if (classDescriptorField != null) {
-               var d = (IVMDescriptor)classDescriptorField.GetValue(null);
-               return new ViewModelTypeDescriptor(d);
+            IVMDescriptor classDescriptor = ClassDescriptorAttribute.GetClassDescriptorOf(objectType);
+            if (classDescriptor != null) {
+               return new ViewModelTypeDescriptor(classDescriptor);
             }
          }
 

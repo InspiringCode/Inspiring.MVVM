@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.MvvmTest.Common {
    using System;
+   using System.Collections;
    using System.Collections.Generic;
    using Inspiring.Mvvm.Common;
    using Inspiring.MvvmTest.ViewModels;
@@ -44,6 +45,35 @@
       public void GetFriendlyTypeName_OfNull_ReturnsDescriptiveString() {
          Assert.AreEqual("<NULL>", TypeService.GetFriendlyTypeName(null));
       }
+
+      [TestMethod]
+      public void GetItemType_OfHashSet_ReturnsItemType() {
+         var actual = TypeService.GetItemType(typeof(HashSet<int>));
+         Assert.AreSame(typeof(int), actual);
+      }
+
+      [TestMethod]
+      public void GetItemType_OfCustumEnumerableImplementation_ReturnsItemType() {
+         var actual = TypeService.GetItemType(typeof(CustomEnumerable<object, int>));
+         Assert.AreSame(typeof(int), actual);
+      }
+
+      [TestMethod]
+      public void GetItemType_OfNonEnumerableType_ReturnsNull() {
+         var actual = TypeService.GetItemType(typeof(Object));
+         Assert.IsNull(actual);
+      }
+
+      private class CustomEnumerable<TArbitrary, TItem> : IEnumerable<TItem> {
+         public IEnumerator<TItem> GetEnumerator() {
+            return null;
+         }
+
+         IEnumerator IEnumerable.GetEnumerator() {
+            return null;
+         }
+      }
+
 
       private struct TestStruct {
       }

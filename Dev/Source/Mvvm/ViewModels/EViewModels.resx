@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BrowsableListRequiresClassDescriptorAttribute" xml:space="preserve">
+    <value>The generic argument specified for 'BrowsableViewModelList' must have a static field of type 'IVMDescriptor' (or a subclass) that is marked with the 'ClassDescriptorAttribute'.</value>
+  </data>
   <data name="ValueAccessedWithinProvideValue" xml:space="preserve">
     <value>The value of a property with a 'CachedValueAccessorBehavior' can only be accessed after the 'ProvideValue' method has completed. Make sure you do all your initalization in the 'InitializeValue' method.</value>
   </data>

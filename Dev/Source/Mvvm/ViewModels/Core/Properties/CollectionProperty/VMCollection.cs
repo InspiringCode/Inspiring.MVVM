@@ -10,7 +10,7 @@
    ///   
    /// </summary>
    public class VMCollection<TItemVM> :
-      TypedBindingList<TItemVM>,
+      BindingList<TItemVM>,
       ITypedList,
       IVMCollection<TItemVM>,
       IVMCollectionExpression<TItemVM>
@@ -145,9 +145,23 @@
          Contract.Invariant(OwnerVM != null);
       }
 
-      public override PropertyDescriptorCollection GetItemProperties(PropertyDescriptor[] listAccessors) {
+      public string GetListName(PropertyDescriptor[] listAccessors) {
+         // This method is used only in the design-time framework and by the 
+         // obsolete DataGrid control.
          if (listAccessors != null && listAccessors.Any()) {
-            return base.GetItemProperties(listAccessors);
+            return listAccessors
+               .Last()
+               .PropertyType
+               .ToString();
+         } else {
+            return typeof(TItemVM).ToString();
+         }
+      }
+
+      public PropertyDescriptorCollection GetItemProperties(PropertyDescriptor[] listAccessors) {
+         if (listAccessors != null && listAccessors.Any()) {
+            PropertyDescriptor lastAccessor = listAccessors.Last();
+            return TypeDescriptor.GetProperties(lastAccessor.PropertyType);
          }
 
          var itemDescriptor = this.GetItemDescriptor();
@@ -167,10 +181,6 @@
          }
 
          CallBehaviors(CollectionChangedArgs<TItemVM>.CollectionPopulated(this, oldItems));
-
-         //Behaviors.TryCall<IModificationCollectionBehavior<TItemVM>>(b =>
-         //   b.CollectionPopulated(Owner.GetContext(), this, previousItems)
-         //);
       }
    }
 }

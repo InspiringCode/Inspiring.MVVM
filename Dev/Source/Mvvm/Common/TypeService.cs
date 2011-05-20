@@ -1,5 +1,7 @@
 ﻿namespace Inspiring.Mvvm.Common {
    using System;
+   using System.Collections.Generic;
+   using System.Diagnostics.Contracts;
    using System.Linq;
 
    internal static class TypeService {
@@ -37,6 +39,28 @@
          return
             type.IsGenericType &&
             type.GetGenericTypeDefinition() == typeof(Nullable<>);
+      }
+
+      public static Type GetItemType(Type collectionType) {
+         Contract.Requires(collectionType != null);
+
+         Type enumerableInterface = collectionType
+            .GetInterfaces()
+            .FirstOrDefault(IsEnumerableInterface);
+
+         if (enumerableInterface != null) {
+            return enumerableInterface
+               .GetGenericArguments()
+               .Single();
+         }
+
+         return null;
+      }
+
+      private static bool IsEnumerableInterface(Type interfaceType) {
+         return
+            interfaceType.IsGenericType &&
+            interfaceType.GetGenericTypeDefinition() == typeof(IEnumerable<>);
       }
    }
 }

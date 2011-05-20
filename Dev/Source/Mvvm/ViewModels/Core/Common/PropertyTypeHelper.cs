@@ -2,6 +2,7 @@
    using System;
    using System.Linq;
 
+   // TODO: Still needed?
    internal sealed class PropertyTypeHelper {
       public static bool IsViewModel(Type propertyType) {
          return typeof(IViewModel).IsAssignableFrom(propertyType);
