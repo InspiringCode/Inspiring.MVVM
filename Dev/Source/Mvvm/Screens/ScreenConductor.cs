@@ -7,6 +7,7 @@
    public class ScreenConductor : ScreenBase {
       private IScreenBase _activeScreen;
       private ScreenLifecycleCollection<IScreenBase> _screens;
+      private bool _isActivated;
 
       public ScreenConductor() {
          _screens = new ScreenLifecycleCollection<IScreenBase>(this);
@@ -16,13 +17,13 @@
          get { return _activeScreen; }
          set {
             if (value != _activeScreen) {
-               if (_activeScreen != null) {
+               if (_activeScreen != null && _isActivated) {
                   _activeScreen.Deactivate();
                }
 
                _activeScreen = value;
 
-               if (_activeScreen != null) {
+               if (_activeScreen != null && _isActivated) {
                   _activeScreen.Activate();
                }
 
@@ -84,6 +85,20 @@
          Contract.Assert(index != -1);
 
          return _screens.Items[(index + 1) % _screens.Items.Count];
+      }
+
+      protected override void OnActivate() {
+         _isActivated = true;
+         if (_activeScreen != null) {
+            _activeScreen.Activate();
+         }
+      }
+
+      protected override void OnDeactivate() {
+         _isActivated = false;
+         if (_activeScreen != null) {
+            _activeScreen.Deactivate();
+         }
       }
 
       protected override bool OnRequestClose() {
