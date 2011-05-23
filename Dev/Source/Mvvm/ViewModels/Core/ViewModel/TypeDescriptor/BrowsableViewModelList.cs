@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
+   using System.Collections.Generic;
    using System.ComponentModel;
    using System.Diagnostics.Contracts;
    using System.Linq;
@@ -13,12 +14,14 @@
 
       private PropertyDescriptorCollection _itemProperties = null;
 
-      public BrowsableViewModelList() {
-         // TODO: Clean up?
-         IVMDescriptor classDescriptor = ClassDescriptorAttribute.GetClassDescriptorOf(typeof(T));
-         if (classDescriptor == null) {
-            throw new ArgumentException(EViewModels.BrowsableListRequiresClassDescriptorAttribute);
-         }
+      public BrowsableViewModelList(params T[] items)
+         : base(items) {
+         RequireClassDescriptorAttributeOnItemType();
+      }
+
+      public BrowsableViewModelList(IEnumerable<T> items)
+         : base(AsList(items)) {
+         RequireClassDescriptorAttributeOnItemType();
       }
 
       public PropertyDescriptorCollection GetItemProperties(PropertyDescriptor[] listAccessors) {
@@ -51,6 +54,21 @@
          } else {
             return typeof(T).ToString();
          }
+      }
+
+      private static void RequireClassDescriptorAttributeOnItemType() {
+         // TODO: Clean up?
+         IVMDescriptor classDescriptor = ClassDescriptorAttribute.GetClassDescriptorOf(typeof(T));
+         if (classDescriptor == null) {
+            throw new ArgumentException(EViewModels.BrowsableListRequiresClassDescriptorAttribute);
+         }
+      }
+
+      private static IList<T> AsList(IEnumerable<T> source) {
+         IList<T> list = source as IList<T>;
+         return list != null ?
+            list :
+            source.ToList();
       }
    }
 
