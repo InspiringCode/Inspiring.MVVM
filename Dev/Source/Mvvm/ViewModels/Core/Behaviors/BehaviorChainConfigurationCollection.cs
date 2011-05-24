@@ -28,6 +28,10 @@
          }
       }
 
+      public IEnumerable<IVMPropertyDescriptor> ConfiguredProperties {
+         get { return _propertyConfigurations.Keys; }
+      }
+
       /// <summary>
       ///   Registers a <see cref="BehaviorChainConfiguration"/> for a certain
       ///   <paramref name="property"/>.

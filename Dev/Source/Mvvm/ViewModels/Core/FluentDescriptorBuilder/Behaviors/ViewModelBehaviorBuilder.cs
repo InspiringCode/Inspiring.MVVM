@@ -81,7 +81,7 @@
       }
 
       public void EnableUndo() {
-         foreach (var property in _descriptor.Properties) {
+         foreach (var property in _configuration.PropertyConfigurations.ConfiguredProperties) {
             var config = _configuration.PropertyConfigurations[property];
             if (config.Contains(PropertyBehaviorKeys.Undo)) {
                config.Enable(PropertyBehaviorKeys.Undo);

@@ -10,3 +10,4 @@
 // TODO: Behavior configuration: think of position in chain when manually adding behaviors
 // TODO: Declarative dependendcies: Make ValidationScope adjustable
 // TODO: Undo: Invalid Value handling (DisplayValue)
+// TODO: Rethink descriptor properties handling
