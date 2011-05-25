@@ -72,6 +72,41 @@
          Assert.AreSame(first, second);
       }
 
+      [TestMethod]
+      public void Constructor_WithItemArray_PopulatesCollection() {
+         var item1 = new EmployeeVM();
+         var item2 = new EmployeeVM();
+
+         var list = new BrowsableViewModelList<EmployeeVM>(item1, item2);
+         CollectionAssert.AreEqual(new[] { item1, item2 }, list);
+      }
+
+      [TestMethod]
+      public void Add_OnEmptyCollection_AddsItem() {
+         var list = new BrowsableViewModelList<EmployeeVM>();
+         var newItem = new EmployeeVM();
+         list.Add(newItem);
+
+         CollectionAssert.AreEqual(new[] { newItem }, list);
+      }
+
+      [TestMethod]
+      public void Add_OnPopulatedCollection_AddsItem() {
+         var initialItem = new EmployeeVM();
+         var list = new BrowsableViewModelList<EmployeeVM>(initialItem);
+         var newItem = new EmployeeVM();
+         list.Add(newItem);
+
+         CollectionAssert.AreEqual(new[] { initialItem, newItem }, list);
+      }
+
+      [TestMethod]
+      public void Constructor_WithEnumerable_PopulatesCollection() {
+         IEnumerable<EmployeeVM> source = new[] { new EmployeeVM(), new EmployeeVM() };
+         var list = new BrowsableViewModelList<EmployeeVM>(source);
+         CollectionAssert.AreEqual(source.ToArray(), list);
+      }
+
       private static PropertyDescriptor[] GetListAccessorsForSimpleTypeProperty(BrowsableViewModelList<EmployeeVM> list) {
          var employeeProperties = list.GetItemProperties(null);
          var simpleTypePropertyDescriptor = employeeProperties["SimpleTypeProperty"];

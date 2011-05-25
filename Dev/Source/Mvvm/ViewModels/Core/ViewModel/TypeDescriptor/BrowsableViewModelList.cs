@@ -15,12 +15,11 @@
       private PropertyDescriptorCollection _itemProperties = null;
 
       public BrowsableViewModelList(params T[] items)
-         : base(items) {
-         RequireClassDescriptorAttributeOnItemType();
+         : this((IEnumerable<T>)items) {
       }
 
       public BrowsableViewModelList(IEnumerable<T> items)
-         : base(AsList(items)) {
+         : base(items.ToList()) {
          RequireClassDescriptorAttributeOnItemType();
       }
 

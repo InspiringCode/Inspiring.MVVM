@@ -20,7 +20,8 @@
             }
          }
 
-         return base.GetTypeDescriptor(objectType, instance);
+         var baseDescriptor = base.GetTypeDescriptor(objectType, instance);
+         return baseDescriptor;
       }
    }
 }
