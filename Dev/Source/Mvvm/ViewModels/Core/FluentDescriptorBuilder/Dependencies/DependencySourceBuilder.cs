@@ -50,10 +50,12 @@
       }
 
       public IDependencyActionBuilder<TRootVM, TRootDescriptor> Collection<D>(
-         Func<TSourceDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<D>>>> collectionSelector
+         Func<TSourceDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<D>>>> collectionSelector,
+         bool includeCollectionPopulated = false
       ) where D : IVMDescriptor {
          _context.AddCollectionStep<TSourceDescriptor, IViewModelExpression<D>, D>(
-            collectionSelector
+            collectionSelector,
+            includeCollectionPopulated
          );
          return new DependencySourceBuilder<TRootVM, IViewModel<D>, TRootDescriptor, D>(_context);
       }

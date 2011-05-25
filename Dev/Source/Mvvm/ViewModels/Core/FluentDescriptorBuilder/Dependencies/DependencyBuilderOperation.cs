@@ -32,7 +32,8 @@
       }
 
       public void AddCollectionStep<TDescriptor, TDescendant, TDescendantDescriptor>(
-         Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<TDescendant>>> collectionPropertySelector
+         Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<TDescendant>>> collectionPropertySelector,
+         bool includeCollectionPopulated
       )
          where TDescriptor : IVMDescriptor
          where TDescendant : IViewModel
@@ -41,6 +42,9 @@
          _isProperlyTerminated = true;
          _changesTypes.Add(ChangeType.AddedToCollection);
          _changesTypes.Add(ChangeType.RemovedFromCollection);
+         if (includeCollectionPopulated) {
+            _changesTypes.Add(ChangeType.CollectionPopulated);
+         }
       }
 
       public void AddProperties<TDescriptor>(
@@ -58,8 +62,7 @@
          where TDescriptor : IVMDescriptor {
          _sourcePath = _sourcePath.Append(new OptionalStep(new AnyStepsStep<TDescriptor>()));
          _isProperlyTerminated = true;
-         _changesTypes.Add(ChangeType.PropertyChanged);
-         _changesTypes.Add(ChangeType.ValidationResultChanged);
+         AddAllChangeTypes();
       }
 
       public void AddDescendantTargetStep<TDescriptor, TDescendant, TDescendantDescriptor>(
@@ -139,6 +142,13 @@
             _changesTypes,
             _actionCreator()
          );
+      }
+
+      private void AddAllChangeTypes() {
+         _changesTypes.Add(ChangeType.AddedToCollection);
+         _changesTypes.Add(ChangeType.PropertyChanged);
+         _changesTypes.Add(ChangeType.RemovedFromCollection);
+         _changesTypes.Add(ChangeType.ValidationResultChanged);
       }
    }
 }

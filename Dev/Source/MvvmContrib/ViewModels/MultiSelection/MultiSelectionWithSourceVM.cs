@@ -14,7 +14,7 @@
       ///   Use <see cref="CreateDescriptor"/> to create one.
       /// </param>
       internal MultiSelectionWithSourceVM(
-         MultiSelectionVMDescriptor<TItemSource, TItemVM> descriptor,
+         MultiSelectionVMDescriptor<TItemSource, MultiSelectionItemVM<TItemSource, TItemVM>> descriptor,
          IServiceLocator serviceLocator
       )
          : base(descriptor, serviceLocator) {
@@ -58,15 +58,28 @@
       ///   A function that should create a VM property that returns all source
       ///   items. This may be a delegated property that returns a constant list.
       /// </param>
-      internal static MultiSelectionVMDescriptor<TItemSource, TItemVM> CreateDescriptor(
-         IVMDescriptor itemDescriptor,
+      internal static MultiSelectionVMDescriptor<TItemSource, MultiSelectionItemVM<TItemSource, TItemVM>> CreateDescriptor(
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<ICollection<TItemSource>>> selectedSourceItemsPropertyFactory,
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory,
          bool enableValidation,
          bool enableUndo
       ) {
+
+         MultiSelectionItemVMDescriptor<TItemVM> itemDescriptor = VMDescriptorBuilder
+            .OfType<MultiSelectionItemVMDescriptor<TItemVM>>()
+            .For<MultiSelectionItemVM<TItemSource, TItemVM>>()
+            .WithProperties((d, c) => {
+               var v = c.GetPropertyBuilder();
+
+               d.IsSelected = v.Property.Of<bool>();
+               d.VM = v.VM.Wraps(x => x.Source).With<TItemVM>();
+
+            })
+            .WithValidators(b => b.EnableParentViewModelValidation())
+            .Build();
+
          var builder = VMDescriptorBuilder
-            .OfType<MultiSelectionVMDescriptor<TItemSource, TItemVM>>()
+            .OfType<MultiSelectionVMDescriptor<TItemSource, MultiSelectionItemVM<TItemSource, TItemVM>>>()
             .For<MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>>()
             .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
@@ -74,15 +87,21 @@
 
                d.AllSourceItems = allSourceItemsPropertyFactory(source);
                d.SelectedSourceItems = selectedSourceItemsPropertyFactory(source);
-               d.AllItems = v.Collection.Wraps(vm => vm.GetActiveSourceItems()).With<TItemVM>(itemDescriptor);
-               d.SelectedItems = v.Collection.Wraps(vm => vm.SelectedSourceItems).With<TItemVM>(itemDescriptor);
+
+               d.AllItems = v.Collection
+                  .Wraps(vm => vm.GetActiveSourceItems())
+                  .With<MultiSelectionItemVM<TItemSource, TItemVM>>(itemDescriptor);
+
+               d.SelectedItems = v.Collection
+                  .Wraps(vm => vm.SelectedSourceItems)
+                  .With<MultiSelectionItemVM<TItemSource, TItemVM>>(itemDescriptor);
             })
             .WithBehaviors(c => {
                // This behavior ensures, that the 'SelectedItems' collection returns the same
                // VM instances (for the same source items) as the 'AllItems' collection.
                c.Property(x => x.SelectedItems).Enable(
                   PropertyBehaviorKeys.ValueAccessor,
-                  new LookupPopulatorCollectionBehavior<MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>, TItemVM, TItemSource>(
+                  new LookupPopulatorCollectionBehavior<MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>, MultiSelectionItemVM<TItemSource, TItemVM>, TItemSource>(
                      multiSelectionVM => multiSelectionVM.AllItems
                   )
                );
@@ -91,7 +110,7 @@
                // property every time the selection changes.
                c.Property(x => x.SelectedItems).Enable(
                   PropertyBehaviorKeys.DisplayValueAccessor,
-                  new SettableListDisplayValueBehavior<TItemVM>()
+                  new SettableListDisplayValueBehavior<MultiSelectionItemVM<TItemSource, TItemVM>>()
                );
 
                c.Property(x => x.SelectedItems).AddChangeHandler((vm, args) => {
@@ -114,6 +133,36 @@
                      args.AddError(item, "Das gewählte Element ist nicht vorhanden.");
                   }
                });
+            })
+            .WithDependencies(b => {
+               b.OnChangeOf
+                  .Collection(x => x.SelectedItems, true)
+                  .Execute((vm, args) => {
+                     if (args.ChangeType == ChangeType.CollectionPopulated || args.ChangeType == ChangeType.AddedToCollection) {
+                        foreach (MultiSelectionItemVM<TItemSource, TItemVM> item in args.NewItems) {
+                           item.IsSelected = true;
+                        }
+                     }
+
+                     if (args.ChangeType == ChangeType.RemovedFromCollection) {
+                        foreach (MultiSelectionItemVM<TItemSource, TItemVM> item in args.OldItems) {
+                           item.IsSelected = false;
+                        }
+                     }
+                  });
+               b.OnChangeOf
+                  .Descendant(x => x.AllItems)
+                  .Properties(x => x.IsSelected)
+                  .Execute((vm, args) => {
+                     if ((bool)args.ChangedVM.Kernel.GetValue(args.ChangedProperty)) {
+                        if (!vm.SelectedItems.Contains(args.ChangedVM)) {
+                           vm.SelectedItems.Add(args.ChangedVM);
+                        }
+                     } else {
+                        vm.SelectedItems.Remove(args.ChangedVM);
+                     }
+                  });
+
             });
 
          //if (enableValidation) {

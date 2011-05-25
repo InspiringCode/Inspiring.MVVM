@@ -12,14 +12,14 @@
       Type ItemVMType { get; }
    }
 
-   public abstract class MultiSelectionVM<TItemSource, TItemVM> :
+   public abstract class MultiSelectionBaseVM<TItemSource, TItemVM> :
       ViewModel<MultiSelectionVMDescriptor<TItemSource, TItemVM>>, IMultiSelectionVM
       where TItemVM : IViewModel {
 
       /// <param name="descriptor">
       ///   Use <see cref="CreateDescriptor"/> to create one.
       /// </param>
-      internal MultiSelectionVM(
+      internal MultiSelectionBaseVM(
          MultiSelectionVMDescriptor<TItemSource, TItemVM> descriptor,
          IServiceLocator serviceLocator
       )
@@ -140,10 +140,8 @@
       }
    }
 
-
-
    public abstract class MultiSelectionVM<TItemSource> :
-      MultiSelectionVM<TItemSource, SelectionItemVM<TItemSource>> {
+      MultiSelectionBaseVM<TItemSource, SelectionItemVM<TItemSource>> {
 
       public MultiSelectionVM(
          MultiSelectionVMDescriptor<TItemSource> descriptor,
@@ -153,4 +151,16 @@
       }
    }
 
+   public abstract class MultiSelectionVM<TItemSource, TItemVM> :
+      MultiSelectionBaseVM<TItemSource, MultiSelectionItemVM<TItemSource, TItemVM>>
+      where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
+
+      public MultiSelectionVM(
+         MultiSelectionVMDescriptor<TItemSource, MultiSelectionItemVM<TItemSource, TItemVM>> descriptor,
+         IServiceLocator serviceLocator
+      )
+         : base(descriptor, serviceLocator) {
+
+      }
+   }
 }

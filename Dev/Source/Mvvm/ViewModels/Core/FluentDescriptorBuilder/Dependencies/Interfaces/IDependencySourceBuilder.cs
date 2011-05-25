@@ -45,7 +45,8 @@
       ) where D : IVMDescriptor;
 
       IDependencyActionBuilder<TRootVM, TRootDescriptor> Collection<D>(
-         Func<TSourceDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<D>>>> collectionSelector
+         Func<TSourceDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<D>>>> collectionSelector,
+         bool includePopulatedEvents = false
       ) where D : IVMDescriptor;
 
       //IChangeActionBuilder<TRootVM, TRootDescriptor> AnyProperty { get; }

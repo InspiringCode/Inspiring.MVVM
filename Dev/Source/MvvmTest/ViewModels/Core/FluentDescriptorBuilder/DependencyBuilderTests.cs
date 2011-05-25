@@ -94,6 +94,41 @@
       }
 
       [TestMethod]
+      public void Dependency_ForCollectionIncludesPopilatedWithRefreshAction_SetupsBehaviorProperly() {
+         var descriptor = BuildDescriptor(b => b
+            .OnChangeOf
+            .Collection(x => x.Projects, true)
+            .Refresh
+            .Descendant(x => x.SelectedProject)
+         );
+
+         var expectedSourcePath = PathDefinition
+            .Empty
+            .AppendCollection<EmployeeVMDescriptor, IViewModelExpression<ProjectVMDescriptor>>(
+               x => x.Projects
+            );
+
+         var expectedChangeTypes = new ChangeType[] { 
+            ChangeType.RemovedFromCollection, 
+            ChangeType.AddedToCollection,
+            ChangeType.CollectionPopulated
+         };
+
+         var expectedTargetPath = PathDefinition
+            .Empty
+            .Append<EmployeeVMDescriptor, IViewModel<ProjectVMDescriptor>>(
+               x => x.SelectedProject
+            );
+
+         AssertDependencySetup<RefreshAction>(
+            descriptor,
+            expectedSourcePath,
+            expectedChangeTypes,
+            expectedTargetPath
+         );
+      }
+
+      [TestMethod]
       public void Dependency_ForSelfOrAnyDescendantWithValidationActionForProperties_SetupsBehaviorProperly() {
          var descriptor = BuildDescriptor(b => b
             .OnChangeOf
@@ -110,7 +145,9 @@
 
          var expectedChangeTypes = new ChangeType[] { 
             ChangeType.PropertyChanged, 
-            ChangeType.ValidationResultChanged 
+            ChangeType.ValidationResultChanged,
+            ChangeType.AddedToCollection,
+            ChangeType.RemovedFromCollection
          };
 
          var expectedTargetPath = PathDefinition

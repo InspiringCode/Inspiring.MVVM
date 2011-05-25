@@ -72,9 +72,8 @@
          return this;
       }
 
-      public IVMPropertyDescriptor<MultiSelectionVM<TItemSource, TItemVM>> Of<TItemVM>(
-         IVMDescriptor itemDescriptor
-      ) where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
+      public IVMPropertyDescriptor<MultiSelectionVM<TItemSource, TItemVM>> Of<TItemVM>()
+         where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
          Contract.Assert(SelectedSourceItemsPropertyFactory != null);
 
          var allSourceItemsPropertyFactory =
@@ -84,7 +83,6 @@
          // The descriptor is created only once for every owner VM property/descriptor
          // and reused for every VM instance created from the owner VM descriptor.
          var descriptor = MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>.CreateDescriptor(
-            itemDescriptor,
             SelectedSourceItemsPropertyFactory,
             allSourceItemsPropertyFactory,
             ValidationIsEnabled,
@@ -172,10 +170,13 @@
          IRefreshBehavior
          where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
-         private MultiSelectionVMDescriptor<TItemSource, TItemVM> _descriptor;
+         private MultiSelectionVMDescriptor<TItemSource, MultiSelectionItemVM<TItemSource, TItemVM>> _descriptor;
          private Func<TItemSource, bool> _filter;
 
-         public MultSelectionAccessor(MultiSelectionVMDescriptor<TItemSource, TItemVM> descriptor, Func<TItemSource, bool> filter) {
+         public MultSelectionAccessor(
+            MultiSelectionVMDescriptor<TItemSource, MultiSelectionItemVM<TItemSource, TItemVM>> descriptor,
+            Func<TItemSource, bool> filter
+         ) {
             _descriptor = descriptor;
             _filter = filter;
          }
