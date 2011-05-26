@@ -25,15 +25,14 @@
       }
 
       public static IEnumerable<IScreenLifecycle> GetSelfAndChildren(IScreenLifecycle handler) {
-         IScreenBase parent = handler as IScreenBase;
+         List<IScreenLifecycle> children = new List<IScreenLifecycle>();
+         children.Add(handler);
 
-         if (parent == null) {
-            return Enumerable.Empty<IScreenLifecycle>();
+         IScreenBase parent = handler as IScreenBase;
+         if (parent != null) {
+            children.AddRange(parent.Children.Items);
          }
 
-         List<IScreenLifecycle> children = new List<IScreenLifecycle>();
-         children.Add(parent);
-         children.AddRange(parent.Children.Items);
          return children;
       }
    }

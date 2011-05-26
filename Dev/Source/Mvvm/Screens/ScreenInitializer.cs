@@ -20,10 +20,10 @@
             INeedsInitialization<TSubject> needsTypedInitialization = s as INeedsInitialization<TSubject>;
             INeedsInitialization needsInitialization = s as INeedsInitialization;
 
-            if (needsTypedInitialization != null) {
-               needsTypedInitialization.Initialize(subject);
-            } else if (needsInitialization != null) {
-               needsInitialization.Initialize();
+            if (!TryTypedInitialize(screen, subject)) {
+               if (needsInitialization != null) {
+                  needsInitialization.Initialize();
+               }
             }
          });
       }
@@ -49,6 +49,28 @@
             .GetSelfAndChildren(handler) // instead of GetDescendants. HACK: Rethink initialization logic!
             .Where(c => InvocationOrderAttribute.GetOrder(c, "Initialize") == order)
             .ForEach(initializer);
+      }
+
+      private static bool TryTypedInitialize<TSubject>(IScreenLifecycle screen, TSubject subject) {
+         var typed = screen as INeedsInitialization<TSubject>;
+
+         if (typed != null) {
+            typed.Initialize(subject);
+            return true;
+         }
+
+         for (Type t = typeof(TSubject).BaseType; t != null; t = t.BaseType) {
+            Type itf = typeof(INeedsInitialization<>).MakeGenericType(t);
+            if (itf.IsAssignableFrom(screen.GetType())) {
+               itf
+                  .GetMethod("Initialize")
+                  .Invoke(screen, new object[] { subject });
+
+               return true;
+            }
+         }
+
+         return false;
       }
    }
 }
