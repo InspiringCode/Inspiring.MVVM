@@ -98,6 +98,10 @@
             return nextStep.Property == expectedProperty;
          }
 
+         if (!parent.Kernel.IsLoaded(expectedProperty)) {
+            return false;
+         }
+
          object expectedPropertyValue = parent.Kernel.GetValue(expectedProperty);
 
          if (nextStep.IsViewModel) {
