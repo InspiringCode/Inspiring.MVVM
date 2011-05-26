@@ -11,6 +11,8 @@
          get { return GetValue(Descriptor.VM); }
       }
 
+      public TItemSource Source { get; set; }
+
       public bool IsSelected {
          get { return GetValue(Descriptor.IsSelected); }
          set { SetValue(Descriptor.IsSelected, value); }
@@ -25,7 +27,9 @@
          }
       }
 
-      public TItemSource Source { get; set; }
+      public override string ToString() {
+         return VM.ToString();
+      }
    }
 
    public class MultiSelectionItemVMDescriptor<TItemVM> : VMDescriptor {
