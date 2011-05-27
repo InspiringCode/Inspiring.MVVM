@@ -3,9 +3,9 @@
    using System.ComponentModel;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
-   using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
+   using Inspiring.Mvvm.ViewModels.Core;
 
    [TestClass]
    public class TypeDescriptorTests : TestBase {
@@ -93,17 +93,23 @@
       [TestMethod]
       public void GetProperties_WhenViewModelTypeWithClassDescriptorAttributeIsPassed_ReturnsProperties() {
          var actualProperties = TypeDescriptor.GetProperties(typeof(ViewModelWithClassDescriptorAttributeVM));
-         
+
          ICustomTypeDescriptor customTypeDescriptor = new ViewModelWithClassDescriptorAttributeVM();
          var expectedProperties = customTypeDescriptor.GetProperties();
-         
+
          Assert.AreSame(expectedProperties, actualProperties);
       }
 
       [TestMethod]
-      public void GetProperties_WhenViewModelTypeWithoutClassDescriptorAttributeIsPassed_ReturnsEmptyPropertyCollection() {
+      public void GetProperties_WhenViewModelTypeWithoutClassDescriptorAttributeIsPassed_ReturnsClrProperties() {
          var actualProperties = TypeDescriptor.GetProperties(typeof(MovieReviewVM));
-         Assert.AreEqual(0, actualProperties.Count);
+
+         var propertyNames = actualProperties
+            .Cast<PropertyDescriptor>()
+            .Select(x => x.Name)
+            .ToArray();
+
+         CollectionAssert.Contains(propertyNames, "ClrProperty");
       }
 
       /// <summary>
@@ -173,6 +179,8 @@
             get { return GetValue(Descriptor.Comment); }
             set { SetValue(Descriptor.Comment, value); }
          }
+
+         public string ClrProperty { get; set; }
       }
 
       private sealed class MovieReviewVMDescriptor : VMDescriptor {
@@ -180,7 +188,7 @@
          public IVMPropertyDescriptor<string> Comment { get; set; }
       }
 
-
+      [TypeDescriptionProvider(typeof(ViewModelTypeDescriptionProvider))]
       private class ViewModelWithClassDescriptorAttributeVM : ViewModel<ViewModelWithClassDescriptorAttributeVMDescriptor> {
          [ClassDescriptor]
          public static readonly ViewModelWithClassDescriptorAttributeVMDescriptor ClassDescriptor = VMDescriptorBuilder

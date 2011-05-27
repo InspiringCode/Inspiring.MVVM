@@ -20,8 +20,7 @@
             }
          }
 
-         var baseDescriptor = base.GetTypeDescriptor(objectType, instance);
-         return baseDescriptor;
+         return base.GetTypeDescriptor(objectType, instance); // return an empty TypeDescriptor
       }
    }
 }
