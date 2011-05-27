@@ -331,8 +331,8 @@
       public void CreateMultiSelection_WithSelectedItems_SetsIsSelectedProperty() {
          UserVM vm = CreateUserVMWithItems();
 
-         var selectedGroup1 = vm.Groups.SelectedItems.Single(x => x.Source.Equals(Group1));
-         var selectedGroup2 = vm.Groups.SelectedItems.Single(x => x.Source.Equals(Group2));
+         var selectedGroup1 = vm.Groups.AllItems.Single(x => x.Source.Equals(Group1));
+         var selectedGroup2 = vm.Groups.AllItems.Single(x => x.Source.Equals(Group2));
 
          Assert.IsTrue(selectedGroup1.GetValue(x => x.IsSelected));
          Assert.IsTrue(selectedGroup2.GetValue(x => x.IsSelected));

@@ -162,7 +162,13 @@
                         vm.SelectedItems.Remove(args.ChangedVM);
                      }
                   });
-
+               b.OnChangeOf
+                  .Collection(x => x.AllItems, true)
+                  .Execute((vm, args) => {
+                     if (args.ChangeType == ChangeType.CollectionPopulated) {
+                        var loadTrigger = vm.SelectedItems;
+                     }
+                  });
             });
 
          //if (enableValidation) {
