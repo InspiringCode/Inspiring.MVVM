@@ -20,7 +20,7 @@
             INeedsInitialization<TSubject> needsTypedInitialization = s as INeedsInitialization<TSubject>;
             INeedsInitialization needsInitialization = s as INeedsInitialization;
 
-            if (!TryTypedInitialize(screen, subject)) {
+            if (!TryTypedInitialize(s, subject)) {
                if (needsInitialization != null) {
                   needsInitialization.Initialize();
                }

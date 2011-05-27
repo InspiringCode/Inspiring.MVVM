@@ -184,6 +184,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="PropertyChangedCounter.cs" />
     <Compile Include="ReflectionServiceLocator.cs" />
+    <Compile Include="Screens\LifecycleTreeWalkerTests.cs" />
     <Compile Include="Screens\ScreenCreationBehaviorTest.cs" />
     <Compile Include="Screens\ScreenInitializerTests.cs" />
     <Compile Include="Stubs\BehaviorContextStub.cs" />
