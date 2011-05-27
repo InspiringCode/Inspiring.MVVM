@@ -1,8 +1,6 @@
 ﻿namespace Inspiring.MvvmTest.Screens {
-   using System;
-   using System.Linq;
-   using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Inspiring.Mvvm.Screens;
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
    public class ScreenInitializerTests {
@@ -35,6 +33,22 @@
       }
 
       [TestMethod]
+      public void Initialize_WhenScreenExpectsInterface_CallsInitialize() {
+         var subject = new DerivedSubject();
+         var screen = new ScreenWithInterfaceSubject();
+         ScreenInitializer.Initialize(screen, subject);
+         Assert.AreEqual(subject, screen.LastSubject);
+      }
+
+      [TestMethod]
+      public void Initialize_WhenCompileTimeTypeOfSubjectIsInterface_CallsInitializeOverloadOfRuntimeType() {
+         var subject = new DerivedSubject();
+         var screen = new TestScreen<BaseSubject>();
+         ScreenInitializer.Initialize(screen, (ISubject)subject);
+         Assert.AreEqual(subject, screen.LastSubject);
+      }
+
+      [TestMethod]
       public void Initialize_WhenScreenDoesNotImplementInterface_CallsInitializeOnChildren() {
          var subject = new DerivedSubject();
          var parent = new NonInitializableParentScreen();
@@ -64,7 +78,20 @@
          }
       }
 
-      private class BaseSubject {
+      private class ScreenWithInterfaceSubject : ScreenBase, INeedsInitialization<ISubject> {
+         public ISubject LastSubject { get; set; }
+
+         void INeedsInitialization<ISubject>.Initialize(ISubject subject) {
+            LastSubject = subject;
+         }
+      }
+
+      private interface ISubject {
+         object Dummy { get; set; }
+      }
+
+      private class BaseSubject : ISubject {
+         object ISubject.Dummy { get; set; }
       }
 
       private class DerivedSubject : BaseSubject {

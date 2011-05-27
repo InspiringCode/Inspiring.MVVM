@@ -11,3 +11,6 @@
 // TODO: Declarative dependendcies: Make ValidationScope adjustable
 // TODO: Undo: Invalid Value handling (DisplayValue)
 // TODO: Rethink descriptor properties handling
+
+// TODO: Check GetHashCode of RevalidationRequest. Does/should it call VM/source GetHashCode()?
+// TODO: Improve ScreenInitializer.

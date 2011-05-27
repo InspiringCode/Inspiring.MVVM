@@ -1,5 +1,7 @@
 ﻿namespace Inspiring.Mvvm.Screens {
    using System;
+   using System.Collections.Generic;
+   using System.Diagnostics.Contracts;
    using System.Linq;
 
    public static class ScreenInitializer {
@@ -52,6 +54,8 @@
       }
 
       private static bool TryTypedInitialize<TSubject>(IScreenLifecycle screen, TSubject subject) {
+         Contract.Requires(subject != null);
+
          var typed = screen as INeedsInitialization<TSubject>;
 
          if (typed != null) {
@@ -59,18 +63,37 @@
             return true;
          }
 
-         for (Type t = typeof(TSubject).BaseType; t != null; t = t.BaseType) {
-            Type itf = typeof(INeedsInitialization<>).MakeGenericType(t);
-            if (itf.IsAssignableFrom(screen.GetType())) {
-               itf
-                  .GetMethod("Initialize")
-                  .Invoke(screen, new object[] { subject });
+         var interfaceImpl = GetCompatibleInitializationInterfaces(screen.GetType(), subject.GetType())
+            .FirstOrDefault();
 
-               return true;
-            }
+         if (interfaceImpl != null) {
+            interfaceImpl
+               .GetMethod("Initialize")
+               .Invoke(screen, new object[] { subject });
+
+            return true;
          }
 
          return false;
+      }
+
+      private static IEnumerable<Type> GetCompatibleInitializationInterfaces(Type screenType, Type subjectType) {
+         var canditateSubjectTypes = GetBaseTypesAndInterfacesOf(subjectType);
+         return canditateSubjectTypes
+            .Select(c => typeof(INeedsInitialization<>).MakeGenericType(c))
+            .Where(itf => itf.IsAssignableFrom(screenType));
+      }
+
+      private static IEnumerable<Type> GetBaseTypesAndInterfacesOf(Type type) {
+         for (Type t = type.BaseType; t != null && t != typeof(Object); t = t.BaseType) {
+            yield return t;
+         }
+
+         foreach (Type itf in type.GetInterfaces()) {
+            yield return itf;
+         }
+
+         yield return typeof(Object);
       }
    }
 }
