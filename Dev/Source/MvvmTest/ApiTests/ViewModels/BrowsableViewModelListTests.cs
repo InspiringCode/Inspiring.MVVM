@@ -4,7 +4,6 @@
    using System.ComponentModel;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
-   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
@@ -12,7 +11,7 @@
       [TestMethod]
       public void Constructor_WhenListTypeDoesNotSpecifyClassDescriptorAttributes_ThrowsException() {
          AssertHelper.Throws<ArgumentException>(() =>
-            new BrowsableViewModelList<ViewModelWithoutClassDescriptor>()
+            new BrowsableViewModelList<ViewModelWithoutClassDescriptorVM>()
          )
          .WithMessage(EViewModels.BrowsableListRequiresClassDescriptorAttribute);
       }
@@ -70,6 +69,44 @@
          var second = list.GetItemProperties(GetListAccessorsForManagerAddress(list));
 
          Assert.AreSame(first, second);
+      }
+
+      // PLEASE clean us up. Maybe make a nice generic method for 
+
+      [TestMethod]
+      public void GetItemProperties_ForAViewModelCollectionPropertyOfAnObjectWithoutClassDescriptorAttribute_ReturnsViewModelProperties() {
+         var list = new BrowsableViewModelList<ViewModelWithClassDescriptorVM>();
+
+         PropertyDescriptorCollection withDescProperties = list.GetItemProperties(null);
+         PropertyDescriptor withoutAttributePropertyDescriptor = withDescProperties["ViewModelWithoutAttribute"];
+
+         PropertyDescriptor withAttributePropertyDescriptor = list
+            .GetItemProperties(new[] { withoutAttributePropertyDescriptor })["ViewModelCollectionWithAttribute"];
+
+
+         PropertyDescriptorCollection withAttributeProperties = list
+            .GetItemProperties(new[] { withoutAttributePropertyDescriptor, withAttributePropertyDescriptor });
+
+         var expectedProperties = ViewModelWithClassDescriptorVM.ClassDescriptor.Properties;
+         CollectionAssert.AreEqual(GetExpectations(expectedProperties), GetExpectations(withAttributeProperties));
+      }
+
+      [TestMethod]
+      public void GetItemProperties_ForAViewModelPropertyOfAnObjectWithoutClassDescriptorAttribute_ReturnsViewModelProperties() {
+         var list = new BrowsableViewModelList<ViewModelWithClassDescriptorVM>();
+
+         PropertyDescriptorCollection withDescProperties = list.GetItemProperties(null);
+         PropertyDescriptor withoutAttributePropertyDescriptor = withDescProperties["ViewModelWithoutAttribute"];
+
+         PropertyDescriptor withAttributePropertyDescriptor = list
+            .GetItemProperties(new[] { withoutAttributePropertyDescriptor })["ViewModelWithAttribute"];
+
+
+         PropertyDescriptorCollection withAttributeProperties = list
+            .GetItemProperties(new[] { withoutAttributePropertyDescriptor, withAttributePropertyDescriptor });
+
+         var expectedProperties = ViewModelWithClassDescriptorVM.ClassDescriptor.Properties;
+         CollectionAssert.AreEqual(GetExpectations(expectedProperties), GetExpectations(withAttributeProperties));
       }
 
       [TestMethod]
@@ -163,7 +200,59 @@
          }
       }
 
-      private class ViewModelWithoutClassDescriptor : ViewModelStub {
+
+      private class ViewModelWithClassDescriptorVM : ViewModel<ViewModelWithClassDescriptorVMDescriptor> {
+         [ClassDescriptor]
+         public static readonly ViewModelWithClassDescriptorVMDescriptor ClassDescriptor = VMDescriptorBuilder
+            .OfType<ViewModelWithClassDescriptorVMDescriptor>()
+            .For<ViewModelWithClassDescriptorVM>()
+            .WithProperties((d, b) => {
+               var v = b.GetPropertyBuilder();
+
+               d.ViewModelWithoutAttribute = v.VM.Of<ViewModelWithoutClassDescriptorVM>();
+            })
+            .Build();
+
+         public ViewModelWithClassDescriptorVM()
+            : base(ClassDescriptor) {
+         }
+      }
+
+      private class ViewModelWithClassDescriptorVMDescriptor : VMDescriptor {
+         public IVMPropertyDescriptor<ViewModelWithoutClassDescriptorVM> ViewModelWithoutAttribute { get; set; }
+      }
+
+      private class ViewModelWithoutClassDescriptorVM : ViewModel<ViewModelWithoutClassDescriptorVMDescriptor> {
+         public static readonly ViewModelWithoutClassDescriptorVMDescriptor ClassDescriptor = VMDescriptorBuilder
+            .OfType<ViewModelWithoutClassDescriptorVMDescriptor>()
+            .For<ViewModelWithoutClassDescriptorVM>()
+            .WithProperties((d, b) => {
+               var v = b.GetPropertyBuilder();
+
+               d.ViewModelCollectionWithAttribute = v
+                  .Collection
+                  .Of<ViewModelWithClassDescriptorVM>(ViewModelWithClassDescriptorVM.ClassDescriptor);
+
+               d.ViewModelWithAttribute = v.VM.Of<ViewModelWithClassDescriptorVM>();
+            })
+            .Build();
+
+         public ViewModelWithoutClassDescriptorVM()
+            : base(ClassDescriptor) {
+         }
+
+         public ViewModelWithClassDescriptorVM ViewModelWithAttribute {
+            get { return GetValue(Descriptor.ViewModelWithAttribute); }
+         }
+
+         public IVMCollection<ViewModelWithClassDescriptorVM> ViewModelCollectionWithAttribute {
+            get { return GetValue(Descriptor.ViewModelCollectionWithAttribute); }
+         }
+      }
+
+      private class ViewModelWithoutClassDescriptorVMDescriptor : VMDescriptor {
+         public IVMPropertyDescriptor<IVMCollection<ViewModelWithClassDescriptorVM>> ViewModelCollectionWithAttribute { get; set; }
+         public IVMPropertyDescriptor<ViewModelWithClassDescriptorVM> ViewModelWithAttribute { get; set; }
       }
 
       private class EmployeeVM : ViewModel<EmployeeVMDescriptor> {

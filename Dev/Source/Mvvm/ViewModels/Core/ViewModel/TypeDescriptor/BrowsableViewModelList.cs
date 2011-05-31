@@ -32,7 +32,7 @@
 
             return browsableDescriptor != null ?
                browsableDescriptor.ChildProperties :
-               TypeDescriptor.GetProperties(lastAccessor.PropertyType);
+               BrowsablePropertyDescriptor.GetPropertiesOf(lastAccessor.PropertyType);
          }
 
          if (_itemProperties == null) {
