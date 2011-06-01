@@ -166,7 +166,7 @@
                   .Collection(x => x.AllItems, true)
                   .Execute((vm, args) => {
                      if (args.ChangeType == ChangeType.CollectionPopulated) {
-                        var loadTrigger = vm.SelectedItems;
+                        vm.Load(vm.Descriptor.SelectedItems);
                      }
                   });
             });
