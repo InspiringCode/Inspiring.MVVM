@@ -417,6 +417,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Common\Events\" />
     <Folder Include="ViewModels\Core\Properties\SimpleProperty\BehaviorInterfaces\" />
     <Folder Include="ViewModels\Core\Properties\ViewModelProperty\BehaviorInterfaces\" />
     <Folder Include="Views\TestDoubles\" />

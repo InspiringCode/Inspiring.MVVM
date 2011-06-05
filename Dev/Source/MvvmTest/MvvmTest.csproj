@@ -112,6 +112,7 @@
     <Compile Include="- Test Infrastructure -\TestViewModel.cs" />
     <Compile Include="- Test Infrastructure -\ValidatorMockConfiguration.cs" />
     <Compile Include="- Test Infrastructure -\ValidatorMockConfigurationFluent.cs" />
+    <Compile Include="ApiTests\Common\EventTests.cs" />
     <Compile Include="ApiTests\ViewModels\CommandHandlerTests.cs" />
     <Compile Include="ApiTests\ViewModels\Core\PathDefinitionTests.cs" />
     <Compile Include="ApiTests\ViewModels\DeclarativeDeendencies\DependencyExecuteActionTests.cs" />
@@ -178,6 +179,7 @@
     <Compile Include="Common\Behaviors\BehaviorFactoryConfigurationTests.cs" />
     <Compile Include="Common\Behaviors\BehaviorFactoryTests.cs" />
     <Compile Include="Common\DelegateUtilsTests.cs" />
+    <Compile Include="Common\Events\EventSubscriptionTests.cs" />
     <Compile Include="Common\HashCodeServiceTests.cs" />
     <Compile Include="Common\ServiceRegistryTests.cs" />
     <Compile Include="Common\TypeServiceTests.cs" />
