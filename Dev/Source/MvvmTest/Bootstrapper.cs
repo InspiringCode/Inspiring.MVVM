@@ -2,6 +2,7 @@
    using System;
    using Inspiring.Mvvm;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
+   using Inspiring.Mvvm.Testability;
 
    [TestClass]
    public sealed class Bootstrapper {
@@ -14,6 +15,7 @@
          //};
 
          ServiceLocator.SetServiceLocator(new ReflectionServiceLocator());
+         TestFrameworkAdapter.SetTestFrameworkAdapter(new MSTestAdapter());
       }
    }
 }

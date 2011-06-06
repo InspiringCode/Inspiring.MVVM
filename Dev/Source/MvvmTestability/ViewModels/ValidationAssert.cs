@@ -1,13 +1,11 @@
-﻿namespace Inspiring.MvvmTest {
+﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
    using System.Collections.Generic;
    using System.Linq;
-   using Inspiring.Mvvm.Common;
-   using Inspiring.Mvvm.ViewModels;
+   using Inspiring.Mvvm.Testability;
    using Inspiring.Mvvm.ViewModels.Core;
-   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-   internal static class ValidationAssert {
+   public static class ValidationAssert {
       public static readonly IEqualityComparer<ValidationError> EssentialErrorComparer = new EssentialValidationErrorComparer();
       public static readonly IEqualityComparer<ValidationError> FullErrorComparer = new FullValidationErrorComparer();
 
@@ -29,10 +27,12 @@
             .OrderBy(x => x);
 
          if (!orderedExpected.SequenceEqual(orderedActual)) {
-            Assert.Fail(
-               "Expected error messages [{0}] but got [{1}].",
-               String.Join(", ", orderedExpected),
-               String.Join(", ", orderedActual)
+            TestFrameworkAdapter.Current.Fail(
+               String.Format(
+                  "Expected error messages [{0}] but got [{1}].",
+                  String.Join(", ", orderedExpected),
+                  String.Join(", ", orderedActual)
+               )
             );
          }
       }
@@ -71,7 +71,13 @@
          );
 
          if (!errorsEqual) {
-            Assert.Fail("Expected validaton result {0} but was {1}.", expectedResult, actualResult);
+            TestFrameworkAdapter.Current.Fail(
+               String.Format(
+                  "Expected validaton result {0} but was {1}.",
+                  expectedResult,
+                  actualResult
+               )
+            );
          }
       }
 
@@ -84,7 +90,14 @@
          );
 
          if (!errorsEqual) {
-            Assert.Fail("Expected validaton result {0} for {1} but was {2}.", expectedResult, vm, actualResult);
+            TestFrameworkAdapter.Current.Fail(
+               String.Format(
+                  "Expected validaton result {0} for {1} but was {2}.",
+                  expectedResult,
+                  vm,
+                  actualResult
+               )
+            );
          }
       }
 
@@ -128,17 +141,24 @@
 
       public static void IsValid(IViewModel vm) {
          if (!vm.Kernel.IsValid) {
-            Assert.Fail(
-               "Expected {0} to be valid but returned result {1}.",
-               vm,
-               vm.Kernel.GetValidationResult()
+            TestFrameworkAdapter.Current.Fail(
+               String.Format(
+                  "Expected {0} to be valid but returned result {1}.",
+                  vm,
+                  vm.Kernel.GetValidationResult()
+               )
             );
          }
       }
 
       public static void IsValid(ValidationResult result) {
          if (!result.IsValid) {
-            Assert.Fail("Expected result to be valid but was {0}.", result);
+            TestFrameworkAdapter.Current.Fail(
+               String.Format(
+                  "Expected result to be valid but was {0}.",
+                  result
+               )
+            );
          }
       }
 
@@ -154,11 +174,13 @@
          var propertyResult = vm.Kernel.GetValidationResult(property);
 
          if (!propertyResult.IsValid) {
-            Assert.Fail(
-               "Expected {0}.{1} to be valid but returned result {2}.",
-               vm,
-               property,
-               propertyResult
+            TestFrameworkAdapter.Current.Fail(
+               String.Format(
+                  "Expected {0}.{1} to be valid but returned result {2}.",
+                  vm,
+                  property,
+                  propertyResult
+               )
             );
          }
       }
@@ -167,10 +189,12 @@
          var result = vm.Kernel.GetValidationResult(ValidationResultScope.ViewModelValidationsOnly);
 
          if (!result.IsValid) {
-            Assert.Fail(
-               "Expected view model validations of {0} to be valid but returned result {1}.",
-               vm,
-               result
+            TestFrameworkAdapter.Current.Fail(
+               String.Format(
+                  "Expected view model validations of {0} to be valid but returned result {1}.",
+                  vm,
+                  result
+               )
             );
          }
       }

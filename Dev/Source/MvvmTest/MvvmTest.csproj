@@ -185,6 +185,7 @@
     <Compile Include="Common\TypeServiceTests.cs" />
     <Compile Include="DomainAssert.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="MSTestAdapter.cs" />
     <Compile Include="PropertyChangedCounter.cs" />
     <Compile Include="ReflectionServiceLocator.cs" />
     <Compile Include="Screens\LifecycleTreeWalkerTests.cs" />
@@ -199,7 +200,6 @@
     <Compile Include="TestUtils\ComparisonObject.cs" />
     <Compile Include="TestUtils\ComparisonObjectTests.cs" />
     <Compile Include="TestUtils\GenericComparisonObjectTests.cs" />
-    <Compile Include="ValidationAssert.cs" />
     <Compile Include="ValidationTestBase.cs" />
     <Compile Include="ViewModels\- No Namespace -\ViewModelTests.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMCollectionCallModificationBehaviorTests.cs" />
