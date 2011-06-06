@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
    using System.Windows.Input;
+   using Inspiring.Mvvm.Testability;
 
    public static class ViewModelExtensions {
       public static void ExecuteCommand<TDescriptor>(
@@ -13,6 +14,10 @@
 
          if (commandPropertySelector == null) {
             throw new ArgumentNullException("commandPropertySelector");
+         }
+
+         if (!CanExecuteCommand(viewModel, commandPropertySelector)) {
+            TestFrameworkAdapter.Current.Fail("Das Kommando kann nicht ausgeführt werden.");
          }
 
          var property = commandPropertySelector((TDescriptor)viewModel.Descriptor);
