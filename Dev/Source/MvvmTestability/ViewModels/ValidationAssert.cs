@@ -42,7 +42,7 @@
          params string[] expectedMessages
       ) {
          bool contains = expectedMessages
-            .All(m => actualResult.Errors.Any(x => x.Message.Contains(m)));
+            .All(m => actualResult.Errors.Any(x => x.Message == m));
 
          if (!contains) {
             TestFrameworkAdapter.Current.Fail(
