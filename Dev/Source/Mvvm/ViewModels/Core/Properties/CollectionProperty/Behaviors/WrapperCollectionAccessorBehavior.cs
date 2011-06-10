@@ -5,8 +5,25 @@
 
    internal sealed class WrapperCollectionAccessorBehavior<TItemVM, TItemSource> :
       CachedAccessorBehavior<IVMCollection<TItemVM>>,
+      IValueAccessorBehavior<IEnumerable<TItemSource>>,
       IRefreshBehavior
       where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
+
+      private static readonly FieldDefinitionGroup CollectionSourceCacheGroup = new FieldDefinitionGroup();
+      private DynamicFieldAccessor<IEnumerable<TItemSource>> _collectionSourceCache;
+
+      IEnumerable<TItemSource> IValueAccessorBehavior<IEnumerable<TItemSource>>.GetValue(IBehaviorContext context) {
+         return GetSourceItems(context);
+      }
+
+      void IValueAccessorBehavior<IEnumerable<TItemSource>>.SetValue(IBehaviorContext context, IEnumerable<TItemSource> value) {
+         throw new NotSupportedException();
+      }
+
+      public override void Initialize(BehaviorInitializationContext context) {
+         _collectionSourceCache = new DynamicFieldAccessor<IEnumerable<TItemSource>>(context, CollectionSourceCacheGroup);
+         base.Initialize(context);
+      }
 
       public override void SetValue(IBehaviorContext context, IVMCollection<TItemVM> value) {
          throw new NotSupportedException(
@@ -15,6 +32,7 @@
       }
 
       public void Refresh(IBehaviorContext context) {
+         _collectionSourceCache.Clear(context);
          var collection = GetValue(context);
          var previousItemsBySource = collection.ToDictionary(x => x.Source);
          var newSourceItems = GetSourceItems(context);
@@ -69,7 +87,12 @@
       }
 
       private IEnumerable<TItemSource> GetSourceItems(IBehaviorContext context) {
-         return this.GetValueNext<IEnumerable<TItemSource>>(context);
+         if (!_collectionSourceCache.HasValue(context)) {
+            IEnumerable<TItemSource> source = this.GetValueNext<IEnumerable<TItemSource>>(context);
+            _collectionSourceCache.Set(context, source);
+         }
+
+         return _collectionSourceCache.Get(context);
       }
 
       private TItemVM CreateAndInitializeItem(IBehaviorContext context, TItemSource source) {

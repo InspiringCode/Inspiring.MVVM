@@ -283,6 +283,7 @@
     <Compile Include="ViewModels\Core\ViewModel\VMKernelTests.cs" />
     <Compile Include="ViewModels\Core\Properties\VMPropertyFactoryTests.cs" />
     <Compile Include="ViewModels\IntegrationTests\CollectionPropertyTest.cs" />
+    <Compile Include="ViewModels\IntegrationTests\CollectionSourceCacheTests.cs" />
     <Compile Include="ViewModels\IntegrationTests\StandardValidationsTest.cs" />
     <Compile Include="ViewModels\PropertyTypeHelperTests.cs" />
     <Compile Include="ViewModels\TestBase.cs" />

@@ -242,10 +242,13 @@
          IVMPropertyDescriptor<IVMCollection<TItemVM>> ICollectionPropertyBuilderWithSource<TItemSource>.With<TItemVM>(
             IVMDescriptor itemDescriptor
          ) {
+            IValueAccessorBehavior<IVMCollection<TItemVM>> valueAccessor = 
+               new WrapperCollectionAccessorBehavior<TItemVM, TItemSource>();
+
             return _factory.CollectionPropertyWithSource(
                itemDescriptor,
-               valueAccessor: new WrapperCollectionAccessorBehavior<TItemVM, TItemSource>(),
-               sourceAccessor: _sourceCollectionAccessor
+               valueAccessor,
+               _sourceCollectionAccessor
             );
          }
       }
