@@ -1,48 +1,52 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.Common {
+   using Inspiring.Mvvm.Common;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
    public class EventTests {
-      //   [TestMethod]
-      //   public void Publish_OfAnEvent_ExecutesCorrectHandlers() {
-      //      var mgr = CreateManager();
+      [TestMethod]
+      public void Publish_OfAnEvent_ExecutesCorrectHandlers() {
+         Assert.Inconclusive("Still TODO: Events");
 
-      //      var firstEventHandler = new TestHandler();
-      //      var secondEventHandler = new TestHandler();
+         var mgr = CreateManager();
 
-      //      mgr.Subscribe(TestEvents.FirstEvent, firstEventHandler, firstEventHandler.HandleEvent);
-      //      mgr.Subscribe(TestEvents.SecondEvent, secondEventHandler, secondEventHandler.HandleEvent);
+         var firstEventHandler = new TestHandler();
+         var secondEventHandler = new TestHandler();
 
-      //      var expectedPayload = new TestPayload();
-      //      mgr.Publish(TestEvents.FirstEvent, expectedPayload);
+         var sm = new EventSubscriptionManager(mgr, b => {
+            b.On(TestEvents.FirstEvent).Execute(firstEventHandler.HandleEvent);
+            b.On(TestEvents.SecondEvent).Execute(secondEventHandler.HandleEvent);
+         });
 
-      //      Assert.AreEqual(1, firstEventHandler.Invocations);
-      //      Assert.AreEqual(0, secondEventHandler.Invocations);
+         var expectedPayload = new TestPayload();
+         mgr.Publish(TestEvents.FirstEvent, expectedPayload);
 
-      //      Assert.AreEqual(expectedPayload, firstEventHandler.LastPaylaod);
-      //   }
+         Assert.AreEqual(1, firstEventHandler.Invocations);
+         Assert.AreEqual(0, secondEventHandler.Invocations);
 
-      //   private EventAggregator CreateManager() {
-      //      throw new NotImplementedException();
-      //   }
+         Assert.AreEqual(expectedPayload, firstEventHandler.LastPaylaod);
+      }
 
-      //   private class TestHandler {
-      //      public int Invocations { get; set; }
-      //      public TestPayload LastPaylaod { get; set; }
+      private EventAggregator CreateManager() {
+         return new EventAggregator();
+      }
 
-      //      public void HandleEvent(TestPayload payload) {
-      //         Invocations++;
-      //         LastPaylaod = payload;
-      //      }
-      //   }
+      private class TestHandler {
+         public int Invocations { get; set; }
+         public TestPayload LastPaylaod { get; set; }
 
-      //   private class TestEvents {
-      //      public static readonly Event<TestPayload> FirstEvent = new Event<TestPayload>();
-      //      public static readonly Event<TestPayload> SecondEvent = new Event<TestPayload>();
-      //   }
+         public void HandleEvent(TestPayload payload) {
+            Invocations++;
+            LastPaylaod = payload;
+         }
+      }
 
-      //   private class TestPayload {
-      //   }
-      //}
+      private class TestEvents {
+         public static readonly Event<TestPayload> FirstEvent = new Event<TestPayload>();
+         public static readonly Event<TestPayload> SecondEvent = new Event<TestPayload>();
+      }
+
+      private class TestPayload {
+      }
    }
 }

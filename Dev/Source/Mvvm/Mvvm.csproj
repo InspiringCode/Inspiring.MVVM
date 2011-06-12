@@ -104,6 +104,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ECommon.resx</DependentUpon>
     </Compile>
+    <Compile Include="Common\Events\Event.cs" />
+    <Compile Include="Common\Events\EventAggregator.cs" />
+    <Compile Include="Common\Events\EventOccurrence.cs" />
+    <Compile Include="Common\Events\DefaultEventExtensions.cs" />
+    <Compile Include="Common\Events\EventSubscription.cs" />
+    <Compile Include="Common\Events\EventSubscriptionManager.cs" />
+    <Compile Include="Common\Events\IEvent.cs" />
+    <Compile Include="Common\Events\EventSubscriptionBuilder.cs" />
+    <Compile Include="Common\Events\IEventSubscription.cs" />
+    <Compile Include="Common\Events\IEventSubscriptionRepository.cs" />
     <Compile Include="Common\HashCodeService.cs" />
     <Compile Include="Common\SealableObject.cs" />
     <Compile Include="Common\ServiceRegistry.cs" />
@@ -417,7 +427,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Common\Events\" />
     <Folder Include="ViewModels\Core\Properties\SimpleProperty\BehaviorInterfaces\" />
     <Folder Include="ViewModels\Core\Properties\ViewModelProperty\BehaviorInterfaces\" />
     <Folder Include="Views\TestDoubles\" />
