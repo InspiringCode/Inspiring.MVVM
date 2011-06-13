@@ -72,8 +72,15 @@
       public void ImmediateCloseScreen(IScreenBase screen) {
          IScreenBase next = ChooseNextScreen(screen);
          ActiveScreen = next;
-         screen.Close();
+
+         // It is important to FIRST remove the screen and THEN call 'Close'. The
+         // removal triggers a collection change which causes the view reprenstation
+         // to close the view. In this stage the screen may still be accessed by the
+         // view. If 'Close' was called before, the screen may already be in an
+         // disposed state (e.g. database session closed).
          _screens.Items.Remove(screen);
+
+         screen.Close();
       }
 
       protected virtual IScreenBase ChooseNextScreen(IScreenBase screen) {

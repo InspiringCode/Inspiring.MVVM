@@ -27,6 +27,11 @@
       public static void BindVM<TDescriptor>(
          Action<IVMBinder<TDescriptor>> bindingConfigurator
       ) where TDescriptor : IVMDescriptor {
+         // See http://sweux.com/blogs/laranjeira/index.php/wpf/design-mode-wpf/how-to-get-design-mode-property-in-wpf/
+         if (DesignerProperties.GetIsInDesignMode(new DependencyObject())) {
+            return;
+         }
+
          VMPropertyBinder<TDescriptor> binder = new VMPropertyBinder<TDescriptor>();
          bindingConfigurator(binder);
          binder.Execute();
