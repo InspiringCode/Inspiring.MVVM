@@ -16,7 +16,7 @@
          IScreenBase parent = null,
          string title = null
       ) where TScreen : IScreenBase {
-         Window window = WindowService.CreateWindow(screen);
+         Window window = WindowService.CreateDialogWindow(screen);
          window.Show();
       }
 
