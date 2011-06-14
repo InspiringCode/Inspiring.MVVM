@@ -66,7 +66,10 @@
          return DequeueResponder().ProcessScreenDialogInvocation(invocation, screen);
       }
 
-
+      void IDialogService.Show<TScreen>(IScreenFactory<TScreen> screen, IScreenBase parent, string title) {
+         // TODO
+         throw new NotImplementedException();
+      }
 
       bool IDialogService.ShowOpenFileDialog(IScreenBase parent, out string fileName, string filter, string initialDirectory) {
          var invocation = new DialogServiceInvocation(DialogServiceMethod.ShowOpenFileDialog);

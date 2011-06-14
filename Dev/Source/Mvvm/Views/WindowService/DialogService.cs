@@ -11,6 +11,15 @@
          WindowService = windowService;
       }
 
+      public virtual void Show<TScreen>(
+         IScreenFactory<TScreen> screen,
+         IScreenBase parent = null,
+         string title = null
+      ) where TScreen : IScreenBase {
+         Window window = WindowService.CreateWindow(screen);
+         window.Show();
+      }
+
       public virtual DialogScreenResult ShowDialog<TScreen>(
          IScreenFactory<TScreen> screen,
          IScreenBase parent = null,
