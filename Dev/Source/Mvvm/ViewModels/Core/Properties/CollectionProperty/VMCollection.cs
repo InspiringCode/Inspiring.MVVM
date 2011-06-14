@@ -34,17 +34,6 @@
       }
 
       /// <inheritdoc />
-      public bool IsPopulating {
-         get { return _isPopulating; }
-         set {
-            if (_isPopulating != value) {
-               _isPopulating = value;
-               OnListChanged(new ListChangedEventArgs(ListChangedType.Reset, -1));
-            }
-         }
-      }
-
-      /// <inheritdoc />
       public IViewModel OwnerVM {
          get;
          private set;
@@ -53,6 +42,16 @@
       public IVMPropertyDescriptor OwnerProperty {
          get;
          private set;
+      }
+
+      private bool IsPopulating {
+         get { return _isPopulating; }
+         set {
+            if (_isPopulating != value) {
+               _isPopulating = value;
+               OnListChanged(new ListChangedEventArgs(ListChangedType.Reset, -1));
+            }
+         }
       }
 
       /// <summary>
@@ -87,10 +86,6 @@
          }
 
          CallBehaviors(CollectionChangedArgs<TItemVM>.ItemInserted(this, item, index));
-
-         //Behaviors.TryCall<IModificationCollectionBehavior<TItemVM>>(b =>
-         //   b.ItemInserted(Owner.GetContext(), this, item, index)
-         //);
       }
 
       /// <inheritdoc />
@@ -100,10 +95,6 @@
          base.RemoveItem(index);
 
          CallBehaviors(CollectionChangedArgs<TItemVM>.ItemRemoved(this, oldItem, index));
-
-         //Behaviors.TryCall<IModificationCollectionBehavior<TItemVM>>(b =>
-         //   b.ItemRemoved(Owner.GetContext(), this, removedItem, index)
-         //);
       }
 
       /// <inheritdoc />
@@ -113,10 +104,6 @@
          base.SetItem(index, item);
 
          CallBehaviors(CollectionChangedArgs<TItemVM>.ItemSet(this, oldItem, item, index));
-
-         //Behaviors.TryCall<IModificationCollectionBehavior<TItemVM>>(b =>
-         //   b.ItemSet(Owner.GetContext(), this, previousItem, item, index)
-         //);
       }
 
       /// <inheritdoc />
@@ -176,11 +163,15 @@
             IsPopulating = true;
             Clear();
             newItems.ForEach(Add);
+
+            // We have to call the behaviors BEFORE we raise the ListChanged event. The 
+            // behavior chain does essential initialization (e.g. sets the descriptor).
+            // If we raise the ListChanged before, the UI may try to access the VMs before
+            // they are properly initialized.
+            CallBehaviors(CollectionChangedArgs<TItemVM>.CollectionPopulated(this, oldItems));
          } finally {
             IsPopulating = false;
          }
-
-         CallBehaviors(CollectionChangedArgs<TItemVM>.CollectionPopulated(this, oldItems));
       }
    }
 }

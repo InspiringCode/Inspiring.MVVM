@@ -2,6 +2,8 @@
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+   using System.Text;
 
    [TestClass]
    public class VMCollectionTests : TestBase {
@@ -53,6 +55,50 @@
 
          Assert.AreSame(itemTypeDescriptorBehavior.PropertyDescriptors, collection.GetItemProperties(null));
       }
+
+      [TestMethod]
+      public void SetItems_ListChangedIsRaisedAfterBehaviors() {
+         var actionLog = new StringBuilder();
+         
+         var changeListener = new TestChangeListener();
+         
+         var ownerProperty = PropertyStub
+            .WithBehaviors(changeListener)
+            .Build();
+
+         var ownerVM = ViewModelStub
+            .WithProperties(ownerProperty)
+            .Build();
+
+         var collection = new VMCollection<IViewModel>(ownerVM, ownerProperty);
+
+         changeListener.HandleChange += delegate {
+            actionLog.Append("ChangeHandlerBehavior ");
+         };
+
+         collection.ListChanged += delegate {
+            actionLog.Append("ListChanged ");
+         };
+         
+         IVMCollection<IViewModel> c = collection;
+         c.ReplaceItems(new[] { ViewModelStub.Build(), ViewModelStub.Build() });
+
+         Assert.AreEqual("ChangeHandlerBehavior ListChanged ", actionLog.ToString());         
+      }
+
+      private class TestChangeListener : Behavior, ICollectionChangeHandlerBehavior<IViewModel> {
+         public event Action<CollectionChangedArgs<IViewModel>> HandleChange;
+
+         void ICollectionChangeHandlerBehavior<IViewModel>.HandleChange(
+            IBehaviorContext context, 
+            CollectionChangedArgs<IViewModel> args
+         ) {
+            if (HandleChange != null) {
+               HandleChange(args);
+            }
+         }
+      }
+      
 
       private VMCollection<IViewModel> CreateCollection() {
          return new VMCollection<IViewModel>(ViewModelStub.Build(), PropertyStub.Build());
