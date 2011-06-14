@@ -391,6 +391,24 @@
          Assert.IsFalse(vm.Groups.SelectedItems.Contains(additionalItem2));
       }
 
+      [TestMethod]
+      public void InitialEmptySourceItems_RefreshesAllItemsWhenSourceItemIsAdded() {
+         List<Group> allGroups = new List<Group>();
+
+         var vm = CreateUserVM(
+            allGroupsList: allGroups
+         );
+
+         allGroups.Add(Group1);
+
+         var groups = vm.GetValue(x => x.Groups);
+
+         Assert.IsTrue(groups
+            .AllItems
+            .Any(x => x.Source.Equals(Group1))
+         );
+      }
+
       /// <summary>
       ///   Asserts that the source groups of the 'AllItems' property of the
       ///   selection VM are equal to the given source items.
@@ -442,6 +460,7 @@
       private UserVM CreateUserVM(
          Func<Group, bool> filter = null,
          Group[] allGroups = null,
+         List<Group> allGroupsList = null,
          Func<User, IEnumerable<Group>> allGroupsSelector = null,
          Func<User, ICollection<Group>> selectedGroupsSelector = null,
          params Group[] selectedGroups
@@ -468,6 +487,10 @@
 
                if (allGroups != null) {
                   builder = builder.WithItems(x => allGroups);
+               }
+
+               if (allGroupsList != null) {
+                  builder = builder.WithItems(x => allGroupsList);
                }
 
                if (allGroupsSelector != null) {
