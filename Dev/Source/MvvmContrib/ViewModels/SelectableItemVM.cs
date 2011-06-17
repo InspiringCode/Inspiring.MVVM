@@ -7,6 +7,14 @@
       IComparable<SelectableItemVM<TItemSource, TItemVM>>
       where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
+      public SelectableItemVM() {
+
+      }
+
+      public SelectableItemVM(IServiceLocator serviceLocator)
+         : base(serviceLocator) {
+      }
+
       public TItemVM VM {
          get { return GetValue(Descriptor.VM); }
       }
