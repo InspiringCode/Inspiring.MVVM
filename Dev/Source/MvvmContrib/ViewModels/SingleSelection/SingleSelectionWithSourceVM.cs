@@ -14,7 +14,7 @@
       ///   Use <see cref="CreateDescriptor"/> to create one.
       /// </param>
       internal SingleSelectionWithSourceVM(
-         SingleSelectionVMDescriptor<TItemSource, TItemVM> descriptor,
+         SingleSelectionVMDescriptor<TItemSource, SelectableItemVM<TItemSource, TItemVM>> descriptor,
          IServiceLocator serviceLocator
       )
          : base(descriptor, serviceLocator) {
@@ -58,15 +58,28 @@
       ///   A function that should create a VM property that returns all source
       ///   items. This may be a delegated property that returns a constant list.
       /// </param>
-      internal static SingleSelectionVMDescriptor<TItemSource, TItemVM> CreateDescriptor(
-         IVMDescriptor itemDescriptor,
+      internal static SingleSelectionVMDescriptor<TItemSource, SelectableItemVM<TItemSource, TItemVM>> CreateDescriptor(
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<TItemSource>> selectedSourceItemPropertyFactory,
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory,
          bool enableValidation,
          bool enableUndo
       ) {
+
+         SelectableItemVMDescriptor<TItemVM> itemDescriptor = VMDescriptorBuilder
+            .OfType<SelectableItemVMDescriptor<TItemVM>>()
+            .For<SelectableItemVM<TItemSource, TItemVM>>()
+            .WithProperties((d, c) => {
+               var v = c.GetPropertyBuilder();
+
+               d.IsSelected = v.Property.Of<bool>();
+               d.VM = v.VM.Wraps(x => x.Source).With<TItemVM>();
+
+            })
+            .WithValidators(b => b.EnableParentViewModelValidation())
+            .Build();
+
          var builder = VMDescriptorBuilder
-            .OfType<SingleSelectionVMDescriptor<TItemSource, TItemVM>>()
+            .OfType<SingleSelectionVMDescriptor<TItemSource, SelectableItemVM<TItemSource, TItemVM>>>()
             .For<SingleSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>>()
             .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
@@ -74,11 +87,14 @@
 
                d.AllSourceItems = allSourceItemsPropertyFactory(source);
                d.SelectedSourceItem = selectedSourceItemPropertyFactory(source);
-               d.AllItems = v.Collection.Wraps(vm => vm.GetActiveSourceItems()).With<TItemVM>(itemDescriptor);
+               d.AllItems = v.Collection
+                  .Wraps(vm => vm.GetActiveSourceItems())
+                  .With<SelectableItemVM<TItemSource, TItemVM>>(itemDescriptor);
+
                d.SelectedItem = v.VM.DelegatesTo(
                   vm => vm.SelectedSourceItem != null ?
-                     vm.AllItems.Single(i => Object.Equals(i.Source, vm.SelectedSourceItem)) :
-                     default(TItemVM),
+                     vm.AllItems.Single(i => Object.Equals(i.VM.Source, vm.SelectedSourceItem)) :
+                     default(SelectableItemVM<TItemSource, TItemVM>),
                      (vm, value) => vm.SetValue(vm.Descriptor.SelectedSourceItem, value != null ? value.Source : default(TItemSource))
                );
             })
@@ -107,6 +123,55 @@
                      args.AddError("Das gewählte Element ist nicht vorhanden.");
                   }
                });
+            })
+            .WithDependencies(b => {
+               // Initiales setzen der IsSelected property
+               b.OnChangeOf
+                  .Collection(x => x.AllItems, true)
+                  .Execute((vm, args) => {
+                     if (args.ChangeType != ChangeType.CollectionPopulated) {
+                        return;
+                     }
+                     var selectedItem = vm.AllItems.SingleOrDefault(i => Object.Equals(i.VM.Source, vm.SelectedSourceItem));
+                     if (selectedItem != null) {
+                        selectedItem.IsSelected = true;
+                     }
+                  });
+
+               b.OnChangeOf
+                  .Properties(x => x.SelectedItem)
+                  .Execute((vm, args) => {
+                     var newItem = (SelectableItemVM<TItemSource, TItemVM>)args.NewItems.FirstOrDefault();
+                     if (newItem != null && !newItem.IsSelected) {
+                        newItem.IsSelected = true;
+                     }
+
+                     var oldItem = (SelectableItemVM<TItemSource, TItemVM>)args.OldItems.FirstOrDefault();
+                     if (oldItem != null && oldItem.IsSelected) {
+                        oldItem.IsSelected = false;
+                     }
+                  });
+
+               b.OnChangeOf
+                  .Descendant(x => x.AllItems)
+                  .Properties(x => x.IsSelected)
+                  .Execute((vm, args) => {
+                     if ((bool)args.ChangedVM.Kernel.GetValue(args.ChangedProperty)) {
+                        vm.SelectedItem = (SelectableItemVM<TItemSource, TItemVM>)args.ChangedVM;
+                     } else {
+                        if (!vm.AllItems.Any(x => x.IsSelected)) {
+                           vm.SelectedItem = null;
+                        }
+                     }
+                  });
+
+               b.OnChangeOf
+                  .Collection(x => x.AllItems, true)
+                  .Execute((vm, args) => {
+                     if (args.ChangeType == ChangeType.CollectionPopulated) {
+                        vm.Load(vm.Descriptor.SelectedItem);
+                     }
+                  });
             });
 
          //if (enableValidation) {

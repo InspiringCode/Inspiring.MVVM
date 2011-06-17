@@ -128,7 +128,7 @@
             .AllItems
             .Single(x => x.Source == Group2);
 
-         var selectedItems = new List<MultiSelectionItemVM<Group, GroupVM>>(vm.Groups.SelectedItems);
+         var selectedItems = new List<SelectableItemVM<Group, GroupVM>>(vm.Groups.SelectedItems);
          selectedItems.Add(additionalItem);
 
          SetSelectedItems(vm, selectedItems);
@@ -149,7 +149,7 @@
             .AllItems
             .Single(x => x.Source == Group2);
 
-         var selectedItems = new List<MultiSelectionItemVM<Group, GroupVM>>(vm.Groups.SelectedItems);
+         var selectedItems = new List<SelectableItemVM<Group, GroupVM>>(vm.Groups.SelectedItems);
          selectedItems.Insert(0, additionalItem);
          SetSelectedItems(vm, selectedItems);
 
@@ -161,7 +161,7 @@
       public void RemoveFirstSelectedItem_ModifiesSourceCollection() {
          UserVM vm = CreateUserVMWithItems();
 
-         var selectedItems = new List<MultiSelectionItemVM<Group, GroupVM>>(vm.Groups.SelectedItems);
+         var selectedItems = new List<SelectableItemVM<Group, GroupVM>>(vm.Groups.SelectedItems);
          selectedItems.RemoveAt(0);
          SetSelectedItems(vm, selectedItems);
 
@@ -173,7 +173,7 @@
       public void RemoveLastSelectedItem_ModifiesSourceCollection() {
          UserVM vm = CreateUserVMWithItems();
 
-         var selectedItems = new List<MultiSelectionItemVM<Group, GroupVM>>(vm.Groups.SelectedItems);
+         var selectedItems = new List<SelectableItemVM<Group, GroupVM>>(vm.Groups.SelectedItems);
          selectedItems.RemoveAt(selectedItems.Count - 1);
          SetSelectedItems(vm, selectedItems);
 
@@ -446,7 +446,7 @@
          // HACK: Refactor descriptor concept?
          IViewModel selection = vm.Groups;
          //var selectionDescriptor = (MultiSelectionVMDescriptor<Group, GroupVM>)selection.Descriptor;
-         var selectionDescriptor = (MultiSelectionVMDescriptor<Group, MultiSelectionItemVM<Group, GroupVM>>)selection.Descriptor;
+         var selectionDescriptor = (MultiSelectionVMDescriptor<Group, SelectableItemVM<Group, GroupVM>>)selection.Descriptor;
          selection.SetDisplayValue(selectionDescriptor.SelectedItems, selectedItems);
       }
 

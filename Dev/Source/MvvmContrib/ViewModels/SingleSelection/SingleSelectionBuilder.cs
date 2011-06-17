@@ -72,9 +72,8 @@
          return this;
       }
 
-      public IVMPropertyDescriptor<SingleSelectionVM<TItemSource, TItemVM>> Of<TItemVM>(
-         IVMDescriptor itemDescriptor
-      ) where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
+      public IVMPropertyDescriptor<SingleSelectionVM<TItemSource, TItemVM>> Of<TItemVM>()
+         where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
          Contract.Assert(SelectedSourceItemPropertyFactory != null);
 
          var allSourceItemsPropertyFactory =
@@ -84,7 +83,6 @@
          // The descriptor is created only once for every owner VM property/descriptor
          // and reused for every VM instance created from the owner VM descriptor.
          var descriptor = SingleSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>.CreateDescriptor(
-            itemDescriptor,
             SelectedSourceItemPropertyFactory,
             allSourceItemsPropertyFactory,
             ValidationIsEnabled,
@@ -176,10 +174,13 @@
          IRefreshBehavior
          where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
-         private SingleSelectionVMDescriptor<TItemSource, TItemVM> _descriptor;
+         private SingleSelectionVMDescriptor<TItemSource, SelectableItemVM<TItemSource, TItemVM>> _descriptor;
          private Func<TItemSource, bool> _filter;
 
-         public SingleSelectionFactory(SingleSelectionVMDescriptor<TItemSource, TItemVM> descriptor, Func<TItemSource, bool> filter) {
+         public SingleSelectionFactory(
+            SingleSelectionVMDescriptor<TItemSource, SelectableItemVM<TItemSource, TItemVM>> descriptor,
+            Func<TItemSource, bool> filter
+         ) {
             _descriptor = descriptor;
             _filter = filter;
          }

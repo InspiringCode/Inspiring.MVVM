@@ -181,6 +181,65 @@
          Assert.IsNull(vm.Department.SelectedSourceItem);
       }
 
+      [TestMethod]
+      public void CreateSingleSelection_WithSelectedItem_SetsIsSelectedPropertyOnSelectedItem() {
+
+         var vm = CreateUserVM(
+            allDepartments: new[] { Department1, Department2, InactiveDepartment },
+            selectedDepartment: Department1
+         );
+
+         var selectedDepartment = vm.Department.AllItems.Single(x => x.Source.Equals(Department1));
+
+         Assert.IsTrue(selectedDepartment.GetValue(x => x.IsSelected));
+      }
+
+      [TestMethod]
+      public void SetSelectedItem_WithPreviousSelectItem_SetsIsSelectedPropertiesProperly() {
+         var vm = CreateUserVM(
+            allDepartments: new[] { Department1, Department2, InactiveDepartment },
+            selectedDepartment: Department1
+         );
+
+         var previousSelectedDepartment = vm.Department.AllItems.Single(x => x.Source.Equals(Department1));
+
+         var currentSelectedDepartment = vm.Department.AllItems.Single(x => x.Source.Equals(Department2));
+
+         vm.Department.SelectedItem = currentSelectedDepartment;
+
+         Assert.IsFalse(previousSelectedDepartment.GetValue(x => x.IsSelected));
+         Assert.IsTrue(currentSelectedDepartment.GetValue(x => x.IsSelected));
+      }
+
+      [TestMethod]
+      public void SetIsSelectedProperty_SetsSelectedItem() {
+         var vm = CreateUserVM(
+           allDepartments: new[] { Department1, Department2, InactiveDepartment }
+         );
+
+         var itemToSelect = vm.Department.AllItems.Single(x => x.Source.Equals(Department1));
+
+         itemToSelect.IsSelected = true;
+
+         Assert.AreSame(itemToSelect, vm.Department.SelectedItem);
+      }
+
+      [TestMethod]
+      public void ClearIsSelectedProperty_ClearsSelectedItem() {
+         var vm = CreateUserVM(
+           allDepartments: new[] { Department1, Department2, InactiveDepartment },
+           selectedDepartment: Department1
+         );
+
+         Assert.IsNotNull(vm.Department.SelectedItem);
+
+         var itemToSelect = vm.Department.AllItems.Single(x => x.Source.Equals(Department1));
+
+         itemToSelect.IsSelected = false;
+
+         Assert.IsNull(vm.Department.SelectedItem);
+      }
+
       /// <summary>
       ///   Asserts that the source departments of the 'AllItems' property of the
       ///   selection VM are equal to the given source items.
@@ -230,7 +289,8 @@
                }
 
                d.Name = u.Property.MapsTo(x => x.Name);
-               d.Department = builder.Of<DepartmentVM>(DepartmentVM.ClassDescriptor);
+               //d.Department = builder.Of<DepartmentVM>(DepartmentVM.ClassDescriptor);
+               d.Department = builder.Of<DepartmentVM>();
             })
             .Build();
 

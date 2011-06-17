@@ -14,7 +14,7 @@
       ///   Use <see cref="CreateDescriptor"/> to create one.
       /// </param>
       internal MultiSelectionWithSourceVM(
-         MultiSelectionVMDescriptor<TItemSource, MultiSelectionItemVM<TItemSource, TItemVM>> descriptor,
+         MultiSelectionVMDescriptor<TItemSource, SelectableItemVM<TItemSource, TItemVM>> descriptor,
          IServiceLocator serviceLocator
       )
          : base(descriptor, serviceLocator) {
@@ -58,16 +58,16 @@
       ///   A function that should create a VM property that returns all source
       ///   items. This may be a delegated property that returns a constant list.
       /// </param>
-      internal static MultiSelectionVMDescriptor<TItemSource, MultiSelectionItemVM<TItemSource, TItemVM>> CreateDescriptor(
+      internal static MultiSelectionVMDescriptor<TItemSource, SelectableItemVM<TItemSource, TItemVM>> CreateDescriptor(
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<ICollection<TItemSource>>> selectedSourceItemsPropertyFactory,
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory,
          bool enableValidation,
          bool enableUndo
       ) {
 
-         MultiSelectionItemVMDescriptor<TItemVM> itemDescriptor = VMDescriptorBuilder
-            .OfType<MultiSelectionItemVMDescriptor<TItemVM>>()
-            .For<MultiSelectionItemVM<TItemSource, TItemVM>>()
+         SelectableItemVMDescriptor<TItemVM> itemDescriptor = VMDescriptorBuilder
+            .OfType<SelectableItemVMDescriptor<TItemVM>>()
+            .For<SelectableItemVM<TItemSource, TItemVM>>()
             .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
 
@@ -79,7 +79,7 @@
             .Build();
 
          var builder = VMDescriptorBuilder
-            .OfType<MultiSelectionVMDescriptor<TItemSource, MultiSelectionItemVM<TItemSource, TItemVM>>>()
+            .OfType<MultiSelectionVMDescriptor<TItemSource, SelectableItemVM<TItemSource, TItemVM>>>()
             .For<MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>>()
             .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
@@ -90,18 +90,18 @@
 
                d.AllItems = v.Collection
                   .Wraps(vm => vm.GetActiveSourceItems())
-                  .With<MultiSelectionItemVM<TItemSource, TItemVM>>(itemDescriptor);
+                  .With<SelectableItemVM<TItemSource, TItemVM>>(itemDescriptor);
 
                d.SelectedItems = v.Collection
                   .Wraps(vm => vm.SelectedSourceItems)
-                  .With<MultiSelectionItemVM<TItemSource, TItemVM>>(itemDescriptor);
+                  .With<SelectableItemVM<TItemSource, TItemVM>>(itemDescriptor);
             })
             .WithBehaviors(c => {
                // This behavior ensures, that the 'SelectedItems' collection returns the same
                // VM instances (for the same source items) as the 'AllItems' collection.
                c.Property(x => x.SelectedItems).Enable(
                   PropertyBehaviorKeys.ValueAccessor,
-                  new LookupPopulatorCollectionBehavior<MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>, MultiSelectionItemVM<TItemSource, TItemVM>, TItemSource>(
+                  new LookupPopulatorCollectionBehavior<MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>, SelectableItemVM<TItemSource, TItemVM>, TItemSource>(
                      multiSelectionVM => multiSelectionVM.AllItems
                   )
                );
@@ -110,7 +110,7 @@
                // property every time the selection changes.
                c.Property(x => x.SelectedItems).Enable(
                   PropertyBehaviorKeys.DisplayValueAccessor,
-                  new SettableListDisplayValueBehavior<MultiSelectionItemVM<TItemSource, TItemVM>>()
+                  new SettableListDisplayValueBehavior<SelectableItemVM<TItemSource, TItemVM>>()
                );
 
                c.Property(x => x.SelectedItems).AddChangeHandler((vm, args) => {
@@ -139,13 +139,13 @@
                   .Collection(x => x.SelectedItems, true)
                   .Execute((vm, args) => {
                      if (args.ChangeType == ChangeType.CollectionPopulated || args.ChangeType == ChangeType.AddedToCollection) {
-                        foreach (MultiSelectionItemVM<TItemSource, TItemVM> item in args.NewItems) {
+                        foreach (SelectableItemVM<TItemSource, TItemVM> item in args.NewItems) {
                            item.IsSelected = true;
                         }
                      }
 
                      if (args.ChangeType == ChangeType.RemovedFromCollection) {
-                        foreach (MultiSelectionItemVM<TItemSource, TItemVM> item in args.OldItems) {
+                        foreach (SelectableItemVM<TItemSource, TItemVM> item in args.OldItems) {
                            item.IsSelected = false;
                         }
                      }

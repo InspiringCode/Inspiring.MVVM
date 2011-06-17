@@ -1,10 +1,10 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
 
-   public sealed class MultiSelectionItemVM<TItemSource, TItemVM> :
-      ViewModel<MultiSelectionItemVMDescriptor<TItemVM>>,
+   public sealed class SelectableItemVM<TItemSource, TItemVM> :
+      ViewModel<SelectableItemVMDescriptor<TItemVM>>,
       IHasSourceObject<TItemSource>,
-      IComparable<MultiSelectionItemVM<TItemSource, TItemVM>>
+      IComparable<SelectableItemVM<TItemSource, TItemVM>>
       where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
       public TItemVM VM {
@@ -18,7 +18,7 @@
          set { SetValue(Descriptor.IsSelected, value); }
       }
 
-      public int CompareTo(MultiSelectionItemVM<TItemSource, TItemVM> other) {
+      public int CompareTo(SelectableItemVM<TItemSource, TItemVM> other) {
          var source = VM as IComparable<TItemVM>;
          if (source == null) {
             return 0;
@@ -32,7 +32,7 @@
       }
    }
 
-   public class MultiSelectionItemVMDescriptor<TItemVM> : VMDescriptor {
+   public class SelectableItemVMDescriptor<TItemVM> : VMDescriptor {
       public IVMPropertyDescriptor<bool> IsSelected { get; set; }
       public IVMPropertyDescriptor<TItemVM> VM { get; set; }
    }

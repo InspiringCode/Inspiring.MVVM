@@ -170,11 +170,11 @@
          IRefreshBehavior
          where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
-         private MultiSelectionVMDescriptor<TItemSource, MultiSelectionItemVM<TItemSource, TItemVM>> _descriptor;
+         private MultiSelectionVMDescriptor<TItemSource, SelectableItemVM<TItemSource, TItemVM>> _descriptor;
          private Func<TItemSource, bool> _filter;
 
          public MultSelectionAccessor(
-            MultiSelectionVMDescriptor<TItemSource, MultiSelectionItemVM<TItemSource, TItemVM>> descriptor,
+            MultiSelectionVMDescriptor<TItemSource, SelectableItemVM<TItemSource, TItemVM>> descriptor,
             Func<TItemSource, bool> filter
          ) {
             _descriptor = descriptor;

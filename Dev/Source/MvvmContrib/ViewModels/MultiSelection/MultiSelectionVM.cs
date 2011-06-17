@@ -152,11 +152,11 @@
    }
 
    public abstract class MultiSelectionVM<TItemSource, TItemVM> :
-      MultiSelectionBaseVM<TItemSource, MultiSelectionItemVM<TItemSource, TItemVM>>
+      MultiSelectionBaseVM<TItemSource, SelectableItemVM<TItemSource, TItemVM>>
       where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
       public MultiSelectionVM(
-         MultiSelectionVMDescriptor<TItemSource, MultiSelectionItemVM<TItemSource, TItemVM>> descriptor,
+         MultiSelectionVMDescriptor<TItemSource, SelectableItemVM<TItemSource, TItemVM>> descriptor,
          IServiceLocator serviceLocator
       )
          : base(descriptor, serviceLocator) {
