@@ -1,8 +1,14 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
 
+   // ToDo: rethink
+   public interface ISelectableItem {
+      IViewModel VM { get; }
+   }
+
    public sealed class SelectableItemVM<TItemSource, TItemVM> :
       ViewModel<SelectableItemVMDescriptor<TItemVM>>,
+      ISelectableItem,
       IHasSourceObject<TItemSource>,
       IComparable<SelectableItemVM<TItemSource, TItemVM>>
       where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
@@ -24,6 +30,10 @@
       public bool IsSelected {
          get { return GetValue(Descriptor.IsSelected); }
          set { SetValue(Descriptor.IsSelected, value); }
+      }
+
+      IViewModel ISelectableItem.VM {
+         get { return VM; }
       }
 
       public int CompareTo(SelectableItemVM<TItemSource, TItemVM> other) {
