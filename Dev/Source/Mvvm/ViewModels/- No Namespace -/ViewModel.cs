@@ -99,7 +99,7 @@
             // HACK: Validation problem with DevExpress.
             if (columnName.Contains('.')) {
                string[] parts = columnName.Split('.');
-               Contract.Assert(parts.Length <= 3);
+               Contract.Assert(parts.Length <= 4);
 
                int columnNameIndex = parts.Length - 1;
 
@@ -109,13 +109,23 @@
                if (parts.Length == 2) {
                   property = Kernel.GetProperty(parts[0]);
                   value = Kernel.GetDisplayValue(property) as IDataErrorInfo;
-               } else {
+               } else if (parts.Length == 3) {
                   IVMPropertyDescriptor viewModelProp = Kernel.GetProperty(parts[0]);
                   IViewModel viewModel = (IViewModel)Kernel.GetDisplayValue(viewModelProp);
 
                   property = viewModel.Kernel.GetProperty(parts[1]);
                   value = viewModel.Kernel.GetDisplayValue(property) as IDataErrorInfo;
+               } else {
+                  IVMPropertyDescriptor viewModelProp = Kernel.GetProperty(parts[0]);
+                  IViewModel viewModel = (IViewModel)Kernel.GetDisplayValue(viewModelProp);
+
+                  IVMPropertyDescriptor viewModelProp2 = viewModel.Kernel.GetProperty(parts[1]);
+                  IViewModel viewModel2 = (IViewModel)viewModel.Kernel.GetDisplayValue(viewModelProp2);
+
+                  property = viewModel2.Kernel.GetProperty(parts[2]);
+                  value = viewModel2.Kernel.GetDisplayValue(property) as IDataErrorInfo;
                }
+
                if (value == null) {
                   return null;
                }
