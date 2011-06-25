@@ -388,15 +388,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EViewModels.resx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Binder\BinderBuildStep.cs" />
-    <Compile Include="Views\Binder\BinderBuildStepRegistry.cs" />
-    <Compile Include="Views\Binder\BinderContext.cs" />
-    <Compile Include="Views\Binder\BinderExpression.cs" />
-    <Compile Include="Views\Binder\BinderRootExpression.cs" />
-    <Compile Include="Views\Binder\DataGridBinderBuildStep.cs" />
-    <Compile Include="Views\Binder\SetBindingBuildStep.cs" />
-    <Compile Include="Views\Binder\DefaultPropertyBuildStep.cs" />
-    <Compile Include="Views\Binder\VMPropertyBinder.cs" />
+    <Compile Include="Views\LegacyBinder\BinderBuildStep.cs" />
+    <Compile Include="Views\LegacyBinder\BinderBuildStepRegistry.cs" />
+    <Compile Include="Views\LegacyBinder\BinderContext.cs" />
+    <Compile Include="Views\LegacyBinder\BinderExpression.cs" />
+    <Compile Include="Views\LegacyBinder\BinderRootExpression.cs" />
+    <Compile Include="Views\LegacyBinder\DataGridBinderBuildStep.cs" />
+    <Compile Include="Views\LegacyBinder\SetBindingBuildStep.cs" />
+    <Compile Include="Views\LegacyBinder\DefaultPropertyBuildStep.cs" />
+    <Compile Include="Views\LegacyBinder\VMPropertyBinder.cs" />
     <Compile Include="Views\CommonBehaviors.cs" />
     <Compile Include="Views\WindowService\DialogCloseHandler.cs" />
     <Compile Include="Views\WindowService\DialogService.cs" />
