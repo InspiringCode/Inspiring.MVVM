@@ -2,7 +2,7 @@
    using System;
    using System.Diagnostics.Contracts;
 
-   public abstract class BinderExpression {
+   public class BinderExpression {
       private BinderContext _context;
 
       public BinderExpression(BinderContext context) {
