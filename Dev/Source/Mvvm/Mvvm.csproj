@@ -124,6 +124,7 @@
     <Compile Include="Screens\DelegateCommand.cs" />
     <Compile Include="Screens\DialogLifecycle.cs" />
     <Compile Include="Screens\IDialogService.cs" />
+    <Compile Include="Screens\ILocatableScreen.cs" />
     <Compile Include="Screens\INeedsInitialization.cs" />
     <Compile Include="Screens\InvocationOrder.cs" />
     <Compile Include="Screens\IScreen.cs" />

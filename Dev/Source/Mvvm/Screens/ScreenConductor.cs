@@ -37,23 +37,28 @@
       }
 
       // TODO: Maybe set the ScreenConductor as Opener of the new Screen.
-      public void OpenScreen<TScreen>(IScreenFactory<TScreen> screen)
+      public void OpenScreen<TScreen>(IScreenFactory<TScreen> factory)
          where TScreen : class, IScreenBase {
 
          var creationBehavior = GetCreationBehavior(typeof(TScreen));
 
+         IScreenBase alreadyOpenScreen = null;
+
          switch (creationBehavior) {
             case ScreenCreationBehavior.MultipleInstances:
-               ActiveScreen = _screens.AddNew(screen);
                break;
             case ScreenCreationBehavior.SingleInstance:
-               var alreadyOpenScreen = _screens.Items
+               alreadyOpenScreen = Screens
                   .OfType<TScreen>()
                   .SingleOrDefault();
-
-               ActiveScreen = alreadyOpenScreen ?? _screens.AddNew(screen);
+               break;
+            case ScreenCreationBehavior.UseScreenLocation:
+               alreadyOpenScreen = Screens
+                  .FirstOrDefault(s => factory.CreatesScreensEquivalentTo(s));
                break;
          }
+
+         ActiveScreen = alreadyOpenScreen ?? _screens.AddNew(factory);
       }
 
       public bool CloseScreen(IScreenBase screen) {
