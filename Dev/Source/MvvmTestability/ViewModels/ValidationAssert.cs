@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
    using System.Collections.Generic;
+   using System.Diagnostics.Contracts;
    using System.Linq;
    using Inspiring.Mvvm.Testability;
    using Inspiring.Mvvm.ViewModels.Core;
@@ -83,10 +84,7 @@
       public static void AreEqual(ValidationResult expectedResult, ValidationResult actualResult, IEqualityComparer<ValidationError> comparer = null) {
          comparer = comparer ?? EssentialErrorComparer;
 
-         bool errorsEqual = expectedResult.Errors.SequenceEqual(
-            actualResult.Errors,
-            comparer
-         );
+         bool errorsEqual = AreEquivalent(expectedResult.Errors, actualResult.Errors, comparer);
 
          if (!errorsEqual) {
             TestFrameworkAdapter.Current.Fail(
@@ -215,6 +213,20 @@
                )
             );
          }
+      }
+
+      private static bool AreEquivalent(
+         IEnumerable<ValidationError> first,
+         IEnumerable<ValidationError> second,
+         IEqualityComparer<ValidationError> comparer
+      ) {
+         Contract.Requires(first != null);
+         Contract.Requires(second != null);
+         Contract.Requires(comparer != null);
+
+         return first.Union(second).All(error =>
+            first.Count(x => comparer.Equals(x, error)) == second.Count(x => comparer.Equals(x, error))
+         );
       }
    }
 }

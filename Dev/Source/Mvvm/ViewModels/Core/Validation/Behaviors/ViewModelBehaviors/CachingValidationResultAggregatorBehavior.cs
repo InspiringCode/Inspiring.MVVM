@@ -4,6 +4,17 @@
    using System.Diagnostics.Contracts;
    using System.Linq;
 
+   /// <summary>
+   ///   Notes: Currently not used. Does not work correctly if item is contained mulitple 
+   ///   collections/child properties (see tests). If This really saves some performance,
+   ///   one solution to fix this behavior is to change 'RemoveCachedResult' with the
+   ///   following pseudo code:
+   ///      if (oldItem.Parents.CountOf(self) == 1) {
+   ///         RemoveCache();
+   ///      } else {
+   ///         // Ignore, because we still reference it.
+   ///      }
+   /// </summary>
    internal sealed class CachingValidationResultAggregatorBehavior :
       Behavior,
       IBehaviorInitializationBehavior,

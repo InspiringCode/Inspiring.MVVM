@@ -72,7 +72,18 @@
             return first;
          }
 
-         var allErrors = ArrayUtils.Concat(first._errors, second._errors);
+         var allErrors = new List<ValidationError>(first.Errors);
+
+         foreach (var error in second.Errors) {
+            bool alreadyContained = first
+               .Errors
+               .Any(x => Object.ReferenceEquals(error, x));
+
+            if (!alreadyContained) {
+               allErrors.Add(error);
+            }
+         }
+         
          return new ValidationResult(allErrors);
       }
 
