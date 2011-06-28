@@ -61,10 +61,12 @@
     </Compile>
     <Compile Include="ApiTests\ViewModels\PerformanceTests.cs" />
     <Compile Include="ApiTests\ViewModels\Selection\Domain\Department.cs" />
+    <Compile Include="ApiTests\ViewModels\Selection\SelectionItemVMTests.cs" />
     <Compile Include="ApiTests\ViewModels\Selection\SingleSelectionTests.cs" />
     <Compile Include="ApiTests\ViewModels\Selection\SimpleSingleSelectionTests.cs" />
     <Compile Include="ApiTests\ViewModels\Selection\MultiSelectionTests.cs" />
     <Compile Include="ApiTests\ViewModels\Selection\SimpleMultiSelectionTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Selection\TypeDescriptorTests.cs" />
     <Compile Include="ApiTests\ViewModels\Selection\VMs\DepartmentVM.cs" />
     <Compile Include="AssertHelper.cs" />
     <Compile Include="Bootstrapper.cs" />
@@ -105,6 +107,10 @@
     <ProjectReference Include="..\MvvmContrib\MvvmContrib.csproj">
       <Project>{7D10FFF8-1916-49C7-9532-9AFC7ED22B03}</Project>
       <Name>MvvmContrib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MvvmTestability\MvvmTestability.csproj">
+      <Project>{DDE69E0D-5034-4E89-82D2-F80DD3E82729}</Project>
+      <Name>MvvmTestability</Name>
     </ProjectReference>
     <ProjectReference Include="..\MvvmTest\MvvmTest.csproj">
       <Project>{4BDD1C93-B8FB-4CCB-9980-0A0AD4502D8C}</Project>

@@ -9,7 +9,7 @@
 //   using Inspiring.Mvvm.ViewModels.Core;
 
 //   [TestClass]
-//   public class SingleSelectionTest {
+//   public class SingleSelectionTest : TestBase {
 //      private PersonVM _vm;
 //      private Person _person;
 //      private PersonStatus _selectableStatus1;

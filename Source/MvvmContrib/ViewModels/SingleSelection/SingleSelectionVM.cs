@@ -12,14 +12,14 @@
       Type ItemVMType { get; }
    }
 
-   public abstract class SingleSelectionVM<TItemSource, TItemVM> :
+   public abstract class SingleSelectionBaseVM<TItemSource, TItemVM> :
         ViewModel<SingleSelectionVMDescriptor<TItemSource, TItemVM>>, ISingleSelectionVM
         where TItemVM : IViewModel {
 
       /// <param name="descriptor">
       ///   Use <see cref="CreateDescriptor"/> to create one.
       /// </param>
-      internal SingleSelectionVM(
+      internal SingleSelectionBaseVM(
          SingleSelectionVMDescriptor<TItemSource, TItemVM> descriptor,
          IServiceLocator serviceLocator
       )
@@ -43,7 +43,17 @@
 
       public TItemSource SelectedSourceItem {
          get { return GetValue(Descriptor.SelectedSourceItem); }
-         set { SetValue(Descriptor.SelectedSourceItem, value); }
+         set {
+            if (value != null && !AllSourceItems.Contains(value)) {
+               throw new ArgumentException(ExceptionTexts.SourceItemNotContainedByAllSourceItems);
+            }
+
+            SetValue(Descriptor.SelectedSourceItem, value);
+
+            Kernel.Refresh(Descriptor.AllItems);
+            Kernel.Refresh(Descriptor.SelectedItem);
+
+         }
       }
 
       public IVMCollection<TItemVM> AllItems {
@@ -116,10 +126,22 @@
    }
 
    public abstract class SingleSelectionVM<TItemSource> :
-      SingleSelectionVM<TItemSource, SelectionItemVM<TItemSource>> {
+      SingleSelectionBaseVM<TItemSource, SelectionItemVM<TItemSource>> {
 
       public SingleSelectionVM(
          SingleSelectionVMDescriptor<TItemSource> descriptor,
+         IServiceLocator serviceLocator
+      )
+         : base(descriptor, serviceLocator) {
+      }
+   }
+
+   public abstract class SingleSelectionVM<TItemSource, TItemVM> :
+      SingleSelectionBaseVM<TItemSource, SelectableItemVM<TItemSource, TItemVM>>
+      where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
+
+      public SingleSelectionVM(
+         SingleSelectionVMDescriptor<TItemSource, SelectableItemVM<TItemSource, TItemVM>> descriptor,
          IServiceLocator serviceLocator
       )
          : base(descriptor, serviceLocator) {

@@ -261,4 +261,31 @@
   <data name="WrongBehaviorFactoryType" xml:space="preserve">
     <value>Cannot create a behavior for '{0}'. Expected a behavior factory of type '{1}' but got one of type '{2}'. Make sure that you passed the correct factory to your 'BehaviorChainTemplate'.</value>
   </data>
+  <data name="ValidationStateCannotBeModified" xml:space="preserve">
+    <value>'ValidationState.Valid' is readonly and cannot be modified. Create a new 'ValidationState' instance to add validation errors.</value>
+  </data>
+  <data name="UnexpectedPathStepType" xml:space="preserve">
+    <value>The given 'Path' is invalid: The 'PathStep' at index {0} was expected to be of one of the following 'PathStepType's: {1}.</value>
+  </data>
+  <data name="MultipleUndoRoots" xml:space="preserve">
+    <value>At most one ancestor of a certain distance can be the undo root.</value>
+  </data>
+  <data name="NoUndoRootManagerFound" xml:space="preserve">
+    <value>Undo functionality is enabled but no undo manager is found in the view model hierarchy</value>
+  </data>
+  <data name="RollbackPointNotFound" xml:space="preserve">
+    <value>The 'UndoManager' does not contain the rollback point.</value>
+  </data>
+  <data name="GetDescaedantsWrongPropertyStepType" xml:space="preserve">
+    <value>Descendants can only requested for view model or collection properties.</value>
+  </data>
+  <data name="PropertyIsNotContainedByParentDescriptor" xml:space="preserve">
+    <value>Next property step is invalid. Property is not contained by parent descriptor.</value>
+  </data>
+  <data name="IncompleteDependencySetupMissingAction" xml:space="preserve">
+    <value>Dependency configuration is incomplete.  No action specified.</value>
+  </data>
+  <data name="IncompleteDependencySetupMissingTargetPath" xml:space="preserve">
+    <value>Dependency configuration is incomplete. For validation and refresh actions a target path is required.</value>
+  </data>
 </root>

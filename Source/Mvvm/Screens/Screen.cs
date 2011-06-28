@@ -12,7 +12,7 @@
    public class ViewModelScreenBase<TDescriptor> :
       ViewModel<TDescriptor>,
       IViewModelScreenBase
-      where TDescriptor : VMDescriptorBase {
+      where TDescriptor : IVMDescriptor {
 
       public ViewModelScreenBase(IServiceLocator serviceLocator = null)
          : base(serviceLocator) {
@@ -74,8 +74,8 @@
          Contract.Requires<ArgumentNullException>(childScreen != null);
 
          T screen = Children.AddNew(childScreen);
-         SetDisplayValue(screenProperty, screen);
          screen.Activate();
+         SetDisplayValue(screenProperty, screen);
       }
 
       protected bool CloseChildScreen(IVMPropertyDescriptor<IScreenBase> screenProperty) {

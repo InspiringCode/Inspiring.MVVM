@@ -2,10 +2,11 @@
    using System;
    using System.Reflection;
    using Inspiring.Mvvm.Common;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class ExpressionServiceTest {
+   public class ExpressionServiceTest : TestBase {
       [TestMethod]
       public void GetProperties() {
          PropertyInfo[] path = ExpressionService.GetProperties<Person, DateTime>(p => p.BirthDate);
@@ -48,9 +49,25 @@
          Assert.AreEqual("BirthDate", name);
       }
 
+      [TestMethod]
+      public void GetPropertyNameParameterless_StaticFieldInCallingClass_Succeeds() {
+         var name = ExpressionService.GetPropertyName(() => StaticField);
+         Assert.AreEqual("StaticField", name);
+      }
+
+      [TestMethod]
+      public void GetPropertyNameParameterless_StaticFieldInExternalClass_Succeeds() {
+         var name = ExpressionService.GetPropertyName(() => Person.DefaultDepartment);
+         Assert.AreEqual("DefaultDepartment", name);
+      }
+
+      private static readonly object StaticField = new Object();
+
       public DateTime BirthDate { get; set; }
 
       private class Person {
+         public static readonly Department DefaultDepartment = null;
+
          public DateTime BirthDate { get; set; }
          public Department Department { get; set; }
          public DateTime GetBirthDate() {

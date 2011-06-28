@@ -1,10 +1,11 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels {
    using System.Collections.Generic;
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class CollectionTests {
+   public class CollectionTests : TestBase {
       private List<Task> SourceList { get; set; }
       private TaskListVM VM { get; set; }
 

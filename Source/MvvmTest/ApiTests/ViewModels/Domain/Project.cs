@@ -1,7 +1,7 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Domain {
 
    public sealed class Project {
-      public Project(string title, Customer customer = null) {
+      public Project(string title = null, Customer customer = null) {
          Title = title;
          Customer = customer;
       }

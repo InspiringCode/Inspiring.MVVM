@@ -21,7 +21,7 @@
       }
 
       public override string ToString() {
-         return Caption ?? base.ToString();
+         return Caption ?? String.Empty;
       }
 
       public int CompareTo(SelectionItemVM<TSourceItem> other) {

@@ -2,10 +2,11 @@
    using System;
    using Inspiring.Mvvm;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class EnumLocalizerTest {
+   public class EnumLocalizerTest : TestBase {
       [TestInitialize]
       public void Setup() {
          EnumLocalizer.AddLocalizationResource(EnumLocalizations.ResourceManager);

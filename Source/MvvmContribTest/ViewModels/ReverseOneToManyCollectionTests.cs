@@ -1,10 +1,11 @@
 ﻿namespace Inspiring.MvvmContribTest.ViewModels {
    using System.Collections.Generic;
-   using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.MvvmTest.ViewModels;
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class ReverseOneToManyCollectionTests {
+   public class ReverseOneToManyCollectionTests : TestBase {
       private Group Admins { get; set; }
       private Group Operators { get; set; }
 
@@ -26,9 +27,9 @@
       public void Constructor_PopulatesCollectionWithCorrectTargetObjects() {
          John.Groups.Add(Admins);
          John.Groups.Add(Operators);
-         
+
          Tim.Groups.Add(Admins);
-         
+
          Jane.Groups.Add(Operators);
 
          var collection = CreateCollection(Admins);
@@ -67,7 +68,7 @@
       [TestMethod]
       public void Clear_RemovesSourceObjectFromAllTargetObjects() {
          Jane.Groups.Add(Admins);
-         
+
          John.Groups.Add(Admins);
          John.Groups.Add(Operators);
 

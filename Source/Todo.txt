@@ -1,0 +1,16 @@
+// TODO: Test refresh behaviors against null values.
+// TODO: Remove warnings
+// TODO: Write unit test for path lazy loading
+// TODO: Test UI visualization for multi selection validation error (element not valid).
+// TODO: Make error message of property can not be accessed while loading more user friendly. Test who recursively defined properties behave.
+// TODO: Make collection refresh work for source collections with duplicate items.
+// TODO: Make CollectionResultCache tests better and also test view model validation case...
+// TODO: Cleanup Validation error creations and assertions in tests.
+// TODO: Declarative dependendcies: rethink collection change handling
+// TODO: Behavior configuration: think of position in chain when manually adding behaviors
+// TODO: Declarative dependendcies: Make ValidationScope adjustable
+// TODO: Undo: Invalid Value handling (DisplayValue)
+// TODO: Rethink descriptor properties handling
+
+// TODO: Check GetHashCode of RevalidationRequest. Does/should it call VM/source GetHashCode()?
+// TODO: Improve ScreenInitializer.

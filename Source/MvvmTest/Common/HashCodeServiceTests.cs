@@ -1,9 +1,10 @@
 ﻿namespace Inspiring.MvvmTest.Common {
    using Inspiring.Mvvm.Common;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class HashCodeServiceTests {
+   public class HashCodeServiceTests : TestBase {
       [TestMethod]
       public void CanCalculateHashCode() {
          TestClass o1 = new TestClass {

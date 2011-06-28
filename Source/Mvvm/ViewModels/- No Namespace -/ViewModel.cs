@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
+   using System.Collections.Generic;
    using System.ComponentModel;
    using System.Diagnostics.Contracts;
    using System.Linq;
@@ -11,14 +12,15 @@
       public static readonly FieldDefinitionGroup GeneralFieldGroup = new FieldDefinitionGroup();
    }
 
+   //[TypeDescriptionProvider(typeof(ViewModelTypeDescriptionProvider))]
    public abstract class ViewModel<TDescriptor> :
-      ViewModelTypeDescriptor,
+      ViewModelWithTypeDescriptor,
       IViewModel,
       IViewModel<TDescriptor>,
       IViewModelExpression<TDescriptor>,
       INotifyPropertyChanged,
       IDataErrorInfo
-      where TDescriptor : VMDescriptorBase {
+      where TDescriptor : IVMDescriptor {
 
       public ViewModel(IServiceLocator serviceLocator = null) {
          ServiceLocator = serviceLocator ?? Mvvm.ServiceLocator.Current;
@@ -31,20 +33,27 @@
 
       private VMKernel _kernel;
 
-      public IViewModel Parent {
-         get { return Kernel.Parent; }
-         set { Kernel.Parent = value; }
+      public IEnumerable<IViewModel> Parents {
+         get { return Kernel.Parents.ToArray(); }
       }
 
       public bool IsValid {
          get { return Kernel.IsValid; }
       }
 
+      public ValidationResult ValidationResult {
+         get { return Kernel.GetValidationResult(); }
+      }
+
+      public UndoManager UndoManager {
+         get { return Kernel.UndoManager; }
+      }
+
       VMKernel IViewModel.Kernel {
          get { return Kernel; }
       }
 
-      VMDescriptorBase IViewModel.Descriptor {
+      IVMDescriptor IViewModel.Descriptor {
          get { return Descriptor; }
          set { Descriptor = (TDescriptor)value; }
       }
@@ -78,7 +87,7 @@
 
       string IDataErrorInfo.Error {
          get {
-            ValidationState state = Kernel.GetValidationState(ValidationStateScope.ViewModelValidationsOnly);
+            ValidationResult state = Kernel.GetValidationResult(ValidationResultScope.ViewModelValidationsOnly);
             return state.IsValid ?
                null :
                state.Errors.First().Message;
@@ -90,7 +99,7 @@
             // HACK: Validation problem with DevExpress.
             if (columnName.Contains('.')) {
                string[] parts = columnName.Split('.');
-               Contract.Assert(parts.Length <= 3);
+               Contract.Assert(parts.Length <= 4);
 
                int columnNameIndex = parts.Length - 1;
 
@@ -100,20 +109,30 @@
                if (parts.Length == 2) {
                   property = Kernel.GetProperty(parts[0]);
                   value = Kernel.GetDisplayValue(property) as IDataErrorInfo;
-               } else {
+               } else if (parts.Length == 3) {
                   IVMPropertyDescriptor viewModelProp = Kernel.GetProperty(parts[0]);
                   IViewModel viewModel = (IViewModel)Kernel.GetDisplayValue(viewModelProp);
 
                   property = viewModel.Kernel.GetProperty(parts[1]);
                   value = viewModel.Kernel.GetDisplayValue(property) as IDataErrorInfo;
+               } else {
+                  IVMPropertyDescriptor viewModelProp = Kernel.GetProperty(parts[0]);
+                  IViewModel viewModel = (IViewModel)Kernel.GetDisplayValue(viewModelProp);
+
+                  IVMPropertyDescriptor viewModelProp2 = viewModel.Kernel.GetProperty(parts[1]);
+                  IViewModel viewModel2 = (IViewModel)viewModel.Kernel.GetDisplayValue(viewModelProp2);
+
+                  property = viewModel2.Kernel.GetProperty(parts[2]);
+                  value = viewModel2.Kernel.GetDisplayValue(property) as IDataErrorInfo;
                }
+
                if (value == null) {
                   return null;
                }
                return value[parts[columnNameIndex]];
             } else {
                IVMPropertyDescriptor property = Kernel.GetProperty(propertyName: columnName);
-               ValidationState state = Kernel.GetValidationState(property);
+               ValidationResult state = Kernel.GetValidationResult(property);
                return state.IsValid ?
                   null :
                   state.Errors.First().Message;
@@ -148,11 +167,8 @@
          Kernel.SetDisplayValue(property, value);
       }
 
-      protected void Revalidate(
-         ValidationScope scope = ValidationScope.SelfOnly,
-         ValidationMode mode = ValidationMode.CommitValidValues
-      ) {
-         Kernel.Revalidate(scope, mode);
+      protected void Revalidate(ValidationScope scope = ValidationScope.Self) {
+         Kernel.Revalidate(scope);
       }
 
       protected void CopyFromSource() {
@@ -205,19 +221,11 @@
          return Kernel;
       }
 
-      void IViewModel.NotifyPropertyChanged(IVMPropertyDescriptor property) {
-         OnPropertyChanged(property);
-      }
-
-      void IViewModel.NotifyValidationStateChanged(IVMPropertyDescriptor property) {
-         OnValidationStateChanged(property);
-      }
-
       protected virtual void OnPropertyChanged(IVMPropertyDescriptor property) {
          OnPropertyChanged(property.PropertyName);
       }
 
-      protected virtual void OnValidationStateChanged(IVMPropertyDescriptor property) {
+      protected virtual void OnValidationResultChanged(IVMPropertyDescriptor property) {
          if (property != null) {
             OnPropertyChanged("Item[]");
 
@@ -258,18 +266,19 @@
             ExceptionTexts.DescriptorNotSet
          );
 
-         return Descriptor
-            .Behaviors
-            .GetNextBehavior<TypeDescriptorBehavior>()
-            .PropertyDescriptors;
+         return Descriptor.GetPropertyDescriptors();
       }
 
-      public ValidationState GetValidationState(ValidationStateScope scope) {
-         return Kernel.GetValidationState(scope);
+      public ValidationResult GetValidationResult(ValidationResultScope scope) {
+         return Kernel.GetValidationResult(scope);
+      }
+
+      public ValidationResult GetValidationResult(IVMPropertyDescriptor property) {
+         return Kernel.GetValidationResult(property);
       }
 
       protected void Load(IVMPropertyDescriptor property) {
-         GetDisplayValue(property);
+         Kernel.Load(property);
       }
 
       //T IViewModel.GetValue<T>(IVMProperty<T> property) {
@@ -288,5 +297,40 @@
       //void IViewModel.SetDisplayValue(IVMProperty property, object value) {
       //   SetDisplayValue(property, value);
       //}
+
+      void IViewModel.NotifyChange(ChangeArgs args) {
+         OnChange(args);
+      }
+
+      protected virtual void OnChange(ChangeArgs args) {
+         bool relevantChange =
+            args.ChangeType == ChangeType.PropertyChanged ||
+            args.ChangeType == ChangeType.ValidationResultChanged;
+
+         if (!relevantChange) {
+            return;
+         }
+
+         var r = args.ChangedPath.SelectsOnlyPropertyOf(this);
+         bool ownPropertyChanged = r.Success;
+
+         if (ownPropertyChanged) {
+            switch (args.ChangeType) {
+               case ChangeType.PropertyChanged:
+                  OnPropertyChanged(r.Property);
+                  break;
+               case ChangeType.ValidationResultChanged:
+                  OnValidationResultChanged(r.Property);
+                  break;
+            }
+         } else {
+            r = args.ChangedPath.SelectsOnly(this);
+            bool selfChanged = r.Success;
+
+            if (selfChanged && args.ChangeType == ChangeType.ValidationResultChanged) {
+               OnValidationResultChanged(null);
+            }
+         }
+      }
    }
 }

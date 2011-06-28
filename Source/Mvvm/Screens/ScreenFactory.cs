@@ -49,6 +49,11 @@
 
             return screen;
          }
+
+
+         public bool CreatesScreensEquivalentTo(IScreenBase concreteScreen) {
+            return false;
+         }
       }
 
       private class Factory<TScreen, TSubject> : IScreenFactory<TScreen> where TScreen : IScreenBase {
@@ -74,6 +79,15 @@
 
             return screen;
          }
+
+
+         public bool CreatesScreensEquivalentTo(IScreenBase concreteScreen) {
+            var locatableScreen = concreteScreen as ILocatableScreen<TSubject>;
+
+            return locatableScreen != null ?
+               locatableScreen.PresentsSubject(_subject) :
+               false;
+         }
       }
 
       private class InstanceFactory<TScreen> :
@@ -94,6 +108,10 @@
             }
 
             return _instance;
+         }
+
+         public bool CreatesScreensEquivalentTo(IScreenBase concreteScreen) {
+            return Object.Equals(concreteScreen, _instance);
          }
       }
    }

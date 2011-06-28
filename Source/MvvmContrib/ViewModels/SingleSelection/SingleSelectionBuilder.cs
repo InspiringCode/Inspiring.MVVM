@@ -42,8 +42,18 @@
          private set;
       }
 
+      internal bool UndoIsEnabled {
+         get;
+         private set;
+      }
+
       public SingleSelectionBuilder<TSourceObject, TItemSource> EnableValidations() {
          ValidationIsEnabled = true;
+         return this;
+      }
+
+      public SingleSelectionBuilder<TSourceObject, TItemSource> EnableUndo() {
+         UndoIsEnabled = true;
          return this;
       }
 
@@ -62,9 +72,8 @@
          return this;
       }
 
-      public IVMPropertyDescriptor<SingleSelectionVM<TItemSource, TItemVM>> Of<TItemVM>(
-         VMDescriptorBase itemDescriptor
-      ) where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
+      public IVMPropertyDescriptor<SingleSelectionVM<TItemSource, TItemVM>> Of<TItemVM>()
+         where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
          Contract.Assert(SelectedSourceItemPropertyFactory != null);
 
          var allSourceItemsPropertyFactory =
@@ -74,23 +83,24 @@
          // The descriptor is created only once for every owner VM property/descriptor
          // and reused for every VM instance created from the owner VM descriptor.
          var descriptor = SingleSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>.CreateDescriptor(
-            itemDescriptor,
             SelectedSourceItemPropertyFactory,
             allSourceItemsPropertyFactory,
-            ValidationIsEnabled
+            ValidationIsEnabled,
+            UndoIsEnabled
          );
 
-         var property = _sourceObjectPropertyBuilder.VM.Custom(
-            viewModelAccessor: new SingleSelectionFactory<TItemVM>(descriptor, Filter)
+         var property = _sourceObjectPropertyBuilder.Custom.ViewModelProperty(
+            valueAccessor: new SingleSelectionFactory<TItemVM>(descriptor, Filter),
+            sourceAccessor: _sourceObjectPropertyBuilder.Custom.CreateSourceObjectAccessor()
          );
 
-         _sourceObjectPropertyBuilder
-            .Configuration
-            .PropertyConfigurations[property]
-            .Enable(
-               BehaviorKeys.ManualUpdateBehavior,
-               new ManualUpdateSelectionPropertyBehavior<SingleSelectionVM<TItemSource, TItemVM>, TSourceObject>()
-            );
+         //_sourceObjectPropertyBuilder
+         //   .Configuration
+         //   .PropertyConfigurations[property]
+         //   .Enable(
+         //      PropertyBehaviorKeys.ManualUpdateBehavior,
+         //      new ManualUpdateSelectionPropertyBehavior<SingleSelectionVM<TItemSource, TItemVM>, TSourceObject>()
+         //   );
 
          return property;
       }
@@ -101,16 +111,20 @@
          Contract.Requires<ArgumentNullException>(captionGetter != null);
          Contract.Assert(SelectedSourceItemPropertyFactory != null);
 
-         SelectionItemVMDescriptor itemDescriptor = VMDescriptorBuilder
+         var builder = VMDescriptorBuilder
             .OfType<SelectionItemVMDescriptor>()
             .For<SelectionItemVM<TItemSource>>()
             .WithProperties((d, c) => {
                var s = c.GetPropertyBuilder(x => x.Source);
 
                d.Caption = s.Property.DelegatesTo(captionGetter);
-            })
-            .Build();
+            });
 
+         if (ValidationIsEnabled) {
+            builder = builder.WithValidators(b => b.EnableParentValidation(x => x.Caption));
+         }
+
+         SelectionItemVMDescriptor itemDescriptor = builder.Build();
 
          var allSourceItemsPropertyFactory =
             AllSourceItemsPropertyFactory ??
@@ -122,20 +136,23 @@
             itemDescriptor,
             SelectedSourceItemPropertyFactory,
             allSourceItemsPropertyFactory,
-            ValidationIsEnabled
+            ValidationIsEnabled,
+            UndoIsEnabled
          );
 
-         var property = _sourceObjectPropertyBuilder.VM.Custom(
-            viewModelAccessor: new SingleSelectionFactory(descriptor, Filter)
+         var property = _sourceObjectPropertyBuilder.Custom.ViewModelProperty(
+            valueAccessor: new SingleSelectionFactory(descriptor, Filter),
+            sourceAccessor: _sourceObjectPropertyBuilder.Custom.CreateSourceObjectAccessor()
          );
 
-         _sourceObjectPropertyBuilder
-            .Configuration
-            .PropertyConfigurations[property]
-            .Enable(
-               BehaviorKeys.ManualUpdateBehavior,
-               new ManualUpdateSelectionPropertyBehavior<SingleSelectionVM<TItemSource>, TSourceObject>()
-            );
+
+         //_sourceObjectPropertyBuilder
+         //   .Configuration
+         //   .PropertyConfigurations[property]
+         //   .Enable(
+         //      PropertyBehaviorKeys.ManualUpdateBehavior,
+         //      new ManualUpdateSelectionPropertyBehavior<SingleSelectionVM<TItemSource>, TSourceObject>()
+         //   );
 
          return property;
       }
@@ -148,26 +165,31 @@
       /// </summary>
       private Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> CreateLocatingPropertyFactory() {
          return delegate(IVMPropertyBuilder<TSourceObject> factory) {
-            return factory.Property.Custom(
-               sourceValueAccessor: new LocatingItemSourceBehavior()
-            );
+            return factory.Custom.Property(valueAccessor: new LocatingItemSourceBehavior());
          };
       }
 
       private class SingleSelectionFactory<TItemVM> :
-         Behavior,
-         IValueAccessorBehavior<SingleSelectionVM<TItemSource, TItemVM>>
+         CachedAccessorBehavior<SingleSelectionVM<TItemSource, TItemVM>>,
+         IRefreshBehavior
          where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
-         private SingleSelectionVMDescriptor<TItemSource, TItemVM> _descriptor;
+         private SingleSelectionVMDescriptor<TItemSource, SelectableItemVM<TItemSource, TItemVM>> _descriptor;
          private Func<TItemSource, bool> _filter;
 
-         public SingleSelectionFactory(SingleSelectionVMDescriptor<TItemSource, TItemVM> descriptor, Func<TItemSource, bool> filter) {
+         public SingleSelectionFactory(
+            SingleSelectionVMDescriptor<TItemSource, SelectableItemVM<TItemSource, TItemVM>> descriptor,
+            Func<TItemSource, bool> filter
+         ) {
             _descriptor = descriptor;
             _filter = filter;
          }
 
-         public SingleSelectionVM<TItemSource, TItemVM> GetValue(IBehaviorContext context) {
+         public override void SetValue(IBehaviorContext context, SingleSelectionVM<TItemSource, TItemVM> value) {
+            throw new NotSupportedException();
+         }
+
+         protected override SingleSelectionVM<TItemSource, TItemVM> ProvideValue(IBehaviorContext context) {
             TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context);
 
             var vm = new SingleSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>(
@@ -181,14 +203,16 @@
             return vm;
          }
 
-         public void SetValue(IBehaviorContext context, SingleSelectionVM<TItemSource, TItemVM> value) {
-            throw new NotSupportedException();
+         public void Refresh(IBehaviorContext context) {
+            IViewModel vm = GetValue(context);
+            vm.Kernel.Refresh();
+            this.RefreshNext(context);
          }
       }
 
       private class SingleSelectionFactory :
-         Behavior,
-         IValueAccessorBehavior<SingleSelectionVM<TItemSource>> {
+         CachedAccessorBehavior<SingleSelectionVM<TItemSource>>,
+         IRefreshBehavior {
 
          private SingleSelectionVMDescriptor<TItemSource> _descriptor;
          private Func<TItemSource, bool> _filter;
@@ -198,7 +222,7 @@
             _filter = filter;
          }
 
-         public SingleSelectionVM<TItemSource> GetValue(IBehaviorContext context) {
+         protected override SingleSelectionVM<TItemSource> ProvideValue(IBehaviorContext context) {
             TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context);
 
             var vm = new SingleSelectionWithSourceVM<TSourceObject, TItemSource>(
@@ -212,8 +236,14 @@
             return vm;
          }
 
-         public void SetValue(IBehaviorContext context, SingleSelectionVM<TItemSource> value) {
+         public override void SetValue(IBehaviorContext context, SingleSelectionVM<TItemSource> value) {
             throw new NotSupportedException();
+         }
+
+         public void Refresh(IBehaviorContext context) {
+            IViewModel vm = GetValue(context);
+            vm.Kernel.Refresh();
+            this.RefreshNext(context);
          }
       }
 

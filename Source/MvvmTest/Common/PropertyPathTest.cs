@@ -1,10 +1,11 @@
 ﻿using System;
 using Inspiring.Mvvm.Common;
+using Inspiring.MvvmTest.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Inspiring.MvvmTest.Common {
    [TestClass]
-   public class PropertyPathTest {
+   public class PropertyPathTest : TestBase {
       [TestMethod]
       public void GetSetValue() {
          Employee person = new Employee {

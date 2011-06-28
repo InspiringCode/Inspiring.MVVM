@@ -1,198 +1,148 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Validation {
-   using System.Collections.Generic;
    using System.Linq;
-   using Inspiring.Mvvm.ViewModels;
-   using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class CollectionValidationTests {
+   public class CollectionValidationTests : CollectionValidationFixture {
       [TestMethod]
-      public void ItemValidation_ExecutesItemValueValidator() {
-         var firstItem = new ProjectVM { Title = "Project 1" };
-         var secondItem = new ProjectVM { Title = "Project 2" };
+      public void ItemAddition_PerformsPropertyAndCollectionPropertyValidationForNewItem() {
+         var newItem = CreateItem();
+         SetupPropertyValidationError(newItem);
+         SetupCollectionPropertyValidationError(newItem);
 
-         var vm = new EmployeeVM();
-         vm.Projects.Add(firstItem);
-         vm.Projects.Add(secondItem);
+         List.Items.Add(newItem);
 
-         var args = new ValidatorArguments<string>();
-         vm.ValueArgs = args;
-
-         firstItem.Revalidate();
-
-         Assert.AreEqual(1, args.InvocationCount, "Validator was not called once.");
-
-         Assert.AreSame(firstItem.Title, args.Item);
-         CollectionAssert.AreEqual(
-            new[] { firstItem.Title, secondItem.Title },
-            args.Items.ToArray()
-         );
-
-         Assert.AreSame(vm, args.ValidationArgs.OwnerVM);
-         Assert.AreSame(firstItem, args.ValidationArgs.TargetVM);
+         Setup.VerifySetupValidationResults();
       }
 
       [TestMethod]
-      public void ItemValidation_ExecutesItemValidator() {
-         var firstItem = new ProjectVM { Title = "Project 1" };
-         var secondItem = new ProjectVM { Title = "Project 2" };
+      public void ItemAddition_PerformsViewModelAndCollectionViewModelValidationForNewItem() {
+         var newItem = CreateItem();
+         SetupViewModelValidationError(newItem);
+         SetupCollectionViewModelValidationError(newItem);
 
-         var vm = new EmployeeVM();
-         vm.Projects.Add(firstItem);
-         vm.Projects.Add(secondItem);
+         List.Items.Add(newItem);
 
-         var args = new ValidatorArguments<ProjectVM>();
-         vm.ItemArgs = args;
-
-         firstItem.Revalidate();
-
-         Assert.IsTrue(args.InvocationCount >= 1); // TODO: Better way? Validates twice because it property validation in item.
+         Setup.VerifySetupValidationResults();
       }
 
       [TestMethod]
-      public void ItemAddition_ExecutesCollectionValidator() {
-         var vm = new EmployeeVM();
-         var item = new ProjectVM();
+      public void ItemRemoval_PerformsPropertyValidationForOldItemAndCollectionValidationForRemainingItems() {
+         var remainingItem = CreateItem("RemainingItem");
+         var oldItem = CreateItem("OldItem");
 
-         vm.Projects.Add(item);
-         Assert.IsTrue(vm.ItemArgs.InvocationCount >= 1); // TODO: Check why this is executed twice?
+         List.Items.Add(remainingItem);
+         List.Items.Add(oldItem);
+
+         SetupPropertyValidationError(oldItem);
+         SetupCollectionPropertyValidationError(remainingItem);
+
+         List.Items.Remove(oldItem);
+
+         Setup.VerifySetupValidationResults();
       }
 
       [TestMethod]
-      public void ItemAddition_ExecutesItemValidator() {
-         var vm = new EmployeeVM();
-         var item = new ProjectVM();
+      public void ItemRemoval_PerformsViewModelValidationForOldItemAndCollectionValidationForRemainingItems() {
+         var remainingItem = CreateItem("RemainingItem");
+         var oldItem = CreateItem("OldItem");
 
-         vm.Projects.Add(item);
-         Assert.IsTrue(item.WasValidated);
+         List.Items.Add(remainingItem);
+         List.Items.Add(oldItem);
+
+         SetupViewModelValidationError(oldItem);
+         SetupCollectionViewModelValidationError(remainingItem);
+
+         List.Items.Remove(oldItem);
+
+         Setup.VerifySetupValidationResults();
       }
 
       [TestMethod]
-      public void ItemRemoval_ExecutesCollectionValidator() {
-         var vm = new EmployeeVM();
-         var item = new ProjectVM();
+      public void SetItem_PerformPropertyValidationForOldAndNewItemAndCollectionValidationForNewItems() {
+         var oldItem = CreateItem("OldItem");
+         var newItem = CreateItem("NewItem");
+         List.Items.Add(oldItem);
 
-         vm.Projects.Add(item);
-         vm.ItemArgs = new ValidatorArguments<ProjectVM>();
+         SetupPropertyValidationError(oldItem);
+         SetupPropertyValidationError(newItem);
+         SetupCollectionPropertyValidationError(newItem);
 
-         vm.Projects.Remove(item);
+         List.Items[0] = newItem;
 
-         Assert.AreEqual(1, vm.ItemArgs.InvocationCount);
+         Setup.VerifySetupValidationResults();
       }
 
       [TestMethod]
-      public void ItemRemoval_ExecutesItemValidator() {
-         var vm = new EmployeeVM();
-         var item = new ProjectVM();
-         
-         vm.Projects.Add(item);
-         item.WasValidated = false;
+      public void SetItem_PerformsViewModelValidationForOldAndNewItemAndCollectionValidationForNewItems() {
+         var oldItem = CreateItem("OldItem");
+         var newItem = CreateItem("NewItem");
+         List.Items.Add(oldItem);
 
-         vm.Projects.Remove(item);
+         SetupViewModelValidationError(oldItem);
+         SetupViewModelValidationError(newItem);
+         SetupCollectionViewModelValidationError(newItem);
 
-         Assert.IsTrue(item.WasValidated);
+         List.Items[0] = newItem;
+
+         Setup.VerifySetupValidationResults();
       }
 
       [TestMethod]
-      public void ClearCollection_ExecutesCollectionValidator() {
-         var vm = new EmployeeVM();
-         var item = new ProjectVM();
+      public void Clear_PerformsPropertyValidationForOldItemsAndCollectionValidationForEmptyCollection() {
+         var oldItem = CreateItem();
+         List.Items.Add(oldItem);
 
-         vm.Projects.Add(item);
-         vm.ItemArgs = new ValidatorArguments<ProjectVM>();
+         SetupPropertyValidationError(oldItem);
+         List.Items.Clear();
 
-         vm.Projects.Clear();
-
-         Assert.AreEqual(1, vm.ItemArgs.InvocationCount);
+         Setup.VerifySetupValidationResults();
+         Assert.IsTrue(Setup.ActualInvocations.Any(x => x.TargetCollection == List.Items));
       }
 
       [TestMethod]
-      public void SetItem_ExecutesCollectionValidatorForPreviousAndCurrentItem() {
-         var vm = new EmployeeVM();
-         var previousItem = new ProjectVM();
-         var item = new ProjectVM();
-         
-         vm.Projects.Add(previousItem);
-         vm.ItemArgs = new ValidatorArguments<ProjectVM>();
+      public void Clear_PerformsViewModelValidationForOldItemsAndCollectionValidationForEmptyCollection() {
+         var oldItem = CreateItem();
+         List.Items.Add(oldItem);
 
-         vm.Projects[0] = item;
+         SetupViewModelValidationError(oldItem);
+         List.Items.Clear();
 
-         CollectionAssert.AreEqual(
-            new[] { previousItem, item, item }, // TODO: Check why new item is validated twice?
-            vm.ItemArgs.TargetVMHistory
-         );
+         Assert.IsTrue(Setup.ActualInvocations.Any(x => x.TargetCollection == List.Items));
       }
 
-      private sealed class EmployeeVM : ViewModel<EmployeeVMDescriptor> {
-         public static readonly EmployeeVMDescriptor ClassDescriptor = VMDescriptorBuilder
-            .OfType<EmployeeVMDescriptor>()
-            .For<EmployeeVM>()
-            .WithProperties((d, c) => {
-               var v = c.GetPropertyBuilder();
+      [TestMethod]
+      public void SetItems_DoesNotValidateAnything() {
+         List.Items.Add(CreateItem("Old item"));
+         Setup.Reset();
 
-               d.Projects = v.Collection.Of<ProjectVM>(ProjectVM.ClassDescriptor);
-            })
-            .WithValidators(c => {
-               c.CheckCollection(x => x.Projects, x => x.Title).Custom<ProjectVM>((item, items, property, args) => {
-                  var vm = (EmployeeVM)args.OwnerVM;
+         List.Items.ReplaceItems(new[] { CreateItem("New item") });
 
-                  vm.ValueArgs.InvocationCount++;
-                  vm.ValueArgs.Item = item.GetValue(property);
-                  vm.ValueArgs.Items = items.Select(x => x.GetValue(property)).ToArray();
-                  vm.ValueArgs.ValidationArgs = args;
-                  vm.ValueArgs.TargetVMHistory.Add(args.TargetVM);
-               });
-
-               c.CheckCollection(x => x.Projects).Custom((item, items, args) => {
-                  var vm = (EmployeeVM)args.OwnerVM;
-
-                  vm.ItemArgs.InvocationCount++;
-                  vm.ItemArgs.Item = item;
-                  vm.ItemArgs.Items = items;
-                  vm.ItemArgs.ValidationArgs = args;
-                  vm.ItemArgs.TargetVMHistory.Add(args.TargetVM);
-               });
-            })
-            .Build();
-
-         public EmployeeVM()
-            : base(ClassDescriptor) {
-
-            ValueArgs = new ValidatorArguments<string>();
-            ItemArgs = new ValidatorArguments<ProjectVM>();
-         }
-
-         public IVMCollection<ProjectVM> Projects {
-            get { return GetValue(Descriptor.Projects); }
-         }
-
-         public ValidatorArguments<string> ValueArgs { get; set; }
-         public ValidatorArguments<ProjectVM> ItemArgs { get; set; }
-
-         //public int ItemValueValidation_InvocationCount { get; set; }
-         //public string ItemValueValidation_Value { get; set; }
-         //public IEnumerable<string> ItemValueValidation_Values { get; set; }
-         //public ValidationArgs ItemValueValidation_Args { get; set; }
-
-         //public int ItemValidation_InvocationCount { get; set; }
-         //public List<IViewModel> ItemValidation_TargetVMHistory { get; private set; }
+         Assert.AreEqual(0, Setup.ActualInvocations.Count);
       }
 
-      private sealed class EmployeeVMDescriptor : VMDescriptor {
-         public IVMPropertyDescriptor<IVMCollection<ProjectVM>> Projects { get; set; }
+      private void SetupCollectionPropertyValidationError(ItemVM item) {
+         Setup.SetupFailing().CollectionPropertyValidation
+            .Targeting(item, x => x.CollectionProperty)
+            .On(List);
       }
 
-      private class ValidatorArguments<T> {
-         public ValidatorArguments() {
-            TargetVMHistory = new List<IViewModel>();
-         }
+      private void SetupCollectionViewModelValidationError(ItemVM item) {
+         Setup.SetupFailing().CollectionViewModelValidation
+            .Targeting(item)
+            .On(List);
+      }
 
-         public int InvocationCount { get; set; }
-         public T Item { get; set; }
-         public IEnumerable<T> Items { get; set; }
-         public ValidationArgs ValidationArgs { get; set; }
-         public List<IViewModel> TargetVMHistory { get; set; }
+      private void SetupPropertyValidationError(ItemVM item) {
+         Setup.SetupFailing().PropertyValidation
+            .Targeting(item, x => x.CollectionProperty)
+            .On(item);
+      }
+
+      private void SetupViewModelValidationError(ItemVM item) {
+         Setup.SetupFailing().ViewModelValidation
+            .Targeting(item)
+            .On(item);
       }
    }
 }

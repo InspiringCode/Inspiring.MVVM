@@ -12,14 +12,14 @@
       Type ItemVMType { get; }
    }
 
-   public abstract class MultiSelectionVM<TItemSource, TItemVM> :
+   public abstract class MultiSelectionBaseVM<TItemSource, TItemVM> :
       ViewModel<MultiSelectionVMDescriptor<TItemSource, TItemVM>>, IMultiSelectionVM
       where TItemVM : IViewModel {
 
       /// <param name="descriptor">
       ///   Use <see cref="CreateDescriptor"/> to create one.
       /// </param>
-      internal MultiSelectionVM(
+      internal MultiSelectionBaseVM(
          MultiSelectionVMDescriptor<TItemSource, TItemVM> descriptor,
          IServiceLocator serviceLocator
       )
@@ -45,6 +45,26 @@
 
       public ICollection<TItemSource> SelectedSourceItems {
          get { return GetValue(Descriptor.SelectedSourceItems); }
+         set {
+            var selectedSourceItems = GetValue(Descriptor.SelectedSourceItems);
+            selectedSourceItems.Clear();
+
+            if (value != null) {
+               var newItemsContainedByAllSourceItems = value
+                  .All(x => AllSourceItems.Contains(x));
+
+               if (!newItemsContainedByAllSourceItems) {
+                  throw new ArgumentException(ExceptionTexts.SourceItemNotContainedByAllSourceItems);
+               }
+
+               foreach (var item in value) {
+                  selectedSourceItems.Add(item);
+               }
+            }
+
+            Kernel.Refresh(Descriptor.AllItems);
+            Kernel.Refresh(Descriptor.SelectedItems);
+         }
       }
 
       public IVMCollection<TItemVM> AllItems {
@@ -120,10 +140,8 @@
       }
    }
 
-
-
    public abstract class MultiSelectionVM<TItemSource> :
-      MultiSelectionVM<TItemSource, SelectionItemVM<TItemSource>> {
+      MultiSelectionBaseVM<TItemSource, SelectionItemVM<TItemSource>> {
 
       public MultiSelectionVM(
          MultiSelectionVMDescriptor<TItemSource> descriptor,
@@ -133,4 +151,16 @@
       }
    }
 
+   public abstract class MultiSelectionVM<TItemSource, TItemVM> :
+      MultiSelectionBaseVM<TItemSource, SelectableItemVM<TItemSource, TItemVM>>
+      where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
+
+      public MultiSelectionVM(
+         MultiSelectionVMDescriptor<TItemSource, SelectableItemVM<TItemSource, TItemVM>> descriptor,
+         IServiceLocator serviceLocator
+      )
+         : base(descriptor, serviceLocator) {
+
+      }
+   }
 }

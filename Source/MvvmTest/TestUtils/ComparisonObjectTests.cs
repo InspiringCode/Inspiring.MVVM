@@ -1,9 +1,10 @@
 ﻿namespace Inspiring.MvvmTest.TestUtils {
    using System;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class ComparisonObjectTests {
+   public class ComparisonObjectTests : TestBase {
       private const string FirstEmployeeName = "John";
       private const string SecondEmployeeName = "Mike";
       private static readonly DateTime FirstEmployeeBirthDate = new DateTime(1985, 12, 27, 23, 59, 59);

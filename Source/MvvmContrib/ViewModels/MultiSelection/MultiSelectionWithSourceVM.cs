@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
    using System.Collections.Generic;
+   using System.Linq;
    using Inspiring.Mvvm.ViewModels.Core;
 
    public sealed class MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM> :
@@ -13,7 +14,7 @@
       ///   Use <see cref="CreateDescriptor"/> to create one.
       /// </param>
       internal MultiSelectionWithSourceVM(
-         MultiSelectionVMDescriptor<TItemSource, TItemVM> descriptor,
+         MultiSelectionVMDescriptor<TItemSource, SelectableItemVM<TItemSource, TItemVM>> descriptor,
          IServiceLocator serviceLocator
       )
          : base(descriptor, serviceLocator) {
@@ -38,7 +39,7 @@
       /// <inheritdoc />
       public void InitializeFrom(TSourceObject source) {
          SourceObject = source;
-         Kernel.Revalidate(Descriptor.SelectedItems, ValidationMode.DiscardInvalidValues); // TODO: Unify validation on first access handling
+         //Kernel.Revalidate(Descriptor.SelectedItems, ValidationMode.DiscardInvalidValues); // TODO: Unify validation on first access handling
       }
 
       /// <summary>
@@ -57,14 +58,28 @@
       ///   A function that should create a VM property that returns all source
       ///   items. This may be a delegated property that returns a constant list.
       /// </param>
-      internal static MultiSelectionVMDescriptor<TItemSource, TItemVM> CreateDescriptor(
-         VMDescriptorBase itemDescriptor,
+      internal static MultiSelectionVMDescriptor<TItemSource, SelectableItemVM<TItemSource, TItemVM>> CreateDescriptor(
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<ICollection<TItemSource>>> selectedSourceItemsPropertyFactory,
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory,
-         bool enableValidation
+         bool enableValidation,
+         bool enableUndo
       ) {
+
+         SelectableItemVMDescriptor<TItemVM> itemDescriptor = VMDescriptorBuilder
+            .OfType<SelectableItemVMDescriptor<TItemVM>>()
+            .For<SelectableItemVM<TItemSource, TItemVM>>()
+            .WithProperties((d, c) => {
+               var v = c.GetPropertyBuilder();
+
+               d.IsSelected = v.Property.Of<bool>();
+               d.VM = v.VM.Wraps(x => x.Source).With<TItemVM>();
+
+            })
+            .WithValidators(b => b.EnableParentViewModelValidation())
+            .Build();
+
          var builder = VMDescriptorBuilder
-            .OfType<MultiSelectionVMDescriptor<TItemSource, TItemVM>>()
+            .OfType<MultiSelectionVMDescriptor<TItemSource, SelectableItemVM<TItemSource, TItemVM>>>()
             .For<MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>>()
             .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
@@ -72,46 +87,95 @@
 
                d.AllSourceItems = allSourceItemsPropertyFactory(source);
                d.SelectedSourceItems = selectedSourceItemsPropertyFactory(source);
-               d.AllItems = v.Collection.Wraps(vm => vm.GetActiveSourceItems()).With<TItemVM>(itemDescriptor);
-               d.SelectedItems = v.Collection.Wraps(vm => vm.SelectedSourceItems).With<TItemVM>(itemDescriptor);
+
+               d.AllItems = v.Collection
+                  .Wraps(vm => vm.GetActiveSourceItems())
+                  .With<SelectableItemVM<TItemSource, TItemVM>>(itemDescriptor);
+
+               d.SelectedItems = v.Collection
+                  .Wraps(vm => vm.SelectedSourceItems)
+                  .With<SelectableItemVM<TItemSource, TItemVM>>(itemDescriptor);
             })
             .WithBehaviors(c => {
                // This behavior ensures, that the 'SelectedItems' collection returns the same
                // VM instances (for the same source items) as the 'AllItems' collection.
-               c.For(x => x.SelectedItems).CollectionBehaviors.Enable(
-                  CollectionBehaviorKeys.Populator,
-                  new LookupPopulatorCollectionBehavior<MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>, TItemVM, TItemSource>(
+               c.Property(x => x.SelectedItems).Enable(
+                  PropertyBehaviorKeys.ValueAccessor,
+                  new LookupPopulatorCollectionBehavior<MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>, SelectableItemVM<TItemSource, TItemVM>, TItemSource>(
                      multiSelectionVM => multiSelectionVM.AllItems
                   )
                );
 
                // This behavior allows a bound comobox to assign a new list to the 'SelectedItems'
                // property every time the selection changes.
-               c.For(x => x.SelectedItems).Enable(
-                  BehaviorKeys.DisplayValueAccessor,
-                  new SettableListDisplayValueBehavior<TItemVM>()
+               c.Property(x => x.SelectedItems).Enable(
+                  PropertyBehaviorKeys.DisplayValueAccessor,
+                  new SettableListDisplayValueBehavior<SelectableItemVM<TItemSource, TItemVM>>()
                );
 
-               c.For(x => x.SelectedItems).AddChangeHandler((vm, args, path) => {
+               c.Property(x => x.SelectedItems).AddChangeHandler((vm, args) => {
                   vm.OnPropertyChanged("SelectedItems"); // HACK!
                });
             })
+            // TODO: Make this configurable?
             .WithValidators(b => {
-               b.CheckCollection(x => x.SelectedItems).Custom((item, items, args) => {
-                  var vm = (MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>)args.OwnerVM;
+               b.CheckCollection(x => x.SelectedItems).Custom(args => {
+                  var invalidItems = args
+                     .Items
+                     .Where(i => args
+                        .Owner
+                        .NonExistingSelectedSourceItems
+                        .Contains(i.Source));
 
-                  if (vm.NonExistingSelectedSourceItems.Contains(item.Source)) {
+
+                  foreach (var item in invalidItems) {
                      // TODO: Let the user specify the message.
-                     args.Errors.Add("Das gewählte Element ist nicht vorhanden.");
+                     args.AddError(item, "Das gewählte Element ist nicht vorhanden.");
                   }
                });
+            })
+            .WithDependencies(b => {
+               b.OnChangeOf
+                  .Collection(x => x.SelectedItems, true)
+                  .Execute((vm, args) => {
+                     if (args.ChangeType == ChangeType.CollectionPopulated || args.ChangeType == ChangeType.AddedToCollection) {
+                        foreach (SelectableItemVM<TItemSource, TItemVM> item in args.NewItems) {
+                           item.IsSelected = true;
+                        }
+                     }
+
+                     if (args.ChangeType == ChangeType.RemovedFromCollection) {
+                        foreach (SelectableItemVM<TItemSource, TItemVM> item in args.OldItems) {
+                           item.IsSelected = false;
+                        }
+                     }
+                  });
+               b.OnChangeOf
+                  .Descendant(x => x.AllItems)
+                  .Properties(x => x.IsSelected)
+                  .Execute((vm, args) => {
+                     if ((bool)args.ChangedVM.Kernel.GetValue(args.ChangedProperty)) {
+                        if (!vm.SelectedItems.Contains(args.ChangedVM)) {
+                           vm.SelectedItems.Add(args.ChangedVM);
+                        }
+                     } else {
+                        vm.SelectedItems.Remove(args.ChangedVM);
+                     }
+                  });
+               b.OnChangeOf
+                  .Collection(x => x.AllItems, true)
+                  .Execute((vm, args) => {
+                     if (args.ChangeType == ChangeType.CollectionPopulated) {
+                        vm.Load(vm.Descriptor.SelectedItems);
+                     }
+                  });
             });
 
-         if (enableValidation) {
-            builder = builder.WithValidators(b => {
-               b.EnableParentValidation(x => x.SelectedItems);
-            });
-         }
+         //if (enableValidation) {
+         //   builder = builder.WithValidators(b => {
+         //      b.EnableParentValidation(x => x.SelectedItems);
+         //   });
+         //}
 
          return builder.WithViewModelBehaviors(b => {
             b.OverrideUpdateFromSourceProperties(
@@ -123,6 +187,9 @@
             b.OverrideUpdateSourceProperties(
                x => x.SelectedSourceItems
             );
+            if (enableUndo) {
+               b.EnableUndo();
+            }
          })
          .Build();
       }
@@ -149,7 +216,7 @@
       /// <inheritdoc />
       public void InitializeFrom(TSourceObject source) {
          Source = source;
-         Kernel.Revalidate(Descriptor.SelectedItems, ValidationMode.DiscardInvalidValues); // TODO: Unify validation on first access handling
+         //Kernel.Revalidate(Descriptor.SelectedItems, ValidationMode.DiscardInvalidValues); // TODO: Unify validation on first access handling
       }
 
       /// <summary>
@@ -172,7 +239,8 @@
          SelectionItemVMDescriptor itemDescriptor,
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<ICollection<TItemSource>>> selectedSourceItemsPropertyFactory,
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory,
-         bool enableValidation
+         bool enableValidation,
+         bool enableUndo
       ) {
          var builder = VMDescriptorBuilder
             .OfType<MultiSelectionVMDescriptor<TItemSource>>()
@@ -189,8 +257,8 @@
             .WithBehaviors(c => {
                // This behavior ensures, that the 'SelectedItems' collection returns the same
                // VM instances (for the same source items) as the 'AllItems' collection.
-               c.For(x => x.SelectedItems).CollectionBehaviors.Enable(
-                  CollectionBehaviorKeys.Populator,
+               c.Property(x => x.SelectedItems).Enable(
+                  PropertyBehaviorKeys.ValueAccessor,
                   new LookupPopulatorCollectionBehavior<MultiSelectionWithSourceVM<TSourceObject, TItemSource>, SelectionItemVM<TItemSource>, TItemSource>(
                      multiSelectionVM => multiSelectionVM.AllItems
                   )
@@ -198,31 +266,38 @@
 
                // This behavior allows a bound comobox to assign a new list to the 'SelectedItems'
                // property every time the selection changes.
-               c.For(x => x.SelectedItems).Enable(
-                  BehaviorKeys.DisplayValueAccessor,
+               c.Property(x => x.SelectedItems).Enable(
+                  PropertyBehaviorKeys.DisplayValueAccessor,
                   new SettableListDisplayValueBehavior<SelectionItemVM<TItemSource>>()
                );
 
-               c.For(x => x.SelectedItems).AddChangeHandler((vm, args, path) => {
+               c.Property(x => x.SelectedItems).AddChangeHandler((vm, args) => {
                   vm.OnPropertyChanged("SelectedItems"); // HACK!
                });
             })
+            // TODO: Make this configurable?
             .WithValidators(b => {
-               b.CheckCollection(x => x.SelectedItems).Custom((item, items, args) => {
-                  var vm = (MultiSelectionWithSourceVM<TSourceObject, TItemSource>)args.OwnerVM;
+               b.CheckCollection(x => x.SelectedItems).Custom(args => {
+                  var invalidItems = args
+                     .Items
+                     .Where(i => args
+                        .Owner
+                        .NonExistingSelectedSourceItems
+                        .Contains(i.Source));
 
-                  if (vm.NonExistingSelectedSourceItems.Contains(item.Source)) {
+
+                  foreach (var item in invalidItems) {
                      // TODO: Let the user specify the message.
-                     args.Errors.Add("Das gewählte Element ist nicht vorhanden.");
+                     args.AddError(item, "Das gewählte Element ist nicht vorhanden.");
                   }
                });
             });
 
-         if (enableValidation) {
-            builder = builder.WithValidators(b => {
-               b.EnableParentValidation(x => x.SelectedItems);
-            });
-         }
+         //if (enableValidation) {
+         //   builder = builder.WithValidators(b => {
+         //      b.EnableParentValidation(x => x.SelectedItems);
+         //   });
+         //}
 
          return builder.WithViewModelBehaviors(b => {
             b.OverrideUpdateFromSourceProperties(
@@ -234,6 +309,10 @@
             b.OverrideUpdateSourceProperties(
                x => x.SelectedSourceItems // TODO: Is this enough? Rethink disconnected SelectionVMs...
             );
+
+            if (enableUndo) {
+               b.EnableUndo();
+            }
          })
          .Build();
       }

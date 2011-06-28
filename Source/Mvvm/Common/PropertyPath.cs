@@ -137,6 +137,18 @@
       }
 
       /// <summary>
+      ///   Returns a new <see cref="PropertyPath"/> that returns the passed default
+      ///   value whenever one of its steps returns null.
+      /// </summary>
+      public PropertyPath<TSource, TValue> ReturnDefaultIfNull(TValue defaultValue = default(TValue)) {
+         return new PropertyPath<TSource, TValue>(
+            GetSteps().ToArray(),
+            true,
+            defaultValue
+         );
+      }
+
+      /// <summary>
       ///   Gets the value of the property path by sequentially getting the value
       ///   of all property steps. Pass in the object for which the value of the 
       ///   property path should be returned.
@@ -258,7 +270,7 @@
 
       private IEnumerable<Step> GetSteps() {
          return IsEmpty ?
-            new Step[] { } :
+            Enumerable.Empty<Step>() :
             _prefixSteps.Concat(new Step[] { _lastStep });
       }
    }

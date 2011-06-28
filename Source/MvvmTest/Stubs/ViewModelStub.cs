@@ -5,6 +5,7 @@
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
 
+   // TODO: Remove
    public class ViewModelStub : IViewModel {
       private Dictionary<IVMPropertyDescriptor, object> _fakeValues;
       private IBehaviorContext _context;
@@ -14,11 +15,17 @@
 
       }
 
-      public ViewModelStub(VMDescriptorBase descriptor) {
+      public ViewModelStub(IVMDescriptor descriptor) {
          _fakeValues = new Dictionary<IVMPropertyDescriptor, object>();
          Descriptor = descriptor;
          Kernel = new VMKernel(this, Descriptor, ServiceLocator.Current);
          _context = Kernel;
+      }
+
+      public ViewModelStub(Behavior behavior)
+         : this() {
+         Descriptor.Behaviors.Successor = behavior;
+         Descriptor.Behaviors.Initialize(Descriptor);
       }
 
       public void OverrideContext(IBehaviorContext context) {
@@ -66,20 +73,10 @@
       }
 
 
-      public VMDescriptorBase Descriptor {
+      public IVMDescriptor Descriptor {
          get;
          set;
       }
-
-
-      public void NotifyPropertyChanged(IVMPropertyDescriptor property) {
-         throw new NotImplementedException();
-      }
-
-      public void NotifyValidationStateChanged(IVMPropertyDescriptor property) {
-         throw new NotImplementedException();
-      }
-
 
       public T GetValue<T>(IVMPropertyDescriptor<T> property) {
          return (T)GetValue((IVMPropertyDescriptor)property);
@@ -96,6 +93,11 @@
 
       public void SetDisplayValue(IVMPropertyDescriptor property, object value) {
          Kernel.SetDisplayValue(property, value);
+      }
+
+
+      public void NotifyChange(ChangeArgs args) {
+         throw new NotImplementedException();
       }
    }
 }

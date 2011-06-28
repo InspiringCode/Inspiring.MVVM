@@ -1,9 +1,10 @@
 ﻿namespace Inspiring.MvvmTest.Screens {
    using Inspiring.Mvvm.Screens;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class ScreenTest {
+   public class ScreenTest : TestBase {
       [TestMethod]
       public void TestChildren() {
          //var childScreen = new Mock<ILifecycleHandler>(MockBehavior.Strict);

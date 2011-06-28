@@ -1,10 +1,11 @@
 ﻿namespace Inspiring.MvvmTest.Common {
    using System;
    using Inspiring.Mvvm.Common;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class ServiceRegistryTests {
+   public class ServiceRegistryTests : TestBase {
       [TestMethod]
       public void GetService_ServiceNotRegistered_ThrowsException() {
          ServiceRegistry registry = new ServiceRegistry();

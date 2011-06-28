@@ -225,42 +225,24 @@
          private ValidatorInteractionTests Test { get; set; }
 
          private static void FirstCollectionValidator(
-            EmployeeVM item,
-            IEnumerable<EmployeeVM> items,
-            IVMPropertyDescriptor<string> property,
-            ValidationArgs args
+            CollectionValidationArgs<EmployeeListVM, EmployeeVM, string> args
          ) {
-            var owner = (EmployeeListVM)args.OwnerVM;
+            var owner = args.Owner;
             var invalidItems = owner.Test.InvalidItemsOfCollectionValidator.ToList();
 
-            if (invalidItems.Contains(item)) {
-               args.Errors.Add("Collection validator error");
-            }
-
-            var itemsToRevalidate = invalidItems.Union(items.Where(x => !x.IsValid));
-
-            foreach (var i in itemsToRevalidate) {
-               args.RevalidationQueue.Add(i);
+            foreach (var item in invalidItems) {
+               args.AddError(item, "Collection validator error");
             }
          }
 
          private static void SecondCollectionValidator(
-            EmployeeVM item,
-            IEnumerable<EmployeeVM> items,
-            IVMPropertyDescriptor<string> property,
-            ValidationArgs args
+            CollectionValidationArgs<EmployeeListVM, EmployeeVM, string> args
          ) {
-            var owner = (EmployeeListVM)args.OwnerVM;
+            var owner = args.Owner;
             var invalidItems = owner.Test.InvalidItemsOfSecondCollectionValidator.ToList();
 
-            if (invalidItems.Contains(item)) {
-               args.Errors.Add("Second collection validator error");
-            }
-
-            var itemsToRevalidate = invalidItems.Union(items.Where(x => !x.IsValid));
-
-            foreach (var i in itemsToRevalidate) {
-               args.RevalidationQueue.Add(i);
+            foreach (var item in invalidItems) {
+               args.AddError(item, "Second collection validator error");
             }
          }
       }
@@ -303,20 +285,20 @@
             return "{" + GetValue(Descriptor.Name) + "}";
          }
 
-         protected override void OnValidationStateChanged(IVMPropertyDescriptor property) {
-            base.OnValidationStateChanged(property);
+         protected override void OnValidationResultChanged(IVMPropertyDescriptor property) {
+            base.OnValidationResultChanged(property);
             ValidationStateChangedEvents.Add(property);
          }
 
-         private static void FirstPropertyValidator(EmployeeVM vm, string value, ValidationArgs args) {
-            if (vm.Test.InvalidItemsOfPropertyValidator.Contains(vm)) {
-               args.Errors.Add("Property validator error");
+         private static void FirstPropertyValidator(PropertyValidationArgs<EmployeeVM, EmployeeVM, string> args) {
+            if (args.Owner.Test.InvalidItemsOfPropertyValidator.Contains(args.Target)) {
+               args.AddError("Property validator error");
             }
          }
 
-         private static void SecondPropertyValidator(EmployeeVM vm, string value, ValidationArgs args) {
-            if (vm.Test.InvalidItemsOfSecondPropertyValidator.Contains(vm)) {
-               args.Errors.Add("Second property validator error");
+         private static void SecondPropertyValidator(PropertyValidationArgs<EmployeeVM, EmployeeVM, string> args) {
+            if (args.Owner.Test.InvalidItemsOfSecondPropertyValidator.Contains(args.Target)) {
+               args.AddError("Second property validator error");
             }
          }
       }

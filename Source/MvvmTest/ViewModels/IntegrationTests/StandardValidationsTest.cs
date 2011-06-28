@@ -1,136 +1,301 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using Inspiring.Mvvm.ViewModels;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
+   using System;
+   using System.Collections.Generic;
+   using Inspiring.Mvvm.Common;
+   using Inspiring.Mvvm.ViewModels;
+   using Inspiring.Mvvm.ViewModels.Core;
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
    [TestClass]
-   public class StandardValidationsTest {
+   public class StandardValidationsTest : ValidationTestBase {
       [TestMethod]
-      public void CheckUnique() {
-         ParentVM vm = new ParentVM();
+      public void HasValue_PropertyHasNoValue_AddsValidationErrorToProperty() {
+         var error = "Value required";
+         var vm = CreateChild(b => b.Check(x => x.StringProperty).HasValue(error));
 
-         // TODO: Validation works only after vm were added to parent!
-         ChildVM child1 = new ChildVM() { StringProperty = "Val1" };
-         ChildVM child2 = new ChildVM() { StringProperty = "Val2" };
-         ChildVM child3 = new ChildVM() { StringProperty = "Val3" };
+         vm.StringProperty = "Valid value";
+         ValidationAssert.IsValid(vm);
 
-         vm.Children.Add(child1);
-         vm.Children.Add(child2);
-         vm.Children.Add(child3);
-
-         child1.StringProperty = "Val1";
-         child2.StringProperty = "Val2";
-         child3.StringProperty = "Val2";
-
-         IDataErrorInfo errorInfo1 = child1;
-         IDataErrorInfo errorInfo2 = child2;
-         IDataErrorInfo errorInfo3 = child3;
-
-         Assert.IsNull(errorInfo1.Error);
-         Assert.IsNull(errorInfo2.Error);
-         Assert.IsNull(errorInfo3.Error);
-
-         Assert.IsNull(errorInfo1["StringProperty"]);
-         //Assert.AreEqual("Duplicate value", errorInfo2["StringProperty"]);
-         Assert.AreEqual("Duplicate value", errorInfo3["StringProperty"]);
+         vm.StringProperty = String.Empty;
+         ValidationAssert.ErrorMessages(vm.ValidationResult, error);
       }
 
       [TestMethod]
-      public void ChildValidation_OneChildInvalid_ParentHasError() {
-         ParentVM vm = new ParentVM();
-         IDataErrorInfo info = vm;
+      public void CheckLength_PropertyLengthExceedsMaximumLength_AddsValidationErrorToProperty() {
+         var error = "Value too long";
+         var vm = CreateChild(b => b.Check(x => x.StringProperty).Length(4, error));
 
-         ChildVM child1 = new ChildVM() { StringProperty = "Val1" };
-         ChildVM child2 = new ChildVM() { StringProperty = "Val2" };
+         vm.StringProperty = "1234";
+         ValidationAssert.IsValid(vm);
 
-         vm.Children.Add(child1);
-         vm.Children.Add(child2);
+         vm.StringProperty = "12345";
+         ValidationAssert.ErrorMessages(vm.ValidationResult, error);
+      }
+
+      [TestMethod]
+      public void IsUnique_WithDuplicateStringProperties_InvalidatesViewModel() {
+         var error = "Duplicate item";
+         var vm = CreateParent(b => b
+            .CheckCollection(x => x.Children, x => x.StringProperty)
+            .IsUnique(StringComparison.CurrentCultureIgnoreCase, error)
+         );
+
+         var item1 = new ChildVM("Item 1") { StringProperty = "VAL1" };
+         var item2 = new ChildVM("Item 2") { StringProperty = "VAL2" };
+         var item3 = new ChildVM("Item 3") { StringProperty = "VAL3" };
+
+         vm.Children.Add(item1);
+         vm.Children.Add(item2);
+         vm.Children.Add(item3);
+
+         ValidationAssert.IsValid(vm);
+         item3.StringProperty = "VAL2";
+
+         var expectedResult = CreateValidationResult(
+            Error(error).For(item3, x => x.StringProperty),
+            Error(error).For(item2, x => x.StringProperty)
+         );
+
+         ValidationAssert.AreEqual(expectedResult, vm.ValidationResult);
+      }
+
+      [TestMethod]
+      public void IsUnique_WithDuplicateIntegerProperties_InvalidatesViewModel() {
+         var error = "Duplicate item";
+         var vm = CreateParent(b => b
+            .CheckCollection(x => x.Children, x => x.IntegerProperty)
+            .IsUnique(error)
+         );
+
+         var item1 = new ChildVM() { IntegerProperty = 1 };
+         var item2 = new ChildVM() { IntegerProperty = 2 };
+         var item3 = new ChildVM() { IntegerProperty = 3 };
+
+         vm.Children.Add(item1);
+         vm.Children.Add(item2);
+         vm.Children.Add(item3);
 
          Assert.IsTrue(vm.IsValid);
-         Assert.IsNull(info.Error);
 
-         child2.StringProperty = "";
-         Assert.AreEqual("Child invalid", info.Error);
+         item2.IntegerProperty = 1;
+
+         var expectedResult = CreateValidationResult(
+            Error(error).For(item2, x => x.IntegerProperty),
+            Error(error).For(item1, x => x.IntegerProperty)
+         );
+
+         ValidationAssert.AreEqual(expectedResult, vm.ValidationResult);
       }
 
       [TestMethod]
-      public void CheckHasValue() {
-         ChildVM vm = new ChildVM();
-         vm.StringProperty = String.Empty;
+      public void PropagateChildErrors_WithInvalidChildren_ParentHasError() {
+         var error = "Child records are invalid";
 
-         IDataErrorInfo errorInfo = vm;
-         Assert.IsNull(errorInfo.Error);
-         Assert.AreEqual("No value", errorInfo["StringProperty"]);
+         var validItem = new ChildVM();
+         var invalidItem = new ChildVM();
+
+         var childDescriptor = CreateChildDescriptor(b => b.CheckViewModel(args => {
+            if (args.Target == invalidItem) {
+               args.AddError("Item error");
+            }
+         }));
+
+         ParentVM vm = CreateParent(b => b.PropagateChildErrors(error), childDescriptor);
+
+         vm.Children.Add(validItem);
+         ValidationAssert.IsValid(vm.ValidationResult);
+
+         vm.Children.Add(invalidItem);
+         var actualParentValidationState = vm.GetValidationResult(ValidationResultScope.Self);
+         ValidationAssert.ErrorMessages(actualParentValidationState, error);
       }
 
       [TestMethod]
-      public void CheckLength() {
-         ChildVM vm = new ChildVM();
-         vm.StringProperty = "Wert";
+      public void RegexValidation_RegexPatternMatches_InvalidatesViewModel() {
+         var error = "Invalid number";
+         var vm = CreateChild(b => b
+            .Check(x => x.StringProperty)
+            .RegexValidation(@"\d+", error)
+         );
 
-         IDataErrorInfo errorInfo = vm;
-         Assert.IsNull(errorInfo.Error);
-         Assert.IsNull(errorInfo["StringProperty"]);
+         vm.StringProperty = "1234";
+         ValidationAssert.IsValid(vm);
 
-         vm.StringProperty = "Wert!";
-
-         Assert.IsNull(errorInfo.Error);
-         Assert.AreEqual("Max length 4", errorInfo["StringProperty"]);
+         vm.StringProperty = "AnInvalidNumber";
+         ValidationAssert.ErrorMessages(vm.ValidationResult, error);
       }
 
+      [TestMethod]
+      public void ValidateProperties_InvalidProperty_InvalidatesViewModel() {
+         var propertyValid = true;
 
-      private class ParentVM : ViewModel<ParentVMDescriptor> {
-         public static readonly ParentVMDescriptor ClassDescriptor = VMDescriptorBuilder
-            .OfType<ParentVMDescriptor>()
-            .For<ParentVM>()
+         var error = "Some fields are invalid";
+         var vm = CreateChild(b => {
+            b.ValidateProperties(error);
+            b.Check(x => x.StringProperty).Custom(x => {
+               if (!propertyValid) {
+                  x.AddError("Property error");
+               }
+            });
+         });
+
+         vm.Revalidate();
+         ValidationAssert.IsValid(vm);
+
+         propertyValid = false;
+         vm.Revalidate();
+
+         var viewModelOnlyResult = vm.GetValidationResult(ValidationResultScope.ViewModelValidationsOnly);
+         ValidationAssert.ErrorMessages(viewModelOnlyResult, error);
+      }
+
+      [TestMethod]
+      public void IsUnique_WithCustomDuplicateKey_InvalidatesViewModel() {
+         var error = "Duplicate item";
+         var vm = CreateParent(b => b
+            .CheckCollection(x => x.Children)
+            .IsUnique(x => Tuple.Create(x.IntegerProperty, x.StringProperty), error)
+         );
+
+         var item1 = new ChildVM() { IntegerProperty = 1, StringProperty = "Item1" };
+         var item2 = new ChildVM() { IntegerProperty = 2, StringProperty = "Item2" };
+         var item3 = new ChildVM() { IntegerProperty = 3, StringProperty = "Item3" };
+
+         vm.Children.Add(item1);
+         vm.Children.Add(item2);
+         vm.Children.Add(item3);
+
+         Assert.IsTrue(vm.IsValid);
+
+         item2.IntegerProperty = 1;
+         item2.StringProperty = "Item1";
+
+         var expectedResult = CreateValidationResult(
+           Error(error).For(item2),
+           Error(error).For(item1)
+         );
+
+         ValidationAssert.AreEqual(expectedResult, vm.ValidationResult);
+      }
+
+      [TestMethod]
+      public void IsUnique_WithCustomDuplicateEqualityComparer_InvalidatesViewModel() {
+         var error = "Duplicate item";
+         var vm = CreateParent(b => b
+            .CheckCollection(x => x.Children)
+            .IsUnique(new CustomChildVMComparer(), error)
+         );
+
+         var item1 = new ChildVM() { IntegerProperty = 1, StringProperty = "Item1" };
+         var item2 = new ChildVM() { IntegerProperty = 2, StringProperty = "Item2" };
+         var item3 = new ChildVM() { IntegerProperty = 3, StringProperty = "Item3" };
+
+         vm.Children.Add(item1);
+         vm.Children.Add(item2);
+         vm.Children.Add(item3);
+
+         Assert.IsTrue(vm.IsValid);
+
+         item2.IntegerProperty = 1;
+         item2.StringProperty = "Item1";
+
+         var expectedResult = CreateValidationResult(
+           Error(error).For(item2),
+           Error(error).For(item1)
+         );
+
+         ValidationAssert.AreEqual(expectedResult, vm.ValidationResult);
+      }
+
+      [TestMethod]
+      public void IsUnique_WithDuplicateItemViewModels_InvalidatesDuplicateItems() {
+         var error = "Duplicate item";
+         var vm = CreateParent(b => b
+            .CheckCollection(x => x.Children)
+            .IsUnique(error)
+         );
+
+         var item1 = new ChildVM() { IntegerProperty = 1, StringProperty = "Item1" };
+
+         vm.Children.Add(item1);
+
+         Assert.IsTrue(vm.IsValid);
+
+         vm.Children.Add(item1);
+
+         var expectedResult = CreateValidationResult(
+           Error(error).For(item1),
+           Error(error).For(item1)
+         );
+
+         ValidationAssert.AreEqual(expectedResult, vm.ValidationResult);
+      }
+
+      private static ParentVM CreateParent(
+         Action<RootValidatorBuilder<ParentVM, ParentVM, ParentVMDescriptor>> validatorConfigurationAction,
+         ChildVMDescriptor childDescriptor = null
+      ) {
+         var descriptor = VMDescriptorBuilder
+           .OfType<ParentVMDescriptor>()
+           .For<ParentVM>()
+           .WithProperties((d, c) => {
+              var v = c.GetPropertyBuilder();
+              d.Children = v.Collection.Of<ChildVM>(childDescriptor ?? ChildVM.ClassDescriptor);
+           })
+           .WithValidators(validatorConfigurationAction)
+           .Build();
+
+         return new ParentVM(descriptor);
+      }
+
+      private static ChildVM CreateChild(
+         Action<RootValidatorBuilder<ChildVM, ChildVM, ChildVMDescriptor>> validatorConfigurationAction
+      ) {
+         var descriptor = CreateChildDescriptor(validatorConfigurationAction);
+         return new ChildVM(descriptor);
+      }
+
+      private static ChildVMDescriptor CreateChildDescriptor(
+         Action<RootValidatorBuilder<ChildVM, ChildVM, ChildVMDescriptor>> validatorConfigurationAction
+      ) {
+         return VMDescriptorBuilder
+            .OfType<ChildVMDescriptor>()
+            .For<ChildVM>()
             .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
-               d.Children = v.Collection.Wraps(x => x.Source).With<ChildVM>(ChildVM.ClassDescriptor);
+               d.StringProperty = v.Property.Of<string>();
+               d.IntegerProperty = v.Property.Of<int>();
             })
-            .WithValidators(c => {
-               c.CheckCollection(x => x.Children, x => x.StringProperty).IsUnique(
-                  StringComparison.CurrentCultureIgnoreCase,
-                  "Duplicate value"
-               );
-               c.PropagateChildErrors("Child invalid");
-            })
+            .WithValidators(validatorConfigurationAction)
             .Build();
+      }
 
-         public ParentVM()
-            : base(ClassDescriptor) {
-            Source = new List<string>();
+
+
+      private class ParentVM : TestViewModel<ParentVMDescriptor> {
+         public ParentVM(ParentVMDescriptor descriptor)
+            : base(descriptor) {
          }
 
          public IVMCollection<ChildVM> Children {
             get { return GetValue(Descriptor.Children); }
             set { SetValue(Descriptor.Children, value); }
          }
-
-         private List<string> Source { get; set; }
-
-         public bool IsValid {
-            get { return Kernel.GetValidationState().IsValid; }
-         }
       }
 
-      private class ChildVM : ViewModel<ChildVMDescriptor>, IHasSourceObject<string> {
-         public static readonly ChildVMDescriptor ClassDescriptor = VMDescriptorBuilder
-            .OfType<ChildVMDescriptor>()
-            .For<ChildVM>()
-            .WithProperties((d, c) => {
-               var v = c.GetPropertyBuilder();
-               d.StringProperty = v.Property.Of<string>();
-            })
-            .WithValidators(c => {
-               c.Check(x => x.StringProperty).HasValue("No value");
-               c.Check(x => x.StringProperty).Length(4, "Max length {0}");
-            })
-            .Build();
+      private class ChildVM : TestViewModel<ChildVMDescriptor> {
+         public static readonly ChildVMDescriptor ClassDescriptor = CreateChildDescriptor(b => {
+            b.EnableParentValidation(x => x.StringProperty);
+            b.EnableParentValidation(x => x.IntegerProperty);
+            b.EnableParentViewModelValidation();
+         });
 
-         public ChildVM()
-            : base(ClassDescriptor) {
+         public ChildVM(string description = null)
+            : this(ClassDescriptor, description) {
+         }
+
+         public ChildVM(ChildVMDescriptor descriptor, string description = null)
+            : base(descriptor, description) {
          }
 
          public string StringProperty {
@@ -138,17 +303,9 @@ namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
             set { SetValue(Descriptor.StringProperty, value); }
          }
 
-         public void InitializeFrom(string source) {
-            StringProperty = source;
-         }
-
-         public string Source {
-            get { return StringProperty; }
-            set { StringProperty = value; }
-         }
-
-         public bool IsValid {
-            get { return Kernel.GetValidationState().IsValid; }
+         public int IntegerProperty {
+            get { return GetValue(Descriptor.IntegerProperty); }
+            set { SetValue(Descriptor.IntegerProperty, value); }
          }
       }
 
@@ -158,6 +315,23 @@ namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
 
       private class ChildVMDescriptor : VMDescriptor {
          public IVMPropertyDescriptor<string> StringProperty { get; set; }
+         public IVMPropertyDescriptor<int> IntegerProperty { get; set; }
+      }
+
+      private class CustomChildVMComparer : IEqualityComparer<ChildVM> {
+
+         public bool Equals(ChildVM x, ChildVM y) {
+            return x.IntegerProperty == y.IntegerProperty &&
+                   x.StringProperty == x.StringProperty;
+         }
+
+         public int GetHashCode(ChildVM obj) {
+            return HashCodeService.CalculateHashCode(
+               obj,
+               obj.IntegerProperty,
+               obj.StringProperty
+            );
+         }
       }
    }
 }

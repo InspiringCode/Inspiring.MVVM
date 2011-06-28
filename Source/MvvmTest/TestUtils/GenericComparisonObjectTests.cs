@@ -1,9 +1,10 @@
 ﻿namespace Inspiring.MvvmTest.TestUtils {
    using System;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class GenericComparisonObjectTests {
+   public class GenericComparisonObjectTests : TestBase {
       private const string FirstEmployeeName = "John";
       private const string SecondEmployeeName = "Mike";
       private static readonly DateTime FirstEmployeeBirthDate = new DateTime(1985, 12, 27, 23, 59, 59);
@@ -62,9 +63,9 @@
       }
 
       private static EmployeeCO CreateFirstEmployeeCO() {
-         return new EmployeeCO(new Employee { 
-            Name = FirstEmployeeName, 
-            BirthDate = FirstEmployeeBirthDate 
+         return new EmployeeCO(new Employee {
+            Name = FirstEmployeeName,
+            BirthDate = FirstEmployeeBirthDate
          });
       }
 

@@ -3,10 +3,12 @@
    using System.Windows.Input;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
+   using Inspiring.Mvvm.Common;
 
    [TestClass]
-   public class CommandHandlerTests {
+   public class CommandHandlerTests : TestBase {
       private static readonly BehaviorKey TestBehaviorKey = new BehaviorKey("TestBehavior");
 
       private EmployeeVM VM { get; set; }
@@ -46,24 +48,24 @@
 
       private static void RegisterCustomCommandTemplate() {
          BehaviorChainTemplateRegistry.RegisterTemplate(
-            BehaviorChainTemplateKeys.CommandBehaviors,
-            new BehaviorChainTemplate(CustomPropertyBehaviorFactory.Instance)
-               .Append(BehaviorKeys.WaitCursor)
+            DefaultBehaviorChainTemplateKeys.CommandProperty,
+            new BehaviorChainTemplate(CustomBehaviorFactoryProviders.CommandProperty)
+               .Append(PropertyBehaviorKeys.ValueAccessor)
+               .Append(CommandPropertyBehaviorKeys.WaitCursor)
                .Append(TestBehaviorKey)
-               .Append(BehaviorKeys.CommandExecutor, DefaultBehaviorState.DisabledWithoutFactory)
-               .Append(BehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(CommandPropertyBehaviorKeys.CommandExecutor, DefaultBehaviorState.DisabledWithoutFactory)
+               .Append(PropertyBehaviorKeys.SourceAccessor, DefaultBehaviorState.DisabledWithoutFactory)
          );
       }
 
-      private class CustomPropertyBehaviorFactory : CommandBehaviorFactory {
-         public static readonly CommandBehaviorFactory Instance = new CustomPropertyBehaviorFactory();
+      private class CustomBehaviorFactoryProviders : BehaviorFactoryProviders {
+         public static new readonly IBehaviorFactoryProvider CommandProperty = new CustomCommandPropertyProvider();
 
-         public override IBehavior Create<TVM, TValue>(BehaviorKey key) {
-            if (key == TestBehaviorKey) {
-               return new CustomCommandHandler();
+         private class CustomCommandPropertyProvider : CommandPropertyProvider {
+            protected override BehaviorFactory GetFactoryWithCommonBehaviors<TOwnerVM, TValue, TSourceObject>() {
+               return base.GetFactoryWithCommonBehaviors<TOwnerVM, TValue, TSourceObject>()
+                  .RegisterBehavior<CustomCommandHandler>(TestBehaviorKey);
             }
-
-            return base.Create<TVM, TValue>(key);
          }
       }
 

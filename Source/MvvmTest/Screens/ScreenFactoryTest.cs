@@ -2,11 +2,12 @@
    using System;
    using Inspiring.Mvvm;
    using Inspiring.Mvvm.Screens;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Moq;
 
    [TestClass]
-   public class ScreenFactoryTest {
+   public class ScreenFactoryTest : TestBase {
       [TestMethod]
       public void TestServiceLocatorIsUsed() {
          var locatorMock = new Mock<IServiceLocator>();

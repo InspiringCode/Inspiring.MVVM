@@ -24,10 +24,6 @@
          : base(ClassDescriptor) {
       }
 
-      public ValidationResult ViewModelValidationResult { get; set; }
-
-      public ValidationResult LocalPropertyValidationResult { get; set; }
-
       public TestVMSource Source { get; set; }
 
       public int CalculatedMutableAccessor {
@@ -72,7 +68,7 @@
       //   base.OnValidate(args);
 
       //   if (ViewModelValidationResult != null && !ViewModelValidationResult.Successful) {
-      //      args.AddError(ViewModelValidationResult.ErrorMessage);
+      //      args..AddError(ViewModelValidationResult.ErrorMessage);
       //   }
       //}
 
@@ -119,11 +115,6 @@
 
       public ChildVMSource Source { get; set; }
 
-
-      public ValidationResult ViewModelValidationResult { get; set; }
-
-      public ValidationResult MappedMutablePropertyValidationResult { get; set; }
-
       public string MappeddMutableAccessor {
          get { return GetValue(Descriptor.MappedMutableProperty); }
          set { SetValue(Descriptor.MappedMutableProperty, value); }
@@ -140,7 +131,7 @@
       //   base.OnValidate(args);
 
       //   if (ViewModelValidationResult != null && !ViewModelValidationResult.Successful) {
-      //      args.AddError(ViewModelValidationResult.ErrorMessage);
+      //      args..AddError(ViewModelValidationResult.ErrorMessage);
       //   }
       //}
 
@@ -199,7 +190,7 @@
    //   //   base.OnValidate(args);
 
    //   //   if (ViewModelValidationResult != null && !ViewModelValidationResult.Successful) {
-   //   //      args.AddError(ViewModelValidationResult.ErrorMessage);
+   //   //      args..AddError(ViewModelValidationResult.ErrorMessage);
    //   //   }
    //   //}
 

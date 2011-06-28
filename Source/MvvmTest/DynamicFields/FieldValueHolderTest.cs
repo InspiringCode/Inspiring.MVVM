@@ -1,8 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Inspiring.MvvmTest.ViewModels;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Inspiring.MvvmTest.DynamicFields {
    [TestClass]
-   public class FieldValueHolderTest {
+   public class FieldValueHolderTest : TestBase {
       [TestMethod]
       public void TestMethod1() {
          //FieldDefinitionCollection fieldDefinitions = new FieldDefinitionCollection();

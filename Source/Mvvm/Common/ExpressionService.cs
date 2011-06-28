@@ -105,11 +105,16 @@
             unary.Operand as MemberExpression :
             propertySelector.Body as MemberExpression;
 
-         if (exp == null || !(exp.Member is PropertyInfo) || !(exp.Expression is ConstantExpression)) {
-            throw new ArgumentException(ExceptionTexts.UnsupportedParameterlessPropertyExpression);
+         bool isValid =
+            exp != null &&
+            (exp.Member is PropertyInfo || exp.Member is MemberInfo) &&
+            (exp.Expression == null || exp.Expression is ConstantExpression);
+
+         if (isValid) {
+            return exp.Member.Name;
          }
 
-         return exp.Member.Name;
+         throw new ArgumentException(ExceptionTexts.UnsupportedParameterlessPropertyExpression);
       }
    }
 }

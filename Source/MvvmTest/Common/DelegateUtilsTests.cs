@@ -1,11 +1,11 @@
 ﻿namespace Inspiring.MvvmTest.Common {
    using System;
-   using System.Linq;
-   using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Inspiring.Mvvm.Common;
+   using Inspiring.MvvmTest.ViewModels;
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class DelegateUtilsTests {
+   public class DelegateUtilsTests : TestBase {
       [TestMethod]
       public void GetFriendlyName_AnonymousDelegate() {
          Action<int> dlg = x => { };

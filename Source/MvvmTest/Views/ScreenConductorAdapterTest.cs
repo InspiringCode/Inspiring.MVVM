@@ -5,12 +5,13 @@
    using Inspiring.Mvvm;
    using Inspiring.Mvvm.Screens;
    using Inspiring.Mvvm.Views;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Moq;
    using Moq.Protected;
 
    [TestClass]
-   public class ScreenConductorAdapterTest {
+   public class ScreenConductorAdapterTest : TestBase {
       private IScreenBase _firstScreen;
       private IScreenBase _secondScreen;
       private IScreenFactory<IScreenBase> _firstFactory;
