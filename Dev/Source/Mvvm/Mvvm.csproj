@@ -389,6 +389,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EViewModels.resx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Binder\Core\BindingPropertiesBuilder.cs" />
+    <Compile Include="Views\Binder\Core\BindingTargetBuilder.cs" />
+    <Compile Include="Views\Binder\Core\CollectionSource.cs" />
+    <Compile Include="Views\Binder\Core\ObjectBinder.cs" />
+    <Compile Include="Views\Binder\Objects\ObjectBinder.cs" />
+    <Compile Include="Views\Binder\Objects\ObjectSource.cs" />
+    <Compile Include="Views\Binder\ViewModels\ViewModelBinder.cs" />
+    <Compile Include="Views\Binder\ViewModels\ViewModelSource.cs" />
+    <Compile Include="Views\Binder\Xpf\XpfBinder.cs" />
     <Compile Include="Views\LegacyBinder\BinderBuildStep.cs" />
     <Compile Include="Views\LegacyBinder\BinderBuildStepRegistry.cs" />
     <Compile Include="Views\LegacyBinder\BinderContext.cs" />

@@ -1,4 +1,8 @@
-﻿using Inspiring.MvvmTest.ViewModels;
+﻿using System.Collections.Generic;
+using Inspiring.Mvvm.ViewModels;
+using Inspiring.Mvvm.Views;
+using Inspiring.Mvvm.Views.Binder.Xpf;
+using Inspiring.MvvmTest.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Sequences;
@@ -20,6 +24,8 @@ namespace Inspiring.MvvmTest {
 
    [TestClass]
    public class UnitTest1 : TestBase {
+
+
       //[TestMethod]
       //public void MyTestMethod() {
       //   IBuilder<IViewModel<Inspiring.MvvmTest.ApiTests.ViewModels.Undo.ProjectVMDescriptor>> foo = null;
@@ -31,6 +37,73 @@ namespace Inspiring.MvvmTest {
 
 
       //}
+
+      [TestMethod]
+      public void MyTestMethod() {
+         //ObjectBinder.BindType<TestObject>(b => {
+         //   b.Collection(x => x.Collection).To(null).BindItem(i => {
+         //      i.Property(x => x.ItemProperty).To(null);
+         //   });
+         //});
+
+         //ViewModelBinder.BindDescriptor<TestVMDescriptor>(b => {
+         //   b.Collection(x => x.Collection).To(null).BindItem(i => {
+         //      i.Property(x => x.ItemProperty).To(null);
+         //   });
+         //});
+      }
+
+      private class TestObject {
+         public string ObjectProperty { get; set; }
+         public ICollection<TestItem> Collection { get; set; }
+      }
+
+      public class TestItem {
+         public string ItemProperty { get; set; }
+      }
+
+
+      public sealed class TestVM : ViewModel<TestVMDescriptor> {
+         public static readonly TestVMDescriptor ClassDescriptor = VMDescriptorBuilder
+            .OfType<TestVMDescriptor>()
+            .For<TestVM>()
+            .WithProperties((d, b) => {
+               var v = b.GetPropertyBuilder();
+
+
+            })
+            .Build();
+
+         public TestVM()
+            : base(ClassDescriptor) {
+         }
+      }
+
+      public sealed class TestVMDescriptor : VMDescriptor {
+         public IVMPropertyDescriptor<IVMCollection<TestItemVM>> Collection { get; set; }
+      }
+
+
+
+      public sealed class TestItemVM : ViewModel<TestItemVMDescriptor> {
+         public static readonly TestItemVMDescriptor ClassDescriptor = VMDescriptorBuilder
+            .OfType<TestItemVMDescriptor>()
+            .For<TestItemVM>()
+            .WithProperties((d, b) => {
+               var v = b.GetPropertyBuilder();
+
+
+            })
+            .Build();
+
+         public TestItemVM()
+            : base(ClassDescriptor) {
+         }
+      }
+
+      public sealed class TestItemVMDescriptor : VMDescriptor {
+         public IVMPropertyDescriptor<string> ItemProperty { get; set; }
+      }
 
 
       [TestMethod]
