@@ -1,10 +1,10 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Validation {
    using Inspiring.Mvvm.ViewModels;
-   using Inspiring.Mvvm.ViewModels.Core;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class ValidationEventTests {
+   public class ValidationEventTests : TestBase {
       private TaskVM VM { get; set; }
       private PropertyChangedCounter ValidationStateChangedEvent { get; set; }
 
@@ -56,9 +56,9 @@
                d.Title = v.Property.Of<string>();
             })
             .WithValidators(c => {
-               c.Check(x => x.Title).Custom((vm, val, args) => {
-                  if (vm.ReturnError) {
-                     args.Errors.Add(new ValidationError("Validation error"));
+               c.Check(x => x.Title).Custom(args => {
+                  if (args.Owner.ReturnError) {
+                     args.AddError("Validation error");
                   }
                });
             })
@@ -81,7 +81,7 @@
          }
 
          private void Revalidate() {
-            Revalidate(ValidationScope.SelfOnly, ValidationMode.DiscardInvalidValues);
+            Revalidate(ValidationScope.Self);
          }
       }
 

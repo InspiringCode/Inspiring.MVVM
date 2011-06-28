@@ -3,7 +3,6 @@
    using Inspiring.Mvvm;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
-   using Inspiring.MvvmTest.Stubs;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Moq;
 
@@ -17,17 +16,23 @@
          return new Mock<T>().Object;
       }
 
-      [TestCleanup]
-      public void Cleanup() {
+
+      protected static ValidationResult CreateValidationResult(
+         params ValidationError[] errors
+      ) {
+         return new ValidationResult(errors);
+      }
+
+      [TestInitialize]
+      public void SetupBase() {
          ServiceLocator.SetServiceLocator(new ReflectionServiceLocator());
-         ValidationContext.Reset(); // HACK
       }
 
       protected class ViewModelBehaviorContextHelper {
          public ViewModelBehaviorContextHelper() {
             //var fields = new FieldDefinitionCollection();
 
-            var descriptor = new VMDescriptorStub();
+            var descriptor = new DescriptorStub();
 
             InitializationContext = new BehaviorInitializationContext(descriptor); // Is this correct?
 
@@ -66,7 +71,7 @@
                property = new Mock<IVMPropertyDescriptor>().Object;
             }
 
-            var descriptor = new VMDescriptorStub();
+            var descriptor = new DescriptorStub();
 
             InitializationContext = new BehaviorInitializationContext(
                descriptor,

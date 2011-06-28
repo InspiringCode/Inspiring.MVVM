@@ -4,9 +4,8 @@
    using Inspiring.Mvvm.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-
    [TestClass]
-   public class VMCollectionWithCustomValidationTests {
+   public class VMCollectionWithCustomValidationTests : TestBase {
 
       private PersonListeVM _viewModel;
 
@@ -44,8 +43,8 @@
                   .With<PersonVM>(PersonVM.ClassDescriptor);
             })
             .WithValidators(b => {
-               b.CheckViewModel((vm, args) => {
-                  if (vm.PersonListe.Count == 0) {
+               b.CheckViewModel(args => {
+                  if (args.Target.PersonListe.Count == 0) {
                      ;
                   }
                });
@@ -86,7 +85,12 @@
                d.IsSelected = v.Property.Of<bool>();
             })
             .WithValidators(b => {
-               b.EnableParentValidation();
+               b.EnableParentValidation(x => x.FirstName);
+               b.EnableParentValidation(x => x.LastName);
+               b.EnableParentValidation(x => x.BirthDate);
+               b.EnableParentValidation(x => x.Salary);
+               b.EnableParentValidation(x => x.Name);
+               b.EnableParentValidation(x => x.IsSelected);
             })
             .Build();
 

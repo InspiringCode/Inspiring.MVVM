@@ -2,7 +2,6 @@
    using System;
    using System.Collections;
    using System.Diagnostics.Contracts;
-   using System.Linq;
 
    /// <summary>
    ///   Helper class for implementing <see cref="Object.GetHashCode"/> in a 
@@ -40,7 +39,6 @@
          Contract.Requires(obj != null);
          Contract.Requires(propertyValues != null);
          Contract.Requires(propertyValues.Length > 0);
-         Contract.Requires(Contract.ForAll(propertyValues, x => x != null));
 
          unchecked {
             // If two objects of different types have the same property values, they
@@ -61,7 +59,6 @@
       /// </summary>
       public static int CalculateCollectionHashCode(IEnumerable collection) {
          Contract.Requires(collection != null);
-         Contract.Requires(Contract.ForAll(collection.Cast<object>(), x => x != null));
 
          unchecked {
             int hashCode = 0;

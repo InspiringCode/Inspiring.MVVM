@@ -42,8 +42,18 @@
          private set;
       }
 
+      internal bool UndoIsEnabled {
+         get;
+         private set;
+      }
+
       public MultiSelectionBuilder<TSourceObject, TItemSource> EnableValidations() {
          ValidationIsEnabled = true;
+         return this;
+      }
+
+      public MultiSelectionBuilder<TSourceObject, TItemSource> EnableUndo() {
+         UndoIsEnabled = true;
          return this;
       }
 
@@ -62,9 +72,8 @@
          return this;
       }
 
-      public IVMPropertyDescriptor<MultiSelectionVM<TItemSource, TItemVM>> Of<TItemVM>(
-         VMDescriptorBase itemDescriptor
-      ) where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
+      public IVMPropertyDescriptor<MultiSelectionVM<TItemSource, TItemVM>> Of<TItemVM>()
+         where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
          Contract.Assert(SelectedSourceItemsPropertyFactory != null);
 
          var allSourceItemsPropertyFactory =
@@ -74,23 +83,24 @@
          // The descriptor is created only once for every owner VM property/descriptor
          // and reused for every VM instance created from the owner VM descriptor.
          var descriptor = MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>.CreateDescriptor(
-            itemDescriptor,
             SelectedSourceItemsPropertyFactory,
             allSourceItemsPropertyFactory,
-            ValidationIsEnabled
+            ValidationIsEnabled,
+            UndoIsEnabled
          );
 
-         var property = _sourceObjectPropertyBuilder.VM.Custom(
-            viewModelAccessor: new MultSelectionAccessor<TItemVM>(descriptor, Filter)
+         var property = _sourceObjectPropertyBuilder.Custom.ViewModelProperty(
+            valueAccessor: new MultSelectionAccessor<TItemVM>(descriptor, Filter),
+            sourceAccessor: _sourceObjectPropertyBuilder.Custom.CreateSourceObjectAccessor()
          );
 
-         _sourceObjectPropertyBuilder
-            .Configuration
-            .PropertyConfigurations[property]
-            .Enable(
-               BehaviorKeys.ManualUpdateBehavior,
-               new ManualUpdateSelectionPropertyBehavior<MultiSelectionVM<TItemSource, TItemVM>, TSourceObject>()
-            );
+         //_sourceObjectPropertyBuilder
+         //   .Configuration
+         //   .PropertyConfigurations[property]
+         //   .Enable(
+         //      PropertyBehaviorKeys.ManualUpdateBehavior,
+         //      new ManualUpdateSelectionPropertyBehavior<MultiSelectionVM<TItemSource, TItemVM>, TSourceObject>()
+         //   );
 
          return property;
       }
@@ -109,6 +119,7 @@
 
                d.Caption = s.Property.DelegatesTo(captionGetter);
             })
+            .WithValidators(b => b.EnableParentViewModelValidation())
             .Build();
 
 
@@ -122,20 +133,22 @@
             itemDescriptor,
             SelectedSourceItemsPropertyFactory,
             allSourceItemsPropertyFactory,
-            ValidationIsEnabled
+            ValidationIsEnabled,
+            UndoIsEnabled
          );
 
-         var property = _sourceObjectPropertyBuilder.VM.Custom(
-            viewModelAccessor: new MultSelectionAccessor(descriptor, Filter)
+         var property = _sourceObjectPropertyBuilder.Custom.ViewModelProperty(
+            valueAccessor: new MultSelectionAccessor(descriptor, Filter),
+            sourceAccessor: _sourceObjectPropertyBuilder.Custom.CreateSourceObjectAccessor()
          );
 
-         _sourceObjectPropertyBuilder
-            .Configuration
-            .PropertyConfigurations[property]
-            .Enable(
-               BehaviorKeys.ManualUpdateBehavior,
-               new ManualUpdateSelectionPropertyBehavior<MultiSelectionVM<TItemSource>, TSourceObject>()
-            );
+         //_sourceObjectPropertyBuilder
+         //   .Configuration
+         //   .PropertyConfigurations[property]
+         //   .Enable(
+         //      PropertyBehaviorKeys.ManualUpdateBehavior,
+         //      new ManualUpdateSelectionPropertyBehavior<MultiSelectionVM<TItemSource>, TSourceObject>()
+         //   );
 
          return property;
       }
@@ -148,26 +161,45 @@
       /// </summary>
       private Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> CreateLocatingPropertyFactory() {
          return delegate(IVMPropertyBuilder<TSourceObject> factory) {
-            return factory.Property.Custom(
-               sourceValueAccessor: new LocatingItemSourceBehavior()
-            );
+            return factory.Custom.Property(valueAccessor: new LocatingItemSourceBehavior());
          };
       }
 
       private class MultSelectionAccessor<TItemVM> :
-         Behavior,
-         IValueAccessorBehavior<MultiSelectionVM<TItemSource, TItemVM>>
+         CachedAccessorBehavior<MultiSelectionVM<TItemSource, TItemVM>>,
+         IRefreshBehavior
          where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
-         private MultiSelectionVMDescriptor<TItemSource, TItemVM> _descriptor;
+         private MultiSelectionVMDescriptor<TItemSource, SelectableItemVM<TItemSource, TItemVM>> _descriptor;
          private Func<TItemSource, bool> _filter;
 
-         public MultSelectionAccessor(MultiSelectionVMDescriptor<TItemSource, TItemVM> descriptor, Func<TItemSource, bool> filter) {
+         public MultSelectionAccessor(
+            MultiSelectionVMDescriptor<TItemSource, SelectableItemVM<TItemSource, TItemVM>> descriptor,
+            Func<TItemSource, bool> filter
+         ) {
             _descriptor = descriptor;
             _filter = filter;
          }
 
-         public MultiSelectionVM<TItemSource, TItemVM> GetValue(IBehaviorContext context) {
+         //public MultiSelectionVM<TItemSource, TItemVM> GetValue(IBehaviorContext context) {
+         //   TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context);
+
+         //   var vm = new MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>(
+         //      _descriptor,
+         //      context.ServiceLocator
+         //   );
+
+         //   vm.ActiveItemFilter = _filter;
+         //   vm.InitializeFrom(sourceObject);
+
+         //   return vm;
+         //}
+
+         //public void SetValue(IBehaviorContext context, MultiSelectionVM<TItemSource, TItemVM> value) {
+         //   throw new NotSupportedException();
+         //}
+
+         protected override MultiSelectionVM<TItemSource, TItemVM> ProvideValue(IBehaviorContext context) {
             TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context);
 
             var vm = new MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>(
@@ -181,14 +213,16 @@
             return vm;
          }
 
-         public void SetValue(IBehaviorContext context, MultiSelectionVM<TItemSource, TItemVM> value) {
-            throw new NotSupportedException();
+         public void Refresh(IBehaviorContext context) {
+            IViewModel vm = GetValue(context);
+            vm.Kernel.Refresh();
+            this.RefreshNext(context);
          }
       }
 
       private class MultSelectionAccessor :
-         Behavior,
-         IValueAccessorBehavior<MultiSelectionVM<TItemSource>> {
+         CachedAccessorBehavior<MultiSelectionVM<TItemSource>>,
+         IRefreshBehavior {
 
          private MultiSelectionVMDescriptor<TItemSource> _descriptor;
          private Func<TItemSource, bool> _filter;
@@ -198,7 +232,25 @@
             _filter = filter;
          }
 
-         public MultiSelectionVM<TItemSource> GetValue(IBehaviorContext context) {
+         //public MultiSelectionVM<TItemSource> GetValue(IBehaviorContext context) {
+         //   TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context);
+
+         //   var vm = new MultiSelectionWithSourceVM<TSourceObject, TItemSource>(
+         //      _descriptor,
+         //      context.ServiceLocator
+         //   );
+
+         //   vm.ActiveItemFilter = _filter;
+         //   vm.InitializeFrom(sourceObject);
+
+         //   return vm;
+         //}
+
+         //public void SetValue(IBehaviorContext context, MultiSelectionVM<TItemSource> value) {
+         //   throw new NotSupportedException();
+         //}
+
+         protected override MultiSelectionVM<TItemSource> ProvideValue(IBehaviorContext context) {
             TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context);
 
             var vm = new MultiSelectionWithSourceVM<TSourceObject, TItemSource>(
@@ -212,8 +264,10 @@
             return vm;
          }
 
-         public void SetValue(IBehaviorContext context, MultiSelectionVM<TItemSource> value) {
-            throw new NotSupportedException();
+         public void Refresh(IBehaviorContext context) {
+            IViewModel vm = GetValue(context);
+            vm.Kernel.Refresh();
+            this.RefreshNext(context);
          }
       }
 

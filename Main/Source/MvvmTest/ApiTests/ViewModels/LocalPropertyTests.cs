@@ -1,10 +1,11 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels {
+   using System.Linq;
    using Inspiring.Mvvm.ViewModels;
-   using Inspiring.Mvvm.ViewModels.Core;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class LocalPropertyTests {
+   public class LocalPropertyTests : TestBase {
       public EmployeeVM VM { get; set; }
 
       [TestInitialize]
@@ -26,16 +27,14 @@
       public void SetViewModel_ParentIsSet() {
          var child = new ProjectVM();
          VM.CurrentProject = child;
-
-         Assert.AreSame(VM, child.Parent);
+         Assert.IsTrue(child.Parents.Contains(VM));
       }
 
       [TestMethod]
       public void AddItemToCollection_ParentIsSet() {
          var child = new ProjectVM();
          VM.Projects.Add(child);
-
-         Assert.AreSame(VM, child.Parent);
+         Assert.IsTrue(child.Parents.Contains(VM));
       }
 
       public sealed class EmployeeVM : ViewModel<EmployeeVMDescriptor> {

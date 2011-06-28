@@ -4,8 +4,35 @@ using Moq;
 using Moq.Sequences;
 
 namespace Inspiring.MvvmTest {
+   //public interface IBuilder<out T> {
+
+   //}
+
+   //public static class ExtensionsTest {
+   //   public static IBuilder<IViewModel<T>> Test<TDesc, T>(this IBuilder<IViewModel<TDesc>> b, Func<TDesc, IVMPropertyDescriptor<IViewModel<T>>> selector) where TDesc : IVMDescriptor {
+   //      return null;
+   //   }
+
+   //   public static IBuilder<TC> Test<T, TC>(this IBuilder<T> b, Func<T, TC> selector) {
+   //      return null;
+   //   }
+   //}
+
    [TestClass]
    public class UnitTest1 : TestBase {
+      //[TestMethod]
+      //public void MyTestMethod() {
+      //   IBuilder<IViewModel<Inspiring.MvvmTest.ApiTests.ViewModels.Undo.ProjectVMDescriptor>> foo = null;
+      //   IBuilder<Binding> bar = null;
+
+      //   foo.Test(x => x.Customer);
+
+
+
+
+      //}
+
+
       [TestMethod]
       public void ThisShouldWork2() {
          var a = new Mock<IFoo>(MockBehavior.Strict);

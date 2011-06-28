@@ -1,31 +1,26 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
+   using System.Collections;
    using System.Collections.Generic;
    using Inspiring.Mvvm.ViewModels.Core;
-   using System.Collections;
 
-   public interface IVMCollection {
-      // TODO: Comment.
-      BehaviorChain Behaviors { get; }
-
-      /// <summary>
-      ///   <para>Indicates wheather the collection is in the middle of a complete 
-      ///      repoulation process.</para>
-      ///   <para>The collection that implements this interface should not raise
-      ///      collection/list changed events when this property is set to true and 
-      ///      should raise a collection/list reset event when it changes from true 
-      ///      to false.</para>
-      ///   <para>Collection behaviors can use this property to suppress certain
-      ///      action while a collection is repopulated (e.g. raising validation
-      ///      events) to improve performance or avoid endless recursions.</para>
-      /// </summary>
-      bool IsPopulating { get; set; }
-
+   public interface IVMCollection : IEnumerable {
       /// <summary>
       ///   Gets the view model instance that holds this collection instance. 
-      ///   The <see cref="Owner"/> is the <see cref="IViewModel.Parent"/>
+      ///   The <see cref="OwnerVM"/> is the <see cref="IViewModel.Parent"/>
       ///   of all items.
       /// </summary>
-      IViewModel Owner { get; }
+      IViewModel OwnerVM { get; }
+
+      // TODO: Comment.
+      IVMPropertyDescriptor OwnerProperty { get; }
+   }
+
+   // TODO: Should this interface replace IVMCollectionExpression?
+   public interface IVMCollectionBase<out TItemVM> :
+      IVMCollection,
+      IEnumerable<TItemVM>,
+      IVMCollectionExpression<TItemVM>
+      where TItemVM : IViewModel {
    }
 
    /// <summary>
@@ -33,10 +28,15 @@
    ///   be used in VMs to hold a collection of child VMs. This interface is
    ///   especially required by the predefined collection behaviors.
    /// </summary>
-   public interface IVMCollection<TItemVM> : IVMCollection, IList<TItemVM>, IList, IVMCollectionExpression<TItemVM> {
+   public interface IVMCollection<TItemVM> : IVMCollectionBase<TItemVM>, IList<TItemVM>, IList where TItemVM : IViewModel {
       int Count { get; }
       void Clear();
       void RemoveAt(int index);
+      /// <summary>
+      ///   Clears the collections and adds the <paramref name="newItems"/>.
+      /// </summary>
+      /// <param name="newItems"></param>
+      void ReplaceItems(IEnumerable<TItemVM> newItems);
       TItemVM this[int index] { get; set; }
    }
 }

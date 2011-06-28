@@ -5,18 +5,18 @@
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class DisplayValueTests {
+   public class DisplayValueTests : ValidationTestBase {
       private const int ValidRatingValue = 3;
       private const int InvalidRatingValue = 6;
 
       private static readonly object ValidRatingDisplayValue = 4;
       private static readonly object InvalidRatingDisplayValue = 2.5m;
 
-      private static readonly ValidationError InvalidDisplayValueValidationError =
-         new ValidationError("Rating must be an integer (no decimal places)!");
+      private static readonly string InvalidDisplayValueValidationError =
+         "Rating must be an integer (no decimal places)!";
 
-      private static readonly ValidationError InvalidValueValidationError =
-         new ValidationError("Rating must be between 1 and 5!");
+      private static readonly string InvalidValueValidationError =
+         "Rating must be between 1 and 5!";
 
       private MovieReviewVM VM { get; set; }
 
@@ -73,8 +73,7 @@
       public void SetDisplayValue_ToInvalidValue_AddsValidationError() {
          VM.RatingDisplayValue = InvalidRatingDisplayValue;
 
-         var expected = new ValidationState();
-         expected.Errors.Add(InvalidDisplayValueValidationError);
+         var expected = CreateValidationResult(InvalidDisplayValueValidationError);
 
          Assert.AreEqual(expected, VM.ValidationState);
       }
@@ -97,9 +96,7 @@
          VM.RatingDisplayValue = InvalidRatingDisplayValue;
          VM.RatingSourceValue = InvalidRatingValue;
 
-         var expected = new ValidationState();
-         expected.Errors.Add(InvalidDisplayValueValidationError);
-         expected.Errors.Add(InvalidValueValidationError);
+         var expected = CreateValidationResult(InvalidDisplayValueValidationError, InvalidValueValidationError);
 
          Assert.AreEqual(expected, VM.ValidationState);
       }
@@ -149,8 +146,8 @@
 
          public string ChangedPropertyName { get; set; }
 
-         public ValidationState ValidationState {
-            get { return Kernel.GetValidationState(Descriptor.Rating); }
+         public ValidationResult ValidationState {
+            get { return Kernel.GetValidationResult(Descriptor.Rating); }
          }
 
          protected override void OnPropertyChanged(string propertyName) {

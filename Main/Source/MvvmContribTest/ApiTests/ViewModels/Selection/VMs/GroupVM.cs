@@ -11,6 +11,10 @@
 
             d.Name = k.Property.MapsTo(x => x.Name);
          })
+         .WithValidators(b => {
+            b.EnableParentValidation(x => x.Name);
+            b.EnableParentViewModelValidation();
+         })
          .Build();
 
       public GroupVM()

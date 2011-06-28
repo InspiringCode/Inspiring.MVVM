@@ -6,7 +6,7 @@
    using System.Linq;
    using Inspiring.Mvvm;
    using Inspiring.Mvvm.ViewModels;
-   using Inspiring.MvvmTest.Stubs;
+   using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -14,12 +14,14 @@
    public class MultiSelectionTests : TestBase {
       private Group Group1 { get; set; }
       private Group Group2 { get; set; }
+      private Group Group3 { get; set; }
       private Group InactiveGroup { get; set; }
 
       [TestInitialize]
       public void Setup() {
          Group1 = new Group("Group 1");
          Group2 = new Group("Group 2");
+         Group3 = new Group("Group 3");
          InactiveGroup = new Group("Inactive Group", isActive: false);
       }
 
@@ -75,7 +77,9 @@
             new[] { Group2 },
             vm.Groups.SelectedSourceItems.ToArray()
          );
-         // TODO: Fix it when validation is refactored.
+
+         var lazyLoadDummy = vm.Groups.SelectedItems;
+
          Assert.IsFalse(vm.IsValid);
       }
 
@@ -95,7 +99,8 @@
             new[] { Group2 },
             vm.Groups.SelectedSourceItems.ToArray()
          );
-         // TODO: Fix it when validation is refactored.
+
+         var lazyLoadDummy = vm.Groups.SelectedItems;
          Assert.IsFalse(vm.IsValid);
       }
 
@@ -108,7 +113,6 @@
          ServiceLocator.SetServiceLocator(locator);
 
          var vm = CreateUserVM();
-
          AssertAllItemsAreEqual(vm, allItems);
       }
 
@@ -124,12 +128,13 @@
             .AllItems
             .Single(x => x.Source == Group2);
 
-         var selectedItems = new List<GroupVM>(vm.Groups.SelectedItems);
+         var selectedItems = new List<SelectableItemVM<Group, GroupVM>>(vm.Groups.SelectedItems);
          selectedItems.Add(additionalItem);
+
          SetSelectedItems(vm, selectedItems);
 
          AssertSelectedItemsAreEqual(vm, selectedItems);
-         AssertSelectedSourceItemsAreEqual(vm, selectedItems);
+         AssertSelectedSourceItemsAreEqual(vm, selectedItems.Select(x => x.VM));
       }
 
       [TestMethod]
@@ -144,36 +149,36 @@
             .AllItems
             .Single(x => x.Source == Group2);
 
-         var selectedItems = new List<GroupVM>(vm.Groups.SelectedItems);
+         var selectedItems = new List<SelectableItemVM<Group, GroupVM>>(vm.Groups.SelectedItems);
          selectedItems.Insert(0, additionalItem);
          SetSelectedItems(vm, selectedItems);
 
          AssertSelectedItemsAreEqual(vm, selectedItems);
-         AssertSelectedSourceItemsAreEqual(vm, selectedItems);
+         AssertSelectedSourceItemsAreEqual(vm, selectedItems.Select(x => x.VM));
       }
 
       [TestMethod]
       public void RemoveFirstSelectedItem_ModifiesSourceCollection() {
          UserVM vm = CreateUserVMWithItems();
 
-         var selectedItems = new List<GroupVM>(vm.Groups.SelectedItems);
+         var selectedItems = new List<SelectableItemVM<Group, GroupVM>>(vm.Groups.SelectedItems);
          selectedItems.RemoveAt(0);
          SetSelectedItems(vm, selectedItems);
 
          AssertSelectedItemsAreEqual(vm, selectedItems);
-         AssertSelectedSourceItemsAreEqual(vm, selectedItems);
+         AssertSelectedSourceItemsAreEqual(vm, selectedItems.Select(x => x.VM));
       }
 
       [TestMethod]
       public void RemoveLastSelectedItem_ModifiesSourceCollection() {
          UserVM vm = CreateUserVMWithItems();
 
-         var selectedItems = new List<GroupVM>(vm.Groups.SelectedItems);
+         var selectedItems = new List<SelectableItemVM<Group, GroupVM>>(vm.Groups.SelectedItems);
          selectedItems.RemoveAt(selectedItems.Count - 1);
          SetSelectedItems(vm, selectedItems);
 
          AssertSelectedItemsAreEqual(vm, selectedItems);
-         AssertSelectedSourceItemsAreEqual(vm, selectedItems);
+         AssertSelectedSourceItemsAreEqual(vm, selectedItems.Select(x => x.VM));
       }
 
       [TestMethod]
@@ -226,15 +231,182 @@
             eventSequence += ("ListChanged" + "|");
          };
 
-         vm.UpdateGroupsFromSource();
+         vm.RefreshGroups();
 
-         Assert.IsTrue(eventSequence.EndsWith("|ListChanged|PropertyChanged|")); // TODO: Investigate why so many events are raised.
+         Assert.IsTrue(eventSequence.Contains("|ListChanged|PropertyChanged|")); // TODO: Investigate why so many events are raised.
+      }
+
+      [TestMethod]
+      public void RefreshOfMultiSelectionProperty_RefreshesAllItemsAndSelectedItems() {
+         var allGroups = new List<Group> { Group1 };
+         var selectedGroups = new List<Group> { Group1 };
+
+         UserVM vm = CreateUserVM(
+            allGroupsSelector: x => allGroups,
+            selectedGroupsSelector: x => selectedGroups
+         );
+
+         Assert.AreEqual(1, vm.Groups.SelectedItems.Count); // Trigger initial load
+
+         allGroups = new List<Group> { Group2 };
+         selectedGroups = new List<Group> { Group2 };
+
+         vm.RefreshGroups();
+
+         AssertAllItemsAreEqual(vm, allGroups);
+         CollectionAssert.AreEqual(
+            selectedGroups,
+            vm.Groups.SelectedItems.Select(x => x.Source).ToArray()
+         );
       }
 
       [TestMethod]
       public void UpdateFromSource() {
          UserVM vm = CreateUserVMWithItems();
-         vm.UpdateGroupsFromSource();
+         vm.RefreshGroups();
+      }
+
+      [TestMethod]
+      public void EnableUndo_EnablesUndoSetValueBehavior() {
+         UserVM vm = CreateUserVMWithItems();
+
+         var department = vm.GetValue(x => x.Groups);
+
+         var relevantProperties = new[] { 
+            department.GetProperty(x => x.AllItems), 
+            department.GetProperty(x => x.SelectedItems)
+         };
+
+         foreach (var property in relevantProperties) {
+            bool found = false;
+            for (IBehavior b = property.Behaviors; b != null; b = b.Successor) {
+               if (b.GetType().Name.Contains("UndoSetValueBehavior") ||
+                   b.GetType().Name.Contains("UndoCollectionModifcationBehavior")) {
+                  found = true;
+                  break;
+               }
+            }
+            Assert.IsTrue(found);
+         }
+      }
+
+      [TestMethod]
+      public void SetSelectedSourceItems_SetsSelectedItems() {
+         UserVM vm = CreateUserVMWithItems();
+
+         var newSelectedSourceItems = new Group[] { Group2, Group3 };
+
+         vm.Groups.SelectedSourceItems = newSelectedSourceItems;
+
+         var expectedSelectedItems = vm.Groups
+            .AllItems
+            .Where(x => x.Source.Equals(Group2) || x.Source.Equals(Group3))
+            .ToArray();
+
+         CollectionAssert.AreEquivalent(expectedSelectedItems, vm.Groups.SelectedItems);
+      }
+
+      [TestMethod]
+      public void SetSelectedSourceItems_ToNull_ClearsSelectedItems() {
+         UserVM vm = CreateUserVMWithItems();
+
+         vm.Groups.SelectedSourceItems = null;
+
+         Assert.AreEqual(0, vm.Groups.SelectedItems.Count);
+      }
+
+      [TestMethod]
+      public void SetSelectedSourceItems_ThatAreNotContainedByAllSourceItems_ThrowsException() {
+         UserVM vm = CreateUserVMWithItems();
+
+         var notContainedGroup = new Group("notContainedGroup");
+         var newSelectedSourceItems = new Group[] { notContainedGroup, Group3 };
+
+         AssertHelper.Throws<ArgumentException>(() => {
+            vm.Groups.SelectedSourceItems = newSelectedSourceItems;
+         });
+      }
+
+      [TestMethod]
+      public void CreateMultiSelection_WithSelectedItems_SetsIsSelectedProperty() {
+         UserVM vm = CreateUserVMWithItems();
+
+         var selectedGroup1 = vm.Groups.AllItems.Single(x => x.Source.Equals(Group1));
+         var selectedGroup2 = vm.Groups.AllItems.Single(x => x.Source.Equals(Group2));
+
+         Assert.IsTrue(selectedGroup1.GetValue(x => x.IsSelected));
+         Assert.IsTrue(selectedGroup2.GetValue(x => x.IsSelected));
+      }
+
+      [TestMethod]
+      public void SetSelectedItemsToNull_ClearsIsSelectedProperty() {
+         UserVM vm = CreateUserVMWithItems();
+
+         vm.Groups.SelectedItems.Clear();
+
+         vm.Groups.AllItems.ForEach(x => Assert.IsFalse(x.GetValue(p => p.IsSelected)));
+      }
+
+      [TestMethod]
+      public void AddSelectedItems_SetsIsSelectedProperty() {
+         UserVM vm = CreateUserVMWithItems();
+
+         var additionalItem3 = vm
+           .Groups
+           .AllItems
+           .Single(x => x.Source == Group3);
+
+         vm.Groups.SelectedItems.Add(additionalItem3);
+
+         var selectedItem3 = vm.Groups.SelectedItems.Single(x => x.Source.Equals(Group3));
+
+         Assert.IsTrue(selectedItem3.GetValue(x => x.IsSelected));
+      }
+
+      [TestMethod]
+      public void SetIsSelectedProperty_AddsItemToSelectedItems() {
+         UserVM vm = CreateUserVMWithItems();
+
+         var additionalItem3 = vm
+           .Groups
+           .AllItems
+           .Single(x => x.Source == Group3);
+
+         additionalItem3.IsSelected = true;
+
+         Assert.AreSame(additionalItem3, vm.Groups.SelectedItems.Single(x => x.Source.Equals(Group3)));
+      }
+
+      [TestMethod]
+      public void ClearIsSelectedProperty_RemovesItemFromSelectedItems() {
+         UserVM vm = CreateUserVMWithItems();
+
+         var additionalItem2 = vm
+           .Groups
+           .SelectedItems
+           .Single(x => x.Source == Group2);
+
+         additionalItem2.IsSelected = false;
+
+         Assert.IsFalse(vm.Groups.SelectedItems.Contains(additionalItem2));
+      }
+
+      [TestMethod]
+      public void InitialEmptySourceItems_RefreshesAllItemsWhenSourceItemIsAdded() {
+         List<Group> allGroups = new List<Group>();
+
+         var vm = CreateUserVM(
+            allGroupsList: allGroups
+         );
+
+         allGroups.Add(Group1);
+
+         var groups = vm.GetValue(x => x.Groups);
+
+         Assert.IsTrue(groups
+            .AllItems
+            .Any(x => x.Source.Equals(Group1))
+         );
       }
 
       /// <summary>
@@ -273,13 +445,14 @@
       private void SetSelectedItems(UserVM vm, IEnumerable selectedItems) {
          // HACK: Refactor descriptor concept?
          IViewModel selection = vm.Groups;
-         var selectionDescriptor = (MultiSelectionVMDescriptor<Group, GroupVM>)selection.Descriptor;
+         //var selectionDescriptor = (MultiSelectionVMDescriptor<Group, GroupVM>)selection.Descriptor;
+         var selectionDescriptor = (MultiSelectionVMDescriptor<Group, SelectableItemVM<Group, GroupVM>>)selection.Descriptor;
          selection.SetDisplayValue(selectionDescriptor.SelectedItems, selectedItems);
       }
 
       private UserVM CreateUserVMWithItems() {
          return CreateUserVM(
-            allGroups: new[] { Group1, Group2, InactiveGroup },
+            allGroups: new[] { Group1, Group2, Group3, InactiveGroup },
             selectedGroups: new[] { Group1, Group2 }
          );
       }
@@ -287,6 +460,7 @@
       private UserVM CreateUserVM(
          Func<Group, bool> filter = null,
          Group[] allGroups = null,
+         List<Group> allGroupsList = null,
          Func<User, IEnumerable<Group>> allGroupsSelector = null,
          Func<User, ICollection<Group>> selectedGroupsSelector = null,
          params Group[] selectedGroups
@@ -315,12 +489,18 @@
                   builder = builder.WithItems(x => allGroups);
                }
 
+               if (allGroupsList != null) {
+                  builder = builder.WithItems(x => allGroupsList);
+               }
+
                if (allGroupsSelector != null) {
                   builder = builder.WithItems(allGroupsSelector);
                }
 
+               builder = builder.EnableUndo();
+
                d.Name = u.Property.MapsTo(x => x.Name);
-               d.Groups = builder.Of<GroupVM>(GroupVM.ClassDescriptor);
+               d.Groups = builder.Of<GroupVM>();
             })
             .Build();
 

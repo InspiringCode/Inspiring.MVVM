@@ -29,7 +29,7 @@
 
       public override void InitializeFrom(IEnumerable<Customer> source) {
          SetSource(source);
-         Revalidate(ValidationScope.FullSubtree);
+         Revalidate(ValidationScope.SelfAndAllDescendants);
       }
 
       public IVMCollection<BaseVM> Children {

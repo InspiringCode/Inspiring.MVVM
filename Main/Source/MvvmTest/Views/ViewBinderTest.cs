@@ -1,13 +1,14 @@
-﻿using System.Windows.Controls;
-using System.Windows.Data;
-using Inspiring.Mvvm.Screens;
-using Inspiring.Mvvm.Views;
-using Inspiring.MvvmTest.ViewModels;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿namespace Inspiring.MvvmTest.Views {
+   using System.Windows.Controls;
+   using System.Windows.Data;
+   using Inspiring.Mvvm.Screens;
+   using Inspiring.Mvvm.Views;
+   using Inspiring.MvvmTest.ViewModels;
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Inspiring.MvvmTest.Views {
+
    [TestClass]
-   public class ViewBinderTest {
+   public class ViewBinderTest : TestBase {
       // [TestMethod] // TODO
       public void BindScreen() {
          PersonScreenView screenView = new PersonScreenView();

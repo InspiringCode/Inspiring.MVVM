@@ -1,10 +1,10 @@
-﻿using System.Windows.Input;
-using Inspiring.Mvvm.ViewModels;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿namespace Inspiring.MvvmTest.ViewModels {
+   using System.Windows.Input;
+   using Inspiring.Mvvm.ViewModels;
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Inspiring.MvvmTest.ViewModels {
    [TestClass]
-   public class CommandPropertyTest {
+   public class CommandPropertyTest : TestBase {
       private CommandVM _vm;
 
       [TestInitialize]

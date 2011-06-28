@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Inspiring.MvvmTest.ViewModels {
    [TestClass]
-   public class TypeDescriptorTest {
+   public class TypeDescriptorTest : TestBase {
       private Person _person;
       private PersonVM _vm;
       private PropertyDescriptorCollection _properties;

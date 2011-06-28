@@ -1,10 +1,10 @@
-﻿using Inspiring.Mvvm.ViewModels;
-namespace Inspiring.MvvmTest.ViewModels {
+﻿namespace Inspiring.MvvmTest.ViewModels {
    using System;
+   using Inspiring.Mvvm.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class ViewModelsTest {
+   public class ViewModelsTest : TestBase {
       private Person _person;
       private PersonVM _vm;
 

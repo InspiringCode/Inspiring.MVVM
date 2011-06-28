@@ -52,6 +52,20 @@
             .WithCaption(x => EnumLocalizer.GetCaption(x));
       }
 
+      public static IVMPropertyDescriptor<SingleSelectionVM<TEnum>> UndoableEnumSelection<TSourceObject, TEnum>(
+         this IVMPropertyBuilder<TSourceObject> sourceObjectPropertyFactory,
+         Expression<Func<TSourceObject, TEnum>> selectedSourceItemSelector
+      ) {
+         Contract.Requires<ArgumentNullException>(selectedSourceItemSelector != null);
+         Contract.Requires(sourceObjectPropertyFactory != null);
+
+         return sourceObjectPropertyFactory
+            .SingleSelection(selectedSourceItemSelector)
+            .EnableUndo()
+            .WithItems(x => GetEnumValues<TEnum>())
+            .WithCaption(x => EnumLocalizer.GetCaption(x));
+      }
+
       private static TEnum[] GetEnumValues<TEnum>() {
          Type enumType;
 

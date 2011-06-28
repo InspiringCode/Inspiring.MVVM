@@ -1,12 +1,11 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels {
-   using System;
-   using System.Linq;
-   using Microsoft.VisualStudio.TestTools.UnitTesting;
+   using System.Collections.Generic;
    using Inspiring.Mvvm.ViewModels;
-using System.Collections.Generic;
+   using Inspiring.MvvmTest.ViewModels;
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class PerformanceTests {
+   public class PerformanceTests : TestBase {
       private const int EmploymentTypeCount = 1000;
       private static readonly List<EmploymentType> EmploymentTypes = GenerateEmploymentTypes(EmploymentTypeCount);
 
@@ -14,7 +13,7 @@ using System.Collections.Generic;
       public void TestMethod1() {
 
       }
-      
+
       private static List<EmploymentType> GenerateEmploymentTypes(int EmploymentTypeCount) {
          List<EmploymentType> list = new List<EmploymentType>();
 

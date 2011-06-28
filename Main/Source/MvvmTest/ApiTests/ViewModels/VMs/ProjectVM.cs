@@ -14,10 +14,12 @@
             d.Customer = p.VM.Wraps(x => x.Customer).With<CustomerVM>();
          })
          .WithValidators(b => {
-            b.EnableParentValidation();
-            b.Check(x => x.Title).Custom((vm, val, args) => {
-               args.Errors.Add("Error");
-               vm.WasValidated = true;
+            b.EnableParentValidation(x => x.Title);
+            b.EnableParentValidation(x => x.Customer);
+
+            b.Check(x => x.Title).Custom(args => {
+               args.AddError("Error");
+               args.Owner.WasValidated = true;
             });
          })
          .Build();
@@ -43,12 +45,12 @@
          set { SetValue(Descriptor.Title, value); }
       }
 
-      public void UpdateCustomerFromSource() {
-         Kernel.UpdateFromSource(Descriptor.Customer);
+      public void RefreshCustomer() {
+         Kernel.Refresh(Descriptor.Customer);
       }
 
       public void Revalidate() {
-         Kernel.Revalidate(ValidationScope.SelfOnly, ValidationMode.DiscardInvalidValues);
+         Kernel.Revalidate(ValidationScope.Self);
       }
    }
 

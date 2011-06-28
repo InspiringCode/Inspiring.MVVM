@@ -14,7 +14,7 @@
       ///   Use <see cref="CreateDescriptor"/> to create one.
       /// </param>
       internal SingleSelectionWithSourceVM(
-         SingleSelectionVMDescriptor<TItemSource, TItemVM> descriptor,
+         SingleSelectionVMDescriptor<TItemSource, SelectableItemVM<TItemSource, TItemVM>> descriptor,
          IServiceLocator serviceLocator
       )
          : base(descriptor, serviceLocator) {
@@ -39,7 +39,7 @@
       /// <inheritdoc />
       public void InitializeFrom(TSourceObject source) {
          SourceObject = source;
-         Kernel.Revalidate(Descriptor.SelectedItem, ValidationMode.DiscardInvalidValues); // TODO: Unify validation on first access handling
+         //Kernel.Revalidate(Descriptor.SelectedItem, ValidationMode.DiscardInvalidValues); // TODO: Unify validation on first access handling
       }
 
       /// <summary>
@@ -58,14 +58,28 @@
       ///   A function that should create a VM property that returns all source
       ///   items. This may be a delegated property that returns a constant list.
       /// </param>
-      internal static SingleSelectionVMDescriptor<TItemSource, TItemVM> CreateDescriptor(
-         VMDescriptorBase itemDescriptor,
+      internal static SingleSelectionVMDescriptor<TItemSource, SelectableItemVM<TItemSource, TItemVM>> CreateDescriptor(
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<TItemSource>> selectedSourceItemPropertyFactory,
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory,
-         bool enableValidation
+         bool enableValidation,
+         bool enableUndo
       ) {
+
+         SelectableItemVMDescriptor<TItemVM> itemDescriptor = VMDescriptorBuilder
+            .OfType<SelectableItemVMDescriptor<TItemVM>>()
+            .For<SelectableItemVM<TItemSource, TItemVM>>()
+            .WithProperties((d, c) => {
+               var v = c.GetPropertyBuilder();
+
+               d.IsSelected = v.Property.Of<bool>();
+               d.VM = v.VM.Wraps(x => x.Source).With<TItemVM>();
+
+            })
+            .WithValidators(b => b.EnableParentViewModelValidation())
+            .Build();
+
          var builder = VMDescriptorBuilder
-            .OfType<SingleSelectionVMDescriptor<TItemSource, TItemVM>>()
+            .OfType<SingleSelectionVMDescriptor<TItemSource, SelectableItemVM<TItemSource, TItemVM>>>()
             .For<SingleSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>>()
             .WithProperties((d, c) => {
                var v = c.GetPropertyBuilder();
@@ -73,13 +87,19 @@
 
                d.AllSourceItems = allSourceItemsPropertyFactory(source);
                d.SelectedSourceItem = selectedSourceItemPropertyFactory(source);
-               d.AllItems = v.Collection.Wraps(vm => vm.GetActiveSourceItems()).With<TItemVM>(itemDescriptor);
+               d.AllItems = v.Collection
+                  .Wraps(vm => vm.GetActiveSourceItems())
+                  .With<SelectableItemVM<TItemSource, TItemVM>>(itemDescriptor);
+
                d.SelectedItem = v.VM.DelegatesTo(
                   vm => vm.SelectedSourceItem != null ?
-                     vm.AllItems.Single(i => Object.Equals(i.Source, vm.SelectedSourceItem)) :
-                     default(TItemVM),
-                     (vm, value) => vm.SelectedSourceItem = value != null ? value.Source : default(TItemSource)
+                     vm.AllItems.Single(i => Object.Equals(i.VM.Source, vm.SelectedSourceItem)) :
+                     default(SelectableItemVM<TItemSource, TItemVM>),
+                     (vm, value) => vm.SetValue(vm.Descriptor.SelectedSourceItem, value != null ? value.Source : default(TItemSource))
                );
+            })
+            .WithBehaviors(b => {
+               b.Property(x => x.SelectedItem).RequiresLoadedProperty(x => x.AllItems);
             })
             .WithViewModelBehaviors(b => {
                b.OverrideUpdateFromSourceProperties(
@@ -92,21 +112,77 @@
                   x => x.SelectedSourceItem
                );
             })
+            // TODO: Make this configurable?
             .WithValidators(b => {
-               b.Check(x => x.SelectedItem).Custom((vm, value, args) => {
-                  if (value != null &&
-                      vm.NonExistingSelectedSourceItem.HasValue &&
-                      Object.Equals(value.Source, vm.NonExistingSelectedSourceItem.Value)
+               b.Check(x => x.SelectedItem).Custom(args => {
+                  if (args.Value != null &&
+                      args.Owner.NonExistingSelectedSourceItem.HasValue &&
+                      Object.Equals(args.Value.Source, args.Owner.NonExistingSelectedSourceItem.Value)
                   ) {
                      // TODO: Let the user specify the message.
-                     args.Errors.Add("Das gewählte Element ist nicht vorhanden.");
+                     args.AddError("Das gewählte Element ist nicht vorhanden.");
                   }
                });
+            })
+            .WithDependencies(b => {
+               // Initiales setzen der IsSelected property
+               b.OnChangeOf
+                  .Collection(x => x.AllItems, true)
+                  .Execute((vm, args) => {
+                     if (args.ChangeType != ChangeType.CollectionPopulated) {
+                        return;
+                     }
+                     var selectedItem = vm.AllItems.SingleOrDefault(i => Object.Equals(i.VM.Source, vm.SelectedSourceItem));
+                     if (selectedItem != null) {
+                        selectedItem.IsSelected = true;
+                     }
+                  });
+
+               b.OnChangeOf
+                  .Properties(x => x.SelectedItem)
+                  .Execute((vm, args) => {
+                     var newItem = (SelectableItemVM<TItemSource, TItemVM>)args.NewItems.FirstOrDefault();
+                     if (newItem != null && !newItem.IsSelected) {
+                        newItem.IsSelected = true;
+                     }
+
+                     var oldItem = (SelectableItemVM<TItemSource, TItemVM>)args.OldItems.FirstOrDefault();
+                     if (oldItem != null && oldItem.IsSelected) {
+                        oldItem.IsSelected = false;
+                     }
+                  });
+
+               b.OnChangeOf
+                  .Descendant(x => x.AllItems)
+                  .Properties(x => x.IsSelected)
+                  .Execute((vm, args) => {
+                     if ((bool)args.ChangedVM.Kernel.GetValue(args.ChangedProperty)) {
+                        vm.SelectedItem = (SelectableItemVM<TItemSource, TItemVM>)args.ChangedVM;
+                     } else {
+                        if (!vm.AllItems.Any(x => x.IsSelected)) {
+                           vm.SelectedItem = null;
+                        }
+                     }
+                  });
+
+               b.OnChangeOf
+                  .Collection(x => x.AllItems, true)
+                  .Execute((vm, args) => {
+                     if (args.ChangeType == ChangeType.CollectionPopulated) {
+                        vm.Load(vm.Descriptor.SelectedItem);
+                     }
+                  });
             });
 
-         if (enableValidation) {
-            builder = builder.WithValidators(b => {
-               b.EnableParentValidation(x => x.SelectedItem);
+         //if (enableValidation) {
+         //   builder = builder.WithValidators(b => {
+         //      b.EnableParentValidation(x => x.SelectedItem);
+         //   });
+         //}
+
+         if (enableUndo) {
+            builder = builder.WithViewModelBehaviors(b => {
+               b.EnableUndo();
             });
          }
          //.WithBehaviors(c => {
@@ -152,7 +228,7 @@
       /// <inheritdoc />
       public void InitializeFrom(TSourceObject source) {
          Source = source;
-         Kernel.Revalidate(Descriptor.SelectedItem, ValidationMode.DiscardInvalidValues); // TODO: Unify validation on first access handling
+         //Kernel.Revalidate(Descriptor.SelectedItem, ValidationMode.DiscardInvalidValues); // TODO: Unify validation on first access handling
       }
 
       /// <summary>
@@ -175,7 +251,8 @@
          SelectionItemVMDescriptor itemDescriptor,
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<TItemSource>> selectedSourceItemsPropertyFactory,
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory,
-         bool enableValidation
+         bool enableValidation,
+         bool enableUndo
       ) {
          var builder = VMDescriptorBuilder
             .OfType<SingleSelectionVMDescriptor<TItemSource>>()
@@ -191,8 +268,11 @@
                  vm => vm.SelectedSourceItem != null ?
                     vm.AllItems.Single(i => Object.Equals(i.Source, vm.SelectedSourceItem)) :
                     default(SelectionItemVM<TItemSource>),
-                 (vm, value) => vm.SelectedSourceItem = value != null ? value.Source : default(TItemSource)
+                    (vm, value) => vm.SetValue(vm.Descriptor.SelectedSourceItem, value != null ? value.Source : default(TItemSource))
               );
+            })
+            .WithBehaviors(b => {
+               b.Property(x => x.SelectedItem).RequiresLoadedProperty(x => x.AllItems);
             })
             .WithViewModelBehaviors(b => {
                b.OverrideUpdateFromSourceProperties(
@@ -205,23 +285,32 @@
                   x => x.SelectedSourceItem
                );
             })
+            // TODO: Make this configurable?
             .WithValidators(b => {
-               b.Check(x => x.SelectedItem).Custom((vm, value, args) => {
-                  if (value != null &&
-                      vm.NonExistingSelectedSourceItem.HasValue &&
-                      Object.Equals(value.Source, vm.NonExistingSelectedSourceItem.Value)
+               b.Check(x => x.SelectedItem).Custom(args => {
+                  if (args.Value != null &&
+                      args.Owner.NonExistingSelectedSourceItem.HasValue &&
+                      Object.Equals(args.Value.Source, args.Owner.NonExistingSelectedSourceItem.Value)
                   ) {
                      // TODO: Let the user specify the message.
-                     args.Errors.Add("Das gewählte Element ist nicht vorhanden.");
+                     args.AddError("Das gewählte Element ist nicht vorhanden.");
                   }
                });
             });
 
-         if (enableValidation) {
-            builder = builder.WithValidators(b => {
-               b.EnableParentValidation(x => x.SelectedItem);
+         //if (enableValidation) {
+         //   builder = builder.WithValidators(b => {
+         //      b.EnableParentValidation(x => x.SelectedItem);
+         //   });
+         //}
+
+         if (enableUndo) {
+            builder = builder.WithViewModelBehaviors(b => {
+               b.EnableUndo();
             });
          }
+
+
          //.WithBehaviors(c => {
          //   // This behavior ensures, that the 'SelectedItems' collection returns the same
          //   // VM instances (for the same source items) as the 'AllItems' collection.

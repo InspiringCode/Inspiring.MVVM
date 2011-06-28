@@ -1,10 +1,124 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels {
+   using System;
+   using System.Linq;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.MvvmTest.ApiTests.ViewModels.Domain;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class ViewModelPropertyTests {
+   public class ViewModelPropertyTests : TestBase {
+      private RootVM VM { get; set; }
+
+      [TestInitialize]
+      public void Setup() {
+         VM = new RootVM();
+      }
+
+      [TestMethod]
+      public void GetValueOfDelegatingViewModelProperty_WhenGetterDelegateReturnsNull_ReturnsNull() {
+         var vm = CreateVM(x => x.VM.DelegatesTo(v => (CustomerVM)null));
+         Assert.IsNull(vm.Customer);
+      }
+
+      [TestMethod]
+      public void GetValueOfWrapperProperty_WhenSourceValueIsNull_ReturnsNull() {
+         var vm = CreateVM(x => x.VM.Wraps(v => (Customer)null, (v, val) => { }).With<CustomerVM>());
+         Assert.IsNull(vm.Customer);
+      }
+
+      [TestMethod]
+      public void SetValueOfWrapperProperty_ToNull_SetsSourceToNull() {
+         VM.WrapperPropertySource = new ChildSource();
+         VM.Load(x => x.WrapperProperty);
+
+         VM.SetValue(x => x.WrapperProperty, null);
+         Assert.IsNull(VM.WrapperPropertySource);
+      }
+
+      [TestMethod]
+      public void SetValue_CallsNotifyChange() {
+         var oldChild = new ChildVM();
+         var newChild = new ChildVM();
+         VM.SetValue(x => x.InstanceProperty, oldChild);
+
+         VM.NotifyChangeInvocations.Clear();
+         VM.SetValue(x => x.InstanceProperty, newChild);
+
+         var args = VM.NotifyChangeInvocations.FirstOrDefault();
+         Assert.IsNotNull(args);
+         CollectionAssert.AreEqual(new[] { oldChild }, args.OldItems.ToArray());
+         CollectionAssert.AreEqual(new[] { newChild }, args.NewItems.ToArray());
+      }
+
+      private ProjectVM CreateVM(
+         Func<IVMPropertyBuilder<ProjectVM>, IVMPropertyDescriptor<CustomerVM>> propertyDefinitionAction
+      ) {
+         var descriptor = VMDescriptorBuilder
+            .OfType<ProjectVMDescriptor>()
+            .For<ProjectVM>()
+            .WithProperties((d, c) => {
+               var v = c.GetPropertyBuilder();
+
+               d.Title = v.Property.Of<string>();
+               d.Customer = propertyDefinitionAction(v);
+            })
+            .Build();
+
+         return new ProjectVM(descriptor);
+      }
+
+      private sealed class RootVM : TestViewModel<RootVMDescriptor> {
+         public static readonly RootVMDescriptor ClassDescriptor = VMDescriptorBuilder
+            .OfType<RootVMDescriptor>()
+            .For<RootVM>()
+            .WithProperties((d, b) => {
+               var v = b.GetPropertyBuilder();
+
+               d.InstanceProperty = v.VM.Of<ChildVM>();
+               d.WrapperProperty = v.VM.Wraps(x => x.WrapperPropertySource).With<ChildVM>();
+               d.DelegateProperty = v.VM.DelegatesTo(
+                  x => x.DelegatePropertyResult,
+                  (x, val) => x.DelegatePropertyResult = val
+               );
+            })
+            .Build();
+
+         public RootVM()
+            : base(ClassDescriptor) {
+         }
+
+         public ChildSource WrapperPropertySource { get; set; }
+         public ChildVM DelegatePropertyResult { get; set; }
+      }
+
+      private sealed class RootVMDescriptor : VMDescriptor {
+         public IVMPropertyDescriptor<ChildVM> InstanceProperty { get; set; }
+         public IVMPropertyDescriptor<ChildVM> WrapperProperty { get; set; }
+         public IVMPropertyDescriptor<ChildVM> DelegateProperty { get; set; }
+      }
+
+      protected class ChildSource {
+      }
+
+      protected class ChildVM : DefaultViewModelWithSourceBase<ChildVMDescriptor, ChildSource> {
+         public static readonly ChildVMDescriptor ClassDescriptor = VMDescriptorBuilder
+            .OfType<ChildVMDescriptor>()
+            .For<ChildVM>()
+            .WithProperties((d, b) => {
+               var v = b.GetPropertyBuilder();
+            })
+            .Build();
+
+         public ChildVM()
+            : base(ClassDescriptor) {
+         }
+      }
+
+      protected class ChildVMDescriptor : VMDescriptor {
+      }
+
 
       [TestClass]
       public abstract class BaseTests {
@@ -45,10 +159,17 @@
          }
 
          [TestMethod]
-         public void UpdateFromSource_RecreatesViewModel() {
+         public void Refresh_RecreatesViewModel() {
             Source.Customer = new Customer();
-            VM.UpdateCustomerFromSource();
+            VM.RefreshCustomer();
             Assert.AreEqual(Source.Customer, VM.Customer.CustomerSource);
+         }
+
+         [TestMethod]
+         public void GetValue_WhenSourceIsNull_ReturnsNull() {
+            var vm = CreateVM();
+            vm.InitializeFrom(new Project { Customer = null });
+            Assert.IsNull(vm.Customer);
          }
 
          protected abstract ProjectVM CreateVM();

@@ -1,12 +1,13 @@
 ﻿namespace Inspiring.MvvmContribTest.Views {
+   using System;
+   using System.Reflection;
    using System.Windows.Input;
    using Inspiring.Mvvm.Views;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
-   using System.Reflection;
-   using System;
 
    [TestClass]
-   public class CustomKeyGestureTests {
+   public class CustomKeyGestureTests : TestBase {
       [TestMethod]
       public void Create_AssignsKey() {
          var g = CustomKeyGesture.Create(Key.A, ModifierKeys.None);
@@ -42,7 +43,7 @@
       public void DisplayString_LocalizedModifiers_Success() {
          CustomKeyGesture.SupplyLocalization(KeyGestureLocalizations.ResourceManager);
          var g = CustomKeyGesture.Create(Key.A, ModifierKeys.Control | ModifierKeys.Shift);
-         
+
          string expected = String.Format(
             "{0}+{1}+A",
             KeyGestureLocalizations.ModifierKeys_Control,

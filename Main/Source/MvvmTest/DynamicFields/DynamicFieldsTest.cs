@@ -1,10 +1,11 @@
 ﻿using Inspiring.Mvvm.ViewModels.Core;
 namespace Inspiring.MvvmTest.DynamicFields {
    using System;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class DynamicFieldsTest {
+   public class DynamicFieldsTest : TestBase {
       private FieldDefinitionCollection _fieldDefinitions;
 
       private FieldDefinitionGroup _valueGroup;

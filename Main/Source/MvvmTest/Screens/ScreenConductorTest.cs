@@ -1,8 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Inspiring.MvvmTest.ViewModels;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Inspiring.MvvmTest.Screens {
    [TestClass]
-   public class ScreenConductorTest {
+   public class ScreenConductorTest : TestBase {
       [TestMethod]
       public void TestMethod1() {
          //ScreenConductor cd = new ScreenConductor();

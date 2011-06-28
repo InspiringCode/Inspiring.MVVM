@@ -14,7 +14,7 @@
       public static void BindVM<TDescriptor>(
          IBindableView<IViewModelExpression<TDescriptor>> view,
          Action<IVMBinder<TDescriptor>> bindingConfigurator
-      ) where TDescriptor : VMDescriptor {
+      ) where TDescriptor : IVMDescriptor {
          if (DesignerProperties.GetIsInDesignMode((DependencyObject)view)) {
             return;
          }
@@ -26,7 +26,12 @@
 
       public static void BindVM<TDescriptor>(
          Action<IVMBinder<TDescriptor>> bindingConfigurator
-      ) where TDescriptor : VMDescriptor {
+      ) where TDescriptor : IVMDescriptor {
+         // See http://sweux.com/blogs/laranjeira/index.php/wpf/design-mode-wpf/how-to-get-design-mode-property-in-wpf/
+         if (DesignerProperties.GetIsInDesignMode(new DependencyObject())) {
+            return;
+         }
+
          VMPropertyBinder<TDescriptor> binder = new VMPropertyBinder<TDescriptor>();
          bindingConfigurator(binder);
          binder.Execute();
@@ -98,6 +103,7 @@
       IOptionsExpression<T> PropertyChanged();
       IOptionsExpression<T> With(IValueConverter converter, object parameter = null);
       IOptionsExpression<T> FallbackValue(object value);
+      IOptionsExpression<T> StringFormat(string format);
    }
 
    public interface IBindCollectionExpression<TDescriptor> {
@@ -212,6 +218,13 @@
          return this;
       }
 
+      public IOptionsExpression<T> StringFormat(string format) {
+         BinderExpression.ExposeContext(this, c => {
+            c.Binding.StringFormat = format;
+         });
+
+         return this;
+      }
 
       public IOptionsExpression<T> FallbackValue(object value) {
          BinderExpression.ExposeContext(this, c => {

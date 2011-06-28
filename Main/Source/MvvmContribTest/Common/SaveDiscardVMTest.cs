@@ -2,11 +2,12 @@
    using System.Windows.Input;
    using Inspiring.Mvvm.Common;
    using Inspiring.MvvmTest;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Moq;
 
    [TestClass]
-   public class SaveDiscardVMTest {
+   public class SaveDiscardVMTest : TestBase {
       private Mock<ISaveDiscardHandler> _handlerMock;
       private SaveDiscardVM _vm;
 

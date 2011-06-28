@@ -1,10 +1,10 @@
 ﻿namespace Inspiring.MvvmContribTest.ViewModels.Selection {
    using Inspiring.Mvvm.ViewModels;
-   using Inspiring.MvvmTest.Stubs;
+   using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class SettableListDisplayValueBehaviorTests {
+   public class SettableListDisplayValueBehaviorTests : TestBase {
       private SettableListDisplayValueBehavior<ItemVM> Behavior { get; set; }
 
       [TestMethod]
@@ -14,6 +14,6 @@
 
 
 
-      public class ItemVM : ViewModelStub { }
+      public class ItemVM : Inspiring.MvvmTest.ViewModels.ViewModelStub { }
    }
 }

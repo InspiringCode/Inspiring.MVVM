@@ -84,7 +84,7 @@
 
          public void Initialize() {
             Employees.Add(new EmployeeVM());
-            Revalidate(ValidationScope.FullSubtree, ValidationMode.DiscardInvalidValues);
+            Revalidate(ValidationScope.SelfAndAllDescendants);
          }
       }
 
@@ -120,7 +120,7 @@
                d.PersonalNumber = v.Property.Of<decimal>();
             })
             .WithValidators(b => {
-               b.EnableParentValidation();
+               b.EnableParentValidation(x => x.PersonalNumber);
             })
             .Build();
 
