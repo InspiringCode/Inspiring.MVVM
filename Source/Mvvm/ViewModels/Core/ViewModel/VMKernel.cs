@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Diagnostics.Contracts;
+   using System.Linq;
    using Inspiring.Mvvm.ViewModels;
 
    public sealed class VMKernel : IBehaviorContext {
@@ -219,7 +220,8 @@
       }
 
       private void ForwardChangeNotificationToParents(ChangeArgs args) {
-         foreach (var parent in Parents) {
+         // Parents have to be cached, because parents may changed by change handlers (declarative dependencies).
+         foreach (var parent in Parents.ToArray()) {
             parent
                .Kernel
                .GetContext()
