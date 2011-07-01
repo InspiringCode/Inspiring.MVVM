@@ -10,7 +10,8 @@
       ViewModel<SelectableItemVMDescriptor<TItemVM>>,
       ISelectableItem,
       IHasSourceObject<TItemSource>,
-      IComparable<SelectableItemVM<TItemSource, TItemVM>>
+      IComparable<SelectableItemVM<TItemSource, TItemVM>>,
+      IComparable
       where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
       public SelectableItemVM() {
@@ -47,6 +48,10 @@
 
       public override string ToString() {
          return VM.ToString();
+      }
+
+      public int CompareTo(object obj) {
+         return CompareTo(obj as SelectableItemVM<TItemSource, TItemVM>);
       }
    }
 
