@@ -4,7 +4,8 @@
    public class SelectionItemVM<TSourceItem> :
       ViewModel<SelectionItemVMDescriptor>,
       IHasSourceObject<TSourceItem>,
-      IComparable<SelectionItemVM<TSourceItem>> {
+      IComparable<SelectionItemVM<TSourceItem>>,
+      IComparable {
 
       // The descriptor is set by the collection
       public SelectionItemVM() {
@@ -25,7 +26,13 @@
       }
 
       public int CompareTo(SelectionItemVM<TSourceItem> other) {
-         return String.Compare(Caption, other.Caption);
+         return other != null ?
+            String.Compare(Caption, other.Caption) :
+            String.Compare(Caption, null);
+      }
+
+      public int CompareTo(object obj) {
+         return CompareTo(obj as SelectionItemVM<TSourceItem>);
       }
    }
 
