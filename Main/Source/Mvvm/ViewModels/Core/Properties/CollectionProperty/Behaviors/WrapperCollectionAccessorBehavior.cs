@@ -2,6 +2,7 @@
    using System;
    using System.Collections.Generic;
    using System.Linq;
+   using Inspiring.Mvvm.Common;
 
    internal sealed class WrapperCollectionAccessorBehavior<TItemVM, TItemSource> :
       CachedAccessorBehavior<IVMCollection<TItemVM>>,
@@ -34,7 +35,12 @@
       public void Refresh(IBehaviorContext context) {
          _collectionSourceCache.Clear(context);
          var collection = GetValue(context);
-         var previousItemsBySource = collection.ToDictionary(x => x.Source);
+
+         Dictionary<TItemSource, TItemVM> previousItemsBySource = collection.ToDictionary(
+            x => x.Source,
+            new ReferenceEqualityComparer<TItemSource>()
+         );
+
          var newSourceItems = GetSourceItems(context);
 
          var newItems = newSourceItems.Select(s => {

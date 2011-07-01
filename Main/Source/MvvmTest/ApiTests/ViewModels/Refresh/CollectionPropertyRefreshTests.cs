@@ -67,6 +67,21 @@
       }
 
       [TestMethod]
+      public void Refresh_OfWrapperCollectionProperty_UsesReferenceEqualityComparisonOfSourceObjectsToDetermineReusability() {
+         var oldSourceItem = new ChildSourceWithEquals("Identical ID");
+         var newSourceItem = new ChildSourceWithEquals("Identical ID");
+
+         VM.WrapperPropertySource = new[] { oldSourceItem };
+         var oldItemVM = VM.WrapperProperty[0];
+
+         VM.WrapperPropertySource = new[] { newSourceItem };
+         VM.Refresh(x => x.WrapperProperty);
+
+         var newItemVM = VM.WrapperProperty[0];
+         Assert.AreNotSame(oldItemVM, newItemVM);
+      }
+
+      [TestMethod]
       public void Refresh_OfWrapperCollectionProperty_CallsNotifyChangeForCollectionPopulation() {
          VM.WrapperProperty.Add(new ChildVM(new ChildSource()));
          var oldItems = VM.WrapperProperty.ToArray();
@@ -190,6 +205,23 @@
                VM.Refresh(propertySelector);
                VM.ValidatorResults.VerifyInvocationSequence();
             });
+      }
+
+      private class ChildSourceWithEquals : ChildSource {
+         public ChildSourceWithEquals(string id) {
+            Id = id;
+         }
+
+         public string Id { get; set; }
+
+         public override int GetHashCode() {
+            return (Id ?? String.Empty).GetHashCode();
+         }
+
+         public override bool Equals(object obj) {
+            var other = obj as ChildSourceWithEquals;
+            return other != null && Object.Equals(other.Id, Id);
+         }
       }
 
       private sealed class RootVM : TestViewModel<RootVMDescriptor> {
