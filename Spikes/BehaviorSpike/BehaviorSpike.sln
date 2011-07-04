@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BehaviorSpike", "BehaviorSpike\BehaviorSpike.csproj", "{348733D9-C553-4AD3-883F-39D91ADE4FE5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CB447D4D-0E94-4009-BA70-EFBEF98B16FF}"
+	ProjectSection(SolutionItems) = preProject
+		BehaviorSpike.vsmdi = BehaviorSpike.vsmdi
+		Local.testsettings = Local.testsettings
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 2
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs17
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = BehaviorSpike\\BehaviorSpike.csproj
+		SccProjectName1 = BehaviorSpike
+		SccLocalPath1 = BehaviorSpike
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = BehaviorSpike.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{348733D9-C553-4AD3-883F-39D91ADE4FE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{348733D9-C553-4AD3-883F-39D91ADE4FE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{348733D9-C553-4AD3-883F-39D91ADE4FE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{348733D9-C553-4AD3-883F-39D91ADE4FE5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
