@@ -65,6 +65,13 @@
          string initialDirectory = null
       );
 
+      bool ShowFolderBrowseDialog(
+         IScreenBase parent,
+         out string selectedPath,
+         string message,
+         Nullable<Environment.SpecialFolder> specialFolder = null
+      );
+
       void Show<TScreen>(
          IScreenFactory<TScreen> screen,
          IScreenBase parent = null,

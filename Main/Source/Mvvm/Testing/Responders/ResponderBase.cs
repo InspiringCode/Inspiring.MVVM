@@ -50,6 +50,19 @@
          return dialogResult;
       }
 
+      internal bool ProcessFolderDialogInvocation(
+         DialogServiceInvocation invocation,
+         out string selectedPath
+      ) {
+         bool dialogResult;
+
+         if (!ProcessFolderDialogInvocationCore(invocation, out selectedPath, out dialogResult)) {
+            ThrowAssertionException(invocation);
+         }
+
+         return dialogResult;
+      }
+
       internal virtual bool ProcessMessageBoxInvocationCore(
          DialogServiceInvocation invocation,
          out CustomDialogResult result
@@ -64,6 +77,17 @@
          out bool result
       ) {
          filename = null;
+         result = false;
+         return false;
+      }
+
+
+      internal virtual bool ProcessFolderDialogInvocationCore(
+         DialogServiceInvocation invocation,
+         out string selectedPath,
+         out bool result
+      ) {
+         selectedPath = null;
          result = false;
          return false;
       }

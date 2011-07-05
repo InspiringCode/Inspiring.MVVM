@@ -63,6 +63,28 @@
          return result.Value;
       }
 
+      public bool ShowFolderBrowseDialog(
+         IScreenBase parent,
+         out string selectedPath,
+         string message,
+         Environment.SpecialFolder? specialFolder = null
+      ) {
+         Window owner = WindowService.GetAssociatedWindow(parent);
+
+         FolderBrowserDialog fbd = new FolderBrowserDialog();
+         if (specialFolder != null) {
+            fbd.RootFolder = (Environment.SpecialFolder)specialFolder;
+         }
+
+         fbd.Description = message;
+
+         bool result = fbd.ShowDialog(owner);
+
+         selectedPath = result ? fbd.SelectedPath : String.Empty;
+
+         return result;
+      }
+
       public virtual void Info(string message, string caption) {
          MessageBox.Show(
             message,
