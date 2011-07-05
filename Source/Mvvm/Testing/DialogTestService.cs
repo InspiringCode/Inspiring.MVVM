@@ -20,6 +20,12 @@
          return resp;
       }
 
+      public FolderDialogResponderSetup EnqueueFolderBrowserDialogResponder(string selectedPath, bool result) {
+         var resp = new FolderDialogResponderSetup(selectedPath, result);
+         _responders.Enqueue(resp);
+         return resp;
+      }
+
       public MessageBoxResponderSetup EnqueueInfoResponder() {
          return EnqueueMessageBoxResponder(DialogServiceMethod.Info);
       }
@@ -78,6 +84,14 @@
          invocation.Parent.SetValue(parent);
 
          return DequeueResponder().ProcessFileDialogInvocation(invocation, out fileName);
+      }
+
+      bool IDialogService.ShowFolderBrowseDialog(IScreenBase parent, out string selectedPath, string message, Environment.SpecialFolder? specialFolder = null) {
+         var invocation = new DialogServiceInvocation(DialogServiceMethod.ShowOpenFileDialog);
+         invocation.Message.SetValue(message);
+         invocation.Parent.SetValue(parent);
+
+         return DequeueResponder().ProcessFolderDialogInvocation(invocation, out selectedPath);
       }
 
       void IDialogService.Error(string message, string caption) {

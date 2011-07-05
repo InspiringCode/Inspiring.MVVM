@@ -9,6 +9,7 @@
       YesNoCancel,
       OkCancel,
       ShowOpenFileDialog,
+      ShowFolderBrowseDialog,
       OpenDialog
    }
 
