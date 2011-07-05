@@ -2,7 +2,7 @@
    using System.Collections.Generic;
 
    public sealed class EventAggregator : IEventSubscriptionRepository {
-      //public IEventSubscriptionRepository Subscriptions { get; }
+      
 
 
       internal void Publish<TPayload>(Event<TPayload> p, TPayload payload) {
@@ -15,6 +15,10 @@
 
       void IEventSubscriptionRepository.AddSubscriptionStore(IEnumerable<IEventSubscription> store) {
          throw new System.NotImplementedException();
+      }
+
+      private class SubscriptionStoreReference {
+         public IEnumerable<IEventSubscription> Store { g
       }
    }
 }

@@ -114,6 +114,8 @@
     <Compile Include="Common\Events\EventSubscriptionBuilder.cs" />
     <Compile Include="Common\Events\IEventSubscription.cs" />
     <Compile Include="Common\Events\IEventSubscriptionRepository.cs" />
+    <Compile Include="Common\Events\IEventSubscriptionStore.cs" />
+    <Compile Include="Common\Events\WeakList.cs" />
     <Compile Include="Common\HashCodeService.cs" />
     <Compile Include="Common\ReferenceEqualityComparer.cs" />
     <Compile Include="Common\SealableObject.cs" />
