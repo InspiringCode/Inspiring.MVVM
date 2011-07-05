@@ -1,0 +1,63 @@
+﻿
+   public class ScreenConductorSubject {
+      public ScreenConductorSubject(object conductorId) {
+         ConductorId = conductorId;
+      }
+
+      public object ConductorId { get; private set; }
+   }
+
+   
+   public interface IIdentifiedScreen {
+      object ScreenId { get; }
+   }
+
+      protected TScreen FindScreen<TScreen>(object screenId = null) where TScreen : IScreen {
+         return (TScreen)FindScreen(s => {
+            if (!(s is TScreen)) {
+               return false;
+            }
+
+            IIdentifiedScreen identified = s as IIdentifiedScreen;
+            return screenId == null || (
+               identified != null &&
+               Object.Equals(identified.ScreenId, screenId)
+            );
+         });
+      }
+
+      private IScreen FindScreen(Func<IScreen, bool> searchSpecification) {
+         IScreen s = this;
+         IScreen root = this;
+
+         for (s = s.Parent; s != null; s = s.Parent) {
+            if (searchSpecification(s)) {
+               return s;
+            }
+
+            root = s;
+         }
+
+         Queue<IScreen> screens = new Queue<IScreen>();
+         screens.Enqueue(root);
+
+         while (screens.Count > 0) {
+            s = screens.Dequeue();
+
+            if (searchSpecification(s)) {
+               return s;
+            }
+
+            Screen scr = s as Screen;
+            if (scr != null) {
+               scr.Children.Screens.ForEach(screens.Enqueue);
+            }
+
+            ScreenConductor conductor = s as ScreenConductor;
+            if (conductor != null) {
+               conductor.Screens.ForEach(screens.Enqueue);
+            }
+         }
+
+         return null;
+      }
