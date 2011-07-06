@@ -26,8 +26,18 @@
       ///      defined by the <see cref="IVMPropertyFactoryProvider.GetFactory"/>
       ///      method) is passed to the delegate.</para>  
       /// </param>
+      /// <param name="cacheSourceCollection">
+      ///   <para>If false, the <paramref name="sourceCollectionSelector"/> is executed 
+      ///      for each collection operation (population, add, remove, ...). This is 
+      ///      appropriate if the source collection instance may be replaced behind the 
+      ///      scenes (e.g. when the collection is mapped with NHibernate).</para>
+      ///   <para>If true, the <paramref name="sourceCollectionSelector"/> is only 
+      ///      executed when the collection is populated or refreshed. This is 
+      ///      appropriate if the source collection is constructed on the fly.</para>
+      /// </param>
       ICollectionPropertyBuilderWithSource<TItemSource> Wraps<TItemSource>(
-         Func<TSourceObject, IEnumerable<TItemSource>> sourceCollectionSelector
+         Func<TSourceObject, IEnumerable<TItemSource>> sourceCollectionSelector,
+         bool cacheSourceCollection = false
       );
 
       /// <summary>

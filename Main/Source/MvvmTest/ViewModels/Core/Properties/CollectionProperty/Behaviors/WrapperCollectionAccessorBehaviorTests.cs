@@ -12,7 +12,7 @@
 
       [TestInitialize]
       public void Setup() {
-         Behavior = new WrapperCollectionAccessorBehavior<ItemVM, ItemSource>();
+         Behavior = new WrapperCollectionAccessorBehavior<ItemVM, ItemSource>(false);
          Context = CreateContext(Behavior);
       }
 
