@@ -7,16 +7,35 @@
 
    [TestClass]
    public class CollectionSourceCacheTests {
+      [TestMethod]
+      public void CollectionSourceCacheDisabled_WhenCollectionChanges_DoesInvokeSourceProvider() {
+         int sourceProviderInvocations = 0;
+         var sourceList = new List<Task>();
+
+         Func<IEnumerable<Task>> sourceProvider = () => {
+            sourceProviderInvocations++;
+            return sourceList;
+         };
+
+         var vm = new TaskListVM(TaskListVM.CreateDescriptor(sourceProvider, cacheSourceCollection: false));
+
+         var loadTrigger = vm.Tasks;
+
+         vm.Tasks.Add(new TaskVM());
+         vm.Tasks.Clear();
+
+         Assert.IsTrue(sourceProviderInvocations >= 3);
+      }
 
       [TestMethod]
-      public void CollectionSourceCache_CollectionChange_DoesNotInvokeSourceProvider() {
+      public void CollectionSourceCacheEnabled_WhenCollectionChanges_DoesNotInvokeSourceProvider() {
          int sourceProviderInvocations = 0;
          Func<IEnumerable<Task>> sourceProvider = () => {
             sourceProviderInvocations++;
             return new List<Task>();
          };
 
-         var vm = new TaskListVM(TaskListVM.CreateDescriptor(sourceProvider));
+         var vm = new TaskListVM(TaskListVM.CreateDescriptor(sourceProvider, cacheSourceCollection: true));
 
          var loadTrigger = vm.Tasks;
 
@@ -27,7 +46,7 @@
       }
 
       [TestMethod]
-      public void CollectionSourceCache_RefreshOfCollection_InvokesSourceProvider() {
+      public void CollectionSourceCacheEnabled_WhenCollectionIsRefreshed_InvokesSourceProvider() {
 
          List<Task> originalTasks = TaskRepository.GetTasks();
          IEnumerable<Task> tasks = originalTasks;
@@ -36,7 +55,7 @@
             return tasks;
          };
 
-         var vm = new TaskListVM(TaskListVM.CreateDescriptor(sourceProvider));
+         var vm = new TaskListVM(TaskListVM.CreateDescriptor(sourceProvider, cacheSourceCollection: true));
 
          CollectionAssert.AreEqual(
             originalTasks,
@@ -62,14 +81,17 @@
 
       }
 
-      public static TaskListVMDescriptor CreateDescriptor(Func<IEnumerable<Task>> sourceProvider) {
+      public static TaskListVMDescriptor CreateDescriptor(Func<IEnumerable<Task>> sourceProvider, bool cacheSourceCollection) {
          return VMDescriptorBuilder
             .OfType<TaskListVMDescriptor>()
             .For<TaskListVM>()
             .WithProperties((d, c) => {
                var vm = c.GetPropertyBuilder();
 
-               d.Tasks = vm.Collection.Wraps(x => sourceProvider()).With<TaskVM>(TaskVM.ClassDescriptor);
+               d.Tasks = vm
+                  .Collection
+                  .Wraps(x => sourceProvider(), cacheSourceCollection)
+                  .With<TaskVM>(TaskVM.ClassDescriptor);
             })
             .Build();
       }

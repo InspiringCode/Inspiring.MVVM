@@ -11,7 +11,12 @@
       where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
       private static readonly FieldDefinitionGroup CollectionSourceCacheGroup = new FieldDefinitionGroup();
+      private readonly bool _shouldCacheSourceCollection;
       private DynamicFieldAccessor<IEnumerable<TItemSource>> _collectionSourceCache;
+
+      public WrapperCollectionAccessorBehavior(bool shouldCacheSourceCollection) {
+         _shouldCacheSourceCollection = shouldCacheSourceCollection;
+      }
 
       IEnumerable<TItemSource> IValueAccessorBehavior<IEnumerable<TItemSource>>.GetValue(IBehaviorContext context) {
          return GetSourceItems(context);
@@ -93,6 +98,11 @@
       }
 
       private IEnumerable<TItemSource> GetSourceItems(IBehaviorContext context) {
+         if (!_shouldCacheSourceCollection) {
+            IEnumerable<TItemSource> source = this.GetValueNext<IEnumerable<TItemSource>>(context);
+            return source;
+         }
+
          if (!_collectionSourceCache.HasValue(context)) {
             IEnumerable<TItemSource> source = this.GetValueNext<IEnumerable<TItemSource>>(context);
             _collectionSourceCache.Set(context, source);
