@@ -3,7 +3,7 @@
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
 
-   public sealed class EventSubscriptionManager {
+   public sealed class EventSubscriptionManager : IEventSubscriptionStore {
       private readonly List<IEventSubscription> _subscriptions;
 
       public EventSubscriptionManager(
@@ -15,7 +15,7 @@
          subscriptionAction(new EventSubscriptionBuilder(_subscriptions));
 
          IEventSubscriptionRepository repository = aggregator;
-         repository.AddSubscriptionStore(_subscriptions);
+         repository.AddSubscriptionStore(this);
       }
 
       public void RemoveAllSubscriptions() {
@@ -25,6 +25,10 @@
       public void RemoveSubscriptionsTo(IEvent @event) {
          Contract.Requires<ArgumentNullException>(@event != null);
          _subscriptions.RemoveAll(x => x.Event == @event);
+      }
+
+      IEnumerable<IEventSubscription> IEventSubscriptionStore.Subscriptions {
+         get { return _subscriptions; }
       }
    }
 }

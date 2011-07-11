@@ -1,13 +1,11 @@
-﻿namespace Inspiring.Mvvm.Common {
-   using System.Collections.Generic;
+﻿using System.Collections.Generic;
+namespace Inspiring.Mvvm.Common {
 
    public interface IEventSubscriptionRepository {
-      //IEnumerable<TSubscription> GetSubscriptionsFor<TSubscription, TPayload>(
-      //   EventOccurrence<TPayload> eventOccurrence
-      //);
+      IEnumerable<IEventSubscription<TPayload>> GetSubscriptions<TPayload>(
+         EventPublication<TPayload> publication
+      );
 
-      //IEnumerable<TSubscription> GetSubscriptions<TSubscription>();
-
-      void AddSubscriptionStore(IEnumerable<IEventSubscription> store);
+      void AddSubscriptionStore(IEventSubscriptionStore store);
    }
 }

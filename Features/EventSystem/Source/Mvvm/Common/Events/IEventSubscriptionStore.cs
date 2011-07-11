@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.Mvvm.Common {
+   using System.Collections.Generic;
 
-   internal interface IEventSubscriptionStore {
-
+   public interface IEventSubscriptionStore {
+      IEnumerable<IEventSubscription> Subscriptions { get; }
    }
 }
