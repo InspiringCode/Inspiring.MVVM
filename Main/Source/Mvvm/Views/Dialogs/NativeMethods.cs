@@ -59,6 +59,7 @@
          BrowseFileJunctions = 0x00010000
       }
 
+      [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
       public struct BROWSEINFO {
          public IntPtr hwndOwner;
          public IntPtr pidlRoot;
