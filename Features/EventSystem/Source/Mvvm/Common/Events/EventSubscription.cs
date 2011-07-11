@@ -3,31 +3,37 @@
    using System.Diagnostics.Contracts;
 
    public class EventSubscription<TPayload> : IEventSubscription<TPayload> {
-      private readonly Event<TPayload> _event;
+      private readonly IEvent<TPayload> _event;
       private readonly Action<TPayload> _handler;
+      private readonly ExecutionOrder _executionOrder;
 
-      public EventSubscription(Event<TPayload> @event, Action<TPayload> handler) {
+      public EventSubscription(
+         IEvent<TPayload> @event,
+         Action<TPayload>
+         handler, ExecutionOrder executionOrder
+      ) {
          Contract.Requires<ArgumentNullException>(@event != null);
          Contract.Requires<ArgumentNullException>(handler != null);
 
          _event = @event;
          _handler = handler;
+         _executionOrder = executionOrder;
       }
 
-      IEvent IEventSubscription.Event {
+      public IEvent Event {
          get { return _event; }
       }
 
-      bool IEventSubscription<TPayload>.Matches(EventPublication<TPayload> publication) {
-         return Matches(publication);
+      public ExecutionOrder ExecutionOrder {
+         get { return _executionOrder; }
       }
 
-      void IEventSubscription<TPayload>.Invoke(TPayload payload) {
-         _handler(payload);
-      }
-
-      protected bool Matches(EventPublication<TPayload> publication) {
+      public bool Matches(EventPublication<TPayload> publication) {
          return publication.Event == _event;
+      }
+
+      public void Invoke(TPayload payload) {
+         _handler(payload);
       }
    }
 }

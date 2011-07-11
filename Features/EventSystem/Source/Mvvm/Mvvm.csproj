@@ -104,17 +104,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ECommon.resx</DependentUpon>
     </Compile>
+    <Compile Include="Common\Events\DefaultSubscriptionOptions.cs" />
+    <Compile Include="Common\Events\DelegateEventCondition.cs" />
     <Compile Include="Common\Events\Event.cs" />
     <Compile Include="Common\Events\EventAggregator.cs" />
     <Compile Include="Common\Events\EventPublication.cs" />
     <Compile Include="Common\Events\DefaultEventExtensions.cs" />
     <Compile Include="Common\Events\EventSubscription.cs" />
     <Compile Include="Common\Events\EventSubscriptionManager.cs" />
+    <Compile Include="Common\Events\ExecutionOrder.cs" />
     <Compile Include="Common\Events\IEvent.cs" />
-    <Compile Include="Common\Events\EventSubscriptionBuilder.cs" />
+    <Compile Include="Common\Events\IEventCondition.cs" />
+    <Compile Include="Common\Events\SubscriptionBuilderInterface.cs" />
     <Compile Include="Common\Events\IEventSubscription.cs" />
     <Compile Include="Common\Events\IEventSubscriptionRepository.cs" />
     <Compile Include="Common\Events\IEventSubscriptionStore.cs" />
+    <Compile Include="Common\Events\EventSubscriptionBuilder.cs" />
     <Compile Include="Common\HashCodeService.cs" />
     <Compile Include="Common\ReferenceEqualityComparer.cs" />
     <Compile Include="Common\SealableObject.cs" />

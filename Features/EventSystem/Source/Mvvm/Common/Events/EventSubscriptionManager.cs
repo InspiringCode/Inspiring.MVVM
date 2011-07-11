@@ -8,11 +8,11 @@
 
       public EventSubscriptionManager(
          EventAggregator aggregator,
-         Action<EventSubscriptionBuilder> subscriptionAction
+         Action<SubscriptionBuilderInterface> subscriptionAction
       ) {
          _subscriptions = new List<IEventSubscription>();
 
-         subscriptionAction(new EventSubscriptionBuilder(_subscriptions));
+         subscriptionAction(new SubscriptionBuilderInterface(_subscriptions));
 
          IEventSubscriptionRepository repository = aggregator;
          repository.AddSubscriptionStore(this);
