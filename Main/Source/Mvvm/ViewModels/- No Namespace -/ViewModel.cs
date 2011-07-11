@@ -251,6 +251,8 @@
          } else {
             OnPropertyChanged("Error");
          }
+
+         OnPropertyChanged("IsValid");
       }
 
       protected virtual void OnPropertyChanged(string propertyName) {
