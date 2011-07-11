@@ -8,7 +8,8 @@
    public static class StandardValidations {
       public static void HasValue<TOwnerVM, TTargetVM, TValue>(
          this PropertyValidatorBuilder<TOwnerVM, TTargetVM, TValue> builder,
-         string errorMessage
+         string errorMessage,
+         object details = null
       )
          where TOwnerVM : IViewModel
          where TTargetVM : IViewModel {
@@ -19,7 +20,7 @@
                Object.Equals(args.Value, null);
 
             if (empty) {
-               args.AddError(errorMessage);
+               args.AddError(errorMessage, details);
             }
          });
       }
@@ -27,21 +28,23 @@
       public static void Length<TOwnerVM, TTargetVM>(
          this PropertyValidatorBuilder<TOwnerVM, TTargetVM, string> builder,
          int maximumLength,
-         string errorMessage
+         string errorMessage,
+         object details = null
       )
          where TOwnerVM : IViewModel
          where TTargetVM : IViewModel {
 
          builder.Custom((args) => {
             if (args.Value != null && args.Value.Length > maximumLength) {
-               args.AddError(errorMessage.FormatWith(maximumLength));
+               args.AddError(errorMessage.FormatWith(maximumLength), details);
             }
          });
       }
 
       public static void IsUnique<TOwnerVM, TItemDescriptor, T>(
          this CollectionValidatorBuilder<TOwnerVM, TItemDescriptor, T> builder, // TODO
-         string errorMessage
+         string errorMessage,
+         object details = null
       )
          where TOwnerVM : IViewModel
          where TItemDescriptor : IVMDescriptor {
@@ -53,7 +56,7 @@
                .Where(g => g.Count() > 1)
                .SelectMany(g => g)
                .ForEach(item => {
-                  args.AddError(item, errorMessage);
+                  args.AddError(item, errorMessage, details);
                });
          });
       }
@@ -61,7 +64,8 @@
       public static void IsUnique<TOwnerVM, TItemDescriptor>(
          this CollectionValidatorBuilder<TOwnerVM, TItemDescriptor, string> builder,
          StringComparison comparisonType,
-         string errorMessage
+         string errorMessage,
+         object details = null
       )
          where TOwnerVM : IViewModel
          where TItemDescriptor : IVMDescriptor {
@@ -73,7 +77,7 @@
                .Where(g => g.Count() > 1)
                .SelectMany(g => g)
                .ForEach(item => {
-                  args.AddError(item, errorMessage);
+                  args.AddError(item, errorMessage, details);
                });
          });
       }
@@ -81,7 +85,8 @@
       public static void IsUnique<TOwnerVM, TItemVM, TKey>(
          this CollectionValidatorBuilder<TOwnerVM, TItemVM> builder,
          Func<TItemVM, TKey> keySelector,
-         string errorMessage
+         string errorMessage,
+         object details = null
       )
          where TOwnerVM : IViewModel
          where TItemVM : IViewModel {
@@ -93,7 +98,7 @@
                .Where(g => g.Count() > 1)
                .SelectMany(g => g)
                .ForEach(item => {
-                  args.AddError(item, errorMessage);
+                  args.AddError(item, errorMessage, details);
                });
          });
       }
@@ -101,7 +106,8 @@
       public static void IsUnique<TOwnerVM, TItemVM>(
          this CollectionValidatorBuilder<TOwnerVM, TItemVM> builder,
          IEqualityComparer<TItemVM> comparer,
-         string errorMessage
+         string errorMessage,
+         object details = null
       )
          where TOwnerVM : IViewModel
          where TItemVM : IViewModel {
@@ -113,14 +119,15 @@
                .Where(g => g.Count() > 1)
                .SelectMany(g => g)
                .ForEach(item => {
-                  args.AddError(item, errorMessage);
+                  args.AddError(item, errorMessage, details);
                });
          });
       }
 
       public static void IsUnique<TOwnerVM, TItemVM>(
          this CollectionValidatorBuilder<TOwnerVM, TItemVM> builder,
-         string errorMessage
+         string errorMessage,
+         object details = null
       )
          where TOwnerVM : IViewModel
          where TItemVM : IViewModel {
@@ -128,7 +135,8 @@
          IsUnique(
             builder,
             x => x,
-            errorMessage
+            errorMessage,
+            details
          );
       }
 
@@ -215,7 +223,8 @@
       public static void RegexValidation<TOwnerVM, TTargetVM>(
          this PropertyValidatorBuilder<TOwnerVM, TTargetVM, string> builder,
          string regexPattern,
-         string errorMessage
+         string errorMessage,
+         object details = null
       )
          where TOwnerVM : IViewModel
          where TTargetVM : IViewModel {
@@ -223,7 +232,7 @@
          Regex regex = new Regex(regexPattern);
          builder.Custom((args) => {
             if (!(String.IsNullOrEmpty(args.Value) || regex.IsMatch(args.Value))) {
-               args.AddError(errorMessage);
+               args.AddError(errorMessage, details);
             }
          });
       }
