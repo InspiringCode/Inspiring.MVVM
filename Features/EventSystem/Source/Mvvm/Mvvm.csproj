@@ -121,6 +121,7 @@
     <Compile Include="Common\SealableObject.cs" />
     <Compile Include="Common\ServiceRegistry.cs" />
     <Compile Include="Common\TypeService.cs" />
+    <Compile Include="Common\WeakCollection.cs" />
     <Compile Include="MvvmApplication.cs" />
     <Compile Include="Common\NotifyObject.cs" />
     <Compile Include="IServiceLocator.cs" />
