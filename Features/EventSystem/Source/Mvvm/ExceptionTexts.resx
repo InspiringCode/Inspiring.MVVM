@@ -291,4 +291,7 @@
   <data name="WeakCollectionDoesNotSupportNullItems" xml:space="preserve">
     <value>The 'WeakCollection' does not support 'null' items.</value>
   </data>
+  <data name="FolderBrowserDialogNoRootFolder" xml:space="preserve">
+    <value>Unable to retrieve the root folder.</value>
+  </data>
 </root>

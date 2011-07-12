@@ -8,9 +8,9 @@
 
          IEnumerable<IEventSubscription<TPayload>> matching = allSubscriptions
             .GetSubscriptions(publication)
-            .OfType<EventSubscription<TPayload>>();
+            .OfType<EventSubscription<TPayload>>()
+            .OrderBy(x => x.ExecutionOrder);
 
-         // Consider priority
          foreach (var subscription in matching) {
             subscription.Invoke(payload);
          }

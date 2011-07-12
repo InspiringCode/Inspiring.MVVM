@@ -1,4 +1,4 @@
-﻿namespace Inspiring.Mvvm.Common.Events {
+﻿namespace Inspiring.Mvvm.Common {
    using System;
    using System.Diagnostics.Contracts;
 

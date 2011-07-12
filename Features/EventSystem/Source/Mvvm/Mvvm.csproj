@@ -104,7 +104,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ECommon.resx</DependentUpon>
     </Compile>
-    <Compile Include="Common\Events\DefaultSubscriptionOptions.cs" />
     <Compile Include="Common\Events\DelegateEventCondition.cs" />
     <Compile Include="Common\Events\Event.cs" />
     <Compile Include="Common\Events\EventAggregator.cs" />
@@ -153,6 +152,7 @@
     <Compile Include="Screens\ScreenFactory.cs" />
     <Compile Include="ServiceLocator.cs" />
     <Compile Include="Testing\ArgumentValue.cs" />
+    <Compile Include="Testing\Responders\FolderDialogResponderSetup.cs" />
     <Compile Include="Testing\TestScreenResult.cs" />
     <Compile Include="Testing\Responders\FileDialogResponderSetup.cs" />
     <Compile Include="Testing\DialogServiceInvocation.cs" />
@@ -397,6 +397,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EViewModels.resx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Dialogs\FolderBrowserDialog.cs" />
+    <Compile Include="Views\Dialogs\NativeMethods.cs" />
+    <Compile Include="Views\Dialogs\ShellComInterfaces.cs" />
     <Compile Include="Views\LegacyBinder\BinderBuildStep.cs" />
     <Compile Include="Views\LegacyBinder\BinderBuildStepRegistry.cs" />
     <Compile Include="Views\LegacyBinder\BinderContext.cs" />

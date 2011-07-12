@@ -18,22 +18,19 @@
    }
 
    public class SubscriptionBuilderInterface<TPayload> {
-      private readonly SubscriptionBuilderInterface _rootBuilder;
-      private readonly Event<TPayload> _event;
-
-      public SubscriptionBuilderInterface(SubscriptionBuilderInterface rootBuilder, Event<TPayload> @event) {
-         Contract.Requires<ArgumentNullException>(rootBuilder != null);
-         Contract.Requires<ArgumentNullException>(@event != null);
-
-         _rootBuilder = rootBuilder;
-         _event = @event;
+      public SubscriptionBuilderInterface(EventSubscriptionBuilder<TPayload> builder) {
+         Contract.Requires<ArgumentNullException>(builder != null);
+         Builder = builder;
       }
 
-      public void Execute(Action<TPayload> handler) {
+      public EventSubscriptionBuilder<TPayload> Builder { get; private set; }
+
+      public void Execute(Action<TPayload> handler, ExecutionOrder order = ExecutionOrder.Default) {
          Contract.Requires<ArgumentNullException>(handler != null);
 
-         var s = new EventSubscription<TPayload>(_event, handler, ExecutionOrder.Default);
-         _rootBuilder.AddSubscription(s);
+         Builder.Handler = handler;
+         Builder.ExecutionOrder = order;
+         Builder.Build();
       }
    }
 }

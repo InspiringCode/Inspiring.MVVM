@@ -99,6 +99,18 @@
          counter.AssertOneRaise();
       }
 
+      [TestMethod]
+      public void NotifyChange_WithValidationResultChangeForOwnProperty_RaisesPropertyChangedForIsValidProperty() {
+         var counter = new PropertyChangedCounter(VM, "IsValid");
+
+         VMInterface.NotifyChange(ChangeArgs
+               .ValidationResultChanged()
+               .PrependViewModel(VM)
+            );
+
+         counter.AssertOneRaise();
+      }
+
       private class ViewModelMock : ViewModel<IVMDescriptor> {
          public IVMPropertyDescriptor LastOnPropertyChangedInvocation { get; set; }
          public IVMPropertyDescriptor LastOnValidationStateChangedInvocation { get; set; }

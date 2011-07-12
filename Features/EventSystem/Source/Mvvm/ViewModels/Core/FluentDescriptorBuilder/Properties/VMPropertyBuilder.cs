@@ -127,11 +127,13 @@
 
       /// <inheritdoc />
       ICollectionPropertyBuilderWithSource<TItemSource> ICollectionPropertyBuilder<TSourceObject>.Wraps<TItemSource>(
-         Func<TSourceObject, IEnumerable<TItemSource>> sourceCollectionSelector
+         Func<TSourceObject, IEnumerable<TItemSource>> sourceCollectionSelector,
+         bool cacheSourceCollection
       ) {
          return new CollectionPropertyBuilderWithSource<TItemSource>(
             Custom,
-            sourceCollectionAccessor: Custom.CreateDelegateAccessor(sourceCollectionSelector)
+            sourceCollectionAccessor: Custom.CreateDelegateAccessor(sourceCollectionSelector),
+            shouldCacheSourceCollection: cacheSourceCollection
          );
       }
 
@@ -230,20 +232,23 @@
 
          private readonly ICustomPropertyFactory<TSourceObject> _factory;
          private readonly IValueAccessorBehavior<IEnumerable<TItemSource>> _sourceCollectionAccessor;
+         private readonly bool _shouldCacheSourceCollection;
 
          public CollectionPropertyBuilderWithSource(
             ICustomPropertyFactory<TSourceObject> factory,
-            IValueAccessorBehavior<IEnumerable<TItemSource>> sourceCollectionAccessor
+            IValueAccessorBehavior<IEnumerable<TItemSource>> sourceCollectionAccessor,
+            bool shouldCacheSourceCollection
          ) {
             _sourceCollectionAccessor = sourceCollectionAccessor;
             _factory = factory;
+            _shouldCacheSourceCollection = shouldCacheSourceCollection;
          }
 
          IVMPropertyDescriptor<IVMCollection<TItemVM>> ICollectionPropertyBuilderWithSource<TItemSource>.With<TItemVM>(
             IVMDescriptor itemDescriptor
          ) {
-            IValueAccessorBehavior<IVMCollection<TItemVM>> valueAccessor = 
-               new WrapperCollectionAccessorBehavior<TItemVM, TItemSource>();
+            IValueAccessorBehavior<IVMCollection<TItemVM>> valueAccessor =
+               new WrapperCollectionAccessorBehavior<TItemVM, TItemSource>(_shouldCacheSourceCollection);
 
             return _factory.CollectionPropertyWithSource(
                itemDescriptor,
