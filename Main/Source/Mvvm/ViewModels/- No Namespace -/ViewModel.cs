@@ -251,8 +251,6 @@
          } else {
             OnPropertyChanged("Error");
          }
-
-         OnPropertyChanged("IsValid");
       }
 
       protected virtual void OnPropertyChanged(string propertyName) {
@@ -332,6 +330,10 @@
             if (selfChanged && args.ChangeType == ChangeType.ValidationResultChanged) {
                OnValidationResultChanged(null);
             }
+         }
+
+         if (args.ChangeType == ChangeType.ValidationResultChanged) {
+            OnPropertyChanged("IsValid");
          }
       }
    }
