@@ -185,6 +185,7 @@
     <Compile Include="Common\HashCodeServiceTests.cs" />
     <Compile Include="Common\ServiceRegistryTests.cs" />
     <Compile Include="Common\TypeServiceTests.cs" />
+    <Compile Include="Common\WeakCollectionTests.cs" />
     <Compile Include="DomainAssert.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="MSTestAdapter.cs" />

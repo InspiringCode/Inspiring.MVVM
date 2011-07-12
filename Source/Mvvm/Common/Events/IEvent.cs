@@ -3,6 +3,6 @@
    }
 
    public interface IEvent<TPayload> : IEvent {
-      void Raise(IEventSubscriptionRepository allSubscriptions, TPayload payload);
+      void Publish(IEventSubscriptionRepository allSubscriptions, TPayload payload);
    }
 }

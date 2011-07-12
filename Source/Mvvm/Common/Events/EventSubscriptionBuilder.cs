@@ -2,38 +2,42 @@
    using System;
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
-
-   public sealed class EventSubscriptionBuilder {
-      private ICollection<IEventSubscription> _subscriptionStore;
-
-      internal EventSubscriptionBuilder(ICollection<IEventSubscription> subscriptionStore) {
-         Contract.Requires(subscriptionStore != null);
-         _subscriptionStore = subscriptionStore;
-      }
-
-      public void AddSubscription(IEventSubscription subscription) {
-         Contract.Requires<ArgumentNullException>(subscription != null);
-         _subscriptionStore.Add(subscription);
-      }
-   }
+   using System.Linq;
 
    public class EventSubscriptionBuilder<TPayload> {
-      private readonly EventSubscriptionBuilder _rootBuilder;
-      private readonly Event<TPayload> _event;
+      private readonly SubscriptionBuilderInterface _builderInterface;
 
-      public EventSubscriptionBuilder(EventSubscriptionBuilder rootBuilder, Event<TPayload> @event) {
-         Contract.Requires<ArgumentNullException>(rootBuilder != null);
-         Contract.Requires<ArgumentNullException>(@event != null);
+      public EventSubscriptionBuilder(SubscriptionBuilderInterface builderInterface) {
+         Contract.Requires<ArgumentNullException>(builderInterface != null);
 
-         _rootBuilder = rootBuilder;
-         _event = @event;
+         _builderInterface = builderInterface;
+         Conditions = new List<IEventCondition<TPayload>>();
       }
 
-      public void Execute(Action<TPayload> handler) {
-         Contract.Requires<ArgumentNullException>(handler != null);
+      public IEvent<TPayload> Event { get; set; }
 
-         var s = new EventSubscription<TPayload>(_event, handler);
-         _rootBuilder.AddSubscription(s);
+      public ExecutionOrder ExecutionOrder { get; set; }
+
+      public Action<TPayload> Handler { get; set; }
+
+      public ICollection<IEventCondition<TPayload>> Conditions { get; private set; }
+
+      public void Build() {
+         IEventSubscription s = CreateSubscription();
+         _builderInterface.AddSubscription(s);
+      }
+
+      protected virtual IEventSubscription CreateSubscription() {
+         IEventCondition<TPayload>[] conditions = Conditions.Any() ?
+            Conditions.ToArray() :
+            null;
+
+         return new EventSubscription<TPayload>(
+            Event,
+            Handler,
+            ExecutionOrder,
+            conditions
+         );
       }
    }
 }

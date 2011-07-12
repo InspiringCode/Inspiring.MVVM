@@ -3,14 +3,30 @@
    using System.Diagnostics.Contracts;
 
    public static class DefaultEventExtensions {
-      public static EventSubscriptionBuilder<TPayload> On<TPayload>(
-         this EventSubscriptionBuilder rootBuilder,
+      public static SubscriptionBuilderInterface<TPayload> On<TPayload>(
+         this SubscriptionBuilderInterface root,
          Event<TPayload> @event
       ) {
-         Contract.Requires<ArgumentNullException>(rootBuilder != null);
+         Contract.Requires<ArgumentNullException>(root != null);
          Contract.Requires<ArgumentNullException>(@event != null);
 
-         return new EventSubscriptionBuilder<TPayload>(rootBuilder, @event);
+         var builder = new EventSubscriptionBuilder<TPayload>(root) {
+            Event = @event
+         };
+
+         return new SubscriptionBuilderInterface<TPayload>(builder);
+      }
+
+      public static SubscriptionBuilderInterface<TPayload> When<TPayload>(
+         this SubscriptionBuilderInterface<TPayload> builder,
+         Func<TPayload, bool> condition
+      ) {
+         builder
+            .Builder
+            .Conditions
+            .Add(new DelegateEventCondition<TPayload>(condition));
+
+         return builder;
       }
    }
 }

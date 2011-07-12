@@ -1,20 +1,33 @@
 ﻿namespace Inspiring.Mvvm.Common {
+   using System;
    using System.Collections.Generic;
+   using System.Diagnostics.Contracts;
+   using System.Linq;
 
    public sealed class EventAggregator : IEventSubscriptionRepository {
-      //public IEventSubscriptionRepository Subscriptions { get; }
 
+      private WeakCollection<IEventSubscriptionStore> _subscriptionStores =
+         new WeakCollection<IEventSubscriptionStore>();
 
-      internal void Publish<TPayload>(Event<TPayload> p, TPayload payload) {
-         throw new System.NotImplementedException();
+      public void Publish<TPayload>(IEvent<TPayload> @event, TPayload payload) {
+         Contract.Requires<ArgumentNullException>(@event != null);
+         Contract.Requires<ArgumentNullException>(payload != null);
+
+         @event.Publish(this, payload);
       }
 
-      //public void AddSubscriptionStore(IEnumerable<IEventSubscription> store) {
-      //   throw new System.NotImplementedException();
-      //}
+      void IEventSubscriptionRepository.AddSubscriptionStore(IEventSubscriptionStore store) {
+         _subscriptionStores.Add(store);
+      }
 
-      void IEventSubscriptionRepository.AddSubscriptionStore(IEnumerable<IEventSubscription> store) {
-         throw new System.NotImplementedException();
+      IEnumerable<IEventSubscription<TPayload>> IEventSubscriptionRepository.GetSubscriptions<TPayload>(
+         EventPublication<TPayload> publication
+      ) {
+         return _subscriptionStores
+            .SelectMany(x => x.Subscriptions)
+            .OfType<IEventSubscription<TPayload>>()
+            .Where(x => x.Matches(publication))
+            .ToArray();
       }
    }
 }
