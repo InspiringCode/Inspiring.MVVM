@@ -150,6 +150,7 @@
     <Compile Include="ApiTests\ViewModels\Undo\UndoTests.cs" />
     <Compile Include="ApiTests\ViewModels\UntypedPropertyAccessTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\ParentValidationTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\ValidationForNullableDecimalTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\ValidationResultCachingTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\ViewModelPropertyValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\CollectionRevalidationTests.cs" />
