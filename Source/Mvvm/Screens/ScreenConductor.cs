@@ -1,16 +1,17 @@
 ﻿namespace Inspiring.Mvvm.Screens {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using System.Linq;
 
    public class ScreenConductor : ScreenBase {
       private IScreenBase _activeScreen;
       private ScreenLifecycleCollection<IScreenBase> _screens;
+      private IList<IScreenBase> _activatedScreensHistory;
       private bool _isActivated;
 
       public ScreenConductor() {
          _screens = new ScreenLifecycleCollection<IScreenBase>(this);
+         _activatedScreensHistory = new List<IScreenBase>();
       }
 
       public IScreenBase ActiveScreen {
@@ -20,13 +21,18 @@
                if (_activeScreen != null && _isActivated) {
                   _activeScreen.Deactivate();
                }
-
+               
                _activeScreen = value;
 
                if (_activeScreen != null && _isActivated) {
                   _activeScreen.Activate();
                }
 
+               if (_activeScreen != null) {
+                  _activatedScreensHistory.Remove(_activeScreen);
+                  _activatedScreensHistory.Add(_activeScreen);
+               }
+               
                OnPropertyChanged(() => ActiveScreen);
             }
          }
@@ -75,8 +81,8 @@
       }
 
       public void ImmediateCloseScreen(IScreenBase screen) {
-         IScreenBase next = ChooseNextScreen(screen);
-         ActiveScreen = next;
+         _activatedScreensHistory.Remove(screen);
+         ActiveScreen = _activatedScreensHistory.LastOrDefault();
 
          // It is important to FIRST remove the screen and THEN call 'Close'. The
          // removal triggers a collection change which causes the view reprenstation
@@ -86,17 +92,6 @@
          _screens.Items.Remove(screen);
 
          screen.Close();
-      }
-
-      protected virtual IScreenBase ChooseNextScreen(IScreenBase screen) {
-         if (_screens.Items.Count == 1) {
-            return null;
-         }
-
-         int index = _screens.Items.IndexOf(screen);
-         Contract.Assert(index != -1);
-
-         return _screens.Items[(index + 1) % _screens.Items.Count];
       }
 
       protected override void OnActivate() {
