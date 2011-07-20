@@ -1,17 +1,52 @@
 ﻿namespace Inspiring.Mvvm.Screens {
    using System;
    using System.Collections.Generic;
+   using System.Diagnostics.Contracts;
    using System.Linq;
+   using Inspiring.Mvvm.Common;
+
+   public sealed class ScreenOpenedEventArgs : EventArgs {
+      internal ScreenOpenedEventArgs(
+         ScreenConductor conductor,
+         IScreenBase screen,
+         bool wasAlreadyOpen
+      ) {
+         Contract.Requires(conductor != null);
+         Contract.Requires(screen != null);
+
+         Conductor = conductor;
+         Screen = screen;
+         WasAlreadyOpen = wasAlreadyOpen;
+      }
+
+      public ScreenConductor Conductor { get; private set; }
+      public IScreenBase Screen { get; private set; }
+      public bool WasAlreadyOpen { get; private set; }
+   }
 
    public class ScreenConductor : ScreenBase {
+      /// <summary>
+      ///   An event that is raised whenever <see cref="OpenScreen{TScreen}"/> is called.
+      /// </summary>
+      /// <remarks>
+      ///   This event may for example be handled by a view to restore already opened
+      ///   MDI windows that are currently minimized.
+      /// </remarks>
+      public static readonly Event<ScreenOpenedEventArgs> ScreenOpenedEvent = new Event<ScreenOpenedEventArgs>();
+
+      private readonly ScreenLifecycleCollection<IScreenBase> _screens;
+      private readonly List<IScreenBase> _activatedScreensHistory;
+      private readonly EventAggregator _eventAggregator;
+
       private IScreenBase _activeScreen;
-      private ScreenLifecycleCollection<IScreenBase> _screens;
-      private IList<IScreenBase> _activatedScreensHistory;
       private bool _isActivated;
 
-      public ScreenConductor() {
+      public ScreenConductor(EventAggregator eventAggregator) {
+         Contract.Requires<ArgumentNullException>(eventAggregator != null);
+
          _screens = new ScreenLifecycleCollection<IScreenBase>(this);
          _activatedScreensHistory = new List<IScreenBase>();
+         _eventAggregator = eventAggregator;
       }
 
       public IScreenBase ActiveScreen {
@@ -21,7 +56,7 @@
                if (_activeScreen != null && _isActivated) {
                   _activeScreen.Deactivate();
                }
-               
+
                _activeScreen = value;
 
                if (_activeScreen != null && _isActivated) {
@@ -32,7 +67,7 @@
                   _activatedScreensHistory.Remove(_activeScreen);
                   _activatedScreensHistory.Add(_activeScreen);
                }
-               
+
                OnPropertyChanged(() => ActiveScreen);
             }
          }
@@ -64,7 +99,16 @@
                break;
          }
 
-         ActiveScreen = alreadyOpenScreen ?? _screens.AddNew(factory);
+         bool alreadyOpen = alreadyOpenScreen != null;
+
+         ActiveScreen = alreadyOpen ?
+            alreadyOpenScreen :
+            _screens.AddNew(factory);
+
+         _eventAggregator.Publish(
+            ScreenOpenedEvent,
+            new ScreenOpenedEventArgs(this, ActiveScreen, alreadyOpen)
+         );
       }
 
       public bool CloseScreen(IScreenBase screen) {

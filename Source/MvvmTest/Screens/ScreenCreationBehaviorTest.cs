@@ -5,12 +5,13 @@
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Moq;
+   using Inspiring.Mvvm.Common;
 
    [TestClass]
    public class ScreenCreationBehaviorTest : TestBase {
       [TestMethod]
       public void MultipleInstances() {
-         ScreenConductor c = new ScreenConductor();
+         ScreenConductor c = CreateConductor();
          c.OpenScreen(ScreenFactory.For<MultipleInstancesScreen>());
          c.OpenScreen(ScreenFactory.For<MultipleInstancesScreen>());
          Assert.AreEqual(2, c.Screens.Count());
@@ -18,7 +19,7 @@
 
       [TestMethod]
       public void SingleInstance() {
-         ScreenConductor c = new ScreenConductor();
+         ScreenConductor c = CreateConductor();
 
          var firstFactoryMock = new Mock<IScreenFactory<SingleInstanceScreen>>(MockBehavior.Strict);
          var secondFactoryMock = new Mock<IScreenFactory<SingleInstanceScreen>>(MockBehavior.Strict);
@@ -42,7 +43,7 @@
 
       [TestMethod]
       public void DefaultCreationBehavior() {
-         ScreenConductor c = new ScreenConductor();
+         ScreenConductor c = CreateConductor();
          c.OpenScreen(ScreenFactory.For<DefaultCreationBehaviorScreen>());
          c.OpenScreen(ScreenFactory.For<DefaultCreationBehaviorScreen>());
          Assert.AreEqual(2, c.Screens.Count());
@@ -50,7 +51,7 @@
 
       [TestMethod]
       public void OpenScreenUseScreenLocation_WhenNoMatchingScreenIsOpen_CreatesNewScreen() {
-         var conductor = new ScreenConductor();
+         var conductor = CreateConductor();
          var firstSubject = new BaseSubject { Value = "First Subject" };
          var differentSubject = new BaseSubject { Value = "Different Subject" };
 
@@ -79,7 +80,7 @@
 
       [TestMethod]
       public void OpenScreenUseScreenLocation_WhenMatchingScreenIsAlreadyOpen_ActivatesScreen() {
-         var conductor = new ScreenConductor();
+         var conductor = CreateConductor();
          var singleSubject = new BaseSubject { Value = "Single Subject" };
 
          conductor.OpenScreen(
@@ -102,7 +103,7 @@
 
       [TestMethod]
       public void OpenScreenUseScreenLocation_WhenScreenImplementsLocatableScreenForBaseClass_ActivatesScreen() {
-         var conductor = new ScreenConductor();
+         var conductor = CreateConductor();
          var singleSubject = new DerivedSubject { Value = "Single Subject" };
 
          conductor.OpenScreen(
@@ -129,6 +130,10 @@
             .OfType<LocatableScreen>()
             .Select(x => x.Subject)
             .ToArray();
+      }
+
+      private ScreenConductor CreateConductor() {
+         return new ScreenConductor(new EventAggregator());
       }
 
       [ScreenCreationBehavior(ScreenCreationBehavior.MultipleInstances)]
