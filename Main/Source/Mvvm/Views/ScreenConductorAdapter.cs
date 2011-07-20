@@ -33,7 +33,7 @@
 
          _screens.Screens.ForEach(AddScreen);
 
-         object view = ViewFor(_screens.ActiveScreen);
+         object view = GetViewForScreen(_screens.ActiveScreen);
          OnActiveViewChanged(view);
       }
 
@@ -44,12 +44,12 @@
       public object ActiveView {
          get { return _activeView; }
          set {
-            _screens.ActiveScreen = ScreenFor(value);
+            _screens.ActiveScreen = GetScreenForView(value);
          }
       }
 
       public bool CloseView(object view) {
-         IScreenBase screen = ScreenFor(view);
+         IScreenBase screen = GetScreenForView(view);
          return _screens.CloseScreen(screen);
       }
 
@@ -70,9 +70,19 @@
          return ViewFactory.CreateView(forScreen);
       }
 
+      protected object GetViewForScreen(IScreenBase screen) {
+         return screen != null ?
+            _screenViews[screen] :
+            null;
+      }
+
+      protected IScreenBase GetScreenForView(object view) {
+         return _screenViews.SingleOrDefault(x => x.Value == view).Key;
+      }
+
       private void HandlePropertyChanged(object sender, PropertyChangedEventArgs e) {
          if (e.PropertyName == ActiveScreenPropertyName) {
-            object view = ViewFor(_screens.ActiveScreen);
+            object view = GetViewForScreen(_screens.ActiveScreen);
             OnActiveViewChanged(view);
          }
       }
@@ -102,19 +112,9 @@
       }
 
       private void RemoveScreen(IScreenBase screen) {
-         object view = ViewFor(screen);
+         object view = GetViewForScreen(screen);
          _screenViews.Remove(screen);
          OnViewRemoved(view);
-      }
-
-      private object ViewFor(IScreenBase screen) {
-         return screen != null ?
-            _screenViews[screen] :
-            null;
-      }
-
-      private IScreenBase ScreenFor(object view) {
-         return _screenViews.SingleOrDefault(x => x.Value == view).Key;
       }
    }
 }
