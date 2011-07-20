@@ -1,9 +1,63 @@
-﻿using Inspiring.MvvmTest.ViewModels;
+﻿using Inspiring.Mvvm.Screens;
+using Inspiring.MvvmTest.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Inspiring.Mvvm.Common;
+using System;
 
 namespace Inspiring.MvvmTest.Screens {
    [TestClass]
    public class ScreenConductorTest : TestBase {
+      private ScreenConductor Conductor { get; set; }
+      private EventAggregator EventAggregator { get; set; }
+
+      [TestInitialize]
+      public void Setup() {
+         EventAggregator = new EventAggregator();
+         Conductor = new ScreenConductor(EventAggregator);
+      }
+
+      [TestMethod]
+      public void OpenScreen_WhenScreenIsNotAlreadyOpen_PublishesScreenOpenedEvent() {
+         var newScreen = new SingleInstanceScreen();
+
+         var eventArgs = ExpectScreenOpenedEvent(() => {
+            Conductor.OpenScreen(ScreenFactory.For(newScreen));
+         });
+
+         Assert.IsNotNull(eventArgs);
+         Assert.AreEqual(Conductor, eventArgs.Conductor);
+         Assert.AreEqual(newScreen, eventArgs.Screen);
+         Assert.IsFalse(eventArgs.WasAlreadyOpen);
+      }
+
+      [TestMethod]
+      public void OpenScreen_WhenScrenIsAlreadyOpen_PublishesScreenOpenedEvent() {
+         var alreadyOpenedScreen = new SingleInstanceScreen();
+         Conductor.OpenScreen(ScreenFactory.For(alreadyOpenedScreen));
+
+         var eventArgs = ExpectScreenOpenedEvent(() => {
+            Conductor.OpenScreen(ScreenFactory.For(alreadyOpenedScreen));
+         });
+
+         Assert.IsNotNull(eventArgs);
+         Assert.AreEqual(Conductor, eventArgs.Conductor);
+         Assert.AreEqual(alreadyOpenedScreen, eventArgs.Screen);
+         Assert.IsTrue(eventArgs.WasAlreadyOpen);
+      }
+
+      private ScreenOpenedEventArgs ExpectScreenOpenedEvent(Action triggerAction) {
+         ScreenOpenedEventArgs args = null;
+
+         var sm = new EventSubscriptionManager(EventAggregator, b => {
+            b.On(ScreenConductor.ScreenOpenedEvent).Execute(a => args = a);
+         });
+
+         triggerAction();
+
+         sm.RemoveAllSubscriptions();
+         return args;
+      }
+
       [TestMethod]
       public void TestMethod1() {
          //ScreenConductor cd = new ScreenConductor();
@@ -66,5 +120,8 @@ namespace Inspiring.MvvmTest.Screens {
       //   }
       //}
 
+      [ScreenCreationBehavior(ScreenCreationBehavior.SingleInstance)]
+      private class SingleInstanceScreen : ScreenBase {
+      }
    }
 }

@@ -3,6 +3,7 @@
    using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm;
+   using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.Screens;
    using Inspiring.Mvvm.Views;
    using Inspiring.MvvmTest.ViewModels;
@@ -32,7 +33,7 @@
       // [TestMethod] // TODO
       public void AddTwoScreens() {
          List<object> expectedViews = new List<object>();
-         ScreenConductor conductor = new ScreenConductor();
+         ScreenConductor conductor = CreateConductor();
          var adapterMock = new Mock<ScreenConductorAdapter>(conductor) { CallBase = true };
          var adapter = adapterMock.Object;
 
@@ -61,7 +62,7 @@
       // [TestMethod] // TODO
       public void InitializeWithTwoScreens() {
          List<object> expectedViews = new List<object> { _firstView, _secondView };
-         ScreenConductor conductor = new ScreenConductor();
+         ScreenConductor conductor = CreateConductor();
          conductor.OpenScreen(_firstFactory);
          conductor.OpenScreen(_secondFactory);
 
@@ -79,7 +80,7 @@
       // [TestMethod] // TODO
       public void RemoveTwoScreens() {
          List<object> expectedViews = new List<object> { _firstView, _secondView };
-         ScreenConductor conductor = new ScreenConductor();
+         ScreenConductor conductor = CreateConductor();
          conductor.OpenScreen(_firstFactory);
          conductor.OpenScreen(_secondFactory);
 
@@ -107,7 +108,7 @@
       // [TestMethod] // TODO
       public void SetActiveView() {
          List<object> expectedViews = new List<object> { _firstView, _secondView };
-         ScreenConductor conductor = new ScreenConductor();
+         ScreenConductor conductor = CreateConductor();
          conductor.OpenScreen(_firstFactory);
          conductor.OpenScreen(_secondFactory);
 
@@ -125,7 +126,7 @@
       // [TestMethod] // TODO
       public void CloseScreen() {
          List<object> expectedViews = new List<object> { _firstView, _secondView };
-         ScreenConductor conductor = new ScreenConductor();
+         ScreenConductor conductor = CreateConductor();
          conductor.OpenScreen(_firstFactory);
          conductor.OpenScreen(_secondFactory);
 
@@ -151,6 +152,10 @@
       [TestCleanup]
       public void Cleanup() {
          Bootstrapper.Initialize(null); // HACK
+      }
+
+      private ScreenConductor CreateConductor() {
+         return new ScreenConductor(new EventAggregator());
       }
    }
 }

@@ -8,18 +8,18 @@
       public void Publish_OfAnEvent_ExecutesCorrectHandlers() {
          Assert.Inconclusive("Still TODO: Events");
 
-         var mgr = CreateManager();
+         var agg = CreateAggregator();
 
          var firstEventHandler = new TestHandler();
          var secondEventHandler = new TestHandler();
 
-         var sm = new EventSubscriptionManager(mgr, b => {
+         var sm = new EventSubscriptionManager(agg, b => {
             b.On(TestEvents.FirstEvent).Execute(firstEventHandler.HandleEvent);
             b.On(TestEvents.SecondEvent).Execute(secondEventHandler.HandleEvent);
          });
 
          var expectedPayload = new TestPayload();
-         mgr.Publish(TestEvents.FirstEvent, expectedPayload);
+         agg.Publish(TestEvents.FirstEvent, expectedPayload);
 
          Assert.AreEqual(1, firstEventHandler.Invocations);
          Assert.AreEqual(0, secondEventHandler.Invocations);
@@ -27,7 +27,7 @@
          Assert.AreEqual(expectedPayload, firstEventHandler.LastPaylaod);
       }
 
-      private EventAggregator CreateManager() {
+      private EventAggregator CreateAggregator() {
          return new EventAggregator();
       }
 
