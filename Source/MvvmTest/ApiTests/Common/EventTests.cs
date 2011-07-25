@@ -73,6 +73,9 @@
 
          var sm1 = new EventSubscriptionManager(agg, b => {
             b.On(TestEvents.FirstEvent).Execute(firstHandler.HandleEvent, ExecutionOrder.First);
+         });
+
+         sm1.Subscribe(b => {
             b.On(TestEvents.FirstEvent).Execute(defaultHandler.HandleEvent, ExecutionOrder.Default);
             b.On(TestEvents.FirstEvent).Execute(lastHandler.HandleEvent, ExecutionOrder.Last);
          });
