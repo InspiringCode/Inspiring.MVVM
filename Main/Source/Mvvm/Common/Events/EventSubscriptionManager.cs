@@ -6,16 +6,26 @@
    public sealed class EventSubscriptionManager : IEventSubscriptionStore {
       private readonly List<IEventSubscription> _subscriptions;
 
-      public EventSubscriptionManager(
-         EventAggregator aggregator,
-         Action<SubscriptionBuilderInterface> subscriptionAction
-      ) {
-         _subscriptions = new List<IEventSubscription>();
+      public EventSubscriptionManager(EventAggregator aggregator) {
+         Contract.Requires<ArgumentNullException>(aggregator != null);
 
-         subscriptionAction(new SubscriptionBuilderInterface(_subscriptions));
+         _subscriptions = new List<IEventSubscription>();
 
          IEventSubscriptionRepository repository = aggregator;
          repository.AddSubscriptionStore(this);
+      }
+
+      public EventSubscriptionManager(
+         EventAggregator aggregator,
+         Action<SubscriptionBuilderInterface> subscriptionAction
+      )
+         : this(aggregator) {
+
+         Subscribe(subscriptionAction);
+      }
+
+      public void Subscribe(Action<SubscriptionBuilderInterface> subscriptionAction) {
+         subscriptionAction(new SubscriptionBuilderInterface(_subscriptions));
       }
 
       public void RemoveAllSubscriptions() {
