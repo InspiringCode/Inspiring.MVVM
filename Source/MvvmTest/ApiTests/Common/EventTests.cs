@@ -13,7 +13,8 @@
          var firstEventHandler = new TestHandler();
          var secondEventHandler = new TestHandler();
 
-         var sm = new EventSubscriptionManager(agg, b => {
+         var sm = new EventSubscriptionManager(agg);
+         sm.Subscribe(b => {
             b.On(TestEvents.FirstEvent).Execute(firstEventHandler.HandleEvent);
             b.On(TestEvents.SecondEvent).Execute(secondEventHandler.HandleEvent);
          });
@@ -90,6 +91,55 @@
 
          GC.KeepAlive(sm1);
          GC.KeepAlive(sm2);
+      }
+
+      [TestMethod]
+      public void RemoveAllSubscriptions_HandlerAreNotExecutedAnymore() {
+         var agg = CreateAggregator();
+
+         var firstEventHandler = new TestHandler();
+         var secondEventHandler = new TestHandler();
+
+         var sm = new EventSubscriptionManager(agg, b => {
+            b.On(TestEvents.FirstEvent).Execute(firstEventHandler.HandleEvent);
+            b.On(TestEvents.SecondEvent).Execute(secondEventHandler.HandleEvent);
+         });
+
+         sm.RemoveAllSubscriptions();
+
+         agg.Publish(TestEvents.FirstEvent, new TestPayload());
+         agg.Publish(TestEvents.SecondEvent, new TestPayload());
+
+         Assert.AreEqual(0, firstEventHandler.Invocations);
+         Assert.AreEqual(0, secondEventHandler.Invocations);
+
+         GC.KeepAlive(sm);
+      }
+
+      [TestMethod]
+      public void RemoveSubscriptionTo_OnlyHandlerOfSpecifiedEventIsNotExecutedAnymore() {
+         var agg = CreateAggregator();
+
+         var firstEventHandler = new TestHandler();
+         var secondEventHandler1 = new TestHandler();
+         var secondEventHandler2 = new TestHandler();
+
+         var sm = new EventSubscriptionManager(agg, b => {
+            b.On(TestEvents.FirstEvent).Execute(firstEventHandler.HandleEvent);
+            b.On(TestEvents.SecondEvent).Execute(secondEventHandler1.HandleEvent);
+            b.On(TestEvents.SecondEvent).Execute(secondEventHandler2.HandleEvent);
+         });
+
+         sm.RemoveSubscriptionsTo(TestEvents.SecondEvent);
+
+         agg.Publish(TestEvents.FirstEvent, new TestPayload());
+         agg.Publish(TestEvents.SecondEvent, new TestPayload());
+
+         Assert.AreEqual(1, firstEventHandler.Invocations);
+         Assert.AreEqual(0, secondEventHandler1.Invocations);
+         Assert.AreEqual(0, secondEventHandler2.Invocations);
+
+         GC.KeepAlive(sm);
       }
 
       private EventAggregator CreateAggregator() {
