@@ -340,7 +340,9 @@
          where TValue : struct, IComparable {
 
          builder.Custom((args) => {
-            if (min.CompareTo(args.Value) == 1) {
+            if (args.Value.HasValue &&
+                min.CompareTo(args.Value) == 1) {
+
                if (String.IsNullOrEmpty(message)) {
                   message = Localized.ValidationMin.FormatWith(min);
                }
@@ -363,7 +365,9 @@
          builder.Custom((args) => {
             var minValue = minValueSelector(args.Owner);
 
-            if (minValue.CompareTo(args.Value) == 1) {
+            if (args.Value.HasValue &&
+                minValue.CompareTo(args.Value) == 1) {
+
                if (String.IsNullOrEmpty(message)) {
                   message = Localized.ValidationMin.FormatWith(minValue);
                }
@@ -428,7 +432,9 @@
          where TValue : struct, IComparable {
 
          builder.Custom((args) => {
-            if (max.CompareTo(args.Value) < 0) {
+            if (args.Value.HasValue &&
+                max.CompareTo(args.Value) < 0) {
+
                if (String.IsNullOrEmpty(message)) {
                   message = Localized.ValidationMax.FormatWith(max);
                }
@@ -451,7 +457,9 @@
          builder.Custom((args) => {
             var maxValue = maxValueSelector(args.Owner);
 
-            if (maxValue.CompareTo(args.Value) < 0) {
+            if (args.Value.HasValue &&
+                maxValue.CompareTo(args.Value) < 0) {
+
                if (String.IsNullOrEmpty(message)) {
                   message = Localized.ValidationMax.FormatWith(maxValue);
                }
