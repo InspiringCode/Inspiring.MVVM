@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.MvvmTest.ViewModels.IntegrationTests {
    using System;
    using System.Collections.Generic;
+   using System.Globalization;
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
@@ -231,6 +232,256 @@
          ValidationAssert.AreEqual(expectedResult, vm.ValidationResult);
       }
 
+      [TestMethod]
+      public void ValueInRange_ForIntergerProperty_ValidatesPropertyAccordingly() {
+         var errorMessage = "Value not in range";
+         int min = 1;
+         int max = 10;
+         int valueOutOfRange = max + 1;
+
+         var vm = CreateParent(b => b
+            .Check(x => x.IntegerProperty)
+               .ValueInRange(min, max, errorMessage)
+         );
+
+         vm.SetValue(x => x.IntegerProperty, 1);
+
+         ValidationAssert.IsValid(vm);
+
+         vm.SetValue(x => x.IntegerProperty, valueOutOfRange);
+
+         var expectedResult = CreateValidationResult(
+            Error(errorMessage).For(vm, x => x.IntegerProperty)
+         );
+
+         ValidationAssert.AreEqual(expectedResult, vm.ValidationResult);
+      }
+
+      [TestMethod]
+      public void ValueInRange_ForNullableIntergerProperty_ValidatesPropertyAccordingly() {
+         var errorMessage = "Value not in range";
+         int min = 1;
+         int max = 10;
+         int valueOutOfRange = max + 1;
+
+         var vm = CreateParent(b => b
+            .Check(x => x.NullableIntegerProperty)
+               .ValueInRange(min, max, errorMessage)
+         );
+
+         vm.SetValue(x => x.NullableIntegerProperty, null);
+
+         ValidationAssert.IsValid(vm);
+
+         vm.SetValue(x => x.NullableIntegerProperty, valueOutOfRange);
+
+         var expectedResult = CreateValidationResult(
+            Error(errorMessage).For(vm, x => x.NullableIntegerProperty)
+         );
+
+         ValidationAssert.AreEqual(expectedResult, vm.ValidationResult);
+      }
+
+      [TestMethod]
+      public void Min_ForIntegerProperty_ValidatesPropertyAccordingly() {
+         var errorMessage = "Value below min";
+         int min = 10;
+         int belowMin = min - 1;
+
+         var vm = CreateParent(b => b
+            .Check(x => x.IntegerProperty)
+               .Min(min, errorMessage)
+         );
+
+         vm.SetValue(x => x.IntegerProperty, min);
+
+         ValidationAssert.IsValid(vm);
+
+         vm.SetValue(x => x.IntegerProperty, belowMin);
+
+         var expectedResult = CreateValidationResult(
+            Error(errorMessage).For(vm, x => x.IntegerProperty)
+         );
+
+         ValidationAssert.AreEqual(expectedResult, vm.ValidationResult);
+      }
+
+      [TestMethod]
+      public void Min_ForNullableIntegerProperty_ValidatesPropertyAccordingly() {
+         var errorMessage = "Value below min";
+         int min = 10;
+         int belowMin = min - 1;
+
+         var vm = CreateParent(b => b
+            .Check(x => x.NullableIntegerProperty)
+               .Min(min, errorMessage)
+         );
+
+         vm.SetValue(x => x.NullableIntegerProperty, min);
+
+         ValidationAssert.IsValid(vm);
+
+         vm.SetValue(x => x.NullableIntegerProperty, belowMin);
+
+         var expectedResult = CreateValidationResult(
+            Error(errorMessage).For(vm, x => x.NullableIntegerProperty)
+         );
+
+         ValidationAssert.AreEqual(expectedResult, vm.ValidationResult);
+      }
+
+      [TestMethod]
+      public void Min_ForIntegerPropertyWithMinValueSelector_ValidatesPropertyAccordingly() {
+         var errorMessage = "Value below min";
+
+         var vm = CreateParent(b => b
+            .Check(x => x.IntegerProperty)
+               .Min(x => x.Limit, errorMessage)
+         );
+         vm.Limit = 3;
+         vm.SetValue(x => x.IntegerProperty, vm.Limit);
+
+         ValidationAssert.IsValid(vm);
+
+         vm.SetValue(x => x.IntegerProperty, vm.Limit - 1);
+
+         var expectedResult = CreateValidationResult(
+            Error(errorMessage).For(vm, x => x.IntegerProperty)
+         );
+
+         ValidationAssert.AreEqual(expectedResult, vm.ValidationResult);
+      }
+
+      [TestMethod]
+      public void Min_ForNullableIntegerPropertyWithMinValueSelector_ValidatesPropertyAccordingly() {
+         var errorMessage = "Value below min";
+
+         var vm = CreateParent(b => b
+            .Check(x => x.NullableIntegerProperty)
+               .Min(x => x.Limit, errorMessage)
+         );
+         vm.Limit = 3;
+         vm.SetValue(x => x.NullableIntegerProperty, vm.Limit);
+
+         ValidationAssert.IsValid(vm);
+
+         vm.SetValue(x => x.NullableIntegerProperty, vm.Limit - 1);
+
+         var expectedResult = CreateValidationResult(
+            Error(errorMessage).For(vm, x => x.NullableIntegerProperty)
+         );
+
+         ValidationAssert.AreEqual(expectedResult, vm.ValidationResult);
+      }
+
+      [TestMethod]
+      public void Max_ForIntegerProperty_ValidatesPropertyAccordingly() {
+         var errorMessage = "Value above max";
+         int max = 10;
+         int aboveMax = max + 1;
+
+         var vm = CreateParent(b => b
+            .Check(x => x.IntegerProperty)
+               .Max(max, errorMessage)
+         );
+
+         vm.SetValue(x => x.IntegerProperty, max);
+
+         ValidationAssert.IsValid(vm);
+
+         vm.SetValue(x => x.IntegerProperty, aboveMax);
+
+         var expectedResult = CreateValidationResult(
+            Error(errorMessage).For(vm, x => x.IntegerProperty)
+         );
+
+         ValidationAssert.AreEqual(expectedResult, vm.ValidationResult);
+      }
+
+      [TestMethod]
+      public void Max_ForNullableIntegerProperty_ValidatesPropertyAccordingly() {
+         var errorMessage = "Value above max";
+         int max = 10;
+         int aboveMax = max + 1;
+
+         var vm = CreateParent(b => b
+            .Check(x => x.NullableIntegerProperty)
+               .Max(max, errorMessage)
+         );
+
+         vm.SetValue(x => x.NullableIntegerProperty, max);
+
+         ValidationAssert.IsValid(vm);
+
+         vm.SetValue(x => x.NullableIntegerProperty, aboveMax);
+
+         var expectedResult = CreateValidationResult(
+            Error(errorMessage).For(vm, x => x.NullableIntegerProperty)
+         );
+
+         ValidationAssert.AreEqual(expectedResult, vm.ValidationResult);
+      }
+
+      [TestMethod]
+      public void Max_ForIntegerPropertyWithMaxValueSelector_ValidatesPropertyAccordingly() {
+         var errorMessage = "Value above max";
+
+         var vm = CreateParent(b => b
+            .Check(x => x.IntegerProperty)
+               .Max(x => x.Limit, errorMessage)
+         );
+         vm.Limit = 3;
+         vm.SetValue(x => x.IntegerProperty, vm.Limit);
+
+         ValidationAssert.IsValid(vm);
+
+         vm.SetValue(x => x.IntegerProperty, vm.Limit + 1);
+
+         var expectedResult = CreateValidationResult(
+            Error(errorMessage).For(vm, x => x.IntegerProperty)
+         );
+
+         ValidationAssert.AreEqual(expectedResult, vm.ValidationResult);
+      }
+
+      [TestMethod]
+      public void Max_ForNullableIntegerPropertyWithMaxValueSelector_ValidatesPropertyAccordingly() {
+         var errorMessage = "Value above max";
+
+         var vm = CreateParent(b => b
+            .Check(x => x.NullableIntegerProperty)
+               .Max(x => x.Limit, errorMessage)
+         );
+         vm.Limit = 3;
+         vm.SetValue(x => x.NullableIntegerProperty, vm.Limit);
+
+         ValidationAssert.IsValid(vm);
+
+         vm.SetValue(x => x.NullableIntegerProperty, vm.Limit + 1);
+
+         var expectedResult = CreateValidationResult(
+            Error(errorMessage).For(vm, x => x.NullableIntegerProperty)
+         );
+
+         ValidationAssert.AreEqual(expectedResult, vm.ValidationResult);
+      }
+
+      [TestMethod]
+      public void ValueInRange_ErrorMessageLocalization() {
+         CultureInfo ci = new CultureInfo("de-AT");
+         System.Threading.Thread.CurrentThread.CurrentCulture = ci;
+         System.Threading.Thread.CurrentThread.CurrentUICulture = ci;
+
+         int max = 10;
+
+         var vm = CreateParent(b => b
+            .Check(x => x.IntegerProperty)
+               .Max(max)
+         );
+
+         vm.SetValue(x => x.IntegerProperty, max + 1);
+      }
+
       private static ParentVM CreateParent(
          Action<RootValidatorBuilder<ParentVM, ParentVM, ParentVMDescriptor>> validatorConfigurationAction,
          ChildVMDescriptor childDescriptor = null
@@ -240,6 +491,8 @@
            .For<ParentVM>()
            .WithProperties((d, c) => {
               var v = c.GetPropertyBuilder();
+              d.IntegerProperty = v.Property.Of<int>();
+              d.NullableIntegerProperty = v.Property.Of<Nullable<int>>();
               d.Children = v.Collection.Of<ChildVM>(childDescriptor ?? ChildVM.ClassDescriptor);
            })
            .WithValidators(validatorConfigurationAction)
@@ -281,6 +534,8 @@
             get { return GetValue(Descriptor.Children); }
             set { SetValue(Descriptor.Children, value); }
          }
+
+         internal int Limit { get; set; }
       }
 
       private class ChildVM : TestViewModel<ChildVMDescriptor> {
@@ -311,6 +566,8 @@
 
       private class ParentVMDescriptor : VMDescriptor {
          public IVMPropertyDescriptor<IVMCollection<ChildVM>> Children { get; set; }
+         public IVMPropertyDescriptor<int> IntegerProperty { get; set; }
+         public IVMPropertyDescriptor<Nullable<int>> NullableIntegerProperty { get; set; }
       }
 
       private class ChildVMDescriptor : VMDescriptor {

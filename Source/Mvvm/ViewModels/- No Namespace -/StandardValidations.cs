@@ -3,6 +3,7 @@
    using System.Collections.Generic;
    using System.Linq;
    using System.Text.RegularExpressions;
+   using Inspiring.Mvvm.Resources;
    using Inspiring.Mvvm.ViewModels.Core;
 
    public static class StandardValidations {
@@ -233,6 +234,229 @@
          builder.Custom((args) => {
             if (!(String.IsNullOrEmpty(args.Value) || regex.IsMatch(args.Value))) {
                args.AddError(errorMessage, details);
+            }
+         });
+      }
+
+      public static void ValueInRange<TOwnerVM, TTargetVM, TValue>(
+         this PropertyValidatorBuilder<TOwnerVM, TTargetVM, TValue> builder,
+         TValue min,
+         TValue max,
+         string message = null,
+         object details = null
+      )
+         where TOwnerVM : IViewModel
+         where TTargetVM : IViewModel
+         where TValue : IComparable {
+         builder.Custom((args) => {
+            if ((min.CompareTo(args.Value) == 1) ||
+                (max.CompareTo(args.Value) < 0)
+            ) {
+               if (String.IsNullOrEmpty(message)) {
+                  message = Localized.ValidationValueInRange.FormatWith(min, max);
+               }
+
+               args.AddError(message, details);
+            }
+         });
+      }
+
+      public static void ValueInRange<TOwnerVM, TTargetVM, TValue>(
+         this PropertyValidatorBuilder<TOwnerVM, TTargetVM, Nullable<TValue>> builder,
+         TValue min,
+         TValue max,
+         string message = null,
+         object details = null
+      )
+         where TOwnerVM : IViewModel
+         where TTargetVM : IViewModel
+         where TValue : struct, IComparable {
+         builder.Custom((args) => {
+            if (args.Value.HasValue &&
+                (min.CompareTo(args.Value) == 1 ||
+                 max.CompareTo(args.Value) < 0)
+            ) {
+               if (String.IsNullOrEmpty(message)) {
+                  message = Localized.ValidationValueInRange.FormatWith(min, max);
+               }
+
+               args.AddError(message, details);
+            }
+         });
+      }
+
+      public static void Min<TOwnerVM, TTargetVM, TValue>(
+         this PropertyValidatorBuilder<TOwnerVM, TTargetVM, TValue> builder,
+         TValue min,
+         string message = null,
+         object details = null
+      )
+         where TOwnerVM : IViewModel
+         where TTargetVM : IViewModel
+         where TValue : IComparable {
+
+         builder.Custom((args) => {
+            if (min.CompareTo(args.Value) == 1) {
+               if (String.IsNullOrEmpty(message)) {
+                  message = Localized.ValidationMin.FormatWith(min);
+               }
+
+               args.AddError(message, details);
+            }
+         });
+      }
+
+      public static void Min<TOwnerVM, TTargetVM, TValue>(
+         this PropertyValidatorBuilder<TOwnerVM, TTargetVM, TValue> builder,
+         Func<TOwnerVM, TValue> minValueSelector,
+         string message = null,
+         object details = null
+      )
+         where TOwnerVM : IViewModel
+         where TTargetVM : IViewModel
+         where TValue : IComparable {
+
+         builder.Custom((args) => {
+            var minValue = minValueSelector(args.Owner);
+
+            if (minValue.CompareTo(args.Value) == 1) {
+               if (String.IsNullOrEmpty(message)) {
+                  message = Localized.ValidationMin.FormatWith(minValue);
+               }
+
+               args.AddError(message, details);
+            }
+         });
+      }
+
+      public static void Min<TOwnerVM, TTargetVM, TValue>(
+         this PropertyValidatorBuilder<TOwnerVM, TTargetVM, Nullable<TValue>> builder,
+         TValue min,
+         string message = null,
+         object details = null
+      )
+         where TOwnerVM : IViewModel
+         where TTargetVM : IViewModel
+         where TValue : struct, IComparable {
+
+         builder.Custom((args) => {
+            if (min.CompareTo(args.Value) == 1) {
+               if (String.IsNullOrEmpty(message)) {
+                  message = Localized.ValidationMin.FormatWith(min);
+               }
+
+               args.AddError(message, details);
+            }
+         });
+      }
+
+      public static void Min<TOwnerVM, TTargetVM, TValue>(
+         this PropertyValidatorBuilder<TOwnerVM, TTargetVM, Nullable<TValue>> builder,
+         Func<TOwnerVM, TValue> minValueSelector,
+         string message = null,
+         object details = null
+      )
+         where TOwnerVM : IViewModel
+         where TTargetVM : IViewModel
+         where TValue : struct, IComparable {
+
+         builder.Custom((args) => {
+            var minValue = minValueSelector(args.Owner);
+
+            if (minValue.CompareTo(args.Value) == 1) {
+               if (String.IsNullOrEmpty(message)) {
+                  message = Localized.ValidationMin.FormatWith(minValue);
+               }
+
+               args.AddError(message, details);
+            }
+         });
+      }
+
+      public static void Max<TOwnerVM, TTargetVM, TValue>(
+         this PropertyValidatorBuilder<TOwnerVM, TTargetVM, TValue> builder,
+         TValue max,
+         string message = null,
+         object details = null
+      )
+         where TOwnerVM : IViewModel
+         where TTargetVM : IViewModel
+         where TValue : IComparable {
+
+         builder.Custom((args) => {
+            if (max.CompareTo(args.Value) < 0) {
+               if (String.IsNullOrEmpty(message)) {
+                  message = Localized.ValidationMax.FormatWith(max);
+               }
+
+               args.AddError(message, details);
+            }
+         });
+      }
+
+      public static void Max<TOwnerVM, TTargetVM, TValue>(
+         this PropertyValidatorBuilder<TOwnerVM, TTargetVM, TValue> builder,
+         Func<TOwnerVM, TValue> maxValueSelector,
+         string message = null,
+         object details = null
+      )
+         where TOwnerVM : IViewModel
+         where TTargetVM : IViewModel
+         where TValue : IComparable {
+
+         builder.Custom((args) => {
+            var maxValue = maxValueSelector(args.Owner);
+
+            if (maxValue.CompareTo(args.Value) < 0) {
+               if (String.IsNullOrEmpty(message)) {
+                  message = Localized.ValidationMax.FormatWith(maxValue);
+               }
+
+               args.AddError(message, details);
+            }
+         });
+      }
+
+      public static void Max<TOwnerVM, TTargetVM, TValue>(
+         this PropertyValidatorBuilder<TOwnerVM, TTargetVM, Nullable<TValue>> builder,
+         TValue max,
+         string message = null,
+         object details = null
+      )
+         where TOwnerVM : IViewModel
+         where TTargetVM : IViewModel
+         where TValue : struct, IComparable {
+
+         builder.Custom((args) => {
+            if (max.CompareTo(args.Value) < 0) {
+               if (String.IsNullOrEmpty(message)) {
+                  message = Localized.ValidationMax.FormatWith(max);
+               }
+
+               args.AddError(message, details);
+            }
+         });
+      }
+
+      public static void Max<TOwnerVM, TTargetVM, TValue>(
+         this PropertyValidatorBuilder<TOwnerVM, TTargetVM, Nullable<TValue>> builder,
+         Func<TOwnerVM, TValue> maxValueSelector,
+         string message = null,
+         object details = null
+      )
+         where TOwnerVM : IViewModel
+         where TTargetVM : IViewModel
+         where TValue : struct, IComparable {
+
+         builder.Custom((args) => {
+            var maxValue = maxValueSelector(args.Owner);
+
+            if (maxValue.CompareTo(args.Value) < 0) {
+               if (String.IsNullOrEmpty(message)) {
+                  message = Localized.ValidationMax.FormatWith(maxValue);
+               }
+
+               args.AddError(message, details);
             }
          });
       }
