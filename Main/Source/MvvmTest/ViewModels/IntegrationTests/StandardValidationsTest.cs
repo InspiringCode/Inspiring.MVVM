@@ -317,6 +317,10 @@
                .Min(min, errorMessage)
          );
 
+         vm.SetValue(x => x.NullableIntegerProperty, null);
+
+         ValidationAssert.IsValid(vm);
+
          vm.SetValue(x => x.NullableIntegerProperty, min);
 
          ValidationAssert.IsValid(vm);
@@ -361,6 +365,11 @@
                .Min(x => x.Limit, errorMessage)
          );
          vm.Limit = 3;
+
+         vm.SetValue(x => x.NullableIntegerProperty, null);
+
+         ValidationAssert.IsValid(vm);
+
          vm.SetValue(x => x.NullableIntegerProperty, vm.Limit);
 
          ValidationAssert.IsValid(vm);
@@ -409,6 +418,10 @@
                .Max(max, errorMessage)
          );
 
+         vm.SetValue(x => x.NullableIntegerProperty, null);
+
+         ValidationAssert.IsValid(vm);
+
          vm.SetValue(x => x.NullableIntegerProperty, max);
 
          ValidationAssert.IsValid(vm);
@@ -453,6 +466,11 @@
                .Max(x => x.Limit, errorMessage)
          );
          vm.Limit = 3;
+
+         vm.SetValue(x => x.NullableIntegerProperty, null);
+
+         ValidationAssert.IsValid(vm);
+
          vm.SetValue(x => x.NullableIntegerProperty, vm.Limit);
 
          ValidationAssert.IsValid(vm);
