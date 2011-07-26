@@ -128,6 +128,11 @@
     <Compile Include="MvvmApplication.cs" />
     <Compile Include="Common\NotifyObject.cs" />
     <Compile Include="IServiceLocator.cs" />
+    <Compile Include="Resources\Localized.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Localized.resx</DependentUpon>
+    </Compile>
     <Compile Include="Screens\DelegateCommand.cs" />
     <Compile Include="Screens\DialogLifecycle.cs" />
     <Compile Include="Screens\IDialogService.cs" />
@@ -432,6 +437,11 @@
     <EmbeddedResource Include="ExceptionTexts.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ExceptionTexts.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Localized.de.resx" />
+    <EmbeddedResource Include="Resources\Localized.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Localized.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="ViewModels\EViewModels.resx">
       <Generator>ResXFileCodeGenerator</Generator>
