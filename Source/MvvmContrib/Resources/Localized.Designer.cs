@@ -61,29 +61,38 @@ namespace Inspiring.Mvvm.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The value must be less than {0}..
+        ///   Looks up a localized string similar to Validation errors:.
         /// </summary>
-        internal static string ValidationMax {
+        internal static string MultiSelectionCompositeValidationError {
             get {
-                return ResourceManager.GetString("ValidationMax", resourceCulture);
+                return ResourceManager.GetString("MultiSelectionCompositeValidationError", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The value must be  greater than {0}..
+        ///   Looks up a localized string similar to   {0}: {1}.
         /// </summary>
-        internal static string ValidationMin {
+        internal static string MultiSelectionCompositeValidationErrorPropertyLine {
             get {
-                return ResourceManager.GetString("ValidationMin", resourceCulture);
+                return ResourceManager.GetString("MultiSelectionCompositeValidationErrorPropertyLine", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The value must be from {0} to {1}..
+        ///   Looks up a localized string similar to  .
         /// </summary>
-        internal static string ValidationValueInRange {
+        internal static string MultiSelectionCompositeValidationErrorSeparator {
             get {
-                return ResourceManager.GetString("ValidationValueInRange", resourceCulture);
+                return ResourceManager.GetString("MultiSelectionCompositeValidationErrorSeparator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to   {0}.
+        /// </summary>
+        internal static string MultiSelectionCompositeValidationErrorViewModelLine {
+            get {
+                return ResourceManager.GetString("MultiSelectionCompositeValidationErrorViewModelLine", resourceCulture);
             }
         }
     }

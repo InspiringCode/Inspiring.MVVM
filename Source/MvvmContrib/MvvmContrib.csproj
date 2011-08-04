@@ -108,6 +108,11 @@
     </Compile>
     <Compile Include="Extensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Localized.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Localized.resx</DependentUpon>
+    </Compile>
     <Compile Include="Screens\ApplicationCommandManager.cs" />
     <Compile Include="Screens\CommandProxy.cs" />
     <Compile Include="Testing\MessageBoxResponderSetup.cs" />
@@ -151,6 +156,11 @@
     <EmbeddedResource Include="ExceptionTexts.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ExceptionTexts.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Localized.de.resx" />
+    <EmbeddedResource Include="Resources\Localized.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Localized.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

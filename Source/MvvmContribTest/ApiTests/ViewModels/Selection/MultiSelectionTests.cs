@@ -5,6 +5,7 @@
    using System.ComponentModel;
    using System.Linq;
    using Inspiring.Mvvm;
+   using Inspiring.Mvvm.Resources;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.MvvmTest.ViewModels;
@@ -409,6 +410,54 @@
          );
       }
 
+      [TestMethod]
+      public void DataErrorInfoForSelectedItems_ReturnsAggregatedErrorMessages() {
+         string itemPropertyError = "Item Property error.";
+         string itemViewModelError = "Item VM error.";
+         string viewModelError = "Selection VM error.";
+
+         Group firstGroup = new Group("First group");
+         Group secondGroup = new Group("Second group");
+
+         var vm = CreateUserVM(
+            allGroups: new[] { firstGroup, secondGroup },
+            validatorBuilder: b => {
+               b.ValidateDescendant(x => x.Groups)
+                  .ValidateDescendant(x => x.AllItems)
+                  .ValidateDescendant(x => x.VM)
+                  .Check(x => x.Name)
+                  .Custom(args => args.AddError(itemPropertyError));
+
+               b.ValidateDescendant(x => x.Groups)
+                  .ValidateDescendant(x => x.AllItems)
+                  .ValidateDescendant(x => x.VM)
+                  .CheckViewModel(args => args.AddError(itemViewModelError));
+
+               b.ValidateDescendant(x => x.Groups)
+                  .CheckViewModel(args => args.AddError(viewModelError));
+            }
+         );
+
+         vm.Revalidate(ValidationScope.SelfAndAllDescendants);
+
+         IDataErrorInfo errorInfo = vm.Groups;
+         string actualMessage = errorInfo["SelectedItems"];
+
+         string expectedMessage =
+            Localized.MultiSelectionCompositeValidationError + Environment.NewLine +
+            Localized.MultiSelectionCompositeValidationErrorPropertyLine.FormatWith(
+               firstGroup.Name,
+               itemPropertyError + Localized.MultiSelectionCompositeValidationErrorSeparator + itemViewModelError
+            ) + Environment.NewLine +
+            Localized.MultiSelectionCompositeValidationErrorPropertyLine.FormatWith(
+               secondGroup.Name,
+               itemPropertyError + Localized.MultiSelectionCompositeValidationErrorSeparator + itemViewModelError
+            ) + Environment.NewLine +
+            Localized.MultiSelectionCompositeValidationErrorViewModelLine.FormatWith(viewModelError);
+
+         Assert.AreEqual(expectedMessage, actualMessage);
+      }
+
       /// <summary>
       ///   Asserts that the source groups of the 'AllItems' property of the
       ///   selection VM are equal to the given source items.
@@ -450,10 +499,11 @@
          selection.SetDisplayValue(selectionDescriptor.SelectedItems, selectedItems);
       }
 
-      private UserVM CreateUserVMWithItems() {
+      private UserVM CreateUserVMWithItems(Action<RootValidatorBuilder<UserVM, UserVM, UserVMDescriptor>> validatorBuilder = null) {
          return CreateUserVM(
             allGroups: new[] { Group1, Group2, Group3, InactiveGroup },
-            selectedGroups: new[] { Group1, Group2 }
+            selectedGroups: new[] { Group1, Group2 },
+            validatorBuilder: validatorBuilder
          );
       }
 
@@ -463,6 +513,7 @@
          List<Group> allGroupsList = null,
          Func<User, IEnumerable<Group>> allGroupsSelector = null,
          Func<User, ICollection<Group>> selectedGroupsSelector = null,
+         Action<RootValidatorBuilder<UserVM, UserVM, UserVMDescriptor>> validatorBuilder = null,
          params Group[] selectedGroups
       ) {
          if (allGroups != null && allGroupsSelector != null) {
@@ -471,7 +522,7 @@
 
          var sourceUser = new User(selectedGroups);
 
-         UserVMDescriptor descriptor = VMDescriptorBuilder
+         var descriptorBuilder = VMDescriptorBuilder
             .OfType<UserVMDescriptor>()
             .For<UserVM>()
             .WithProperties((d, c) => {
@@ -501,8 +552,13 @@
 
                d.Name = u.Property.MapsTo(x => x.Name);
                d.Groups = builder.Of<GroupVM>();
-            })
-            .Build();
+            });
+
+         if (validatorBuilder != null) {
+            descriptorBuilder = descriptorBuilder.WithValidators(validatorBuilder);
+         }
+
+         UserVMDescriptor descriptor = descriptorBuilder.Build();
 
          var vm = new UserVM(descriptor);
          vm.InitializeFrom(sourceUser);
