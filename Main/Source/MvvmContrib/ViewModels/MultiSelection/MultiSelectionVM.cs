@@ -167,6 +167,10 @@
                })
                .ToArray();
 
+            if (groupedErrors.Count() == 0) {
+               return null;
+            }
+
             IEnumerable<string> propertyErrorLines = groupedErrors
                .Where(x => x.ItemCaption != null)
                .Select(x => {
