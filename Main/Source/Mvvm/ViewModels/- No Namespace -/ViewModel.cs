@@ -87,56 +87,13 @@
 
       string IDataErrorInfo.Error {
          get {
-            ValidationResult state = Kernel.GetValidationResult(ValidationResultScope.ViewModelValidationsOnly);
-            return state.IsValid ?
-               null :
-               state.Errors.First().Message;
+            return ProvideErrorMessage(null);
          }
       }
 
       string IDataErrorInfo.this[string columnName] {
          get {
-            // HACK: Validation problem with DevExpress.
-            if (columnName.Contains('.')) {
-               string[] parts = columnName.Split('.');
-               Contract.Assert(parts.Length <= 4);
-
-               int columnNameIndex = parts.Length - 1;
-
-               IVMPropertyDescriptor property = null;
-               IDataErrorInfo value = null;
-
-               if (parts.Length == 2) {
-                  property = Kernel.GetProperty(parts[0]);
-                  value = Kernel.GetDisplayValue(property) as IDataErrorInfo;
-               } else if (parts.Length == 3) {
-                  IVMPropertyDescriptor viewModelProp = Kernel.GetProperty(parts[0]);
-                  IViewModel viewModel = (IViewModel)Kernel.GetDisplayValue(viewModelProp);
-
-                  property = viewModel.Kernel.GetProperty(parts[1]);
-                  value = viewModel.Kernel.GetDisplayValue(property) as IDataErrorInfo;
-               } else {
-                  IVMPropertyDescriptor viewModelProp = Kernel.GetProperty(parts[0]);
-                  IViewModel viewModel = (IViewModel)Kernel.GetDisplayValue(viewModelProp);
-
-                  IVMPropertyDescriptor viewModelProp2 = viewModel.Kernel.GetProperty(parts[1]);
-                  IViewModel viewModel2 = (IViewModel)viewModel.Kernel.GetDisplayValue(viewModelProp2);
-
-                  property = viewModel2.Kernel.GetProperty(parts[2]);
-                  value = viewModel2.Kernel.GetDisplayValue(property) as IDataErrorInfo;
-               }
-
-               if (value == null) {
-                  return null;
-               }
-               return value[parts[columnNameIndex]];
-            } else {
-               IVMPropertyDescriptor property = Kernel.GetProperty(propertyName: columnName);
-               ValidationResult state = Kernel.GetValidationResult(property);
-               return state.IsValid ?
-                  null :
-                  state.Errors.First().Message;
-            }
+            return ProvideErrorMessage(columnName);
          }
       }
 
@@ -185,6 +142,57 @@
 
       protected void CopyToSource(IVMPropertyDescriptor property) {
          Kernel.UpdateSource(property);
+      }
+
+      protected virtual string ProvideErrorMessage(string propertyName) {
+         if (propertyName == null) {
+            ValidationResult state = Kernel.GetValidationResult(ValidationResultScope.ViewModelValidationsOnly);
+            return state.IsValid ?
+               null :
+               state.Errors.First().Message;
+         }
+
+         // HACK: Validation problem with DevExpress.
+         if (propertyName.Contains('.')) {
+            string[] parts = propertyName.Split('.');
+            Contract.Assert(parts.Length <= 4);
+
+            int columnNameIndex = parts.Length - 1;
+
+            IVMPropertyDescriptor property = null;
+            IDataErrorInfo value = null;
+
+            if (parts.Length == 2) {
+               property = Kernel.GetProperty(parts[0]);
+               value = Kernel.GetDisplayValue(property) as IDataErrorInfo;
+            } else if (parts.Length == 3) {
+               IVMPropertyDescriptor viewModelProp = Kernel.GetProperty(parts[0]);
+               IViewModel viewModel = (IViewModel)Kernel.GetDisplayValue(viewModelProp);
+
+               property = viewModel.Kernel.GetProperty(parts[1]);
+               value = viewModel.Kernel.GetDisplayValue(property) as IDataErrorInfo;
+            } else {
+               IVMPropertyDescriptor viewModelProp = Kernel.GetProperty(parts[0]);
+               IViewModel viewModel = (IViewModel)Kernel.GetDisplayValue(viewModelProp);
+
+               IVMPropertyDescriptor viewModelProp2 = viewModel.Kernel.GetProperty(parts[1]);
+               IViewModel viewModel2 = (IViewModel)viewModel.Kernel.GetDisplayValue(viewModelProp2);
+
+               property = viewModel2.Kernel.GetProperty(parts[2]);
+               value = viewModel2.Kernel.GetDisplayValue(property) as IDataErrorInfo;
+            }
+
+            if (value == null) {
+               return null;
+            }
+            return value[parts[columnNameIndex]];
+         } else {
+            IVMPropertyDescriptor property = Kernel.GetProperty(propertyName);
+            ValidationResult state = Kernel.GetValidationResult(property);
+            return state.IsValid ?
+               null :
+               state.Errors.First().Message;
+         }
       }
 
       [Obsolete("Use Refresh")]

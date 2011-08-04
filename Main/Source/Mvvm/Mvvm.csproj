@@ -440,7 +440,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Localized.de.resx" />
     <EmbeddedResource Include="Resources\Localized.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
+      <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Localized.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="ViewModels\EViewModels.resx">

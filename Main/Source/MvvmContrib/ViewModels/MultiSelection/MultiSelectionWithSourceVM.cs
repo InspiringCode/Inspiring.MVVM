@@ -119,6 +119,7 @@
             })
             // TODO: Make this configurable?
             .WithValidators(b => {
+               b.EnableParentViewModelValidation();
                b.CheckCollection(x => x.SelectedItems).Custom(args => {
                   var invalidItems = args
                      .Items
@@ -277,6 +278,7 @@
             })
             // TODO: Make this configurable?
             .WithValidators(b => {
+               b.EnableParentViewModelValidation();
                b.CheckCollection(x => x.SelectedItems).Custom(args => {
                   var invalidItems = args
                      .Items

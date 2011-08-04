@@ -4,6 +4,7 @@
    using System.Collections.Generic;
    using System.Linq;
    using Inspiring.Mvvm;
+   using Inspiring.Mvvm.Resources;
 
    public interface IMultiSelectionVM {
       IList AllItems { get; }
@@ -137,6 +138,61 @@
          }
 
          return activeSourceItems;
+      }
+
+      protected override string ProvideErrorMessage(string propertyName) {
+         if (propertyName == Descriptor.SelectedItems.PropertyName) {
+
+            var groupedErrors = ValidationResult
+               .Errors
+               .Select(e => {
+                  IViewModel targetVM = e.Target.VM;
+
+                  string itemCaption = targetVM != null && targetVM != this ?
+                     targetVM.ToString() :
+                     null;
+
+                  return new {
+                     ItemCaption = itemCaption,
+                     ErrorMessage = e.Message
+                  };
+               })
+               .GroupBy(x => x.ItemCaption)
+               .Select(x => new {
+                  ItemCaption = x.Key,
+                  Messages = String.Join(
+                     Localized.MultiSelectionCompositeValidationErrorSeparator,
+                     x.Select(entry => entry.ErrorMessage)
+                  )
+               })
+               .ToArray();
+
+            IEnumerable<string> propertyErrorLines = groupedErrors
+               .Where(x => x.ItemCaption != null)
+               .Select(x => {
+                  return Localized
+                    .MultiSelectionCompositeValidationErrorPropertyLine
+                    .FormatWith(x.ItemCaption, x.Messages);
+               });
+
+            IEnumerable<string> viewModelErrorLine = groupedErrors
+               .Where(x => x.ItemCaption == null)
+               .Select(x => {
+                  return Localized
+                     .MultiSelectionCompositeValidationErrorViewModelLine
+                     .FormatWith(x.Messages);
+               });
+
+            IEnumerable<string> errorLines = propertyErrorLines.Concat(viewModelErrorLine);
+            IEnumerable<string> header = new[] { Localized.MultiSelectionCompositeValidationError };
+
+            return String.Join(
+               Environment.NewLine,
+               header.Concat(errorLines)
+            );
+         }
+
+         return base.ProvideErrorMessage(propertyName);
       }
    }
 
