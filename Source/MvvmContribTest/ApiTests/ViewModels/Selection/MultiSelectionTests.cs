@@ -458,6 +458,23 @@
          Assert.AreEqual(expectedMessage, actualMessage);
       }
 
+      [TestMethod]
+      public void DataErrorInfoForSelectedItems_ReturnsNoErrorMessage() {
+         Group firstGroup = new Group("First group");
+         Group secondGroup = new Group("Second group");
+
+         var vm = CreateUserVM(
+            allGroups: new[] { firstGroup, secondGroup }
+         );
+
+         vm.Revalidate(ValidationScope.SelfAndAllDescendants);
+
+         IDataErrorInfo errorInfo = vm.Groups;
+         string actualMessage = errorInfo["SelectedItems"];
+
+         Assert.IsNull(actualMessage);
+      }
+
       /// <summary>
       ///   Asserts that the source groups of the 'AllItems' property of the
       ///   selection VM are equal to the given source items.
