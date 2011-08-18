@@ -35,6 +35,7 @@
          // HACK ATTACK: My collegas needed a quick fix!!!!
          if (typeof(T) == typeof(ICommand)) {
             context.Binding.FallbackValue = DelegateCommand.AlwaysDisabled;
+            context.Binding.TargetNullValue = DelegateCommand.AlwaysDisabled;
          }
 
          // TODO: Always necessary? Is there a better place?
