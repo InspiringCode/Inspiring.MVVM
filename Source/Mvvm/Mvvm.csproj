@@ -120,10 +120,16 @@
     <Compile Include="Common\Events\IEventSubscriptionStore.cs" />
     <Compile Include="Common\Events\EventSubscriptionBuilder.cs" />
     <Compile Include="Common\HashCodeService.cs" />
+    <Compile Include="Common\InterprocessCommunication\AbstractInterprocessMessenger.cs" />
+    <Compile Include="Common\InterprocessCommunication\DispatchTarget.cs" />
+    <Compile Include="Common\InterprocessCommunication\InterprocessLock.cs" />
+    <Compile Include="Common\InterprocessCommunication\InterprocessMessenger.cs" />
+    <Compile Include="Common\InterprocessCommunication\WindowMessageInterprocessMessenger.cs" />
     <Compile Include="Common\ReferenceEqualityComparer.cs" />
     <Compile Include="Common\SealableObject.cs" />
     <Compile Include="Common\ServiceRegistry.cs" />
     <Compile Include="Common\TypeService.cs" />
+    <Compile Include="Common\UniqueAppKey.cs" />
     <Compile Include="Common\WeakCollection.cs" />
     <Compile Include="MvvmApplication.cs" />
     <Compile Include="Common\NotifyObject.cs" />
