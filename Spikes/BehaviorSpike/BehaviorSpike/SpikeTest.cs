@@ -20,7 +20,7 @@
             new SetValueBehavior<string>()
          });
 
-         const int runs = 20 * 1000 * 1000;
+         const int runs = 1 * 1000 * 1000;
 
          Stopwatch sw = Stopwatch.StartNew();
 
@@ -52,9 +52,9 @@
          });
 
          var rootBehavior = new Behavior { Successor = property.Behaviors[0] };
-         var context = GetContext(property);
+         var context = (PropertyBehaviorContext)GetContext(property);
 
-         const int runs = 20 * 1000 * 1000;
+         const int runs = 1 * 1000 * 1000;
 
          Stopwatch sw = Stopwatch.StartNew();
 
@@ -70,12 +70,16 @@
          Assert.Fail("Runs per second: {0}", (long)runs * 1000 / sw.ElapsedMilliseconds);
       }
 
-      private PropertyBehaviorContext GetContext(VMPropertyDescriptor property) {
+      private IPropertyBehaviorContext GetContext(VMPropertyDescriptor property) {
          return new PropertyBehaviorContext(property.Behaviors, 0);
       }
    }
 
-   internal class PropertyBehaviorContext : BehaviorContext {
+   internal interface IPropertyBehaviorContext {
+      bool TryGetNext<T>(out T foundBehavior, out PropertyBehaviorContext context) where T : IBehavior;
+   }
+
+   internal struct PropertyBehaviorContext : IPropertyBehaviorContext {
       private IBehavior[] _behaviors;
       private int _index;
 
@@ -90,12 +94,13 @@
             if (b is T) {
                foundBehavior = (T)b;
                context = new PropertyBehaviorContext(_behaviors, i + 1);
+               //context._index++;
                return true;
             }
          }
 
          foundBehavior = default(T);
-         context = null;
+         context = default(PropertyBehaviorContext);
          return false;
       }
 
@@ -131,7 +136,7 @@
    }
 
    internal static class Extensions {
-      public static void SetValueNew<T>(this PropertyBehaviorContext context, T value) {
+      public static void SetValueNew<T>(this IPropertyBehaviorContext context, T value) {
          SetValueBehavior<T> behavior;
          PropertyBehaviorContext next;
          if (context.TryGetNext(out behavior, out next)) {
