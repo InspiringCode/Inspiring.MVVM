@@ -96,21 +96,6 @@
       }
 
       [TestMethod]
-      public void CollectionChange_InvalidatesCache() {
-         Behavior.GetValidationResult(Context, ValidationResultScope.All);
-         var expectedResult = ChangeNextResultsAndReturnJoinedResults();
-
-         Behavior.HandleChange(
-            Context,
-            ChangeArgs.ItemsAdded(VMCollectionStub.Build(), new[] { ViewModelStub.Build() })
-         );
-
-         var actualResult = Behavior.GetValidationResult(Context, ValidationResultScope.All);
-
-         Assert.AreEqual(expectedResult, actualResult);
-      }
-
-      [TestMethod]
       public void PropertyChange_DoesNotInvalidateCache() {
          Behavior.GetValidationResult(Context, ValidationResultScope.All);
          Counter.Invocations = 0;
@@ -124,22 +109,6 @@
          var expectedResult = ValidationResult.Join(new[] { PropertyResult, ViewModelResult, DescendantResult });
 
          Assert.AreEqual(0, Counter.Invocations);
-         Assert.AreEqual(expectedResult, actualResult);
-      }
-
-
-      [TestMethod]
-      public void PropertyChange_OfViewModelProperty_DoesInvalidateCache() {
-         Behavior.GetValidationResult(Context, ValidationResultScope.All);
-         var expectedResult = ChangeNextResultsAndReturnJoinedResults();
-
-         Behavior.HandleChange(
-            Context,
-            ChangeArgs.PropertyChanged(PropertyStub.Of<ViewModelStub>()).PrependViewModel(ViewModelStub.Build())
-         );
-
-         var actualResult = Behavior.GetValidationResult(Context, ValidationResultScope.All);
-
          Assert.AreEqual(expectedResult, actualResult);
       }
 

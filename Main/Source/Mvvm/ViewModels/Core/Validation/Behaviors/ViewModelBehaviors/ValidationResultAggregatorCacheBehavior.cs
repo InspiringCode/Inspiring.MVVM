@@ -69,19 +69,10 @@
          // because we have already handled them (the caches of all ancestors were
          // cleared when the change was handled on that descendant).
 
-         if (!args.ChangedPath.SelectsAncestor()) {
-            bool validationResultChanged = args.ChangeType == ChangeType.ValidationResultChanged;
+         if (args.ChangeType == ChangeType.ValidationResultChanged) {
+            bool isChangeOfSelf = !args.ChangedPath.SelectsAncestor();
 
-            bool collectionChanged =
-               args.ChangeType == ChangeType.AddedToCollection ||
-               args.ChangeType == ChangeType.RemovedFromCollection;
-
-            // TODO: Is there a cleaner way? Should we introduce a own change type? Would maybe be useful!
-            bool viewModelPropertyChanged = args.ChangedProperty != null ?
-               PropertyTypeHelper.IsViewModel(args.ChangedProperty.PropertyType) :
-               false;
-
-            if (validationResultChanged || collectionChanged || viewModelPropertyChanged) {
+            if (isChangeOfSelf) {
                InvalidateCache(context);
                InvalidateParentCachesOf(context.VM);
             }

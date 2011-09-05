@@ -149,6 +149,7 @@
     <Compile Include="ApiTests\ViewModels\Undo\UndoManagerTests.cs" />
     <Compile Include="ApiTests\ViewModels\Undo\UndoTests.cs" />
     <Compile Include="ApiTests\ViewModels\UntypedPropertyAccessTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Validation\IsValidPropertyChangedTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\ParentValidationTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\ValidationForNullableDecimalTests.cs" />
     <Compile Include="ApiTests\ViewModels\Validation\ValidationResultCachingTests.cs" />

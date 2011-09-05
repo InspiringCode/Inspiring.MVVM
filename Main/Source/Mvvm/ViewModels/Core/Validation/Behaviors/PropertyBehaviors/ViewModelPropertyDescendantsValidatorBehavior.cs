@@ -1,4 +1,5 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core {
+﻿using System;
+namespace Inspiring.Mvvm.ViewModels.Core {
 
    internal sealed class ViewModelPropertyDescendantsValidatorBehavior<TValue> :
       DescendantsValidatorBehavior,
@@ -12,15 +13,33 @@
       public void SetValue(IBehaviorContext context, TValue value) {
          TValue previousChild = this.GetValueNext<TValue>(context);
 
+         var oldResult = ValidationResult.Valid;
+         var newResult = ValidationResult.Valid;
+
          if (previousChild != null) {
+            oldResult = previousChild
+               .Kernel
+               .GetValidationResult();
+
             Revalidator.Revalidate(previousChild, ValidationScope.SelfAndLoadedDescendants);
          }
 
          if (value != null) {
             Revalidator.Revalidate(value, ValidationScope.SelfAndLoadedDescendants);
+
+            newResult = value
+               .Kernel
+               .GetValidationResult();
          }
 
          this.SetValueNext(context, value);
+
+         // If an already invalid child is set or the previous child was invalid,
+         // the aggregated validation state of the owner changes, therefore an
+         // ValidationResultChanged event should be raised.
+         if (!Object.Equals(oldResult, newResult)) {
+            context.NotifyChange(ChangeArgs.ValidationResultChanged());
+         }
       }
 
       protected override void RevalidateDescendantsCore(IBehaviorContext context, ValidationScope scope) {
