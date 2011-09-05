@@ -3,8 +3,29 @@
    using System.Linq;
 
    internal sealed class CollectionPropertyDescendantsValidatorBehavior<TItemVM> :
-      DescendantsValidatorBehavior
+      DescendantsValidatorBehavior,
+      ICollectionChangeHandlerBehavior<TItemVM>
       where TItemVM : IViewModel {
+
+      public void HandleChange(IBehaviorContext context, CollectionChangedArgs<TItemVM> args) {
+         IEnumerable<TItemVM> changedItems = args
+            .OldItems
+            .Concat(args.NewItems);
+
+         IEnumerable<ValidationResult> changedItemsResults = changedItems
+            .Select(x => x.Kernel.GetValidationResult());
+
+         var changedItemsResult = ValidationResult.Join(changedItemsResults);
+
+         this.HandleChangeNext(context, args);
+
+         // If already invalid items are added or removed, the aggregated
+         // validation state of the collection owner changes, therefore an
+         // ValidationResultChanged event should be raised.
+         if (!changedItemsResult.IsValid) {
+            context.NotifyChange(ChangeArgs.ValidationResultChanged());
+         }
+      }
 
       protected override void RevalidateDescendantsCore(IBehaviorContext context, ValidationScope scope) {
          var items = (IEnumerable<IViewModel>)this.GetValueNext<IVMCollection<TItemVM>>(context);
