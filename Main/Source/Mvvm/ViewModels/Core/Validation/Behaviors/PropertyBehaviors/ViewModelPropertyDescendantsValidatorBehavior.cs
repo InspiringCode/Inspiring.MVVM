@@ -11,35 +11,29 @@ namespace Inspiring.Mvvm.ViewModels.Core {
       }
 
       public void SetValue(IBehaviorContext context, TValue value) {
-         TValue previousChild = this.GetValueNext<TValue>(context);
+         DetectValidationResultChange(
+            context,
+            delegate {
+               TValue previousChild = this.GetValueNext<TValue>(context);
 
-         var oldResult = ValidationResult.Valid;
-         var newResult = ValidationResult.Valid;
+               if (previousChild != null) {
+                  Revalidator.Revalidate(previousChild, ValidationScope.SelfAndLoadedDescendants);
+               }
 
-         if (previousChild != null) {
-            oldResult = previousChild
-               .Kernel
-               .GetValidationResult();
+               if (value != null) {
+                  Revalidator.Revalidate(value, ValidationScope.SelfAndLoadedDescendants);
+               }
 
-            Revalidator.Revalidate(previousChild, ValidationScope.SelfAndLoadedDescendants);
-         }
+               this.SetValueNext(context, value);
+            }
+         );
+      }
 
-         if (value != null) {
-            Revalidator.Revalidate(value, ValidationScope.SelfAndLoadedDescendants);
-
-            newResult = value
-               .Kernel
-               .GetValidationResult();
-         }
-
-         this.SetValueNext(context, value);
-
-         // If an already invalid child is set or the previous child was invalid,
-         // the aggregated validation state of the owner changes, therefore an
-         // ValidationResultChanged event should be raised.
-         if (!Object.Equals(oldResult, newResult)) {
-            context.NotifyChange(ChangeArgs.ValidationResultChanged());
-         }
+      public override void Refresh(IBehaviorContext context) {
+         DetectValidationResultChange(
+            context,
+            () => base.Refresh(context)
+         );
       }
 
       protected override void RevalidateDescendantsCore(IBehaviorContext context, ValidationScope scope) {
@@ -55,6 +49,33 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          return childVM != null ?
             childVM.Kernel.GetValidationResult() :
             ValidationResult.Valid;
+      }
+
+      // If an already invalid child is set or the previous child was invalid,
+      // the aggregated validation state of the owner changes, therefore an
+      // ValidationResultChanged event should be raised.
+      private void DetectValidationResultChange(IBehaviorContext context, Action action) {
+         IViewModel oldChild = this.GetValueNext<TValue>(context);
+         ValidationResult oldResult = GetValidationResultOrValidIfNull(oldChild);
+
+         action();
+
+         IViewModel newChild = this.GetValueNext<TValue>(context);
+         ValidationResult newResult = GetValidationResultOrValidIfNull(newChild);
+
+         if (!Object.Equals(oldResult, newResult)) {
+            context.NotifyChange(ChangeArgs.ValidationResultChanged());
+         }
+      }
+
+      private static ValidationResult GetValidationResultOrValidIfNull(IViewModel vm) {
+         if (vm == null) {
+            return ValidationResult.Valid;
+         }
+
+         return vm
+            .Kernel
+            .GetValidationResult();
       }
    }
 }

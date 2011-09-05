@@ -59,7 +59,7 @@
          }
       }
 
-      public void Refresh(IBehaviorContext context) {
+      public virtual void Refresh(IBehaviorContext context) {
          this.RefreshNext(context);
 
          State s = GetState(context);
