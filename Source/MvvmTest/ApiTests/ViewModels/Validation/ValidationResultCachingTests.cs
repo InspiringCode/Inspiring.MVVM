@@ -12,6 +12,22 @@
       }
 
       [TestMethod]
+      public void OwnerResult_WhenDelegatedViewModelPropertyIsRefreshedAndReturnsNewInvalidViewModel_ContainsError() {
+         Owner.DelegatedPropertyResultToReturn = new ItemVM();
+         Owner.Load(x => x.DelegatedProperty);
+         ValidationAssert.IsValid(Owner);
+
+         var invalidChild = CreateInvalidItem();
+         Owner.DelegatedPropertyResultToReturn = invalidChild;
+         ValidationAssert.IsValid(Owner);
+
+         Owner.Refresh(x => x.DelegatedProperty);
+         Assert.IsFalse(Owner.DelegatedProperty.IsValid);
+
+         ValidationAssert.ErrorMessages(Owner.ValidationResult, invalidChild.ErrorToReturn);
+      }
+
+      [TestMethod]
       public void OwnerResult_WhenInvalidItemIsInTwoCollections_ContainsItemErrorOnlyOnce() {
          var invalidItem = CreateInvalidItem();
          Owner.CollectionOne.Add(invalidItem);
@@ -87,10 +103,12 @@
       }
 
       private ItemVM CreateInvalidItem() {
-         return new ItemVM { ErrorToReturn = "Item error" };
+         var item = new ItemVM { ErrorToReturn = "Item error" };
+         item.Revalidate();
+         return item;
       }
 
-      private class OwnerVM : ViewModel<OwnerVMDescriptor> {
+      private class OwnerVM : TestViewModel<OwnerVMDescriptor> {
          public static readonly OwnerVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<OwnerVMDescriptor>()
             .For<OwnerVM>()
@@ -100,12 +118,15 @@
                d.CollectionOne = v.Collection.Of<ItemVM>(ItemVM.ClassDescriptor);
                d.CollectionTwo = v.Collection.Of<ItemVM>(ItemVM.ClassDescriptor);
                d.ItemProperty = v.VM.Of<ItemVM>();
+               d.DelegatedProperty = v.VM.DelegatesTo(x => x.DelegatedPropertyResultToReturn);
             })
             .Build();
 
          public OwnerVM()
             : base(ClassDescriptor) {
          }
+
+         public ItemVM DelegatedPropertyResultToReturn { get; set; }
 
          public IVMCollection<ItemVM> CollectionOne {
             get { return GetValue(Descriptor.CollectionOne); }
@@ -119,12 +140,18 @@
             get { return GetValue(Descriptor.ItemProperty); }
             set { SetValue(Descriptor.ItemProperty, value); }
          }
+
+         public ItemVM DelegatedProperty {
+            get { return GetValue(Descriptor.DelegatedProperty); }
+            set { SetValue(Descriptor.DelegatedProperty, value); }
+         }
       }
 
       private class OwnerVMDescriptor : VMDescriptor {
          public IVMPropertyDescriptor<IVMCollection<ItemVM>> CollectionOne { get; set; }
          public IVMPropertyDescriptor<IVMCollection<ItemVM>> CollectionTwo { get; set; }
          public IVMPropertyDescriptor<ItemVM> ItemProperty { get; set; }
+         public IVMPropertyDescriptor<ItemVM> DelegatedProperty { get; set; }
       }
 
       private class ItemVM : ViewModel<ItemVMDescriptor> {
