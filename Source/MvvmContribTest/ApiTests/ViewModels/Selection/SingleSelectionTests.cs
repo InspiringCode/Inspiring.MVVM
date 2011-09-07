@@ -293,8 +293,7 @@
                d.Department = builder.Of<DepartmentVM>();
             })
             .WithValidators(b => {
-               b.ValidateDescendant(x => x.Department)
-                  .OnlyExistingItemsAreSelected();
+               b.OnlyExistingItemsAreSelected(x => x.Department);
             })
             .Build();
 

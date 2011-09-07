@@ -541,8 +541,7 @@
             b.ValidateDescendant(x => x.Groups).CheckCollection(x => x.SelectedItems).Custom(args => {
                
             });
-            b.ValidateDescendant(x => x.Groups)
-               .OnlyExistingItemsAreSelected();
+            b.OnlyExistingItemsAreSelected(x => x.Groups);
          });
 
          var sourceUser = new User(selectedGroups);
