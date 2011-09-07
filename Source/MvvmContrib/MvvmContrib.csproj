@@ -120,6 +120,7 @@
     <Compile Include="ViewModels\EnumLocalizer.cs" />
     <Compile Include="ViewModels\EnumSelectionPropertyBuilder.cs" />
     <Compile Include="ViewModels\ISelectionPropertyBuilder.cs" />
+    <Compile Include="ViewModels\ItemProviderBehavior.cs" />
     <Compile Include="ViewModels\IVMPropertyFactory.cs" />
     <Compile Include="ViewModels\MultiSelection\MultiSelectionVM.cs" />
     <Compile Include="ViewModels\MultiSelection\LookupPopulatorCollectionBehavior.cs" />
@@ -129,9 +130,9 @@
     <Compile Include="ViewModels\ReverseManyToManyCollection.cs" />
     <Compile Include="ViewModels\SelectableItemVM.cs" />
     <Compile Include="ViewModels\SelectionBuilderExtensions.cs" />
-    <Compile Include="ViewModels\SelectionExtensions.cs" />
     <Compile Include="ViewModels\SelectionItemVM.cs" />
     <Compile Include="ViewModels\SelectionPropertyConfiguration.cs" />
+    <Compile Include="ViewModels\IHasSourceItems.cs" />
     <Compile Include="ViewModels\SingleSelectionProperty.cs" />
     <Compile Include="ViewModels\SingleSelectionPropertyBuilder.cs" />
     <Compile Include="ViewModels\SingleSelectionVM.cs" />

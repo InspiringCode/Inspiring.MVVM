@@ -38,6 +38,10 @@
       }
 
       public void Refresh(IBehaviorContext context) {
+         // Call next behavior first, because a source accessor behavior may handle
+         // it.
+         this.RefreshNext(context);
+
          _collectionSourceCache.Clear(context);
          var collection = GetValue(context);
 
@@ -65,8 +69,6 @@
          newItems
             .Where(x => x.IsReusedItem)
             .ForEach(x => x.Item.Kernel.RefreshWithoutValidation());
-
-         this.RefreshNext(context);
       }
 
       protected override IVMCollection<TItemVM> ProvideValue(IBehaviorContext context) {

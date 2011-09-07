@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
    using System.Collections.Generic;
-   using System.Linq;
    using Inspiring.Mvvm.ViewModels.Core;
 
    public sealed class MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM> :
@@ -62,7 +61,8 @@
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<ICollection<TItemSource>>> selectedSourceItemsPropertyFactory,
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory,
          bool enableValidation,
-         bool enableUndo
+         bool enableUndo,
+         Func<TItemSource, bool> isActiveFilter
       ) {
 
          SelectableItemVMDescriptor<TItemVM> itemDescriptor = VMDescriptorBuilder
@@ -88,13 +88,26 @@
                d.AllSourceItems = allSourceItemsPropertyFactory(source);
                d.SelectedSourceItems = selectedSourceItemsPropertyFactory(source);
 
-               d.AllItems = v.Collection
-                  .Wraps(vm => vm.GetActiveSourceItems())
-                  .With<SelectableItemVM<TItemSource, TItemVM>>(itemDescriptor);
+               //d.AllItems = v.Collection
+               //   .Wraps(vm => vm.GetActiveSourceItems())
+               //   .With<SelectableItemVM<TItemSource, TItemVM>>(itemDescriptor);
 
                d.SelectedItems = v.Collection
                   .Wraps(vm => vm.SelectedSourceItems)
                   .With<SelectableItemVM<TItemSource, TItemVM>>(itemDescriptor);
+
+               var itemProviderBehavior = new ItemProviderBehavior<TItemSource>(
+                  d.AllSourceItems,
+                  d.SelectedSourceItems
+               ) { IsActiveFilter = isActiveFilter };
+
+               d.AllItems = v
+                  .Custom
+                  .CollectionPropertyWithSource(
+                     itemDescriptor,
+                     DefaultBehaviors.WrapperCollectionValueAccessor<TItemSource, SelectableItemVM<TItemSource, TItemVM>>(),
+                     itemProviderBehavior
+                  );
             })
             .WithBehaviors(c => {
                // This behavior ensures, that the 'SelectedItems' collection returns the same
@@ -120,20 +133,21 @@
             // TODO: Make this configurable?
             .WithValidators(b => {
                b.EnableParentViewModelValidation();
-               b.CheckCollection(x => x.SelectedItems).Custom(args => {
-                  var invalidItems = args
-                     .Items
-                     .Where(i => args
-                        .Owner
-                        .NonExistingSelectedSourceItems
-                        .Contains(i.Source));
+               b.EnableParentValidation(x => x.SelectedItems);
+               //b.CheckCollection(x => x.SelectedItems).Custom(args => {
+               //   var invalidItems = args
+               //      .Items
+               //      .Where(i => args
+               //         .Owner
+               //         .NonExistingSelectedSourceItems
+               //         .Contains(i.Source));
 
 
-                  foreach (var item in invalidItems) {
-                     // TODO: Let the user specify the message.
-                     args.AddError(item, "Das gewählte Element ist nicht vorhanden.");
-                  }
-               });
+               //   foreach (var item in invalidItems) {
+               //      // TODO: Let the user specify the message.
+               //      args.AddError(item, "Das gewählte Element ist nicht vorhanden.");
+               //   }
+               //});
             })
             .WithDependencies(b => {
                b.OnChangeOf
@@ -241,7 +255,8 @@
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<ICollection<TItemSource>>> selectedSourceItemsPropertyFactory,
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory,
          bool enableValidation,
-         bool enableUndo
+         bool enableUndo,
+         Func<TItemSource, bool> isActiveFilter
       ) {
          var builder = VMDescriptorBuilder
             .OfType<MultiSelectionVMDescriptor<TItemSource>>()
@@ -252,8 +267,21 @@
 
                d.AllSourceItems = allSourceItemsPropertyFactory(source);
                d.SelectedSourceItems = selectedSourceItemsPropertyFactory(source);
-               d.AllItems = v.Collection.Wraps(vm => vm.GetActiveSourceItems()).With<SelectionItemVM<TItemSource>>(itemDescriptor);
+
                d.SelectedItems = v.Collection.Wraps(vm => vm.SelectedSourceItems).With<SelectionItemVM<TItemSource>>(itemDescriptor);
+
+               var itemProviderBehavior = new ItemProviderBehavior<TItemSource>(
+                  d.AllSourceItems,
+                  d.SelectedSourceItems
+               ) { IsActiveFilter = isActiveFilter };
+
+               d.AllItems = v
+                  .Custom
+                  .CollectionPropertyWithSource(
+                     itemDescriptor,
+                     DefaultBehaviors.WrapperCollectionValueAccessor<TItemSource, SelectionItemVM<TItemSource>>(),
+                     itemProviderBehavior
+                  );
             })
             .WithBehaviors(c => {
                // This behavior ensures, that the 'SelectedItems' collection returns the same
@@ -279,20 +307,21 @@
             // TODO: Make this configurable?
             .WithValidators(b => {
                b.EnableParentViewModelValidation();
-               b.CheckCollection(x => x.SelectedItems).Custom(args => {
-                  var invalidItems = args
-                     .Items
-                     .Where(i => args
-                        .Owner
-                        .NonExistingSelectedSourceItems
-                        .Contains(i.Source));
+               b.EnableParentValidation(x => x.SelectedItems);
+               //b.CheckCollection(x => x.SelectedItems).Custom(args => {
+               //   var invalidItems = args
+               //      .Items
+               //      .Where(i => args
+               //         .Owner
+               //         .NonExistingSelectedSourceItems
+               //         .Contains(i.Source));
 
 
-                  foreach (var item in invalidItems) {
-                     // TODO: Let the user specify the message.
-                     args.AddError(item, "Das gewählte Element ist nicht vorhanden.");
-                  }
-               });
+               //   foreach (var item in invalidItems) {
+               //      // TODO: Let the user specify the message.
+               //      args.AddError(item, "Das gewählte Element ist nicht vorhanden.");
+               //   }
+               //});
             });
 
          //if (enableValidation) {

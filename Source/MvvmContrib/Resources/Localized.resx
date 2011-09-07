@@ -131,4 +131,7 @@
     <value>  {0}</value>
     <comment>0 = MultiSelection level validation</comment>
   </data>
+  <data name="SelectedItemsNotInSourceItems" xml:space="preserve">
+    <value>The selected item does not exist.</value>
+  </data>
 </root>

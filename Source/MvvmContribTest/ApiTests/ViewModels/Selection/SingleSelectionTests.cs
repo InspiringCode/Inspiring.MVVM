@@ -292,6 +292,10 @@
                //d.Department = builder.Of<DepartmentVM>(DepartmentVM.ClassDescriptor);
                d.Department = builder.Of<DepartmentVM>();
             })
+            .WithValidators(b => {
+               b.ValidateDescendant(x => x.Department)
+                  .OnlyExistingItemsAreSelected();
+            })
             .Build();
 
          var vm = new UserVM(descriptor);

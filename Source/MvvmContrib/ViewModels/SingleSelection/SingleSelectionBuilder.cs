@@ -86,7 +86,8 @@
             SelectedSourceItemPropertyFactory,
             allSourceItemsPropertyFactory,
             ValidationIsEnabled,
-            UndoIsEnabled
+            UndoIsEnabled,
+            Filter
          );
 
          var property = _sourceObjectPropertyBuilder.Custom.ViewModelProperty(
@@ -137,7 +138,8 @@
             SelectedSourceItemPropertyFactory,
             allSourceItemsPropertyFactory,
             ValidationIsEnabled,
-            UndoIsEnabled
+            UndoIsEnabled,
+            Filter
          );
 
          var property = _sourceObjectPropertyBuilder.Custom.ViewModelProperty(
