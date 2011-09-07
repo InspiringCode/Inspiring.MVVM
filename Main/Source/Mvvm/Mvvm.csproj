@@ -183,6 +183,7 @@
     <Compile Include="ViewModels\Core\Common\Paths\Definition\OptionalStep.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\Definition\OrStep.cs" />
     <Compile Include="ViewModels\Core\Common\PropertySelector.cs" />
+    <Compile Include="ViewModels\Core\DefaultBehaviors.cs" />
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\Actions\DependencyAction.cs" />
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\Actions\ExecuteAction.cs" />
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\Actions\RefreshAction.cs" />

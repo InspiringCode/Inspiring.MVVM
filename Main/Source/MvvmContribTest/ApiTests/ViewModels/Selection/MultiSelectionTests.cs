@@ -537,6 +537,14 @@
             throw new ArgumentException();
          }
 
+         validatorBuilder = validatorBuilder ?? (b => {
+            b.ValidateDescendant(x => x.Groups).CheckCollection(x => x.SelectedItems).Custom(args => {
+               
+            });
+            b.ValidateDescendant(x => x.Groups)
+               .OnlyExistingItemsAreSelected();
+         });
+
          var sourceUser = new User(selectedGroups);
 
          var descriptorBuilder = VMDescriptorBuilder

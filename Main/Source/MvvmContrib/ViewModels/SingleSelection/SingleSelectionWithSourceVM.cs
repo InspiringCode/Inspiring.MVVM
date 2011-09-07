@@ -62,7 +62,8 @@
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<TItemSource>> selectedSourceItemPropertyFactory,
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory,
          bool enableValidation,
-         bool enableUndo
+         bool enableUndo,
+         Func<TItemSource, bool> isActiveFilter
       ) {
 
          SelectableItemVMDescriptor<TItemVM> itemDescriptor = VMDescriptorBuilder
@@ -87,9 +88,6 @@
 
                d.AllSourceItems = allSourceItemsPropertyFactory(source);
                d.SelectedSourceItem = selectedSourceItemPropertyFactory(source);
-               d.AllItems = v.Collection
-                  .Wraps(vm => vm.GetActiveSourceItems())
-                  .With<SelectableItemVM<TItemSource, TItemVM>>(itemDescriptor);
 
                d.SelectedItem = v.VM.DelegatesTo(
                   vm => vm.SelectedSourceItem != null ?
@@ -97,6 +95,20 @@
                      default(SelectableItemVM<TItemSource, TItemVM>),
                      (vm, value) => vm.SetValue(vm.Descriptor.SelectedSourceItem, value != null ? value.Source : default(TItemSource))
                );
+
+
+               var itemProviderBehavior = new ItemProviderBehavior<TItemSource>(
+                  d.AllSourceItems,
+                  d.SelectedSourceItem
+               ) { IsActiveFilter = isActiveFilter };
+
+               d.AllItems = v
+                  .Custom
+                  .CollectionPropertyWithSource(
+                     itemDescriptor,
+                     DefaultBehaviors.WrapperCollectionValueAccessor<TItemSource, SelectableItemVM<TItemSource, TItemVM>>(),
+                     itemProviderBehavior
+                  );
             })
             .WithBehaviors(b => {
                b.Property(x => x.SelectedItem).RequiresLoadedProperty(x => x.AllItems);
@@ -114,15 +126,16 @@
             })
             // TODO: Make this configurable?
             .WithValidators(b => {
-               b.Check(x => x.SelectedItem).Custom(args => {
-                  if (args.Value != null &&
-                      args.Owner.NonExistingSelectedSourceItem.HasValue &&
-                      Object.Equals(args.Value.Source, args.Owner.NonExistingSelectedSourceItem.Value)
-                  ) {
-                     // TODO: Let the user specify the message.
-                     args.AddError("Das gewählte Element ist nicht vorhanden.");
-                  }
-               });
+               b.EnableParentValidation(x => x.SelectedItem);
+               //b.Check(x => x.SelectedItem).Custom(args => {
+               //   //if (args.Value != null &&
+               //   //    args.Owner.NonExistingSelectedSourceItem.HasValue &&
+               //   //    Object.Equals(args.Value.Source, args.Owner.NonExistingSelectedSourceItem.Value)
+               //   //) {
+               //   //   // TODO: Let the user specify the message.
+               //   //   args.AddError("Das gewählte Element ist nicht vorhanden.");
+               //   //}
+               //});
             })
             .WithDependencies(b => {
                // Initiales setzen der IsSelected property
@@ -252,7 +265,8 @@
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<TItemSource>> selectedSourceItemsPropertyFactory,
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> allSourceItemsPropertyFactory,
          bool enableValidation,
-         bool enableUndo
+         bool enableUndo,
+         Func<TItemSource, bool> isActiveFilter
       ) {
          var builder = VMDescriptorBuilder
             .OfType<SingleSelectionVMDescriptor<TItemSource>>()
@@ -263,13 +277,26 @@
 
                d.AllSourceItems = allSourceItemsPropertyFactory(source);
                d.SelectedSourceItem = selectedSourceItemsPropertyFactory(source);
-               d.AllItems = v.Collection.Wraps(vm => vm.GetActiveSourceItems()).With<SelectionItemVM<TItemSource>>(itemDescriptor);
+
                d.SelectedItem = v.VM.DelegatesTo(
                  vm => vm.SelectedSourceItem != null ?
                     vm.AllItems.Single(i => Object.Equals(i.Source, vm.SelectedSourceItem)) :
                     default(SelectionItemVM<TItemSource>),
                     (vm, value) => vm.SetValue(vm.Descriptor.SelectedSourceItem, value != null ? value.Source : default(TItemSource))
               );
+
+               var itemProviderBehavior = new ItemProviderBehavior<TItemSource>(
+                  d.AllSourceItems,
+                  d.SelectedSourceItem
+               ) { IsActiveFilter = isActiveFilter };
+
+               d.AllItems = v
+                  .Custom
+                  .CollectionPropertyWithSource(
+                     itemDescriptor,
+                     DefaultBehaviors.WrapperCollectionValueAccessor<TItemSource, SelectionItemVM<TItemSource>>(),
+                     itemProviderBehavior
+                  );
             })
             .WithBehaviors(b => {
                b.Property(x => x.SelectedItem).RequiresLoadedProperty(x => x.AllItems);
@@ -287,15 +314,16 @@
             })
             // TODO: Make this configurable?
             .WithValidators(b => {
-               b.Check(x => x.SelectedItem).Custom(args => {
-                  if (args.Value != null &&
-                      args.Owner.NonExistingSelectedSourceItem.HasValue &&
-                      Object.Equals(args.Value.Source, args.Owner.NonExistingSelectedSourceItem.Value)
-                  ) {
-                     // TODO: Let the user specify the message.
-                     args.AddError("Das gewählte Element ist nicht vorhanden.");
-                  }
-               });
+               b.EnableParentValidation(x => x.SelectedItem);
+               //b.Check(x => x.SelectedItem).Custom(args => {
+               //   //if (args.Value != null &&
+               //   //    args.Owner.NonExistingSelectedSourceItem.HasValue &&
+               //   //    Object.Equals(args.Value.Source, args.Owner.NonExistingSelectedSourceItem.Value)
+               //   //) {
+               //   //   // TODO: Let the user specify the message.
+               //   //   args.AddError("Das gewählte Element ist nicht vorhanden.");
+               //   //}
+               //});
             });
 
          //if (enableValidation) {

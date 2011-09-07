@@ -215,6 +215,10 @@
                   .WithFilter(x => x != PersonStatus.Dismissed)
                   .WithCaption(x => EnumLocalizer.GetCaption(x));
             })
+            .WithValidators(b => {
+               b.ValidateDescendant(x => x.Status)
+                  .OnlyExistingItemsAreSelected();
+            })
             .Build();
 
          public PersonVM()

@@ -14,7 +14,9 @@
    }
 
    public abstract class MultiSelectionBaseVM<TItemSource, TItemVM> :
-      ViewModel<MultiSelectionVMDescriptor<TItemSource, TItemVM>>, IMultiSelectionVM
+      ViewModel<MultiSelectionVMDescriptor<TItemSource, TItemVM>>,
+      IMultiSelectionVM,
+      IHasSourceItems<TItemSource>
       where TItemVM : IViewModel {
 
       /// <param name="descriptor">
@@ -26,7 +28,7 @@
       )
          : base(descriptor, serviceLocator) {
 
-         NonExistingSelectedSourceItems = new List<TItemSource>();
+         //NonExistingSelectedSourceItems = new List<TItemSource>();
       }
 
       /// <summary>
@@ -76,10 +78,10 @@
          get { return GetValue(Descriptor.SelectedItems); }
       }
 
-      /// <summary>
-      ///   May contain items that are selected, but not in the AllSourceItems collection.
-      /// </summary>
-      internal ICollection<TItemSource> NonExistingSelectedSourceItems { get; private set; }
+      ///// <summary>
+      /////   May contain items that are selected, but not in the AllSourceItems collection.
+      ///// </summary>
+      //internal ICollection<TItemSource> NonExistingSelectedSourceItems { get; private set; }
 
       IList IMultiSelectionVM.AllItems {
          get { return AllItems; }
@@ -102,43 +104,55 @@
          set { SetDisplayValue(Descriptor.SelectedItems, value); }
       }
 
-      /// <summary>
-      ///   Returns all source items for which the <see cref="ActiveItemFilter"/>
-      ///   returns true or that are currently contained by selected items collection
-      ///   of the source object.
-      ///   All selected items are always contained, even if they are not in the collection of
-      ///   all items.
-      /// </summary>
-      internal IEnumerable<TItemSource> GetActiveSourceItems() {
-         IEnumerable<TItemSource> allSourceItems = GetValue(Descriptor.AllSourceItems);
-         IEnumerable<TItemSource> selectedSourceItems = GetValue(Descriptor.SelectedSourceItems);
-         IEnumerable<TItemSource> activeSourceItems = null;
 
-         if (allSourceItems == null) {
-            activeSourceItems = new TItemSource[0];
-         } else if (ActiveItemFilter == null) {
-            activeSourceItems = allSourceItems;
-         } else {
-            activeSourceItems = allSourceItems
-               .Where(i =>
-                  ActiveItemFilter(i) ||
-                  selectedSourceItems.Contains(i)
-               )
-               .ToArray();
+
+      SourceItemCollections<TItemSource> IHasSourceItems<TItemSource>.SourceItems {
+         get {
+            return Descriptor
+               .AllItems
+               .Behaviors
+               .GetNextBehavior<ItemProviderBehavior<TItemSource>>()
+               .GetCollections(GetContext());
          }
-
-         NonExistingSelectedSourceItems = selectedSourceItems
-            .Except(activeSourceItems)
-            .ToArray();
-
-         if (NonExistingSelectedSourceItems.Any()) {
-            activeSourceItems = activeSourceItems
-               .Concat(NonExistingSelectedSourceItems)
-               .ToArray();
-         }
-
-         return activeSourceItems;
       }
+
+      ///// <summary>
+      /////   Returns all source items for which the <see cref="ActiveItemFilter"/>
+      /////   returns true or that are currently contained by selected items collection
+      /////   of the source object.
+      /////   All selected items are always contained, even if they are not in the collection of
+      /////   all items.
+      ///// </summary>
+      //internal IEnumerable<TItemSource> GetActiveSourceItems() {
+      //   IEnumerable<TItemSource> allSourceItems = GetValue(Descriptor.AllSourceItems);
+      //   IEnumerable<TItemSource> selectedSourceItems = GetValue(Descriptor.SelectedSourceItems);
+      //   IEnumerable<TItemSource> activeSourceItems = null;
+
+      //   if (allSourceItems == null) {
+      //      activeSourceItems = new TItemSource[0];
+      //   } else if (ActiveItemFilter == null) {
+      //      activeSourceItems = allSourceItems;
+      //   } else {
+      //      activeSourceItems = allSourceItems
+      //         .Where(i =>
+      //            ActiveItemFilter(i) ||
+      //            selectedSourceItems.Contains(i)
+      //         )
+      //         .ToArray();
+      //   }
+
+      //   NonExistingSelectedSourceItems = selectedSourceItems
+      //      .Except(activeSourceItems)
+      //      .ToArray();
+
+      //   if (NonExistingSelectedSourceItems.Any()) {
+      //      activeSourceItems = activeSourceItems
+      //         .Concat(NonExistingSelectedSourceItems)
+      //         .ToArray();
+      //   }
+
+      //   return activeSourceItems;
+      //}
 
       protected override string ProvideErrorMessage(string propertyName) {
          if (propertyName == Descriptor.SelectedItems.PropertyName) {

@@ -127,4 +127,7 @@
   <data name="MultiSelectionCompositeValidationErrorSeparator" xml:space="preserve">
     <value> </value>
   </data>
+  <data name="SelectedItemsNotInSourceItems" xml:space="preserve">
+    <value>Das gewählte Element ist nicht vorhanden.</value>
+  </data>
 </root>

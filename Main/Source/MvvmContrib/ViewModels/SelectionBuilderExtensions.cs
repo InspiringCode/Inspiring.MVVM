@@ -4,6 +4,7 @@
    using System.Diagnostics.Contracts;
    using System.Linq;
    using System.Linq.Expressions;
+   using Inspiring.Mvvm.Resources;
    using Inspiring.Mvvm.ViewModels.Core;
 
    public static class SelectionBuilderExtensions {
@@ -64,6 +65,106 @@
             .EnableUndo()
             .WithItems(x => GetEnumValues<TEnum>())
             .WithCaption(x => EnumLocalizer.GetCaption(x));
+      }
+
+      public static void OnlyExistingItemsAreSelected<TOwner, TTarget, TDescriptor, TSource, TVM>(
+         this ValidatorBuilder<
+            TOwner,
+            TTarget,
+            TDescriptor
+         > builder,
+         Func<TDescriptor, IVMPropertyDescriptor<IViewModel<SingleSelectionVMDescriptor<TSource, TVM>>>> selectionPropertySelector,
+         string errorMessage = null,
+         object details = null
+      )
+         where TTarget : IViewModel
+         where TDescriptor : class, IVMDescriptor
+         where TOwner : IViewModel
+         where TVM : IViewModel, IHasSourceObject<TSource> {
+
+         errorMessage = errorMessage ?? Localized.SelectedItemsNotInSourceItems;
+
+         builder
+            .ValidateDescendant(selectionPropertySelector)
+            .OnlyExistingItemsAreSelected(errorMessage, details);
+      }
+
+      public static void OnlyExistingItemsAreSelected<TOwner, TTarget, TDescriptor, TSource, TVM>(
+         this ValidatorBuilder<
+            TOwner,
+            TTarget,
+            TDescriptor
+         > builder,
+         Func<TDescriptor, IVMPropertyDescriptor<IViewModel<MultiSelectionVMDescriptor<TSource, TVM>>>> selectionPropertySelector,
+         string errorMessage = null,
+         object details = null
+      )
+         where TTarget : IViewModel
+         where TDescriptor : class, IVMDescriptor
+         where TOwner : IViewModel
+         where TVM : IViewModel, IHasSourceObject<TSource> {
+
+         errorMessage = errorMessage ?? Localized.SelectedItemsNotInSourceItems;
+
+         builder
+            .ValidateDescendant(selectionPropertySelector)
+            .OnlyExistingItemsAreSelected(errorMessage, details);
+      }
+
+      public static void OnlyExistingItemsAreSelected<TOwner, TTarget, TSource, TVM>(
+         this ValidatorBuilder<
+            TOwner,
+            TTarget,
+            MultiSelectionVMDescriptor<TSource, TVM>
+         > builder,
+         string errorMessage = null,
+         object details = null
+      )
+         where TTarget : IViewModel<MultiSelectionVMDescriptor<TSource, TVM>>
+         where TOwner : IViewModel
+         where TVM : IViewModel, IHasSourceObject<TSource> {
+
+         errorMessage = errorMessage ?? Localized.SelectedItemsNotInSourceItems;
+
+         builder.CheckCollection(x => x.SelectedItems).Custom(args => {
+            var selectionVM = (IHasSourceItems<TSource>)args.Items.OwnerVM;
+            SourceItemCollections<TSource> source = selectionVM.SourceItems;
+
+            ISet<TSource> nonExisting = source.SelectedItemsNotContainedInSource;
+
+            foreach (TVM selectedItem in args.Items) {
+               if (nonExisting.Contains(selectedItem.Source)) {
+                  args.AddError(selectedItem, errorMessage, details);
+               }
+            }
+         });
+      }
+
+      public static void OnlyExistingItemsAreSelected<TOwner, TTarget, TSource, TVM>(
+         this ValidatorBuilder<
+            TOwner,
+            TTarget,
+            SingleSelectionVMDescriptor<TSource, TVM>
+         > builder,
+         string errorMessage = null,
+         object details = null
+      )
+         where TTarget : IViewModel<SingleSelectionVMDescriptor<TSource, TVM>>
+         where TOwner : IViewModel
+         where TVM : IViewModel, IHasSourceObject<TSource> {
+
+         errorMessage = errorMessage ?? Localized.SelectedItemsNotInSourceItems;
+
+         builder.Check(x => x.SelectedItem).Custom(args => {
+            var selectionVM = (IHasSourceItems<TSource>)args.Target;
+            SourceItemCollections<TSource> source = selectionVM.SourceItems;
+
+            ISet<TSource> nonExisting = source.SelectedItemsNotContainedInSource;
+
+            if (nonExisting.Any()) {
+               args.AddError(errorMessage, details);
+            }
+         });
       }
 
       private static TEnum[] GetEnumValues<TEnum>() {
