@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.Screens {
    using System;
+   using System.Diagnostics.Contracts;
 
    public static partial class ScreenFactory {
       public static IScreenFactory<TScreen> For<TScreen>(IServiceLocator resolveWith = null) where TScreen : IScreenBase {
@@ -13,6 +14,7 @@
       public static IScreenFactory<TScreen> For<TScreen>(
          TScreen instance
       ) where TScreen : IScreenBase {
+         Contract.Requires<ArgumentNullException>(instance != null);
          return new InstanceFactory<TScreen>(instance);
       }
 
@@ -33,6 +35,10 @@
 
          public Factory(IServiceLocator resolveWith) {
             _resolveWith = resolveWith ?? ServiceLocator.Current;
+         }
+
+         public Type ScreenType {
+            get { return typeof(TScreen); }
          }
 
          public TScreen Create(Action<TScreen> initializationCallback = null) {
@@ -63,6 +69,10 @@
          public Factory(TSubject subject, IServiceLocator resolveWith) {
             _subject = subject;
             _resolveWith = resolveWith ?? ServiceLocator.Current;
+         }
+
+         public Type ScreenType {
+            get { return typeof(TScreen); }
          }
 
          public TScreen Create(Action<TScreen> initializationCallback = null) {
@@ -98,6 +108,10 @@
 
          public InstanceFactory(TScreen instance) {
             _instance = instance;
+         }
+
+         public Type ScreenType {
+            get { return _instance.GetType(); }
          }
 
          public TScreen Create(Action<TScreen> initializationCallback = null) {

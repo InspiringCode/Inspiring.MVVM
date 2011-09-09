@@ -10,5 +10,11 @@
       ///   name="concreteScreen"/>.
       /// </summary>
       bool CreatesScreensEquivalentTo(IScreenBase concreteScreen);
+
+      /// <summary>
+      ///   The type of the screen that gets created. You cannot rely on <typeparamref 
+      ///   name="TScreen"/> because <see cref="IScreenFactory{TScreen}"/> is covariant. 
+      /// </summary>
+      Type ScreenType { get; }
    }
 }

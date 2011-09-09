@@ -81,7 +81,7 @@
       public void OpenScreen<TScreen>(IScreenFactory<TScreen> factory)
          where TScreen : class, IScreenBase {
 
-         var creationBehavior = GetCreationBehavior(typeof(TScreen));
+         var creationBehavior = GetCreationBehavior(factory);
 
          IScreenBase alreadyOpenScreen = null;
 
@@ -162,9 +162,9 @@
          }
       }
 
-      private ScreenCreationBehavior GetCreationBehavior(Type screenType) {
+      private ScreenCreationBehavior GetCreationBehavior(IScreenFactory<IScreenBase> screenFactory) {
          var attr = (ScreenCreationBehaviorAttribute)Attribute.GetCustomAttribute(
-            screenType,
+            screenFactory.ScreenType,
             typeof(ScreenCreationBehaviorAttribute)
          );
 

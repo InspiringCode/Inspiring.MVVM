@@ -1,11 +1,11 @@
 ﻿namespace Inspiring.MvvmTest.Screens {
    using System;
    using System.Linq;
+   using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.Screens;
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Moq;
-   using Inspiring.Mvvm.Common;
 
    [TestClass]
    public class ScreenCreationBehaviorTest : TestBase {
@@ -20,24 +20,8 @@
       [TestMethod]
       public void SingleInstance() {
          ScreenConductor c = CreateConductor();
-
-         var firstFactoryMock = new Mock<IScreenFactory<SingleInstanceScreen>>(MockBehavior.Strict);
-         var secondFactoryMock = new Mock<IScreenFactory<SingleInstanceScreen>>(MockBehavior.Strict);
-
-         firstFactoryMock
-            .Setup(x => x.Create(It.IsAny<Action<SingleInstanceScreen>>()))
-            .Returns<Action<SingleInstanceScreen>>(init =>
-               ScreenFactory.For<SingleInstanceScreen>().Create(init)
-            );
-
-         c.OpenScreen(firstFactoryMock.Object);
-         c.OpenScreen(secondFactoryMock.Object);
-
-         firstFactoryMock.Verify(
-            x => x.Create(It.IsAny<Action<SingleInstanceScreen>>()),
-            Times.Once()
-         );
-
+         c.OpenScreen(ScreenFactory.For<SingleInstanceScreen>());
+         c.OpenScreen(ScreenFactory.For<SingleInstanceScreen>());
          Assert.AreEqual(1, c.Screens.Count());
       }
 
@@ -94,6 +78,53 @@
                .WithSubject(singleSubject)
                .For<LocatableScreen>()
          );
+
+         CollectionAssert.AreEqual(
+            new[] { singleSubject },
+            GetSubjectsOfOpenScreens(conductor)
+         );
+      }
+
+      [TestMethod]
+      public void OpenScreenUseScreenLocation_WhenAttributeIsOnBaseClass_Works() {
+         var conductor = CreateConductor();
+         var singleSubject = new BaseSubject { Value = "Single Subject" };
+
+         conductor.OpenScreen(
+            ScreenFactory
+               .WithSubject(singleSubject)
+               .For<DerivedLocatableScreen>()
+         );
+
+         conductor.OpenScreen(
+            ScreenFactory
+               .WithSubject(singleSubject)
+               .For<DerivedLocatableScreen>()
+         );
+
+         CollectionAssert.AreEqual(
+            new[] { singleSubject },
+            GetSubjectsOfOpenScreens(conductor)
+         );
+      }
+
+
+      [TestMethod]
+      public void OpenScreenUseScreenLocation_WhenScreenFactoryIsDowncasted_Works() {
+         var conductor = CreateConductor();
+         var singleSubject = new BaseSubject { Value = "Single Subject" };
+
+         conductor.OpenScreen(
+            ScreenFactory
+               .WithSubject(singleSubject)
+               .For<DerivedLocatableScreen>()
+         );
+
+         IScreenFactory<IScreenBase> downcasted = ScreenFactory
+            .WithSubject(singleSubject)
+            .For<DerivedLocatableScreen>();
+
+         conductor.OpenScreen(downcasted);
 
          CollectionAssert.AreEqual(
             new[] { singleSubject },
@@ -163,6 +194,8 @@
             Subject = subject;
          }
       }
+
+      public class DerivedLocatableScreen : LocatableScreen { }
 
       public class BaseSubject {
          public string Value { get; set; }
