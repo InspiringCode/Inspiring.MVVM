@@ -323,6 +323,7 @@
     </Compile>
     <Compile Include="Views\ScreenConductorAdapterTest.cs" />
     <Compile Include="Views\ViewBinderTest.cs" />
+    <Compile Include="Views\ViewFactoryTests.cs" />
     <Compile Include="Views\ViewTest.cs" />
     <Compile Include="WpfTestHelper.cs" />
   </ItemGroup>
