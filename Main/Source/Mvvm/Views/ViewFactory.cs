@@ -11,13 +11,24 @@
             return false;
          }
 
-         Type[] interfaces = view.GetType().GetInterfaces();
+         Type[] interfaces = view
+            .GetType()
+            .GetInterfaces();
+
+         Type[] supportedModelTypes = interfaces
+            .Where(i => IsIViewInterface(i))
+            .Select(i => GetModelTypeOfIViewInterface(i))
+            .ToArray();
 
          if (withModel != null) {
             // Get the most specialized IView<T> implementation
-            foreach (Type viewInterface in GetPossibleViewInterfaces(withModel.GetType())) {
-               if (interfaces.Contains(viewInterface)) {
-                  SetModelProperty(view, withModel, viewInterface);
+            foreach (Type modelBaseType in GetModelBaseTypes(withModel.GetType())) {
+               Type supportedModelType = supportedModelTypes
+                  .FirstOrDefault(t => t.IsAssignableFrom(modelBaseType));
+
+               if (supportedModelType != null) {
+                  Type implementedViewInterface = typeof(IView<>).MakeGenericType(supportedModelType);
+                  SetModelProperty(view, withModel, implementedViewInterface);
                   return true;
                }
             }
@@ -25,7 +36,7 @@
             // Set all Model properties to null and return true if at least one 
             // IView<T> interface is implemented.
             Type[] implementedViewInterfaces = interfaces
-               .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IView<>))
+               .Where(i => IsIViewInterface(i))
                .ToArray();
 
             if (implementedViewInterfaces.Length > 0) {
@@ -63,11 +74,37 @@
          for (Type t = forModelType; t != null; t = t.BaseType) {
             yield return typeof(IView<>).MakeGenericType(t);
          }
+
+         //foreach (Type itf in forModelType.GetInterfaces()) {
+         //   yield return typeof(IView<>).MakeGenericType(itf);
+         //}
+      }
+
+      private static IEnumerable<Type> GetModelBaseTypes(Type modelType) {
+         for (Type t = modelType; t != null; t = t.BaseType) {
+            yield return t;
+         }
+
+         foreach (Type itf in modelType.GetInterfaces()) {
+            yield return itf;
+         }
       }
 
       private static void SetModelProperty(object ofView, object toModel, Type viewInterface) {
          PropertyInfo viewInterfaceModelProperty = viewInterface.GetProperty("Model");
          viewInterfaceModelProperty.SetValue(ofView, toModel, null);
+      }
+
+      private static bool IsIViewInterface(Type itf) {
+         return
+            itf.IsGenericType &&
+            itf.GetGenericTypeDefinition() == typeof(IView<>);
+      }
+
+      private static Type GetModelTypeOfIViewInterface(Type viewInterface) {
+         return viewInterface
+            .GetGenericArguments()
+            .First();
       }
    }
 }
