@@ -106,6 +106,30 @@
       }
 
       [TestMethod]
+      public void ValidationResult_WhenExistingItemIsSelectedWhenCurrentItemDoesNotExist_BecomesValid() {
+         var allGroups = new[] { Group1, InactiveGroup };
+         var selectableGroups = new[] { Group1, Group2 };
+
+         var vm = CreateUserVM(
+            allGroups: allGroups,
+            filter: x => x.IsActive,
+            selectedGroups: Group2
+         );
+         
+         var selectionVM = vm.GetValue(x => x.Groups);
+         selectionVM.Load(x => x.SelectedItems);
+
+         Assert.IsFalse(selectionVM.IsValid);
+
+         var existingItem = selectionVM
+            .AllItems
+            .Single(x => x.Source == Group1);
+
+         selectionVM.SelectedItems.Clear();
+         ValidationAssert.IsValid(selectionVM);
+      }
+
+      [TestMethod]
       public void AllItems_WithoutItemsSource_UsesServiceLocator() {
          Group[] allItems = new[] { Group1 };
 

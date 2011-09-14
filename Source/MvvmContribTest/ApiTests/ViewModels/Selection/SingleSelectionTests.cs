@@ -81,6 +81,30 @@
       }
 
       [TestMethod]
+      public void ValidationResult_WhenExistingItemIsSelectedWhenCurrentItemDoesNotExist_BecomesValid() {
+         var allDepartments = new[] { Department1 };
+         var allIncludingSelected = new[] { Department1, Department2 };
+
+         var vm = CreateUserVM(
+            allDepartments: allDepartments,
+            selectedDepartment: Department2
+         );
+
+         var selectionVM = vm.GetValue(x => x.Department);
+         selectionVM.Load(x => x.SelectedItem);
+
+         Assert.IsFalse(selectionVM.IsValid);
+
+         var existingItem = selectionVM
+            .AllItems
+            .Single(x => x.Source == Department1);
+
+         selectionVM.SetValue(x => x.SelectedItem, existingItem);
+
+         ValidationAssert.IsValid(selectionVM);         
+      }
+
+      [TestMethod]
       public void AllItems_WithFilteredAndNonExistingSelectedItem_ReturnsFilteredItemsIncludingSelectedAndIsInvalid() {
          var allDepartments = new[] { Department1, InactiveDepartment };
          var filteredIncludingSelected = new[] { Department1, Department2 };

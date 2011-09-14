@@ -54,9 +54,9 @@
          if (!context.FieldValues.TryGetValue(_items, out items)) {
             var vm = context.VM;
             IEnumerable<TItemSource> allItems = vm.Kernel.GetValue(_allItemsProperty);
-            IEnumerable<TItemSource> selectedItems = _selectedItemsSelector(vm);
+            Func<IEnumerable<TItemSource>> selectedItemsProvider = () => _selectedItemsSelector(vm);
 
-            items = new SourceItemCollections<TItemSource>(allItems, selectedItems, IsActiveFilter);
+            items = new SourceItemCollections<TItemSource>(allItems, selectedItemsProvider, IsActiveFilter);
             context.FieldValues.SetValue(_items, items);
          }
 
@@ -78,14 +78,16 @@
    }
 
    internal class SourceItemCollections<TItemSource> {
+      private Func<IEnumerable<TItemSource>> _selectedItemsProvider;
+
       internal SourceItemCollections(
          IEnumerable<TItemSource> allItems,
-         IEnumerable<TItemSource> selectedItems,
+         Func<IEnumerable<TItemSource>> selectedItemsProvider,
          Func<TItemSource, bool> isActiveFilter
       ) {
          allItems = allItems ?? Enumerable.Empty<TItemSource>();
 
-         SelectedItems = selectedItems;
+         _selectedItemsProvider = selectedItemsProvider;
          AllSourceItems = new HashSet<TItemSource>(allItems);
 
          IEnumerable<TItemSource> selectableItems = allItems;
@@ -93,6 +95,8 @@
          if (isActiveFilter != null) {
             selectableItems = selectableItems.Where(isActiveFilter);
          }
+
+         IEnumerable<TItemSource> selectedItems = _selectedItemsProvider();
 
          if (selectedItems != null && selectedItems.Any()) {
             // Add items that are either inactive but currently selected or do
@@ -107,12 +111,18 @@
       public IEnumerable<TItemSource> SelectableItems { get; private set; }
       public IEnumerable<TItemSource> SelectedItems { get; private set; }
 
-      public ISet<TItemSource> SelectedItemsNotContainedInSource {
-         get {
-            return new HashSet<TItemSource>(
-               SelectedItems.Where(x => !AllSourceItems.Contains(x))
-            );
-         }
+      //public ISet<TItemSource> SelectedItemsNotContainedInSource {
+      //   get {
+      //      var selectedItems = _selectedItemsProvider();
+
+      //      return new HashSet<TItemSource>(
+      //         selectedItems.Where(x => !AllSourceItems.Contains(x))
+      //      );
+      //   }
+      //}
+
+      public bool IsItemContainedInSource(TItemSource item) {
+         return AllSourceItems.Contains(item);
       }
    }
 }
