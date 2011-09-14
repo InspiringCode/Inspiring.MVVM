@@ -130,10 +130,10 @@
             var selectionVM = (IHasSourceItems<TSource>)args.Items.OwnerVM;
             SourceItemCollections<TSource> source = selectionVM.SourceItems;
 
-            ISet<TSource> nonExisting = source.SelectedItemsNotContainedInSource;
+            //ISet<TSource> nonExisting = source.SelectedItemsNotContainedInSource;
 
             foreach (TVM selectedItem in args.Items) {
-               if (nonExisting.Contains(selectedItem.Source)) {
+               if (!source.IsItemContainedInSource(selectedItem.Source)) {
                   args.AddError(selectedItem, errorMessage, details);
                }
             }
@@ -159,10 +159,12 @@
             var selectionVM = (IHasSourceItems<TSource>)args.Target;
             SourceItemCollections<TSource> source = selectionVM.SourceItems;
 
-            ISet<TSource> nonExisting = source.SelectedItemsNotContainedInSource;
+            //ISet<TSource> nonExisting = source.SelectedItemsNotContainedInSource;
 
-            if (nonExisting.Any()) {
-               args.AddError(errorMessage, details);
+            if (args.Value != null) {
+               if (!source.IsItemContainedInSource(args.Value.Source)) {
+                  args.AddError(errorMessage, details);
+               }
             }
          });
       }
