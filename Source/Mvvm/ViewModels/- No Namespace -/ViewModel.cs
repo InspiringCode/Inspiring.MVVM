@@ -70,12 +70,15 @@
 
       protected VMKernel Kernel {
          get {
-            Contract.Requires<InvalidOperationException>(
-               Descriptor != null,
-               ExceptionTexts.DescriptorNotSet
-            );
-
-            Contract.Ensures(Contract.Result<VMKernel>() != null);
+            // This property is accessed very often. Performance optimizations:
+            //  (1) No contracts are use because they always access the resource 
+            //      file and add some overhead.
+            //  (2) The throwing of the exception happens in its own method because
+            //      methods that may throw exceptions are not inlined by the JIT
+            //      compiler.
+            if (Descriptor == null) {
+               ThrowDescriptorNotSetException();
+            }
 
             if (_kernel == null) {
                _kernel = new VMKernel(this, Descriptor, ServiceLocator);
@@ -343,6 +346,10 @@
          if (args.ChangeType == ChangeType.ValidationResultChanged) {
             OnPropertyChanged("IsValid");
          }
+      }
+
+      private void ThrowDescriptorNotSetException() {
+         throw new InvalidOperationException(ExceptionTexts.DescriptorNotSet);
       }
    }
 }

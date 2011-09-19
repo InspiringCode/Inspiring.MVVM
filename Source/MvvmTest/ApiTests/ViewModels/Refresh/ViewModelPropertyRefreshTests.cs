@@ -133,7 +133,22 @@
             });
       }
 
+      [TestMethod]
+      public void Refresh_OfWrapperProperty_DoesNotCallSourceSetter() {
+         VM.WrapperPropertySource = new ChildSource();
+         VM.WrapperPropertySourceSetterCount = 0;
+
+         VM.Load(x => x.WrapperProperty);
+
+         Assert.AreEqual(0, VM.WrapperPropertySourceSetterCount);
+
+         VM.Refresh(x => x.WrapperProperty);
+         Assert.AreEqual(0, VM.WrapperPropertySourceSetterCount);
+      }
+
       private sealed class RootVM : TestViewModel<RootVMDescriptor> {
+         private ChildSource _wrapperPropertySource;
+
          public static readonly RootVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<RootVMDescriptor>()
             .For<RootVM>()
@@ -159,8 +174,16 @@
             ValidationErrors = new Dictionary<IVMPropertyDescriptor, string>();
          }
 
-         public ChildSource WrapperPropertySource { get; set; }
+         public ChildSource WrapperPropertySource {
+            get { return _wrapperPropertySource; }
+            set {
+               _wrapperPropertySource = value;
+               WrapperPropertySourceSetterCount++;
+            }
+         }
          public ChildVM DelegatePropertyResult { get; set; }
+
+         public int WrapperPropertySourceSetterCount { get; set; }
 
          public Dictionary<IVMPropertyDescriptor, string> ValidationErrors { get; private set; }
 

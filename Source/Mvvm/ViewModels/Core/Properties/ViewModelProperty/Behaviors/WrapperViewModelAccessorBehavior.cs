@@ -22,6 +22,10 @@
          TSource source = this.GetValueNext<TSource>(context);
          TValue childVM = GetValue(context);
 
+         // Note: We must not call 'SetValueNext' here because a Refresh would
+         // try to set the source property which may fail if it is a readonly
+         // property.
+
          if (source != null) {
             if (childVM != null) {
                childVM.Source = source;
@@ -29,10 +33,10 @@
             } else {
                childVM = CreateViewModel(context);
                childVM.Source = source;
-               SetValue(context, childVM);
+               UpdateCache(context, childVM);
             }
          } else {
-            SetValue(context, default(TValue));
+            UpdateCache(context, default(TValue));
          }
 
          this.RefreshNext(context);

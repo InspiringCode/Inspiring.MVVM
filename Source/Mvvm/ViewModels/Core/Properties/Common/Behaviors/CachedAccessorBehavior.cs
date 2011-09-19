@@ -51,12 +51,20 @@ namespace Inspiring.Mvvm.ViewModels.Core {
 
       public virtual void SetValue(IBehaviorContext context, TValue value) {
          RequireInitialized();
-         _cache.Set(context, value);
+         UpdateCache(context, value);
          this.SetValueNext(context, value);
       }
 
       public bool IsLoaded(IBehaviorContext context) {
          return _cache.HasValue(context) && this.IsLoadedNext(context);
+      }
+
+      /// <summary>
+      ///   Updates the cached value without call SetValue on the behavior
+      ///   chain.
+      /// </summary>
+      protected void UpdateCache(IBehaviorContext context, TValue value) {
+         _cache.Set(context, value);
       }
 
       protected void RefreshCache(IBehaviorContext context) {
