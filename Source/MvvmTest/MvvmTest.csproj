@@ -116,11 +116,12 @@
     <Compile Include="ApiTests\ViewModels\CommandHandlerTests.cs" />
     <Compile Include="ApiTests\ViewModels\Core\PathDefinitionTests.cs" />
     <Compile Include="ApiTests\ViewModels\Core\VMKernelTests.cs" />
-    <Compile Include="ApiTests\ViewModels\DeclarativeDeendencies\DependencyExecuteActionTests.cs" />
-    <Compile Include="ApiTests\ViewModels\DeclarativeDeendencies\DependencyRefreshActionTests.cs" />
-    <Compile Include="ApiTests\ViewModels\DeclarativeDeendencies\DependencyTestBase.cs" />
-    <Compile Include="ApiTests\ViewModels\DeclarativeDeendencies\DependencyValidationActionTests.cs" />
-    <Compile Include="ApiTests\ViewModels\DeclarativeDeendencies\LazyLoadTests.cs" />
+    <Compile Include="ApiTests\ViewModels\DeclarativeDependencies\DependencyExecuteActionTests.cs" />
+    <Compile Include="ApiTests\ViewModels\DeclarativeDependencies\DependencyRefreshActionTests.cs" />
+    <Compile Include="ApiTests\ViewModels\DeclarativeDependencies\DependencyTestBase.cs" />
+    <Compile Include="ApiTests\ViewModels\DeclarativeDependencies\DependencyTests.cs" />
+    <Compile Include="ApiTests\ViewModels\DeclarativeDependencies\DependencyValidationActionTests.cs" />
+    <Compile Include="ApiTests\ViewModels\DeclarativeDependencies\LazyLoadTests.cs" />
     <Compile Include="ApiTests\ViewModels\Domain\CustomerRepository.cs" />
     <Compile Include="ApiTests\ViewModels\InheritanceTests.cs" />
     <Compile Include="ApiTests\ViewModels\InheritanceWithGenericsTests.cs" />

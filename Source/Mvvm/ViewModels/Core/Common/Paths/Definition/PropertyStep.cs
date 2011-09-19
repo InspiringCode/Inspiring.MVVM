@@ -59,14 +59,22 @@
          var property = _propertySelector((TDescriptor)rootVM.Descriptor);
          var instance = rootVM.Kernel.GetValue(property);
 
-         if (instance is IVMCollection) {
+         if (PropertyTypeHelper.IsViewModelCollection(property.PropertyType)) {
+            if (instance == null) {
+               return new IViewModel[0];
+            }
+
             var collection = (IVMCollection)instance;
             return ((IVMCollection)instance)
                .Cast<IViewModel>()
                .SelectMany(x => definitionSteps.GetDescendantNext(x))
                .ToArray();
 
-         } else if (instance is IViewModel) {
+         } else if (PropertyTypeHelper.IsViewModel(property.PropertyType)) {
+            if (instance == null) {
+               return new IViewModel[0];
+            }
+
             return definitionSteps.GetDescendantNext((IViewModel)instance);
          }
 
