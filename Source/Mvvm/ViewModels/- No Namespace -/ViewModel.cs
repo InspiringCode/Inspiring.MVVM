@@ -171,9 +171,6 @@
             } else if (parts.Length == 3) {
                IVMPropertyDescriptor viewModelProp = Kernel.GetProperty(parts[0]);
                IViewModel viewModel = (IViewModel)Kernel.GetDisplayValue(viewModelProp);
-               if (viewModel == null) {
-                  return null;
-               }
 
                property = viewModel.Kernel.GetProperty(parts[1]);
                value = property != null ? viewModel.Kernel.GetDisplayValue(property) as IDataErrorInfo : null;
