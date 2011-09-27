@@ -211,14 +211,10 @@
     <Compile Include="ViewModels\- No Namespace -\ViewModelTests.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMCollectionCallModificationBehaviorTests.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMCollectionTests.cs" />
-    <Compile Include="ViewModels\- Test Infrastructure -\BehaviorContextStub.cs" />
-    <Compile Include="ViewModels\- Test Infrastructure -\DescriptorStub.cs" />
-    <Compile Include="ViewModels\- Test Infrastructure -\PropertyStub.cs" />
     <Compile Include="ViewModels\- Test Infrastructure -\ServiceLocatorStub.cs" />
     <Compile Include="ViewModels\- Test Infrastructure -\ValidationResultAggregaturStub.cs" />
     <Compile Include="ViewModels\- Test Infrastructure -\ValidationResultProviderStub.cs" />
     <Compile Include="ViewModels\- Test Infrastructure -\ValueAccessorStub.cs" />
-    <Compile Include="ViewModels\- Test Infrastructure -\ViewModelStub.cs" />
     <Compile Include="ViewModels\- Test Infrastructure -\VMCollectionStub.cs" />
     <Compile Include="Common\BehaviorKeysTests.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\AnyStepsStepTests.cs" />

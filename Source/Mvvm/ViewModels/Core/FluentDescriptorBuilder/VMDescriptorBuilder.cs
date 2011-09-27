@@ -80,7 +80,7 @@
          Action<TDescriptor, IVMPropertyBuilderProvider<TVM>> propertyConfigurator
       ) {
          Contract.Requires<ArgumentNullException>(propertyConfigurator != null);
-         _propertyConfigurator = propertyConfigurator;
+         _propertyConfigurator += propertyConfigurator;
          return this;
       }
 
@@ -89,7 +89,7 @@
          Action<IVMDependencyBuilder<TVM, TDescriptor>> dependencyConfigurator
       ) {
          Contract.Requires<ArgumentNullException>(dependencyConfigurator != null);
-         _dependencyConfigurator = dependencyConfigurator;
+         _dependencyConfigurator += dependencyConfigurator;
          return this;
       }
 
@@ -98,7 +98,7 @@
          Action<RootValidatorBuilder<TVM, TVM, TDescriptor>> validatorConfigurator
       ) {
          Contract.Requires<ArgumentNullException>(validatorConfigurator != null);
-         _validatorConfigurator = validatorConfigurator;
+         _validatorConfigurator += validatorConfigurator;
          return this;
       }
 
@@ -107,7 +107,7 @@
          Action<IVMBehaviorBuilder<TVM, TDescriptor>> behaviorConfigurator
       ) {
          Contract.Requires<ArgumentNullException>(behaviorConfigurator != null);
-         _behaviorConfigurator = behaviorConfigurator;
+         _behaviorConfigurator += behaviorConfigurator;
          return this;
       }
 
@@ -116,7 +116,7 @@
          Action<ViewModelBehaviorBuilder<TVM, TDescriptor>> behaviorConfigurator
       ) {
          Contract.Requires<ArgumentNullException>(behaviorConfigurator != null);
-         _viewModelBehaviorConfigurator = behaviorConfigurator;
+         _viewModelBehaviorConfigurator += behaviorConfigurator;
          return this;
       }
 

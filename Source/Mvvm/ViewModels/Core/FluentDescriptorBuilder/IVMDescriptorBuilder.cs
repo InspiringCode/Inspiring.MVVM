@@ -25,7 +25,8 @@
    /// <summary>
    ///   Fluent interface. See <see cref="VMDescriptorBuilder"/>.
    /// </summary>
-   public interface IVMDescriptorBuilderWithProperties<TDescriptor, TVM>
+   public interface IVMDescriptorBuilderWithProperties<TDescriptor, TVM> : 
+      IVMDescriptorBuilder<TDescriptor, TVM>
       where TDescriptor : VMDescriptor, new()
       where TVM : IViewModel {
 

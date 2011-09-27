@@ -3,6 +3,8 @@
    using System.Collections.Generic;
 
    internal sealed class User {
+      private Department _department;
+
       public User(string name = null) {
          Name = name ?? "User";
          Groups = new List<Group>();
@@ -14,7 +16,10 @@
 
       public string Name { get; set; }
 
-      public Department Department { get; set; }
+      public Department Department {
+         get { return _department; }
+         set { _department = value; }
+      }
 
       public ICollection<Group> Groups { get; private set; }
 

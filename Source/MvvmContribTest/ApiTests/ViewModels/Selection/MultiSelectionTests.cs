@@ -499,6 +499,31 @@
          Assert.IsNull(actualMessage);
       }
 
+      [TestMethod]
+      public void GetValueOfSelectedItems_DoesNotLoadAllItems() {
+         var vm = CreateUserVMWithItems();
+         vm.Groups.GetValue(x => x.SelectedItems);
+         ViewModelAssert.IsNotLoaded(vm.Groups, x => x.AllItems);
+      }
+
+      [TestMethod]
+      public void SetSelectedSourceItems_DoesNotLoadAllItems() {
+         var vm = CreateUserVMWithItems();
+         vm.Groups.Load(x => x.SelectedItems);
+         vm.Groups.SelectedSourceItems = new[] { Group1, Group3 };
+         ViewModelAssert.IsNotLoaded(vm.Groups, x => x.AllItems);
+      }
+
+      [TestMethod]
+      public void Revalidate_DoesNotLoadAllItems() {
+         var vm = CreateUserVMWithItems();
+
+         vm.Groups.Load(x => x.SelectedItems);
+         vm.Groups.Revalidate(ValidationScope.SelfAndLoadedDescendants);
+
+         ViewModelAssert.IsNotLoaded(vm.Groups, x => x.AllItems);
+      }
+
       /// <summary>
       ///   Asserts that the source groups of the 'AllItems' property of the
       ///   selection VM are equal to the given source items.

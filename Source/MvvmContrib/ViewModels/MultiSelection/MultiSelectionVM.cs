@@ -14,10 +14,10 @@
    }
 
    public abstract class MultiSelectionBaseVM<TItemSource, TItemVM> :
-      ViewModel<MultiSelectionVMDescriptor<TItemSource, TItemVM>>,
+      SelectionVM<MultiSelectionVMDescriptor<TItemSource, TItemVM>, TItemSource, TItemVM>,
       IMultiSelectionVM,
-      IHasSourceItems<TItemSource>
-      where TItemVM : IViewModel {
+      ISelectionVM
+      where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
       /// <param name="descriptor">
       ///   Use <see cref="CreateDescriptor"/> to create one.
@@ -104,17 +104,19 @@
          set { SetDisplayValue(Descriptor.SelectedItems, value); }
       }
 
-
-
-      SourceItemCollections<TItemSource> IHasSourceItems<TItemSource>.SourceItems {
-         get {
-            return Descriptor
-               .AllItems
-               .Behaviors
-               .GetNextBehavior<ItemProviderBehavior<TItemSource>>()
-               .GetCollections(GetContext());
-         }
+      internal void RaisePropertyChangedForSelectedItems() {
+         OnPropertyChanged("SelectedItems");
       }
+
+      //SourceItemCollections<TItemSource> IHasSourceItems<TItemSource>.SourceItems {
+      //   get {
+      //      return Descriptor
+      //         .AllItems
+      //         .Behaviors
+      //         .GetNextBehavior<ItemProviderBehavior<TItemSource>>()
+      //         .GetSelectableItems(GetContext());
+      //   }
+      //}
 
       ///// <summary>
       /////   Returns all source items for which the <see cref="ActiveItemFilter"/>
@@ -211,6 +213,14 @@
          }
 
          return base.ProvideErrorMessage(propertyName);
+      }
+
+      IEnumerable ISelectionVM.AllSourceItems {
+         get { return AllSourceItems; }
+      }
+
+      IEnumerable ISelectionVM.SelectedSourceItems {
+         get { return SelectedSourceItems; }
       }
    }
 

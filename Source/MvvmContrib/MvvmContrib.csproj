@@ -118,26 +118,25 @@
     <Compile Include="Testing\MessageBoxResponderSetup.cs" />
     <Compile Include="ViewModels\Behaviors\SettableListDisplayValueBehavior.cs" />
     <Compile Include="ViewModels\EnumLocalizer.cs" />
-    <Compile Include="ViewModels\EnumSelectionPropertyBuilder.cs" />
-    <Compile Include="ViewModels\ISelectionPropertyBuilder.cs" />
-    <Compile Include="ViewModels\ItemProviderBehavior.cs" />
-    <Compile Include="ViewModels\IVMPropertyFactory.cs" />
+    <Compile Include="ViewModels\ISelectionVM.cs" />
+    <Compile Include="ViewModels\Behaviors\ItemProviderBehavior.cs" />
+    <Compile Include="ViewModels\MultiSelection\MultiSelectionDescriptorBuilder.cs" />
     <Compile Include="ViewModels\MultiSelection\MultiSelectionVM.cs" />
-    <Compile Include="ViewModels\MultiSelection\LookupPopulatorCollectionBehavior.cs" />
+    <Compile Include="ViewModels\MultiSelection\SelectedItemsAccessorBehavior.cs" />
     <Compile Include="ViewModels\MultiSelection\MultiSelectionBuilder.cs" />
     <Compile Include="ViewModels\MultiSelection\MultiSelectionVMDescriptor.cs" />
     <Compile Include="ViewModels\MultiSelection\MultiSelectionWithSourceVM.cs" />
     <Compile Include="ViewModels\ReverseManyToManyCollection.cs" />
     <Compile Include="ViewModels\SelectableItemVM.cs" />
     <Compile Include="ViewModels\SelectionBuilderExtensions.cs" />
+    <Compile Include="ViewModels\SelectionHelpers.cs" />
+    <Compile Include="ViewModels\Behaviors\SelectionItemViewModelCacheBehavior.cs" />
     <Compile Include="ViewModels\SelectionItemVM.cs" />
-    <Compile Include="ViewModels\SelectionPropertyConfiguration.cs" />
-    <Compile Include="ViewModels\IHasSourceItems.cs" />
-    <Compile Include="ViewModels\SingleSelectionProperty.cs" />
-    <Compile Include="ViewModels\SingleSelectionPropertyBuilder.cs" />
-    <Compile Include="ViewModels\SingleSelectionVM.cs" />
+    <Compile Include="ViewModels\Selections\SelectionDescriptorBuilder.cs" />
     <Compile Include="Screens\IMessageBoxService.cs" />
+    <Compile Include="ViewModels\Selections\SelectionVM.cs" />
     <Compile Include="ViewModels\SingleSelection\SingleSelectionBuilder.cs" />
+    <Compile Include="ViewModels\SingleSelection\SingleSelectionDescriptorBuilder.cs" />
     <Compile Include="ViewModels\SingleSelection\SingleSelectionVMDescriptor.cs" />
     <Compile Include="ViewModels\SingleSelection\SingleSelectionWithSourceVM.cs" />
     <Compile Include="ViewModels\SingleSelection\SingleSelectionVM.cs" />
@@ -167,7 +166,9 @@
   <ItemGroup>
     <Content Include="Finding screens.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="ViewModels\- Diagrams -\Selection Hierarchy.cd" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

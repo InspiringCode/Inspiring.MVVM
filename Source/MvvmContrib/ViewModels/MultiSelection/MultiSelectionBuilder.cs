@@ -5,67 +5,45 @@
    using Inspiring.Mvvm.ViewModels.Core;
 
    public class MultiSelectionBuilder<TSourceObject, TItemSource> {
-      private IVMPropertyBuilder<TSourceObject> _sourceObjectPropertyBuilder;
+      private readonly IVMPropertyBuilder<TSourceObject> _sourceObjectPropertyBuilder;
+      private Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<ICollection<TItemSource>>> _selectedSourceItemsPropertyFactory;
+      private Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> _allSourceItemsPropertyFactory;
+      private Func<TItemSource, bool> _filter;
+      private bool _validationIsEnabled;
+      private bool _undoIsEnabled;
 
       /// <param name="sourceObjectPropertyBuilder">
       ///   The original <see cref="VMPropertyBuilder"/> that was extended by
       ///   with the extension method.
       /// </param>
-      internal MultiSelectionBuilder(IVMPropertyBuilder<TSourceObject> sourceObjectPropertyBuilder) {
+      internal MultiSelectionBuilder(
+         IVMPropertyBuilder<TSourceObject> sourceObjectPropertyBuilder,
+         Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<ICollection<TItemSource>>> selectedSourceItemsPropertyFactory
+       ) {
          Contract.Requires(sourceObjectPropertyBuilder != null);
          _sourceObjectPropertyBuilder = sourceObjectPropertyBuilder;
-      }
-
-      /// <summary>
-      ///   Caches the property builder.
-      /// </summary>
-      internal Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<ICollection<TItemSource>>> SelectedSourceItemsPropertyFactory {
-         get;
-         set;
-      }
-
-      /// <summary>
-      ///   Caches the property builder.
-      /// </summary>
-      internal Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> AllSourceItemsPropertyFactory {
-         get;
-         set;
-      }
-
-      internal Func<TItemSource, bool> Filter {
-         get;
-         set;
-      }
-
-      internal bool ValidationIsEnabled {
-         get;
-         private set;
-      }
-
-      internal bool UndoIsEnabled {
-         get;
-         private set;
+         _selectedSourceItemsPropertyFactory = selectedSourceItemsPropertyFactory;
       }
 
       public MultiSelectionBuilder<TSourceObject, TItemSource> EnableValidations() {
-         ValidationIsEnabled = true;
+         _validationIsEnabled = true;
          return this;
       }
 
       public MultiSelectionBuilder<TSourceObject, TItemSource> EnableUndo() {
-         UndoIsEnabled = true;
+         _undoIsEnabled = true;
          return this;
       }
 
       public MultiSelectionBuilder<TSourceObject, TItemSource> WithFilter(Func<TItemSource, bool> filter) {
-         Filter = filter;
+         _filter = filter;
          return this;
       }
 
       public MultiSelectionBuilder<TSourceObject, TItemSource> WithItems(
          Func<TSourceObject, IEnumerable<TItemSource>> allSourceItemsSelector
       ) {
-         AllSourceItemsPropertyFactory = delegate(IVMPropertyBuilder<TSourceObject> factory) {
+         _allSourceItemsPropertyFactory = delegate(IVMPropertyBuilder<TSourceObject> factory) {
             return factory.Property.DelegatesTo(allSourceItemsSelector);
          };
 
@@ -74,34 +52,35 @@
 
       public IVMPropertyDescriptor<MultiSelectionVM<TItemSource, TItemVM>> Of<TItemVM>()
          where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
-         Contract.Assert(SelectedSourceItemsPropertyFactory != null);
+         Contract.Assert(_selectedSourceItemsPropertyFactory != null);
 
          var allSourceItemsPropertyFactory =
-            AllSourceItemsPropertyFactory ??
+            _allSourceItemsPropertyFactory ??
             CreateLocatingPropertyFactory();
 
-         // The descriptor is created only once for every owner VM property/descriptor
-         // and reused for every VM instance created from the owner VM descriptor.
-         var descriptor = MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>.CreateDescriptor(
-            SelectedSourceItemsPropertyFactory,
-            allSourceItemsPropertyFactory,
-            ValidationIsEnabled,
-            UndoIsEnabled,
-            Filter
+         var descriptorBuilder = new SelectableItemMultiSelectionDescriptorBuilder<TSourceObject, TItemSource, TItemVM>(
+            _filter
          );
+
+         descriptorBuilder.WithProperties((d, b) => {
+            var s = b.GetPropertyBuilder(x => x.SourceObject);
+
+            d.AllSourceItems = allSourceItemsPropertyFactory(s);
+            d.SelectedSourceItems = _selectedSourceItemsPropertyFactory(s);
+         });
+
+         if (_undoIsEnabled) {
+            descriptorBuilder.WithViewModelBehaviors(b => {
+               b.EnableUndo();
+            });
+         }
+
+         var descriptor = descriptorBuilder.Build();
 
          var property = _sourceObjectPropertyBuilder.Custom.ViewModelProperty(
-            valueAccessor: new MultSelectionAccessor<TItemVM>(descriptor, Filter),
+            valueAccessor: new MultSelectionAccessor<TItemVM>(descriptor, _filter),
             sourceAccessor: _sourceObjectPropertyBuilder.Custom.CreateSourceObjectAccessor()
          );
-
-         //_sourceObjectPropertyBuilder
-         //   .Configuration
-         //   .PropertyConfigurations[property]
-         //   .Enable(
-         //      PropertyBehaviorKeys.ManualUpdateBehavior,
-         //      new ManualUpdateSelectionPropertyBehavior<MultiSelectionVM<TItemSource, TItemVM>, TSourceObject>()
-         //   );
 
          return property;
       }
@@ -110,7 +89,7 @@
          Func<TItemSource, string> captionGetter
       ) {
          Contract.Requires<ArgumentNullException>(captionGetter != null);
-         Contract.Assert(SelectedSourceItemsPropertyFactory != null);
+         Contract.Assert(_selectedSourceItemsPropertyFactory != null);
 
          SelectionItemVMDescriptor itemDescriptor = VMDescriptorBuilder
             .OfType<SelectionItemVMDescriptor>()
@@ -125,32 +104,33 @@
 
 
          var allSourceItemsPropertyFactory =
-            AllSourceItemsPropertyFactory ??
+            _allSourceItemsPropertyFactory ??
             CreateLocatingPropertyFactory();
 
-         // The descriptor is created only once for every owner VM property/descriptor
-         // and reused for every VM instance created from the owner VM descriptor.
-         var descriptor = MultiSelectionWithSourceVM<TSourceObject, TItemSource>.CreateDescriptor(
-            itemDescriptor,
-            SelectedSourceItemsPropertyFactory,
-            allSourceItemsPropertyFactory,
-            ValidationIsEnabled,
-            UndoIsEnabled,
-            Filter
+         var descriptorBuilder = new CaptionMultiSelectionDescriptorBuilder<TSourceObject, TItemSource>(
+            _filter,
+            itemDescriptor
          );
+
+         descriptorBuilder.WithProperties((d, b) => {
+            var s = b.GetPropertyBuilder(x => x.Source);
+
+            d.AllSourceItems = allSourceItemsPropertyFactory(s);
+            d.SelectedSourceItems = _selectedSourceItemsPropertyFactory(s);
+         });
+
+         if (_undoIsEnabled) {
+            descriptorBuilder.WithViewModelBehaviors(b => {
+               b.EnableUndo();
+            });
+         }
+
+         var descriptor = descriptorBuilder.Build();
 
          var property = _sourceObjectPropertyBuilder.Custom.ViewModelProperty(
-            valueAccessor: new MultSelectionAccessor(descriptor, Filter),
+            valueAccessor: new MultSelectionAccessor(descriptor, _filter),
             sourceAccessor: _sourceObjectPropertyBuilder.Custom.CreateSourceObjectAccessor()
          );
-
-         //_sourceObjectPropertyBuilder
-         //   .Configuration
-         //   .PropertyConfigurations[property]
-         //   .Enable(
-         //      PropertyBehaviorKeys.ManualUpdateBehavior,
-         //      new ManualUpdateSelectionPropertyBehavior<MultiSelectionVM<TItemSource>, TSourceObject>()
-         //   );
 
          return property;
       }
@@ -182,24 +162,6 @@
             _descriptor = descriptor;
             _filter = filter;
          }
-
-         //public MultiSelectionVM<TItemSource, TItemVM> GetValue(IBehaviorContext context) {
-         //   TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context);
-
-         //   var vm = new MultiSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>(
-         //      _descriptor,
-         //      context.ServiceLocator
-         //   );
-
-         //   vm.ActiveItemFilter = _filter;
-         //   vm.InitializeFrom(sourceObject);
-
-         //   return vm;
-         //}
-
-         //public void SetValue(IBehaviorContext context, MultiSelectionVM<TItemSource, TItemVM> value) {
-         //   throw new NotSupportedException();
-         //}
 
          protected override MultiSelectionVM<TItemSource, TItemVM> ProvideValue(IBehaviorContext context) {
             TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context);
@@ -233,24 +195,6 @@
             _descriptor = descriptor;
             _filter = filter;
          }
-
-         //public MultiSelectionVM<TItemSource> GetValue(IBehaviorContext context) {
-         //   TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context);
-
-         //   var vm = new MultiSelectionWithSourceVM<TSourceObject, TItemSource>(
-         //      _descriptor,
-         //      context.ServiceLocator
-         //   );
-
-         //   vm.ActiveItemFilter = _filter;
-         //   vm.InitializeFrom(sourceObject);
-
-         //   return vm;
-         //}
-
-         //public void SetValue(IBehaviorContext context, MultiSelectionVM<TItemSource> value) {
-         //   throw new NotSupportedException();
-         //}
 
          protected override MultiSelectionVM<TItemSource> ProvideValue(IBehaviorContext context) {
             TSourceObject sourceObject = this.GetValueNext<TSourceObject>(context);

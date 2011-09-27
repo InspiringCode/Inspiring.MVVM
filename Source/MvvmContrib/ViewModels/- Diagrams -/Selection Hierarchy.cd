@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Inspiring.Mvvm.ViewModels.MultiSelectionBaseVM&lt;TItemSource, TItemVM&gt;" Collapsed="true">
+    <Position X="3" Y="5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAIAgAAAAAQgEAAAAIIAAgAAAAAABAAIAAAAA=</HashCode>
+      <FileName>ViewModels\MultiSelection\MultiSelectionVM.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Inspiring.Mvvm.ViewModels.MultiSelectionVM&lt;TItemSource&gt;" Collapsed="true">
+    <Position X="0.5" Y="6.5" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\MultiSelection\MultiSelectionVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Inspiring.Mvvm.ViewModels.MultiSelectionVM&lt;TItemSource, TItemVM&gt;" Collapsed="true">
+    <Position X="5" Y="6.5" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\MultiSelection\MultiSelectionVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Inspiring.Mvvm.ViewModels.MultiSelectionVMDescriptor&lt;TItemSource, TItemVM&gt;" Collapsed="true">
+    <Position X="10.5" Y="5" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAgAAAAAQAAAAAAIAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\MultiSelection\MultiSelectionVMDescriptor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Inspiring.Mvvm.ViewModels.MultiSelectionVMDescriptor&lt;TItemSource&gt;" Collapsed="true">
+    <Position X="10.5" Y="6.5" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\MultiSelection\MultiSelectionVMDescriptor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Inspiring.Mvvm.ViewModels.MultiSelectionWithSourceVM&lt;TSourceObject, TItemSource, TItemVM&gt;" Collapsed="true">
+    <Position X="5" Y="7.75" Width="4.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAACABAAAAAAAAAAEAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\MultiSelection\MultiSelectionWithSourceVM.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Inspiring.Mvvm.ViewModels.MultiSelectionWithSourceVM&lt;TSourceObject, TItemSource&gt;" Collapsed="true">
+    <Position X="0.5" Y="7.75" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAABAAAAAAAAAAEAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\MultiSelection\MultiSelectionWithSourceVM.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Inspiring.Mvvm.ViewModels.SingleSelectionBaseVM&lt;TItemSource, TItemVM&gt;" Collapsed="true">
+    <Position X="2.75" Y="0.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>ACgAAAAAAAAgAAEAQAEAAAAIAAAgAAAABBAAAYABAAA=</HashCode>
+      <FileName>ViewModels\SingleSelection\SingleSelectionVM.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Inspiring.Mvvm.ViewModels.SingleSelectionVM&lt;TItemSource&gt;" Collapsed="true">
+    <Position X="0.5" Y="2" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\SingleSelection\SingleSelectionVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Inspiring.Mvvm.ViewModels.SingleSelectionVM&lt;TItemSource, TItemVM&gt;" Collapsed="true">
+    <Position X="5.25" Y="2" Width="4.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\SingleSelection\SingleSelectionVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Inspiring.Mvvm.ViewModels.SingleSelectionVMDescriptor&lt;TItemSource, TItemVM&gt;" Collapsed="true">
+    <Position X="10.5" Y="0.5" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAQAAAAAAIAAAAAAAAABAAAAABAAA=</HashCode>
+      <FileName>ViewModels\SingleSelection\SingleSelectionVMDescriptor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Inspiring.Mvvm.ViewModels.SingleSelectionVMDescriptor&lt;TItemSource&gt;" Collapsed="true">
+    <Position X="10.5" Y="2" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\SingleSelection\SingleSelectionVMDescriptor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Inspiring.Mvvm.ViewModels.SingleSelectionWithSourceVM&lt;TSourceObject, TItemSource, TItemVM&gt;" Collapsed="true">
+    <Position X="5.25" Y="3.25" Width="4.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAACABAAAAAAAAAAEAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\SingleSelection\SingleSelectionWithSourceVM.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Inspiring.Mvvm.ViewModels.SingleSelectionWithSourceVM&lt;TSourceObject, TItemSource&gt;" Collapsed="true">
+    <Position X="0.5" Y="3.25" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAABAAAAAAAAAAEAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\SingleSelection\SingleSelectionWithSourceVM.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

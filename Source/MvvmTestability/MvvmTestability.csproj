@@ -100,7 +100,14 @@
     <Compile Include="ITestFrameworkAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestFrameworkAdapter.cs" />
+    <Compile Include="ViewModels\Core\BehaviorContextStub.cs" />
+    <Compile Include="ViewModels\Core\DescriptorStub.cs" />
+    <Compile Include="ViewModels\Core\PropertyStub.cs" />
+    <Compile Include="ViewModels\Core\ValidationResultAggregaturStub.cs" />
+    <Compile Include="ViewModels\Core\ValueAccessorStub.cs" />
+    <Compile Include="ViewModels\Core\ViewModelStub.cs" />
     <Compile Include="ViewModels\ValidationAssert.cs" />
+    <Compile Include="ViewModels\ViewModelAssert.cs" />
     <Compile Include="ViewModels\ViewModelExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

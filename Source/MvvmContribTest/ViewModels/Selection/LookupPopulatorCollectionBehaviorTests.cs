@@ -60,18 +60,18 @@
          Assert.Inconclusive();
       }
 
-      private LookupPopulatorCollectionBehavior<EmployeeVM, ProjectVM, Project> CreateBehavior(
+      private SelectedItemsAccessorBehavior<EmployeeVM, ProjectVM, Project> CreateBehavior(
          IEnumerable<ProjectVM> lookupCollection,
          IEnumerable<Project> sourceObjectCollection = null
       ) {
          return CreateBehavior(vm => lookupCollection, sourceObjectCollection);
       }
 
-      private LookupPopulatorCollectionBehavior<EmployeeVM, ProjectVM, Project> CreateBehavior(
+      private SelectedItemsAccessorBehavior<EmployeeVM, ProjectVM, Project> CreateBehavior(
          Func<EmployeeVM, IEnumerable<ProjectVM>> lookupSourceProvider,
          IEnumerable<Project> sourceObjectCollection = null
       ) {
-         var behavior = new LookupPopulatorCollectionBehavior<EmployeeVM, ProjectVM, Project>(lookupSourceProvider);
+         var behavior = new SelectedItemsAccessorBehavior<EmployeeVM, ProjectVM, Project>(/*lookupSourceProvider */);
 
          var sourceAccessorStub = new Mock<IValueAccessorBehavior<IEnumerable<Project>>>();
          sourceAccessorStub

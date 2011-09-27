@@ -12,8 +12,10 @@
    }
 
    public abstract class SingleSelectionBaseVM<TItemSource, TItemVM> :
-        ViewModel<SingleSelectionVMDescriptor<TItemSource, TItemVM>>, ISingleSelectionVM, IHasSourceItems<TItemSource>
-        where TItemVM : IViewModel {
+      SelectionVM<SingleSelectionVMDescriptor<TItemSource, TItemVM>, TItemSource, TItemVM>,
+      ISingleSelectionVM,
+      ISelectionVM
+      where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
       /// <param name="descriptor">
       ///   Use <see cref="CreateDescriptor"/> to create one.
@@ -23,17 +25,6 @@
          IServiceLocator serviceLocator
       )
          : base(descriptor, serviceLocator) {
-      }
-
-      /// <summary>
-      ///   Gets or sets a filter that determines which items of the source items
-      ///   should actually be returned by the <see cref="AllItems"/> property.
-      ///   Items that were initially selected are always returned by the <see 
-      ///   cref="AllItems"/> property.
-      /// </summary>
-      public Func<TItemSource, bool> ActiveItemFilter {
-         get;
-         set;
       }
 
       public IEnumerable<TItemSource> AllSourceItems {
@@ -64,11 +55,6 @@
          set { SetValue(Descriptor.SelectedItem, value); }
       }
 
-      ///// <summary>
-      /////   May contain an item that is selected, but not in the AllSourceItems collection.
-      ///// </summary>
-      //internal Optional<TItemSource> NonExistingSelectedSourceItem { get; private set; }
-
       IList ISingleSelectionVM.AllItems {
          get { return AllItems; }
       }
@@ -86,52 +72,35 @@
          get { return typeof(TItemVM); }
       }
 
-      SourceItemCollections<TItemSource> IHasSourceItems<TItemSource>.SourceItems {
+      IEnumerable ISelectionVM.AllSourceItems {
+         get { return AllSourceItems; }
+      }
+
+      IEnumerable ISelectionVM.SelectedSourceItems {
          get {
-            return Descriptor
-               .AllItems
-               .Behaviors
-               .GetNextBehavior<ItemProviderBehavior<TItemSource>>()
-               .GetCollections(GetContext());
+            return SelectedSourceItem != null ?
+               new[] { SelectedSourceItem } :
+               null;
          }
       }
-      
-      //   /// <summary>
-      //   ///   Returns all source items for which the <see cref="ActiveItemFilter"/>
-      //   ///   returns true or that are currently the selected item of the source object.
-      //   ///   The selected item is always contained, even if it is not in the collection of
-      //   ///   all items.
-      //   /// </summary>
-      //   internal IEnumerable<TItemSource> GetActiveSourceItems() {
-      //      IEnumerable<TItemSource> allSourceItems = GetValue(Descriptor.AllSourceItems);
-      //      TItemSource selectedSourceItem = GetValue(Descriptor.SelectedSourceItem);
-      //      IEnumerable<TItemSource> activeSourceItems = null;
 
-      //      if (allSourceItems == null) {
-      //         activeSourceItems = new TItemSource[0];
-      //      } else if (ActiveItemFilter == null) {
-      //         activeSourceItems = allSourceItems;
-      //      } else {
-      //         activeSourceItems = allSourceItems
-      //            .Where(i =>
-      //               ActiveItemFilter(i) ||
-      //               Object.Equals(selectedSourceItem, i)
-      //            )
-      //            .ToArray();
-      //      }
+      internal TItemVM GetSelectedItem() {
+         if (SelectedSourceItem == null) {
+            return default(TItemVM);
+         }
 
-      //      if (selectedSourceItem != null && !activeSourceItems.Contains(selectedSourceItem)) {
-      //         NonExistingSelectedSourceItem = new Optional<TItemSource>(selectedSourceItem);
+         return GetItemVM(SelectedSourceItem);
+      }
 
-      //         activeSourceItems = activeSourceItems
-      //            .Concat(new TItemSource[] { selectedSourceItem })
-      //            .ToArray();
-      //      } else {
-      //         NonExistingSelectedSourceItem = default(Optional<TItemSource>);
-      //      }
+      internal void SetSelectedItem(TItemVM selectedItem) {
+         TItemSource s = selectedItem != null ?
+            selectedItem.Source :
+            default(TItemSource);
 
-      //      return activeSourceItems;
-      //   }
+         // Do not use property setter because it is intended to be set by the
+         // end user and executes additional code.
+         SetValue(Descriptor.SelectedSourceItem, s);
+      }
    }
 
    public abstract class SingleSelectionVM<TItemSource> :
