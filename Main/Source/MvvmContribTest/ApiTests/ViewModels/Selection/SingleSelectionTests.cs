@@ -206,6 +206,16 @@
       }
 
       [TestMethod]
+      public void SetSelectedSourceItem_ToInactiveItem_SetsSelectedItemToInactiveItem() {
+         var vm = CreateUserVMWithItems();
+         vm.Department.SelectedSourceItem = InactiveDepartment;
+
+         Assert.AreEqual(InactiveDepartment, vm.Source.Department);
+         Assert.AreEqual(InactiveDepartment, vm.Department.SelectedSourceItem);
+         Assert.AreEqual(InactiveDepartment, vm.Department.SelectedItem.Source);
+      }
+
+      [TestMethod]
       public void CreateSingleSelection_WithSelectedItem_SetsIsSelectedPropertyOnSelectedItem() {
 
          var vm = CreateUserVM(
@@ -264,6 +274,31 @@
          Assert.IsNull(vm.Department.SelectedItem);
       }
 
+      [TestMethod]
+      public void GetValueOfSelectedItem_DoesNotLoadAllItems() {
+         var vm = CreateUserVMWithItems();
+         vm.Department.GetValue(x => x.SelectedItem);
+         ViewModelAssert.IsNotLoaded(vm.Department, x => x.AllItems);
+      }
+
+      [TestMethod]
+      public void SetSelectedSourceItem_DoesNotLoadAllItems() {
+         var vm = CreateUserVMWithItems();
+         vm.Department.Load(x => x.SelectedItem);
+         vm.Department.SelectedSourceItem = Department2;
+         ViewModelAssert.IsNotLoaded(vm.Department, x => x.AllItems);
+      }
+
+      [TestMethod]
+      public void Revalidate_DoesNotLoadAllItems() {
+         var vm = CreateUserVMWithItems();
+         
+         vm.Department.Load(x => x.SelectedItem);
+         vm.Department.Revalidate(ValidationScope.SelfAndLoadedDescendants);
+         
+         ViewModelAssert.IsNotLoaded(vm.Department, x => x.AllItems);
+      }
+      
       /// <summary>
       ///   Asserts that the source departments of the 'AllItems' property of the
       ///   selection VM are equal to the given source items.
@@ -276,7 +311,11 @@
       }
 
       private UserVM CreateUserVMWithItems() {
-         return CreateUserVM(x => x.IsActive, new[] { Department1, Department2, InactiveDepartment });
+         return CreateUserVM(
+            filter: x => x.IsActive,
+            allDepartments: new[] { Department1, Department2, InactiveDepartment },
+            selectedDepartment: Department1
+         );
       }
 
       private UserVM CreateUserVM(

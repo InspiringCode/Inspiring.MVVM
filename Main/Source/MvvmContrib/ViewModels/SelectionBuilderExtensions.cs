@@ -15,11 +15,11 @@
          Contract.Requires<ArgumentNullException>(selectedSourceItemsSelector != null);
          Contract.Requires(sourceObjectPropertyFactory != null);
 
-         var builder = new MultiSelectionBuilder<TSourceObject, TItemSource>(sourceObjectPropertyFactory);
-
-         // Store the property factory for later creation of the MultiSelectionVM.
-         builder.SelectedSourceItemsPropertyFactory = factory =>
-            factory.Property.DelegatesTo(selectedSourceItemsSelector);
+         var builder = new MultiSelectionBuilder<TSourceObject, TItemSource>(
+            sourceObjectPropertyFactory,
+            selectedSourceItemsPropertyFactory: factory =>
+               factory.Property.DelegatesTo(selectedSourceItemsSelector)
+         );
 
          return builder;
       }
@@ -31,12 +31,12 @@
          Contract.Requires<ArgumentNullException>(selectedSourceItemSelector != null);
          Contract.Requires(sourceObjectPropertyFactory != null);
 
-         var builder = new SingleSelectionBuilder<TSourceObject, TItemSource>(sourceObjectPropertyFactory);
-
-         // Store the property factory for later creation of the MultiSelectionVM.
-         builder.SelectedSourceItemPropertyFactory = factory =>
-            factory.Property.MapsTo(selectedSourceItemSelector);
-
+         var builder = new SingleSelectionBuilder<TSourceObject, TItemSource>(
+            sourceObjectPropertyFactory,
+            selectedSourceItemPropertyFactory: factory =>
+               factory.Property.MapsTo(selectedSourceItemSelector)
+         );
+         
          return builder;
       }
 
@@ -127,13 +127,10 @@
          errorMessage = errorMessage ?? Localized.SelectedItemsNotInSourceItems;
 
          builder.CheckCollection(x => x.SelectedItems).Custom(args => {
-            var selectionVM = (IHasSourceItems<TSource>)args.Items.OwnerVM;
-            SourceItemCollections<TSource> source = selectionVM.SourceItems;
-
-            //ISet<TSource> nonExisting = source.SelectedItemsNotContainedInSource;
+            var selectionVM = args.Items.OwnerVM;
 
             foreach (TVM selectedItem in args.Items) {
-               if (!source.IsItemContainedInSource(selectedItem.Source)) {
+               if (!SelectionHelpers.IsItemContainedInAllSourceItems(selectionVM, selectedItem.Source)) {
                   args.AddError(selectedItem, errorMessage, details);
                }
             }
@@ -156,13 +153,10 @@
          errorMessage = errorMessage ?? Localized.SelectedItemsNotInSourceItems;
 
          builder.Check(x => x.SelectedItem).Custom(args => {
-            var selectionVM = (IHasSourceItems<TSource>)args.Target;
-            SourceItemCollections<TSource> source = selectionVM.SourceItems;
-
-            //ISet<TSource> nonExisting = source.SelectedItemsNotContainedInSource;
+            var selectionVM = args.Target;
 
             if (args.Value != null) {
-               if (!source.IsItemContainedInSource(args.Value.Source)) {
+               if (!SelectionHelpers.IsItemContainedInAllSourceItems(selectionVM, args.Value.Source)) {
                   args.AddError(errorMessage, details);
                }
             }

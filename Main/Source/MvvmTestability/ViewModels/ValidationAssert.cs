@@ -215,6 +215,17 @@
          }
       }
 
+      public static void IsInvalid(IViewModel vm) {
+         if (vm.Kernel.IsValid) {
+            TestFrameworkAdapter.Current.Fail(
+               String.Format(
+                  "Expected {0} to be invalid but was valid.",
+                  vm
+               )
+            );
+         }
+      }
+
       private static bool AreEquivalent(
          IEnumerable<ValidationError> first,
          IEnumerable<ValidationError> second,

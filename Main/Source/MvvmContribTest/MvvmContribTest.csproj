@@ -84,6 +84,7 @@
     <Compile Include="Screens\FindScreenTest.cs" />
     <Compile Include="ViewModels\EnumSelectionWithCustomValidationTests.cs" />
     <Compile Include="ViewModels\ReverseOneToManyCollectionTests.cs" />
+    <Compile Include="ViewModels\Selection\ItemProviderBehaviorTests.cs" />
     <Compile Include="ViewModels\Selection\LookupPopulatorCollectionBehaviorTests.cs" />
     <Compile Include="ApiTests\ViewModels\Selection\VMs\UserVM.cs" />
     <Compile Include="ViewModels\Selection\SettableListDisplayValueBehaviorTests.cs" />
@@ -93,9 +94,7 @@
     <Compile Include="ViewModels\EnumLocalizerTest.cs" />
     <Compile Include="ViewModels\EnumSelectionTest.cs" />
     <Compile Include="ApiTests\ViewModels\Selection\Domain\Group.cs" />
-    <Compile Include="ViewModels\MultiSelectionTest.cs" />
     <Compile Include="ViewModels\PersonStatus.cs" />
-    <Compile Include="ViewModels\SingleSelectionTest.cs" />
     <Compile Include="ViewModelTestExtensions.cs" />
     <Compile Include="Views\CustomKeyGestureExtensionTests.cs" />
     <Compile Include="Views\CustomKeyGestureTests.cs" />

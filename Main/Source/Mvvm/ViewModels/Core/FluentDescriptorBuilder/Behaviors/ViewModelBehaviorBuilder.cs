@@ -2,6 +2,7 @@
    using System;
    using System.Diagnostics.Contracts;
    using System.Linq;
+   using Inspiring.Mvvm.Common;
 
    // TODO: Document me.
    public sealed class ViewModelBehaviorBuilder<TVM, TDescriptor>
@@ -24,6 +25,21 @@
             templateKey,
             BehaviorFactoryConfigurations.ForViewModel<TVM>()
          );
+      }
+
+      public void AddBehavior(
+         IBehavior behaviorInstance,
+         BehaviorKey key = null
+      ) {
+         string keyString = String.Format(
+             "{0} (manually configured)",
+             TypeService.GetFriendlyTypeName(behaviorInstance)
+          );
+
+         key = key ?? new BehaviorKey(keyString);
+
+         _configuration.ViewModelConfiguration.Append(key, behaviorInstance);
+         _configuration.ViewModelConfiguration.Enable(key, behaviorInstance);
       }
 
       // Todo: Should this be public ?

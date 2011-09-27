@@ -1,7 +1,8 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System.Diagnostics.Contracts;
 
-   internal sealed class DynamicFieldAccessor<TValue> {
+   // TODO: Is public a good idea? Should ONLY this class be public (and the fieldvalues, etc. internal?)
+   public sealed class DynamicFieldAccessor<TValue> {
       private readonly FieldDefinition<TValue> _field;
 
       public DynamicFieldAccessor(
