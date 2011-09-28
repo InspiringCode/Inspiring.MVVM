@@ -137,6 +137,7 @@
     <Compile Include="ApiTests\ViewModels\Domain\TaskRepository.cs" />
     <Compile Include="ApiTests\ViewModels\PerformanceTests.cs" />
     <Compile Include="ApiTests\ViewModels\PropertyDependencyTests.cs" />
+    <Compile Include="ApiTests\ViewModels\PropertyValueCachingTests.cs" />
     <Compile Include="ApiTests\ViewModels\Refresh\CollectionPropertyRefreshTests.cs" />
     <Compile Include="ApiTests\ViewModels\Refresh\RefreshFixture.cs" />
     <Compile Include="ApiTests\ViewModels\Refresh\SimplePropertyRefreshTests.cs" />

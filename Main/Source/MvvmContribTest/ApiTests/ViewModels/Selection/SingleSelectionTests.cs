@@ -81,6 +81,19 @@
       }
 
       [TestMethod]
+      public void SelectedItem_WhenNonExistingItemIsInitiallySelected_IsInvalid() {
+         var vm = CreateUserVM(
+            allDepartments: new[] { Department1 },
+            selectedDepartment: Department2
+         );
+
+         ValidationAssert.IsValid(vm);
+
+         vm.Department.Load(x => x.SelectedItem);
+         ValidationAssert.IsInvalid(vm);
+      }
+
+      [TestMethod]
       public void ValidationResult_WhenExistingItemIsSelectedWhenCurrentItemDoesNotExist_BecomesValid() {
          var allDepartments = new[] { Department1 };
          var allIncludingSelected = new[] { Department1, Department2 };
@@ -101,7 +114,7 @@
 
          selectionVM.SetValue(x => x.SelectedItem, existingItem);
 
-         ValidationAssert.IsValid(selectionVM);         
+         ValidationAssert.IsValid(selectionVM);
       }
 
       [TestMethod]
@@ -292,13 +305,39 @@
       [TestMethod]
       public void Revalidate_DoesNotLoadAllItems() {
          var vm = CreateUserVMWithItems();
-         
+
          vm.Department.Load(x => x.SelectedItem);
          vm.Department.Revalidate(ValidationScope.SelfAndLoadedDescendants);
-         
+
          ViewModelAssert.IsNotLoaded(vm.Department, x => x.AllItems);
       }
-      
+
+      [TestMethod]
+      public void VariousOperations_ShouldNotCallItemsProviderFunction() {
+         int providerCalls = 0;
+
+         var vm = CreateUserVM(
+            allDepartmentsSelector: user => {
+               providerCalls++;
+               return new[] { Department1, Department2 };
+            }
+         );
+
+         Assert.AreEqual(0, providerCalls);
+
+         vm.Department.Load(x => x.SelectedItem);
+         Assert.AreEqual(0, providerCalls);
+
+         vm.Department.Load(x => x.AllItems);
+         Assert.AreEqual(1, providerCalls);
+
+         vm.Department.Revalidate(ValidationScope.SelfAndAllDescendants);
+         Assert.AreEqual(1, providerCalls);
+
+         vm.Department.SelectedSourceItem = Department1;
+         Assert.AreEqual(1, providerCalls);
+      }
+
       /// <summary>
       ///   Asserts that the source departments of the 'AllItems' property of the
       ///   selection VM are equal to the given source items.

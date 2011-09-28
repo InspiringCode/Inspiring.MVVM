@@ -25,6 +25,13 @@
          TValue oldValue = GetValue(context);
          this.SetValueNext(context, value);
 
+         // Note the use of 'value' instead of a second 'GetValue' call. There
+         // may be some sort of cache after this behavior. Calling 'GetValue'
+         // would access the real source getter once again which may not be
+         // wanted.
+         // The only case in which a change would not be detected this way is
+         // when the value of the source property changes if it is set to the
+         // same value that it returned last time.
          if (!Object.Equals(value, oldValue)) {
             var args = CreateChangeArgs(_property, oldValue, value);
             context.NotifyChange(args);

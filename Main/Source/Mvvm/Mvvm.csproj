@@ -175,6 +175,7 @@
     <Compile Include="ViewModels\- No Namespace -\Validation\ValidationResultScope.cs" />
     <Compile Include="ViewModels\- No Namespace -\ViewModel.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMDescriptorBuilder.cs" />
+    <Compile Include="ViewModels\- No Namespace -\BehaviorExtensions.cs" />
     <Compile Include="ViewModels\Core\Common\IPropertySelector.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\Definition\AnyPropertyStep.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\Definition\AnyStepsStep.cs" />
@@ -192,6 +193,7 @@
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\DeclarativeDependency.cs" />
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\DependencySourceBuilder.cs" />
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\DependencyTargetBuilder.cs" />
+    <Compile Include="ViewModels\Core\Properties\SimpleProperty\Behaviors\ValueCacheBehavior.cs" />
     <Compile Include="ViewModels\Core\Properties\ViewModelProperty\Behaviors\ViewModelPropertyChangedNotifierBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\Behaviors\ViewModelBehaviors\CachingValidationResultAggregatorBehavior.cs" />
     <Compile Include="ViewModels\Core\ViewModel\Behaviors\DeclarativeDependencyBehavior.cs" />
