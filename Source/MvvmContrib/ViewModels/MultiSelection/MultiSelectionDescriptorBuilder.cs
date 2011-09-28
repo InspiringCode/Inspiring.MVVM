@@ -64,6 +64,8 @@
             b.Property(x => x.SelectedItems).AddChangeHandler((vm, args) => {
                vm.RaisePropertyChangedForSelectedItems(); // HACK!
             });
+
+            b.Property(x => x.AllSourceItems).IsCached();
          });
 
          WithValidators(b => {

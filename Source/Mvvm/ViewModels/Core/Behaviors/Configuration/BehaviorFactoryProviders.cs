@@ -28,7 +28,8 @@
 
          public virtual BehaviorFactory GetFactoryForPropertyWithSource<TOwnerVM, TValue, TSourceObject>()
             where TOwnerVM : IViewModel {
-            return GetFactoryWithCommonBehaviors<TOwnerVM, TValue, TSourceObject>();
+            return GetFactoryWithCommonBehaviors<TOwnerVM, TValue, TSourceObject>()
+               .RegisterBehavior<ValueCacheBehavior<TValue>>(PropertyBehaviorKeys.ValueCache);
          }
 
          protected override BehaviorFactory GetFactoryWithCommonBehaviors<TOwnerVM, TValue, TSourceObject>() {

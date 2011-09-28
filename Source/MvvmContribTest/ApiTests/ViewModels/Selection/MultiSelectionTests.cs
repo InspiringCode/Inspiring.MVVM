@@ -115,7 +115,7 @@
             filter: x => x.IsActive,
             selectedGroups: Group2
          );
-         
+
          var selectionVM = vm.GetValue(x => x.Groups);
          selectionVM.Load(x => x.SelectedItems);
 
@@ -524,6 +524,32 @@
          ViewModelAssert.IsNotLoaded(vm.Groups, x => x.AllItems);
       }
 
+      [TestMethod]
+      public void VariousOperations_ShouldNotCallItemsProviderFunction() {
+         int providerCalls = 0;
+
+         var vm = CreateUserVM(
+            allGroupsSelector: user => {
+               providerCalls++;
+               return new[] { Group1, Group2 };
+            }
+         );
+
+         Assert.AreEqual(0, providerCalls);
+
+         vm.Groups.Load(x => x.SelectedItems);
+         Assert.AreEqual(0, providerCalls);
+
+         vm.Groups.Load(x => x.AllItems);
+         Assert.AreEqual(1, providerCalls);
+
+         vm.Groups.Revalidate(ValidationScope.SelfAndAllDescendants);
+         Assert.AreEqual(1, providerCalls);
+
+         vm.Groups.SelectedSourceItems = new[] { Group1 };
+         Assert.AreEqual(1, providerCalls);
+      }
+
       /// <summary>
       ///   Asserts that the source groups of the 'AllItems' property of the
       ///   selection VM are equal to the given source items.
@@ -588,7 +614,7 @@
 
          validatorBuilder = validatorBuilder ?? (b => {
             b.ValidateDescendant(x => x.Groups).CheckCollection(x => x.SelectedItems).Custom(args => {
-               
+
             });
             b.OnlyExistingItemsAreSelected(x => x.Groups);
          });

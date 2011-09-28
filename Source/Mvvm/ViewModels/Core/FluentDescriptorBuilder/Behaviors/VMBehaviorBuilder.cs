@@ -108,6 +108,10 @@
 
             return this;
          }
+
+         bool ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue>.ContainsBehavior(BehaviorKey key) {
+            return _propertyConfiguration.Contains(key);
+         }
       }
    }
 }

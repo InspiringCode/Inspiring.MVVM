@@ -48,6 +48,10 @@
             b.AddBehavior(new ItemProviderBehavior<TItemSource>() { IsActiveFilter = isActiveFilter });
          });
 
+         WithBehaviors(b => {
+            b.Property(x => x.AllSourceItems).IsCached();
+         });
+
          WithValidators(b => {
             b.EnableParentValidation(x => x.SelectedItem);
          });

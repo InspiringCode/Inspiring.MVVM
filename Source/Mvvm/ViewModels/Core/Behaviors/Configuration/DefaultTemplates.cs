@@ -38,6 +38,7 @@
                .Append(PropertyBehaviorKeys.Undo, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.ValueValidationSource, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.ChangeNotifier)
+               .Append(PropertyBehaviorKeys.ValueCache, DefaultBehaviorState.Disabled)
                .Append(PropertyBehaviorKeys.ValueAccessor, DefaultBehaviorState.DisabledWithoutFactory)
                .Append(PropertyBehaviorKeys.PropertyDescriptorProvider)
          );
