@@ -171,15 +171,24 @@
             } else if (parts.Length == 3) {
                IVMPropertyDescriptor viewModelProp = Kernel.GetProperty(parts[0]);
                IViewModel viewModel = (IViewModel)Kernel.GetDisplayValue(viewModelProp);
+               if (viewModel == null) {
+                  return null;
+               }
 
                property = viewModel.Kernel.GetProperty(parts[1]);
-               value = property != null ? viewModel.Kernel.GetDisplayValue(property) as IDataErrorInfo : null;
+               value = viewModel.Kernel.GetDisplayValue(property) as IDataErrorInfo;
             } else {
                IVMPropertyDescriptor viewModelProp = Kernel.GetProperty(parts[0]);
                IViewModel viewModel = (IViewModel)Kernel.GetDisplayValue(viewModelProp);
+               if (viewModel == null) {
+                  return null;
+               }
 
                IVMPropertyDescriptor viewModelProp2 = viewModel.Kernel.GetProperty(parts[1]);
                IViewModel viewModel2 = (IViewModel)viewModel.Kernel.GetDisplayValue(viewModelProp2);
+               if (viewModel2 == null) {
+                  return null;
+               }
 
                property = viewModel2.Kernel.GetProperty(parts[2]);
                value = viewModel2.Kernel.GetDisplayValue(property) as IDataErrorInfo;
