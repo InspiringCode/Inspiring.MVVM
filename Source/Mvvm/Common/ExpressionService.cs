@@ -20,9 +20,11 @@
          Contract.Requires(propertyPathSelector != null);
          Contract.Ensures(Contract.Result<PropertyInfo[]>() != null);
 
+         Expression root = RemoveConvertExpression(propertyPathSelector.Body);
+
          List<PropertyInfo> propertyPath = new List<PropertyInfo>();
-         MemberExpression exp = propertyPathSelector.Body as MemberExpression;
-         ParameterExpression last = propertyPathSelector.Body as ParameterExpression;
+         MemberExpression exp = root as MemberExpression;
+         ParameterExpression last = root as ParameterExpression;
 
          while (exp != null) {
             PropertyInfo pi = exp.Member as PropertyInfo;
@@ -115,6 +117,21 @@
          }
 
          throw new ArgumentException(ExceptionTexts.UnsupportedParameterlessPropertyExpression);
+      }
+
+      private static Expression RemoveConvertExpression(Expression expression) {
+         UnaryExpression unary = expression as UnaryExpression;
+         if (unary == null) {
+            return expression;
+         }
+
+         bool isConvertNode =
+            unary.NodeType == ExpressionType.Convert ||
+            unary.NodeType == ExpressionType.ConvertChecked;
+
+         return isConvertNode ?
+            unary.Operand :
+            expression;
       }
    }
 }
