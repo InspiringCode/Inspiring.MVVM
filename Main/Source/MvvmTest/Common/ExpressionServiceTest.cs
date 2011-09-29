@@ -1,9 +1,11 @@
 ﻿namespace Inspiring.MvvmTest.Common {
    using System;
+   using System.Linq;
    using System.Reflection;
    using Inspiring.Mvvm.Common;
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
+   using System.Linq.Expressions;
 
    [TestClass]
    public class ExpressionServiceTest : TestBase {
@@ -61,6 +63,24 @@
          Assert.AreEqual("DefaultDepartment", name);
       }
 
+
+      [TestMethod]
+      public void GetPropertyName_WorksWithPropertiesWithDerivedTypes() {
+         Expression<Func<Person, object>> exp = x => x.BirthDate;
+
+         var path = ExpressionService.GetProperties(exp);
+         Assert.AreEqual("BirthDate", ToString(path));
+
+         exp = x => x.Department.Name;
+
+         path = ExpressionService.GetProperties(exp);
+         Assert.AreEqual("Department.Name", ToString(path));
+      }
+
+      private static string ToString(PropertyInfo[] infos) {
+         return String.Join(".", infos.Select(x => x.Name));
+      }
+      
       private static readonly object StaticField = new Object();
 
       public DateTime BirthDate { get; set; }
