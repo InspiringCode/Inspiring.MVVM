@@ -6,7 +6,7 @@
    ///   Returns a <see cref="ViewModelTypeDescriptor"/> for the <see cref="VMDescriptor"/>
    ///   defined by a static field marked with <see cref="ClassDescriptorAttribute"/>.
    /// </summary>
-   internal sealed class ViewModelTypeDescriptionProvider : TypeDescriptionProvider {
+   public sealed class ViewModelTypeDescriptionProvider : TypeDescriptionProvider {
       public override ICustomTypeDescriptor GetTypeDescriptor(Type objectType, object instance) {
          if (instance != null) {
             // Interface is implemented by ViewModelWithTypeDescriptor

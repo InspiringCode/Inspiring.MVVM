@@ -29,6 +29,7 @@
             selectableItems = selectableItems.Concat(selectedItems);
          }
 
+         // We use user defined equality here
          _items = new HashSet<T>(selectableItems);
          _allSourceItems = allSourceItems;
       }

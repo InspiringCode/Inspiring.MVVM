@@ -14,6 +14,15 @@
          set;
       }
 
+      public override bool Equals(object obj) {
+         Department other = obj as Department;
+         return other != null && other.Name == Name;
+      }
+
+      public override int GetHashCode() {
+         return (Name ?? String.Empty).GetHashCode();
+      }
+
       public override string ToString() {
          return String.Format("{{Department: {0}}}", Name);
       }
