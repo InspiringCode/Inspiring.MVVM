@@ -71,8 +71,15 @@
 
       public void Refresh(IBehaviorContext context) {
          RequireInitialized();
+
          foreach (IVMPropertyDescriptor property in UpdateFromSourceProperties) {
-            Refresh(context, property);
+            // We call ALL behaviors and not only succeeding ones, because a client
+            // may want to register a behavior that gets called BEFORE this behavior.
+            context
+               .VM
+               .Descriptor
+               .Behaviors
+               .ViewModelRefreshNext(context, property);
          }
 
          this.ViewModelRefreshNext(context);

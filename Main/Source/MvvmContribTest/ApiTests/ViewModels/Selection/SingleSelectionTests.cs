@@ -338,6 +338,19 @@
          Assert.AreEqual(1, providerCalls);
       }
 
+      [TestMethod]
+      public void Refresh_OfSingleSelectionProperty_RefreshesAllItems() {
+         var allItems = new[] { Department1 };
+         var vm = CreateUserVM(allDepartmentsSelector: user => allItems);
+
+         AssertAllItemsAreEqual(vm, allItems);
+
+         allItems = new[] { Department1, Department2 };
+         vm.RefreshDepartment();
+
+         AssertAllItemsAreEqual(vm, allItems);
+      }
+
       /// <summary>
       ///   Asserts that the source departments of the 'AllItems' property of the
       ///   selection VM are equal to the given source items.

@@ -27,7 +27,7 @@
          );
       }
 
-      public void AddBehavior(
+      public void AppendBehavior(
          IBehavior behaviorInstance,
          BehaviorKey key = null
       ) {
@@ -39,6 +39,21 @@
          key = key ?? new BehaviorKey(keyString);
 
          _configuration.ViewModelConfiguration.Append(key, behaviorInstance);
+         _configuration.ViewModelConfiguration.Enable(key, behaviorInstance);
+      }
+
+      public void PrependBehavior(
+         IBehavior behaviorInstance,
+         BehaviorKey key = null
+      ) {
+         string keyString = String.Format(
+             "{0} (manually configured)",
+             TypeService.GetFriendlyTypeName(behaviorInstance)
+          );
+
+         key = key ?? new BehaviorKey(keyString);
+
+         _configuration.ViewModelConfiguration.Prepend(key, behaviorInstance);
          _configuration.ViewModelConfiguration.Enable(key, behaviorInstance);
       }
 

@@ -22,6 +22,10 @@
       public void RefreshGroups() {
          Refresh(Descriptor.Groups);
       }
+
+      public void RefreshDepartment() {
+         Refresh(Descriptor.Department);
+      }
    }
 
    internal sealed class UserVMDescriptor : VMDescriptor {

@@ -44,8 +44,8 @@
                x => x.SelectedSourceItem
             );
 
-            b.AddBehavior(new SelectionItemViewModelCacheBehavior<TItemSource, TItemVM>(itemDescriptor));
-            b.AddBehavior(new ItemProviderBehavior<TItemSource>() { IsActiveFilter = isActiveFilter });
+            b.AppendBehavior(new SelectionItemViewModelCacheBehavior<TItemSource, TItemVM>(itemDescriptor));
+            b.PrependBehavior(new ItemProviderBehavior<TItemSource>() { IsActiveFilter = isActiveFilter });
          });
 
          WithBehaviors(b => {

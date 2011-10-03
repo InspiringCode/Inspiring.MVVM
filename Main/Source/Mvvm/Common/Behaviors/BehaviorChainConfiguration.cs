@@ -124,6 +124,18 @@
       }
 
       /// <summary>
+      ///   Adds a disabled behavior configuration to the top of the chain.
+      /// </summary>
+      internal void Prepend(BehaviorKey key, IBehavior instance) {
+         Contract.Requires(key != null);
+         Contract.Requires(instance != null);
+         RequireNotSealed();
+
+         var item = new BehaviorChainItemConfiguration(key) { Instance = instance };
+         _items.Insert(0, item);
+      }
+
+      /// <summary>
       ///   Creates a <see cref="BehaviorChain"/> with <see cref="IBehavior"/>s
       ///   as configured by this object.
       /// </summary>
