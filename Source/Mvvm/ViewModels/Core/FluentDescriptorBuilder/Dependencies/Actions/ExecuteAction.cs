@@ -9,7 +9,11 @@
          _action = action;
       }
 
-      public override void Execute(IViewModel ownerVM, ChangeArgs args) {
+      public override void Execute(
+         IViewModel ownerVM,
+         ChangeArgs args,
+         DeclarativeDependency dependency
+      ) {
          _action((TOwnerVM)ownerVM, args);
       }
    }

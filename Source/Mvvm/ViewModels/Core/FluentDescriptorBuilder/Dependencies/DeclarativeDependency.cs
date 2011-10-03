@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 namespace Inspiring.Mvvm.ViewModels.Core {
 
@@ -37,8 +38,16 @@ namespace Inspiring.Mvvm.ViewModels.Core {
 
          PathMatch sourcePathMatch = _sourcePath.Matches(args.ChangedPath);
          if (sourcePathMatch.Success) {
-            _action.Execute(ownerVM, args);
+            _action.Execute(ownerVM, args, this);
          }
+      }
+
+      public override string ToString() {
+         return String.Format(
+            "On change of '{0}' '{1}'.",
+            SourcePath,
+            Action
+         );
       }
    }
 }

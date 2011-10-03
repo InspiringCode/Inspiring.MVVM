@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System.Collections.Generic;
+   using Inspiring.Mvvm.ViewModels.Tracing;
 
    internal sealed class RefreshAction : DependencyAction {
       private readonly PathDefinition _targetPath;
@@ -19,7 +20,13 @@
          get { return _targetProperties; }
       }
 
-      public override void Execute(IViewModel ownerVM, ChangeArgs args) {
+      public override void Execute(
+         IViewModel ownerVM,
+         ChangeArgs args,
+         DeclarativeDependency dependency
+      ) {
+         RefreshTrace.BeginRefresh(dependency);
+
          if (TargetPath.IsEmpty) {
             RefreshProperties(ownerVM);
          } else {
@@ -29,16 +36,18 @@
                if (_targetProperties.Count > 0) {
                   RefreshProperties(viewModel);
                } else {
-                  viewModel.Kernel.Refresh();
+                  viewModel.Kernel.RefreshInternal();
                }
             }
          }
+
+         RefreshTrace.EndLastRefresh();
       }
 
       private void RefreshProperties(IViewModel ownerVM) {
          foreach (var propertySelector in _targetProperties) {
             var property = propertySelector.GetProperty(ownerVM.Descriptor);
-            ownerVM.Kernel.Refresh(property);
+            ownerVM.Kernel.RefreshInternal(property);
          }
       }
    }

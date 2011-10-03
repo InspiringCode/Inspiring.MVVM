@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Collections.Generic;
+   using Inspiring.Mvvm.ViewModels.Tracing;
 
    // TODO: Test Refresh order etc.!
    internal sealed class LoadOrderBehavior :
@@ -70,6 +71,8 @@
       }
 
       public void Refresh(IBehaviorContext context) {
+         RefreshTrace.BeginRefresh(context.VM);
+
          RequireInitialized();
 
          foreach (IVMPropertyDescriptor property in UpdateFromSourceProperties) {
@@ -83,13 +86,19 @@
          }
 
          this.ViewModelRefreshNext(context);
+
+         RefreshTrace.EndLastRefresh();
       }
 
       public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property) {
+         RefreshTrace.BeginRefresh(property);
+
          RequireInitialized();
          property.Behaviors.RefreshNext(context);
 
          this.ViewModelRefreshNext(context, property);
+
+         RefreshTrace.EndLastRefresh();
       }
    }
 }

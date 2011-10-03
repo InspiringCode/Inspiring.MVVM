@@ -3,6 +3,7 @@
    using System.Diagnostics.Contracts;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.Mvvm.ViewModels.Tracing;
 
    public sealed class VMKernel : IBehaviorContext {
       private readonly IViewModel _vm;
@@ -146,22 +147,15 @@
       }
 
       public void Refresh() {
-         RefreshWithoutValidation();
-         Revalidator.Revalidate(_vm, ValidationScope.SelfAndLoadedDescendants);
-      }
-
-      public void RefreshWithoutValidation() {
-         _descriptor.Behaviors.ViewModelRefreshNext(this);
+         RefreshTrace.BeginManualRefresh();
+         RefreshInternal();
+         RefreshTrace.EndLastRefresh();
       }
 
       public void Refresh(IVMPropertyDescriptor property) {
-         _descriptor.Behaviors.ViewModelRefreshNext(this, property);
-
-         Revalidator.RevalidatePropertyValidations(
-            _vm,
-            property,
-            ValidationScope.SelfAndLoadedDescendants
-         );
+         RefreshTrace.BeginManualRefresh();
+         RefreshInternal(property);
+         RefreshTrace.EndLastRefresh();
       }
 
       public void AddParent(IViewModel parent) {
@@ -185,6 +179,25 @@
 
       public IBehaviorContext GetContext() {
          return this;
+      }
+
+      internal void RefreshInternal() {
+         RefreshWithoutValidation();
+         Revalidator.Revalidate(_vm, ValidationScope.SelfAndLoadedDescendants);
+      }
+
+      internal void RefreshWithoutValidation() {
+         _descriptor.Behaviors.ViewModelRefreshNext(this);
+      }
+
+      internal void RefreshInternal(IVMPropertyDescriptor property) {
+         _descriptor.Behaviors.ViewModelRefreshNext(this, property);
+
+         Revalidator.RevalidatePropertyValidations(
+            _vm,
+            property,
+            ValidationScope.SelfAndLoadedDescendants
+         );
       }
 
       private void NotifyChangeCore(ChangeArgs args) {

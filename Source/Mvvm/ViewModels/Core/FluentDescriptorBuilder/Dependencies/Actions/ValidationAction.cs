@@ -19,7 +19,11 @@
          get { return _targetProperties; }
       }
 
-      public override void Execute(IViewModel ownerVM, ChangeArgs args) {
+      public override void Execute(
+         IViewModel ownerVM,
+         ChangeArgs args,
+         DeclarativeDependency dependency
+      ) {
          if (TargetPath.IsEmpty) {
             RevalidateProperties(ownerVM);
          } else {

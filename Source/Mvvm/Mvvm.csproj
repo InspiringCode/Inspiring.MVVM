@@ -411,6 +411,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EViewModels.resx</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\Tracing\RefreshTrace.cs" />
+    <Compile Include="ViewModels\Tracing\TraceBuilder.cs" />
+    <Compile Include="ViewModels\Tracing\TraceEntry.cs" />
     <Compile Include="Views\Dialogs\FolderBrowserDialog.cs" />
     <Compile Include="Views\Dialogs\NativeMethods.cs" />
     <Compile Include="Views\Dialogs\ShellComInterfaces.cs" />

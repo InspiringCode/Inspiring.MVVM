@@ -309,6 +309,8 @@
     <Compile Include="ViewModels\CommandPropertyTest.cs" />
     <Compile Include="ViewModels\Core\Properties\Common\ServiceLocatorValueFactoryBehaviorTests.cs" />
     <Compile Include="ViewModels\PersonVM.cs" />
+    <Compile Include="ViewModels\Tracing\TraceBuilderTests.cs" />
+    <Compile Include="ViewModels\Tracing\TraceEntryTests.cs" />
     <Compile Include="ViewModels\TypeDescriptorTest.cs" />
     <Compile Include="ViewModels\ViewModelsTest.cs" />
     <Compile Include="ViewModels\ViewModel_ParentChild.cs" />
