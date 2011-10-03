@@ -1,5 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
+   using System;
    using System.Collections.Generic;
+   using System.Linq;
    using Inspiring.Mvvm.ViewModels.Tracing;
 
    internal sealed class RefreshAction : DependencyAction {
@@ -42,6 +44,16 @@
          }
 
          RefreshTrace.EndLastRefresh();
+      }
+
+      public override string ToString() {
+         var quotedProps = TargetProperties.Select(x => String.Format("'{0}'", x));
+
+         return String.Format(
+            "refresh path '{0}' and properties {1}",
+            TargetPath,
+            String.Join(", ", quotedProps)
+         );
       }
 
       private void RefreshProperties(IViewModel ownerVM) {

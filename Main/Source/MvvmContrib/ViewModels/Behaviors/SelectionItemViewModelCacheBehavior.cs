@@ -23,7 +23,7 @@
       }
 
       public TVM GetVMForSource(IBehaviorContext context, TSource source) {
-         var cache = GetCache(context);
+         Dictionary<TSource, TVM> cache = GetCache(context);
 
          TVM cachedInstance;
          if (!cache.TryGetValue(source, out cachedInstance)) {
@@ -41,6 +41,7 @@
          Dictionary<TSource, TVM> cache;
 
          if (!context.FieldValues.TryGetValue(_cache, out cache)) {
+            // We use user defined equality here
             cache = new Dictionary<TSource, TVM>();
             context.FieldValues.SetValue(_cache, cache);
          }

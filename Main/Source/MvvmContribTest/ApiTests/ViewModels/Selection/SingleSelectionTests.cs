@@ -351,6 +351,35 @@
          AssertAllItemsAreEqual(vm, allItems);
       }
 
+      [TestMethod]
+      public void AllItems_ReturnsAllInstancesIfItemsAreEqual() {
+         var department1 = new Department("Department");
+         var department2 = new Department("Department");
+
+         var allItems = new[] { department1, department2 };
+
+         var vm = CreateUserVM(allDepartments: allItems);
+
+         var uniqueItems = new[] { department1 };
+
+         AssertAllItemsAreEqual(vm, uniqueItems);
+      }
+
+      [TestMethod]
+      public void SelectedItem_ReturnsCorrectItemIfSelectedSourceItemIsEqualButDifferentInstance() {
+         var department1 = new Department("Department");
+         var department2 = new Department("Department");
+
+         var vm = CreateUserVM(allDepartments: new[] { department1, department2});
+         var ss = vm.Department;
+
+         ss.SelectedSourceItem = department2;
+         Assert.AreEqual(department1, ss.SelectedItem.Source);
+
+         ss.SelectedSourceItem = department2;
+         Assert.AreEqual(department1, ss.SelectedItem.Source);
+      }
+
       /// <summary>
       ///   Asserts that the source departments of the 'AllItems' property of the
       ///   selection VM are equal to the given source items.
