@@ -93,7 +93,7 @@
       Behavior,
       IBehaviorInitializationBehavior,
       IValueAccessorBehavior<IEnumerable<TItemSource>>,
-      IRefreshBehavior {
+      IRefreshControllerBehavior {
 
       private static readonly FieldDefinitionGroup ItemsGroup = new FieldDefinitionGroup();
       //private readonly Func<IViewModel, IEnumerable<TItemSource>> _selectedItemsSelector;
@@ -158,8 +158,7 @@
       }
 
       public void Refresh(IBehaviorContext context) {
-         context.FieldValues.ClearField(_items);
-         this.RefreshNext(context);
+         this.ViewModelRefreshNext(context);
       }
 
       //private SourceItemsCache CreateCache(IViewModel selectionVM) {
@@ -190,6 +189,11 @@
       //   //public IEnumerable<TItemSource> AllSourceItems { get; set; }
       //   public IEnumerable<TItemSource> SelectableSourceItems { get; set; }
       //}
+
+      public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property) {
+         context.FieldValues.ClearField(_items);
+         this.ViewModelRefreshNext(context, property);
+      }
    }
 
    internal class SourceItemCollections<TItemSource> {
