@@ -5,6 +5,7 @@
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
+   using Inspiring.Mvvm.ViewModels.Tracing;
 
    [TestClass]
    public class CollectionPropertyRefreshTests : RefreshFixture {
@@ -50,6 +51,8 @@
 
       [TestMethod]
       public void Refresh_OfWrapperCollectionProperty_RefreshesReusedItemVMs() {
+         RefreshTrace.StartTrace();
+
          var sharedSource = new ChildSource();
          var reusedVM = new ChildVM(sharedSource);
          var previousVM = new ChildVM(new ChildSource());
@@ -64,6 +67,8 @@
          Assert.AreEqual(2, VM.WrapperProperty.Count);
          Assert.IsTrue(VM.WrapperProperty[0].WasRefreshed);
          Assert.IsFalse(VM.WrapperProperty[1].WasRefreshed);
+
+         RefreshTrace.WriteToFile("D:\\trace.txt");
       }
 
       [TestMethod]
