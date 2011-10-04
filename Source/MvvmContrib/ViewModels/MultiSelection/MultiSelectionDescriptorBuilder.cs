@@ -66,6 +66,7 @@
             });
 
             b.Property(x => x.AllSourceItems).IsCached();
+            b.Property(x => x.SelectedItems).SupportsDisplayValueConversion();
          });
 
          WithValidators(b => {
