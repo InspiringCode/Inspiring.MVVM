@@ -27,7 +27,7 @@
       public PathDefinition Append<TDescriptor, TValue>(
          Func<TDescriptor, IVMPropertyDescriptor<TValue>> propertySelector
       ) where TDescriptor : IVMDescriptor {
-         return Append(new PropertyStep<TDescriptor>(propertySelector, typeof(TValue)));
+         return Append(new PropertyStep<TDescriptor>(propertySelector));
       }
 
       public PathDefinition AppendCollection<TDescriptor, TItemVM>(
@@ -59,12 +59,12 @@
          IEnumerable<PathDefinitionStep> steps = _steps;
 
          if (!_steps.Any()) {
-            return "[empty path]";
+            return "[empty]";
          }
 
          return String.Format(
             "[{0}]",
-            String.Join(", ", steps)
+            String.Join(".", steps)
          );
       }
    }

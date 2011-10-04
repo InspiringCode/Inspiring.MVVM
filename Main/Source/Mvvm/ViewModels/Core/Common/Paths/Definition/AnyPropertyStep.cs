@@ -44,11 +44,7 @@
       }
 
       public override string ToString() {
-         return String.Format(
-            "{0} -> {1}",
-            TypeService.GetFriendlyName(typeof(TDescriptor)),
-            "AnyProperty"
-         );
+         return "[any property]";
       }
 
       public override IViewModel[] GetDescendants(PathDefinitionIterator definitionSteps, IViewModel rootVM) {

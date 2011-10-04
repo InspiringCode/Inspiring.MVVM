@@ -2,17 +2,17 @@
    using System;
    using System.Diagnostics.Contracts;
    using System.Linq;
-   using Inspiring.Mvvm.Common;
 
    internal sealed class CollectionPropertyStep<TDescriptor, TValue> :
       PathDefinitionStep
       where TDescriptor : IVMDescriptor {
 
-      private Func<TDescriptor, IVMPropertyDescriptor<TValue>> _propertySelector;
+      private PropertySelector<TDescriptor> _propertySelector;
+
 
       public CollectionPropertyStep(Func<TDescriptor, IVMPropertyDescriptor<TValue>> propertySelector) {
          Contract.Requires(propertySelector != null);
-         _propertySelector = propertySelector;
+         _propertySelector = new PropertySelector<TDescriptor>(propertySelector);
       }
 
       public override PathMatch Matches(PathDefinitionIterator definitionSteps, PathIterator step) {
@@ -31,9 +31,8 @@
             return PathMatch.Fail();
          }
 
-         var itemDescriptor = (TDescriptor)parentCollection.GetItemDescriptor();
-
-         var expectedProperty = _propertySelector(itemDescriptor);
+         var itemDescriptor = parentCollection.GetItemDescriptor();
+         var expectedProperty = _propertySelector.GetProperty(itemDescriptor);
 
          if (expectedProperty == step.Property) {
             PathMatch result = PathMatch.Succeed(length: 1);
@@ -43,48 +42,6 @@
          }
 
          return PathMatch.Fail();
-
-         //if (!step.HasStep) {
-         //   return PathMatch.Fail();
-         //}
-
-         //if (!step.IsViewModel && !step.IsCollection) {
-         //   ThrowUnexpectedStepTypeException(step.GetIndex(), PathStepType.ViewModel, PathStepType.Collection);
-         //}
-
-         //PathIterator parentStep = step;
-         //step.MoveNext();
-
-         //if (!step.HasStep) {
-         //   return PathMatch.Fail();
-         //}
-
-         //bool currenStepMatches = false;
-
-         //switch (parentStep.Type) {
-         //   case PathStepType.ViewModel:
-         //      currenStepMatches = Matches(parentStep.ViewModel, step);
-         //      break;
-         //   case PathStepType.Collection:
-         //      currenStepMatches = Matches(parentStep.Collection, step);
-         //      break;
-         //}
-
-         //if (currenStepMatches) {
-         //   int matchedPathSteps = 1;
-
-         //   if (CollectionIsFollowedByItemViewModel(step)) {
-         //      step.MoveNext();
-         //      matchedPathSteps++;
-         //   }
-
-         //   PathMatch result = PathMatch.Succeed(length: matchedPathSteps);
-         //   PathMatch nextResult = definitionSteps.MatchesNext(step);
-
-         //   return PathMatch.Combine(result, nextResult);
-         //} else {
-         //   return PathMatch.Fail();
-         //}
       }
 
       public override IViewModel[] GetDescendants(
@@ -95,11 +52,7 @@
       }
 
       public override string ToString() {
-         return String.Format(
-            "{0} -> {1}",
-            TypeService.GetFriendlyName(typeof(TDescriptor)),
-            TypeService.GetFriendlyName(typeof(TValue))
-         );
+         return _propertySelector.PropertyName;
       }
 
       private bool Matches(IViewModel parent, PathIterator nextStep) {
@@ -113,7 +66,7 @@
 
          TDescriptor descriptor = (TDescriptor)parent.Descriptor;
 
-         IVMPropertyDescriptor expectedProperty = _propertySelector(descriptor);
+         IVMPropertyDescriptor expectedProperty = _propertySelector.GetProperty(descriptor);
 
          if (nextStep.IsProperty) {
             return nextStep.Property == expectedProperty;
@@ -145,7 +98,7 @@
 
          TDescriptor itemDescriptor = (TDescriptor)collection.GetItemDescriptor();
 
-         return _propertySelector(itemDescriptor) == nextStep.Property;
+         return _propertySelector.GetProperty(itemDescriptor) == nextStep.Property;
       }
 
       private static bool CollectionIsFollowedByItemViewModel(PathIterator step) {

@@ -58,7 +58,7 @@
       [TestMethod]
       public void ToString_WithoutSteps_ReturnsEmptyPath() {
          var path = PathDefinition.Empty;
-         Assert.AreEqual("[empty path]", path.ToString());
+         Assert.AreEqual("[empty]", path.ToString());
       }
 
       [TestMethod]
@@ -67,7 +67,7 @@
             .Append(new StepDefinitionMock("Step 1"))
             .Append(new StepDefinitionMock("Step 2"));
 
-         Assert.AreEqual("[Step 1, Step 2]", path.ToString());
+         Assert.AreEqual("[Step 1.Step 2]", path.ToString());
       }
 
       [TestMethod]

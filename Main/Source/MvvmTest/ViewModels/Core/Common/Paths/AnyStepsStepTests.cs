@@ -60,9 +60,9 @@
       }
 
       [TestMethod]
-      public void ToString_ReturnsDescriptorNameAndAnyPropertyString() {
+      public void ToString_ReturnsKeyword() {
          var step = new AnyStepsStep<EmployeeVMDescriptor>();
-         Assert.AreEqual("EmployeeVMDescriptor -> AnySteps", step.ToString());
+         Assert.AreEqual("[anything]", step.ToString());
       }
    }
 }

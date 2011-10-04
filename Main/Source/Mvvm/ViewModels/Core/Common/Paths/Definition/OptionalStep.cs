@@ -23,7 +23,7 @@
       }
 
       public override string ToString() {
-         return string.Format("{{OptionalStep {0}}}", _innerStep.ToString());
+         return String.Format("{0}?", _innerStep.ToString());
       }
    }
 }

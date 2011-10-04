@@ -139,9 +139,9 @@
       }
 
       [TestMethod]
-      public void ToString_ReturnsDescriptorNameAndPropertyType() {
+      public void ToString_ReturnsPropertyName() {
          var step = CreateStep(x => x.Projects);
-         Assert.AreEqual("EmployeeVMDescriptor -> IVMPropertyDescriptor<IVMCollection<ProjectVM>>", step.ToString());
+         Assert.AreEqual("Projects", step.ToString());
       }
 
       private PathDefinitionStep CreateStep<TValue>(Func<EmployeeVMDescriptor, IVMPropertyDescriptor<TValue>> propertySelector) {
@@ -151,7 +151,7 @@
       private PathDefinitionStep CreateStep<TDescriptor, TValue>(
          Func<TDescriptor, IVMPropertyDescriptor<TValue>> propertySelector
       ) where TDescriptor : IVMDescriptor {
-         return new PropertyStep<TDescriptor>(propertySelector, typeof(TValue));
+         return new PropertyStep<TDescriptor>(propertySelector);
       }
    }
 }

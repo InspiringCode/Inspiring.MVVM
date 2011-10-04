@@ -297,7 +297,7 @@
       private PropertyStep<TDescriptor> CreatePropertyStep<TDescriptor, TValue>(
          Func<TDescriptor, IVMPropertyDescriptor<TValue>> propertySelector
       ) where TDescriptor : IVMDescriptor {
-         return new PropertyStep<TDescriptor>(propertySelector, typeof(TValue));
+         return new PropertyStep<TDescriptor>(propertySelector);
       }
 
       private class EmployeeVM : ViewModel<EmployeeVMDescriptor> {

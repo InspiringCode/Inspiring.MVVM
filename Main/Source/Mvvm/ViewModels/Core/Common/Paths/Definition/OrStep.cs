@@ -28,10 +28,7 @@
 
       public override string ToString() {
          IEnumerable<PathDefinitionStep> steps = _steps;
-         return String.Format(
-            "OrStep[{0}]",
-             String.Join(", ", steps)
-         );
+         return String.Join("|", steps);
       }
    }
 }
