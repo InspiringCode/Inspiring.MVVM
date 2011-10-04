@@ -3,9 +3,9 @@
    using System.ComponentModel;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
-   using Inspiring.Mvvm.ViewModels.Core;
 
    [TestClass]
    public class TypeDescriptorTests : TestBase {
@@ -31,8 +31,10 @@
             .ToArray();
 
          var expected = new PropertyDescriptorCO[] { 
-            new PropertyDescriptorCO("Rating", typeof(object)),
-            new PropertyDescriptorCO("Comment", typeof(object))
+            new PropertyDescriptorCO("Rating", typeof(int)),
+            new PropertyDescriptorCO("Comment", typeof(string)),
+            new PropertyDescriptorCO("PropertySupportingConversion", typeof(object)),
+            new PropertyDescriptorCO("PropertyNotSupportingConversion", typeof(string))
          };
 
          CollectionAssert.AreEquivalent(expected, actual);
@@ -112,6 +114,18 @@
          CollectionAssert.Contains(propertyNames, "ClrProperty");
       }
 
+      [TestMethod]
+      public void PropertyType_WhenDispalyValueConversionIsEnabled_ReturnsObject() {
+         PropertyDescriptor pd = GetPropertyDescriptor("PropertySupportingConversion");
+         Assert.AreEqual(typeof(object), pd.PropertyType);
+      }
+
+      [TestMethod]
+      public void PropertyType_WhenDispalyValueConversionIsDisabled_ReturnsActualType() {
+         PropertyDescriptor pd = GetPropertyDescriptor("PropertyNotSupportingConversion");
+         Assert.AreEqual(typeof(string), pd.PropertyType);
+      }
+
       /// <summary>
       ///   Calls 'TypeDescriptor.GetProperties' and returns the 'PropertyDescriptor' 
       ///   with the specified 'propertyName'.
@@ -153,6 +167,13 @@
 
                d.Rating = vm.Property.Of<int>();
                d.Comment = vm.Property.Of<string>();
+
+               d.PropertySupportingConversion = vm.Property.Of<string>();
+               d.PropertyNotSupportingConversion = vm.Property.Of<string>();
+            })
+            .WithBehaviors(b => {
+               b.Property(x => x.PropertySupportingConversion).SupportsDisplayValueConversion();
+               b.Property(x => x.PropertyNotSupportingConversion).SupportsDisplayValueConversion(false);
             })
             .Build();
 
@@ -186,6 +207,9 @@
       private sealed class MovieReviewVMDescriptor : VMDescriptor {
          public IVMPropertyDescriptor<int> Rating { get; set; }
          public IVMPropertyDescriptor<string> Comment { get; set; }
+
+         public IVMPropertyDescriptor<string> PropertySupportingConversion { get; set; }
+         public IVMPropertyDescriptor<string> PropertyNotSupportingConversion { get; set; }
       }
 
       [TypeDescriptionProvider(typeof(ViewModelTypeDescriptionProvider))]

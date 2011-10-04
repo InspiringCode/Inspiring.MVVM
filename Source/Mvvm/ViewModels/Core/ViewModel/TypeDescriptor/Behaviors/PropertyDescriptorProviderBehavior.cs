@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
-   using System.Diagnostics.Contracts;
+   using System;
    using System.ComponentModel;
+   using System.Diagnostics.Contracts;
 
    internal sealed class PropertyDescriptorProviderBehavior<TValue> :
       Behavior,
@@ -11,11 +12,22 @@
       private IVMPropertyDescriptor<TValue> _property;
       private ViewModelPropertyDescriptor<TValue> _descriptor;
 
+      public PropertyDescriptorProviderBehavior() {
+         ReturnActualType = true;
+      }
+
+      public bool ReturnActualType { get; set; }
+
       public PropertyDescriptor PropertyDescriptor {
          get {
             if (_descriptor == null) {
                AssertInitialized();
-               _descriptor = new ViewModelPropertyDescriptor<TValue>(_property);
+
+               Type propertyType = ReturnActualType ?
+                  _property.PropertyType :
+                  typeof(object);
+
+               _descriptor = new ViewModelPropertyDescriptor<TValue>(_property, propertyType);
             }
 
             return _descriptor;
