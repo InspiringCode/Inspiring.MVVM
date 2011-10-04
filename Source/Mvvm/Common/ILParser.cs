@@ -32,6 +32,8 @@
                MemberInfo info = _declaringType.Module.ResolveMethod(metadataToken);
                yield return info;
             }
+
+            SkipOpCode(stream, op);
          }
       }
 
@@ -60,8 +62,6 @@
             .Take(4)
             .ToArray();
 
-         stream.RemoveRange(0, count: 4);
-
          return BitConverter.ToInt32(bytes, 0);
       }
 
@@ -85,8 +85,8 @@
          throw new ArgumentException();
       }
 
-      private void SkipOpCode(List<byte> stream, OpCode code) {
-         stream.RemoveRange(0, count: code.Size);
+      private void SkipOpCode(List<byte> stream, OpCode op) {
+         stream.RemoveRange(0, count: GetOperandLength(stream, op));
       }
 
       private static Dictionary<short, OpCode> CreateOpCodeLookup() {
@@ -96,6 +96,31 @@
             .Select(fi => (OpCode)fi.GetValue(null))
             .Where(op => op.OpCodeType != OpCodeType.Nternal)
             .ToDictionary(op => op.Value);
+      }
+
+      private static int GetOperandLength(List<byte> stream, OpCode op) {
+         switch (op.OperandType) {
+            case OperandType.InlineNone:
+               return 0;
+            case OperandType.ShortInlineBrTarget:
+            case OperandType.ShortInlineI:
+            case OperandType.ShortInlineVar:
+               return 1;
+            case OperandType.InlineVar:
+               return 2;
+            case OperandType.InlineI8:
+            case OperandType.InlineR:
+               return 8;
+            case OperandType.InlineSwitch:
+               byte[] bytes = stream
+                  .Take(4)
+                  .ToArray();
+
+               int count = BitConverter.ToInt32(bytes, startIndex: 0);
+               return 4 * (count + 1);
+            default:
+               return 4;
+         }
       }
    }
 }
