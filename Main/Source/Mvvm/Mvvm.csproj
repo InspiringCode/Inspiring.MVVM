@@ -120,6 +120,7 @@
     <Compile Include="Common\Events\IEventSubscriptionStore.cs" />
     <Compile Include="Common\Events\EventSubscriptionBuilder.cs" />
     <Compile Include="Common\HashCodeService.cs" />
+    <Compile Include="Common\ILParser.cs" />
     <Compile Include="Common\InterprocessCommunication\AbstractInterprocessMessenger.cs" />
     <Compile Include="Common\InterprocessCommunication\DispatchTarget.cs" />
     <Compile Include="Common\InterprocessCommunication\InterprocessLock.cs" />

@@ -187,6 +187,7 @@
     <Compile Include="Common\DelegateUtilsTests.cs" />
     <Compile Include="Common\Events\EventSubscriptionTests.cs" />
     <Compile Include="Common\HashCodeServiceTests.cs" />
+    <Compile Include="Common\ILParserTests.cs" />
     <Compile Include="Common\InterprocessCommunication\InterprocessMessengerTests.cs" />
     <Compile Include="Common\ServiceRegistryTests.cs" />
     <Compile Include="Common\TypeServiceTests.cs" />
