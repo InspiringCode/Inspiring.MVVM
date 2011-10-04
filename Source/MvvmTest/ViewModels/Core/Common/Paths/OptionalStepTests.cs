@@ -50,7 +50,7 @@
       public void ToString_ReturnsOptionalStepPlusInnerStep() {
          var innerStep = CreateStep(x => x.Projects);
          var optionalStep = new OptionalStep(innerStep);
-         Assert.AreEqual("Projects?", optionalStep.ToString());
+         Assert.AreEqual("EmployeeVMDescriptor.Projects?", optionalStep.ToString(isFirst: true));
       }
 
       private PathDefinitionStep CreateStep<TValue>(Func<EmployeeVMDescriptor, IVMPropertyDescriptor<TValue>> propertySelector) {

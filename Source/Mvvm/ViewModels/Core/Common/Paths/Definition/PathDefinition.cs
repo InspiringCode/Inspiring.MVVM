@@ -56,16 +56,14 @@
       }
 
       public override string ToString() {
-         IEnumerable<PathDefinitionStep> steps = _steps;
+         IEnumerable<string> stepsTexts = _steps
+            .Select((step, idx) => step.ToString(isFirst: idx == 0));
 
          if (!_steps.Any()) {
             return "[empty]";
          }
 
-         return String.Format(
-            "[{0}]",
-            String.Join(".", steps)
-         );
+         return String.Join(".", stepsTexts);
       }
    }
 }

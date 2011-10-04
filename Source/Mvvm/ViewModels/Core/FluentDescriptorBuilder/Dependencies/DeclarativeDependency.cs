@@ -44,7 +44,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
 
       public override string ToString() {
          return String.Format(
-            "On change of '{0}' {1}.",
+            "On change of '{0}' {1}",
             SourcePath,
             Action
          );

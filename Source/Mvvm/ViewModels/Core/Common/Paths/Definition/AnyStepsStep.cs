@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Linq;
+   using Inspiring.Mvvm.Common;
 
    internal sealed class AnyStepsStep<TDescriptor> :
       PathDefinitionStep
@@ -32,9 +33,16 @@
       public override IViewModel[] GetDescendants(PathDefinitionIterator definitionSteps, IViewModel rootVM) {
          throw new System.NotImplementedException();
       }
+      
+      public override string ToString(bool isFirst) {
+         if (!isFirst) {
+            return "[anything]";
+         }
 
-      public override string ToString() {
-         return "[anything]";
+         return String.Format(
+            "{0}.[anything]",
+            TypeService.GetFriendlyName(typeof(TDescriptor))
+         );
       }
 
       private bool Matches(IViewModel parent, PathIterator nextStep) {

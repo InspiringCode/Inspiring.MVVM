@@ -47,12 +47,10 @@
       }
 
       public override string ToString() {
-         var quotedProps = TargetProperties.Select(x => String.Format("'{0}'", x));
-
          return String.Format(
-            "refresh path '{0}' and properties {1}",
+            "refresh '{0}.[{1}]'",
             TargetPath,
-            String.Join(", ", quotedProps)
+            String.Join(" AND ", TargetProperties.Select(x => x.PropertyName))
          );
       }
 

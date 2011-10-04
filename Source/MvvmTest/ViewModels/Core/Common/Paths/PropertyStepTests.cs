@@ -141,7 +141,7 @@
       [TestMethod]
       public void ToString_ReturnsPropertyName() {
          var step = CreateStep(x => x.Projects);
-         Assert.AreEqual("Projects", step.ToString());
+         Assert.AreEqual("EmployeeVMDescriptor.Projects", step.ToString(isFirst: true));
       }
 
       private PathDefinitionStep CreateStep<TValue>(Func<EmployeeVMDescriptor, IVMPropertyDescriptor<TValue>> propertySelector) {

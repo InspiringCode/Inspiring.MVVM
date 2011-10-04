@@ -22,8 +22,8 @@
          throw new NotSupportedException();
       }
 
-      public override string ToString() {
-         return String.Format("{0}?", _innerStep.ToString());
+      public override string ToString(bool isFirst) {
+         return String.Format("{0}?", _innerStep.ToString(isFirst));
       }
    }
 }

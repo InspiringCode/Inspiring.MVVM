@@ -43,8 +43,15 @@
          return true;
       }
 
-      public override string ToString() {
-         return "[any property]";
+      public override string ToString(bool isFirst) {
+         if (!isFirst) {
+            return "[any property]";
+         }
+
+         return String.Format(
+            "{0}.[any property]",
+            TypeService.GetFriendlyName(typeof(TDescriptor))
+         );
       }
 
       public override IViewModel[] GetDescendants(PathDefinitionIterator definitionSteps, IViewModel rootVM) {

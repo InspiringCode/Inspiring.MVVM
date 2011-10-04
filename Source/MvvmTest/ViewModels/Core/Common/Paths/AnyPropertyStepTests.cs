@@ -86,7 +86,7 @@
       [TestMethod]
       public void ToString_ReturnsKeyword() {
          var step = new AnyPropertyStep<EmployeeVMDescriptor>();
-         Assert.AreEqual("[any property]", step.ToString());
+         Assert.AreEqual("EmployeeVMDescriptor.[any property]", step.ToString(isFirst: true));
       }
    }
 }

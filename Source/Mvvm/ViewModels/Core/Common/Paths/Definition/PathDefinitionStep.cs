@@ -14,5 +14,11 @@
             )
          );
       }
+
+      public abstract string ToString(bool isFirst);
+
+      public sealed override string ToString() {
+         return ToString(isFirst: true);
+      }
    }
 }

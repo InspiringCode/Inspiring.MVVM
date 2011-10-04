@@ -26,9 +26,12 @@
          throw new NotSupportedException();
       }
 
-      public override string ToString() {
+      public override string ToString(bool isFirst) {
          IEnumerable<PathDefinitionStep> steps = _steps;
-         return String.Join("|", steps);
+         return String.Format(
+            "[{0}]",
+            String.Join(" OR ", steps)
+         );
       }
    }
 }
