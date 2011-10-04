@@ -67,6 +67,9 @@
 
             b.Property(x => x.AllSourceItems).IsCached();
             b.Property(x => x.SelectedItems).SupportsDisplayValueConversion();
+
+            // TODO: Make this configurable.
+            b.Property(x => x.SelectedSourceItems).RequiresLoadedProperty(x => x.AllSourceItems);
          });
 
          WithValidators(b => {
