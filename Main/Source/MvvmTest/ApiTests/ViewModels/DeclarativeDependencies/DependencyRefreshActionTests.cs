@@ -205,6 +205,32 @@
          CollectionAssert.AreEquivalent(expectedRefreshedProperties, refreshedProperties);
       }
 
+      [TestMethod]
+      public void ToString_ReturnsReadableOutput() {
+         var employeeVM = CreateEmployeeVM(
+            b => b
+               .OnChangeOf
+               .Self
+               .OrAnyDescendant
+               .Refresh
+               .Descendant(x => x.Projects)
+               .Descendant(x => x.Customer)
+               .Properties(x => x.Name, x => x.Rating)
+         );
+
+         var behavior = employeeVM
+            .Descriptor
+            .Behaviors
+            .GetNextBehavior<DeclarativeDependencyBehavior>();
+
+         DeclarativeDependency dp = behavior.Dependencies.Single();
+
+         string expected =
+            "On change of 'EmployeeVMDescriptor.[anything]?' refresh 'EmployeeVMDescriptor.Projects.Customer.[Name AND Rating]'";
+
+         Assert.AreEqual(expected, dp.ToString());
+      }
+
       private EmployeeVM CreateEmployeeVM(
          Action<IVMDependencyBuilder<EmployeeVM, EmployeeVMDescriptor>> dependencyConfigurationAction,
          ProjectVMDescriptor projectVMDescriptor = null

@@ -58,8 +58,10 @@
          throw new NotSupportedException();
       }
 
-      public override string ToString() {
-         return _propertySelector.PropertyName;
+      public override string ToString(bool isFirst) {
+         return isFirst ?
+            _propertySelector.ToString() :
+            _propertySelector.PropertyName;
       }
 
       private bool Matches(IViewModel parent, PathIterator nextStep) {

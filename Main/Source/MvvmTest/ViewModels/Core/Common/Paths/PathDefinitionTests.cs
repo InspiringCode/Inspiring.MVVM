@@ -67,7 +67,7 @@
             .Append(new StepDefinitionMock("Step 1"))
             .Append(new StepDefinitionMock("Step 2"));
 
-         Assert.AreEqual("[Step 1.Step 2]", path.ToString());
+         Assert.AreEqual("Step 1.Step 2", path.ToString());
       }
 
       [TestMethod]
@@ -239,7 +239,7 @@
             return Result;
          }
 
-         public override string ToString() {
+         public override string ToString(bool isFirst) {
             return ToStringResult ?? base.ToString();
          }
 

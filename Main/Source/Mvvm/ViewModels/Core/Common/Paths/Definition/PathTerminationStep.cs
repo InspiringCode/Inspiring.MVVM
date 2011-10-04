@@ -1,4 +1,5 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core {
+﻿using System;
+namespace Inspiring.Mvvm.ViewModels.Core {
 
    internal sealed class PathTerminationStep : PathDefinitionStep {
       public static readonly PathTerminationStep Instance = new PathTerminationStep();
@@ -24,6 +25,10 @@
          IViewModel rootVM
       ) {
          return new IViewModel[] { rootVM };
+      }
+
+      public override string ToString(bool isFirst) {
+         return String.Empty;
       }
    }
 }
