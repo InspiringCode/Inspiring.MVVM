@@ -50,6 +50,9 @@
 
          WithBehaviors(b => {
             b.Property(x => x.AllSourceItems).IsCached();
+
+            // TODO: Make this configurable.
+            b.Property(x => x.SelectedSourceItem).RequiresLoadedProperty(x => x.AllSourceItems);
          });
 
          WithValidators(b => {
