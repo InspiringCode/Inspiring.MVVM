@@ -9,15 +9,15 @@
 
    [TestClass]
    public class ViewModelPropertyDescriptorTests : TestBase {
-      private IVMPropertyDescriptor<object> _property;
+      private IVMPropertyDescriptor<string> _property;
       private PropertyDescriptor _descriptor;
       private IViewModel _vm;
 
       [TestInitialize]
       public void Setup() {
-         _property = PropertyStub.Named("Test").Of<object>();
+         _property = PropertyStub.Named("Test").Of<string>();
 
-         _descriptor = new ViewModelPropertyDescriptor<object>(_property);
+         _descriptor = new ViewModelPropertyDescriptor<string>(_property, typeof(string));
          _vm = new ViewModelStub();
       }
 
@@ -64,12 +64,7 @@
       public void ComponentType_ReturnsTypeOfIViewModel() {
          Assert.AreEqual(typeof(IViewModel), _descriptor.ComponentType);
       }
-
-      [TestMethod]
-      public void PropertyType_ReturnsPropertyTypeOfVMProperty() {
-         Assert.AreEqual(_property.PropertyType, _descriptor.PropertyType);
-      }
-
+      
       [TestMethod]
       public void IsReadOnly_ReturnsFalse() {
          Assert.IsFalse(_descriptor.IsReadOnly);

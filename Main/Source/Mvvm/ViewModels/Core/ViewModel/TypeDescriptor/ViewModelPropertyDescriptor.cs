@@ -8,15 +8,10 @@
    ///   wrapper is defined on the ViewModel class.
    /// </summary>
    internal class ViewModelPropertyDescriptor : SimplePropertyDescriptor {
-      public ViewModelPropertyDescriptor(IVMPropertyDescriptor property)
-         // We have to use Object as type because we describe the 'DisplayValue'
-         // of the property, which is of type object. This is necessary to allow
-         // the view model to make type conversions. If we would return the real
-         // type of the property, the .NET Binding system would try to do the
-         // conversion.
+      public ViewModelPropertyDescriptor(IVMPropertyDescriptor property, Type propertyType)
          : base(
             property.PropertyName,
-            propertyType: typeof(object),
+            propertyType: propertyType,
             componentType: typeof(IViewModel)
          ) {
          Contract.Requires(property != null);
@@ -57,8 +52,8 @@
    }
 
    internal class ViewModelPropertyDescriptor<TValue> : ViewModelPropertyDescriptor {
-      public ViewModelPropertyDescriptor(IVMPropertyDescriptor<TValue> property)
-         : base(property) {
+      public ViewModelPropertyDescriptor(IVMPropertyDescriptor<TValue> property, Type propertyType)
+         : base(property, propertyType) {
       }
    }
 }
