@@ -40,7 +40,7 @@
             ValidationStep.Value,
             PathDefinition
                .Empty
-               .Append(ViewModelSelector<EmployeeVMDescriptor, ProjectVMDescriptor>())
+               .Append(new Func<EmployeeVMDescriptor, IVMPropertyDescriptor<ProjectVM>>(x => x.SelectedProject))
                .Append((ProjectVMDescriptor x) => x.EndDate),
             DelegateValidator.For(validationAction)
          );
@@ -56,7 +56,7 @@
             .Custom(validationAction)
          );
 
-         var collectionSelector = new Func<EmployeeVMDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<ProjectVMDescriptor>>>>(x => null);
+         var collectionSelector = new Func<EmployeeVMDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<ProjectVMDescriptor>>>>(x => x.Projects);
 
          AssertStandardValidators(
             d,
@@ -97,7 +97,7 @@
             .Custom(validationAction)
          );
 
-         var collectionSelector = new Func<EmployeeVMDescriptor, IVMPropertyDescriptor<IVMCollection<IViewModelExpression<ProjectVMDescriptor>>>>(x => null);
+         var collectionSelector = new Func<EmployeeVMDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<ProjectVMDescriptor>>>>(x => x.Projects);
 
          AssertStandardValidators(
             d,
@@ -140,7 +140,7 @@
             ValidationStep.ViewModel,
             PathDefinition
                .Empty
-               .Append(ViewModelSelector<EmployeeVMDescriptor, ProjectVMDescriptor>()),
+               .Append(new Func<EmployeeVMDescriptor, IVMPropertyDescriptor<ProjectVM>>(x => x.SelectedProject)),
             DelegateValidator.For(validationAction)
          );
       }
@@ -218,13 +218,13 @@
       //   return new Func<TDescriptor, IVMPropertyDescriptor<IVMCollection<IViewModelExpression<TItemDescriptor>>>>(x => null);
       //}
 
-      private static Func<TDescriptor, IVMPropertyDescriptor<IViewModel<TChildDescriptor>>>
-         ViewModelSelector<TDescriptor, TChildDescriptor>()
-         where TDescriptor : IVMDescriptor
-         where TChildDescriptor : IVMDescriptor {
+      //private static Func<TDescriptor, IVMPropertyDescriptor<IViewModel<TChildDescriptor>>>
+      //   ViewModelSelector<TDescriptor, TChildDescriptor>()
+      //   where TDescriptor : IVMDescriptor
+      //   where TChildDescriptor : IVMDescriptor {
 
-         return new Func<TDescriptor, IVMPropertyDescriptor<IViewModel<TChildDescriptor>>>(x => null);
-      }
+      //   return new Func<TDescriptor, IVMPropertyDescriptor<IViewModel<TChildDescriptor>>>(x => null);
+      //}
 
       private void AssertStandardValidators(
          IVMDescriptor descriptor,

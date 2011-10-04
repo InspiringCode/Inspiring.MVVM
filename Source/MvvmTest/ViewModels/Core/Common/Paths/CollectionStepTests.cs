@@ -95,9 +95,9 @@
       //}
 
       [TestMethod]
-      public void ToString_ReturnsDescriptorNameAndPropertyType() {
+      public void ToString_ReturnsPropertyName() {
          var step = CreateStep<EmployeeVMDescriptor, ProjectVM>(x => x.Projects);
-         Assert.AreEqual("EmployeeVMDescriptor -> IVMCollection<ProjectVM>", step.ToString());
+         Assert.AreEqual("Projects", step.ToString());
       }
 
       //private PathDefinitionStep CreateStep<TItemVM>(

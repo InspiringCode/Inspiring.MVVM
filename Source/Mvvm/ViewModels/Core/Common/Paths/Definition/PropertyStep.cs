@@ -8,25 +8,23 @@
       PathDefinitionStep
       where TDescriptor : IVMDescriptor {
 
-      private readonly Func<TDescriptor, IVMPropertyDescriptor> _propertySelector;
-      private readonly string _propertyNameHint;
+      private readonly PropertySelector<TDescriptor> _propertySelector;
 
       public PropertyStep(
          Func<TDescriptor, IVMPropertyDescriptor> propertySelector
       ) {
          Contract.Requires(propertySelector != null);
-         _propertySelector = propertySelector;
-         _propertyNameHint = "IVMPropertyDescriptor";
+         _propertySelector = new PropertySelector<TDescriptor>(propertySelector);
       }
 
-      public PropertyStep(
-         Func<TDescriptor, IVMPropertyDescriptor> propertySelector,
-         Type propertyHint
-      ) {
-         Contract.Requires(propertySelector != null);
-         _propertySelector = propertySelector;
-         _propertyNameHint = String.Format("IVMPropertyDescriptor<{0}>", TypeService.GetFriendlyName(propertyHint));
-      }
+      //public PropertyStep(
+      //   Func<TDescriptor, IVMPropertyDescriptor> propertySelector,
+      //   Type propertyHint
+      //) {
+      //   Contract.Requires(propertySelector != null);
+      //   _propertySelector = propertySelector;
+      //   _propertyNameHint = String.Format("IVMPropertyDescriptor<{0}>", TypeService.GetFriendlyName(propertyHint));
+      //}
 
       public override PathMatch Matches(PathDefinitionIterator definitionSteps, PathIterator step) {
          if (!step.HasStep || step.IsCollection || step.IsProperty) {
@@ -56,7 +54,7 @@
          PathDefinitionIterator definitionSteps,
          IViewModel rootVM
       ) {
-         var property = _propertySelector((TDescriptor)rootVM.Descriptor);
+         var property = _propertySelector.GetProperty(rootVM.Descriptor);
          var instance = rootVM.Kernel.GetValue(property);
 
          if (PropertyTypeHelper.IsViewModelCollection(property.PropertyType)) {
@@ -82,11 +80,7 @@
       }
 
       public override string ToString() {
-         return String.Format(
-            "{0} -> {1}",
-            TypeService.GetFriendlyName(typeof(TDescriptor)),
-            _propertyNameHint
-         );
+         return _propertySelector.PropertyName;
       }
 
       private bool Matches(IViewModel parent, PathIterator nextStep) {
@@ -100,7 +94,7 @@
 
          TDescriptor descriptor = (TDescriptor)parent.Descriptor;
 
-         IVMPropertyDescriptor expectedProperty = _propertySelector(descriptor);
+         IVMPropertyDescriptor expectedProperty = _propertySelector.GetProperty(descriptor);
 
          if (nextStep.IsProperty) {
             return nextStep.Property == expectedProperty;
