@@ -4,6 +4,7 @@
       Behavior,
       IBehaviorInitializationBehavior,
       IValueAccessorBehavior<TValue>,
+      IIsLoadedIndicatorBehavior,
       IRefreshBehavior {
 
       private static readonly FieldDefinitionGroup CacheGroup = new FieldDefinitionGroup();
@@ -33,6 +34,10 @@
       public void Refresh(IBehaviorContext context) {
          _cache.Clear(context);
          this.RefreshNext(context);
+      }
+
+      public bool IsLoaded(IBehaviorContext context) {
+         return _cache.HasValue(context) && this.IsLoadedNext(context);
       }
    }
 }
