@@ -2,6 +2,7 @@
    using Inspiring.Mvvm.Screens;
    using Inspiring.Mvvm.Views;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
+   using Inspiring.Mvvm.Common;
 
    [TestClass]
    public class DialogServiceTests {
@@ -9,7 +10,7 @@
 
       [TestInitialize]
       public void Setup() {
-         DialogSerivce = new DialogService(new WindowServiceStub());
+         DialogSerivce = new DialogService(new WindowServiceStub(), new EventAggregator());
       }
 
       [TestMethod]

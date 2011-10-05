@@ -1,21 +1,33 @@
 ﻿namespace Inspiring.Mvvm.Views {
    using System;
+   using System.Diagnostics.Contracts;
    using System.Windows;
+   using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.Screens;
    using Microsoft.Win32;
 
    public class DialogService : IDialogService {
-      protected IWindowService WindowService { get; private set; }
+      public static readonly Event<EventArgs> DialogOpeningEvent = new Event<EventArgs>();
 
-      public DialogService(IWindowService windowService) {
+      private readonly EventAggregator _aggregator;
+
+      public DialogService(IWindowService windowService, EventAggregator aggregator) {
+         Contract.Requires<ArgumentNullException>(windowService != null);
+         Contract.Requires<ArgumentNullException>(aggregator != null);
+
          WindowService = windowService;
+         _aggregator = aggregator;
       }
+
+      protected IWindowService WindowService { get; private set; }
 
       public virtual void Show<TScreen>(
          IScreenFactory<TScreen> screen,
          IScreenBase parent = null,
          string title = null
       ) where TScreen : IScreenBase {
+         OnDialogOpening();
+
          Window window = WindowService.CreateDialogWindow(screen);
          window.Show();
       }
@@ -25,6 +37,8 @@
          IScreenBase parent = null,
          string title = null
       ) where TScreen : IScreenBase {
+         OnDialogOpening();
+
          IScreenBase s = screen.Create();
          s.Children.Add(new DialogLifecycle());
 
@@ -47,6 +61,8 @@
          string filter = null,
          string initialDirectory = null
       ) {
+         OnDialogOpening();
+
          Window owner = WindowService.GetAssociatedWindow(parent);
          OpenFileDialog ofd = new OpenFileDialog();
 
@@ -69,6 +85,8 @@
          string message,
          Environment.SpecialFolder? specialFolder = null
       ) {
+         OnDialogOpening();
+
          Window owner = WindowService.GetAssociatedWindow(parent);
 
          FolderBrowserDialog fbd = new FolderBrowserDialog();
@@ -86,6 +104,8 @@
       }
 
       public virtual void Info(string message, string caption) {
+         OnDialogOpening();
+
          MessageBox.Show(
             message,
             caption,
@@ -95,6 +115,8 @@
       }
 
       public virtual void Warning(string message, string caption) {
+         OnDialogOpening();
+
          MessageBox.Show(
             message,
             caption,
@@ -104,6 +126,8 @@
       }
 
       public virtual void Error(string message, string caption) {
+         OnDialogOpening();
+
          MessageBox.Show(
             message,
             caption,
@@ -113,6 +137,8 @@
       }
 
       public virtual CustomDialogResult YesNo(string message, string caption, CustomDialogResult defaultResult, CustomDialogIcon icon = CustomDialogIcon.Question) {
+         OnDialogOpening();
+
          return MapResult(
             MessageBox.Show(
                message,
@@ -125,6 +151,8 @@
       }
 
       public virtual CustomDialogResult YesNoCancel(string message, string caption, CustomDialogResult defaultResult, CustomDialogIcon icon = CustomDialogIcon.Question) {
+         OnDialogOpening();
+
          return MapResult(
             MessageBox.Show(
                message,
@@ -137,6 +165,8 @@
       }
 
       public virtual CustomDialogResult OkCancel(string message, string caption, CustomDialogResult defaultResult, CustomDialogIcon icon = CustomDialogIcon.Information) {
+         OnDialogOpening();
+
          return MapResult(
             MessageBox.Show(
                message,
@@ -146,6 +176,10 @@
                MapResult(defaultResult)
             )
          );
+      }
+
+      protected virtual void OnDialogOpening() {
+         _aggregator.Publish(DialogOpeningEvent, EventArgs.Empty);
       }
 
       protected static MessageBoxImage MapIcon(CustomDialogIcon icon) {
