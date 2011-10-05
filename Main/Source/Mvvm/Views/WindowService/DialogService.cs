@@ -8,6 +8,7 @@
 
    public class DialogService : IDialogService {
       public static readonly Event<EventArgs> DialogOpeningEvent = new Event<EventArgs>();
+      public static readonly Event<EventArgs> DialogClosedEvent = new Event<EventArgs>();
 
       private readonly EventAggregator _aggregator;
 
@@ -21,24 +22,110 @@
 
       protected IWindowService WindowService { get; private set; }
 
-      public virtual void Show<TScreen>(
+      public void Show<TScreen>(
          IScreenFactory<TScreen> screen,
          IScreenBase parent = null,
          string title = null
       ) where TScreen : IScreenBase {
          OnDialogOpening();
+         ShowCore<TScreen>(screen, parent, title);
+         OnDialogClosed();
+      }
 
+      public DialogScreenResult ShowDialog<TScreen>(
+         IScreenFactory<TScreen> screen,
+         IScreenBase parent = null,
+         string title = null
+      ) where TScreen : IScreenBase {
+         OnDialogOpening();
+         var result = ShowDialogCore(screen, parent, title);
+         OnDialogClosed();
+
+         return result;
+      }
+
+      public bool ShowOpenFileDialog(
+         IScreenBase parent,
+         out string fileName,
+         string filter = null,
+         string initialDirectory = null
+      ) {
+         OnDialogOpening();
+         var result = ShowOpenFileDialogCore(parent, out fileName, filter, initialDirectory);
+         OnDialogClosed();
+
+         return result;
+      }
+
+      public bool ShowFolderBrowseDialog(
+         IScreenBase parent,
+         out string selectedPath,
+         string message,
+         Environment.SpecialFolder? specialFolder = null
+      ) {
+         OnDialogOpening();
+         var result = ShowFolderBrowseDialogCore(parent, out selectedPath, message, specialFolder);
+         OnDialogClosed();
+
+         return result;
+      }
+
+      public void Info(string message, string caption) {
+         OnDialogOpening();
+         InfoCore(message, caption);
+         OnDialogClosed();
+      }
+
+      public void Warning(string message, string caption) {
+         OnDialogOpening();
+         WarningCore(message, caption);
+         OnDialogClosed();
+      }
+
+      public void Error(string message, string caption) {
+         OnDialogOpening();
+         ErrorCore(message, caption);
+         OnDialogClosed();
+      }
+
+      public CustomDialogResult YesNo(string message, string caption, CustomDialogResult defaultResult, CustomDialogIcon icon = CustomDialogIcon.Question) {
+         OnDialogOpening();
+         var result = YesNoCore(message, caption, defaultResult, icon);
+         OnDialogClosed();
+
+         return result;
+      }
+
+      public CustomDialogResult YesNoCancel(string message, string caption, CustomDialogResult defaultResult, CustomDialogIcon icon = CustomDialogIcon.Question) {
+         OnDialogOpening();
+         var result = YesNoCancelCore(message, caption, defaultResult, icon);
+         OnDialogClosed();
+
+         return result;
+      }
+
+      public CustomDialogResult OkCancel(string message, string caption, CustomDialogResult defaultResult, CustomDialogIcon icon = CustomDialogIcon.Information) {
+         OnDialogOpening();
+         var result = OkCancelCore(message, caption, defaultResult, icon);
+         OnDialogClosed();
+
+         return result;
+      }
+
+      protected virtual void ShowCore<TScreen>(
+         IScreenFactory<TScreen> screen,
+         IScreenBase parent = null,
+         string title = null
+      ) where TScreen : IScreenBase {
          Window window = WindowService.CreateDialogWindow(screen);
          window.Show();
       }
 
-      public virtual DialogScreenResult ShowDialog<TScreen>(
+      protected virtual DialogScreenResult ShowDialogCore<TScreen>(
          IScreenFactory<TScreen> screen,
          IScreenBase parent = null,
          string title = null
       ) where TScreen : IScreenBase {
-         OnDialogOpening();
-
          IScreenBase s = screen.Create();
          s.Children.Add(new DialogLifecycle());
 
@@ -55,14 +142,12 @@
          return result;
       }
 
-      public virtual bool ShowOpenFileDialog(
+      protected virtual bool ShowOpenFileDialogCore(
          IScreenBase parent,
          out string fileName,
          string filter = null,
          string initialDirectory = null
       ) {
-         OnDialogOpening();
-
          Window owner = WindowService.GetAssociatedWindow(parent);
          OpenFileDialog ofd = new OpenFileDialog();
 
@@ -79,14 +164,12 @@
          return result.Value;
       }
 
-      public bool ShowFolderBrowseDialog(
+      protected virtual bool ShowFolderBrowseDialogCore(
          IScreenBase parent,
          out string selectedPath,
          string message,
          Environment.SpecialFolder? specialFolder = null
       ) {
-         OnDialogOpening();
-
          Window owner = WindowService.GetAssociatedWindow(parent);
 
          FolderBrowserDialog fbd = new FolderBrowserDialog();
@@ -103,9 +186,7 @@
          return result;
       }
 
-      public virtual void Info(string message, string caption) {
-         OnDialogOpening();
-
+      protected virtual void InfoCore(string message, string caption) {
          MessageBox.Show(
             message,
             caption,
@@ -114,9 +195,7 @@
          );
       }
 
-      public virtual void Warning(string message, string caption) {
-         OnDialogOpening();
-
+      protected virtual void WarningCore(string message, string caption) {
          MessageBox.Show(
             message,
             caption,
@@ -125,9 +204,7 @@
          );
       }
 
-      public virtual void Error(string message, string caption) {
-         OnDialogOpening();
-
+      protected virtual void ErrorCore(string message, string caption) {
          MessageBox.Show(
             message,
             caption,
@@ -136,9 +213,7 @@
          );
       }
 
-      public virtual CustomDialogResult YesNo(string message, string caption, CustomDialogResult defaultResult, CustomDialogIcon icon = CustomDialogIcon.Question) {
-         OnDialogOpening();
-
+      protected virtual CustomDialogResult YesNoCore(string message, string caption, CustomDialogResult defaultResult, CustomDialogIcon icon = CustomDialogIcon.Question) {
          return MapResult(
             MessageBox.Show(
                message,
@@ -150,9 +225,7 @@
          );
       }
 
-      public virtual CustomDialogResult YesNoCancel(string message, string caption, CustomDialogResult defaultResult, CustomDialogIcon icon = CustomDialogIcon.Question) {
-         OnDialogOpening();
-
+      protected virtual CustomDialogResult YesNoCancelCore(string message, string caption, CustomDialogResult defaultResult, CustomDialogIcon icon = CustomDialogIcon.Question) {
          return MapResult(
             MessageBox.Show(
                message,
@@ -164,9 +237,7 @@
          );
       }
 
-      public virtual CustomDialogResult OkCancel(string message, string caption, CustomDialogResult defaultResult, CustomDialogIcon icon = CustomDialogIcon.Information) {
-         OnDialogOpening();
-
+      protected virtual CustomDialogResult OkCancelCore(string message, string caption, CustomDialogResult defaultResult, CustomDialogIcon icon = CustomDialogIcon.Information) {
          return MapResult(
             MessageBox.Show(
                message,
@@ -180,6 +251,10 @@
 
       protected virtual void OnDialogOpening() {
          _aggregator.Publish(DialogOpeningEvent, EventArgs.Empty);
+      }
+
+      protected virtual void OnDialogClosed() {
+         _aggregator.Publish(DialogClosedEvent, EventArgs.Empty);
       }
 
       protected static MessageBoxImage MapIcon(CustomDialogIcon icon) {
