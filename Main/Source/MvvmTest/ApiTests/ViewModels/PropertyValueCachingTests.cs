@@ -121,6 +121,17 @@
          Assert.AreEqual(2, VM.MappedPropertyGetterCalls);
       }
 
+      [TestMethod]
+      public void IsLoaded_WhenCacheIsNotPopulated_ReturnsFalse() {
+         ViewModelAssert.IsNotLoaded(VM, x => x.MappedProperty);
+      }
+
+      [TestMethod]
+      public void IsLoaded_WhenCacheIsPopulated_ReturnsTrue() {
+         VM.Load(x => x.MappedProperty);
+         ViewModelAssert.IsLoaded(VM, x => x.MappedProperty);
+      }
+
       private sealed class TestVM : TestViewModel<TestVMDescriptor> {
          public static readonly TestVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<TestVMDescriptor>()

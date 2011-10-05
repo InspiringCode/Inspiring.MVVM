@@ -326,7 +326,7 @@
          Assert.AreEqual(0, providerCalls);
 
          vm.Department.Load(x => x.SelectedItem);
-         Assert.AreEqual(0, providerCalls);
+         Assert.AreEqual(1, providerCalls);
 
          vm.Department.Load(x => x.AllItems);
          Assert.AreEqual(1, providerCalls);
@@ -380,6 +380,27 @@
          Assert.AreEqual(department1, ss.SelectedItem.Source);
       }
 
+      // We needed this in a project to optimize NHibernate queries.
+      [TestMethod]
+      public void AccessingSelectedItem_AccessesAllSourceItemsBeforeSelectedSourceItem() {
+         string log = String.Empty;
+
+         User user = new User { Department = Department1 };
+         user.DepartmentGetterInvoked += () => log += "SourceItem ";
+
+         var vm = CreateUserVM(
+            allDepartmentsSelector: new Func<User, IEnumerable<Department>>(u => {
+               log += "AllItems ";
+               return new[] { Department1 };
+            }),
+            sourceUser: user
+         );
+
+         var trigger = vm.Department.GetValue(x => x.SelectedItem);
+
+         Assert.AreEqual("AllItems SourceItem ", log);
+      }
+
       /// <summary>
       ///   Asserts that the source departments of the 'AllItems' property of the
       ///   selection VM are equal to the given source items.
@@ -403,13 +424,14 @@
          Func<Department, bool> filter = null,
          Department[] allDepartments = null,
          Func<User, IEnumerable<Department>> allDepartmentsSelector = null,
-         Department selectedDepartment = null
+         Department selectedDepartment = null,
+         User sourceUser = null
       ) {
          if (allDepartments != null && allDepartmentsSelector != null) {
             throw new ArgumentException();
          }
 
-         var sourceUser = new User();
+         sourceUser = sourceUser ?? new User();
          sourceUser.Department = selectedDepartment;
 
          UserVMDescriptor descriptor = VMDescriptorBuilder

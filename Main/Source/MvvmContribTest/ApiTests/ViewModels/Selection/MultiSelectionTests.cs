@@ -538,7 +538,7 @@
          Assert.AreEqual(0, providerCalls);
 
          vm.Groups.Load(x => x.SelectedItems);
-         Assert.AreEqual(0, providerCalls);
+         Assert.AreEqual(1, providerCalls);
 
          vm.Groups.Load(x => x.AllItems);
          Assert.AreEqual(1, providerCalls);
