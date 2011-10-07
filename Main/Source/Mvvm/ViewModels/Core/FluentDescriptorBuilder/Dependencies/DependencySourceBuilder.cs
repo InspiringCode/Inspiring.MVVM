@@ -71,7 +71,7 @@
       //   A C T I O N S
       //
 
-      public IDependencyTargetBuilder<TRootVM, TRootVM, TRootDescriptor, TRootDescriptor> Refresh {
+      public IRefreshTargetBuilder<TRootVM, TRootVM, TRootDescriptor, TRootDescriptor> Refresh {
          get {
             _context.AddRefreshAction();
             return new DependencyTargetBuilder<TRootVM, TRootVM, TRootDescriptor, TRootDescriptor>(_context);

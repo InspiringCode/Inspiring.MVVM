@@ -7,13 +7,16 @@
    internal sealed class RefreshAction : DependencyAction {
       private readonly PathDefinition _targetPath;
       private readonly IList<IPropertySelector> _targetProperties;
+      private readonly bool _executeRefreshDependencies;
 
       public RefreshAction(
          PathDefinition targetPath,
-         IList<IPropertySelector> targetProperties
+         IList<IPropertySelector> targetProperties,
+         bool executeRefreshDependencies
       ) {
          _targetPath = targetPath;
          _targetProperties = targetProperties;
+         _executeRefreshDependencies = executeRefreshDependencies;
       }
 
       internal PathDefinition TargetPath { get { return _targetPath; } }
@@ -27,6 +30,12 @@
          ChangeArgs args,
          DeclarativeDependency dependency
       ) {
+         RefreshReason reason = args.Reason as RefreshReason;
+         
+         if (reason != null && !reason.ExecuteRefreshDependencies) {
+            return;
+         }
+
          RefreshTrace.BeginRefresh(dependency);
 
          if (TargetPath.IsEmpty) {
@@ -38,7 +47,7 @@
                if (_targetProperties.Count > 0) {
                   RefreshProperties(viewModel);
                } else {
-                  viewModel.Kernel.RefreshInternal();
+                  viewModel.Kernel.RefreshInternal(_executeRefreshDependencies);
                }
             }
          }
@@ -57,7 +66,7 @@
       private void RefreshProperties(IViewModel ownerVM) {
          foreach (var propertySelector in _targetProperties) {
             var property = propertySelector.GetProperty(ownerVM.Descriptor);
-            ownerVM.Kernel.RefreshInternal(property);
+            ownerVM.Kernel.RefreshInternal(property, _executeRefreshDependencies);
          }
       }
    }

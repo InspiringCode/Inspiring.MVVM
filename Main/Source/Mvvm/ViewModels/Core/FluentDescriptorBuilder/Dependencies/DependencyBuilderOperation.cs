@@ -17,6 +17,8 @@
          _viewModelConfiguration = viewModelConfiguration;
       }
 
+      public bool ExecuteRefreshDependencies { get; set; }
+
       public void AddSelfStep<TRootDescriptor>()
          where TRootDescriptor : IVMDescriptor {
          _terminatingAnyPropertyStep = CreateAnyPropertyStep<TRootDescriptor>();
@@ -89,7 +91,7 @@
 
       public void AddRefreshAction() {
          _actionCreator = () => {
-            return new RefreshAction(_targetPath, _targetProperties);
+            return new RefreshAction(_targetPath, _targetProperties, ExecuteRefreshDependencies);
          };
       }
 

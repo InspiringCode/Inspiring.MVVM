@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.DeclarativeDependencies {
    using System;
-   using System.Collections.Generic;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -8,15 +7,22 @@
    [TestClass]
    public class IgnoreRefreshDependenciesTests {
       [TestMethod]
-      [Ignore]
       public void Refresh_IgnoresCollectionDependencies() {
          var root = CreateRootVM(b => {
             b.OnChangeOf
                .Descendant(x => x.Child1)
                .Collection(x => x.Grandchildren)
                .Refresh
+               .AndExecuteRefreshDependencies
                .Descendant(x => x.Child2)
                .Properties(x => x.Grandchildren);
+
+            b.OnChangeOf
+               .Descendant(x => x.Child2)
+               .Descendant(x => x.Grandchildren)
+               .Properties(x => x.StringProperty)
+               .Refresh
+               .Properties(x => x.Property1);
          });
 
          var trigger = new ChildVM();
@@ -25,11 +31,10 @@
 
          root.Child1.Grandchildren.Add(trigger);
 
-         Assert.AreEqual(0, monitor.StringPropertyRefreshCount);
+         Assert.AreEqual(0, root.Property1RefreshCount);
       }
 
       [TestMethod]
-      [Ignore]
       public void Refresh_IgnoresViewModelDependencies() {
          var root = CreateRootVM(b => {
             b.OnChangeOf
@@ -45,7 +50,7 @@
          root.Child1.Grandchild = trigger;
          root.Child2.Grandchild = monitor;
 
-         trigger.Refresh(x => x.StringProperty);
+         trigger.Refresh(x => x.StringProperty, executeRefreshDependencies: false);
          Assert.AreEqual(0, monitor.StringPropertyRefreshCount);
 
          root.Child1.Refresh(x => x.Grandchild);
@@ -53,7 +58,6 @@
       }
 
       [TestMethod]
-      [Ignore]
       public void Refresh_IgnoresPropertyDependencies() {
          var root = CreateRootVM(b => {
             b.OnChangeOf
@@ -62,12 +66,11 @@
                .Properties(x => x.Property2);
          });
 
-         root.Refresh(x => x.Property1);
+         root.Refresh(x => x.Property1, executeRefreshDependencies: false);
          Assert.AreEqual(0, root.Property2RefreshCount);
       }
 
       [TestMethod]
-      [Ignore]
       public void Refresh_IgnoresDependencyLoops() {
          var root = CreateRootVM(b => {
             b.OnChangeOf
