@@ -98,7 +98,7 @@
             InitializeValueInvocations++;
          }
 
-         public void Refresh(IBehaviorContext context) {
+         public void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
             RefreshInvocations++;
          }
       }

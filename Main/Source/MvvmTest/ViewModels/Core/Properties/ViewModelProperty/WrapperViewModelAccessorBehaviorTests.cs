@@ -30,7 +30,7 @@
       public void Refresh_DoesNotRaiseNotifyChange() {
          SourceAccessor.Value = new ChildSource();
          Behavior.GetValue(Context);
-         Behavior.Refresh(Context);
+         Behavior.Refresh(Context, false);
          Assert.IsFalse(Context.NotifyChangeInvocations.Any());
       }
    }

@@ -59,8 +59,8 @@
          }
       }
 
-      public virtual void Refresh(IBehaviorContext context) {
-         this.RefreshNext(context);
+      public virtual void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
+         this.RefreshNext(context, executeRefreshDependencies);
 
          State s = GetState(context);
          switch (s.Type) {

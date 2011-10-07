@@ -13,11 +13,11 @@
          );
       }
 
-      public void Refresh(IBehaviorContext context) {
+      public void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
          var collection = GetValue(context);
          Repopulate(context, collection);
 
-         this.RefreshNext(context);
+         this.RefreshNext(context, executeRefreshDependencies);
       }
 
       protected override IVMCollection<TItemVM> ProvideValue(IBehaviorContext context) {

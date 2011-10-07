@@ -220,9 +220,9 @@
 
          public int RefreshCount { get; set; }
 
-         public void Refresh(IBehaviorContext context) {
+         public void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
             RefreshCount++;
-            this.RefreshNext(context);
+            this.RefreshNext(context, executeRefreshDependencies);
          }
       }
    }

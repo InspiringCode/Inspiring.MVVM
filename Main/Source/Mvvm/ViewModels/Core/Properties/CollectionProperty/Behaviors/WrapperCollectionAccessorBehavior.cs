@@ -37,10 +37,10 @@
          );
       }
 
-      public void Refresh(IBehaviorContext context) {
+      public void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
          // Call next behavior first, because a source accessor behavior may handle
          // it.
-         this.RefreshNext(context);
+         this.RefreshNext(context, executeRefreshDependencies);
 
          _collectionSourceCache.Clear(context);
          var collection = GetValue(context);

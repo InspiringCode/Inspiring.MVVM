@@ -49,7 +49,7 @@
          var newSourceVMs = new[] { CreateItem(), CreateItem() };
          Next.PopulatedItemsToReturn = newSourceVMs;
 
-         Behavior.Refresh(Context);
+         Behavior.Refresh(Context, false);
 
          var collection = Behavior.GetValue(Context).ToArray();
 
@@ -59,7 +59,7 @@
 
       [TestMethod]
       public void Refresh_CallsNextBehavior() {
-         Behavior.Refresh(Context);
+         Behavior.Refresh(Context, false);
          Assert.AreEqual(1, Next.RefreshInvocations);
       }
    }

@@ -278,11 +278,12 @@
 
       public static void RefreshNext(
          this Behavior behavior,
-         IBehaviorContext context
+         IBehaviorContext context,
+         bool executeRefreshDependencies
       ) {
          IRefreshBehavior next;
          if (behavior.TryGetBehavior(out next)) {
-            next.Refresh(context);
+            next.Refresh(context, executeRefreshDependencies);
          }
       }
 
