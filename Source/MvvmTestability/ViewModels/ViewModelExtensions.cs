@@ -109,6 +109,23 @@
          viewModel.Kernel.Load(property);
       }
 
+      public static void Refresh<TDescriptor>(
+         this IViewModel<TDescriptor> viewModel,
+         Func<TDescriptor, IVMPropertyDescriptor> propertySelector,
+         bool executeRefreshDependencies = false
+      ) where TDescriptor : IVMDescriptor {
+         if (viewModel == null) {
+            throw new ArgumentNullException("viewModel");
+         }
+
+         if (propertySelector == null) {
+            throw new ArgumentNullException("propertySelector");
+         }
+
+         var property = propertySelector((TDescriptor)viewModel.Descriptor);
+         viewModel.Kernel.Refresh(property, executeRefreshDependencies);
+      }
+
       public static void Revalidate(this IViewModel viewModel, ValidationScope scope = ValidationScope.Self) {
          viewModel.Kernel.Revalidate(scope);
       }

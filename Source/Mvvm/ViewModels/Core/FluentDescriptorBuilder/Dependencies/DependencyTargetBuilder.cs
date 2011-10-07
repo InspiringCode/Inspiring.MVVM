@@ -2,7 +2,8 @@
    using System;
 
    internal sealed class DependencyTargetBuilder<TRootVM, TSourceVM, TRootDescriptor, TSourceDescriptor> :
-      IDependencyTargetBuilder<TRootVM, TSourceVM, TRootDescriptor, TSourceDescriptor>
+      //IDependencyTargetBuilder<TRootVM, TSourceVM, TRootDescriptor, TSourceDescriptor>,
+      IRefreshTargetBuilder<TRootVM, TSourceVM, TRootDescriptor, TSourceDescriptor>
       where TRootVM : IViewModel
       where TSourceVM : IViewModel
       where TRootDescriptor : IVMDescriptor
@@ -30,6 +31,13 @@
       ) where D : IVMDescriptor {
          _context.AddDescendantTargetStep<TSourceDescriptor, IVMCollectionExpression<IViewModelExpression<D>>, D>(collectionSelector);
          return new DependencyTargetBuilder<TRootVM, IViewModel<D>, TRootDescriptor, D>(_context);
+      }
+
+      public IDependencyTargetBuilder<TRootVM, TSourceVM, TRootDescriptor, TSourceDescriptor> AndExecuteRefreshDependencies {
+         get { 
+            _context.ExecuteRefreshDependencies = true;
+            return this;
+         }
       }
    }
 }

@@ -195,6 +195,7 @@
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\DeclarativeDependency.cs" />
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\DependencySourceBuilder.cs" />
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\DependencyTargetBuilder.cs" />
+    <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\Interfaces\IRefreshTargetBuilder.cs" />
     <Compile Include="ViewModels\Core\Properties\SimpleProperty\Behaviors\ValueCacheBehavior.cs" />
     <Compile Include="ViewModels\Core\Properties\ViewModelProperty\Behaviors\ViewModelPropertyChangedNotifierBehavior.cs" />
     <Compile Include="ViewModels\Core\Validation\Behaviors\ViewModelBehaviors\CachingValidationResultAggregatorBehavior.cs" />
