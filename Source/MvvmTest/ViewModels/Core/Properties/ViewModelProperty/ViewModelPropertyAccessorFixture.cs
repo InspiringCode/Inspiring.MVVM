@@ -23,11 +23,11 @@
       protected class RefreshDetectorBehavior : Behavior, IRefreshControllerBehavior {
          public bool WasCalled { get; set; }
 
-         public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property) {
+         public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property, bool executeRefreshDependencies) {
             WasCalled = true;
          }
 
-         public void Refresh(IBehaviorContext context) {
+         public void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
             WasCalled = true;
          }
       }

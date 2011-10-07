@@ -121,6 +121,7 @@
     <Compile Include="ApiTests\ViewModels\DeclarativeDependencies\DependencyTestBase.cs" />
     <Compile Include="ApiTests\ViewModels\DeclarativeDependencies\DependencyTests.cs" />
     <Compile Include="ApiTests\ViewModels\DeclarativeDependencies\DependencyValidationActionTests.cs" />
+    <Compile Include="ApiTests\ViewModels\DeclarativeDependencies\IgnoreRefreshDependenciesTests.cs" />
     <Compile Include="ApiTests\ViewModels\DeclarativeDependencies\LazyLoadTests.cs" />
     <Compile Include="ApiTests\ViewModels\Domain\CustomerRepository.cs" />
     <Compile Include="ApiTests\ViewModels\InheritanceTests.cs" />

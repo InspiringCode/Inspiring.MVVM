@@ -150,12 +150,12 @@
 
          public int RefreshInvocations { get; set; }
 
-         public void Refresh(IBehaviorContext context) {
+         public void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
             ActionLog.Append(RefreshItemLog);
             RefreshInvocations++;
          }
 
-         public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property) {
+         public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property, bool executeRefreshDependencies) {
          }
       }
    }

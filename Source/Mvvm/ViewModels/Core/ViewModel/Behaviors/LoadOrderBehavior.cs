@@ -70,7 +70,7 @@
          this.InitializeNext(context);
       }
 
-      public void Refresh(IBehaviorContext context) {
+      public void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
          RefreshTrace.BeginRefresh(context.VM);
 
          RequireInitialized();
@@ -82,21 +82,21 @@
                .VM
                .Descriptor
                .Behaviors
-               .ViewModelRefreshNext(context, property);
+               .ViewModelRefreshNext(context, property, executeRefreshDependencies);
          }
 
-         this.ViewModelRefreshNext(context);
+         this.ViewModelRefreshNext(context, executeRefreshDependencies);
 
          RefreshTrace.EndLastRefresh();
       }
 
-      public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property) {
+      public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property, bool executeRefreshDependencies) {
          RefreshTrace.BeginRefresh(property);
 
          RequireInitialized();
          property.Behaviors.RefreshNext(context);
 
-         this.ViewModelRefreshNext(context, property);
+         this.ViewModelRefreshNext(context, property, executeRefreshDependencies);
 
          RefreshTrace.EndLastRefresh();
       }

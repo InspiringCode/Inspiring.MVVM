@@ -97,7 +97,7 @@
 
       [TestMethod]
       public void Refresh_PerformsViewModelValidations() {
-         Behavior.Refresh(Context);
+         Behavior.Refresh(Context, executeRefreshDependencies: false);
          Assert.AreEqual(RefreshNext + Validate + RevalidateNext, ActionLog);
       }
 
@@ -138,11 +138,11 @@
 
          private StringBuilder Log { get; set; }
 
-         public void Refresh(IBehaviorContext context) {
+         public void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
             Log.Append(RefreshNext);
          }
 
-         public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property) {
+         public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property, bool executeRefreshDependencies) {
             Log.Append(RefreshNextProperty);
          }
 
