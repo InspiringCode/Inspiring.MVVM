@@ -111,6 +111,17 @@
 
       public static void Refresh<TDescriptor>(
          this IViewModel<TDescriptor> viewModel,
+         bool executeRefreshDependencies = false
+      ) where TDescriptor : IVMDescriptor {
+         if (viewModel == null) {
+            throw new ArgumentNullException("viewModel");
+         }
+
+         viewModel.Kernel.Refresh(executeRefreshDependencies);
+      }
+
+      public static void Refresh<TDescriptor>(
+         this IViewModel<TDescriptor> viewModel,
          Func<TDescriptor, IVMPropertyDescriptor> propertySelector,
          bool executeRefreshDependencies = false
       ) where TDescriptor : IVMDescriptor {
