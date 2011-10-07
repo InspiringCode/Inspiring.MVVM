@@ -146,15 +146,20 @@
          //_descriptor.Behaviors.UpdateSourceNext(this, property);
       }
 
-      public void Refresh() {
+      public void Refresh(
+         bool executeRefreshDependencies = false
+      ) {
          RefreshTrace.BeginManualRefresh();
-         RefreshInternal();
+         RefreshInternal(executeRefreshDependencies);
          RefreshTrace.EndLastRefresh();
       }
 
-      public void Refresh(IVMPropertyDescriptor property) {
+      public void Refresh(
+         IVMPropertyDescriptor property, 
+         bool executeRefreshDependencies = false
+      ) {
          RefreshTrace.BeginManualRefresh();
-         RefreshInternal(property);
+         RefreshInternal(property, executeRefreshDependencies);
          RefreshTrace.EndLastRefresh();
       }
 
@@ -181,17 +186,17 @@
          return this;
       }
 
-      internal void RefreshInternal() {
+      internal void RefreshInternal(bool executeRefreshDependencies = false) {
          RefreshWithoutValidation();
          Revalidator.Revalidate(_vm, ValidationScope.SelfAndLoadedDescendants);
       }
 
-      internal void RefreshWithoutValidation() {
-         _descriptor.Behaviors.ViewModelRefreshNext(this);
+      internal void RefreshWithoutValidation(bool executeRefreshDependencies = false) {
+         _descriptor.Behaviors.ViewModelRefreshNext(this, executeRefreshDependencies);
       }
 
-      internal void RefreshInternal(IVMPropertyDescriptor property) {
-         _descriptor.Behaviors.ViewModelRefreshNext(this, property);
+      internal void RefreshInternal(IVMPropertyDescriptor property, bool executeRefreshDependencies = false) {
+         _descriptor.Behaviors.ViewModelRefreshNext(this, property, executeRefreshDependencies);
 
          Revalidator.RevalidatePropertyValidations(
             _vm,

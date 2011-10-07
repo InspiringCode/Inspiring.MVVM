@@ -280,11 +280,11 @@
             get { return _refreshedProperties.AsReadOnly(); }
          }
 
-         public void Refresh(IBehaviorContext context) {
+         public void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
             _refreshedViewModels.Add(context.VM);
          }
 
-         public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property) {
+         public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property, bool executeRefreshDependencies) {
             _refreshedProperties.Add(property);
          }
       }

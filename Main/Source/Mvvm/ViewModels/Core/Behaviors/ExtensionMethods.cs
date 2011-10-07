@@ -311,11 +311,12 @@
       // TODO: What about naming conflicts between VM Behaviors and Property behaviors?
       public static void ViewModelRefreshNext(
          this Behavior behavior,
-         IBehaviorContext context
+         IBehaviorContext context,
+         bool executeRefreshDependencies
       ) {
          IRefreshControllerBehavior next;
          if (behavior.TryGetBehavior(out next)) {
-            next.Refresh(context);
+            next.Refresh(context, executeRefreshDependencies);
          }
       }
 
@@ -323,11 +324,12 @@
       public static void ViewModelRefreshNext(
          this Behavior behavior,
          IBehaviorContext context,
-         IVMPropertyDescriptor property
+         IVMPropertyDescriptor property,
+         bool executeRefreshDependencies
       ) {
          IRefreshControllerBehavior next;
          if (behavior.TryGetBehavior(out next)) {
-            next.Refresh(context, property);
+            next.Refresh(context, property, executeRefreshDependencies);
          }
       }
 

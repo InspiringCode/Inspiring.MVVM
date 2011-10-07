@@ -217,14 +217,17 @@
          Kernel.UpdateFromSource(property);
       }
 
-      protected void Refresh() {
-         //Console.WriteLine("Refresh is not correctly implemented yet. Strange behavior may be observed!");
-         Kernel.Refresh();
+      protected void Refresh(
+         bool executeRefreshDependencies = false
+      ) {
+         Kernel.Refresh(executeRefreshDependencies);
       }
 
-      protected void Refresh(IVMPropertyDescriptor property) {
-         //Console.WriteLine("Refresh is not correctly implemented yet. Strange behavior may be observed!");
-         Kernel.Refresh(property);
+      protected void Refresh(
+         IVMPropertyDescriptor property, 
+         bool executeRefreshDependencies = false
+      ) {
+         Kernel.Refresh(property, executeRefreshDependencies);
       }
 
 

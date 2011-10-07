@@ -158,8 +158,8 @@
          this.SetValueNext(context, value);
       }
 
-      public void Refresh(IBehaviorContext context) {
-         this.ViewModelRefreshNext(context);
+      public void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
+         this.ViewModelRefreshNext(context, executeRefreshDependencies);
       }
 
       //private SourceItemsCache CreateCache(IViewModel selectionVM) {
@@ -191,9 +191,9 @@
       //   public IEnumerable<TItemSource> SelectableSourceItems { get; set; }
       //}
 
-      public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property) {
+      public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property, bool executeRefreshDependencies) {
          context.FieldValues.ClearField(_items);
-         this.ViewModelRefreshNext(context, property);
+         this.ViewModelRefreshNext(context, property, executeRefreshDependencies);
       }
    }
 

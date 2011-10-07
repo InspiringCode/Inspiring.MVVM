@@ -26,13 +26,20 @@
          this.ViewModelRevalidateNext(context, controller);
       }
 
-      public void Refresh(IBehaviorContext context) {
-         this.ViewModelRefreshNext(context);
+      public void Refresh(
+         IBehaviorContext context, 
+         bool executeRefreshDependencies
+      ) {
+         this.ViewModelRefreshNext(context, executeRefreshDependencies);
          Revalidator.RevalidateViewModelValidations(context.VM);
       }
 
-      public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property) {
-         this.ViewModelRefreshNext(context, property);
+      public void Refresh(
+         IBehaviorContext context, 
+         IVMPropertyDescriptor property, 
+         bool executeRefreshDependencies
+      ) {
+         this.ViewModelRefreshNext(context, property, executeRefreshDependencies);
       }
 
       public ValidationResult GetValidationResult(IBehaviorContext context) {
