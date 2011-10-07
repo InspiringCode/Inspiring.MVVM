@@ -13,7 +13,13 @@
       }
 
       public void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
-         context.NotifyChange(ChangeArgs.PropertyChanged(_property));
+         context.NotifyChange(
+            ChangeArgs.PropertyChanged(
+               _property,
+               RefreshReason.Create(executeRefreshDependencies)
+            )
+         );
+
          this.RefreshNext(context, executeRefreshDependencies);
       }
    }

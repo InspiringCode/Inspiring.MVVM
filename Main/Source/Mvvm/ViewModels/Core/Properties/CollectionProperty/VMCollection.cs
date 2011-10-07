@@ -156,7 +156,7 @@
       }
 
       /// <inheritdoc />
-      void IVMCollection<TItemVM>.ReplaceItems(IEnumerable<TItemVM> newItems) {
+      void IVMCollection<TItemVM>.ReplaceItems(IEnumerable<TItemVM> newItems, IChangeReason reason) {
          TItemVM[] oldItems = this.ToArray();
 
          try {
@@ -168,7 +168,7 @@
             // behavior chain does essential initialization (e.g. sets the descriptor).
             // If we raise the ListChanged before, the UI may try to access the VMs before
             // they are properly initialized.
-            CallBehaviors(CollectionChangedArgs<TItemVM>.CollectionPopulated(this, oldItems));
+            CallBehaviors(CollectionChangedArgs<TItemVM>.CollectionPopulated(this, oldItems, reason));
          } finally {
             IsPopulating = false;
          }

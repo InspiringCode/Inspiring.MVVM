@@ -43,7 +43,7 @@
          TValue oldValue,
          TValue newValue
       ) {
-         return ChangeArgs.PropertyChanged(_property);
+         return ChangeArgs.PropertyChanged(_property, null);
       }
    }
 }

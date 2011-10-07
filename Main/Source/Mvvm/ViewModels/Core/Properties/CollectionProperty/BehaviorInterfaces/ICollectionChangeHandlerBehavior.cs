@@ -47,13 +47,15 @@
          CollectionChangeType type,
          IVMCollection<TItemVM> collection,
          IEnumerable<TItemVM> oldItems = null,
-         IEnumerable<TItemVM> newItems = null
+         IEnumerable<TItemVM> newItems = null,
+         IChangeReason reason = null
       ) {
          Type = type;
          Collection = collection;
          Index = -1;
          OldItems = oldItems ?? Enumerable.Empty<TItemVM>();
          NewItems = newItems ?? Enumerable.Empty<TItemVM>();
+         Reason = reason;
       }
 
       public CollectionChangeType Type { get; private set; }
@@ -69,6 +71,8 @@
       public IEnumerable<TItemVM> OldItems { get; private set; }
 
       public IEnumerable<TItemVM> NewItems { get; private set; }
+
+      public IChangeReason Reason { get; private set; }
 
       public static CollectionChangedArgs<TItemVM> ItemInserted(
          IVMCollection<TItemVM> collection,
@@ -140,7 +144,8 @@
 
       public static CollectionChangedArgs<TItemVM> CollectionPopulated(
          IVMCollection<TItemVM> collection,
-         TItemVM[] oldItems
+         TItemVM[] oldItems,
+         IChangeReason reason = null
       ) {
          Contract.Requires(collection != null);
          Contract.Requires(oldItems != null);
@@ -149,7 +154,8 @@
             CollectionChangeType.Populated,
             collection,
             oldItems: oldItems,
-            newItems: collection
+            newItems: collection,
+            reason: reason
          );
       }
    }

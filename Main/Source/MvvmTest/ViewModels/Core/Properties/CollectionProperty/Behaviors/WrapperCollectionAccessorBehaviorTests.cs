@@ -116,9 +116,9 @@
             : base(ViewModelStub.Build(), PropertyStub.Build()) {
             _log = log;
          }
-         public override void ReplaceItems(IEnumerable<ItemVM> newItems) {
+         public override void ReplaceItems(IEnumerable<ItemVM> newItems, IChangeReason reason) {
             _log.Append(ReplaceItemsLog);
-            base.ReplaceItems(newItems);
+            base.ReplaceItems(newItems, reason);
          }
       }
    }

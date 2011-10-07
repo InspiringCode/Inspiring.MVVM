@@ -102,7 +102,7 @@
 
          ResetStub();
          IVMCollection<IViewModel> c = Collection;
-         c.ReplaceItems(newItems);
+         c.ReplaceItems(newItems, null);
 
          AssertChangeArgs(
             CollectionChangedArgs<IViewModel>.CollectionPopulated(Collection, oldItems)

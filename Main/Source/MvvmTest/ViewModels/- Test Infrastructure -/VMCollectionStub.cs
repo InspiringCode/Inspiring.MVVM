@@ -3,6 +3,7 @@
    using System.Collections.ObjectModel;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
+using Inspiring.Mvvm.ViewModels.Core;
 
    public class VMCollectionStub<TItemVM> : Collection<TItemVM>, IVMCollection<TItemVM> where TItemVM : IViewModel {
       private readonly IViewModel _owner;
@@ -12,7 +13,7 @@
          OwnerProperty = ownerProperty;
       }
 
-      public virtual void ReplaceItems(IEnumerable<TItemVM> newItems) {
+      public virtual void ReplaceItems(IEnumerable<TItemVM> newItems, IChangeReason reason) {
          Clear();
          newItems.ForEach(Add);
       }
@@ -87,7 +88,7 @@
       public VMCollectionStub<T> Build() {
          var c = new VMCollectionStub<T>(_ownerVM, _ownerProperty);
 
-         c.ReplaceItems(_items);
+         c.ReplaceItems(_items, null);
 
          _items
             .Cast<IViewModel>()

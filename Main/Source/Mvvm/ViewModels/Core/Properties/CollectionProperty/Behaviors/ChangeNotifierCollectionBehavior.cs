@@ -19,7 +19,7 @@
          }
 
          if (args.Type == CollectionChangeType.Populated) {
-            var a = ChangeArgs.CollectionPopulated(c);
+            var a = ChangeArgs.CollectionPopulated(c, args.Reason);
             context.NotifyChange(a);
          } else {
             if (newItems.Any()) {

@@ -13,6 +13,9 @@
       RemovedFromCollection
    }
 
+   public interface IChangeReason {
+   }
+
    /// <summary>
    ///   Holds information about a change event (property changed, validation state
    ///   changed) that occured for a VM.
@@ -72,39 +75,45 @@
       private ChangeArgs(
          ChangeType changeType,
          IVMPropertyDescriptor changedProperty,
-         Path changedPath
+         Path changedPath,
+         IChangeReason reason
       ) {
          ChangeType = changeType;
          ChangedProperty = changedProperty;
 
          ChangedPath = changedPath;
+         Reason = reason;
       }
 
       private ChangeArgs(
          ChangeType changeType,
          Path changedPath,
          IEnumerable<IViewModel> oldItems = null,
-         IEnumerable<IViewModel> newItems = null
+         IEnumerable<IViewModel> newItems = null,
+         IChangeReason reason = null
       ) {
          ChangeType = changeType;
          ChangedPath = changedPath;
          OldItems = oldItems ?? Enumerable.Empty<IViewModel>();
          NewItems = newItems ?? Enumerable.Empty<IViewModel>();
+         Reason = reason;
       }
 
-      internal static ChangeArgs PropertyChanged(IVMPropertyDescriptor property) {
+      internal static ChangeArgs PropertyChanged(IVMPropertyDescriptor property, IChangeReason reason = null) {
          Contract.Requires(property != null);
 
          return new ChangeArgs(
             ChangeType.PropertyChanged,
-            Path.Empty.Append(property)
+            Path.Empty.Append(property),
+            reason: reason
          ) { ChangedProperty = property };// TODO: Remove
       }
 
       internal static ChangeArgs ViewModelPropertyChanged(
          IVMPropertyDescriptor property,
          IViewModel oldValue,
-         IViewModel newValue
+         IViewModel newValue, 
+         IChangeReason reason = null
       ) {
          var oldItems = oldValue != null ?
             new[] { oldValue } :
@@ -118,11 +127,12 @@
             ChangeType.PropertyChanged,
             Path.Empty.Append(property),
             oldItems: oldItems,
-            newItems: newItems
+            newItems: newItems,
+            reason: reason
          ) { ChangedProperty = property };// TODO: Remove
       }
 
-      internal static ChangeArgs CollectionPopulated(IVMCollection collection) {
+      internal static ChangeArgs CollectionPopulated(IVMCollection collection, IChangeReason reason = null) {
          Contract.Requires(collection != null);
 
          var newItems = (IEnumerable<IViewModel>)collection;
@@ -130,7 +140,8 @@
          return new ChangeArgs(
             ChangeType.CollectionPopulated,
             Path.Empty.Append(collection),
-            newItems: newItems
+            newItems: newItems,
+            reason: reason
          );
       }
 
@@ -196,11 +207,14 @@
 
       public IEnumerable<IViewModel> NewItems { get; private set; }
 
+      public IChangeReason Reason { get; private set; }
+
       internal ChangeArgs PrependViewModel(IViewModel viewModel) {
          return new ChangeArgs(
             ChangeType,
             ChangedProperty,
-            ChangedPath.Prepend(viewModel)
+            ChangedPath.Prepend(viewModel),
+            Reason
          ) {
             NewItems = NewItems,
             OldItems = OldItems

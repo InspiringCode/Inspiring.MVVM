@@ -64,11 +64,11 @@
             return new { IsReusedItem = isReusedItem, Item = item };
          }).ToArray();
 
-         collection.ReplaceItems(newItems.Select(x => x.Item));
+         collection.ReplaceItems(newItems.Select(x => x.Item), RefreshReason.Create(executeRefreshDependencies));
 
          newItems
             .Where(x => x.IsReusedItem)
-            .ForEach(x => x.Item.Kernel.RefreshWithoutValidation());
+            .ForEach(x => x.Item.Kernel.RefreshWithoutValidation(executeRefreshDependencies));
       }
 
       protected override IVMCollection<TItemVM> ProvideValue(IBehaviorContext context) {
@@ -85,18 +85,18 @@
          //      which calls GetValue and ProvideValue.
 
          var collection = this.GetValue(context);
-         Repopulate(context, collection);
+         Repopulate(context, collection, reason: null);
 
          base.OnInitialize(context);
       }
 
-      private void Repopulate(IBehaviorContext context, IVMCollection<TItemVM> collection) {
+      private void Repopulate(IBehaviorContext context, IVMCollection<TItemVM> collection, IChangeReason reason) {
          var sourceItems = GetSourceItems(context);
 
          IEnumerable<TItemVM> newItems = sourceItems
             .Select(s => CreateAndInitializeItem(context, s));
 
-         collection.ReplaceItems(newItems);
+         collection.ReplaceItems(newItems, reason);
       }
 
       private IEnumerable<TItemSource> GetSourceItems(IBehaviorContext context) {

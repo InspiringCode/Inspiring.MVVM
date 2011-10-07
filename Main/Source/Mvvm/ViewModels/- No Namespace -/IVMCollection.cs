@@ -36,7 +36,7 @@
       ///   Clears the collections and adds the <paramref name="newItems"/>.
       /// </summary>
       /// <param name="newItems"></param>
-      void ReplaceItems(IEnumerable<TItemVM> newItems);
+      void ReplaceItems(IEnumerable<TItemVM> newItems, IChangeReason reason);
       TItemVM this[int index] { get; set; }
    }
 }
