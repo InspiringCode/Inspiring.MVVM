@@ -94,7 +94,7 @@
          RefreshTrace.BeginRefresh(property);
 
          RequireInitialized();
-         property.Behaviors.RefreshNext(context);
+         property.Behaviors.RefreshNext(context, executeRefreshDependencies);
 
          this.ViewModelRefreshNext(context, property, executeRefreshDependencies);
 

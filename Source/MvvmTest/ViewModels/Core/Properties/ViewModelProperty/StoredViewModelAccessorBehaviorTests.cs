@@ -23,18 +23,18 @@
          var child = new ChildVM(refreshDetector);
          Behavior.SetValue(Context, child);
 
-         Behavior.Refresh(Context);
+         Behavior.Refresh(Context, false);
          Assert.IsTrue(refreshDetector.WasCalled);
       }
 
       [TestMethod]
       public void Refresh_WhenValueIsNull_DoesNothing() {
-         Behavior.Refresh(Context);
+         Behavior.Refresh(Context, false);
       }
 
       [TestMethod]
       public void Refresh_DoesNotRaiseNotifyPropertyChanged() {
-         Behavior.Refresh(Context);
+         Behavior.Refresh(Context, false);
          Assert.IsFalse(Context.NotifyChangeInvocations.Any());
       }
    }

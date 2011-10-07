@@ -5,14 +5,14 @@
       IRefreshBehavior
       where TValue : IViewModel {
 
-      public void Refresh(IBehaviorContext context) {
+      public void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
          TValue childVM = GetValue(context);
 
          if (childVM != null) {
             childVM.Kernel.RefreshWithoutValidation();
          }
 
-         this.RefreshNext(context);
+         this.RefreshNext(context, executeRefreshDependencies);
       }
    }
 }

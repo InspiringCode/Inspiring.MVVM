@@ -16,7 +16,7 @@
          base.SetValue(context, value);
       }
 
-      public void Refresh(IBehaviorContext context) {
+      public void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
          RequireInitialized();
 
          TSource source = this.GetValueNext<TSource>(context);
@@ -39,7 +39,7 @@
             UpdateCache(context, default(TValue));
          }
 
-         this.RefreshNext(context);
+         this.RefreshNext(context, executeRefreshDependencies);
       }
 
       protected override TValue ProvideValue(IBehaviorContext context) {

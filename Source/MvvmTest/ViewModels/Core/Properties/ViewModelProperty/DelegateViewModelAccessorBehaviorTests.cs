@@ -33,7 +33,7 @@
          ValueAccessor.Value = oldChild;
          Behavior.GetValue(Context);
          ValueAccessor.Value = newChild;
-         Behavior.Refresh(Context);
+         Behavior.Refresh(Context, false);
 
          var expectedChangeArgs = ChangeArgs.ViewModelPropertyChanged(Property, oldChild, newChild);
          DomainAssert.AreEqual(new[] { expectedChangeArgs }, Context.NotifyChangeInvocations);
@@ -43,7 +43,7 @@
       public void Refresh_ViewModelInstanceHasNotChanged_DoesNotRaiseNotifyChange() {
          ValueAccessor.Value = new ChildVM();
          Behavior.GetValue(Context);
-         Behavior.Refresh(Context);
+         Behavior.Refresh(Context, false);
          Assert.IsFalse(Context.NotifyChangeInvocations.Any());
       }
    }

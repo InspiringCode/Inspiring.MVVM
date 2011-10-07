@@ -12,9 +12,9 @@
          base.Initialize(context);
       }
 
-      public void Refresh(IBehaviorContext context) {
+      public void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
          context.NotifyChange(ChangeArgs.PropertyChanged(_property));
-         this.RefreshNext(context);
+         this.RefreshNext(context, executeRefreshDependencies);
       }
    }
 }

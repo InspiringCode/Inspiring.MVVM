@@ -66,7 +66,7 @@
          };
 
          Next.SourceCollectionToReturn = newSourceItems;
-         Behavior.Refresh(Context);
+         Behavior.Refresh(Context, false);
 
          var newVMs = Behavior.GetValue(Context);
 
@@ -98,14 +98,14 @@
          Behavior.GetValue(Context);
          Next.SourceCollectionToReturn = new[] { sharedSourceItem, new ItemSource("New item") };
 
-         Behavior.Refresh(Context);
+         Behavior.Refresh(Context, false);
 
          Assert.AreEqual(ReplaceItemsLog + ReplaceItemsLog + RefreshItemLog, actionLog.ToString());
       }
 
       [TestMethod]
       public void Refresh_CallsNextBehavior() {
-         Behavior.Refresh(Context);
+         Behavior.Refresh(Context, false);
          Assert.AreEqual(1, Next.RefreshInvocations);
       }
 

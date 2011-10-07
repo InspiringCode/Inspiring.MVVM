@@ -29,10 +29,10 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          );
       }
 
-      public override void Refresh(IBehaviorContext context) {
+      public override void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
          DetectValidationResultChange(
             context,
-            () => base.Refresh(context)
+            () => base.Refresh(context, executeRefreshDependencies)
          );
       }
 
