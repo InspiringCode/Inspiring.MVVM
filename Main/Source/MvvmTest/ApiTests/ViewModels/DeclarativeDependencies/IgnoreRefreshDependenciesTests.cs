@@ -3,6 +3,8 @@
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
+   using System.Linq;
+using System.Collections.Generic;
 
    [TestClass]
    public class IgnoreRefreshDependenciesTests {
@@ -91,6 +93,27 @@
          Assert.AreEqual(1, root.Property1RefreshCount);
       }
 
+      [TestMethod]
+      [Ignore] // TODO
+      public void Refresh_WorksWithSelfRecursiveDependency() {
+         var root = CreateRootVM(b => {
+            b.OnChangeOf
+               .Self.OrAnyDescendant
+               .Refresh
+               .Properties(x => x.Child1, x => x.Child2);
+         });
+
+         var gc1 = new ChildVM();
+         var gc2 = new ChildVM();
+         root.Child1.Grandchildren.Add(gc1);
+         root.Child2.Grandchildren.Add(gc2);
+
+         root.Child1.Refresh(x => x.Grandchildren, executeRefreshDependencies: false);
+
+         Assert.AreEqual(1, gc1.StringPropertyRefreshCount);
+         Assert.AreEqual(1, gc2.StringPropertyRefreshCount);
+      }
+
       public static RootVM CreateRootVM(
          Action<IVMDependencyBuilder<RootVM, RootVMDescriptor>> dependencyConfigurator
       ) {
@@ -103,8 +126,8 @@
                d.Property1 = v.Property.Of<string>();
                d.Property2 = v.Property.Of<string>();
 
-               d.Child1 = v.VM.DelegatesTo(x => new ChildVM());
-               d.Child2 = v.VM.DelegatesTo(x => new ChildVM());
+               d.Child1 = v.VM.Of<ChildVM>();
+               d.Child2 = v.VM.Of<ChildVM>();
             })
             .WithDependencies(dependencyConfigurator)
             .WithBehaviors(b => {
@@ -113,7 +136,10 @@
             })
             .Build();
 
-         return new RootVM(descriptor);
+         var vm = new RootVM(descriptor);
+         vm.SetValue(x => x.Child1, new ChildVM());
+         vm.SetValue(x => x.Child2, new ChildVM());
+         return vm;
       }
 
       public sealed class RootVM : TestViewModel<RootVMDescriptor> {
@@ -157,9 +183,12 @@
          public IVMPropertyDescriptor<ChildVM> Child2 { get; set; }
       }
 
-      public sealed class ChildVM : TestViewModel<ChildVMDescriptor> {
+      public sealed class ChildVM : TestViewModel<ChildVMDescriptor>, IHasSourceObject<object> {
          public ChildVM()
             : base(CreateDescriptor()) {
+
+            Source = new Object();
+            GrandchildrenSource = new List<object>();
          }
 
          public int StringPropertyRefreshCount {
@@ -188,7 +217,7 @@
 
                   d.StringProperty = v.Property.Of<string>();
                   d.Grandchild = v.VM.Of<ChildVM>();
-                  d.Grandchildren = v.Collection.Of<ChildVM>(d);
+                  d.Grandchildren = v.Collection.Wraps(x => x.GrandchildrenSource).With<ChildVM>(d);
                })
                .WithBehaviors(b => {
                   b.Property(x => x.StringProperty).AddBehavior(new RefreshSpyBehavior());
@@ -204,6 +233,10 @@
          public IVMCollection<ChildVM> Grandchildren {
             get { return GetValue(Descriptor.Grandchildren); }
          }
+
+         public object Source { get; set; }
+
+         private List<Object> GrandchildrenSource { get; set; }
       }
 
       public sealed class ChildVMDescriptor : VMDescriptor {
