@@ -179,7 +179,7 @@
 
          public void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
             IViewModel vm = GetValue(context);
-            vm.Kernel.Refresh();
+            vm.Kernel.Refresh(executeRefreshDependencies);
             this.RefreshNext(context, executeRefreshDependencies);
          }
       }
@@ -212,7 +212,7 @@
 
          public void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
             IViewModel vm = GetValue(context);
-            vm.Kernel.Refresh();
+            vm.Kernel.Refresh(executeRefreshDependencies);
             this.RefreshNext(context, executeRefreshDependencies);
          }
       }

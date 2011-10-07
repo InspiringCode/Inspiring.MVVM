@@ -81,7 +81,7 @@ using System;
          };
          
          IVMCollection<IViewModel> c = collection;
-         c.ReplaceItems(new[] { ViewModelStub.Build(), ViewModelStub.Build() });
+         c.ReplaceItems(new[] { ViewModelStub.Build(), ViewModelStub.Build() }, null);
 
          Assert.AreEqual("ChangeHandlerBehavior ListChanged ", actionLog.ToString());         
       }

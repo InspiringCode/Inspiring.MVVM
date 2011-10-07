@@ -11,7 +11,7 @@
 
       public void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
          var collection = GetValue(context);
-         Repopulate(context, collection);
+         Repopulate(context, collection, RefreshReason.Create(executeRefreshDependencies));
 
          this.RefreshNext(context, executeRefreshDependencies);
       }
@@ -30,15 +30,15 @@
          //      which calls GetValue and ProvideValue.
 
          var collection = this.GetValue(context);
-         Repopulate(context, collection);
+         Repopulate(context, collection, reason: null);
 
          base.OnInitialize(context);
       }
 
-      private void Repopulate(IBehaviorContext context, IVMCollection<TItemVM> collection) {
+      private void Repopulate(IBehaviorContext context, IVMCollection<TItemVM> collection, IChangeReason reason) {
          var sourceItems = this.GetValueNext<IEnumerable<TItemSource>>(context);
          var items = sourceItems.Select(sourceItem => GetItemVM(context, sourceItem));
-         collection.ReplaceItems(items);
+         collection.ReplaceItems(items, reason);
       }
 
       private TItemVM GetItemVM(IBehaviorContext context, TItemSource source) {

@@ -116,7 +116,7 @@
          List.Items.Add(CreateItem("Old item"));
          Setup.Reset();
 
-         List.Items.ReplaceItems(new[] { CreateItem("New item") });
+         List.Items.ReplaceItems(new[] { CreateItem("New item") }, null);
 
          Assert.AreEqual(0, Setup.ActualInvocations.Count);
       }

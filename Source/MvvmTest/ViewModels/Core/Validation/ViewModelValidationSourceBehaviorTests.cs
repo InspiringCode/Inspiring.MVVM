@@ -40,7 +40,7 @@
       [TestMethod]
       public void HandleChange_OwnPropertyChanged_PerformsViewModelValidations() {
          var args = ChangeArgs
-            .PropertyChanged(PropertyStub.Of<string>())
+            .PropertyChanged(PropertyStub.Of<string>(), null)
             .PrependViewModel(VM);
 
          Behavior.HandleChange(Context, args);
@@ -66,7 +66,7 @@
 
       [TestMethod]
       public void HandleChange_DescendantPropertyChanged_PerformsViewModelValidation() {
-         var args = ChangeArgs.PropertyChanged(PropertyStub.Of<string>())
+         var args = ChangeArgs.PropertyChanged(PropertyStub.Of<string>(), null)
             .PrependViewModel(VM)
             .PrependViewModel(new ViewModelStub());
 

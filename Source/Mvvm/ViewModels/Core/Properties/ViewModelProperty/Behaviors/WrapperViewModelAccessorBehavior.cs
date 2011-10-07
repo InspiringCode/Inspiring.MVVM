@@ -29,7 +29,7 @@
          if (source != null) {
             if (childVM != null) {
                childVM.Source = source;
-               childVM.Kernel.RefreshWithoutValidation();
+               childVM.Kernel.RefreshWithoutValidation(executeRefreshDependencies);
             } else {
                childVM = CreateViewModel(context);
                childVM.Source = source;

@@ -24,7 +24,8 @@ namespace Inspiring.Mvvm.ViewModels.Core {
             var args = ChangeArgs.ViewModelPropertyChanged(
                _property,
                previousValue,
-               newValue
+               newValue,
+               RefreshReason.Create(executeRefreshDependencies)
             );
 
             context.NotifyChange(args);

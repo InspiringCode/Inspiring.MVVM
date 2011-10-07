@@ -9,7 +9,7 @@
          TValue oldValue,
          TValue newValue
       ) {
-         return ChangeArgs.ViewModelPropertyChanged(property, oldValue, newValue);
+         return ChangeArgs.ViewModelPropertyChanged(property, oldValue, newValue, reason: null);
       }
    }
 }
