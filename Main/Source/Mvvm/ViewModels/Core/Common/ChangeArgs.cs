@@ -179,10 +179,11 @@
          );
       }
 
-      internal static ChangeArgs ValidationResultChanged() {
+      internal static ChangeArgs ValidationResultChanged(IChangeReason reason = null) {
          return new ChangeArgs(
             ChangeType.ValidationResultChanged,
-            Path.Empty
+            Path.Empty,
+            reason: reason
          );
       }
 
