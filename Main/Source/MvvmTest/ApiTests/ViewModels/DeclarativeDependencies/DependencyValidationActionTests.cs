@@ -201,7 +201,7 @@
          ProjectVMDescriptor projectVMDescriptor = null
       ) {
          projectVMDescriptor = projectVMDescriptor ?? ProjectVM.CreateDescriptor(null, false);
-         return new EmployeeVM(dependencyConfigurationAction, projectVMDescriptor, true, Results);
+         return new EmployeeVM(dependencyConfigurationAction, projectVMDescriptor, true, Results, new RefreshControllerBehaviorMock());
       }
 
       private ProjectVM CreateProjectVM() {

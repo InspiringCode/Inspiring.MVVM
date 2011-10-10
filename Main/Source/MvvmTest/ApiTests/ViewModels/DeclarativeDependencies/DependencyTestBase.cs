@@ -20,22 +20,8 @@
             Action<IVMDependencyBuilder<EmployeeVM, EmployeeVMDescriptor>> dependencyConfigurationAction,
             ProjectVMDescriptor projectVMDescriptor,
             bool useMockBehaviors,
-            ValidatorMockConfigurationFluent results
-         )
-            : this(
-               dependencyConfigurationAction,
-               projectVMDescriptor,
-               new RefreshControllerBehaviorMock(),
-               useMockBehaviors
-            ) {
-            Results = results;
-         }
-
-         private EmployeeVM(
-               Action<IVMDependencyBuilder<EmployeeVM, EmployeeVMDescriptor>> dependencyConfigurationAction,
-               ProjectVMDescriptor projectVMDescriptor,
-               RefreshControllerBehaviorMock refreshControllerBehavior,
-               bool useMockBehaviors
+            ValidatorMockConfigurationFluent results,
+            RefreshControllerBehaviorMock refreshControllerBehavior
          )
             : base(
                CreateDescriptor(
@@ -45,7 +31,9 @@
                   useMockBehaviors
                 )
             ) {
+
             RefreshControllerBehaviorMock = refreshControllerBehavior;
+            Results = results;
          }
 
          internal RefreshControllerBehaviorMock RefreshControllerBehaviorMock { get; private set; }

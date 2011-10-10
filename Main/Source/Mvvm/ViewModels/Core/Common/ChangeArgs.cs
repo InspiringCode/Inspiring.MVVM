@@ -112,7 +112,7 @@
       internal static ChangeArgs ViewModelPropertyChanged(
          IVMPropertyDescriptor property,
          IViewModel oldValue,
-         IViewModel newValue, 
+         IViewModel newValue,
          IChangeReason reason = null
       ) {
          var oldItems = oldValue != null ?
@@ -145,7 +145,11 @@
          );
       }
 
-      internal static ChangeArgs ItemsAdded(IVMCollection collection, IEnumerable<IViewModel> newItems) {
+      internal static ChangeArgs ItemsAdded(
+         IVMCollection collection,
+         IEnumerable<IViewModel> newItems,
+         IChangeReason reason = null
+      ) {
          Contract.Requires(collection != null);
          Contract.Requires(newItems != null);
          Contract.Requires(newItems.Any());
@@ -153,11 +157,16 @@
          return new ChangeArgs(
             ChangeType.AddedToCollection,
             Path.Empty.Append(collection),
-            newItems: newItems
+            newItems: newItems,
+            reason: reason
          );
       }
 
-      internal static ChangeArgs ItemsRemoved(IVMCollection collection, IEnumerable<IViewModel> oldItems) {
+      internal static ChangeArgs ItemsRemoved(
+         IVMCollection collection,
+         IEnumerable<IViewModel> oldItems,
+         IChangeReason reason = null
+      ) {
          Contract.Requires(collection != null);
          Contract.Requires(oldItems != null);
          Contract.Requires(oldItems.Any());
@@ -165,7 +174,8 @@
          return new ChangeArgs(
             ChangeType.RemovedFromCollection,
             Path.Empty.Append(collection),
-            oldItems: oldItems
+            oldItems: oldItems,
+            reason: reason
          );
       }
 

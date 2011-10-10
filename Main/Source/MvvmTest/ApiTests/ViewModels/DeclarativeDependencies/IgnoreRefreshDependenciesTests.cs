@@ -5,6 +5,7 @@
    using Microsoft.VisualStudio.TestTools.UnitTesting;
    using System.Linq;
 using System.Collections.Generic;
+   using Inspiring.Mvvm.ViewModels.Tracing;
 
    [TestClass]
    public class IgnoreRefreshDependenciesTests {
@@ -15,7 +16,6 @@ using System.Collections.Generic;
                .Descendant(x => x.Child1)
                .Collection(x => x.Grandchildren)
                .Refresh
-               .AndExecuteRefreshDependencies
                .Descendant(x => x.Child2)
                .Properties(x => x.Grandchildren);
 
@@ -26,10 +26,12 @@ using System.Collections.Generic;
                .Refresh
                .Properties(x => x.Property1);
          });
-
+         
          var trigger = new ChildVM();
          var monitor = new ChildVM();
          root.Child2.Grandchildren.Add(monitor);
+
+         root.Property1RefreshCount = 0;
 
          root.Child1.Grandchildren.Add(trigger);
 
@@ -94,7 +96,6 @@ using System.Collections.Generic;
       }
 
       [TestMethod]
-      [Ignore] // TODO
       public void Refresh_WorksWithSelfRecursiveDependency() {
          var root = CreateRootVM(b => {
             b.OnChangeOf
@@ -108,7 +109,18 @@ using System.Collections.Generic;
          root.Child1.Grandchildren.Add(gc1);
          root.Child2.Grandchildren.Add(gc2);
 
+         gc1.StringPropertyRefreshCount = 0;
+         gc2.StringPropertyRefreshCount = 0;
+
          root.Child1.Refresh(x => x.Grandchildren, executeRefreshDependencies: false);
+
+         Assert.AreEqual(1, gc1.StringPropertyRefreshCount);
+         Assert.AreEqual(0, gc2.StringPropertyRefreshCount);
+
+         gc1.StringPropertyRefreshCount = 0;
+         gc2.StringPropertyRefreshCount = 0;
+
+         root.Refresh(executeRefreshDependencies: false);
 
          Assert.AreEqual(1, gc1.StringPropertyRefreshCount);
          Assert.AreEqual(1, gc2.StringPropertyRefreshCount);
@@ -156,23 +168,13 @@ using System.Collections.Generic;
          }
 
          public int Property1RefreshCount {
-            get {
-               return Descriptor
-                  .Property1
-                  .Behaviors
-                  .GetNextBehavior<RefreshSpyBehavior>()
-                  .RefreshCount;
-            }
+            get { return RefreshSpyBehavior.GetCount(this, Descriptor.Property1); }
+            set { RefreshSpyBehavior.SetCount(this, Descriptor.Property1, value); }
          }
 
          public int Property2RefreshCount {
-            get {
-               return Descriptor
-                  .Property2
-                  .Behaviors
-                  .GetNextBehavior<RefreshSpyBehavior>()
-                  .RefreshCount;
-            }
+            get { return RefreshSpyBehavior.GetCount(this, Descriptor.Property2); }
+            set { RefreshSpyBehavior.SetCount(this, Descriptor.Property2, value); }
          }
       }
 
@@ -192,20 +194,8 @@ using System.Collections.Generic;
          }
 
          public int StringPropertyRefreshCount {
-            get {
-               return Descriptor
-                  .StringProperty
-                  .Behaviors
-                  .GetNextBehavior<RefreshSpyBehavior>()
-                  .RefreshCount;
-            }
-            set {
-               Descriptor
-                  .StringProperty
-                  .Behaviors
-                  .GetNextBehavior<RefreshSpyBehavior>()
-                  .RefreshCount = value;
-            }
+            get { return RefreshSpyBehavior.GetCount(this, Descriptor.StringProperty); }
+            set { RefreshSpyBehavior.SetCount(this, Descriptor.StringProperty, value); }
          }
 
          public static ChildVMDescriptor CreateDescriptor() {
@@ -252,13 +242,42 @@ using System.Collections.Generic;
 
       private class RefreshSpyBehavior :
          Behavior,
+         IBehaviorInitializationBehavior,
          IRefreshBehavior {
 
-         public int RefreshCount { get; set; }
+         private static readonly FieldDefinitionGroup RefreshSpyGroup = new FieldDefinitionGroup();
+         private DynamicFieldAccessor<int> _count;
+
+         public void Initialize(BehaviorInitializationContext context) {
+            _count = new DynamicFieldAccessor<int>(context, RefreshSpyGroup);
+            this.InitializeNext(context);
+         }
 
          public void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
-            RefreshCount++;
+            SetCount(context, GetCount(context) + 1);
             this.RefreshNext(context, executeRefreshDependencies);
+         }
+
+         public static int GetCount(IViewModel vm, IVMPropertyDescriptor property) {
+            return GetBehavior(property).GetCount(vm.GetContext());
+         }
+
+         public static void SetCount(IViewModel vm, IVMPropertyDescriptor property, int count) {
+            GetBehavior(property).SetCount(vm.GetContext(), count);
+         }
+
+         private static RefreshSpyBehavior GetBehavior(IVMPropertyDescriptor property) {
+            return property
+               .Behaviors
+               .GetNextBehavior<RefreshSpyBehavior>();
+         }
+
+         private int GetCount(IBehaviorContext context) {
+            return _count.GetWithDefault(context, 0);
+         }
+
+         private void SetCount(IBehaviorContext context, int count) {
+            _count.Set(context, count);
          }
       }
    }

@@ -14,7 +14,7 @@
          var newItems = (IEnumerable<IViewModel>)args.NewItems;
 
          if (oldItems.Any()) {
-            var a = ChangeArgs.ItemsRemoved(c, oldItems);
+            var a = ChangeArgs.ItemsRemoved(c, oldItems, args.Reason);
             context.NotifyChange(a);
          }
 
@@ -23,7 +23,7 @@
             context.NotifyChange(a);
          } else {
             if (newItems.Any()) {
-               var a = ChangeArgs.ItemsAdded(c, newItems);
+               var a = ChangeArgs.ItemsAdded(c, newItems, args.Reason);
                context.NotifyChange(a);
             }
          }
