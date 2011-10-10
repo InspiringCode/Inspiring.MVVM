@@ -23,7 +23,7 @@
          // validation state of the collection owner changes, therefore an
          // ValidationResultChanged event should be raised.
          if (!changedItemsResult.IsValid) {
-            context.NotifyChange(ChangeArgs.ValidationResultChanged());
+            context.NotifyChange(ChangeArgs.ValidationResultChanged(args.Reason));
          }
       }
 

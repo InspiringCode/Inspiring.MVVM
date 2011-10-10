@@ -126,6 +126,31 @@ using System.Collections.Generic;
          Assert.AreEqual(1, gc2.StringPropertyRefreshCount);
       }
 
+      [TestMethod]
+      public void SetValue_WhenValidationResultChanges_WorksWithSelfRecursiveDependency() {
+         var root = CreateRootVM(b => {
+            b.OnChangeOf
+               .Self.OrAnyDescendant
+               .Refresh
+               .Self();
+         });
+
+         var gc1 = new ChildVM();
+         var gc2 = new ChildVM();
+         root.Child1.Grandchildren.Add(gc1);
+         root.Child2.Grandchildren.Add(gc2);
+
+         gc1.StringPropertyValidationError = "Test error";
+
+         gc1.StringPropertyRefreshCount = 0;
+         gc2.StringPropertyRefreshCount = 0;
+         
+         gc1.SetValue(x => x.StringProperty, "Trigger");
+
+         Assert.AreEqual(1, gc1.StringPropertyRefreshCount);
+         Assert.AreEqual(1, gc2.StringPropertyRefreshCount);
+      }
+
       public static RootVM CreateRootVM(
          Action<IVMDependencyBuilder<RootVM, RootVMDescriptor>> dependencyConfigurator
       ) {
@@ -209,6 +234,14 @@ using System.Collections.Generic;
                   d.Grandchild = v.VM.Of<ChildVM>();
                   d.Grandchildren = v.Collection.Wraps(x => x.GrandchildrenSource).With<ChildVM>(d);
                })
+               .WithValidators(b => {
+                  b.Check(x => x.StringProperty).Custom(args => {
+                     string msg = args.Owner.StringPropertyValidationError;
+                     if (msg != null) {
+                        args.AddError(msg);
+                     }
+                  });
+               })
                .WithBehaviors(b => {
                   b.Property(x => x.StringProperty).AddBehavior(new RefreshSpyBehavior());
                })
@@ -225,6 +258,8 @@ using System.Collections.Generic;
          }
 
          public object Source { get; set; }
+
+         public string StringPropertyValidationError { get; set; }
 
          private List<Object> GrandchildrenSource { get; set; }
       }
