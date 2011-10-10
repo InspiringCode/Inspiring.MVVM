@@ -77,6 +77,25 @@
       }
 
       [TestMethod]
+      public void DependencyTargetingSelf_RefreshesSelf() {
+         var refreshMock = new RefreshControllerBehaviorMock();
+         
+         var employeeVM = CreateEmployeeVM(
+            b => b
+               .OnChangeOf
+               .Self
+               .OrAnyDescendant
+               .Refresh
+               .Self(),
+            refreshControllerMock: refreshMock
+         );
+                     
+         employeeVM.Name = "TriggerChange";
+
+         CollectionAssert.AreEquivalent(new[] { employeeVM }, refreshMock.RefreshedViewModels);
+      }
+
+      [TestMethod]
       public void DependencyOnTargetPropertiesOfDescendantOfDescendantCollection_RefreshesSpecifiedPropertiesDescendantsInCollection() {
          var refreshMock = new RefreshControllerBehaviorMock();
          var projectVMDescriptor = ProjectVM.CreateDescriptor(refreshMock, true);
@@ -233,10 +252,13 @@
 
       private EmployeeVM CreateEmployeeVM(
          Action<IVMDependencyBuilder<EmployeeVM, EmployeeVMDescriptor>> dependencyConfigurationAction,
-         ProjectVMDescriptor projectVMDescriptor = null
+         ProjectVMDescriptor projectVMDescriptor = null,
+         RefreshControllerBehaviorMock refreshControllerMock = null
       ) {
+         refreshControllerMock = refreshControllerMock ?? new RefreshControllerBehaviorMock();
+
          projectVMDescriptor = projectVMDescriptor ?? ProjectVM.CreateDescriptor(null, false);
-         return new EmployeeVM(dependencyConfigurationAction, projectVMDescriptor, true, Results);
+         return new EmployeeVM(dependencyConfigurationAction, projectVMDescriptor, true, Results, refreshControllerMock);
       }
 
       private ProjectVM CreateProjectVM() {

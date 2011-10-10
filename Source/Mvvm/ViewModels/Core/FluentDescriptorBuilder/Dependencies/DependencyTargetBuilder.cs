@@ -19,6 +19,10 @@
          _context.AddTargetsProperties(targetPropertySelectors);
       }
 
+      public void Self() {
+         // No-op
+      }
+
       public IDependencyTargetBuilder<TRootVM, IViewModel<D>, TRootDescriptor, D> Descendant<D>(
          Func<TSourceDescriptor, IVMPropertyDescriptor<IViewModel<D>>> viewModelSelector
       ) where D : IVMDescriptor {
@@ -34,7 +38,7 @@
       }
 
       public IDependencyTargetBuilder<TRootVM, TSourceVM, TRootDescriptor, TSourceDescriptor> AndExecuteRefreshDependencies {
-         get { 
+         get {
             _context.ExecuteRefreshDependencies = true;
             return this;
          }

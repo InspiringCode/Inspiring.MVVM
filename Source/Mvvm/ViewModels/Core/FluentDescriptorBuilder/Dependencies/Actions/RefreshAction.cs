@@ -31,7 +31,7 @@
          DeclarativeDependency dependency
       ) {
          RefreshReason reason = args.Reason as RefreshReason;
-         
+
          if (reason != null && !reason.ExecuteRefreshDependencies) {
             return;
          }
@@ -39,7 +39,11 @@
          RefreshTrace.BeginRefresh(dependency);
 
          if (TargetPath.IsEmpty) {
-            RefreshProperties(ownerVM);
+            if (_targetProperties.Count > 0) {
+               RefreshProperties(ownerVM);
+            } else {
+               ownerVM.Kernel.RefreshInternal(_executeRefreshDependencies);
+            }
          } else {
             var viewModels = TargetPath.GetDescendants(ownerVM);
 

@@ -196,7 +196,7 @@
          Action<IVMDependencyBuilder<EmployeeVM, EmployeeVMDescriptor>> dependencyConfigurationAction
       ) {
          var projectVMDescriptor = ProjectVM.CreateDescriptor(null, false);
-         return new EmployeeVM(dependencyConfigurationAction, projectVMDescriptor, false, Results);
+         return new EmployeeVM(dependencyConfigurationAction, projectVMDescriptor, false, Results, new RefreshControllerBehaviorMock());
       }
 
       private ProjectVM CreateProjectVM() {

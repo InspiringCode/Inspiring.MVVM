@@ -9,6 +9,8 @@
 
       void Properties(params Func<TSourceDescriptor, IVMPropertyDescriptor>[] targetPropertySelectors);
 
+      void Self();
+
       /// <summary>
       /// </summary>
       /// <param name="viewModelSelector">
