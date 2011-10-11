@@ -20,9 +20,11 @@
             .Where(field => Attribute.IsDefined(field, typeof(ClassDescriptorAttribute)))
             .FirstOrDefault();
 
-         return classDescriptorField != null ?
-            (IVMDescriptor)classDescriptorField.GetValue(null) :
-            null;
+         if (classDescriptorField != null) {
+            return (IVMDescriptor)classDescriptorField.GetValue(null);
+         }
+
+         return GetClassDescriptorOf(viewModelType.BaseType);
       }
    }
 }
