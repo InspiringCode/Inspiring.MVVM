@@ -8,7 +8,7 @@
       private readonly IVMPropertyBuilder<TSourceObject> _sourceObjectPropertyBuilder;
       private Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<ICollection<TItemSource>>> _selectedSourceItemsPropertyFactory;
       private Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> _allSourceItemsPropertyFactory;
-      private Func<TItemSource, bool> _filter;
+      private Func<TSourceObject, TItemSource, bool> _filter;
       private bool _validationIsEnabled;
       private bool _undoIsEnabled;
 
@@ -35,7 +35,7 @@
          return this;
       }
 
-      public MultiSelectionBuilder<TSourceObject, TItemSource> WithFilter(Func<TItemSource, bool> filter) {
+      public MultiSelectionBuilder<TSourceObject, TItemSource> WithFilter(Func<TSourceObject, TItemSource, bool> filter) {
          _filter = filter;
          return this;
       }
@@ -78,7 +78,7 @@
          var descriptor = descriptorBuilder.Build();
 
          var property = _sourceObjectPropertyBuilder.Custom.ViewModelProperty(
-            valueAccessor: new MultSelectionAccessor<TItemVM>(descriptor, _filter),
+            valueAccessor: new MultSelectionAccessor<TItemVM>(descriptor),
             sourceAccessor: _sourceObjectPropertyBuilder.Custom.CreateSourceObjectAccessor()
          );
 
@@ -128,7 +128,7 @@
          var descriptor = descriptorBuilder.Build();
 
          var property = _sourceObjectPropertyBuilder.Custom.ViewModelProperty(
-            valueAccessor: new MultSelectionAccessor(descriptor, _filter),
+            valueAccessor: new MultSelectionAccessor(descriptor),
             sourceAccessor: _sourceObjectPropertyBuilder.Custom.CreateSourceObjectAccessor()
          );
 
@@ -153,14 +153,11 @@
          where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
          private MultiSelectionVMDescriptor<TItemSource, SelectableItemVM<TItemSource, TItemVM>> _descriptor;
-         private Func<TItemSource, bool> _filter;
 
          public MultSelectionAccessor(
-            MultiSelectionVMDescriptor<TItemSource, SelectableItemVM<TItemSource, TItemVM>> descriptor,
-            Func<TItemSource, bool> filter
+            MultiSelectionVMDescriptor<TItemSource, SelectableItemVM<TItemSource, TItemVM>> descriptor
          ) {
             _descriptor = descriptor;
-            _filter = filter;
          }
 
          protected override MultiSelectionVM<TItemSource, TItemVM> ProvideValue(IBehaviorContext context) {
@@ -171,7 +168,6 @@
                context.ServiceLocator
             );
 
-            vm.ActiveItemFilter = _filter;
             vm.InitializeFrom(sourceObject);
 
             return vm;
@@ -189,11 +185,9 @@
          IRefreshBehavior {
 
          private MultiSelectionVMDescriptor<TItemSource> _descriptor;
-         private Func<TItemSource, bool> _filter;
 
-         public MultSelectionAccessor(MultiSelectionVMDescriptor<TItemSource> descriptor, Func<TItemSource, bool> filter) {
+         public MultSelectionAccessor(MultiSelectionVMDescriptor<TItemSource> descriptor) {
             _descriptor = descriptor;
-            _filter = filter;
          }
 
          protected override MultiSelectionVM<TItemSource> ProvideValue(IBehaviorContext context) {
@@ -204,7 +198,6 @@
                context.ServiceLocator
             );
 
-            vm.ActiveItemFilter = _filter;
             vm.InitializeFrom(sourceObject);
 
             return vm;

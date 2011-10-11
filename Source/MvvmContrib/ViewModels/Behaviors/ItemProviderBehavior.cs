@@ -90,7 +90,7 @@
       }
    }
 
-   internal sealed class ItemProviderBehavior<TItemSource> :
+   internal sealed class ItemProviderBehavior<TSourceObject, TItemSource> :
       Behavior,
       IBehaviorInitializationBehavior,
       IValueAccessorBehavior<IEnumerable<TItemSource>>,
@@ -124,7 +124,7 @@
       //   };
       //}
 
-      public Func<TItemSource, bool> IsActiveFilter {
+      public Func<TSourceObject, TItemSource, bool> IsActiveFilter {
          get;
          set;
       }
@@ -138,10 +138,19 @@
          SelectableItemsCollection<TItemSource> items;
 
          if (!context.FieldValues.TryGetValue(_items, out items)) {
+
+            var source = ((IHasSourceObject<TSourceObject>)context.VM).Source;
+
+            Func<TItemSource, bool> reducedFilter = null;
+
+            if (IsActiveFilter != null) {
+               reducedFilter = item => IsActiveFilter(source, item);
+            }
+
             items = new SelectableItemsCollection<TItemSource>(
                SelectionHelpers.GetAllSourceItems<TItemSource>(context.VM),
                SelectionHelpers.GetSelectedSourceItems<TItemSource>(context.VM),
-               IsActiveFilter
+               reducedFilter
             );
 
             context.FieldValues.SetValue(_items, items);

@@ -4,10 +4,10 @@
    using System.Linq;
 
    internal sealed class SelectionHelpers {
-      internal static IEnumerable<TItemSource> GetSelectableSourceItems<TItemSource>(
+      internal static IEnumerable<TItemSource> GetSelectableSourceItems<TSourceObject, TItemSource>(
          IViewModel selectionVM
       ) {
-         return GetItemProviderBehavior<TItemSource>(selectionVM)
+         return GetItemProviderBehavior<TSourceObject, TItemSource>(selectionVM)
             .GetSelectableItems(selectionVM.GetContext());
       }
 
@@ -37,11 +37,11 @@
          return typed.SelectedSourceItems;
       }
 
-      private static ItemProviderBehavior<TItemSource> GetItemProviderBehavior<TItemSource>(IViewModel selectionVM) {
+      private static ItemProviderBehavior<TSourceObject, TItemSource> GetItemProviderBehavior<TSourceObject, TItemSource>(IViewModel selectionVM) {
          return selectionVM
             .Descriptor
             .Behaviors
-            .GetNextBehavior<ItemProviderBehavior<TItemSource>>();
+            .GetNextBehavior<ItemProviderBehavior<TSourceObject, TItemSource>>();
       }
    }
 }

@@ -212,7 +212,7 @@
                d.FilteredStatus = p
                   .SingleSelection(x => x.CurrentStatus)
                   .WithItems(x => GetEnumValues<PersonStatus>())
-                  .WithFilter(x => x != PersonStatus.Dismissed)
+                  .WithFilter((v, x) => x != PersonStatus.Dismissed)
                   .WithCaption(x => EnumLocalizer.GetCaption(x));
             })
             .WithValidators(b => {

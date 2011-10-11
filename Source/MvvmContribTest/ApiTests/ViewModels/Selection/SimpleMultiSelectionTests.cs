@@ -64,7 +64,7 @@
                   .MultiSelection(x => x.Source.Groups)
                   .EnableUndo()
                   .WithItems(x => x.AllSourceGroups)
-                  .WithFilter(x => x.IsActive)
+                  .WithFilter((vm, x) => x.IsActive)
                   .WithCaption(x => x.Name);
             })
             .Build();

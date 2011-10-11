@@ -4,7 +4,7 @@
    using System.Linq;
    using Inspiring.Mvvm.ViewModels.Core;
 
-   internal class SingleSelectionDescriptorBuilderBase<TDescriptor, TVM, TItemSource, TItemVM> :
+   internal class SingleSelectionDescriptorBuilderBase<TSourceObject, TDescriptor, TVM, TItemSource, TItemVM> :
       SelectionDescriptorBuilder<TDescriptor, TVM>
       where TDescriptor : SingleSelectionVMDescriptor<TItemSource, TItemVM>, new()
       where TVM : SingleSelectionBaseVM<TItemSource, TItemVM>
@@ -12,7 +12,7 @@
 
       public SingleSelectionDescriptorBuilderBase(
          IVMDescriptor itemDescriptor,
-         Func<TItemSource, bool> isActiveFilter
+         Func<TSourceObject, TItemSource, bool> isActiveFilter
       ) {
          WithProperties((d, b) => {
             var v = b.GetPropertyBuilder();
@@ -26,7 +26,7 @@
                .Collection
                .PopulatedWith(vm => {
                   IEnumerable<TItemSource> selectableItems = SelectionHelpers
-                     .GetSelectableSourceItems<TItemSource>(vm);
+                     .GetSelectableSourceItems<TSourceObject, TItemSource>(vm);
 
                   return selectableItems.Select(x => vm.GetItemVM(x));
                })
@@ -45,7 +45,7 @@
             );
 
             b.AppendBehavior(new SelectionItemViewModelCacheBehavior<TItemSource, TItemVM>(itemDescriptor));
-            b.PrependBehavior(new ItemProviderBehavior<TItemSource>() { IsActiveFilter = isActiveFilter });
+            b.PrependBehavior(new ItemProviderBehavior<TSourceObject, TItemSource>() { IsActiveFilter = isActiveFilter });
          });
 
          WithBehaviors(b => {
@@ -63,6 +63,7 @@
 
    internal class SelectableItemSingleSelectionDescriptorBuilder<TSourceObject, TItemSource, TItemVM> :
       SingleSelectionDescriptorBuilderBase<
+         TSourceObject,
          SingleSelectionVMDescriptor<TItemSource, SelectableItemVM<TItemSource, TItemVM>>,
          SingleSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>,
          TItemSource,
@@ -70,7 +71,7 @@
       > where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
       public SelectableItemSingleSelectionDescriptorBuilder(
-         Func<TItemSource, bool> isActiveFilter
+         Func<TSourceObject, TItemSource, bool> isActiveFilter
        )
          : base(CreateItemDescriptor(), isActiveFilter) {
 
@@ -136,6 +137,7 @@
 
    internal class CaptionSingleSelectionDescriptorBuilder<TSourceObject, TItemSource> :
       SingleSelectionDescriptorBuilderBase<
+         TSourceObject,
          SingleSelectionVMDescriptor<TItemSource>,
          SingleSelectionWithSourceVM<TSourceObject, TItemSource>,
          TItemSource,
@@ -143,7 +145,7 @@
       > {
 
       public CaptionSingleSelectionDescriptorBuilder(
-         Func<TItemSource, bool> isActiveFilter,
+         Func<TSourceObject, TItemSource, bool> isActiveFilter,
          IVMDescriptor itemDescriptor
       )
          : base(itemDescriptor, isActiveFilter) {

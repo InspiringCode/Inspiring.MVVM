@@ -8,7 +8,7 @@
       private readonly IVMPropertyBuilder<TSourceObject> _sourceObjectPropertyBuilder;
       private Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<TItemSource>> _selectedSourceItemPropertyFactory;
       private Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> _allSourceItemsPropertyFactory;
-      private Func<TItemSource, bool> _filter;
+      private Func<TSourceObject, TItemSource, bool> _filter;
       private bool _validationIsEnabled;
       private bool _undoIsEnabled;
 
@@ -35,7 +35,7 @@
          return this;
       }
 
-      public SingleSelectionBuilder<TSourceObject, TItemSource> WithFilter(Func<TItemSource, bool> filter) {
+      public SingleSelectionBuilder<TSourceObject, TItemSource> WithFilter(Func<TSourceObject, TItemSource, bool> filter) {
          _filter = filter;
          return this;
       }
