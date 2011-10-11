@@ -95,7 +95,7 @@
                   .EnableValidations()
                   .EnableUndo()
                   .WithItems(x => x.AllSourceDepartments)
-                  .WithFilter(x => x.IsActive)
+                  .WithFilter((vm, x) => x.IsActive)
                   .WithCaption(x => x.Name);
             })
             .WithValidators(b => {

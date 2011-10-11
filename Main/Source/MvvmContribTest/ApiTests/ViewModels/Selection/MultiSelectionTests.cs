@@ -39,7 +39,7 @@
          var allGroups = new[] { Group1, InactiveGroup };
          var selectableGroups = new[] { Group1 };
 
-         var vm = CreateUserVM(allGroups: allGroups, filter: x => x.IsActive);
+         var vm = CreateUserVM(allGroups: allGroups, filter: (v, x) => x.IsActive);
 
          AssertAllItemsAreEqual(vm, selectableGroups);
       }
@@ -51,7 +51,7 @@
 
          var vm = CreateUserVM(
             allGroups: allGroups,
-            filter: x => x.IsActive,
+            filter: (v, x) => x.IsActive,
             selectedGroups: InactiveGroup
          );
 
@@ -91,7 +91,7 @@
 
          var vm = CreateUserVM(
             allGroups: allGroups,
-            filter: x => x.IsActive,
+            filter: (v, x) => x.IsActive,
             selectedGroups: Group2
          );
 
@@ -112,7 +112,7 @@
 
          var vm = CreateUserVM(
             allGroups: allGroups,
-            filter: x => x.IsActive,
+            filter: (v, x) => x.IsActive,
             selectedGroups: Group2
          );
 
@@ -600,7 +600,7 @@
       }
 
       private UserVM CreateUserVM(
-         Func<Group, bool> filter = null,
+         Func<UserVM, Group, bool> filter = null,
          Group[] allGroups = null,
          List<Group> allGroupsList = null,
          Func<User, IEnumerable<Group>> allGroupsSelector = null,
@@ -625,11 +625,11 @@
             .OfType<UserVMDescriptor>()
             .For<UserVM>()
             .WithProperties((d, c) => {
-               var u = c.GetPropertyBuilder(x => x.Source);
-
+               var u = c.GetPropertyBuilder();
+               
                var builder = selectedGroupsSelector != null ?
-                  u.MultiSelection(selectedGroupsSelector) :
-                  u.MultiSelection(x => x.Groups);
+                  u.MultiSelection(x => selectedGroupsSelector(x.Source)) :
+                  u.MultiSelection(x => x.Source.Groups);
 
                if (filter != null) {
                   builder = builder.WithFilter(filter);
@@ -644,7 +644,7 @@
                }
 
                if (allGroupsSelector != null) {
-                  builder = builder.WithItems(allGroupsSelector);
+                  builder = builder.WithItems(x => allGroupsSelector(x.Source));
                }
 
                builder = builder.EnableUndo();

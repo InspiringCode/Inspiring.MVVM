@@ -31,17 +31,6 @@
          //NonExistingSelectedSourceItems = new List<TItemSource>();
       }
 
-      /// <summary>
-      ///   Gets or sets a filter that determines which items of the source items
-      ///   should actually be returned by the <see cref="AllItems"/> property.
-      ///   Items that were initially selected are always returned by the <see 
-      ///   cref="AllItems"/> property.
-      /// </summary>
-      public Func<TItemSource, bool> ActiveItemFilter {
-         get;
-         set;
-      }
-
       public IEnumerable<TItemSource> AllSourceItems {
          get { return GetValue(Descriptor.AllSourceItems); }
       }

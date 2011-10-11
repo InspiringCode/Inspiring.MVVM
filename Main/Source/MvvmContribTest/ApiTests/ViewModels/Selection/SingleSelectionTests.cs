@@ -44,7 +44,7 @@
          var allDepartments = new[] { Department1, InactiveDepartment };
          var selectableDepartments = new[] { Department1 };
 
-         var vm = CreateUserVM(allDepartments: allDepartments, filter: x => x.IsActive);
+         var vm = CreateUserVM(allDepartments: allDepartments, filter: (v, x) => x.IsActive);
 
          AssertAllItemsAreEqual(vm, selectableDepartments);
       }
@@ -56,7 +56,7 @@
 
          var vm = CreateUserVM(
             allDepartments: allDepartments,
-            filter: x => x.IsActive,
+            filter: (v, x) => x.IsActive,
             selectedDepartment: InactiveDepartment
          );
 
@@ -124,7 +124,7 @@
 
          var vm = CreateUserVM(
             allDepartments: allDepartments,
-            filter: x => x.IsActive,
+            filter: (v, x) => x.IsActive,
             selectedDepartment: Department2
          );
 
@@ -370,7 +370,7 @@
          var department1 = new Department("Department");
          var department2 = new Department("Department");
 
-         var vm = CreateUserVM(allDepartments: new[] { department1, department2});
+         var vm = CreateUserVM(allDepartments: new[] { department1, department2 });
          var ss = vm.Department;
 
          ss.SelectedSourceItem = department2;
@@ -414,14 +414,14 @@
 
       private UserVM CreateUserVMWithItems() {
          return CreateUserVM(
-            filter: x => x.IsActive,
+            filter: (vm, x) => x.IsActive,
             allDepartments: new[] { Department1, Department2, InactiveDepartment },
             selectedDepartment: Department1
          );
       }
 
       private UserVM CreateUserVM(
-         Func<Department, bool> filter = null,
+         Func<UserVM, Department, bool> filter = null,
          Department[] allDepartments = null,
          Func<User, IEnumerable<Department>> allDepartmentsSelector = null,
          Department selectedDepartment = null,
@@ -438,9 +438,9 @@
             .OfType<UserVMDescriptor>()
             .For<UserVM>()
             .WithProperties((d, c) => {
-               var u = c.GetPropertyBuilder(x => x.Source);
+               var u = c.GetPropertyBuilder();
 
-               var builder = u.SingleSelection(x => x.Department).EnableUndo();
+               var builder = u.SingleSelection(x => x.Source.Department).EnableUndo();
 
                if (filter != null) {
                   builder = builder.WithFilter(filter);
@@ -451,7 +451,7 @@
                }
 
                if (allDepartmentsSelector != null) {
-                  builder = builder.WithItems(allDepartmentsSelector);
+                  builder = builder.WithItems(x => allDepartmentsSelector(x.Source));
                }
 
                d.Name = u.Property.MapsTo(x => x.Name);

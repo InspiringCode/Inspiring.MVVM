@@ -8,19 +8,23 @@ using Inspiring.Mvvm.ViewModels.Core;
 
    [TestClass]
    public class ItemProviderBehaviorTests {
-      private ItemProviderBehavior<TestSourceItem> Behavior { get; set; }
+      private ItemProviderBehavior<TestSourceObject, TestSourceItem> Behavior { get; set; }
       private IBehaviorContext Context { get; set; }
 
 
       [TestInitialize]
       public void Setup() {
-         Behavior = new ItemProviderBehavior<TestSourceItem>();
+         Behavior = new ItemProviderBehavior<TestSourceObject, TestSourceItem>();
          
          Context = ViewModelStub
             .WithBehaviors(Behavior)
             .BuildContext();
       }
 
+
+      private class TestSourceObject {
+
+      }
 
       private class TestSourceItem {
       }
