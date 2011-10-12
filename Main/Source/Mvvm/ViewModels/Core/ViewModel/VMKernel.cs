@@ -187,7 +187,7 @@
       }
 
       internal void RefreshInternal(bool executeRefreshDependencies = false) {
-         RefreshWithoutValidation();
+         RefreshWithoutValidation(executeRefreshDependencies);
          Revalidator.Revalidate(_vm, ValidationScope.SelfAndLoadedDescendants);
       }
 
