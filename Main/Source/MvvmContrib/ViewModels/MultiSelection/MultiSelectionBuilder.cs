@@ -143,7 +143,8 @@
       /// </summary>
       private Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> CreateLocatingPropertyFactory() {
          return delegate(IVMPropertyBuilder<TSourceObject> factory) {
-            return factory.Custom.Property(valueAccessor: new LocatingItemSourceBehavior());
+            // Only PropertyWithSource is cachable!
+            return factory.Custom.PropertyWithSource(valueAccessor: new LocatingItemSourceBehavior());
          };
       }
 
