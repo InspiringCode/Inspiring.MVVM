@@ -14,12 +14,10 @@
 
       public DependencyBuilderOperation(BehaviorChainConfiguration viewModelConfiguration) {
          _viewModelConfiguration = viewModelConfiguration;
-         TargetPath = new Reference<PathDefinition>(PathDefinition.Empty);
-         TargetProperties = new Reference<IPropertySelector[]>(new IPropertySelector[0]);
+         TargetProperties = new QualifiedProperties();
       }
 
-      public Reference<PathDefinition> TargetPath { get; private set; }
-      public Reference<IPropertySelector[]> TargetProperties { get; private set; }
+      public QualifiedProperties TargetProperties { get; private set; }
       public bool ExecuteRefreshDependencies { get; set; }
 
       public void AddSelfStep<TRootDescriptor>()
@@ -88,13 +86,13 @@
 
       public void AddValidationAction() {
          _actionCreator = () => {
-            return new ValidationAction(TargetPath.Value, TargetProperties.Value);
+            return new ValidationAction(TargetProperties);
          };
       }
 
       public void AddRefreshAction() {
          _actionCreator = () => {
-            return new RefreshAction(TargetPath.Value, TargetProperties.Value, ExecuteRefreshDependencies);
+            return new RefreshAction(TargetProperties, ExecuteRefreshDependencies);
          };
       }
 

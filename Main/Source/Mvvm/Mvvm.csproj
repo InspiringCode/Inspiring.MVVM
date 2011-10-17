@@ -187,6 +187,7 @@
     <Compile Include="ViewModels\Core\Common\Paths\Definition\OrStep.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\Fluent\IPathDefinitionBuilder.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\Fluent\PathDefinitionBuilder.cs" />
+    <Compile Include="ViewModels\Core\Common\Paths\QualifiedProperties.cs" />
     <Compile Include="ViewModels\Core\Common\PropertySelector.cs" />
     <Compile Include="ViewModels\Core\Common\RefreshReason.cs" />
     <Compile Include="ViewModels\Core\DefaultBehaviors.cs" />

@@ -245,7 +245,7 @@
          DeclarativeDependency dp = behavior.Dependencies.Single();
 
          string expected =
-            "On change of 'EmployeeVMDescriptor.[anything]?' refresh 'EmployeeVMDescriptor.Projects.Customer.[Name AND Rating]'";
+            "On change of 'EmployeeVMDescriptor.[anything]?' refresh 'EmployeeVMDescriptor.Projects.Customer.[Name, Rating]'";
 
          Assert.AreEqual(expected, dp.ToString());
       }

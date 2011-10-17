@@ -2,20 +2,22 @@
    using System;
    using System.Linq;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Inspiring.Mvvm.ViewModels.Core;
-using Inspiring.Mvvm.Common;
+   using Inspiring.Mvvm.ViewModels.Core;
+   using Inspiring.Mvvm.Common;
 
    [TestClass]
    public class PathDefinitionBuilderTest : PathFixture {
-      private Reference<PathDefinition> SelectedPath { get; set; }
-      private Reference<IPropertySelector[]> SelectedProperties { get; set; }
+      private PathDefinitionBuilderContext Context { get; set; }
       private PathDefinitionBuilder<EmployeeVMDescriptor> Builder { get; set; }
+
+      private QualifiedProperties SinglePath {
+         get { return Context.Paths.Single(); }
+      }
 
       [TestInitialize]
       public void Setup() {
-         SelectedPath = new Reference<PathDefinition>(PathDefinition.Empty);
-         SelectedProperties = new Reference<IPropertySelector[]>();
-         Builder = new PathDefinitionBuilder<EmployeeVMDescriptor>(SelectedPath, SelectedProperties);
+         Context = new PathDefinitionBuilderContext();
+         Builder = new PathDefinitionBuilder<EmployeeVMDescriptor>(Context);
       }
 
       [TestMethod]
@@ -24,14 +26,14 @@ using Inspiring.Mvvm.Common;
             .Descendant(x => x.Projects)
             .Descendant(x => x.SelectedCustomer);
 
-         Assert.AreEqual(2, SelectedPath.Value.Length);
+         Assert.AreEqual(2, SinglePath.Path.Length);
       }
 
       [TestMethod]
       public void Properties_SetsSelectedPropertiesCorrectly() {
          Builder.Properties(x => x.Name, x => x.Projects);
 
-         Assert.AreEqual(2, SelectedProperties.Value.Length);
+         Assert.AreEqual(2, SinglePath.Properties.Length);
       }
    }
 }

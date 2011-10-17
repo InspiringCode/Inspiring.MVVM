@@ -22,7 +22,7 @@
 
          var action = behavior.Dependencies.First().Action as RefreshAction;
 
-         Assert.IsTrue(action.TargetPath.IsEmpty);
+         Assert.IsTrue(action.Target.Path.IsEmpty);
       }
 
       [TestMethod]
@@ -273,12 +273,12 @@
             if (action is ValidationAction) {
                Assert.AreEqual(
                   targetPath.ToString(),
-                  ((ValidationAction)action).TargetPath.ToString()
+                  ((ValidationAction)action).Target.Path.ToString()
                );
             } else if (action is RefreshAction) {
                Assert.AreEqual(
                   targetPath.ToString(),
-                  ((RefreshAction)action).TargetPath.ToString()
+                  ((RefreshAction)action).Target.Path.ToString()
                );
             } else {
                Assert.Fail("When asserting a target path the action have to be a RefreshAction or ValidationAction");

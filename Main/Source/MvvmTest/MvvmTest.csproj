@@ -140,6 +140,7 @@
     <Compile Include="ApiTests\ViewModels\PropertyDependencyTests.cs" />
     <Compile Include="ApiTests\ViewModels\PropertyValueCachingTests.cs" />
     <Compile Include="ApiTests\ViewModels\Refresh\CollectionPropertyRefreshTests.cs" />
+    <Compile Include="ApiTests\ViewModels\Refresh\DescendantsRefreshTests.cs" />
     <Compile Include="ApiTests\ViewModels\Refresh\RefreshFixture.cs" />
     <Compile Include="ApiTests\ViewModels\Refresh\SimplePropertyRefreshTests.cs" />
     <Compile Include="ApiTests\ViewModels\Refresh\ViewModelPropertyRefreshTests.cs" />
