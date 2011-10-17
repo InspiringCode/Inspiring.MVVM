@@ -5,8 +5,8 @@
       where TRootVM : IViewModel
       where TRootDescriptor : IVMDescriptor {
 
-      IRefreshTargetBuilder<TRootVM, TRootVM, TRootDescriptor, TRootDescriptor> Refresh { get; }
-      IDependencyTargetBuilder<TRootVM, TRootVM, TRootDescriptor, TRootDescriptor> Revalidate { get; }
+      IRefreshTargetBuilder<TRootDescriptor> Refresh { get; }
+      IPathDefinitionBuilder<TRootDescriptor> Revalidate { get; }
       void Execute(Action<TRootVM, ChangeArgs> changeAction);
    }
 }

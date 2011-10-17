@@ -225,6 +225,7 @@
     <Compile Include="ViewModels\Core\Common\Paths\CollectionStepTests.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\AnyPropertyStepTests.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\OptionalStepTests.cs" />
+    <Compile Include="ViewModels\Core\Common\Paths\PathDefinitionBuilderTest.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\StepFixture.cs" />
     <Compile Include="ViewModels\Core\Common\PropertySelectorTests.cs" />
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\DependencyBuilderTests.cs" />

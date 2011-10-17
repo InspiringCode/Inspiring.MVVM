@@ -126,6 +126,7 @@
     <Compile Include="Common\InterprocessCommunication\InterprocessLock.cs" />
     <Compile Include="Common\InterprocessCommunication\InterprocessMessenger.cs" />
     <Compile Include="Common\InterprocessCommunication\WindowMessageInterprocessMessenger.cs" />
+    <Compile Include="Common\Reference.cs" />
     <Compile Include="Common\ReferenceEqualityComparer.cs" />
     <Compile Include="Common\SealableObject.cs" />
     <Compile Include="Common\ServiceRegistry.cs" />
@@ -184,6 +185,8 @@
     <Compile Include="ViewModels\Core\Common\Paths\Definition\CollectionStep.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\Definition\OptionalStep.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\Definition\OrStep.cs" />
+    <Compile Include="ViewModels\Core\Common\Paths\Fluent\IPathDefinitionBuilder.cs" />
+    <Compile Include="ViewModels\Core\Common\Paths\Fluent\PathDefinitionBuilder.cs" />
     <Compile Include="ViewModels\Core\Common\PropertySelector.cs" />
     <Compile Include="ViewModels\Core\Common\RefreshReason.cs" />
     <Compile Include="ViewModels\Core\DefaultBehaviors.cs" />
@@ -205,7 +208,6 @@
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\Interfaces\IDependencySelfSourceBuilder.cs" />
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\Interfaces\IDependencySourceBuilder.cs" />
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\Interfaces\IDependencySourceOrAnyDescendantBuilder.cs" />
-    <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\Interfaces\IDependencyTargetBuilder.cs" />
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\VMDependencyBuilder.cs" />
     <Compile Include="ViewModels\Core\Properties\CollectionProperty\BehaviorInterfaces\ICollectionChangeHandlerBehavior.cs" />
     <Compile Include="ViewModels\Core\Properties\CommandProperty\BehaviorInterfaces\ICommandCanExecuteBehavior.cs" />

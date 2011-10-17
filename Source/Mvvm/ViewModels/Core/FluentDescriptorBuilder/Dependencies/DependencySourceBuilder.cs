@@ -71,17 +71,17 @@
       //   A C T I O N S
       //
 
-      public IRefreshTargetBuilder<TRootVM, TRootVM, TRootDescriptor, TRootDescriptor> Refresh {
+      public IRefreshTargetBuilder<TRootDescriptor> Refresh {
          get {
             _context.AddRefreshAction();
-            return new DependencyTargetBuilder<TRootVM, TRootVM, TRootDescriptor, TRootDescriptor>(_context);
+            return new DependencyTargetBuilder<TRootDescriptor>(_context);
          }
       }
 
-      public IDependencyTargetBuilder<TRootVM, TRootVM, TRootDescriptor, TRootDescriptor> Revalidate {
+      public IPathDefinitionBuilder<TRootDescriptor> Revalidate {
          get {
             _context.AddValidationAction();
-            return new DependencyTargetBuilder<TRootVM, TRootVM, TRootDescriptor, TRootDescriptor>(_context);
+            return new DependencyTargetBuilder<TRootDescriptor>(_context);
          }
       }
 

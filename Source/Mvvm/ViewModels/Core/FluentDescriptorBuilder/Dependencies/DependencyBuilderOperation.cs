@@ -2,21 +2,24 @@
    using System;
    using System.Collections.Generic;
    using System.Linq;
+   using Inspiring.Mvvm.Common;
 
    internal sealed class DependencyBuilderOperation {
       private BehaviorChainConfiguration _viewModelConfiguration;
       private PathDefinition _sourcePath = PathDefinition.Empty;
-      private PathDefinition _targetPath = PathDefinition.Empty;
       private bool _isProperlyTerminated;
       private PathDefinitionStep _terminatingAnyPropertyStep;
       private List<ChangeType> _changesTypes = new List<ChangeType>();
       private Func<DependencyAction> _actionCreator;
-      private List<IPropertySelector> _targetProperties = new List<IPropertySelector>();
 
       public DependencyBuilderOperation(BehaviorChainConfiguration viewModelConfiguration) {
          _viewModelConfiguration = viewModelConfiguration;
+         TargetPath = new Reference<PathDefinition>(PathDefinition.Empty);
+         TargetProperties = new Reference<IPropertySelector[]>(new IPropertySelector[0]);
       }
 
+      public Reference<PathDefinition> TargetPath { get; private set; }
+      public Reference<IPropertySelector[]> TargetProperties { get; private set; }
       public bool ExecuteRefreshDependencies { get; set; }
 
       public void AddSelfStep<TRootDescriptor>()
@@ -67,31 +70,31 @@
          AddAllChangeTypes();
       }
 
-      public void AddDescendantTargetStep<TDescriptor, TDescendant, TDescendantDescriptor>(
-         Func<TDescriptor, IVMPropertyDescriptor<TDescendant>> descendatPropertySelector
-      )
-         where TDescriptor : IVMDescriptor
-         where TDescendantDescriptor : IVMDescriptor {
-         _targetPath = _targetPath.Append(descendatPropertySelector);
-      }
+      //public void AddDescendantTargetStep<TDescriptor, TDescendant, TDescendantDescriptor>(
+      //   Func<TDescriptor, IVMPropertyDescriptor<TDescendant>> descendatPropertySelector
+      //)
+      //   where TDescriptor : IVMDescriptor
+      //   where TDescendantDescriptor : IVMDescriptor {
+      //   _targetPath = _targetPath.Append(descendatPropertySelector);
+      //}
 
-      public void AddTargetsProperties<TDescriptor>(
-         params Func<TDescriptor, IVMPropertyDescriptor>[] propertySelectors
-      ) where TDescriptor : IVMDescriptor {
-         _targetProperties = propertySelectors
-            .Select(p => new PropertySelector<TDescriptor>(p))
-            .ToList<IPropertySelector>();
-      }
+      //public void AddTargetsProperties<TDescriptor>(
+      //   params Func<TDescriptor, IVMPropertyDescriptor>[] propertySelectors
+      //) where TDescriptor : IVMDescriptor {
+      //   _targetProperties = propertySelectors
+      //      .Select(p => new PropertySelector<TDescriptor>(p))
+      //      .ToList<IPropertySelector>();
+      //}
 
       public void AddValidationAction() {
          _actionCreator = () => {
-            return new ValidationAction(_targetPath, _targetProperties);
+            return new ValidationAction(TargetPath.Value, TargetProperties.Value);
          };
       }
 
       public void AddRefreshAction() {
          _actionCreator = () => {
-            return new RefreshAction(_targetPath, _targetProperties, ExecuteRefreshDependencies);
+            return new RefreshAction(TargetPath.Value, TargetProperties.Value, ExecuteRefreshDependencies);
          };
       }
 
