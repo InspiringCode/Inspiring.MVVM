@@ -204,7 +204,7 @@
             ValidationScope.SelfAndLoadedDescendants
          );
       }
-
+      
       private void NotifyChangeCore(ChangeArgs args) {
          CallPropertyChangedHandlerBehaviors(args);
          CallChangeHandlerBehaviors(args);

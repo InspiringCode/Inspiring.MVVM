@@ -1,29 +1,24 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Collections.Generic;
-   using System.Linq;
    using Inspiring.Mvvm.ViewModels.Tracing;
 
    internal sealed class RefreshAction : DependencyAction {
-      private readonly PathDefinition _targetPath;
-      private readonly IList<IPropertySelector> _targetProperties;
+      private readonly QualifiedProperties _target;
       private readonly bool _executeRefreshDependencies;
 
       public RefreshAction(
-         PathDefinition targetPath,
-         IList<IPropertySelector> targetProperties,
+         QualifiedProperties target,
          bool executeRefreshDependencies
       ) {
-         _targetPath = targetPath;
-         _targetProperties = targetProperties;
+         _target = target;
          _executeRefreshDependencies = executeRefreshDependencies;
       }
 
-      internal PathDefinition TargetPath { get { return _targetPath; } }
+      internal QualifiedProperties Target { get { return _target; } }
 
-      internal IList<IPropertySelector> TargetProperties {
-         get { return _targetProperties; }
-      }
+      //internal IList<IPropertySelector> TargetProperties {
+      //   get { return _targetProperties; }
+      //}
 
       public override void Execute(
          IViewModel ownerVM,
@@ -38,40 +33,40 @@
 
          RefreshTrace.BeginRefresh(dependency);
 
-         if (TargetPath.IsEmpty) {
-            if (_targetProperties.Count > 0) {
-               RefreshProperties(ownerVM);
-            } else {
-               ownerVM.Kernel.RefreshInternal(_executeRefreshDependencies);
-            }
-         } else {
-            var viewModels = TargetPath.GetDescendants(ownerVM);
+         _target.Refresh(ownerVM, _executeRefreshDependencies);
 
-            foreach (var viewModel in viewModels) {
-               if (_targetProperties.Count > 0) {
-                  RefreshProperties(viewModel);
-               } else {
-                  viewModel.Kernel.RefreshInternal(_executeRefreshDependencies);
-               }
-            }
-         }
+         //ownerVM.Kernel.RefreshInternal(_target, _executeRefreshDependencies);
+
+         //if (TargetPath.IsEmpty) {
+         //   if (_targetProperties.Count > 0) {
+         //      RefreshProperties(ownerVM);
+         //   } else {
+         //      ownerVM.Kernel.RefreshInternal(_executeRefreshDependencies);
+         //   }
+         //} else {
+         //   var viewModels = TargetPath.GetDescendants(ownerVM);
+
+         //   foreach (var viewModel in viewModels) {
+         //      if (_targetProperties.Count > 0) {
+         //         RefreshProperties(viewModel);
+         //      } else {
+         //         viewModel.Kernel.RefreshInternal(_executeRefreshDependencies);
+         //      }
+         //   }
+         //}
 
          RefreshTrace.EndLastRefresh();
       }
 
       public override string ToString() {
-         return String.Format(
-            "refresh '{0}.[{1}]'",
-            TargetPath,
-            String.Join(" AND ", TargetProperties.Select(x => x.PropertyName))
-         );
+         return String.Format("refresh '{0}'", _target);
       }
 
-      private void RefreshProperties(IViewModel ownerVM) {
-         foreach (var propertySelector in _targetProperties) {
-            var property = propertySelector.GetProperty(ownerVM.Descriptor);
-            ownerVM.Kernel.RefreshInternal(property, _executeRefreshDependencies);
-         }
-      }
+      //private void RefreshProperties(IViewModel ownerVM) {
+      //   foreach (var propertySelector in _targetProperties) {
+      //      var property = propertySelector.GetProperty(ownerVM.Descriptor);
+      //      ownerVM.Kernel.RefreshInternal(property, _executeRefreshDependencies);
+      //   }
+      //}
    }
 }

@@ -6,6 +6,7 @@
    using System.Linq;
    using Inspiring.Mvvm;
    using Inspiring.Mvvm.ViewModels.Core;
+   using Inspiring.Mvvm.ViewModels.Tracing;
 
    // TODO: Rename/Refactor me!
    public class ViewModel {
@@ -224,12 +225,28 @@
       }
 
       protected void Refresh(
-         IVMPropertyDescriptor property, 
+         IVMPropertyDescriptor property,
          bool executeRefreshDependencies = false
       ) {
          Kernel.Refresh(property, executeRefreshDependencies);
       }
 
+      public void RefreshDescendants(
+         Action<IPathDefinitionBuilder<TDescriptor>> refreshTargetSelector,
+         bool executeRefreshDependencies = false
+      ) {
+         RefreshTrace.BeginManualRefresh();
+
+         var context = new PathDefinitionBuilderContext();
+         var builder = new PathDefinitionBuilder<TDescriptor>(context);
+         refreshTargetSelector(builder);
+
+         foreach (var path in context.Paths) {
+            path.Refresh(this, executeRefreshDependencies);
+         }
+
+         RefreshTrace.EndLastRefresh();
+      }
 
       //object IViewModel.GetValue(IVMProperty property) {
       //   return property.GetValue(Kernel);

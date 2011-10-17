@@ -8,7 +8,7 @@
       private readonly DependencyBuilderOperation _context;
 
       public DependencyTargetBuilder(DependencyBuilderOperation context)
-         : base(context.TargetPath, context.TargetProperties) {
+         : base(context.TargetProperties) {
          _context = context;
       }
 
