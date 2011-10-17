@@ -13,36 +13,71 @@
       public IPropertySelector[] Properties { get; set; }
 
       public void Refresh(IViewModel rootVM, bool executeRefreshDependencies) {
-         IEnumerable<IViewModel> viewModels = Path.IsEmpty ?
-            new IViewModel[] { rootVM } :
-            Path.GetDescendants(rootVM);
-
-         foreach (IViewModel vm in viewModels) {
-            if (Properties.Any()) {
-               foreach (var selector in Properties) {
-                  var property = selector.GetProperty(vm.Descriptor);
-                  vm.Kernel.RefreshInternal(property, executeRefreshDependencies);
+         ForeachDescendant(rootVM, (vm, props) => {
+            if (props.Any()) {
+               foreach (var prop in props) {
+                  vm.Kernel.RefreshInternal(prop, executeRefreshDependencies);
                }
             } else {
                vm.Kernel.RefreshInternal(executeRefreshDependencies);
             }
-         }
+         });
+
+         //IEnumerable<IViewModel> viewModels = Path.IsEmpty ?
+         //   new IViewModel[] { rootVM } :
+         //   Path.GetDescendants(rootVM);
+
+         //foreach (IViewModel vm in viewModels) {
+         //   if (Properties.Any()) {
+         //      foreach (var selector in Properties) {
+         //         var property = selector.GetProperty(vm.Descriptor);
+         //         vm.Kernel.RefreshInternal(property, executeRefreshDependencies);
+         //      }
+         //   } else {
+         //      vm.Kernel.RefreshInternal(executeRefreshDependencies);
+         //   }
+         //}
       }
 
       public void Revalidate(IViewModel rootVM) {
+         ForeachDescendant(rootVM, (vm, props) => {
+            if (props.Any()) {
+               foreach (var prop in props) {
+                  vm.Kernel.Revalidate(prop);
+               }
+            } else {
+               vm.Kernel.Revalidate(ValidationScope.SelfAndLoadedDescendants);
+            }
+         });
+
+         //IEnumerable<IViewModel> viewModels = Path.IsEmpty ?
+         //   new IViewModel[] { rootVM } :
+         //   Path.GetDescendants(rootVM);
+
+         //foreach (IViewModel vm in viewModels) {
+         //   if (Properties.Any()) {
+         //      foreach (var selector in Properties) {
+         //         var property = selector.GetProperty(vm.Descriptor);
+         //         vm.Kernel.Revalidate(property);
+         //      }
+         //   } else {
+         //      vm.Kernel.Revalidate(ValidationScope.SelfAndLoadedDescendants);
+         //   }
+         //}
+      }
+
+      public void ForeachDescendant(IViewModel rootVM, Action<IViewModel, IVMPropertyDescriptor[]> action) {
          IEnumerable<IViewModel> viewModels = Path.IsEmpty ?
             new IViewModel[] { rootVM } :
             Path.GetDescendants(rootVM);
 
          foreach (IViewModel vm in viewModels) {
-            if (Properties.Any()) {
-               foreach (var selector in Properties) {
-                  var property = selector.GetProperty(vm.Descriptor);
-                  vm.Kernel.Revalidate(property);
-               }
-            } else {
-               vm.Kernel.Revalidate(ValidationScope.SelfAndLoadedDescendants);
-            }
+            action(
+               vm,
+               Properties
+                  .Select(x => x.GetProperty(vm.Descriptor))
+                  .ToArray()
+            );
          }
       }
 
