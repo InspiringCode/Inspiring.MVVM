@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
+   using System.Linq;
    using Inspiring.Mvvm.ViewModels.Tracing;
 
    internal sealed class RefreshAction : DependencyAction {
@@ -33,7 +34,27 @@
 
          RefreshTrace.BeginRefresh(dependency);
 
-         _target.Refresh(ownerVM, _executeRefreshDependencies);
+         _target.ForeachDescendant(ownerVM, (vm, props) => {
+            if (props.Any()) {
+               foreach (var prop in props) {
+                  bool wouldRefreshChangeSource = 
+                     vm == args.ChangedVM &&
+                     prop == args.ChangedProperty;
+
+                  if (!wouldRefreshChangeSource) {
+                     vm.Kernel.RefreshInternal(prop, _executeRefreshDependencies);
+                  }
+               }
+            } else {
+               bool wouldRefreshChangeSource = vm == args.ChangedVM;
+
+               if (!wouldRefreshChangeSource) {
+                  vm.Kernel.RefreshInternal(_executeRefreshDependencies);
+               }
+            }
+         });
+
+         //_target.Refresh(ownerVM, _executeRefreshDependencies);
 
          //ownerVM.Kernel.RefreshInternal(_target, _executeRefreshDependencies);
 
