@@ -1,11 +1,9 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.DeclarativeDependencies {
    using System;
+   using System.Collections.Generic;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
-   using System.Linq;
-using System.Collections.Generic;
-   using Inspiring.Mvvm.ViewModels.Tracing;
 
    [TestClass]
    public class IgnoreRefreshDependenciesTests {
@@ -26,7 +24,7 @@ using System.Collections.Generic;
                .Refresh
                .Properties(x => x.Property1);
          });
-         
+
          var trigger = new ChildVM();
          var monitor = new ChildVM();
          root.Child2.Grandchildren.Add(monitor);
@@ -127,6 +125,24 @@ using System.Collections.Generic;
       }
 
       [TestMethod]
+      public void Refresh_WithSelfRecursiveDependency_DoesNotRefreshTriggeringProperty() {
+         var root = CreateRootVM(b => {
+            b.OnChangeOf
+               .Properties(x => x.Property1, x => x.Property2)
+               .Refresh
+               .Properties(x => x.Property1, x => x.Property2);
+         });
+
+         root.Property1RefreshCount = 0;
+         root.Property2RefreshCount = 0;
+
+         root.SetValue(x => x.Property1, "Trigger");
+
+         Assert.AreEqual(0, root.Property1RefreshCount);
+         Assert.AreEqual(1, root.Property2RefreshCount);
+      }
+
+      [TestMethod]
       public void SetValue_WhenValidationResultChanges_WorksWithSelfRecursiveDependency() {
          var root = CreateRootVM(b => {
             b.OnChangeOf
@@ -144,7 +160,7 @@ using System.Collections.Generic;
 
          gc1.StringPropertyRefreshCount = 0;
          gc2.StringPropertyRefreshCount = 0;
-         
+
          gc1.SetValue(x => x.StringProperty, "Trigger");
 
          Assert.AreEqual(1, gc1.StringPropertyRefreshCount);
