@@ -6,6 +6,8 @@
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
+   using System.Threading;
+   using Inspiring.Mvvm.Resources;
 
    [TestClass]
    public class StandardValidationsTest : ValidationTestBase {
@@ -487,8 +489,8 @@
       [TestMethod]
       public void ValueInRange_ErrorMessageLocalization() {
          CultureInfo ci = new CultureInfo("de-AT");
-         System.Threading.Thread.CurrentThread.CurrentCulture = ci;
-         System.Threading.Thread.CurrentThread.CurrentUICulture = ci;
+         Thread.CurrentThread.CurrentCulture = ci;
+         Thread.CurrentThread.CurrentUICulture = ci;
 
          int max = 10;
 
@@ -498,6 +500,26 @@
          );
 
          vm.SetValue(x => x.IntegerProperty, max + 1);
+      }
+
+      [TestMethod]
+      public void Min_ExecutedSecondTime_ReturnsUpdatedErrorMessage() {
+         int min = 10;
+         int currentValue = 100;
+         
+         var vm = CreateParent(b => b.Check(x => x.IntegerProperty).Min(x => min));
+         vm.SetValue(x => x.IntegerProperty, currentValue);
+
+         min = currentValue + 1;
+         vm.Revalidate();
+
+         min = currentValue + 2;
+         vm.Revalidate();
+
+         ValidationAssert.ErrorMessages(
+            vm.ValidationResult, 
+            Localized.ValidationMin.FormatWith(min)
+         );
       }
 
       private static ParentVM CreateParent(

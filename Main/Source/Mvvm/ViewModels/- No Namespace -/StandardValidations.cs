@@ -248,15 +248,15 @@
          where TOwnerVM : IViewModel
          where TTargetVM : IViewModel
          where TValue : IComparable {
+
+         message = message ?? Localized.ValidationValueInRange;
+
          builder.Custom((args) => {
             if ((min.CompareTo(args.Value) == 1) ||
                 (max.CompareTo(args.Value) < 0)
             ) {
-               if (String.IsNullOrEmpty(message)) {
-                  message = Localized.ValidationValueInRange.FormatWith(min, max);
-               }
-
-               args.AddError(message, details);
+               string msg = message.FormatWith(min, max); // DO NOT reuse parameter!
+               args.AddError(msg, details);
             }
          });
       }
@@ -271,16 +271,16 @@
          where TOwnerVM : IViewModel
          where TTargetVM : IViewModel
          where TValue : struct, IComparable {
+
+         message = message ?? Localized.ValidationValueInRange;
+
          builder.Custom((args) => {
             if (args.Value.HasValue &&
                 (min.CompareTo(args.Value) == 1 ||
                  max.CompareTo(args.Value) < 0)
             ) {
-               if (String.IsNullOrEmpty(message)) {
-                  message = Localized.ValidationValueInRange.FormatWith(min, max);
-               }
-
-               args.AddError(message, details);
+               string msg = message.FormatWith(min, max); // DO NOT reuse parameter!
+               args.AddError(msg, details);
             }
          });
       }
@@ -295,13 +295,12 @@
          where TTargetVM : IViewModel
          where TValue : IComparable {
 
+         message = message ?? Localized.ValidationMin;
+
          builder.Custom((args) => {
             if (min.CompareTo(args.Value) == 1) {
-               if (String.IsNullOrEmpty(message)) {
-                  message = Localized.ValidationMin.FormatWith(min);
-               }
-
-               args.AddError(message, details);
+               string msg = message.FormatWith(min); // DO NOT reuse parameter!
+               args.AddError(msg, details);
             }
          });
       }
@@ -315,16 +314,15 @@
          where TOwnerVM : IViewModel
          where TTargetVM : IViewModel
          where TValue : IComparable {
+
+         message = message ?? Localized.ValidationMin;
 
          builder.Custom((args) => {
             var minValue = minValueSelector(args.Owner);
 
             if (minValue.CompareTo(args.Value) == 1) {
-               if (String.IsNullOrEmpty(message)) {
-                  message = Localized.ValidationMin.FormatWith(minValue);
-               }
-
-               args.AddError(message, details);
+               string msg = message.FormatWith(minValue); // DO NOT reuse parameter!
+               args.AddError(msg, details);
             }
          });
       }
@@ -339,15 +337,14 @@
          where TTargetVM : IViewModel
          where TValue : struct, IComparable {
 
+         message = message ?? Localized.ValidationMin;
+
          builder.Custom((args) => {
             if (args.Value.HasValue &&
                 min.CompareTo(args.Value) == 1) {
 
-               if (String.IsNullOrEmpty(message)) {
-                  message = Localized.ValidationMin.FormatWith(min);
-               }
-
-               args.AddError(message, details);
+               string msg = message.FormatWith(min); // DO NOT reuse parameter!
+               args.AddError(msg, details);
             }
          });
       }
@@ -361,6 +358,8 @@
          where TOwnerVM : IViewModel
          where TTargetVM : IViewModel
          where TValue : struct, IComparable {
+
+         message = message ?? Localized.ValidationMin;
 
          builder.Custom((args) => {
             var minValue = minValueSelector(args.Owner);
@@ -368,11 +367,8 @@
             if (args.Value.HasValue &&
                 minValue.CompareTo(args.Value) == 1) {
 
-               if (String.IsNullOrEmpty(message)) {
-                  message = Localized.ValidationMin.FormatWith(minValue);
-               }
-
-               args.AddError(message, details);
+               string msg = message.FormatWith(minValue); // DO NOT reuse parameter!
+               args.AddError(msg, details);
             }
          });
       }
@@ -387,13 +383,12 @@
          where TTargetVM : IViewModel
          where TValue : IComparable {
 
+         message = message ?? Localized.ValidationMax;
+
          builder.Custom((args) => {
             if (max.CompareTo(args.Value) < 0) {
-               if (String.IsNullOrEmpty(message)) {
-                  message = Localized.ValidationMax.FormatWith(max);
-               }
-
-               args.AddError(message, details);
+               string msg = message.FormatWith(max); // DO NOT reuse parameter!
+               args.AddError(msg, details);
             }
          });
       }
@@ -407,16 +402,15 @@
          where TOwnerVM : IViewModel
          where TTargetVM : IViewModel
          where TValue : IComparable {
+
+         message = message ?? Localized.ValidationMax;
 
          builder.Custom((args) => {
             var maxValue = maxValueSelector(args.Owner);
 
             if (maxValue.CompareTo(args.Value) < 0) {
-               if (String.IsNullOrEmpty(message)) {
-                  message = Localized.ValidationMax.FormatWith(maxValue);
-               }
-
-               args.AddError(message, details);
+               string msg = message.FormatWith(maxValue); // DO NOT reuse parameter!
+               args.AddError(msg, details);
             }
          });
       }
@@ -431,15 +425,14 @@
          where TTargetVM : IViewModel
          where TValue : struct, IComparable {
 
+         message = message ?? Localized.ValidationMax;
+
          builder.Custom((args) => {
             if (args.Value.HasValue &&
                 max.CompareTo(args.Value) < 0) {
 
-               if (String.IsNullOrEmpty(message)) {
-                  message = Localized.ValidationMax.FormatWith(max);
-               }
-
-               args.AddError(message, details);
+               string msg = message.FormatWith(max); // DO NOT reuse parameter!
+               args.AddError(msg, details);
             }
          });
       }
@@ -453,6 +446,8 @@
          where TOwnerVM : IViewModel
          where TTargetVM : IViewModel
          where TValue : struct, IComparable {
+
+         message = message ?? Localized.ValidationMax;
 
          builder.Custom((args) => {
             var maxValue = maxValueSelector(args.Owner);
@@ -460,11 +455,8 @@
             if (args.Value.HasValue &&
                 maxValue.CompareTo(args.Value) < 0) {
 
-               if (String.IsNullOrEmpty(message)) {
-                  message = Localized.ValidationMax.FormatWith(maxValue);
-               }
-
-               args.AddError(message, details);
+               string msg = message.FormatWith(maxValue); // DO NOT reuse parameter!
+               args.AddError(msg, details);
             }
          });
       }
