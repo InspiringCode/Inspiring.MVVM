@@ -208,6 +208,7 @@
     <Compile Include="Stubs\VMDescriptorStub.cs" />
     <Compile Include="Stubs\VMPropertyBaseStub.cs" />
     <Compile Include="TestExtensions.cs" />
+    <Compile Include="Testing\DialogTestServiceTests.cs" />
     <Compile Include="TestUtils\ComparisonObject.cs" />
     <Compile Include="TestUtils\ComparisonObjectTests.cs" />
     <Compile Include="TestUtils\GenericComparisonObjectTests.cs" />
