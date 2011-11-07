@@ -14,6 +14,12 @@
          return resp;
       }
 
+      public ShowDialogResponderResultSetup EnqueueShowDialogResponder(DialogScreenResult result) {
+         var resp = new ShowDialogResponderResultSetup(DialogServiceMethod.OpenDialog, result);
+         _responders.Enqueue(resp);
+         return resp;
+      }
+
       public FileDialogResponderSetup EnqueueOpenFileDialogResponder(string fileName, bool result) {
          var resp = new FileDialogResponderSetup(DialogServiceMethod.ShowOpenFileDialog, fileName, result);
          _responders.Enqueue(resp);
