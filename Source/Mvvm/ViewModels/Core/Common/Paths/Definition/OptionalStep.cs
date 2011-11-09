@@ -18,7 +18,7 @@
          }
       }
 
-      public override IViewModel[] GetDescendants(PathDefinitionIterator definitionSteps, IViewModel rootVM) {
+      public override IViewModel[] GetDescendants(PathDefinitionIterator definitionSteps, IViewModel rootVM, bool onlyLoaded) {
          throw new NotSupportedException();
       }
 

@@ -25,11 +25,12 @@
          return nextDefinitionStep.Matches(MoveNext(), step);
       }
 
-      public IViewModel[] GetDescendantNext(IViewModel rootVM) {
+      public IViewModel[] GetDescendantNext(IViewModel rootVM, bool onlyLoaded) {
          var nextDefinitionStep = HasStep ?
             Current :
             PathTerminationStep.Instance;
-         return nextDefinitionStep.GetDescendants(MoveNext(), rootVM);
+
+         return nextDefinitionStep.GetDescendants(MoveNext(), rootVM, onlyLoaded);
       }
 
       private PathDefinitionIterator MoveNext() {

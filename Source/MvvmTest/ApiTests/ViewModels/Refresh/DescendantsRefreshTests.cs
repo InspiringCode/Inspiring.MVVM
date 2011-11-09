@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Refresh {
    using System;
+   using System.Collections.Generic;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -24,6 +25,18 @@
          Assert.IsFalse(child.WasRefreshed);
       }
 
+      [TestMethod]
+      public void RefreshDescendants_DoesNotLoadUnloadedProperties() {
+         var root = new RootVM();
+         
+         root.RefreshDescendants(b => {
+            b.Descendant(x => x.Children)
+               .Properties(x => x.RefreshDetectionProperty);
+         });
+
+         ViewModelAssert.IsNotLoaded(root, x => x.Children);
+      }
+
 
       private class RootVM : ViewModel<RootVMDescriptor> {
          [ClassDescriptor]
@@ -34,12 +47,15 @@
                var v = b.GetPropertyBuilder();
 
                d.Child = v.VM.Of<ChildVM>();
-               d.Children = v.Collection.Of<ChildVM>(ChildVM.ClassDescriptor);
+               d.Children = v.Collection
+                  .Wraps(x => x.ChildrenSource)
+                  .With<ChildVM>(ChildVM.ClassDescriptor);
             })
             .Build();
 
          public RootVM()
             : base(ClassDescriptor) {
+            ChildrenSource = new List<ChildSource>();
          }
 
          public ChildVM Child {
@@ -49,6 +65,11 @@
 
          public IVMCollection<ChildVM> Children {
             get { return GetValue(Descriptor.Children); }
+         }
+
+         private List<ChildSource> ChildrenSource {
+            get;
+            set;
          }
 
          public void RefreshDescendants(Action<IPathDefinitionBuilder<RootVMDescriptor>> refreshTargetBuilder) {

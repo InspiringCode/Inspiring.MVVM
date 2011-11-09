@@ -52,7 +52,12 @@
 
       public IViewModel[] GetDescendants(IViewModel rootVM) {
          var it = new PathDefinitionIterator(_steps);
-         return it.GetDescendantNext(rootVM);
+         return it.GetDescendantNext(rootVM, onlyLoaded: false);
+      }
+
+      public IViewModel[] GetLoadedDescendants(IViewModel rootVM) {
+         var it = new PathDefinitionIterator(_steps);
+         return it.GetDescendantNext(rootVM, onlyLoaded: true);
       }
 
       public override string ToString() {

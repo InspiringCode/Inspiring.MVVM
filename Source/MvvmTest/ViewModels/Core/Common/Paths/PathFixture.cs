@@ -4,6 +4,7 @@
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Moq;
+   using System.Collections.Generic;
 
    [TestClass]
    public abstract class PathFixture {
@@ -165,14 +166,26 @@
                var v = b.GetPropertyBuilder();
                d.Name = v.Property.Of<string>();
                d.EndDate = v.Property.Of<DateTime>();
-               d.SelectedCustomer = v.VM.Of<CustomerVM>();
-               d.Customers = v.Collection.Of<CustomerVM>(CustomerVM.ClassDescriptor);
+
+               d.SelectedCustomer = v
+                  .VM
+                  .Wraps(x => x.SelectedCustomerSource)
+                  .With<CustomerVM>();
+
+               d.Customers = v
+                  .Collection
+                  .Wraps(x => x.CustomersSource)
+                  .With<CustomerVM>(CustomerVM.ClassDescriptor);
             })
             .Build();
 
          public ProjectVM()
             : base(ClassDescriptor) {
+            CustomersSource = new List<Customer>();
          }
+
+         private Customer SelectedCustomerSource { get; set; }
+         private List<Customer> CustomersSource { get; set; }
       }
 
       protected sealed class ProjectVMDescriptor : VMDescriptor {
@@ -182,23 +195,28 @@
          public IVMPropertyDescriptor<IVMCollection<CustomerVM>> Customers { get; set; }
       }
 
-      protected sealed class CustomerVM : ViewModel<CustomerVMDescriptor> {
+      protected sealed class CustomerVM : DefaultViewModelWithSourceBase<CustomerVMDescriptor, Customer> {
          public static readonly CustomerVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<CustomerVMDescriptor>()
             .For<CustomerVM>()
             .WithProperties((d, b) => {
-               var v = b.GetPropertyBuilder();
-               d.Name = v.Property.Of<string>();
+               var s = b.GetPropertyBuilder(x => x.Source);
+               d.Name = s.Property.MapsTo(x => x.Name);
             })
             .Build();
 
          public CustomerVM()
             : base(ClassDescriptor) {
+            InitializeFrom(new Customer());
          }
       }
 
       protected sealed class CustomerVMDescriptor : VMDescriptor {
          public IVMPropertyDescriptor<string> Name { get; set; }
+      }
+
+      protected sealed class Customer {
+         public string Name { get; set; }
       }
    }
 }

@@ -13,7 +13,7 @@
       public IPropertySelector[] Properties { get; set; }
 
       public void Refresh(IViewModel rootVM, bool executeRefreshDependencies) {
-         ForeachDescendant(rootVM, (vm, props) => {
+         ForeachLoadedDescendant(rootVM, (vm, props) => {
             if (props.Any()) {
                foreach (var prop in props) {
                   vm.Kernel.RefreshInternal(prop, new RefreshOptions(executeRefreshDependencies));
@@ -40,7 +40,7 @@
       }
 
       public void Revalidate(IViewModel rootVM) {
-         ForeachDescendant(rootVM, (vm, props) => {
+         ForeachLoadedDescendant(rootVM, (vm, props) => {
             if (props.Any()) {
                foreach (var prop in props) {
                   vm.Kernel.Revalidate(prop);
@@ -66,10 +66,10 @@
          //}
       }
 
-      public void ForeachDescendant(IViewModel rootVM, Action<IViewModel, IVMPropertyDescriptor[]> action) {
+      public void ForeachLoadedDescendant(IViewModel rootVM, Action<IViewModel, IVMPropertyDescriptor[]> action) {
          IEnumerable<IViewModel> viewModels = Path.IsEmpty ?
             new IViewModel[] { rootVM } :
-            Path.GetDescendants(rootVM);
+            Path.GetLoadedDescendants(rootVM);
 
          foreach (IViewModel vm in viewModels) {
             action(

@@ -52,9 +52,15 @@
 
       public override IViewModel[] GetDescendants(
          PathDefinitionIterator definitionSteps,
-         IViewModel rootVM
+         IViewModel rootVM, 
+         bool onlyLoaded
       ) {
          var property = _propertySelector.GetProperty(rootVM.Descriptor);
+
+         if (onlyLoaded && !rootVM.Kernel.IsLoaded(property)) {
+            return new IViewModel[0];
+         }
+
          var instance = rootVM.Kernel.GetValue(property);
 
          if (PropertyTypeHelper.IsViewModelCollection(property.PropertyType)) {
@@ -65,7 +71,7 @@
             var collection = (IVMCollection)instance;
             return ((IVMCollection)instance)
                .Cast<IViewModel>()
-               .SelectMany(x => definitionSteps.GetDescendantNext(x))
+               .SelectMany(x => definitionSteps.GetDescendantNext(x, onlyLoaded))
                .ToArray();
 
          } else if (PropertyTypeHelper.IsViewModel(property.PropertyType)) {
@@ -73,7 +79,7 @@
                return new IViewModel[0];
             }
 
-            return definitionSteps.GetDescendantNext((IViewModel)instance);
+            return definitionSteps.GetDescendantNext((IViewModel)instance, onlyLoaded);
          }
 
          throw new NotSupportedException(ExceptionTexts.GetDescaedantsWrongPropertyStepType);

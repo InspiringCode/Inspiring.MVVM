@@ -217,6 +217,44 @@
          CollectionAssert.AreEqual(expectedViewModels, descenantViewModels);
       }
 
+      [TestMethod]
+      public void GetDescendants_WhenOnlyLoadedIsTrue_DoesNotLoadDescendants() {
+         var unloadedProject = new ProjectVM();
+         var loadedProject = new ProjectVM();
+
+         var selectedCustomer = new CustomerVM();
+         var customerItem = new CustomerVM();
+
+         loadedProject.SetValue(x => x.SelectedCustomer, selectedCustomer);
+         loadedProject.GetValue(x => x.Customers).Add(customerItem);
+
+         var rootVM = new EmployeeVM();
+
+         var projects = rootVM.GetValue(x => x.Projects);
+         projects.Add(unloadedProject);
+         projects.Add(loadedProject);
+
+         var path = PathDefinition
+            .Empty
+            .Append((EmployeeVMDescriptor x) => x.Projects)
+            .Append((ProjectVMDescriptor x) => x.SelectedCustomer);
+
+         var descenantViewModels = path.GetLoadedDescendants(rootVM);
+
+         CollectionAssert.AreEquivalent(new[] { selectedCustomer }, descenantViewModels);
+         ViewModelAssert.IsNotLoaded(unloadedProject, x => x.SelectedCustomer);
+
+         path = PathDefinition
+            .Empty
+            .Append((EmployeeVMDescriptor x) => x.Projects)
+            .Append((ProjectVMDescriptor x) => x.Customers);
+
+         descenantViewModels = path.GetLoadedDescendants(rootVM);
+
+         CollectionAssert.AreEquivalent(new[] { customerItem }, descenantViewModels);
+         ViewModelAssert.IsNotLoaded(unloadedProject, x => x.Customers);
+      }
+
       private class StepDefinitionMock : PathDefinitionStep {
          public StepDefinitionMock(PathMatch result) {
             Result = result;
@@ -245,7 +283,9 @@
 
          public override IViewModel[] GetDescendants(
             PathDefinitionIterator definitionSteps,
-            IViewModel rootVM) {
+            IViewModel rootVM, 
+            bool onlyLoaded
+         ) {
             throw new NotSupportedException();
          }
       }
