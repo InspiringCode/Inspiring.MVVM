@@ -34,7 +34,7 @@
 
          RefreshTrace.BeginRefresh(dependency);
 
-         _target.ForeachDescendant(ownerVM, (vm, props) => {
+         _target.ForeachLoadedDescendant(ownerVM, (vm, props) => {
             if (props.Any()) {
                foreach (var prop in props) {
                   bool wouldRefreshChangeSource = 

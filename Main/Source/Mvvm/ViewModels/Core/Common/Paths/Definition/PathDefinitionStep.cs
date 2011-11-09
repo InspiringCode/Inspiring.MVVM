@@ -4,7 +4,7 @@
    internal abstract class PathDefinitionStep {
       public abstract PathMatch Matches(PathDefinitionIterator definitionSteps, PathIterator step);
 
-      public abstract IViewModel[] GetDescendants(PathDefinitionIterator definitionSteps, IViewModel rootVM);
+      public abstract IViewModel[] GetDescendants(PathDefinitionIterator definitionSteps, IViewModel rootVM, bool onlyLoaded);
 
       protected void ThrowUnexpectedStepTypeException(int index, params PathStepType[] expectedTypes) {
          throw new ArgumentException(

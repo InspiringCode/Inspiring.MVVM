@@ -22,7 +22,8 @@ namespace Inspiring.Mvvm.ViewModels.Core {
 
       public override IViewModel[] GetDescendants(
          PathDefinitionIterator definitionSteps,
-         IViewModel rootVM
+         IViewModel rootVM, 
+         bool onlyLoaded
       ) {
          return new IViewModel[] { rootVM };
       }
