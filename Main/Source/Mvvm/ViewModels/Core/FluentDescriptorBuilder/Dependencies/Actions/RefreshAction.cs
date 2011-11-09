@@ -42,7 +42,7 @@
                      prop == args.ChangedProperty;
 
                   if (!wouldRefreshChangeSource) {
-                     vm.Kernel.RefreshInternal(prop, _executeRefreshDependencies);
+                     vm.Kernel.RefreshInternal(prop, new RefreshOptions(_executeRefreshDependencies));
                   }
                }
             } else {

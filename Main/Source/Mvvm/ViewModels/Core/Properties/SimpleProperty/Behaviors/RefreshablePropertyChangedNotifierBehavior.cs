@@ -12,15 +12,15 @@
          base.Initialize(context);
       }
 
-      public void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
+      public void Refresh(IBehaviorContext context, RefreshOptions options) {
          context.NotifyChange(
             ChangeArgs.PropertyChanged(
                _property,
-               RefreshReason.Create(executeRefreshDependencies)
+               RefreshReason.Create(options.ExecuteRefreshDependencies)
             )
          );
 
-         this.RefreshNext(context, executeRefreshDependencies);
+         this.RefreshNext(context, options);
       }
    }
 }

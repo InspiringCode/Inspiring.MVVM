@@ -82,7 +82,7 @@
                .VM
                .Descriptor
                .Behaviors
-               .ViewModelRefreshNext(context, property, executeRefreshDependencies);
+               .ViewModelRefreshNext(context, property, new RefreshOptions(executeRefreshDependencies));
          }
 
          this.ViewModelRefreshNext(context, executeRefreshDependencies);
@@ -90,13 +90,13 @@
          RefreshTrace.EndLastRefresh();
       }
 
-      public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property, bool executeRefreshDependencies) {
+      public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property, RefreshOptions options) {
          RefreshTrace.BeginRefresh(property);
 
          RequireInitialized();
-         property.Behaviors.RefreshNext(context, executeRefreshDependencies);
+         property.Behaviors.RefreshNext(context, options);
 
-         this.ViewModelRefreshNext(context, property, executeRefreshDependencies);
+         this.ViewModelRefreshNext(context, property, options);
 
          RefreshTrace.EndLastRefresh();
       }

@@ -142,7 +142,7 @@
             Log.Append(RefreshNext);
          }
 
-         public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property, bool executeRefreshDependencies) {
+         public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property, RefreshOptions options) {
             Log.Append(RefreshNextProperty);
          }
 

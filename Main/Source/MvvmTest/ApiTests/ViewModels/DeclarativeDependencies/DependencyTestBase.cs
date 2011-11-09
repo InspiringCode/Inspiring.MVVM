@@ -272,7 +272,7 @@
             _refreshedViewModels.Add(context.VM);
          }
 
-         public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property, bool executeRefreshDependencies) {
+         public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property, RefreshOptions options) {
             _refreshedProperties.Add(property);
          }
       }

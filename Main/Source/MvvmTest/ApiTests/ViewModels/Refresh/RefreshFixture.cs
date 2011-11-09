@@ -58,7 +58,7 @@
       private class RefreshDetectorBehavior : Behavior, IRefreshBehavior {
          public bool WasCalled { get; set; }
 
-         public void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
+         public void Refresh(IBehaviorContext context, RefreshOptions options) {
             var vm = (ChildVM)context.VM;
             vm.WasRefreshed = true;
          }

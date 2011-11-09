@@ -304,9 +304,9 @@
             this.InitializeNext(context);
          }
 
-         public void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
+         public void Refresh(IBehaviorContext context, RefreshOptions options) {
             SetCount(context, GetCount(context) + 1);
-            this.RefreshNext(context, executeRefreshDependencies);
+            this.RefreshNext(context, options);
          }
 
          public static int GetCount(IViewModel vm, IVMPropertyDescriptor property) {

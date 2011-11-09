@@ -66,7 +66,7 @@
          };
 
          Next.SourceCollectionToReturn = newSourceItems;
-         Behavior.Refresh(Context, false);
+         InvokeRefresh();
 
          var newVMs = Behavior.GetValue(Context);
 
@@ -98,15 +98,19 @@
          Behavior.GetValue(Context);
          Next.SourceCollectionToReturn = new[] { sharedSourceItem, new ItemSource("New item") };
 
-         Behavior.Refresh(Context, false);
+         InvokeRefresh();
 
          Assert.AreEqual(ReplaceItemsLog + ReplaceItemsLog + RefreshItemLog, actionLog.ToString());
       }
 
       [TestMethod]
       public void Refresh_CallsNextBehavior() {
-         Behavior.Refresh(Context, false);
+         InvokeRefresh();
          Assert.AreEqual(1, Next.RefreshInvocations);
+      }
+
+      private void InvokeRefresh() {
+         Behavior.Refresh(Context, new RefreshOptions());
       }
 
       private class LoggingCollectionStub : VMCollectionStub<ItemVM> {

@@ -49,14 +49,18 @@
          collection.Add(item);
 
          Assert.AreEqual(0, item.RefreshInvocations);
-         Behavior.Refresh(Context, false);
+         InvokeRefresh();
          Assert.AreEqual(1, item.RefreshInvocations);
       }
 
       [TestMethod]
       public void Refresh_CallsNextBehavior() {
-         Behavior.Refresh(Context, false);
+         InvokeRefresh();
          Assert.AreEqual(1, Next.RefreshInvocations);
+      }
+
+      private void InvokeRefresh() {
+         Behavior.Refresh(Context, new RefreshOptions());
       }
    }
 }

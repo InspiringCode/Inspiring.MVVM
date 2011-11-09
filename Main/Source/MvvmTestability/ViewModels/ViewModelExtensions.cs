@@ -137,6 +137,23 @@
          viewModel.Kernel.Refresh(property, executeRefreshDependencies);
       }
 
+      public static void RefreshContainer<TDescriptor>(
+         this IViewModel<TDescriptor> viewModel,
+         Func<TDescriptor, IVMPropertyDescriptor> propertySelector,
+         bool executeRefreshDependencies = false
+      ) where TDescriptor : IVMDescriptor {
+         if (viewModel == null) {
+            throw new ArgumentNullException("viewModel");
+         }
+
+         if (propertySelector == null) {
+            throw new ArgumentNullException("propertySelector");
+         }
+
+         var property = propertySelector((TDescriptor)viewModel.Descriptor);
+         viewModel.Kernel.RefreshContainer(property, executeRefreshDependencies);
+      }
+
       // TODO
       //public static void Refresh<TDescriptor>(
       //   this IViewModel<TDescriptor> viewModel,

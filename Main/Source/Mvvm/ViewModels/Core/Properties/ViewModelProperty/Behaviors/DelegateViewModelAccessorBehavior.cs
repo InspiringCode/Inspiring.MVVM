@@ -13,7 +13,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          base.Initialize(context);
       }
 
-      public void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
+      public void Refresh(IBehaviorContext context, RefreshOptions options) {
          RequireInitialized();
 
          var previousValue = GetValue(context);
@@ -25,13 +25,13 @@ namespace Inspiring.Mvvm.ViewModels.Core {
                _property,
                previousValue,
                newValue,
-               RefreshReason.Create(executeRefreshDependencies)
+               RefreshReason.Create(options.ExecuteRefreshDependencies)
             );
 
             context.NotifyChange(args);
          }
 
-         this.RefreshNext(context, executeRefreshDependencies);
+         this.RefreshNext(context, options);
       }
 
       protected override TValue ProvideValue(IBehaviorContext context) {

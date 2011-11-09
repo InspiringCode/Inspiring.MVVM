@@ -1,4 +1,5 @@
-﻿namespace Inspiring.Mvvm.ViewModels.Core {
+﻿using System;
+namespace Inspiring.Mvvm.ViewModels.Core {
 
    internal sealed class WrapperViewModelAccessorBehavior<TValue, TSource> :
       CachedAccessorBehavior<TValue>,
@@ -16,7 +17,7 @@
          base.SetValue(context, value);
       }
 
-      public void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
+      public void Refresh(IBehaviorContext context, RefreshOptions options) {
          RequireInitialized();
 
          TSource source = this.GetValueNext<TSource>(context);
@@ -28,8 +29,13 @@
 
          if (source != null) {
             if (childVM != null) {
-               childVM.Source = source;
-               childVM.Kernel.RefreshWithoutValidation(executeRefreshDependencies);
+               bool sourceObjectHasChanged = !Object.ReferenceEquals(childVM.Source, source);
+               bool alwaysRefreshChild = options.Scope.HasFlag(RefreshScope.Content);
+               
+               if (sourceObjectHasChanged || alwaysRefreshChild) {
+                  childVM.Source = source;
+                  childVM.Kernel.RefreshWithoutValidation(options.ExecuteRefreshDependencies);
+               }
             } else {
                childVM = CreateViewModel(context);
                childVM.Source = source;
@@ -39,7 +45,7 @@
             UpdateCache(context, default(TValue));
          }
 
-         this.RefreshNext(context, executeRefreshDependencies);
+         this.RefreshNext(context, options);
       }
 
       protected override TValue ProvideValue(IBehaviorContext context) {

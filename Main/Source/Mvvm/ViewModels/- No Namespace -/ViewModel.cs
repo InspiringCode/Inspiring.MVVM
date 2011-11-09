@@ -231,6 +231,13 @@
          Kernel.Refresh(property, executeRefreshDependencies);
       }
 
+      protected void RefreshContainer(
+         IVMPropertyDescriptor property,
+         bool executeRefreshDependencies = false
+      ) {
+         Kernel.RefreshContainer(property, executeRefreshDependencies);
+      }
+
       public void RefreshDescendants(
          Action<IPathDefinitionBuilder<TDescriptor>> refreshTargetSelector,
          bool executeRefreshDependencies = false
