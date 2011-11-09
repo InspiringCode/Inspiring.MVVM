@@ -31,7 +31,7 @@
       [TestMethod]
       public void Refresh_OnUnloadedDescendant_OnlyCallsNextBehavior() {
          SetupUnloaded();
-         Behavior.Refresh(Context, false);
+         InvokeRefresh();
          Assert.AreEqual(RefreshNext, ActionLog);
       }
 
@@ -63,7 +63,7 @@
       [TestMethod]
       public void Refresh_OnUnloadedValidatedDescendant_OnlyCallsNextBehavior() {
          SetupUnloadedAndValidated();
-         Behavior.Refresh(Context, false);
+         InvokeRefresh();
          Assert.AreEqual(RefreshNext, ActionLog);
       }
 
@@ -99,7 +99,7 @@
          foreach (var lastScope in relevantScopes) {
             SetupLoadedAndValidated(lastScope);
 
-            Behavior.Refresh(Context, false);
+            InvokeRefresh();
             Assert.AreEqual(RefreshNext + RevalidateCore, ActionLog);
             Assert.AreEqual(lastScope, Behavior.LastValidationScope);
          }
@@ -127,6 +127,10 @@
 
       internal override IBehaviorContext GetContext() {
          return Context;
+      }
+
+      private void InvokeRefresh() {
+         Behavior.Refresh(Context, new RefreshOptions());
       }
 
       private class TestDescendantsValidationBehavior : DescendantsValidatorBehavior {

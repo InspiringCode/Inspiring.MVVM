@@ -284,6 +284,7 @@
     <Compile Include="ViewModels\Core\Common\Paths\PathStep.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\Definition\PathTerminationStep.cs" />
     <Compile Include="ViewModels\Core\ViewModel\Descriptor\IVMDescriptor.cs" />
+    <Compile Include="ViewModels\Core\ViewModel\RefreshOptions.cs" />
     <Compile Include="ViewModels\Core\ViewModel\TypeDescriptor\BehaviorInterfaces\IPropertyDescriptorProviderBehavior.cs" />
     <Compile Include="ViewModels\Core\ViewModel\TypeDescriptor\ClassDescriptorAttribute.cs" />
     <Compile Include="ViewModels\Core\ViewModel\TypeDescriptor\BrowsableViewModelList.cs" />

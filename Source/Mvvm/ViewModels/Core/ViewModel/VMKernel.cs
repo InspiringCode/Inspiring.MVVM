@@ -155,11 +155,20 @@
       }
 
       public void Refresh(
-         IVMPropertyDescriptor property, 
+         IVMPropertyDescriptor property,
          bool executeRefreshDependencies = false
       ) {
          RefreshTrace.BeginManualRefresh();
-         RefreshInternal(property, executeRefreshDependencies);
+         RefreshInternal(property, new RefreshOptions(executeRefreshDependencies));
+         RefreshTrace.EndLastRefresh();
+      }
+
+      public void RefreshContainer(
+         IVMPropertyDescriptor property,
+         bool executeRefreshDependencies = false
+      ) {
+         RefreshTrace.BeginManualRefresh();
+         RefreshInternal(property, new RefreshOptions(RefreshScope.Container, executeRefreshDependencies));
          RefreshTrace.EndLastRefresh();
       }
 
@@ -195,16 +204,18 @@
          _descriptor.Behaviors.ViewModelRefreshNext(this, executeRefreshDependencies);
       }
 
-      internal void RefreshInternal(IVMPropertyDescriptor property, bool executeRefreshDependencies = false) {
-         _descriptor.Behaviors.ViewModelRefreshNext(this, property, executeRefreshDependencies);
+      internal void RefreshInternal(IVMPropertyDescriptor property, RefreshOptions options) {
+         _descriptor.Behaviors.ViewModelRefreshNext(this, property, options);
 
+         // Refresh does not revalidate the property value itself. Descendants are
+         // automatically validated by the appropriate behaviors.
          Revalidator.RevalidatePropertyValidations(
             _vm,
             property,
-            ValidationScope.SelfAndLoadedDescendants
+            ValidationScope.Self
          );
       }
-      
+
       private void NotifyChangeCore(ChangeArgs args) {
          CallPropertyChangedHandlerBehaviors(args);
          CallChangeHandlerBehaviors(args);

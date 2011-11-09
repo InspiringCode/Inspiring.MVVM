@@ -146,6 +146,35 @@
          Assert.AreEqual(0, VM.WrapperPropertySourceSetterCount);
       }
 
+      [TestMethod]
+      public void RefreshContainer_OfWrapperPropertyIfSourceHasNotChanged_DoesNotRefreshOrRevalidateChild() {
+         VM.Revalidate(ValidationScope.SelfAndAllDescendants);
+
+         var child = new ChildVM(new ChildSource());
+         VM.SetValue(x => x.WrapperProperty, child);
+
+         VM.ValidatorResults.Reset();
+
+         VM.RefreshContainer(x => x.WrapperProperty);
+
+         Assert.IsFalse(child.WasRefreshed);
+         VM.ValidatorResults.VerifyInvocationSequence();
+      }
+
+      [TestMethod]
+      public void RefreshContainer_OfWrapperPropertyIfSourceHasChanged_RefreshesChild() {
+         VM.WrapperPropertySource = new ChildSource();
+         var childVM = VM.GetValue(x => x.WrapperProperty);
+
+         var newSource = new ChildSource();
+         VM.WrapperPropertySource = newSource;
+
+         VM.RefreshContainer(x => x.WrapperProperty);
+
+         Assert.AreEqual(newSource, childVM.Source);
+         Assert.IsTrue(childVM.WasRefreshed);
+      }
+
       private sealed class RootVM : TestViewModel<RootVMDescriptor> {
          private ChildSource _wrapperPropertySource;
 
@@ -166,13 +195,20 @@
                b.Check(x => x.InstanceProperty).Custom(PerformValidation);
                b.Check(x => x.WrapperProperty).Custom(PerformValidation);
                b.Check(x => x.DelegateProperty).Custom(PerformValidation);
+
+               b.ValidateDescendant(x => x.WrapperProperty).Check(x => x.ChildProperty).Custom(args =>
+                  args.Owner.ValidatorResults.PerformValidation(args)
+               );
             })
             .Build();
 
          public RootVM()
             : base(ClassDescriptor) {
             ValidationErrors = new Dictionary<IVMPropertyDescriptor, string>();
+            ValidatorResults = new ValidatorMockConfigurationFluent();
          }
+
+         public ValidatorMockConfigurationFluent ValidatorResults { get; private set; }
 
          public ChildSource WrapperPropertySource {
             get { return _wrapperPropertySource; }

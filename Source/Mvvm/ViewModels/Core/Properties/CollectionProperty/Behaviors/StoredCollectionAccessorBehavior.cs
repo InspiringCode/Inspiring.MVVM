@@ -12,14 +12,14 @@
          );
       }
 
-      public void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
+      public void Refresh(IBehaviorContext context, RefreshOptions options) {
          var collection = GetValue(context);
 
          foreach (TItemVM item in collection) {
-            item.Kernel.RefreshWithoutValidation();
+            item.Kernel.RefreshWithoutValidation(options.ExecuteRefreshDependencies);
          }
 
-         this.RefreshNext(context, executeRefreshDependencies);
+         this.RefreshNext(context, options);
       }
 
       protected override IVMCollection<TItemVM> ProvideValue(IBehaviorContext context) {

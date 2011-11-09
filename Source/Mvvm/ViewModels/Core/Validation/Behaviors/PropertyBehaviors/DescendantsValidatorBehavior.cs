@@ -59,14 +59,16 @@
          }
       }
 
-      public virtual void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
-         this.RefreshNext(context, executeRefreshDependencies);
+      public virtual void Refresh(IBehaviorContext context, RefreshOptions options) {
+         this.RefreshNext(context, options);
 
-         State s = GetState(context);
-         switch (s.Type) {
-            case StateType.Validated:
-               TransitionToValidated(context, s.Scope);
-               break;
+         if (options.Scope.HasFlag(RefreshScope.Content)) {
+            State s = GetState(context);
+            switch (s.Type) {
+               case StateType.Validated:
+                  TransitionToValidated(context, s.Scope);
+                  break;
+            }
          }
       }
 

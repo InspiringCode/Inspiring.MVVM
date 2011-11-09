@@ -16,7 +16,7 @@
          ForeachDescendant(rootVM, (vm, props) => {
             if (props.Any()) {
                foreach (var prop in props) {
-                  vm.Kernel.RefreshInternal(prop, executeRefreshDependencies);
+                  vm.Kernel.RefreshInternal(prop, new RefreshOptions(executeRefreshDependencies));
                }
             } else {
                vm.Kernel.RefreshInternal(executeRefreshDependencies);

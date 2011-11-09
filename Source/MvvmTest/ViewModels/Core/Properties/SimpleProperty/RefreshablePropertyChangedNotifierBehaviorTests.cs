@@ -24,7 +24,7 @@
 
       [TestMethod]
       public void Refresh_CallsNotifyChange() {
-         Behavior.Refresh(Context, false);
+         Behavior.Refresh(Context, new RefreshOptions());
          var expectedChangeArgs = ChangeArgs.PropertyChanged(Property, null);
          DomainAssert.AreEqual(new[] { expectedChangeArgs }, Context.NotifyChangeInvocations);
       }

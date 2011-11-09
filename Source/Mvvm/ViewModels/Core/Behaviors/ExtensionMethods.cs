@@ -279,11 +279,11 @@
       public static void RefreshNext(
          this Behavior behavior,
          IBehaviorContext context,
-         bool executeRefreshDependencies
+         RefreshOptions options
       ) {
          IRefreshBehavior next;
          if (behavior.TryGetBehavior(out next)) {
-            next.Refresh(context, executeRefreshDependencies);
+            next.Refresh(context, options);
          }
       }
 
@@ -326,11 +326,11 @@
          this Behavior behavior,
          IBehaviorContext context,
          IVMPropertyDescriptor property,
-         bool executeRefreshDependencies
+         RefreshOptions options
       ) {
          IRefreshControllerBehavior next;
          if (behavior.TryGetBehavior(out next)) {
-            next.Refresh(context, property, executeRefreshDependencies);
+            next.Refresh(context, property, options);
          }
       }
 

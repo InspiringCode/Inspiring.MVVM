@@ -72,7 +72,7 @@
             IsLoadedResult = true;
          }
 
-         public void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
+         public void Refresh(IBehaviorContext context, RefreshOptions options) {
             Log.Append(RefreshNext);
          }
 

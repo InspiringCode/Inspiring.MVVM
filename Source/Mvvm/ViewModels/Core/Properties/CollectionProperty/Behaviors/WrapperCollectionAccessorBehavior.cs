@@ -37,38 +37,68 @@
          );
       }
 
-      public void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
+      public void Refresh(IBehaviorContext context, RefreshOptions options) {
          // Call next behavior first, because a source accessor behavior may handle
          // it.
-         this.RefreshNext(context, executeRefreshDependencies);
-
+         this.RefreshNext(context, options);
          _collectionSourceCache.Clear(context);
-         var collection = GetValue(context);
 
-         Dictionary<TItemSource, TItemVM> previousItemsBySource = collection.ToDictionary(
-            x => x.Source,
-            new ReferenceEqualityComparer<TItemSource>()
-         );
+         // ToArray so that (1) source is only enumerated once and (2) acess by index
+         // (required by the equality check) is guaranteed to be fast.
+         TItemSource[] newSourceItems = GetSourceItems(context).ToArray();
+         IVMCollection<TItemVM> vmCollection = GetValue(context);
 
-         var newSourceItems = GetSourceItems(context);
+         IEnumerable<TItemVM> itemsToRefresh = Enumerable.Empty<TItemVM>();
 
-         var newItems = newSourceItems.Select(s => {
-            TItemVM item;
+         if (AreCollectionContentsEqual(vmCollection, newSourceItems)) {
+            itemsToRefresh = vmCollection;
+         } else {
+            Dictionary<TItemSource, TItemVM> previousItemsBySource = vmCollection.ToDictionary(
+               x => x.Source,
+               new ReferenceEqualityComparer<TItemSource>()
+            );
 
-            bool isReusedItem = previousItemsBySource.TryGetValue(s, out item);
+            List<TItemVM> newItems = new List<TItemVM>();
+            List<TItemVM> reusedItems = new List<TItemVM>();
 
-            if (!isReusedItem) {
-               item = CreateAndInitializeItem(context, s);
+            foreach (TItemSource s in newSourceItems) {
+               TItemVM item;
+               bool isReusedItem = previousItemsBySource.TryGetValue(s, out item);
+
+               if (isReusedItem) {
+                  reusedItems.Add(item);
+               } else {
+                  item = CreateAndInitializeItem(context, s);
+               }
+
+               newItems.Add(item);
             }
 
-            return new { IsReusedItem = isReusedItem, Item = item };
-         }).ToArray();
+            vmCollection.ReplaceItems(newItems, RefreshReason.Create(options.ExecuteRefreshDependencies));
+            itemsToRefresh = reusedItems;
+         }
 
-         collection.ReplaceItems(newItems.Select(x => x.Item), RefreshReason.Create(executeRefreshDependencies));
+         if (options.Scope.HasFlag(RefreshScope.Content)) {
+            itemsToRefresh
+               .ForEach(x => x.Kernel.RefreshWithoutValidation(options.ExecuteRefreshDependencies));
+         }
+      }
 
-         newItems
-            .Where(x => x.IsReusedItem)
-            .ForEach(x => x.Item.Kernel.RefreshWithoutValidation(executeRefreshDependencies));
+      private static bool AreCollectionContentsEqual(
+         IVMCollection<TItemVM> vmCollection,
+         TItemSource[] sourceCollection
+      ) {
+         if (sourceCollection.Length != vmCollection.Count) {
+            return false;
+         }
+
+         for (int i = 0; i < sourceCollection.Length; i++) {
+            if (!Object.ReferenceEquals(sourceCollection[i], vmCollection[i].Source)) {
+               return false;
+            }
+         }
+
+         return true;
       }
 
       protected override IVMCollection<TItemVM> ProvideValue(IBehaviorContext context) {

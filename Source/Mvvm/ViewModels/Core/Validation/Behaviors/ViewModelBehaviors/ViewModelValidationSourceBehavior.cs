@@ -37,9 +37,9 @@
       public void Refresh(
          IBehaviorContext context, 
          IVMPropertyDescriptor property, 
-         bool executeRefreshDependencies
+         RefreshOptions options
       ) {
-         this.ViewModelRefreshNext(context, property, executeRefreshDependencies);
+         this.ViewModelRefreshNext(context, property, options);
       }
 
       public ValidationResult GetValidationResult(IBehaviorContext context) {

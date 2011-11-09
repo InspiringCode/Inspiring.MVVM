@@ -31,9 +31,9 @@
          this.SetValueNext(context, value);
       }
 
-      public void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
+      public void Refresh(IBehaviorContext context, RefreshOptions options) {
          _cache.Clear(context);
-         this.RefreshNext(context, executeRefreshDependencies);
+         this.RefreshNext(context, options);
       }
 
       public bool IsLoaded(IBehaviorContext context) {

@@ -23,7 +23,7 @@
       protected class RefreshDetectorBehavior : Behavior, IRefreshControllerBehavior {
          public bool WasCalled { get; set; }
 
-         public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property, bool executeRefreshDependencies) {
+         public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property, RefreshOptions options) {
             WasCalled = true;
          }
 

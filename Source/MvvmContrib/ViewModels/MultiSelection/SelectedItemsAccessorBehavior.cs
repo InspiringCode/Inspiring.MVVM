@@ -9,11 +9,11 @@
       where TVM : IViewModel
       where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
-      public void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
+      public void Refresh(IBehaviorContext context, RefreshOptions options) {
          var collection = GetValue(context);
-         Repopulate(context, collection, RefreshReason.Create(executeRefreshDependencies));
+         Repopulate(context, collection, RefreshReason.Create(options.ExecuteRefreshDependencies));
 
-         this.RefreshNext(context, executeRefreshDependencies);
+         this.RefreshNext(context, options);
       }
 
       protected override IVMCollection<TItemVM> ProvideValue(IBehaviorContext context) {

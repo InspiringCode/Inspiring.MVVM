@@ -98,7 +98,7 @@
             InitializeValueInvocations++;
          }
 
-         public void Refresh(IBehaviorContext context, bool executeRefreshDependencies) {
+         public void Refresh(IBehaviorContext context, RefreshOptions options) {
             RefreshInvocations++;
          }
       }
@@ -155,7 +155,7 @@
             RefreshInvocations++;
          }
 
-         public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property, bool executeRefreshDependencies) {
+         public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property, RefreshOptions options) {
          }
       }
    }

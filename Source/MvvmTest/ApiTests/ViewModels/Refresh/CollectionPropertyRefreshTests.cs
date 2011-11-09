@@ -4,8 +4,8 @@
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
-   using Microsoft.VisualStudio.TestTools.UnitTesting;
    using Inspiring.Mvvm.ViewModels.Tracing;
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
    public class CollectionPropertyRefreshTests : RefreshFixture {
@@ -14,6 +14,7 @@
       [TestInitialize]
       public void Setup() {
          VM = new RootVM();
+         VM.Revalidate(ValidationScope.SelfAndLoadedDescendants); // Enable validation
       }
 
       [TestMethod]
@@ -210,6 +211,38 @@
                VM.Refresh(propertySelector);
                VM.ValidatorResults.VerifyInvocationSequence();
             });
+      }
+
+      [TestMethod]
+      public void RefreshContainer_OfWrapperCollection_DoesNotRefreshOrRevalidateItems() {
+         VM.Revalidate(ValidationScope.SelfAndAllDescendants);
+
+         var child = new ChildVM(new ChildSource());
+         VM.WrapperProperty.Add(child);
+         VM.ValidatorResults.Reset();
+
+         VM.RefreshContainer(x => x.WrapperProperty);
+
+         Assert.IsFalse(child.WasRefreshed);
+         VM.ValidatorResults.VerifyInvocationSequence();
+      }
+
+      [TestMethod]
+      public void RefreshContainer_OfWrapperCollection_SynchronizesFromSourceItems() {
+         var existing = new ChildVM(new ChildSource());
+         var removed = new ChildVM(new ChildSource());
+         var addedSource = new ChildSource();
+
+         VM.WrapperProperty.Add(removed);
+         VM.WrapperProperty.Add(existing);
+
+         VM.WrapperPropertySource.Remove(removed.Source);
+         VM.WrapperPropertySource.Insert(0, addedSource);
+
+         VM.RefreshContainer(x => x.WrapperProperty);
+
+         Assert.AreSame(addedSource, VM.WrapperProperty[0].Source);
+         Assert.AreSame(existing, VM.WrapperProperty[1]);
       }
 
       private class ChildSourceWithEquals : ChildSource {

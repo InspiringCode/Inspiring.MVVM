@@ -200,9 +200,9 @@
       //   public IEnumerable<TItemSource> SelectableSourceItems { get; set; }
       //}
 
-      public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property, bool executeRefreshDependencies) {
+      public void Refresh(IBehaviorContext context, IVMPropertyDescriptor property, RefreshOptions options) {
          context.FieldValues.ClearField(_items);
-         this.ViewModelRefreshNext(context, property, executeRefreshDependencies);
+         this.ViewModelRefreshNext(context, property, options);
       }
    }
 
