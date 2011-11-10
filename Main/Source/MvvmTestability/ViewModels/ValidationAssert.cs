@@ -38,18 +38,56 @@
          }
       }
 
+      public static void ErrorMessagesWithSubstrings(ValidationResult actualResult, params string[] expectedMessageSubstrings) {
+         string[] actualMessages = actualResult
+            .Errors
+            .Select(x => x.Message)
+            .ToArray();
+         
+         bool allActualWereExpected = actualMessages
+            .All(act => expectedMessageSubstrings.Any(exp => act.Contains(exp)));
+
+         bool allExpectedAreContained = expectedMessageSubstrings
+            .All(m => actualResult.Errors.Any(x => x.Message.Contains(m)));
+
+         if (!(allActualWereExpected && allExpectedAreContained)) {
+            TestFrameworkAdapter.Current.Fail(
+               String.Format(
+                  "Expected only errors with messages containing the substrings [{0}] but got [{1}].",
+                  String.Join(", ", expectedMessageSubstrings),
+                  String.Join(", ", actualMessages)
+               )
+            );
+         }
+      }
+
       public static void ContainsErrorMessages(
          ValidationResult actualResult,
          params string[] expectedMessages
       ) {
-         bool contains = expectedMessages
+         bool allExpectedAreContained = expectedMessages
             .All(m => actualResult.Errors.Any(x => x.Message == m));
 
-         if (!contains) {
+         if (!allExpectedAreContained) {
             TestFrameworkAdapter.Current.Fail(
                String.Format(
                   "Expected result containing messages [{0}] but got {1}.",
                   String.Join(", ", expectedMessages),
+                  actualResult
+               )
+            );
+         }
+      }
+
+      public static void ContainsErrorMessagesWithSubstrings(ValidationResult actualResult, params string[] expectedMessageSubstrings) {
+         bool allExpectedAreContained = expectedMessageSubstrings
+            .All(m => actualResult.Errors.Any(x => x.Message.Contains(m)));
+
+         if (!allExpectedAreContained) {
+            TestFrameworkAdapter.Current.Fail(
+               String.Format(
+                  "Expected errors with messages containing the substrings [{0}] but got {1}.",
+                  String.Join(", ", expectedMessageSubstrings),
                   actualResult
                )
             );
