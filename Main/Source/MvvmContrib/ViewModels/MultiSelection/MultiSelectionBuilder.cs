@@ -50,7 +50,9 @@
          return this;
       }
 
-      public IVMPropertyDescriptor<MultiSelectionVM<TItemSource, TItemVM>> Of<TItemVM>()
+      public IVMPropertyDescriptor<MultiSelectionVM<TItemSource, TItemVM>> Of<TItemVM>(
+         Action<MultiSelectionDescriptorBuilder<TSourceObject, TItemSource, TItemVM>> descriptorConfigurationAction = null
+      )
          where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
          Contract.Assert(_selectedSourceItemsPropertyFactory != null);
 
@@ -58,7 +60,7 @@
             _allSourceItemsPropertyFactory ??
             CreateLocatingPropertyFactory();
 
-         var descriptorBuilder = new SelectableItemMultiSelectionDescriptorBuilder<TSourceObject, TItemSource, TItemVM>(
+         var descriptorBuilder = new MultiSelectionDescriptorBuilder<TSourceObject, TItemSource, TItemVM>(
             _filter
          );
 
@@ -75,6 +77,10 @@
             });
          }
 
+         if (descriptorConfigurationAction != null) {
+            descriptorConfigurationAction(descriptorBuilder);
+         }
+
          var descriptor = descriptorBuilder.Build();
 
          var property = _sourceObjectPropertyBuilder.Custom.ViewModelProperty(
@@ -86,7 +92,8 @@
       }
 
       public IVMPropertyDescriptor<MultiSelectionVM<TItemSource>> WithCaption(
-         Func<TItemSource, string> captionGetter
+         Func<TItemSource, string> captionGetter,
+         Action<MultiSelectionWithCaptionDescriptorBuilder<TSourceObject, TItemSource>> descriptorConfigurationAction = null
       ) {
          Contract.Requires<ArgumentNullException>(captionGetter != null);
          Contract.Assert(_selectedSourceItemsPropertyFactory != null);
@@ -107,7 +114,7 @@
             _allSourceItemsPropertyFactory ??
             CreateLocatingPropertyFactory();
 
-         var descriptorBuilder = new CaptionMultiSelectionDescriptorBuilder<TSourceObject, TItemSource>(
+         var descriptorBuilder = new MultiSelectionWithCaptionDescriptorBuilder<TSourceObject, TItemSource>(
             _filter,
             itemDescriptor
          );
@@ -123,6 +130,10 @@
             descriptorBuilder.WithViewModelBehaviors(b => {
                b.EnableUndo();
             });
+         }
+
+         if (descriptorConfigurationAction != null) {
+            descriptorConfigurationAction(descriptorBuilder);
          }
 
          var descriptor = descriptorBuilder.Build();

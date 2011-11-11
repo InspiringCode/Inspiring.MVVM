@@ -401,6 +401,52 @@
          Assert.AreEqual("AllItems SourceItem ", log);
       }
 
+      [TestMethod] // TODO
+      public void Refresh_RefreshesActiveItemVM() {
+         UserVM vm = CreateUserVMWithItems();
+
+         string oldName = vm
+            .Department
+            .SelectedItem
+            .GetValue(x => x.VM)
+            .GetValue(x => x.Name);
+
+         string newName = "New name";
+         vm.Source.Department.Name = "New name";
+
+         vm.Refresh(x => x.Department);
+
+         string actualName = vm
+            .Department
+            .SelectedItem
+            .GetValue(x => x.VM)
+            .GetValue(x => x.Name);
+
+         //Assert.AreEqual(newName, actualName);
+      }
+
+      [TestMethod]
+      public void DescriptorConfigurationAction_GetsApplied() {
+         bool configurationWasApplied = false;
+
+         var vm = CreateUserVM(
+           allDepartments: new[] { Department1 },
+           descriptorConfigurationAction: sb => {
+              sb.WithDependencies(dp => {
+                 dp
+                    .OnChangeOf
+                    .Self
+                    .OrAnyDescendant
+                    .Execute((v, args) => configurationWasApplied = true);
+              });
+           }
+         );
+
+         vm.Department.SelectedItem = vm.Department.AllItems.First();
+
+         Assert.IsTrue(configurationWasApplied);
+      }
+
       /// <summary>
       ///   Asserts that the source departments of the 'AllItems' property of the
       ///   selection VM are equal to the given source items.
@@ -425,7 +471,8 @@
          Department[] allDepartments = null,
          Func<User, IEnumerable<Department>> allDepartmentsSelector = null,
          Department selectedDepartment = null,
-         User sourceUser = null
+         User sourceUser = null,
+         Action<SingleSelectionDescriptorBuilder<UserVM, Department, DepartmentVM>> descriptorConfigurationAction = null
       ) {
          if (allDepartments != null && allDepartmentsSelector != null) {
             throw new ArgumentException();
@@ -456,7 +503,7 @@
 
                d.Name = u.Property.MapsTo(x => x.Name);
                //d.Department = builder.Of<DepartmentVM>(DepartmentVM.ClassDescriptor);
-               d.Department = builder.Of<DepartmentVM>();
+               d.Department = builder.Of<DepartmentVM>(descriptorConfigurationAction);
             })
             .WithValidators(b => {
                b.OnlyExistingItemsAreSelected(x => x.Department);

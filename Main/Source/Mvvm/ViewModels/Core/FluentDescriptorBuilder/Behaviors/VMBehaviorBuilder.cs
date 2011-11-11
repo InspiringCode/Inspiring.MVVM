@@ -96,14 +96,21 @@
          }
 
          ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue>.RequiresLoadedProperty(
-            Func<TDescriptor, IVMPropertyDescriptor> requiredPropertySelector
+            Func<TDescriptor, IVMPropertyDescriptor> requiredPropertySelector,
+            bool requireLoaded
          ) {
             IVMPropertyDescriptor requiredProperty = requiredPropertySelector(_descriptor);
 
             _propertyConfiguration
                .ConfigureBehavior<PropertyPreloaderBehavior<TValue>>(
                   PropertyBehaviorKeys.PropertyPreloader,
-                  x => x.PreloadedProperties.Add(requiredProperty)
+                  x => {
+                     if (requireLoaded) {
+                        x.PreloadedProperties.Add(requiredProperty);
+                     } else {
+                        x.PreloadedProperties.Remove(requiredProperty);
+                     }
+                  }
                );
 
             return this;

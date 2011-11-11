@@ -8,17 +8,30 @@
       private const string SourcePropertyDelegateLog = "SourcePropertyDelegate ";
       private const string CollectionPropertyDelegateLog = "CollectionPropertyDelegateLog ";
 
-      private TestVM VM { get; set; }
-
-      [TestInitialize]
-      public void Setup() {
-         VM = new TestVM();
-      }
 
       [TestMethod]
       public void GetValueOfSourceProperty_LoadsRequiredPropertyBeforeSourceProperty() {
-         VM.Load(x => x.SourceProperty);
-         Assert.IsTrue(VM.IsLoaded(x => x.CollectionRequiredBySourceProperty));
+         var vm = new TestVM(TestVM.ClassDescriptor);
+         vm.Load(x => x.SourceProperty);
+         Assert.IsTrue(vm.IsLoaded(x => x.CollectionRequiredBySourceProperty));
+      }
+
+      [TestMethod]
+      public void RequiresLoadedPropertyFalse_DisablesLoadOrderDependency() {
+         TestVMDescriptor descriptorWithoutDependency = VMDescriptorBuilder
+            .Inherits(TestVM.ClassDescriptor)
+            .OfType<TestVMDescriptor>()
+            .For<TestVM>()
+            .WithProperties((d, b) => { })
+            .WithBehaviors(b => {
+               b.Property(x => x.SourceProperty).RequiresLoadedProperty(x => x.CollectionRequiredBySourceProperty, false);
+            })
+            .Build();
+
+         var vm = new TestVM(descriptorWithoutDependency);
+
+         vm.Load(x => x.SourceProperty);
+         Assert.IsFalse(vm.IsLoaded(x => x.CollectionRequiredBySourceProperty));
       }
 
       private class TestVM : TestViewModel<TestVMDescriptor> {
@@ -47,8 +60,8 @@
             })
             .Build();
 
-         public TestVM()
-            : base(ClassDescriptor) {
+         public TestVM(TestVMDescriptor descriptor )
+            : base(descriptor) {
             Log = new StringBuilder();
          }
 

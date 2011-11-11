@@ -51,8 +51,12 @@
          Action<TVM, ChangeArgs> changeHandler
       );
 
+      // TODO: Make this an extension method
+
+      /// <param name="requireLoaded">Pass false to remove the depedency.</param>
       ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> RequiresLoadedProperty(
-         Func<TDescriptor, IVMPropertyDescriptor> requiredPropertySelector
+         Func<TDescriptor, IVMPropertyDescriptor> requiredPropertySelector,
+         bool requireLoaded = true
       );
    }
 }
