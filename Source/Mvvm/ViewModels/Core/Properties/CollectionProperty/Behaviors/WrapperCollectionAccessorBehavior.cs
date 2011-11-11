@@ -4,18 +4,31 @@
    using System.Linq;
    using Inspiring.Mvvm.Common;
 
-   internal sealed class WrapperCollectionAccessorBehavior<TItemVM, TItemSource> :
+   // This class is public to allow the very advanced user to override the equality comparer
+   // used to determine reusability of item VMs.
+
+   public sealed class WrapperCollectionAccessorBehavior<TItemVM, TItemSource> :
       CachedAccessorBehavior<IVMCollection<TItemVM>>,
       IValueAccessorBehavior<IEnumerable<TItemSource>>,
       IRefreshBehavior
       where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
       private static readonly FieldDefinitionGroup CollectionSourceCacheGroup = new FieldDefinitionGroup();
+
       private readonly bool _shouldCacheSourceCollection;
+      private readonly IEqualityComparer<TItemSource> _reusabilitySourceComparer;
+
       private DynamicFieldAccessor<IEnumerable<TItemSource>> _collectionSourceCache;
 
-      public WrapperCollectionAccessorBehavior(bool shouldCacheSourceCollection) {
+      public WrapperCollectionAccessorBehavior(
+         bool shouldCacheSourceCollection,
+         IEqualityComparer<TItemSource> reusabilitySourceComparer = null
+      ) {
          _shouldCacheSourceCollection = shouldCacheSourceCollection;
+
+         _reusabilitySourceComparer =
+            reusabilitySourceComparer ??
+            new ReferenceEqualityComparer<TItemSource>();
       }
 
       IEnumerable<TItemSource> IValueAccessorBehavior<IEnumerable<TItemSource>>.GetValue(IBehaviorContext context) {
@@ -55,7 +68,7 @@
          } else {
             Dictionary<TItemSource, TItemVM> previousItemsBySource = vmCollection.ToDictionary(
                x => x.Source,
-               new ReferenceEqualityComparer<TItemSource>()
+               _reusabilitySourceComparer
             );
 
             List<TItemVM> newItems = new List<TItemVM>();
@@ -84,7 +97,7 @@
          }
       }
 
-      private static bool AreCollectionContentsEqual(
+      private bool AreCollectionContentsEqual(
          IVMCollection<TItemVM> vmCollection,
          TItemSource[] sourceCollection
       ) {
@@ -93,7 +106,7 @@
          }
 
          for (int i = 0; i < sourceCollection.Length; i++) {
-            if (!Object.ReferenceEquals(sourceCollection[i], vmCollection[i].Source)) {
+            if (!_reusabilitySourceComparer.Equals(sourceCollection[i], vmCollection[i].Source)) {
                return false;
             }
          }

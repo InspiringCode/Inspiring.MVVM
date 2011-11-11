@@ -1,6 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
 
-   public interface IHasReadonlySourceObject<out TSourceObject> {
+   public interface IHasReadonlySourceObject<out TSourceObject> : IViewModel {
       TSourceObject Source { get; }
    }
 

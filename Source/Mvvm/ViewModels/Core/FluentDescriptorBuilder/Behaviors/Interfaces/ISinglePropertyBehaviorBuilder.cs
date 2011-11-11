@@ -8,7 +8,7 @@
    /// <typeparam name="TValue">
    ///   The type of the property (such as String or EmployeeVM).
    /// </typeparam>
-   public interface ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> {
+   public interface ISinglePropertyBehaviorBuilder<TVM, TDescriptor, out TValue> {
       bool ContainsBehavior(BehaviorKey key);
 
       /// <summary>
