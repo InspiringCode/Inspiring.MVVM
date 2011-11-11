@@ -51,12 +51,7 @@
       }
 
       public IVMPropertyDescriptor<SingleSelectionVM<TItemSource, TItemVM>> Of<TItemVM>(
-         //Action<
-         //   IVMDescriptorBuilderWithProperties<
-         //      SingleSelectionVMDescriptor<TItemSource, SelectableItemVM<TItemSource, TItemVM>>,
-         //      SingleSelectionWithSourceVM<TSourceObject, TItemSource, TItemVM>
-         //   >
-         //> descriptorConfigurator = null
+         Action<SingleSelectionDescriptorBuilder<TSourceObject, TItemSource, TItemVM>> descriptorConfigurationAction = null
       )
          where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
@@ -66,7 +61,7 @@
             _allSourceItemsPropertyFactory ??
             CreateLocatingPropertyFactory();
 
-         var descriptorBuilder = new SelectableItemSingleSelectionDescriptorBuilder<TSourceObject, TItemSource, TItemVM>(_filter);
+         var descriptorBuilder = new SingleSelectionDescriptorBuilder<TSourceObject, TItemSource, TItemVM>(_filter);
 
          descriptorBuilder.WithProperties((d, b) => {
             var s = b.GetPropertyBuilder(x => x.SourceObject);
@@ -81,8 +76,11 @@
             });
          }
 
-         var descriptor = descriptorBuilder.Build();
+         if (descriptorConfigurationAction != null) {
+            descriptorConfigurationAction(descriptorBuilder);
+         }
 
+         var descriptor = descriptorBuilder.Build();
 
          var property = _sourceObjectPropertyBuilder.Custom.ViewModelProperty(
             valueAccessor: new SingleSelectionFactory<TItemVM>(descriptor),
@@ -93,13 +91,8 @@
       }
 
       public IVMPropertyDescriptor<SingleSelectionVM<TItemSource>> WithCaption(
-         Func<TItemSource, string> captionGetter
-         //Action<
-         //   IVMDescriptorBuilderWithProperties<
-         //      SingleSelectionVMDescriptor<TItemSource>,
-         //      SingleSelectionWithSourceVM<TSourceObject, TItemSource>
-         //   >
-         //> descriptorConfigurator = null
+         Func<TItemSource, string> captionGetter,
+         Action<SingleSelectionWithCaptionDescriptorBuilder<TSourceObject, TItemSource>> descriptorConfigurationAction = null
       ) {
          Contract.Requires<ArgumentNullException>(captionGetter != null);
          Contract.Assert(_selectedSourceItemPropertyFactory != null);
@@ -123,7 +116,7 @@
             _allSourceItemsPropertyFactory ??
             CreateLocatingPropertyFactory();
 
-         var descriptorBuilder = new CaptionSingleSelectionDescriptorBuilder<TSourceObject, TItemSource>(
+         var descriptorBuilder = new SingleSelectionWithCaptionDescriptorBuilder<TSourceObject, TItemSource>(
             _filter,
             itemDescriptor
          );
@@ -140,6 +133,10 @@
             descriptorBuilder.WithViewModelBehaviors(b => {
                b.EnableUndo();
             });
+         }
+
+         if (descriptorConfigurationAction != null) {
+            descriptorConfigurationAction(descriptorBuilder);
          }
 
          var descriptor = descriptorBuilder.Build();

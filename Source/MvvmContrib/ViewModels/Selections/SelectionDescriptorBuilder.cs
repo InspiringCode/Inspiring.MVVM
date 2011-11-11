@@ -2,7 +2,7 @@
    using System;
    using Inspiring.Mvvm.ViewModels.Core;
 
-   internal abstract class SelectionDescriptorBuilder<TDescriptor, TVM>
+   public abstract class SelectionDescriptorBuilder<TDescriptor, TVM>
       where TDescriptor : VMDescriptor, new()
       where TVM : IViewModel {
 
