@@ -56,11 +56,23 @@ namespace Inspiring.Mvvm.ViewModels.Core {
       // ValidationResultChanged event should be raised.
       private void DetectValidationResultChange(IBehaviorContext context, Action action) {
          IViewModel oldChild = this.GetValueNext<TValue>(context);
-         ValidationResult oldResult = GetValidationResultOrValidIfNull(oldChild);
 
          action();
 
          IViewModel newChild = this.GetValueNext<TValue>(context);
+
+         // It is important to query the 'oldResult' after executing the 'action'. The
+         // following scenario could happen otherwise:
+         //   1. 'oldResult' is assigned before the action and is valid.
+         //   2. The action is executed and makes 'oldChild' invalid and 'newChild'
+         //      stays valid. Since 'oldChild' is still in the hierarchy at this
+         //      time, the error is propagated to the validation caches of the
+         //      parent.
+         //   3. 'newResult' is assigned to result of the 'newChild' (valid).
+         //   4. We would not detect a change in the 'if' below and therefore not
+         //      raise a change which would leave the validation cache of the parents
+         //      with the stale error.
+         ValidationResult oldResult = GetValidationResultOrValidIfNull(oldChild);
          ValidationResult newResult = GetValidationResultOrValidIfNull(newChild);
 
          if (!Object.Equals(oldResult, newResult)) {
