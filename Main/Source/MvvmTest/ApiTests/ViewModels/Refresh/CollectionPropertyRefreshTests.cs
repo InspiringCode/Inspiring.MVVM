@@ -214,17 +214,15 @@
       }
 
       [TestMethod]
-      public void RefreshContainer_OfWrapperCollection_DoesNotRefreshOrRevalidateItems() {
+      public void RefreshContainer_OfWrapperCollection_DoesNotRefreshItems() {
          VM.Revalidate(ValidationScope.SelfAndAllDescendants);
 
          var child = new ChildVM(new ChildSource());
          VM.WrapperProperty.Add(child);
-         VM.ValidatorResults.Reset();
 
          VM.RefreshContainer(x => x.WrapperProperty);
 
          Assert.IsFalse(child.WasRefreshed);
-         VM.ValidatorResults.VerifyInvocationSequence();
       }
 
       [TestMethod]
@@ -243,6 +241,24 @@
 
          Assert.AreSame(addedSource, VM.WrapperProperty[0].Source);
          Assert.AreSame(existing, VM.WrapperProperty[1]);
+      }
+
+      [TestMethod]
+      public void RefreshContainer_OfWrapperCollection_RevalidatesItems() {
+         VM.Revalidate(ValidationScope.SelfAndAllDescendants);
+
+         var child = new ChildVM(new ChildSource());
+         VM.WrapperProperty.Add(child);
+         VM.ValidatorResults.Reset();
+
+         VM.ValidatorResults
+            .ExpectInvocationOf.CollectionPropertyValidation
+            .Targeting(VM.WrapperProperty, x => x.ChildProperty)
+            .On(VM);
+
+         VM.RefreshContainer(x => x.WrapperProperty);
+
+         VM.ValidatorResults.VerifyInvocationSequence();
       }
 
       private class ChildSourceWithEquals : ChildSource {

@@ -147,32 +147,39 @@
       }
 
       [TestMethod]
-      public void RefreshContainer_OfWrapperPropertyIfSourceHasNotChanged_DoesNotRefreshOrRevalidateChild() {
+      public void RefreshContainer_OfWrapperPropertyIfSourceHasNotChanged_DoesNotRefreshChild() {
          VM.Revalidate(ValidationScope.SelfAndAllDescendants);
 
          var child = new ChildVM(new ChildSource());
          VM.SetValue(x => x.WrapperProperty, child);
 
-         VM.ValidatorResults.Reset();
-
          VM.RefreshContainer(x => x.WrapperProperty);
-
          Assert.IsFalse(child.WasRefreshed);
-         VM.ValidatorResults.VerifyInvocationSequence();
       }
 
       [TestMethod]
       public void RefreshContainer_OfWrapperPropertyIfSourceHasChanged_RefreshesChild() {
+         VM.Revalidate(ValidationScope.SelfAndLoadedDescendants);
+
          VM.WrapperPropertySource = new ChildSource();
          var childVM = VM.GetValue(x => x.WrapperProperty);
 
          var newSource = new ChildSource();
          VM.WrapperPropertySource = newSource;
 
+         VM.ValidatorResults.Reset();
+         
          VM.RefreshContainer(x => x.WrapperProperty);
 
          Assert.AreEqual(newSource, childVM.Source);
          Assert.IsTrue(childVM.WasRefreshed);
+         
+         VM.ValidatorResults.ExpectInvocationOf
+            .PropertyValidation
+            .Targeting(VM.GetValue(x => x.WrapperProperty), x => x.ChildProperty)
+            .On(VM);
+
+         VM.ValidatorResults.VerifyInvocationSequence();
       }
 
       private sealed class RootVM : TestViewModel<RootVMDescriptor> {
