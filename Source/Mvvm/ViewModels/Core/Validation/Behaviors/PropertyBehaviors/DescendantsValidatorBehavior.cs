@@ -62,13 +62,14 @@
       public virtual void Refresh(IBehaviorContext context, RefreshOptions options) {
          this.RefreshNext(context, options);
 
-         if (options.Scope.HasFlag(RefreshScope.Content)) {
-            State s = GetState(context);
-            switch (s.Type) {
-               case StateType.Validated:
-                  TransitionToValidated(context, s.Scope);
-                  break;
-            }
+         // We even revalidate if 'RefreshContainer' was called. 'RefreshContainer' is used
+         // if items are added/removed in the source (e.g. domain model). But these new items
+         // may be initially invalid, so we have to revalidate.
+         State s = GetState(context);
+         switch (s.Type) {
+            case StateType.Validated:
+               TransitionToValidated(context, s.Scope);
+               break;
          }
       }
 
