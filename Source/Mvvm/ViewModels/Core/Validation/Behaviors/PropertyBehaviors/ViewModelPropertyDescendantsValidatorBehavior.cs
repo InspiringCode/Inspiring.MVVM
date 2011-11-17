@@ -16,15 +16,23 @@ namespace Inspiring.Mvvm.ViewModels.Core {
             delegate {
                TValue previousChild = this.GetValueNext<TValue>(context);
 
+               // The former parent of 'previousChild' (= still the current value of the 
+               // property) was already removed by the 'ViewModelInitializerBehavior'.
                if (previousChild != null) {
                   Revalidator.Revalidate(previousChild, ValidationScope.SelfAndLoadedDescendants);
                }
 
+               this.SetValueNext(context, value);
+               
+               // We MUST revalidate the value after updated the property value defined by
+               // ancestors would not match before (because the 'PathDefinition' calls
+               // 'GetValue' when matching paths). The drawback is that the new view model
+               // is not revalidated yet when 'PropertyChanged' is raised. If this becomes
+               // a problem, it would be possible to cache the new child VM temporarily and
+               // return it in 'GetValue' if one is cached.
                if (value != null) {
                   Revalidator.Revalidate(value, ValidationScope.SelfAndLoadedDescendants);
                }
-
-               this.SetValueNext(context, value);
             }
          );
       }

@@ -12,9 +12,15 @@
       public void SetValue(IBehaviorContext context, TValue value) {
          TValue previousValue = this.GetValueNext<TValue>(context);
 
-         HandleAddedToHierarchy(context, value);
-         this.SetValueNext(context, value);
+         // We have to remove the current parent from the previous child VM before
+         // the next behavior is called so that validators defined by this parent 
+         // are not executed when the previous child is revalidated.
          HandleRemovedFromHierarchy(context, previousValue);
+
+         // Add the parent to the new child so that parent validators are executed.
+         HandleAddedToHierarchy(context, value);
+         
+         this.SetValueNext(context, value);
       }
 
       public void InitializeValue(IBehaviorContext context) {
