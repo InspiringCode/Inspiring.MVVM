@@ -23,6 +23,24 @@
          ValidationAssert.ErrorMessages(newChild.ValidationResult, newChild.ChildPropertyErrorMessage);
       }
 
+      [TestMethod]
+      public void SetValue_RemovesValidationErrorsOfAncestorValidatorsFromOldChild() {
+         string parentErrorMessage = "Parent error";
+         
+         var vm = new ParentVM();
+         var oldChild = new ChildVM();
+         var newChild = new ChildVM();
+                  
+         vm.ChildPropertyErrorMessage = parentErrorMessage;
+
+         vm.SetValue(x => x.Child, oldChild);
+         ValidationAssert.ErrorMessages(oldChild.ValidationResult, parentErrorMessage);
+
+         vm.SetValue(x => x.Child, newChild);
+
+         ValidationAssert.IsValid(oldChild);
+      }
+
       [TestMethod] // regression test
       public void SetValue_WhenOldAndNewChildGetInvalid_ParentResultContainsOnlyErrorOfNewChild() {
          var parent = new ParentVM();
@@ -111,12 +129,21 @@
             })
             .WithValidators(b => {
                b.PropagateChildErrors(ChildInvalidMessage);
+               b.ValidateDescendant(x => x.Child)
+                  .Check(x => x.ChildProperty).Custom(args => {
+                     var message = args.Owner.ChildPropertyErrorMessage;
+                     if (message != null) {
+                        args.AddError(message);
+                     }
+                  });
             })
             .Build();
 
          public ParentVM()
             : base(ClassDescriptor) {
          }
+
+         public string ChildPropertyErrorMessage { get; set; }
       }
 
       private sealed class ParentVMDescriptor : VMDescriptor {
