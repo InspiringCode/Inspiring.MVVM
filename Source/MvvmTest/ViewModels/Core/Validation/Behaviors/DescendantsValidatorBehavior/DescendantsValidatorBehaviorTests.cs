@@ -90,7 +90,7 @@
       }
 
       [TestMethod]
-      public void Refresh_OnLoadedAndValidatedDescendant_RevalidatesOnceWithLastScope() {
+      public void Refresh_OnLoadedAndValidatedDescendant_AlwaysRevalidatesWithScopeLoadedDescendants() {
          var relevantScopes = new[] {
             ValidationScope.SelfAndLoadedDescendants, 
             ValidationScope.SelfAndAllDescendants 
@@ -101,7 +101,7 @@
 
             InvokeRefresh();
             Assert.AreEqual(RefreshNext + RevalidateCore, ActionLog);
-            Assert.AreEqual(lastScope, Behavior.LastValidationScope);
+            Assert.AreEqual(ValidationScope.SelfAndLoadedDescendants, Behavior.LastValidationScope);
          }
       }
 

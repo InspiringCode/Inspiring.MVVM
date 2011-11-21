@@ -62,13 +62,25 @@
       public virtual void Refresh(IBehaviorContext context, RefreshOptions options) {
          this.RefreshNext(context, options);
 
-         // We even revalidate if 'RefreshContainer' was called. 'RefreshContainer' is used
-         // if items are added/removed in the source (e.g. domain model). But these new items
-         // may be initially invalid, so we have to revalidate.
+         // Note 1: We even revalidate if 'RefreshContainer' was called. 'RefreshContainer' 
+         //         is used if items are added/removed in the source (e.g. domain model). 
+         //         But these new items may be initially invalid, so we have to revalidate.
+         // Note 2: We always transition to scope 'SelfAndLoadedDescendants'. Otherwise to
+         //         following unwanted scenario may occur:
+         //           1. Revalidate with scope 'SelfAndAllDescendants' is called (e.g. for
+         //              a newly created record) for a parent VM.
+         //           2. A new complex VM is added which has descendant which should never
+         //              be loaded in the context of the parent (e.g. the VM is also reused
+         //              in other places).
+         //           3. Refresh is called on the parent. If we reuse the previous scope, 
+         //              all descendants of the complex VM of step 2 would be loaded.
+         //         Anonther reason why we might not want to laod all new added descendants
+         //         is performance, especially if we used 'SelfAndAllDescendants' initially
+         //         for a new (and nearly empty) record to revalidate it once.
          State s = GetState(context);
          switch (s.Type) {
             case StateType.Validated:
-               TransitionToValidated(context, s.Scope);
+               TransitionToValidated(context, ValidationScope.SelfAndLoadedDescendants);
                break;
          }
       }

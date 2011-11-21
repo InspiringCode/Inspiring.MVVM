@@ -1,10 +1,10 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Validation {
+   using System;
    using System.Collections.Generic;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
-   using System;
-   using Inspiring.Mvvm.ViewModels.Core;
 
    [TestClass]
    public class ValidationScopeTests : TestBase {
@@ -65,6 +65,57 @@
       }
 
       [TestMethod]
+      public void SetViewModelProperty_AfterRevalidateAllDescendantsHasBeenCalled_DoesLoadDescendantsOfNewChildVM() {
+         VM.Revalidate(ValidationScope.SelfAndAllDescendants);
+
+         var newChild = new ChildVM {
+            Source = new ChildSource {
+               Items = new List<GrandchildSource> { new GrandchildSource() }
+            }
+         };
+
+         ViewModelAssert.IsNotLoaded(newChild, x => x.Items);
+
+         VM.SetValue(x => x.LoadedChild, newChild);
+         ViewModelAssert.IsNotLoaded(newChild, x => x.Items);
+      }
+
+      [TestMethod]
+      public void AddChildToCollection_AfterRevalidateAllDescendantsHasBeenCalled_DoesLoadDescendantsOfNewChild() {
+         VM.Revalidate(ValidationScope.SelfAndAllDescendants);
+
+         var newChild = new ChildVM {
+            Source = new ChildSource {
+               Items = new List<GrandchildSource> { new GrandchildSource() }
+            }
+         };
+
+         ViewModelAssert.IsNotLoaded(newChild, x => x.Items);
+
+         VM.GetValue(x => x.Children).Add(newChild);
+         ViewModelAssert.IsNotLoaded(newChild, x => x.Items);
+      }
+
+      [TestMethod]
+      public void Refresh_AfterRevalidateAllDescendantsHasBeenCalled_DoesLoadUnloadedDescendants() {
+         VM.Revalidate(ValidationScope.SelfAndAllDescendants);
+
+         var newChild = new ChildVM {
+            Source = new ChildSource {
+               Items = new List<GrandchildSource> { new GrandchildSource() }
+            }
+         };
+
+         ViewModelAssert.IsNotLoaded(newChild, x => x.Items);
+
+         VM.SetValue(x => x.LoadedChild, newChild);
+         VM.GetValue(x => x.Children).Add(newChild);
+
+         VM.Refresh();
+         ViewModelAssert.IsNotLoaded(newChild, x => x.Items);
+      }
+
+      [TestMethod]
       public void RevalidateLoadedDescendants_RevalidatesOnlyLoadedDescendants() {
          VM.Revalidate(ValidationScope.SelfAndLoadedDescendants);
 
@@ -81,7 +132,7 @@
       public void RevalidateSelf_ForChildVMPropertyWithPropertyValidator_ExecutesValidator() {
          bool propertyValidatorWasExecuted = false;
          VM.PropertyValidationAction = (args) => { propertyValidatorWasExecuted = true; };
-         
+
          VM.Revalidate(ValidationScope.Self);
          Assert.IsTrue(propertyValidatorWasExecuted);
       }
@@ -95,7 +146,7 @@
          ChildVM propertyWhileValidatingValue = null;
          VM.PropertyValidationAction = (args) => { propertyWhileValidatingValue = args.Value; };
          VM.Revalidate(ValidationScope.Self);
-         
+
          Assert.IsTrue(VM.IsLoaded(x => x.ChildWithPropertyValidator));
          Assert.AreEqual(VM.GetValue(x => x.ChildWithPropertyValidator), propertyWhileValidatingValue);
       }
@@ -179,6 +230,7 @@
             .WithProperties((d, b) => {
                var v = b.GetPropertyBuilder();
 
+               d.Children = v.Collection.Of<ChildVM>(ChildVM.ClassDescriptor);
                d.LoadedChild = v.VM.Wraps(x => x.LoadedChildSource).With<ChildVM>();
                d.UnloadedChild = v.VM.Wraps(x => x.UnloadedChildSource).With<ChildVM>();
                d.ChildWithPropertyValidator = v.VM.Wraps(x => x.ChildWithPropertyValidatorSource).With<ChildVM>();
@@ -203,6 +255,7 @@
       }
 
       private sealed class RootVMDescriptor : VMDescriptor {
+         public IVMPropertyDescriptor<IVMCollection<ChildVM>> Children { get; set; }
          public IVMPropertyDescriptor<ChildVM> LoadedChild { get; set; }
          public IVMPropertyDescriptor<ChildVM> UnloadedChild { get; set; }
          public IVMPropertyDescriptor<ChildVM> ChildWithPropertyValidator { get; set; }
