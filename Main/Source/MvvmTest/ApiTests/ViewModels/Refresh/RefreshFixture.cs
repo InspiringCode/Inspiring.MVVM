@@ -20,6 +20,11 @@
                   CreateRefreshDetectionPropertyChain()
                );
                d.ChildProperty = v.Property.Of<string>();
+
+               d.Grandchild = v.VM.DelegatesTo(_ => new GrandchildVM());
+               d.Grandchildren = v.Collection
+                  .PopulatedWith(_ => new[] { new GrandchildVM() })
+                  .With(GrandchildVM.ClassDescriptor);
             })
             .WithValidators(b => {
                b.EnableParentValidation(x => x.ChildProperty);
@@ -51,8 +56,28 @@
       }
 
       protected class ChildVMDescriptor : VMDescriptor {
+         public IVMPropertyDescriptor<GrandchildVM> Grandchild { get; set; }
+         public IVMPropertyDescriptor<IVMCollection<GrandchildVM>> Grandchildren { get; set; }
          public IVMPropertyDescriptor<object> RefreshDetectionProperty { get; set; }
          public IVMPropertyDescriptor<string> ChildProperty { get; set; }
+      }
+
+      protected class GrandchildVM : ViewModel<GrandchildVMDescriptor> {
+         [ClassDescriptor]
+         public static readonly GrandchildVMDescriptor ClassDescriptor = VMDescriptorBuilder
+            .OfType<GrandchildVMDescriptor>()
+            .For<GrandchildVM>()
+            .WithProperties((d, b) => {
+               var v = b.GetPropertyBuilder();
+            })
+            .Build();
+
+         public GrandchildVM()
+            : base(ClassDescriptor) {
+         }
+      }
+
+      protected class GrandchildVMDescriptor : VMDescriptor {
       }
 
       private class RefreshDetectorBehavior : Behavior, IRefreshBehavior {
