@@ -57,7 +57,7 @@
             return this;
          }
 
-         ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue>.AddBehavior(
+         ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue>.AppendBehavior(
             IBehavior behaviorInstance,
             BehaviorKey key = null
          ) {
@@ -69,6 +69,22 @@
             key = key ?? new BehaviorKey(keyString);
 
             _propertyConfiguration.Append(key, behaviorInstance);
+            _propertyConfiguration.Enable(key, behaviorInstance);
+            return this;
+         }
+
+         ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue>.PrependBehavior(
+            IBehavior behaviorInstance,
+            BehaviorKey key = null
+         ) {
+            string keyString = String.Format(
+               "{0} (manually configured)",
+               TypeService.GetFriendlyTypeName(behaviorInstance)
+            );
+
+            key = key ?? new BehaviorKey(keyString);
+
+            _propertyConfiguration.Prepend(key, behaviorInstance);
             _propertyConfiguration.Enable(key, behaviorInstance);
             return this;
          }

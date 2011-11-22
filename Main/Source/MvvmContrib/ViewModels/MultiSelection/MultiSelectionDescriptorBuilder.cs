@@ -44,7 +44,10 @@
                x => x.SelectedSourceItems
             );
 
-            b.AppendBehavior(new SelectionItemViewModelCacheBehavior<TItemSource, TItemVM>(itemDescriptor));
+            b.AppendBehavior(
+               new SelectionItemViewModelCacheBehavior<TItemSource, TItemVM>(itemDescriptor)
+            );
+
             b.AppendBehavior(new ItemProviderBehavior<TSourceObject, TItemSource>() { IsActiveFilter = isActiveFilter });
          });
 
@@ -67,6 +70,8 @@
 
             b.Property(x => x.AllSourceItems).IsCached();
             b.Property(x => x.SelectedItems).SupportsDisplayValueConversion();
+
+            b.Property(x => x.SelectedItems).PrependBehavior(new SelectedItemsRefreshBehavior<TItemVM>());
 
             // TODO: Make this configurable.
             b.Property(x => x.SelectedSourceItems).RequiresLoadedProperty(x => x.AllSourceItems);

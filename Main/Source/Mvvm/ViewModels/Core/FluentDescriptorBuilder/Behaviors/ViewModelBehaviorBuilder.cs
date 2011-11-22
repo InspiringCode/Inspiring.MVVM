@@ -27,6 +27,9 @@
          );
       }
 
+      // TODO: Best solution?
+      public TDescriptor Descriptor { get { return _descriptor; } }
+
       public void AppendBehavior(
          IBehavior behaviorInstance,
          BehaviorKey key = null

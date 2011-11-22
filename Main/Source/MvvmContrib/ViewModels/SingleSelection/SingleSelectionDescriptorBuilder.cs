@@ -44,12 +44,17 @@
                x => x.SelectedSourceItem
             );
 
-            b.AppendBehavior(new SelectionItemViewModelCacheBehavior<TItemSource, TItemVM>(itemDescriptor));
+            b.AppendBehavior(
+               new SelectionItemViewModelCacheBehavior<TItemSource, TItemVM>(itemDescriptor)
+            );
+
             b.PrependBehavior(new ItemProviderBehavior<TSourceObject, TItemSource>() { IsActiveFilter = isActiveFilter });
          });
 
          WithBehaviors(b => {
             b.Property(x => x.AllSourceItems).IsCached();
+
+            b.Property(x => x.SelectedItem).PrependBehavior(new SelectedItemRefreshBehavior<TItemVM>());
 
             // TODO: Make this configurable.
             b.Property(x => x.SelectedSourceItem).RequiresLoadedProperty(x => x.AllSourceItems);

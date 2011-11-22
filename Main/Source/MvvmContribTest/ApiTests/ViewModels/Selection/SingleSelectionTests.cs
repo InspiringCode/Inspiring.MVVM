@@ -398,31 +398,56 @@
 
          var trigger = vm.Department.GetValue(x => x.SelectedItem);
 
-         Assert.AreEqual("AllItems SourceItem ", log);
+         StringAssert.StartsWith(log, "AllItems");
       }
 
-      [TestMethod] // TODO
+      [TestMethod]
       public void Refresh_RefreshesActiveItemVM() {
          UserVM vm = CreateUserVMWithItems();
 
-         string oldName = vm
-            .Department
+         var oldSelection = vm.Department;
+
+         DepartmentVM oldSelectedItem = oldSelection
             .SelectedItem
-            .GetValue(x => x.VM)
-            .GetValue(x => x.Name);
+            .GetValue(x => x.VM);
+
+         string oldName = oldSelectedItem.GetValue(x => x.CachedName);
 
          string newName = "New name";
-         vm.Source.Department.Name = "New name";
+         vm.Source.Department.Name = newName;
 
          vm.Refresh(x => x.Department);
 
-         string actualName = vm
-            .Department
-            .SelectedItem
-            .GetValue(x => x.VM)
-            .GetValue(x => x.Name);
+         var newSelection = vm.Department;
 
-         //Assert.AreEqual(newName, actualName);
+         DepartmentVM newSelectedItem = newSelection
+            .SelectedItem
+            .GetValue(x => x.VM);
+
+         string actualName = newSelectedItem.GetValue(x => x.CachedName);
+
+         Assert.AreEqual(newName, actualName);
+      }
+
+      [TestMethod]
+      public void SelectedItem_ReturnsSameInstanceEvenIfEqualityOfSourceItemChanges() {
+         UserVM vm = CreateUserVMWithItems();
+
+         Department sourceItem = vm
+            .Department
+            .SelectedSourceItem;
+
+         int oldHash = sourceItem.GetHashCode();
+         var oldSelectedItem = vm.Department.SelectedItem;
+
+         sourceItem.Name = "New name";
+         vm.Department.Refresh(x => x.SelectedItem);
+
+         int newHash = sourceItem.GetHashCode();
+         var newSelectedItem = vm.Department.SelectedItem;
+
+         Assert.AreNotEqual(oldHash, newHash);
+         Assert.AreSame(oldSelectedItem, newSelectedItem);
       }
 
       [TestMethod]
@@ -445,6 +470,46 @@
          vm.Department.SelectedItem = vm.Department.AllItems.First();
 
          Assert.IsTrue(configurationWasApplied);
+      }
+
+      [TestMethod]
+      public void Refresh_IfSourceItemsHaveChanged_ReleasesAllHardReferencesToOldItem() {
+         var oldItem = new Department("Old item");
+         var gcDetectorSource = new WeakReference(oldItem);
+
+         var oldItems = new List<Department>();
+         oldItems.Add(oldItem);
+
+         User source = new User();
+         source.Department = oldItem;
+
+         UserVM vm = CreateUserVM(sourceUser: source, allDepartmentsSelector: _ => oldItems);
+         var gcDetectorVM = new WeakReference(vm.Department.SelectedItem);
+
+         oldItem = null;
+         oldItems.Clear();
+         source.Department = null;
+
+         vm.Department.Refresh();
+
+         GC.Collect();
+         Assert.IsFalse(gcDetectorVM.IsAlive);
+         Assert.IsFalse(gcDetectorSource.IsAlive);
+         
+         GC.KeepAlive(vm);
+      }
+
+      [TestMethod]
+      public void RefreshAllItems_ReusesVMsForItemsWithSameSource() {
+         var keptItem = new Department("Old item");
+
+         UserVM vm = CreateUserVM(allDepartments: new[] { keptItem }, selectedDepartment: keptItem);
+         var oldItemVM = vm.Department.SelectedItem;
+
+         vm.Department.Refresh();
+
+         Assert.AreSame(oldItemVM, vm.Department.SelectedItem);
+         Assert.AreSame(oldItemVM, vm.Department.AllItems.Single());
       }
 
       /// <summary>
@@ -479,7 +544,9 @@
          }
 
          sourceUser = sourceUser ?? new User();
-         sourceUser.Department = selectedDepartment;
+         if (selectedDepartment != null) {
+            sourceUser.Department = selectedDepartment;
+         }
 
          UserVMDescriptor descriptor = VMDescriptorBuilder
             .OfType<UserVMDescriptor>()

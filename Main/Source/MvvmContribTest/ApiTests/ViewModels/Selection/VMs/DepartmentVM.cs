@@ -10,6 +10,10 @@
             var k = c.GetPropertyBuilder(x => x.Source);
 
             d.Name = k.Property.MapsTo(x => x.Name);
+            d.CachedName = k.Property.MapsTo(x => x.Name);
+         })
+         .WithBehaviors(b => {
+            b.Property(x => x.CachedName).IsCached();
          })
          .Build();
 
@@ -24,5 +28,6 @@
 
    public sealed class DepartmentVMDescriptor : VMDescriptor {
       public IVMPropertyDescriptor<string> Name { get; set; }
+      public IVMPropertyDescriptor<string> CachedName { get; set; }
    }
 }
