@@ -25,7 +25,12 @@
          IBehavior behaviorInstance = null
       );
 
-      ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> AddBehavior(
+      ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> AppendBehavior(
+         IBehavior behaviorInstance,
+         BehaviorKey key = null
+      );
+
+      ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> PrependBehavior(
          IBehavior behaviorInstance,
          BehaviorKey key = null
       );

@@ -184,8 +184,8 @@
             })
             .WithDependencies(dependencyConfigurator)
             .WithBehaviors(b => {
-               b.Property(x => x.Property1).AddBehavior(new RefreshSpyBehavior());
-               b.Property(x => x.Property2).AddBehavior(new RefreshSpyBehavior());
+               b.Property(x => x.Property1).AppendBehavior(new RefreshSpyBehavior());
+               b.Property(x => x.Property2).AppendBehavior(new RefreshSpyBehavior());
             })
             .Build();
 
@@ -259,7 +259,7 @@
                   });
                })
                .WithBehaviors(b => {
-                  b.Property(x => x.StringProperty).AddBehavior(new RefreshSpyBehavior());
+                  b.Property(x => x.StringProperty).AppendBehavior(new RefreshSpyBehavior());
                })
                .Build();
          }

@@ -2,12 +2,10 @@
    using System.Collections.Generic;
 
    public class MultiSelectionVMDescriptor<TItemSource, TItemVM> :
-      VMDescriptor
+      SelectionVMDescriptor<TItemSource, TItemVM>
       where TItemVM : IViewModel {
 
-      internal IVMPropertyDescriptor<IEnumerable<TItemSource>> AllSourceItems { get; set; }
       internal IVMPropertyDescriptor<ICollection<TItemSource>> SelectedSourceItems { get; set; }
-      public IVMPropertyDescriptor<IVMCollection<TItemVM>> AllItems { get; set; }
       public IVMPropertyDescriptor<IVMCollection<TItemVM>> SelectedItems { get; set; }
    }
 

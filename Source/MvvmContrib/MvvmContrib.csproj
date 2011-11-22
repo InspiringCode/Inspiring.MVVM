@@ -118,6 +118,7 @@
     <Compile Include="Screens\CommandProxy.cs" />
     <Compile Include="Testing\MessageBoxResponderSetup.cs" />
     <Compile Include="ViewModels\Behaviors\SettableListDisplayValueBehavior.cs" />
+    <Compile Include="ViewModels\Behaviors\SelectedItemsRefreshBehavior.cs" />
     <Compile Include="ViewModels\EnumLocalizer.cs" />
     <Compile Include="ViewModels\ISelectionVM.cs" />
     <Compile Include="ViewModels\Behaviors\ItemProviderBehavior.cs" />
@@ -136,6 +137,7 @@
     <Compile Include="ViewModels\Selections\SelectionDescriptorBuilder.cs" />
     <Compile Include="Screens\IMessageBoxService.cs" />
     <Compile Include="ViewModels\Selections\SelectionVM.cs" />
+    <Compile Include="ViewModels\Selections\SelectionVMDescriptor.cs" />
     <Compile Include="ViewModels\SingleSelection\SingleSelectionBuilder.cs" />
     <Compile Include="ViewModels\SingleSelection\SingleSelectionDescriptorBuilder.cs" />
     <Compile Include="ViewModels\SingleSelection\SingleSelectionVMDescriptor.cs" />
