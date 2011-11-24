@@ -344,6 +344,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ApiTests\Bugs\" />
     <Folder Include="ApiTests\ViewModels\BasicTests\" />
     <Folder Include="API\" />
     <Folder Include="Shell\" />
