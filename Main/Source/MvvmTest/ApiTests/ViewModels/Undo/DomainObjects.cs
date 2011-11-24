@@ -1,7 +1,5 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Undo {
-   using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
 
    public class Employee {
 
@@ -22,12 +20,6 @@
 
       public void RemoveProjekt(Project projekt) {
          Projects.Remove(projekt);
-      }
-
-      [Pure]
-      public bool Contains(Project projekt) {
-         Contract.Requires<ArgumentNullException>(projekt != null);
-         return Projects.Contains(projekt);
       }
    }
 

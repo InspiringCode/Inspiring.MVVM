@@ -62,6 +62,7 @@
     <Compile Include="..\MvvmTest\PropertyChangedCounter.cs">
       <Link>PropertyChangedCounter.cs</Link>
     </Compile>
+    <Compile Include="ApiTests\Bugs\RefreshContainerWhenItemContainsSelectionTests.cs" />
     <Compile Include="ApiTests\ViewModels\PerformanceTests.cs" />
     <Compile Include="ApiTests\ViewModels\Selection\Domain\Department.cs" />
     <Compile Include="ApiTests\ViewModels\Selection\SelectionItemVMTests.cs" />
