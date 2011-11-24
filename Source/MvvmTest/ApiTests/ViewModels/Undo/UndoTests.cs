@@ -492,6 +492,31 @@
          Assert.AreEqual(0, _vmOfUndoAction.Kernel.Parents.Count());
       }
 
+      [TestMethod]
+      public void RollbackTo_WithUserDefinedCompensationAction_ExecutesAction() {
+         bool compensationActionCalled = false;
+
+         Employee employee = CreateEmployee();
+
+         EmployeeVM.InitializeFrom(employee);
+
+         var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
+
+         Project newProject = EmployeeVM.Source.AddProjekt();
+
+         Assert.IsTrue(EmployeeVM.Source.Projects.Contains(newProject));
+
+         EmployeeVM.UndoManager.AddCompensationAction(() => {
+            compensationActionCalled = true;
+            EmployeeVM.Source.RemoveProjekt(newProject);
+         });
+
+         EmployeeVM.UndoManager.RollbackTo(rollbackPoint);
+
+         Assert.IsTrue(compensationActionCalled);
+         Assert.IsFalse(EmployeeVM.Source.Projects.Contains(newProject));
+      }
+
       private Employee CreateEmployee(
          string name = "Employee",
          Project currentProject = null,

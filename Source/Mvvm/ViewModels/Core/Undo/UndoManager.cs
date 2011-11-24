@@ -100,6 +100,10 @@
          return _actionStack.Contains(point);
       }
 
+      public void AddCompensationAction(Action action) {
+         PushAction(new UserDefinedCompensationAction(action));
+      }
+
       /// <summary>
       ///   Inserts an <see cref="IUndoableAction"/> at the top of the undo stack.
       /// </summary>

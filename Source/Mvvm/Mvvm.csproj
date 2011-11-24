@@ -202,6 +202,7 @@
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\Interfaces\IRefreshTargetBuilder.cs" />
     <Compile Include="ViewModels\Core\Properties\SimpleProperty\Behaviors\ValueCacheBehavior.cs" />
     <Compile Include="ViewModels\Core\Properties\ViewModelProperty\Behaviors\ViewModelPropertyChangedNotifierBehavior.cs" />
+    <Compile Include="ViewModels\Core\Undo\Actions\UserDefinedCompensationAction.cs" />
     <Compile Include="ViewModels\Core\Validation\Behaviors\ViewModelBehaviors\CachingValidationResultAggregatorBehavior.cs" />
     <Compile Include="ViewModels\Core\ViewModel\Behaviors\DeclarativeDependencyBehavior.cs" />
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\Interfaces\IActionOrAnyDescendantBuilder.cs" />
