@@ -176,6 +176,7 @@
     <Compile Include="ViewModels\- No Namespace -\Validation\ValidationScope.cs" />
     <Compile Include="ViewModels\- No Namespace -\Validation\ValidationResultScope.cs" />
     <Compile Include="ViewModels\- No Namespace -\ViewModel.cs" />
+    <Compile Include="ViewModels\- No Namespace -\ViewModelExtensions.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMDescriptorBuilder.cs" />
     <Compile Include="ViewModels\- No Namespace -\BehaviorExtensions.cs" />
     <Compile Include="ViewModels\Core\Common\IPropertySelector.cs" />
