@@ -47,6 +47,8 @@
       public virtual void ShowDialogWindow(IScreenBase screen, IScreenBase parent, string title) {
          Window dialogWindow = CreateDialogWindow();
 
+         dialogWindow.ShowInTaskbar = false;
+
          InitializeWindowInternal(dialogWindow, screen, new DialogCloseHandler(screen));
 
          if (title != null) {
@@ -57,8 +59,6 @@
             Window owner = GetAssociatedWindow(parent);
             dialogWindow.Owner = owner;
          }
-
-         dialogWindow.ShowInTaskbar = false;
 
          if (parent != null) {
             screen.Children.Expose<ScreenHierarchyLifecycle>().Opener = parent;
