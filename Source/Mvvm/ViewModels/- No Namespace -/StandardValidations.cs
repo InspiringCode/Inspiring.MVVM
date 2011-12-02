@@ -185,7 +185,8 @@
          where TDescriptor : class, IVMDescriptor {
 
          builder.CheckViewModel((args) => {
-            if (!args.Owner.Kernel.GetValidationResult(ValidationResultScope.Descendants).IsValid) {
+            // TODO: Write test to verify that target is used instead of owner.
+            if (!args.Target.Kernel.GetValidationResult(ValidationResultScope.Descendants).IsValid) {
                args.AddError(errorMessage);
             }
          });
