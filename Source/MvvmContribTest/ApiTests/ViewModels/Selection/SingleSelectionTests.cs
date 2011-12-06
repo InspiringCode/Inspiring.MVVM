@@ -354,6 +354,44 @@
       }
 
       [TestMethod]
+      public void SetIsSelected_ComplexSequence_CorrectlyUpdatesIsSelectedOfAllItems() {
+         var vm = CreateUserVM(
+            allDepartments: new[] { Department1, Department2 },
+            selectedDepartment: DepartmentNotInSource
+         );
+
+         vm.Department.Load(x => x.SelectedItem);
+         ValidationAssert.IsInvalid(vm);
+
+         vm.Department.SelectedItem = vm
+            .Department
+            .AllItems
+            .Single(x => x.Source == Department1);
+
+         vm.Department.SelectedItem = vm
+            .Department
+            .AllItems
+            .Single(x => x.Source == DepartmentNotInSource);
+
+         vm
+            .Department
+            .AllItems
+            .Where(x => x.Source == Department2)
+            .Single()
+            .IsSelected = true;
+
+         Department[] areSelected = vm
+            .Department
+            .AllItems
+            .Where(x => x.IsSelected)
+            .Select(x => x.Source)
+            .ToArray();
+
+         Assert.AreEqual(1, areSelected.Length);
+         Assert.AreEqual(Department2, areSelected[0]);
+      }
+
+      [TestMethod]
       public void ClearIsSelectedProperty_ClearsSelectedItem() {
          var vm = CreateUserVM(
            allDepartments: new[] { Department1, Department2, InactiveDepartment },

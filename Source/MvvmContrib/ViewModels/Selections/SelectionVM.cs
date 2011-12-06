@@ -2,7 +2,7 @@
 
    public abstract class SelectionVM<TDescriptor, TItemSource, TItemVM> :
       ViewModel<TDescriptor>
-      where TDescriptor : IVMDescriptor
+      where TDescriptor : SelectionVMDescriptor<TItemSource, TItemVM>
       where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
       protected SelectionVM(
@@ -10,6 +10,10 @@
          IServiceLocator serviceLocator
       )
          : base(descriptor, serviceLocator) {
+      }
+
+      internal bool AllItemsLoaded {
+         get { return Kernel.IsLoaded(Descriptor.AllItems); }
       }
 
       internal TItemVM GetItemVM(TItemSource source) {

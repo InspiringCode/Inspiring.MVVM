@@ -84,27 +84,45 @@
             b.OnChangeOf
                .Collection(x => x.AllItems, true)
                .Execute((vm, args) => {
-                  // Initiales setzen der IsSelected property
+                  // Initially set 'IsSelected'
                   if (args.ChangeType == ChangeType.CollectionPopulated) {
                      var selectedItem = vm.SelectedItem;
                      if (selectedItem != null) {
                         selectedItem.IsSelected = true;
                      }
+
+                     // Just to make sure everything is in sync if SelectedSourceItem was set a
+                     // few times before accessing 'AllItems'.
+                     vm
+                        .AllItems
+                        .Where(x => x != vm.SelectedItem && x.IsSelected)
+                        .ForEach(x => x.IsSelected = false);
                   }
                });
 
             b.OnChangeOf
                .Properties(x => x.SelectedItem)
                .Execute((vm, args) => {
-                  var newItem = (SelectableItemVM<TItemSource, TItemVM>)args.NewItems.FirstOrDefault();
-                  if (newItem != null && !newItem.IsSelected) {
-                     newItem.IsSelected = true;
+                  // Clearing the flag of 'OldItems' and setting it on 'NewItems' does NOT work
+                  // because if 'SelectedItem' is invalid, there are actually two old items
+                  // (the last valid in the validated value stage and the currently invalid in
+                  // the unvalidated value stage).
+
+                  // We have to do this BEFORE setting 'IsSelected' of others to false. Otherwise
+                  // the 'IsSelected' change handler would detect, that no item has 'IsSelected == true'
+                  // and sets 'SelectedItem' to null.
+                  if (vm.SelectedItem != null) {
+                     vm.SelectedItem.IsSelected = true;
                   }
 
-                  var oldItem = (SelectableItemVM<TItemSource, TItemVM>)args.OldItems.FirstOrDefault();
-                  if (oldItem != null && oldItem.IsSelected) {
-                     oldItem.IsSelected = false;
+                  if (vm.AllItemsLoaded) {
+                     // Performance optimization: Check 'IsSelected' to avoids change handling
+                     vm
+                        .AllItems
+                        .Where(x => x != vm.SelectedItem && x.IsSelected)
+                        .ForEach(x => x.IsSelected = false);
                   }
+
                });
 
             b.OnChangeOf
