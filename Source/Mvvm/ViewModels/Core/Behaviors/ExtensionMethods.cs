@@ -143,6 +143,19 @@
          }
       }
 
+      public static void NotifyPropertyChangedNext<TValue>(
+         this Behavior behavior,
+         IBehaviorContext context,
+         ValueStage stage,
+         TValue oldValue,
+         TValue newValue
+      ) {
+         IChangeNotifierBehavior<TValue> next;
+         if (behavior.TryGetBehavior(out next)) {
+            next.NotifyPropertyChanged(context, stage, oldValue, newValue);
+         }
+      }
+
       public static void UpdateFromSourceNext(
          this Behavior behavior,
          IBehaviorContext context
@@ -356,11 +369,12 @@
 
       public static void HandlePropertyChangedNext(
          this Behavior behavior,
-         IBehaviorContext context
+         IBehaviorContext context,
+         ChangeArgs args
       ) {
          IHandlePropertyChangedBehavior next;
          if (behavior.TryGetBehavior(out next)) {
-            next.HandlePropertyChanged(context);
+            next.HandlePropertyChanged(context, args);
          }
       }
 

@@ -14,12 +14,14 @@
       private Department Department1 { get; set; }
       private Department Department2 { get; set; }
       private Department InactiveDepartment { get; set; }
+      private Department DepartmentNotInSource { get; set; }
 
       [TestInitialize]
       public void Setup() {
          Department1 = new Department("Department 1");
          Department2 = new Department("Department 2");
          InactiveDepartment = new Department("Inactive Department", isActive: false);
+         DepartmentNotInSource = new Department("Department not in Source");
       }
 
       [TestMethod]
@@ -272,6 +274,86 @@
       }
 
       [TestMethod]
+      public void SetIsSelectedProperty_WhenSelectedItemGetsInvalid_CorrectlyUpdatesIsSelectedOfAllItems() {
+         var vm = CreateUserVM(
+            allDepartments: new[] { Department1, Department2 },
+            selectedDepartment: DepartmentNotInSource
+         );
+
+         vm.Department.Load(x => x.SelectedItem);
+         ValidationAssert.IsInvalid(vm);
+
+         Department[] areSelected = vm
+            .Department
+            .AllItems
+            .Where(x => x.IsSelected)
+            .Select(x => x.Source)
+            .ToArray();
+
+         CollectionAssert.AreEquivalent(new[] { DepartmentNotInSource }, areSelected);
+
+         vm.Department.SelectedItem = vm
+            .Department
+            .AllItems
+            .Single(x => x.Source == Department1);
+         
+         vm
+            .Department
+            .AllItems
+            .Where(x => x.Source == DepartmentNotInSource)
+            .Single()
+            .IsSelected = true;
+
+         areSelected = vm
+            .Department
+            .AllItems
+            .Where(x => x.IsSelected)
+            .Select(x => x.Source)
+            .ToArray();
+
+         Assert.AreEqual(1, areSelected.Length);
+         Assert.AreEqual(DepartmentNotInSource, areSelected[0]);
+      }
+
+      [TestMethod]
+      public void SetIsSelected_ToItemWhichCausesSelectedItemToGetInvalidAndBackToPreviousItem_CorrectlyUpdatesIsSelectedOfAllItems() {
+         var vm = CreateUserVM(
+            allDepartments: new[] { Department1, Department2 },
+            selectedDepartment: DepartmentNotInSource
+         );
+
+         vm.Department.Load(x => x.SelectedItem);
+         ValidationAssert.IsInvalid(vm);
+
+         vm.Department.SelectedItem = vm
+            .Department
+            .AllItems
+            .Single(x => x.Source == Department1);
+
+         vm.Department.SelectedItem = vm
+            .Department
+            .AllItems
+            .Single(x => x.Source == DepartmentNotInSource);
+
+         vm
+            .Department
+            .AllItems
+            .Where(x => x.Source == Department1)
+            .Single()
+            .IsSelected = true;
+
+         Department[] areSelected = vm
+            .Department
+            .AllItems
+            .Where(x => x.IsSelected)
+            .Select(x => x.Source)
+            .ToArray();
+
+         Assert.AreEqual(1, areSelected.Length);
+         Assert.AreEqual(Department1, areSelected[0]);
+      }
+
+      [TestMethod]
       public void ClearIsSelectedProperty_ClearsSelectedItem() {
          var vm = CreateUserVM(
            allDepartments: new[] { Department1, Department2, InactiveDepartment },
@@ -495,7 +577,7 @@
          GC.Collect();
          Assert.IsFalse(gcDetectorVM.IsAlive);
          Assert.IsFalse(gcDetectorSource.IsAlive);
-         
+
          GC.KeepAlive(vm);
       }
 

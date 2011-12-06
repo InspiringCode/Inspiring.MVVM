@@ -21,7 +21,7 @@
          var property = PropertyStub.Build();
 
          VMInterface.NotifyChange(ChangeArgs
-            .PropertyChanged(property)
+            .PropertyChanged(property, ValueStage.DisplayValue)
             .PrependViewModel(VM)
          );
 
@@ -33,7 +33,7 @@
          var property = PropertyStub.Build();
 
          VMInterface.NotifyChange(ChangeArgs
-            .ValidationResultChanged(property)
+            .ValidationResultChanged(property, ValueStage.Value)
             .PrependViewModel(VM)
          );
 
@@ -54,7 +54,7 @@
       [TestMethod]
       public void NotifyChange_WithPropertyChangeForDescendantProperty_DoesNothing() {
          VMInterface.NotifyChange(ChangeArgs
-            .PropertyChanged(PropertyStub.Build())
+            .PropertyChanged(PropertyStub.Build(), ValueStage.ValidatedValue)
             .PrependViewModel(ViewModelStub.Build())
             .PrependViewModel(VM)
          );
@@ -66,7 +66,7 @@
       [TestMethod]
       public void NotifyChange_WithValidationResultChangeForDescendantProperty_DoesNothing() {
          VMInterface.NotifyChange(ChangeArgs
-            .ValidationResultChanged(PropertyStub.Build())
+            .ValidationResultChanged(PropertyStub.Build(), ValueStage.Value)
             .PrependViewModel(ViewModelStub.Build())
             .PrependViewModel(VM)
          );

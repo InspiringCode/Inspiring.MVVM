@@ -1,8 +1,10 @@
 ﻿namespace Inspiring.MvvmTest.ApiTests.ViewModels.Validation {
    using System;
+   using System.Linq;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
+   using System.Collections.Generic;
 
    [TestClass]
    public class BasicValidationTests : ValidationTestBase {
@@ -95,6 +97,79 @@
          ValidationAssert.ErrorMessages(child.ValidationResult, error);
       }
 
+      [TestMethod]
+      public void SetValueToDifferentInvalidValue_TriggersChangeNotification() {
+         bool addError = false;
+         int onChangedEvents = 0;
+
+         var vm = EmployeeVM.Create(b => b
+            .Check(x => x.Name)
+            .Custom(args => {
+               if (addError) {
+                  args.AddError("Test error");
+               }
+            })
+         );
+
+         vm.SetValue(x => x.Name, "old value");
+         Assert.AreEqual(1, vm.OnChangeInvocations.Count);
+
+         addError = true;
+
+         vm.SetValue(x => x.Name, "old value");
+         Assert.AreEqual(2, vm.OnChangeInvocations.Count);
+
+         vm.SetValue(x => x.Name, "new value");
+         Assert.AreEqual(3, vm.OnChangeInvocations.Count);
+      }
+
+      [TestMethod]
+      public void SetValue_RaisesAppropriateChangeNotifications() {
+         ValueStage noChangeNotifciation = null;
+
+         EmployeeVM vm = EmployeeVM.Create(b => {
+            b.Check(x => x.NumericProperty).ValueInRange(min: 1, max: 10);
+         });
+
+         Action<int, int, int, ValueStage> testCode = (
+            oldValue,
+            oldSourceValue,
+            newValue,
+            expectedChangeNotification
+         ) => {
+            vm.SetValue(x => x.NumericProperty, oldSourceValue);
+            vm.SetValue(x => x.NumericProperty, oldValue);
+            vm.OnChangeInvocations.Clear();
+
+            vm.SetValue(x => x.NumericProperty, newValue);
+
+            IEnumerable<ChangeArgs> args = vm
+               .OnChangeInvocations
+               .Where(x => x.ChangeType == ChangeType.PropertyChanged);
+
+            if (expectedChangeNotification != null) {
+               Assert.AreEqual(1, args.Count(), "Expected a single change notification.");
+
+               ChangeArgs arg = args.Single();
+               Assert.AreEqual(expectedChangeNotification, arg.Stage);
+            } else {
+               Assert.AreEqual(0, args.Count(), "Expected no change notification.");
+            }
+         };
+
+         // Valid values: { 5, 6 }, invalid values: { 77, 78 }
+         ParameterizedTest
+            // oldValue | oldSourceValue | newValue | expectedChange
+            .TestCase(5, 5, 5, noChangeNotifciation)
+            .TestCase(5, 5, 6, ValueStage.ValidatedValue)
+            .TestCase(5, 5, 77, ValueStage.Value)
+            .TestCase(77, 5, 77, noChangeNotifciation)
+            .TestCase(77, 5, 78, ValueStage.Value)
+            .TestCase(77, 5, 5, ValueStage.Value)
+            .TestCase(77, 5, 6, ValueStage.ValidatedValue)
+            .Run(testCode);
+      }
+
       private void WithPropertyAndViewModelValidation(
          RootValidatorBuilder<EmployeeVM, EmployeeVM, EmployeeVMDescriptor> builder
       ) {
@@ -111,7 +186,7 @@
          });
       }
 
-      private class EmployeeVM : ViewModel<EmployeeVMDescriptor> {
+      private class EmployeeVM : TestViewModel<EmployeeVMDescriptor> {
          private EmployeeVM(EmployeeVMDescriptor descriptor)
             : base(descriptor) {
          }
@@ -127,11 +202,16 @@
 
                   d.Name = vm.Property.Of<string>();
                   d.SelectedProject = vm.VM.Of<ProjectVM>();
+                  d.NumericProperty = vm.Property.Of<int>();
                })
                .WithValidators(validationConfigurationAction)
                .Build();
 
             return new EmployeeVM(descriptor);
+         }
+
+         public int NumericProperty {
+            get { return GetValue(Descriptor.NumericProperty); }
          }
 
          public override string ToString() {
@@ -140,6 +220,7 @@
       }
 
       private class EmployeeVMDescriptor : VMDescriptor {
+         public IVMPropertyDescriptor<int> NumericProperty { get; set; }
          public IVMPropertyDescriptor<string> Name { get; set; }
          public IVMPropertyDescriptor<ProjectVM> SelectedProject { get; set; }
       }

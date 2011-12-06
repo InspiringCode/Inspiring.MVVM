@@ -29,53 +29,10 @@
 
          PropertyName = propertyName;
       }
-
-      //internal abstract void ConfigureBehaviors(BehaviorConfiguration configuration, VMDescriptorBase descriptor);
-
-
-      [Obsolete]
-      internal void OnPropertyChanged(IBehaviorContext vm) {
-         //IHandlePropertyChangingBehavior changingBehavior;
-         //if (Behaviors.TryGetBehavior(out changingBehavior)) {
-         //   changingBehavior.HandlePropertyChanging(vm);
-         //}
-
-         IHandlePropertyChangedBehavior changedBehavior;
-         if (Behaviors.TryGetBehavior(out changedBehavior)) {
-            changedBehavior.HandlePropertyChanged(vm);
-         }
-      }
-
-      //internal ValidationResult GetValidationResult(IBehaviorContext context) {
-      //   IValidationBehavior validationBehavior;
-      //   if (Behaviors.TryGetBehavior(out validationBehavior)) {
-      //      return validationBehavior.GetValidationResult(context);
-      //   }
-
-      //   return ValidationResult.Success();
-      //}
-
-      //internal bool IsMutable(IBehaviorContext context) {
-      //   IMutabilityCheckerBehavior checker;
-      //   if (Behaviors.TryGetBehavior(out checker)) {
-      //      return checker.IsMutable(context);
-      //   }
-      //   return true;
-      //}
-
-
+      
       object IVMPropertyDescriptor.GetValue(IBehaviorContext context) {
          return GetValueCore(context);
       }
-
-
-      //object IVMProperty.GetDisplayValue(IBehaviorContext context) {
-      //   return GetDisplayValue(context);
-      //}
-
-      //void IVMProperty.SetValue(IBehaviorContext context, object value) {
-      //   SetValueCore(context, value);
-      //}
 
       internal object GetDisplayValue(IBehaviorContext context) {
          Contract.Requires(context != null);

@@ -58,7 +58,7 @@
          var vm = new TestVM();
 
          var descendantArgs = ChangeArgs
-            .ValidationResultChanged(PropertyStub.Build())
+            .ValidationResultChanged(PropertyStub.Build(), ValueStage.ValidatedValue)
             .PrependViewModel(ViewModelStub.Build())
             .PrependViewModel(vm);
 
@@ -149,6 +149,7 @@
          var propertyChangedArgs = ChangeArgs
             .ViewModelPropertyChanged(
                owner.SecondProperty,
+               ValueStage.ValidatedValue,
                oldValue: null,
                newValue: firstChild)
             .PrependViewModel(owner);
@@ -166,6 +167,7 @@
          propertyChangedArgs = ChangeArgs
             .ViewModelPropertyChanged(
                owner.SecondProperty,
+               ValueStage.ValidatedValue,
                oldValue: firstChild,
                newValue: secondChild)
             .PrependViewModel(owner);
@@ -179,6 +181,7 @@
          propertyChangedArgs = ChangeArgs
             .ViewModelPropertyChanged(
                owner.SecondProperty,
+               ValueStage.ValidatedValue,
                oldValue: secondChild,
                newValue: null)
             .PrependViewModel(owner);
@@ -322,14 +325,14 @@
 
          public void CallHandleChangeForFirstProperty() {
             CallHandleChangeWith(ChangeArgs
-               .ValidationResultChanged(FirstProperty)
+               .ValidationResultChanged(FirstProperty, ValueStage.ValidatedValue)
                .PrependViewModel(this));
          }
 
 
          public void CallHandleChangeForSecondProperty() {
             CallHandleChangeWith(ChangeArgs
-               .ValidationResultChanged(SecondProperty)
+               .ValidationResultChanged(SecondProperty, ValueStage.ValidatedValue)
                .PrependViewModel(this));
          }
 

@@ -13,7 +13,7 @@
       public TestViewModel(TDescriptor descriptor, string name = null)
          : base(descriptor) {
          _name = name;
-         NotifyChangeInvocations = new List<ChangeArgs>();
+         OnChangeInvocations = new List<ChangeArgs>();
       }
 
       public new TDescriptor Descriptor {
@@ -24,7 +24,7 @@
          get { return base.Kernel; }
       }
 
-      public List<ChangeArgs> NotifyChangeInvocations {
+      public List<ChangeArgs> OnChangeInvocations {
          get;
          private set;
       }
@@ -60,7 +60,7 @@
       }
 
       protected override void OnChange(ChangeArgs args) {
-         NotifyChangeInvocations.Add(args);
+         OnChangeInvocations.Add(args);
       }
    }
 }

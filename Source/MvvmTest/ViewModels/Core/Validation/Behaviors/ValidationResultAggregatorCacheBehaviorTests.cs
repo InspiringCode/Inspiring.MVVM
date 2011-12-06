@@ -102,7 +102,7 @@
 
          Behavior.HandleChange(
             Context,
-            ChangeArgs.PropertyChanged(PropertyStub.Of<string>()).PrependViewModel(ViewModelStub.Build())
+            ChangeArgs.PropertyChanged(PropertyStub.Of<string>(), ValueStage.ValidatedValue).PrependViewModel(ViewModelStub.Build())
          );
 
          var actualResult = Behavior.GetValidationResult(Context, ValidationResultScope.All);

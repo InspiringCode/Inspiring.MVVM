@@ -26,7 +26,7 @@
       [TestMethod]
       public void Refresh_OfInstanceProperty_DoesNotCallNotifyChange() {
          VM.Refresh(x => x.InstanceProperty);
-         DomainAssert.AreEqual(new ChangeArgs[0], VM.NotifyChangeInvocations);
+         DomainAssert.AreEqual(new ChangeArgs[0], VM.OnChangeInvocations);
       }
 
       [TestMethod]
@@ -45,10 +45,10 @@
       [TestMethod]
       public void Refresh_OfWrapperProperty_DoesNotCallNotifyChange() {
          VM.SetValue(x => x.WrapperProperty, new ChildVM());
-         VM.NotifyChangeInvocations.Clear();
+         VM.OnChangeInvocations.Clear();
 
          VM.Refresh(x => x.WrapperProperty);
-         DomainAssert.AreEqual(new ChangeArgs[0], VM.NotifyChangeInvocations);
+         DomainAssert.AreEqual(new ChangeArgs[0], VM.OnChangeInvocations);
       }
 
       [TestMethod]
@@ -69,31 +69,32 @@
          VM.Load(x => x.DelegateProperty);
 
          VM.DelegatePropertyResult = newChild;
-         VM.NotifyChangeInvocations.Clear();
+         VM.OnChangeInvocations.Clear();
 
          VM.Refresh(x => x.DelegateProperty);
 
          var expectedArgs = ChangeArgs
             .ViewModelPropertyChanged(
                RootVM.ClassDescriptor.DelegateProperty,
+               ValueStage.ValidatedValue,
                oldChild,
                newChild)
             .PrependViewModel(VM);
 
          DomainAssert.AreEqual(
             new[] { expectedArgs },
-            VM.NotifyChangeInvocations
+            VM.OnChangeInvocations
          );
       }
 
       [TestMethod]
       public void Refresh_OfDelegateProperty_DoesNotCallNotifyChangeIfViewModelInstanceHasNotChanged() {
          VM.SetValue(x => x.DelegateProperty, new ChildVM());
-         VM.NotifyChangeInvocations.Clear();
+         VM.OnChangeInvocations.Clear();
 
          VM.Refresh(x => x.DelegateProperty);
 
-         DomainAssert.AreEqual(new ChangeArgs[0], VM.NotifyChangeInvocations);
+         DomainAssert.AreEqual(new ChangeArgs[0], VM.OnChangeInvocations);
       }
 
       [TestMethod]

@@ -13,7 +13,7 @@
 
       [TestInitialize]
       public void Setup() {
-         var behavior = new TestBehavior();
+         var behavior = new TestBehavior(ValueStage.Value);
          VM = ViewModelStub.WithBehaviors(behavior).Build();
          Manager = behavior.Manager;
          Context = new BehaviorContextStub(VM);
@@ -65,14 +65,14 @@
 
       [TestMethod]
       public void UpdateValidationResult_AsPropertyBehavior_CallsNotifyChangeWithCorrectArgs() {
-         SetupForProperty();
+         SetupForProperty(ValueStage.DisplayValue);
 
          var oldResult = CreateValidationResult("New result");
 
          Manager.UpdateValidationResult(Context, oldResult);
 
          DomainAssert.AreEqual(
-            ChangeArgs.ValidationResultChanged(Property),
+            ChangeArgs.ValidationResultChanged(Property, ValueStage.DisplayValue),
             Context.NotifyChangeInvocations.LastOrDefault()
          );
       }
@@ -92,14 +92,14 @@
       }
 
       private void SetupForViewModel() {
-         var behavior = new TestBehavior();
+         var behavior = new TestBehavior(ValueStage.ValidatedValue);
          VM = ViewModelStub.WithBehaviors(behavior).Build();
          Manager = behavior.Manager;
          Context = new BehaviorContextStub(VM);
       }
 
-      private void SetupForProperty() {
-         var behavior = new TestBehavior();
+      private void SetupForProperty(ValueStage stage) {
+         var behavior = new TestBehavior(stage);
          Property = PropertyStub.WithBehaviors(behavior).Of<object>();
          VM = ViewModelStub.WithProperties(Property).Build();
          Manager = behavior.Manager;
@@ -108,11 +108,16 @@
 
       private class TestBehavior : Behavior, IBehaviorInitializationBehavior {
          private static readonly FieldDefinitionGroup ResultGroup = new FieldDefinitionGroup();
+         private readonly ValueStage _stage;
+
+         public TestBehavior(ValueStage stage) {
+            _stage = stage;
+         }
 
          public ValidationResultManager Manager { get; private set; }
 
          public void Initialize(BehaviorInitializationContext context) {
-            Manager = new ValidationResultManager(context, ResultGroup);
+            Manager = new ValidationResultManager(context, ResultGroup, _stage);
          }
       }
    }

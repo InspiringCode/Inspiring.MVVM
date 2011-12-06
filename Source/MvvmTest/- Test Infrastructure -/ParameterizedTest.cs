@@ -40,6 +40,16 @@
             .TestCase(testCaseName, firstParameter, secondParameter, thirdParameter);
       }
 
+      public static ITestCaseBuilder<T1, T2, T3, T4> TestCase<T1, T2, T3, T4>(T1 firstParameter, T2 secondParameter, T3 thirdParameter, T4 fourthParameter) {
+         return new TestCaseBuilder<T1, T2, T3, T4>(new ParameterizedTest())
+            .TestCase(firstParameter, secondParameter, thirdParameter, fourthParameter);
+      }
+
+      public static ITestCaseBuilder<T1, T2, T3, T4> TestCase<T1, T2, T3, T4>(string testCaseName, T1 firstParameter, T2 secondParameter, T3 thirdParameter, T4 fourthParameter) {
+         return new TestCaseBuilder<T1, T2, T3, T4>(new ParameterizedTest())
+            .TestCase(testCaseName, firstParameter, secondParameter, thirdParameter, fourthParameter);
+      }
+
       private void AddCase(string name, params object[] parameters) {
          AddCase(new ParameterizedTestCase(name, parameters));
       }
@@ -182,6 +192,28 @@
             _test.RunTests(testAction);
          }
       }
+
+      private class TestCaseBuilder<T1, T2, T3, T4> : ITestCaseBuilder<T1, T2, T3, T4> {
+         private readonly ParameterizedTest _test;
+
+         public TestCaseBuilder(ParameterizedTest test) {
+            _test = test;
+         }
+
+         public ITestCaseBuilder<T1, T2, T3, T4> TestCase(string testCaseName, T1 firstParameter, T2 secondParameter, T3 thirdParameter, T4 fourthParameter) {
+            _test.AddCase(testCaseName, firstParameter, secondParameter, thirdParameter, fourthParameter);
+            return this;
+         }
+
+         public ITestCaseBuilder<T1, T2, T3, T4> TestCase(T1 firstParameter, T2 secondParameter, T3 thirdParameter, T4 fourthParameter) {
+            _test.AddCase(null, firstParameter, secondParameter, thirdParameter, fourthParameter);
+            return this;
+         }
+
+         public void Run(Action<T1, T2, T3, T4> testAction) {
+            _test.RunTests(testAction);
+         }
+      }
    }
 
    internal interface ITestCaseBuilder<T> {
@@ -200,5 +232,11 @@
       ITestCaseBuilder<T1, T2, T3> TestCase(string testCaseName, T1 firstParameter, T2 secondParameter, T3 thirdParameter);
       ITestCaseBuilder<T1, T2, T3> TestCase(T1 firstParameter, T2 secondParameter, T3 thirdParameter);
       void Run(Action<T1, T2, T3> testCode);
+   }
+
+   internal interface ITestCaseBuilder<T1, T2, T3, T4> {
+      ITestCaseBuilder<T1, T2, T3, T4> TestCase(string testCaseName, T1 firstParameter, T2 secondParameter, T3 thirdParameter, T4 fourthParameter);
+      ITestCaseBuilder<T1, T2, T3, T4> TestCase(T1 firstParameter, T2 secondParameter, T3 thirdParameter, T4 fourthParameter);
+      void Run(Action<T1, T2, T3, T4> testCode);
    }
 }

@@ -23,6 +23,7 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          if (!Object.Equals(newValue, previousValue)) {
             var args = ChangeArgs.ViewModelPropertyChanged(
                _property,
+               ValueStage.ValidatedValue,
                previousValue,
                newValue,
                RefreshReason.Create(options.ExecuteRefreshDependencies)

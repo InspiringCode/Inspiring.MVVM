@@ -29,7 +29,7 @@
       [TestMethod]
       public void Refresh_OfInstanceCollectionProperty_DoesNotCallNotifyChangeForCollectionProperty() {
          VM.Load(x => x.InstanceProperty);
-         Assert.IsFalse(VM.NotifyChangeInvocations.Any());
+         Assert.IsFalse(VM.OnChangeInvocations.Any());
       }
 
       [TestMethod]
@@ -91,7 +91,7 @@
       public void Refresh_OfWrapperCollectionProperty_CallsNotifyChangeForCollectionPopulation() {
          VM.WrapperProperty.Add(new ChildVM(new ChildSource()));
          var oldItems = VM.WrapperProperty.ToArray();
-         VM.NotifyChangeInvocations.Clear();
+         VM.OnChangeInvocations.Clear();
 
          VM.WrapperPropertySource = new List<ChildSource> { new ChildSource() };
          VM.Refresh(x => x.WrapperProperty);
@@ -107,7 +107,7 @@
                .PrependViewModel(VM)
          };
 
-         DomainAssert.AreEqual(expectedChangeArgs, VM.NotifyChangeInvocations);
+         DomainAssert.AreEqual(expectedChangeArgs, VM.OnChangeInvocations);
       }
 
       [TestMethod]
@@ -132,7 +132,7 @@
          var oldItems = new[] { new ChildVM() };
          VM.PopulatedPropertyResult = oldItems;
          VM.Load(x => x.PopulatedProperty);
-         VM.NotifyChangeInvocations.Clear();
+         VM.OnChangeInvocations.Clear();
 
          var newItems = new[] { new ChildVM() };
          VM.PopulatedPropertyResult = newItems;
@@ -147,7 +147,7 @@
                .PrependViewModel(VM)
          };
 
-         DomainAssert.AreEqual(expectedChangeArgs, VM.NotifyChangeInvocations);
+         DomainAssert.AreEqual(expectedChangeArgs, VM.OnChangeInvocations);
       }
 
       [TestMethod]

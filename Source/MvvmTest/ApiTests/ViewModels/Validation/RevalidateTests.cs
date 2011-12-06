@@ -47,21 +47,21 @@
       public void Revalidate_ValidationSucceeds_RaisesValidationStateChangedAndPropertyChanged() {
          SetPropertyToValidValue();
          SetPropertyToInvalidValue();
-         VM.NotifyChangeInvocations.Clear();
+         VM.OnChangeInvocations.Clear();
 
          VM.PropertyResultToReturn = ValidationResult.Valid;
          RevalidateProperty();
 
          var expectedChangeNotifications = new[] {
             ChangeArgs
-               .PropertyChanged(TestVM.ClassDescriptor.Property)
+               .PropertyChanged(TestVM.ClassDescriptor.Property, ValueStage.ValidatedValue)
                .PrependViewModel(VM),
             ChangeArgs
-               .ValidationResultChanged(TestVM.ClassDescriptor.Property)
+               .ValidationResultChanged(TestVM.ClassDescriptor.Property, ValueStage.Value)
                .PrependViewModel(VM)
          };
 
-         DomainAssert.AreEqual(expectedChangeNotifications, VM.NotifyChangeInvocations);
+         DomainAssert.AreEqual(expectedChangeNotifications, VM.OnChangeInvocations);
       }
 
       [TestMethod]
@@ -91,18 +91,18 @@
       public void Revalidate_ValidationFails_RaisesOnlyValidationStateChanged() {
          SetPropertyToValidValue();
          SetPropertyToInvalidValue();
-         VM.NotifyChangeInvocations.Clear();
+         VM.OnChangeInvocations.Clear();
 
          VM.PropertyResultToReturn = InvalidValidationResult;
          RevalidateProperty();
 
          var expectedChangeNotifications = new[] {
             ChangeArgs
-               .ValidationResultChanged(TestVM.ClassDescriptor.Property)
+               .ValidationResultChanged(TestVM.ClassDescriptor.Property, ValueStage.Value)
                .PrependViewModel(VM)
          };
 
-         DomainAssert.AreEqual(expectedChangeNotifications, VM.NotifyChangeInvocations);
+         DomainAssert.AreEqual(expectedChangeNotifications, VM.OnChangeInvocations);
       }
 
       private void SetPropertyToInvalidValue(string value = "Default invalid value") {

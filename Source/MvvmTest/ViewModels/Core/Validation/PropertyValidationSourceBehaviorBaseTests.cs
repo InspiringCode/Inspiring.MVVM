@@ -51,8 +51,12 @@
          // The PropertyChangedBehavior calls notify change anyhow
 
          SetInvalidValue();
+         Context
+            .NotifyChangeInvocations
+            .Clear();
+
          string value = "New value";
-         SetInvalidValue(value);
+         SetValidValue(value);
 
          Assert.IsFalse(
             Context
@@ -69,7 +73,7 @@
       }
 
       [TestMethod]
-      public void GetValue_ValidationFailed_ReturnsInvalidValid() {
+      public void GetValue_ValidationFailed_ReturnsInvalidValue() {
          var invalidValue = "Invalid value";
          SetInvalidValue(invalidValue);
          Assert.AreEqual(invalidValue, Behavior.GetValue(Context));
@@ -91,7 +95,7 @@
       public void HandlePropertyChanged_ValidationFailed_ClearsValidationResult() {
          SetInvalidValue();
          Behavior.NextValue = "Source value";
-         Behavior.HandlePropertyChanged(Context);
+         Behavior.HandlePropertyChanged(Context, ChangeArgs.PropertyChanged(Property, ValueStage.ValidatedValue));
          Assert.AreEqual(Behavior.NextValue, Behavior.GetValue(Context));
       }
 
@@ -162,7 +166,7 @@
 
       private class TestValidationSourceBehavior : PropertyValidationSourceBehaviorBase<string> {
          public TestValidationSourceBehavior(ValidationStep step)
-            : base(step) {
+            : base(step, ValueStage.Value) {
             NextValue = "Next test value";
          }
 

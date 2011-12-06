@@ -1,15 +1,18 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
 
    internal sealed class ValidationResultManager {
-      private DynamicFieldAccessor<ValidationResult> _resultField;
-      private IVMPropertyDescriptor _property;
+      private readonly DynamicFieldAccessor<ValidationResult> _resultField;
+      private readonly IVMPropertyDescriptor _property;
+      private readonly ValueStage _stage;
 
       public ValidationResultManager(
          BehaviorInitializationContext context,
-         FieldDefinitionGroup fieldGroup
+         FieldDefinitionGroup fieldGroup,
+         ValueStage stage
       ) {
          _resultField = new DynamicFieldAccessor<ValidationResult>(context, fieldGroup);
          _property = context.Property;
+         _stage = stage;
       }
 
       public void UpdateValidationResult(IBehaviorContext context, ValidationResult result) {
@@ -18,7 +21,7 @@
             SetOrClearValidationResult(context, result);
 
             var args = _property != null ?
-               ChangeArgs.ValidationResultChanged(_property) :
+               ChangeArgs.ValidationResultChanged(_property, _stage) :
                ChangeArgs.ValidationResultChanged();
 
             context.NotifyChange(args);

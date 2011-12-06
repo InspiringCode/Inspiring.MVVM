@@ -21,64 +21,15 @@
    ///   changed) that occured for a VM.
    /// </summary>
    public sealed class ChangeArgs {
-      //internal ChangeArgs(ChangeType changeType, IViewModel changedVM) {
-      //   Contract.Requires(changeType == ChangeType.ValidationStateChanged);
-      //   Contract.Requires(changedVM != null);
-
-      //   ChangeType = changeType;
-      //   ChangedVM = changedVM;
-
-      //   ChangedPath = Path
-      //      .Empty
-      //      .Append(changedVM);
-      //}
-
-      //internal ChangeArgs(
-      //   ChangeType changeType,
-      //   IViewModel changedVM,
-      //   IVMPropertyDescriptor changedProperty
-      //) {
-      //   Contract.Requires(
-      //      changeType == ChangeType.PropertyChanged ||
-      //      changeType == ChangeType.ValidationStateChanged
-      //   );
-      //   Contract.Requires(changedVM != null);
-      //   Contract.Requires(changedProperty != null);
-
-      //   ChangeType = changeType;
-      //   ChangedVM = changedVM;
-      //   ChangedProperty = changedProperty;
-
-      //   ChangedPath = Path
-      //      .Empty
-      //      .Append(changedVM)
-      //      .Append(changedProperty);
-      //}
-
-      //internal ChangeArgs(
-      //   ChangeType changeType,
-      //   IVMCollection changedCollection,
-      //   IEnumerable<IViewModel> oldItems = null,
-      //   IEnumerable<IViewModel> newItems = null
-      //) {
-      //   ChangeType = changeType;
-
-      //   ChangedPath = Path
-      //      .Empty
-      //      .Append(changedCollection.Owner)
-      //      .Append(changedCollection);
-
-      //   OldItems = oldItems ?? Enumerable.Empty<IViewModel>();
-      //   NewItems = newItems ?? Enumerable.Empty<IViewModel>();
-      //}
-
       private ChangeArgs(
          ChangeType changeType,
+         ValueStage stage,
          IVMPropertyDescriptor changedProperty,
          Path changedPath,
          IChangeReason reason
       ) {
          ChangeType = changeType;
+         Stage = stage;
          ChangedProperty = changedProperty;
 
          ChangedPath = changedPath;
@@ -87,23 +38,26 @@
 
       private ChangeArgs(
          ChangeType changeType,
+         ValueStage stage,
          Path changedPath,
          IEnumerable<IViewModel> oldItems = null,
          IEnumerable<IViewModel> newItems = null,
          IChangeReason reason = null
       ) {
          ChangeType = changeType;
+         Stage = stage;
          ChangedPath = changedPath;
          OldItems = oldItems ?? Enumerable.Empty<IViewModel>();
          NewItems = newItems ?? Enumerable.Empty<IViewModel>();
          Reason = reason;
       }
 
-      internal static ChangeArgs PropertyChanged(IVMPropertyDescriptor property, IChangeReason reason = null) {
+      internal static ChangeArgs PropertyChanged(IVMPropertyDescriptor property, ValueStage stage, IChangeReason reason = null) {
          Contract.Requires(property != null);
 
          return new ChangeArgs(
             ChangeType.PropertyChanged,
+            stage,
             Path.Empty.Append(property),
             reason: reason
          ) { ChangedProperty = property };// TODO: Remove
@@ -111,6 +65,7 @@
 
       internal static ChangeArgs ViewModelPropertyChanged(
          IVMPropertyDescriptor property,
+         ValueStage stage,
          IViewModel oldValue,
          IViewModel newValue,
          IChangeReason reason = null
@@ -125,6 +80,7 @@
 
          return new ChangeArgs(
             ChangeType.PropertyChanged,
+            stage,
             Path.Empty.Append(property),
             oldItems: oldItems,
             newItems: newItems,
@@ -139,6 +95,7 @@
 
          return new ChangeArgs(
             ChangeType.CollectionPopulated,
+            ValueStage.ValidatedValue,
             Path.Empty.Append(collection),
             newItems: newItems,
             reason: reason
@@ -156,6 +113,7 @@
 
          return new ChangeArgs(
             ChangeType.AddedToCollection,
+            ValueStage.ValidatedValue,
             Path.Empty.Append(collection),
             newItems: newItems,
             reason: reason
@@ -173,6 +131,7 @@
 
          return new ChangeArgs(
             ChangeType.RemovedFromCollection,
+            ValueStage.ValidatedValue,
             Path.Empty.Append(collection),
             oldItems: oldItems,
             reason: reason
@@ -182,16 +141,18 @@
       internal static ChangeArgs ValidationResultChanged(IChangeReason reason = null) {
          return new ChangeArgs(
             ChangeType.ValidationResultChanged,
+            ValueStage.ValidatedValue,
             Path.Empty,
             reason: reason
          );
       }
 
-      internal static ChangeArgs ValidationResultChanged(IVMPropertyDescriptor property) {
+      internal static ChangeArgs ValidationResultChanged(IVMPropertyDescriptor property, ValueStage stage) {
          Contract.Requires(property != null);
 
          return new ChangeArgs(
             ChangeType.ValidationResultChanged,
+            stage,
             Path.Empty.Append(property)
          );
       }
@@ -220,9 +181,12 @@
 
       public IChangeReason Reason { get; private set; }
 
+      public ValueStage Stage { get; private set; }
+
       internal ChangeArgs PrependViewModel(IViewModel viewModel) {
          return new ChangeArgs(
             ChangeType,
+            Stage,
             ChangedProperty,
             ChangedPath.Prepend(viewModel),
             Reason

@@ -35,7 +35,7 @@
          ValueAccessor.Value = newChild;
          InvokeRefresh();
 
-         var expectedChangeArgs = ChangeArgs.ViewModelPropertyChanged(Property, oldChild, newChild, null);
+         var expectedChangeArgs = ChangeArgs.ViewModelPropertyChanged(Property, ValueStage.ValidatedValue, oldChild, newChild, null);
          DomainAssert.AreEqual(new[] { expectedChangeArgs }, Context.NotifyChangeInvocations);
       }
 

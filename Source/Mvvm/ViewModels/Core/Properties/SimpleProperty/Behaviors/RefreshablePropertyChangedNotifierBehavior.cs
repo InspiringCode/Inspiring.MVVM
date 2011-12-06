@@ -16,6 +16,7 @@
          context.NotifyChange(
             ChangeArgs.PropertyChanged(
                _property,
+               ValueStage.ValidatedValue,
                RefreshReason.Create(options.ExecuteRefreshDependencies)
             )
          );
