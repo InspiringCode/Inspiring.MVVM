@@ -6,7 +6,7 @@
       IValidatedValueAccessorBehavior<TValue> {
 
       public ValueValidationSourceBehavior()
-         : base(ValidationStep.Value) {
+         : base(ValidationStep.Value, ValueStage.Value) {
       }
 
       public TValue GetValue(IBehaviorContext context) {

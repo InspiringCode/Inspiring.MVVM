@@ -238,7 +238,7 @@
             result
                .Property
                .Behaviors
-               .HandlePropertyChangedNext(GetContext());
+               .HandlePropertyChangedNext(GetContext(), args);
          }
       }
 

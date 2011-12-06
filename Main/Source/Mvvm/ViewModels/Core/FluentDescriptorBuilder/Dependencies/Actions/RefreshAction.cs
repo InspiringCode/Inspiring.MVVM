@@ -36,8 +36,12 @@
 
          _target.ForeachLoadedDescendant(ownerVM, (vm, props) => {
             if (props.Any()) {
+               // TODO: The logic with 'wouldRefreshChangeSource' is not correct. The refresh source
+               //       may be an descendant of 'vm' in which case it would nevertheless be refreshed.
+               //       Unit test 'SetValue_WhenValidationResultChanges_WorksWithSelfRecursiveDependency'
+               //       reproduces this.
                foreach (var prop in props) {
-                  bool wouldRefreshChangeSource = 
+                  bool wouldRefreshChangeSource =
                      vm == args.ChangedVM &&
                      prop == args.ChangedProperty;
 

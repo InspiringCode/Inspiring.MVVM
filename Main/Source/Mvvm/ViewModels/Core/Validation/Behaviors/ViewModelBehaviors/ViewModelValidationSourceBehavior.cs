@@ -11,7 +11,7 @@
       private ValidationResultManager _resultManager;
 
       public void Initialize(BehaviorInitializationContext context) {
-         _resultManager = new ValidationResultManager(context, ViewModel.GeneralFieldGroup);
+         _resultManager = new ValidationResultManager(context, ViewModel.GeneralFieldGroup, ValueStage.ValidatedValue);
          SetInitialized();
 
          this.InitializeNext(context);

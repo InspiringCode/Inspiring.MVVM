@@ -55,19 +55,19 @@
 
          var context = vm.GetContext();
 
-         var args = ChangeArgs.PropertyChanged(property);
+         var args = ChangeArgs.PropertyChanged(property, ValueStage.ValidatedValue);
          context.NotifyChange(args);
          Assert.IsTrue(mock.PropertyChangedWasCalled);
 
          mock.PropertyChangedWasCalled = false;
          args = ChangeArgs
-            .PropertyChanged(property)
+            .PropertyChanged(property, ValueStage.ValidatedValue)
             .PrependViewModel(ViewModelStub.Build());
          context.NotifyChange(args);
          Assert.IsFalse(mock.PropertyChangedWasCalled);
 
          mock.PropertyChangedWasCalled = false;
-         args = ChangeArgs.ValidationResultChanged(property);
+         args = ChangeArgs.ValidationResultChanged(property, ValueStage.Value);
          context.NotifyChange(args);
          Assert.IsFalse(mock.PropertyChangedWasCalled);
 
@@ -92,7 +92,7 @@
       }
 
       private static ChangeArgs CreateChangeArgs() {
-         return ChangeArgs.PropertyChanged(PropertyStub.Build());
+         return ChangeArgs.PropertyChanged(PropertyStub.Build(), ValueStage.ValidatedValue);
       }
 
       private static VMKernel CreateKernel(IViewModel vm = null) {
@@ -103,7 +103,7 @@
       private class PropertyChangedMock : Behavior, IHandlePropertyChangedBehavior {
          public bool PropertyChangedWasCalled { get; set; }
 
-         public void HandlePropertyChanged(IBehaviorContext context) {
+         public void HandlePropertyChanged(IBehaviorContext context, ChangeArgs args) {
             PropertyChangedWasCalled = true;
          }
       }

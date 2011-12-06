@@ -4,9 +4,10 @@
    internal class PropertyChangedNotifierBehavior<TValue> :
       InitializableBehavior,
       IBehaviorInitializationBehavior,
+      IChangeNotifierBehavior<TValue>,
       IValueAccessorBehavior<TValue> {
 
-      private IVMPropertyDescriptor _property;
+      protected IVMPropertyDescriptor _property;
 
       public virtual void Initialize(BehaviorInitializationContext context) {
          _property = context.Property;
@@ -33,17 +34,19 @@
          // when the value of the source property changes if it is set to the
          // same value that it returned last time.
          if (!Object.Equals(value, oldValue)) {
-            var args = CreateChangeArgs(_property, oldValue, value);
-            context.NotifyChange(args);
+            NotifyPropertyChanged(context, ValueStage.ValidatedValue, oldValue, value);
          }
       }
 
-      protected virtual ChangeArgs CreateChangeArgs(
-         IVMPropertyDescriptor property,
-         TValue oldValue,
-         TValue newValue
-      ) {
-         return ChangeArgs.PropertyChanged(_property, null);
+      public virtual void NotifyPropertyChanged(IBehaviorContext context, ValueStage stage, TValue oldValue, TValue newValue) {
+         var args = ChangeArgs.PropertyChanged(
+            _property, stage,
+            reason: null
+         );
+
+         context.NotifyChange(args);
+
+         this.NotifyPropertyChangedNext(context, stage, oldValue, newValue);
       }
    }
 }

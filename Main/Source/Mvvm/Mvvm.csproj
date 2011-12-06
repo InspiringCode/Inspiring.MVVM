@@ -126,6 +126,7 @@
     <Compile Include="Common\InterprocessCommunication\InterprocessLock.cs" />
     <Compile Include="Common\InterprocessCommunication\InterprocessMessenger.cs" />
     <Compile Include="Common\InterprocessCommunication\WindowMessageInterprocessMessenger.cs" />
+    <Compile Include="Common\Optional.cs" />
     <Compile Include="Common\Reference.cs" />
     <Compile Include="Common\ReferenceEqualityComparer.cs" />
     <Compile Include="Common\SealableObject.cs" />
@@ -201,10 +202,12 @@
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\DependencySourceBuilder.cs" />
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\DependencyTargetBuilder.cs" />
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\Interfaces\IRefreshTargetBuilder.cs" />
+    <Compile Include="ViewModels\Core\Properties\Common\BehaviorInterfaces\IChangeNotifierBehavior.cs" />
     <Compile Include="ViewModels\Core\Properties\SimpleProperty\Behaviors\ValueCacheBehavior.cs" />
     <Compile Include="ViewModels\Core\Properties\ViewModelProperty\Behaviors\ViewModelPropertyChangedNotifierBehavior.cs" />
     <Compile Include="ViewModels\Core\Undo\Actions\UserDefinedCompensationAction.cs" />
     <Compile Include="ViewModels\Core\Validation\Behaviors\ViewModelBehaviors\CachingValidationResultAggregatorBehavior.cs" />
+    <Compile Include="ViewModels\Core\ValueStage.cs" />
     <Compile Include="ViewModels\Core\ViewModel\Behaviors\DeclarativeDependencyBehavior.cs" />
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\Interfaces\IActionOrAnyDescendantBuilder.cs" />
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\Interfaces\IDependencyActionBuilder.cs" />

@@ -13,7 +13,8 @@
          DomainAssert.AreEqual(Path.Empty, args.ChangedPath);
 
          var property = PropertyStub.Build();
-         args = ChangeArgs.ValidationResultChanged(property);
+         args = ChangeArgs.ValidationResultChanged(property, ValueStage.ValidatedValue);
+         Assert.AreEqual(ValueStage.ValidatedValue, args.Stage);
          Assert.AreEqual(ChangeType.ValidationResultChanged, args.ChangeType);
          DomainAssert.AreEqual(Path.Empty.Append(property), args.ChangedPath);
       }
@@ -21,9 +22,10 @@
       [TestMethod]
       public void PropertyChanged_SetsChangeTypeAndChangedPathToProperty() {
          var property = PropertyStub.Build();
-         var args = ChangeArgs.PropertyChanged(property);
+         var args = ChangeArgs.PropertyChanged(property, ValueStage.DisplayValue);
 
          Assert.AreEqual(ChangeType.PropertyChanged, args.ChangeType);
+         Assert.AreEqual(ValueStage.DisplayValue, args.Stage);
          DomainAssert.AreEqual(Path.Empty.Append(property), args.ChangedPath);
       }
 
@@ -70,9 +72,10 @@
       [TestMethod]
       public void ViewModelPropertyChanged_SetsChangeTypeAndChangedPathToProperty() {
          var property = PropertyStub.Build();
-         var args = ChangeArgs.ViewModelPropertyChanged(property, null, null);
+         var args = ChangeArgs.ViewModelPropertyChanged(property, ValueStage.Value, null, null);
 
          Assert.AreEqual(ChangeType.PropertyChanged, args.ChangeType);
+         Assert.AreEqual(ValueStage.Value, args.Stage);
          DomainAssert.AreEqual(Path.Empty.Append(property), args.ChangedPath);
       }
 
@@ -80,7 +83,7 @@
       public void ViewModelPropertyChanged_SetsOldAndNewItems() {
          var property = PropertyStub.Build();
          var newValue = ViewModelStub.Build();
-         var args = ChangeArgs.ViewModelPropertyChanged(property, null, newValue);
+         var args = ChangeArgs.ViewModelPropertyChanged(property, ValueStage.ValidatedValue, null, newValue);
 
          CollectionAssert.AreEqual(new IViewModel[0], args.OldItems.ToArray());
          CollectionAssert.AreEqual(new IViewModel[] { newValue }, args.NewItems.ToArray());

@@ -163,6 +163,9 @@
 
          gc1.SetValue(x => x.StringProperty, "Trigger");
 
+         // TODO: This should ideally be 1 with an advanced implementation, but it 
+         // should be true if the current implementation would be correct (see 
+         // 'RefreshAction').
          Assert.AreEqual(1, gc1.StringPropertyRefreshCount);
          Assert.AreEqual(1, gc2.StringPropertyRefreshCount);
       }

@@ -39,7 +39,7 @@
          this.InitializeNext(context);
       }
 
-      public void HandlePropertyChanged(IBehaviorContext context) {
+      public void HandlePropertyChanged(IBehaviorContext context, ChangeArgs args) {
          AssertInitialized();
 
          if (_descriptor != null) {
@@ -48,7 +48,7 @@
 
          IHandlePropertyChangedBehavior next;
          if (TryGetBehavior(out next)) {
-            next.HandlePropertyChanged(context);
+            next.HandlePropertyChanged(context, args);
          }
       }
 

@@ -43,10 +43,26 @@
          var newChild = new ChildVM();
          VM.SetValue(x => x.InstanceProperty, oldChild);
 
-         VM.NotifyChangeInvocations.Clear();
+         VM.OnChangeInvocations.Clear();
          VM.SetValue(x => x.InstanceProperty, newChild);
 
-         var args = VM.NotifyChangeInvocations.FirstOrDefault();
+         var args = VM.OnChangeInvocations.FirstOrDefault();
+         Assert.IsNotNull(args);
+         CollectionAssert.AreEqual(new[] { oldChild }, args.OldItems.ToArray());
+         CollectionAssert.AreEqual(new[] { newChild }, args.NewItems.ToArray());
+      }
+
+      [TestMethod]
+      public void SetValue_ToInvalidValue_CallsNotifyChange() {
+         var oldChild = new ChildVM();
+         var newChild = new ChildVM();
+         VM.SetValue(x => x.InstanceProperty, oldChild);
+
+         VM.OnChangeInvocations.Clear();
+         VM.InstancePropertyError = "Invalid Child VM";
+         VM.SetValue(x => x.InstanceProperty, newChild);
+
+         var args = VM.OnChangeInvocations.SingleOrDefault(x => x.ChangeType == ChangeType.PropertyChanged);
          Assert.IsNotNull(args);
          CollectionAssert.AreEqual(new[] { oldChild }, args.OldItems.ToArray());
          CollectionAssert.AreEqual(new[] { newChild }, args.NewItems.ToArray());
@@ -83,6 +99,14 @@
                   (x, val) => x.DelegatePropertyResult = val
                );
             })
+            .WithValidators(b => {
+               b.Check(x => x.InstanceProperty).Custom(args => {
+                  string error = args.Owner.InstancePropertyError;
+                  if (error != null) {
+                     args.AddError(error);
+                  }
+               });
+            })
             .Build();
 
          public RootVM()
@@ -91,6 +115,8 @@
 
          public ChildSource WrapperPropertySource { get; set; }
          public ChildVM DelegatePropertyResult { get; set; }
+
+         public string InstancePropertyError { get; set; }
       }
 
       private sealed class RootVMDescriptor : VMDescriptor {

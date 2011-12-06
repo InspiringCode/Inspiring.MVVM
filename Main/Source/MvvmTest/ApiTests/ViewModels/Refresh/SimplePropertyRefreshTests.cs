@@ -21,14 +21,14 @@
             .TestCase("MappedProperty", x => x.MappedProperty)
             .TestCase("DelegateProperty", x => x.DelegateProperty)
             .Run(propertySelector => {
-               VM.NotifyChangeInvocations.Clear();
+               VM.OnChangeInvocations.Clear();
                VM.Refresh(propertySelector);
 
                var expectedChangaArgs = ChangeArgs
-                  .PropertyChanged(propertySelector(VM.Descriptor))
+                  .PropertyChanged(propertySelector(VM.Descriptor), ValueStage.ValidatedValue)
                   .PrependViewModel(VM);
 
-               DomainAssert.AreEqual(new[] { expectedChangaArgs }, VM.NotifyChangeInvocations);
+               DomainAssert.AreEqual(new[] { expectedChangaArgs }, VM.OnChangeInvocations);
             });
       }
 
