@@ -2,6 +2,7 @@
    using System;
    using System.Linq.Expressions;
    using System.Windows;
+   using System.Windows.Data;
    using System.Windows.Input;
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.Screens;
@@ -39,7 +40,10 @@
          }
 
          // TODO: Always necessary? Is there a better place?
-         context.Binding.ValidatesOnDataErrors = true;
+         Binding binding = context.Binding as Binding;
+         if (binding != null) {
+            binding.ValidatesOnDataErrors = true;
+         }
 
          return new PropertyBinderExpression<T>(context);
       }
