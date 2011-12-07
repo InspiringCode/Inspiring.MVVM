@@ -166,72 +166,62 @@
 
          return this;
       }
-
-
+      
       public IOptionsExpression<T> TwoWay() {
-         BinderExpression.ExposeContext(this, c => {
-            c.Binding.Mode = BindingMode.TwoWay;
-         });
-
+         ConfigureBinding<Binding>(x => x.Mode = BindingMode.TwoWay);
          return this;
       }
 
       public IOptionsExpression<T> OneWay() {
-         BinderExpression.ExposeContext(this, c => {
-            c.Binding.Mode = BindingMode.OneWay;
-         });
-
+         ConfigureBinding<Binding>(x => x.Mode = BindingMode.OneWay);
          return this;
       }
 
       public IOptionsExpression<T> OneWayToSource() {
-         BinderExpression.ExposeContext(this, c => {
-            c.Binding.Mode = BindingMode.OneWayToSource;
-         });
-
+         ConfigureBinding<Binding>(x => x.Mode = BindingMode.OneWayToSource);
          return this;
       }
-
-
+      
       public IOptionsExpression<T> OneTime() {
-         BinderExpression.ExposeContext(this, c => {
-            c.Binding.Mode = BindingMode.OneTime;
-         });
-
+         ConfigureBinding<Binding>(x => x.Mode = BindingMode.OneTime);
          return this;
       }
 
       public IOptionsExpression<T> PropertyChanged() {
-         BinderExpression.ExposeContext(this, c => {
-            c.Binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
-         });
-
+         ConfigureBinding<Binding>(x => x.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged);
          return this;
       }
 
       public IOptionsExpression<T> With(IValueConverter converter, object parameter = null) {
-         BinderExpression.ExposeContext(this, c => {
-            c.Binding.Converter = converter;
-            c.Binding.ConverterParameter = parameter;
+         ConfigureBinding<Binding>(x => {
+            x.Converter = converter;
+            x.ConverterParameter = parameter;
          });
-
+         
          return this;
       }
 
       public IOptionsExpression<T> StringFormat(string format) {
-         BinderExpression.ExposeContext(this, c => {
-            c.Binding.StringFormat = format;
-         });
-
+         ConfigureBinding<BindingBase>(x => x.StringFormat = format);
          return this;
       }
 
       public IOptionsExpression<T> FallbackValue(object value) {
-         BinderExpression.ExposeContext(this, c => {
-            c.Binding.FallbackValue = value;
-         });
-
+         ConfigureBinding<BindingBase>(x => x.FallbackValue = value);
          return this;
+      }
+
+      private void ConfigureBinding<TBinding>(
+         Action<TBinding> configurationAction
+      ) where TBinding : BindingBase {
+         BinderExpression.ExposeContext(this, c => {
+            TBinding casted = c.Binding as TBinding;
+            if (casted == null) {
+               throw new InvalidOperationException(ExceptionTexts.OperationInvalidForBindingType);
+            }
+
+            configurationAction(casted);
+         });
       }
    }
 }

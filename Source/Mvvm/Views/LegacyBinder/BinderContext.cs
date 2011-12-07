@@ -16,7 +16,7 @@
 
       public DependencyProperty TargetProperty { get; set; }
 
-      public Binding Binding { get; set; }
+      public BindingBase Binding { get; set; }
 
       public bool Complete { get; set; }
 
@@ -29,7 +29,11 @@
             propertyPathPostfix :
             PropertyPath + "." + propertyPathPostfix;
 
-         Binding.Path = new PropertyPath(PropertyPath);         
+         // TODO: Is there a better place?
+         Binding b = Binding as Binding;
+         if (b != null) {
+            b.Path = new PropertyPath(PropertyPath);
+         }
       }
 
       //public void PrepareBinding() {

@@ -294,4 +294,7 @@
   <data name="FolderBrowserDialogNoRootFolder" xml:space="preserve">
     <value>Unable to retrieve the root folder.</value>
   </data>
+  <data name="OperationInvalidForBindingType" xml:space="preserve">
+    <value>This binding configuration cannot be applied to the given type of binding.</value>
+  </data>
 </root>
