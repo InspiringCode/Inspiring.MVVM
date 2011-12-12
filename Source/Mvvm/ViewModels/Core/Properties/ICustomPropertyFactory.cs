@@ -5,39 +5,97 @@
    using System.Windows.Input;
 
    public interface ICustomPropertyFactory<TSourceObject> {
+      /// <summary>
+      /// 
+      /// </summary>
+      /// <param name="valueAccessor">
+      ///   Usually an <see cref="IValueAccessorBehavior{TValue}"/> object.
+      /// </param>
       IVMPropertyDescriptor<TValue> Property<TValue>(
-         IValueAccessorBehavior<TValue> valueAccessor
+         IBehavior valueAccessor,
+         Action<BehaviorChainConfiguration> chainConfigurationAction = null
       );
 
+      /// <summary>
+      /// 
+      /// </summary>
+      /// <param name="valueAccessor">
+      ///   Usually an <see cref="IValueAccessorBehavior{TValue}"/> object.
+      /// </param>
       IVMPropertyDescriptor<TValue> PropertyWithSource<TValue>(
-         IValueAccessorBehavior<TValue> valueAccessor
+         IBehavior valueAccessor,
+         Action<BehaviorChainConfiguration> chainConfigurationAction = null
       );
 
+      /// <summary>
+      /// 
+      /// </summary>
+      /// <param name="valueAccessor">
+      ///   Usually an <see cref="IValueAccessorBehavior{TChildVM}"/> object.
+      /// </param>
       IVMPropertyDescriptor<TChildVM> ViewModelProperty<TChildVM>(
-         IValueAccessorBehavior<TChildVM> valueAccessor,
-         IBehavior sourceAccessor = null
+         IBehavior valueAccessor,
+         IBehavior sourceAccessor = null,
+         Action<BehaviorChainConfiguration> chainConfigurationAction = null
       ) where TChildVM : IViewModel;
 
+      /// <summary>
+      /// 
+      /// </summary>
+      /// <param name="valueAccessor">
+      ///   Usually an <see cref="IValueAccessorBehavior{TChildVM}"/> object.
+      /// </param>
+      /// <param name="sourceAccessor">
+      ///   Usually an <see cref="IValueAccessorBehavior{TChildSource}"/> object.
+      /// </param>
       IVMPropertyDescriptor<TChildVM> ViewModelPropertyWithSource<TChildVM, TChildSource>(
-         IValueAccessorBehavior<TChildVM> valueAccessor,
-         IValueAccessorBehavior<TChildSource> sourceAccessor = null
+         IBehavior valueAccessor,
+         IBehavior sourceAccessor = null,
+         Action<BehaviorChainConfiguration> chainConfigurationAction = null
       ) where TChildVM : IViewModel, IHasSourceObject<TChildSource>;
 
+      /// <summary>
+      /// 
+      /// </summary>
+      /// <param name="valueAccessor">
+      ///   Usually an <see cref="IValueAccessorBehavior{T}"/> (T is <see cref="IVMCollection{TChildVM}"/>) object.
+      /// </param>
+      /// <param name="sourceAccessor">
+      ///   Usually an <see cref="IValueAccessorBehavior{T}"/> (T is <see cref="IEnumerable{TChildVM}"/>) object.
+      /// </param>
       IVMPropertyDescriptor<IVMCollection<TChildVM>> CollectionProperty<TChildVM>(
          IVMDescriptor itemDescriptor,
-         IValueAccessorBehavior<IVMCollection<TChildVM>> valueAccessor,
-         IValueAccessorBehavior<IEnumerable<TChildVM>> sourceAccessor = null
+         IBehavior valueAccessor,
+         IBehavior sourceAccessor = null,
+         Action<BehaviorChainConfiguration> chainConfigurationAction = null
       ) where TChildVM : IViewModel;
 
+      /// <summary>
+      /// 
+      /// </summary>
+      /// <param name="valueAccessor">
+      ///   Usually an <see cref="IValueAccessorBehavior{T}"/> (T is <see cref="IVMCollection{TChildVM}"/>) object.
+      /// </param>
+      /// <param name="sourceAccessor">
+      ///   Usually an <see cref="IValueAccessorBehavior{T}"/> (T is <see cref="IEnumerable{TChildSource}"/>) object.
+      /// </param>
       IVMPropertyDescriptor<IVMCollection<TChildVM>> CollectionPropertyWithSource<TChildVM, TChildSource>(
          IVMDescriptor itemDescriptor,
-         IValueAccessorBehavior<IVMCollection<TChildVM>> valueAccessor,
-         IValueAccessorBehavior<IEnumerable<TChildSource>> sourceAccessor = null
+         IBehavior valueAccessor,
+         IBehavior sourceAccessor = null,
+         Action<BehaviorChainConfiguration> chainConfigurationAction = null
       ) where TChildVM : IViewModel, IHasSourceObject<TChildSource>;
 
+      /// <summary>
+      /// 
+      /// </summary>
+      /// <param name="valueAccessor">
+      ///   Usually an <see cref="IValueAccessorBehavior{TSourceObject}"/> object.
+      /// </param>
       IVMPropertyDescriptor<ICommand> CommandProperty(
-         IValueAccessorBehavior<TSourceObject> sourceObjectAccessor,
-         IBehavior commandExecutor
+         IBehavior sourceObjectAccessor,
+         IBehavior commandExecutor,
+         Action<BehaviorChainConfiguration> chainConfigurationAction = null
       );
 
       IVMPropertyDescriptor<TValue> CustomProperty<TValue>(

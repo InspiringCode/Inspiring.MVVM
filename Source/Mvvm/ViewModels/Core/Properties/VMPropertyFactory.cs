@@ -19,27 +19,34 @@
          _sourceObjectPath = sourceObjectPath;
       }
 
-      public IVMPropertyDescriptor<TValue> Property<TValue>(IValueAccessorBehavior<TValue> valueAccessor) {
+      public IVMPropertyDescriptor<TValue> Property<TValue>(
+         IBehavior valueAccessor,
+         Action<BehaviorChainConfiguration> chainConfigurationAction = null
+      ) {
          return CustomProperty<TValue>(
             DefaultBehaviorChainTemplateKeys.Property,
             BehaviorFactoryConfigurations.ForSimpleProperty<TOwnerVM, TValue, TSourceObject>(false),
-            config => config.Enable(PropertyBehaviorKeys.ValueAccessor, valueAccessor)
+            config => config.Enable(PropertyBehaviorKeys.ValueAccessor, valueAccessor),
+            chainConfigurationAction
          );
       }
 
       public IVMPropertyDescriptor<TValue> PropertyWithSource<TValue>(
-         IValueAccessorBehavior<TValue> valueAccessor
+         IBehavior valueAccessor,
+         Action<BehaviorChainConfiguration> chainConfigurationAction = null
       ) {
          return CustomProperty<TValue>(
             DefaultBehaviorChainTemplateKeys.PropertyWithSource,
             BehaviorFactoryConfigurations.ForSimpleProperty<TOwnerVM, TValue, TSourceObject>(true),
-            config => config.Enable(PropertyBehaviorKeys.ValueAccessor, valueAccessor)
+            config => config.Enable(PropertyBehaviorKeys.ValueAccessor, valueAccessor),
+            chainConfigurationAction
          );
       }
 
       public IVMPropertyDescriptor<TChildVM> ViewModelProperty<TChildVM>(
-         IValueAccessorBehavior<TChildVM> valueAccessor,
-         IBehavior sourceAccessor = null
+         IBehavior valueAccessor,
+         IBehavior sourceAccessor = null,
+         Action<BehaviorChainConfiguration> chainConfigurationAction = null
       ) where TChildVM : IViewModel {
          return CustomProperty<TChildVM>(
             DefaultBehaviorChainTemplateKeys.ViewModelProperty,
@@ -50,13 +57,15 @@
                if (sourceAccessor != null) {
                   config.Enable(PropertyBehaviorKeys.SourceAccessor, sourceAccessor);
                }
-            }
+            },
+            chainConfigurationAction
          );
       }
 
       public IVMPropertyDescriptor<TChildVM> ViewModelPropertyWithSource<TChildVM, TChildSource>(
-         IValueAccessorBehavior<TChildVM> valueAccessor,
-         IValueAccessorBehavior<TChildSource> sourceAccessor = null
+         IBehavior valueAccessor,
+         IBehavior sourceAccessor = null,
+         Action<BehaviorChainConfiguration> chainConfigurationAction = null
       ) where TChildVM : IViewModel, IHasSourceObject<TChildSource> {
          return CustomProperty<TChildVM>(
             DefaultBehaviorChainTemplateKeys.ViewModelPropertyWithSource,
@@ -67,14 +76,16 @@
                if (sourceAccessor != null) {
                   config.Enable(PropertyBehaviorKeys.SourceAccessor, sourceAccessor);
                }
-            }
+            },
+            chainConfigurationAction
          );
       }
 
       public IVMPropertyDescriptor<IVMCollection<TChildVM>> CollectionProperty<TChildVM>(
          IVMDescriptor itemDescriptor,
-         IValueAccessorBehavior<IVMCollection<TChildVM>> valueAccessor,
-         IValueAccessorBehavior<IEnumerable<TChildVM>> sourceAccessor = null
+         IBehavior valueAccessor,
+         IBehavior sourceAccessor = null,
+         Action<BehaviorChainConfiguration> chainConfigurationAction = null
       ) where TChildVM : IViewModel {
          return CustomProperty<IVMCollection<TChildVM>>(
             DefaultBehaviorChainTemplateKeys.CollectionProperty,
@@ -90,14 +101,16 @@
                if (sourceAccessor != null) {
                   config.Enable(PropertyBehaviorKeys.SourceAccessor, sourceAccessor);
                }
-            }
+            },
+            chainConfigurationAction
          );
       }
 
       public IVMPropertyDescriptor<IVMCollection<TChildVM>> CollectionPropertyWithSource<TChildVM, TChildSource>(
          IVMDescriptor itemDescriptor,
-         IValueAccessorBehavior<IVMCollection<TChildVM>> valueAccessor,
-         IValueAccessorBehavior<IEnumerable<TChildSource>> sourceAccessor = null
+         IBehavior valueAccessor,
+         IBehavior sourceAccessor = null,
+         Action<BehaviorChainConfiguration> chainConfigurationAction = null
       ) where TChildVM : IViewModel, IHasSourceObject<TChildSource> {
          return CustomProperty<IVMCollection<TChildVM>>(
             DefaultBehaviorChainTemplateKeys.CollectionPropertyWithSource,
@@ -113,13 +126,15 @@
                if (sourceAccessor != null) {
                   config.Enable(PropertyBehaviorKeys.SourceAccessor, sourceAccessor);
                }
-            }
+            },
+            chainConfigurationAction
          );
       }
 
       public IVMPropertyDescriptor<ICommand> CommandProperty(
-         IValueAccessorBehavior<TSourceObject> sourceObjectAccessor,
-         IBehavior commandExecutor
+         IBehavior sourceObjectAccessor,
+         IBehavior commandExecutor,
+         Action<BehaviorChainConfiguration> chainConfigurationAction = null
       ) {
          return CustomProperty<ICommand>(
             DefaultBehaviorChainTemplateKeys.CommandProperty,
@@ -127,7 +142,8 @@
             config => {
                config.Enable(PropertyBehaviorKeys.SourceAccessor, sourceObjectAccessor);
                config.Enable(CommandPropertyBehaviorKeys.CommandExecutor, commandExecutor);
-            }
+            },
+            chainConfigurationAction
          );
       }
 
@@ -176,5 +192,25 @@
       public IValueAccessorBehavior<TSourceObject> CreateSourceObjectAccessor() {
          return new MappedValueAccessorBehavior<TOwnerVM, TSourceObject>(_sourceObjectPath);
       }
+      
+      private IVMPropertyDescriptor<TValue> CustomProperty<TValue>(
+         BehaviorChainTemplateKey templateKey,
+         IBehaviorFactoryConfiguration factoryConfiguration,
+         Action<BehaviorChainConfiguration> chainConfigurationAction,
+         Action<BehaviorChainConfiguration> userChainConfigurationAction
+      ) {
+         return CustomProperty<TValue>(
+            templateKey,
+            factoryConfiguration,
+            config => {
+               chainConfigurationAction(config);
+
+               if (userChainConfigurationAction != null) {
+                  userChainConfigurationAction(config);
+               }
+            }
+         );
+      }
+
    }
 }

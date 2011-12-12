@@ -11,7 +11,7 @@
    ///   cref="IVMPropertyBuilderProvider.GetPropertyBuilder"/> method call 
    ///   used to create the <see cref="IVMPropertyBuilder"/>.
    /// </typeparam>
-   public interface IValuePropertyBuilder<TSourceObject> {
+   public interface IValuePropertyBuilder<TSourceObject> : ICustomPropertyFactoryProvider<TSourceObject> {
       /// <summary>
       ///   Creates a <see cref="IVMPropertyDescriptor"/> that reads and sets the value of
       ///   standard property declared on the source object.

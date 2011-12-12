@@ -83,7 +83,7 @@
 
          var descriptor = descriptorBuilder.Build();
 
-         var property = _sourceObjectPropertyBuilder.Custom.ViewModelProperty(
+         var property = _sourceObjectPropertyBuilder.Custom.ViewModelProperty<MultiSelectionVM<TItemSource, TItemVM>>(
             valueAccessor: new MultSelectionAccessor<TItemVM>(descriptor),
             sourceAccessor: _sourceObjectPropertyBuilder.Custom.CreateSourceObjectAccessor()
          );
@@ -138,7 +138,7 @@
 
          var descriptor = descriptorBuilder.Build();
 
-         var property = _sourceObjectPropertyBuilder.Custom.ViewModelProperty(
+         var property = _sourceObjectPropertyBuilder.Custom.ViewModelProperty<MultiSelectionVM<TItemSource>>(
             valueAccessor: new MultSelectionAccessor(descriptor),
             sourceAccessor: _sourceObjectPropertyBuilder.Custom.CreateSourceObjectAccessor()
          );
@@ -155,7 +155,7 @@
       private Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> CreateLocatingPropertyFactory() {
          return delegate(IVMPropertyBuilder<TSourceObject> factory) {
             // Only PropertyWithSource is cachable!
-            return factory.Custom.PropertyWithSource(valueAccessor: new LocatingItemSourceBehavior());
+            return factory.Custom.PropertyWithSource<IEnumerable<TItemSource>>(valueAccessor: new LocatingItemSourceBehavior());
          };
       }
 
