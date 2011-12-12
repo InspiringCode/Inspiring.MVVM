@@ -11,7 +11,7 @@
    ///   cref="IVMPropertyBuilderProvider.GetPropertyBuilder"/> method call 
    ///   used to create the <see cref="IVMPropertyBuilder"/>.
    /// </typeparam>
-   public interface IVMPropertyBuilder<TSourceObject> : IHideObjectMembers, IConfigurationProvider {
+   public interface IVMPropertyBuilder<TSourceObject> : ICustomPropertyFactoryProvider<TSourceObject>, IHideObjectMembers, IConfigurationProvider {
       /// <summary>
       ///   Creates a <see cref="IVMPropertyDescriptor"/> that holds a simple value (an object,
       ///   string or value type).
@@ -31,14 +31,6 @@
       ///   initialized (for example its parent is set).
       /// </summary>
       ICollectionPropertyBuilder<TSourceObject> Collection { get; }
-
-      /// <summary>
-      ///   Provides an API to create properties with custom behaviors. This API
-      ///   is indended for very ADVANCED scenarios and should ONLY be used if you
-      ///   cannot implement your requirements with the standard API or you are
-      ///   extending the framework.
-      /// </summary>
-      ICustomPropertyFactory<TSourceObject> Custom { get; }
 
       /// <summary>
       ///   Creates a <see cref="IVMPropertyDescriptor"/> of type <see cref="ICommand"/>.

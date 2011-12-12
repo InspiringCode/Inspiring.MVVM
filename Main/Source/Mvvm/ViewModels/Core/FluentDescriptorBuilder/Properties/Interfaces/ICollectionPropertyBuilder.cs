@@ -11,7 +11,7 @@
    ///   cref="IVMPropertyBuilderProvider.GetPropertyBuilder"/> method call 
    ///   used to create the <see cref="IVMPropertyBuilder"/>.
    /// </typeparam>
-   public interface ICollectionPropertyBuilder<TSourceObject> {
+   public interface ICollectionPropertyBuilder<TSourceObject> : ICustomPropertyFactoryProvider<TSourceObject> {
       /// <summary>
       ///   Creates a <see cref="IVMPropertyDescriptor"/> of type <see cref="IVMCollection"/>
       ///   whos items are synchronized with a source collection returned by the 

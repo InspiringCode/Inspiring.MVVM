@@ -11,7 +11,7 @@
    ///   cref="IVMPropertyBuilderProvider.GetPropertyBuilder"/> method call 
    ///   used to create the <see cref="IVMPropertyBuilder"/>.
    /// </typeparam>
-   public interface IViewModelPropertyBuilder<TSourceObject> {
+   public interface IViewModelPropertyBuilder<TSourceObject> : ICustomPropertyFactoryProvider<TSourceObject> {
       /// <summary>
       ///   Selects the source value from which the child view model should be
       ///   initialized.

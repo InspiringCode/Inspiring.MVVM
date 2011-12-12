@@ -56,7 +56,7 @@
       IVMPropertyDescriptor<T> IValuePropertyBuilder<TSourceObject>.MapsTo<T>(
          Expression<Func<TSourceObject, T>> sourcePropertySelector
       ) {
-         return Custom.PropertyWithSource(
+         return Custom.PropertyWithSource<T>(
             Custom.CreateMappedAccessor(sourcePropertySelector)
          );
       }
@@ -107,7 +107,7 @@
          Func<TSourceObject, TChildVM> getter,
          Action<TSourceObject, TChildVM> setter
       ) {
-         return Custom.ViewModelProperty(
+         return Custom.ViewModelProperty<TChildVM>(
             valueAccessor: new DelegateViewModelAccessorBehavior<TChildVM>(),
             sourceAccessor: Custom.CreateDelegateAccessor(getter, setter)
          );
@@ -115,7 +115,7 @@
 
       /// <inheritdoc />
       IVMPropertyDescriptor<TChildVM> IViewModelPropertyBuilder<TSourceObject>.Of<TChildVM>() {
-         return Custom.ViewModelProperty(
+         return Custom.ViewModelProperty<TChildVM>(
             valueAccessor: new StoredViewModelAccessorBehavior<TChildVM>()
          );
       }
@@ -196,7 +196,7 @@
          }
 
          IVMPropertyDescriptor<TChildVM> IViewModelPropertyBuilderWithSource<TSourceValue>.With<TChildVM>() {
-            return _factory.ViewModelPropertyWithSource(
+            return _factory.ViewModelPropertyWithSource<TChildVM, TSourceValue>(
                valueAccessor: new WrapperViewModelAccessorBehavior<TChildVM, TSourceValue>(),
                sourceAccessor: _sourceValueAccessor
             );
@@ -219,7 +219,7 @@
          }
 
          public IVMPropertyDescriptor<IVMCollection<TItemVM>> With(IVMDescriptor itemDescriptor) {
-            return _factory.CollectionProperty(
+            return _factory.CollectionProperty<TItemVM>(
                itemDescriptor,
                valueAccessor: new PopulatedCollectionAccessorBehavior<TItemVM>(),
                sourceAccessor: _sourceCollectionAccessor
@@ -250,7 +250,7 @@
             IValueAccessorBehavior<IVMCollection<TItemVM>> valueAccessor =
                new WrapperCollectionAccessorBehavior<TItemVM, TItemSource>(_shouldCacheSourceCollection);
 
-            return _factory.CollectionPropertyWithSource(
+            return _factory.CollectionPropertyWithSource<TItemVM, TItemSource>(
                itemDescriptor,
                valueAccessor,
                _sourceCollectionAccessor
