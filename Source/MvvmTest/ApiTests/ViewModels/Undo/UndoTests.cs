@@ -207,6 +207,32 @@
       }
 
       [TestMethod]
+      public void RollbackTo_RefreshCollectionWhenSourceCollectionChanges_RestoresRollbackPoint() {
+         var projects = new Project[] {
+            CreateProject("Project1"),
+            CreateProject("Project2"),
+            CreateProject("Project3"),
+            CreateProject("Project4"),
+         };
+
+         Employee emp = CreateEmployee(projects: projects);
+
+         EmployeeVM.InitializeFrom(emp);
+
+         List<ProjectVM> expectedProjectVMColl = EmployeeVM.Projects.ToList();
+
+         var rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
+
+         // Act
+         emp.Projects.RemoveAt(0);
+         ((IViewModel)EmployeeVM).Kernel.Refresh(EmployeeVM.Descriptor.Projects);
+         EmployeeVM.UndoManager.RollbackTo(rollbackPoint);
+
+         CollectionAssert.AreEqual(expectedProjectVMColl, EmployeeVM.Projects);
+         Assert.AreSame(rollbackPoint, EmployeeVM.UndoManager.TopMostAction);
+      }
+
+      [TestMethod]
       public void RollbackTo_ModifyingSourceObjectAndCallRefresh_DoesNotUndo() {
          var employee = CreateEmployee();
 

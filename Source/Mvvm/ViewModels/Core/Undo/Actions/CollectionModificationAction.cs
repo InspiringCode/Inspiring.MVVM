@@ -1,5 +1,4 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
-   using System.Linq;
 
    internal sealed class CollectionModificationAction<TItemVM> :
       IUndoableAction
@@ -33,9 +32,7 @@
                   .ForEach(i => _change.Collection.Add(i));
                break;
             case CollectionChangeType.Populated:
-               for (int nI = 0; nI < _change.OldItems.Count(); nI++) {
-                  _change.Collection[nI] = _change.OldItems.ElementAt(nI);
-               }
+               _change.Collection.ReplaceItems(_change.OldItems, null);
                break;
          }
       }
