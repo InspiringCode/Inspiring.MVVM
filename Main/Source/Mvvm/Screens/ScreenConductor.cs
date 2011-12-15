@@ -53,22 +53,26 @@
          get { return _activeScreen; }
          set {
             if (value != _activeScreen) {
-               if (_activeScreen != null && _isActivated) {
-                  _activeScreen.Deactivate();
+               try {
+                  if (_activeScreen != null && _isActivated) {
+                     _activeScreen.Deactivate();
+                  }
+               } finally {
+                  _activeScreen = value;
+
+                  if (_activeScreen != null) {
+                     _activatedScreensHistory.Remove(_activeScreen);
+                     _activatedScreensHistory.Add(_activeScreen);
+                  }
+
+                  try {
+                     if (_activeScreen != null && _isActivated) {
+                        _activeScreen.Activate();
+                     }
+                  } finally {
+                     OnPropertyChanged(() => ActiveScreen);
+                  }
                }
-
-               _activeScreen = value;
-
-               if (_activeScreen != null && _isActivated) {
-                  _activeScreen.Activate();
-               }
-
-               if (_activeScreen != null) {
-                  _activatedScreensHistory.Remove(_activeScreen);
-                  _activatedScreensHistory.Add(_activeScreen);
-               }
-
-               OnPropertyChanged(() => ActiveScreen);
             }
          }
       }
@@ -101,9 +105,12 @@
 
          bool alreadyOpen = alreadyOpenScreen != null;
 
-         ActiveScreen = alreadyOpen ?
-            alreadyOpenScreen :
-            _screens.AddNew(factory);
+         if (alreadyOpen) {
+            ActiveScreen = alreadyOpenScreen;
+         } else {
+            IScreenBase newScreen = _screens.AddNew(factory);
+            ActiveScreen = newScreen;
+         }
 
          _eventAggregator.Publish(
             ScreenOpenedEvent,
@@ -126,14 +133,18 @@
 
       public void ImmediateCloseScreen(IScreenBase screen) {
          _activatedScreensHistory.Remove(screen);
-         ActiveScreen = _activatedScreensHistory.LastOrDefault();
 
-         // It is important to FIRST remove the screen and THEN call 'Close'. The
-         // removal triggers a collection change which causes the view reprenstation
-         // to close the view. In this stage the screen may still be accessed by the
-         // view. If 'Close' was called before, the screen may already be in an
-         // disposed state (e.g. database session closed).
-         _screens.Items.Remove(screen);
+         try {
+            // Deactivate may throw an exception
+            ActiveScreen = _activatedScreensHistory.LastOrDefault();
+         } finally {
+            // It is important to FIRST remove the screen and THEN call 'Close'. The
+            // removal triggers a collection change which causes the view reprenstation
+            // to close the view. In this stage the screen may still be accessed by the
+            // view. If 'Close' was called before, the screen may already be in an
+            // disposed state (e.g. database session closed).
+            _screens.Items.Remove(screen);
+         }
 
          screen.Close();
       }

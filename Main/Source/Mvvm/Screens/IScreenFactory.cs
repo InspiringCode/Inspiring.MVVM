@@ -2,6 +2,10 @@
    using System;
 
    public interface IScreenFactory<out TScreen> where TScreen : IScreenBase {
+      /// <remarks>
+      ///   If an exception occurs during initialization it should be rethrown by
+      ///   the implementation.
+      /// </remarks>
       TScreen Create(Action<TScreen> initializationCallback = null);
 
       /// <summary>

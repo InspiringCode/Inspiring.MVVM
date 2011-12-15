@@ -37,7 +37,9 @@
             .GetDialogLifecycle(_dialog)
             .WindowResult = window.DialogResult;
 
-         base.OnClosed(window);
+         // HACK: We do not call base, because we call Deactivate/Close ourselves in a
+         //       finally block around 'ShowDialog'.
+         //base.OnClosed(window);
       }
    }
 }

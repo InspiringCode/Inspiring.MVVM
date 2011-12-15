@@ -30,21 +30,11 @@
          }
       }
 
-      private class Factory<TScreen> : IScreenFactory<TScreen> where TScreen : IScreenBase {
-         private IServiceLocator _resolveWith;
-
-         public Factory(IServiceLocator resolveWith) {
-            _resolveWith = resolveWith ?? ServiceLocator.Current;
-         }
-
-         public Type ScreenType {
-            get { return typeof(TScreen); }
-         }
-
+      private abstract class AbstractFactory<TScreen> where TScreen : IScreenBase {
          public TScreen Create(Action<TScreen> initializationCallback = null) {
-            TScreen screen = _resolveWith.GetInstance<TScreen>();
+            TScreen screen = CreateScreen();
 
-            ScreenInitializer.Initialize(screen);
+            InitializeScreen(screen);
 
             // The callback may require that the screen is already initialized
             // (e.g. the callback may add the screen to a screen collection which
@@ -56,40 +46,60 @@
             return screen;
          }
 
+         protected abstract void InitializeScreen(TScreen screen);
+
+         protected abstract TScreen CreateScreen();
+      }
+
+      private abstract class ServiceLocatorFactory<TScreen> :
+         AbstractFactory<TScreen>
+         where TScreen : IScreenBase {
+
+         private readonly IServiceLocator _serviceLocator;
+
+         public ServiceLocatorFactory(IServiceLocator serviceLocator) {
+            _serviceLocator = serviceLocator ?? ServiceLocator.Current;
+         }
+
+         public Type ScreenType {
+            get { return typeof(TScreen); }
+         }
+
+         protected override TScreen CreateScreen() {
+            return _serviceLocator.GetInstance<TScreen>();
+         }
+      }
+
+
+      private class Factory<TScreen> :
+         ServiceLocatorFactory<TScreen>,
+         IScreenFactory<TScreen>
+         where TScreen : IScreenBase {
+
+         public Factory(IServiceLocator serviceLocator)
+            : base(serviceLocator) {
+         }
 
          public bool CreatesScreensEquivalentTo(IScreenBase concreteScreen) {
             return false;
          }
+
+         protected override void InitializeScreen(TScreen screen) {
+            ScreenInitializer.Initialize(screen);
+         }
       }
 
-      private class Factory<TScreen, TSubject> : IScreenFactory<TScreen> where TScreen : IScreenBase {
-         private TSubject _subject;
-         private IServiceLocator _resolveWith;
+      private class Factory<TScreen, TSubject> :
+         ServiceLocatorFactory<TScreen>,
+         IScreenFactory<TScreen>
+         where TScreen : IScreenBase {
 
-         public Factory(TSubject subject, IServiceLocator resolveWith) {
+         private readonly TSubject _subject;
+
+         public Factory(TSubject subject, IServiceLocator serviceLocator)
+            : base(serviceLocator) {
             _subject = subject;
-            _resolveWith = resolveWith ?? ServiceLocator.Current;
          }
-
-         public Type ScreenType {
-            get { return typeof(TScreen); }
-         }
-
-         public TScreen Create(Action<TScreen> initializationCallback = null) {
-            TScreen screen = _resolveWith.GetInstance<TScreen>();
-
-            ScreenInitializer.Initialize(screen, _subject);
-
-            // The callback may require that the screen is already initialized
-            // (e.g. the callback may add the screen to a screen collection which
-            // requires that the data of the screen is already loaded).
-            if (initializationCallback != null) {
-               initializationCallback(screen);
-            }
-
-            return screen;
-         }
-
 
          public bool CreatesScreensEquivalentTo(IScreenBase concreteScreen) {
             var locatableScreen = concreteScreen as ILocatableScreen<TSubject>;
@@ -98,9 +108,14 @@
                locatableScreen.PresentsSubject(_subject) :
                false;
          }
+
+         protected override void InitializeScreen(TScreen screen) {
+            ScreenInitializer.Initialize(screen, _subject);
+         }
       }
 
       private class InstanceFactory<TScreen> :
+         AbstractFactory<TScreen>,
          IScreenFactory<TScreen>
          where TScreen : IScreenBase {
 
@@ -114,18 +129,16 @@
             get { return _instance.GetType(); }
          }
 
-         public TScreen Create(Action<TScreen> initializationCallback = null) {
-            ScreenInitializer.Initialize(_instance);
-
-            if (initializationCallback != null) {
-               initializationCallback(_instance);
-            }
-
-            return _instance;
-         }
-
          public bool CreatesScreensEquivalentTo(IScreenBase concreteScreen) {
             return Object.Equals(concreteScreen, _instance);
+         }
+
+         protected override void InitializeScreen(TScreen screen) {
+            ScreenInitializer.Initialize(_instance);
+         }
+
+         protected override TScreen CreateScreen() {
+            return _instance;
          }
       }
    }
