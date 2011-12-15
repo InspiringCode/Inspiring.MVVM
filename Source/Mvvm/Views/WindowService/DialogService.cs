@@ -6,11 +6,13 @@
    using Inspiring.Mvvm.Screens;
    using Microsoft.Win32;
 
+   // TODO: Refactor this stuff (see 'WindowService')
    public class DialogService : IDialogService {
       public static readonly Event<EventArgs> DialogOpeningEvent = new Event<EventArgs>();
       public static readonly Event<EventArgs> DialogClosedEvent = new Event<EventArgs>();
 
       private readonly EventAggregator _aggregator;
+      private readonly ScreenService _screenService = new ScreenService();
 
       public DialogService(IWindowService windowService, EventAggregator aggregator) {
          Contract.Requires<ArgumentNullException>(windowService != null);
@@ -126,14 +128,23 @@
          IScreenBase parent = null,
          string title = null
       ) where TScreen : IScreenBase {
-         IScreenBase s = screen.Create();
-         s.Children.Add(new DialogLifecycle());
+         TScreen s = _screenService.CreateAndActivateScreen(
+            screen,
+            initializationCallback: x => x.Children.Add(new DialogLifecycle())
+         );
 
-         WindowService.ShowDialogWindow(s, parent, title);
+         DialogScreenResult result = null;
 
-         var dl = DialogLifecycle.GetDialogLifecycle(s);
-         s.Children.Remove(dl);
-         var result = dl.ScreenResult ?? new DialogScreenResult(false);
+         try {
+            WindowService.ShowDialogWindow(s, parent, title);
+         } finally {
+            if (DialogLifecycle.HasDialogLifecycle(s)) {
+               var dl = DialogLifecycle.GetDialogLifecycle(s);
+               s.Children.Remove(dl);
+
+               result = dl.ScreenResult ?? new DialogScreenResult(false);
+            }
+         }
 
          if (result.Data is ExceptionResult) {
             throw ((ExceptionResult)result.Data).Exception;

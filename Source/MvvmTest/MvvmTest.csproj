@@ -109,6 +109,7 @@
   <ItemGroup>
     <Compile Include="- Test Infrastructure -\NullValidator.cs" />
     <Compile Include="- Test Infrastructure -\ParameterizedTest.cs" />
+    <Compile Include="- Test Infrastructure -\ScreenLifecycleTestBase.cs" />
     <Compile Include="- Test Infrastructure -\TestViewModel.cs" />
     <Compile Include="- Test Infrastructure -\ValidatorMockConfiguration.cs" />
     <Compile Include="- Test Infrastructure -\ValidatorMockConfigurationFluent.cs" />

@@ -164,6 +164,7 @@
     <Compile Include="Screens\Screen.cs" />
     <Compile Include="Screens\ScreenConductor.cs" />
     <Compile Include="Screens\ScreenFactory.cs" />
+    <Compile Include="Screens\ScreenService.cs" />
     <Compile Include="ServiceLocator.cs" />
     <Compile Include="Testing\ArgumentValue.cs" />
     <Compile Include="Testing\Responders\FolderDialogResponderSetup.cs" />

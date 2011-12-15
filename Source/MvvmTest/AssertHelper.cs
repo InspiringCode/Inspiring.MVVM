@@ -4,6 +4,7 @@
    using System.Collections.Generic;
    using System.Diagnostics;
    using System.Linq;
+   using System.Reflection;
    using System.Text.RegularExpressions;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -12,14 +13,20 @@
       /// <summary>
       /// Verifies that the exact exception is thrown (and not a derived exception type).
       /// </summary>
-      public static ExceptionExpression<TException> Throws<TException>(Action testCode) where TException : Exception {
+      public static ExceptionExpression<TException> Throws<TException>(Action testCode, bool unwrapTargetInvocationException = false) where TException : Exception {
          try {
             testCode();
-         } catch (TException ex) {
+         } catch (Exception ex) {
+            var invocationEx = ex as TargetInvocationException;
+            if (invocationEx != null) {
+               ex = invocationEx.InnerException;
+            }
+
             if (typeof(TException) != ex.GetType()) {
                throw;
             }
-            return new ExceptionExpression<TException>(ex);
+
+            return new ExceptionExpression<TException>((TException)ex);
          }
 
          Assert.Fail("Expected exception {0}.", typeof(TException).Name);
