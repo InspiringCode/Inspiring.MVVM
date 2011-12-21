@@ -75,8 +75,9 @@
             dialogWindow.Title = title;
          }
 
+         Window owner = null;
          if (parent != null) {
-            Window owner = GetAssociatedWindow(parent);
+            owner = GetAssociatedWindow(parent);
             dialogWindow.Owner = owner;
          }
 
@@ -110,6 +111,11 @@
             if (parent != null) {
                screen.Children.Expose<ScreenHierarchyLifecycle>().Opener = null;
                parent.Children.Expose<ScreenHierarchyLifecycle>().OpenedScreens.Remove(screen);
+            }
+
+            if (owner != null) {
+               // fix for http://stackoverflow.com/questions/3144004/wpf-app-loses-completely-focus-on-window-close
+               owner.Activate();
             }
          }
       }
