@@ -5,22 +5,32 @@
    using System.Linq;
    using Inspiring.Mvvm.Common;
 
-   public sealed class ScreenOpenedEventArgs : EventArgs {
-      internal ScreenOpenedEventArgs(
+   public class ScreenEventArgs : EventArgs {
+      internal ScreenEventArgs(
          ScreenConductor conductor,
-         IScreenBase screen,
-         bool wasAlreadyOpen
+         IScreenBase screen
       ) {
          Contract.Requires(conductor != null);
          Contract.Requires(screen != null);
 
          Conductor = conductor;
          Screen = screen;
-         WasAlreadyOpen = wasAlreadyOpen;
       }
 
       public ScreenConductor Conductor { get; private set; }
       public IScreenBase Screen { get; private set; }
+   }
+
+   public sealed class ScreenOpenedEventArgs : ScreenEventArgs {
+      internal ScreenOpenedEventArgs(
+         ScreenConductor conductor,
+         IScreenBase screen,
+         bool wasAlreadyOpen
+      )
+         : base(conductor, screen) {
+         WasAlreadyOpen = wasAlreadyOpen;
+      }
+
       public bool WasAlreadyOpen { get; private set; }
    }
 
@@ -33,6 +43,14 @@
       ///   MDI windows that are currently minimized.
       /// </remarks>
       public static readonly Event<ScreenOpenedEventArgs> ScreenOpenedEvent = new Event<ScreenOpenedEventArgs>();
+
+      /// <summary>
+      ///   An event that is raised whenever <see cref="CloseScreen{TScreen}"/> is called.
+      /// </summary>
+      /// <remarks>
+      ///   This event may for example be handled by a view to save view settings.
+      /// </remarks>
+      public static readonly Event<ScreenEventArgs> ScreenClosedEvent = new Event<ScreenEventArgs>();
 
       private readonly ScreenLifecycleCollection<IScreenBase> _screens;
       private readonly List<IScreenBase> _activatedScreensHistory;
@@ -125,6 +143,12 @@
 
          if (screen.RequestClose()) {
             ImmediateCloseScreen(screen);
+
+            _eventAggregator.Publish(
+               ScreenClosedEvent,
+               new ScreenEventArgs(this, ActiveScreen)
+            );
+
             return true;
          }
 
