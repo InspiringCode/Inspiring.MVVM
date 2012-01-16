@@ -169,6 +169,24 @@
          pc.AssertOneRaise();
       }
 
+      [TestMethod]
+      public void RequestClose_StopsAfterFirstChildReturnsFalse() {
+         ScreenConductor conductor = CreateScreenConductor();
+         var first = new ScreenMock { RequestCloseResult = true };
+         var second = new ScreenMock { RequestCloseResult = false };
+         var third = new ScreenMock { RequestCloseResult = true };
+
+         OpenScreen(conductor, first);
+         OpenScreen(conductor, second);
+         OpenScreen(conductor, third);
+
+         IScreenLifecycle c = conductor;
+         Assert.IsFalse(c.RequestClose(), "RequestClose should return false.");
+         Assert.IsTrue(first.WasCloseRequested);
+         Assert.IsTrue(second.WasCloseRequested);
+         Assert.IsFalse(third.WasCloseRequested);
+      }
+
       private ScreenConductor CreateScreenConductor() {
          ScreenConductor conductor = new ScreenConductor(EventAggregator);
          IScreenBase s = conductor;

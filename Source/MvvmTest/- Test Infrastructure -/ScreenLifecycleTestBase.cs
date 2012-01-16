@@ -20,6 +20,12 @@
          public bool ThrowOnDeactivate { get; set; }
          public bool ThrowOnClose { get; set; }
 
+         public bool RequestCloseResult { get; set; }
+
+         public ScreenMock() {
+            RequestCloseResult = true;
+         }
+
          public void Initialize() {
             Assert.IsFalse(WasInitialized, "Initialize was called twice.");
             WasInitialized = true;
@@ -63,7 +69,7 @@
          protected override bool OnRequestClose() {
             Assert.IsFalse(WasCloseRequested, "RequestClose was called twice.");
             WasCloseRequested = true;
-            return base.OnRequestClose();
+            return base.OnRequestClose() && RequestCloseResult;
          }
 
          protected override void OnClose() {
