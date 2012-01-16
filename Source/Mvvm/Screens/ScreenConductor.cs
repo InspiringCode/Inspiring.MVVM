@@ -146,7 +146,7 @@
 
             _eventAggregator.Publish(
                ScreenClosedEvent,
-               new ScreenEventArgs(this, ActiveScreen)
+               new ScreenEventArgs(this, screen)
             );
 
             return true;
