@@ -6,6 +6,7 @@
    using System.Linq;
 
    public class ScreenLifecycleCollection<T> where T : IScreenLifecycle {
+      private const bool ContineInvocations = true;
       private IScreenLifecycle _parent;
 
       internal ScreenLifecycleCollection(IScreenLifecycle parent) {
@@ -63,19 +64,27 @@
       }
 
       internal bool RequestCloseAll(Func<bool> parentCallback = null) {
-         List<bool> results = new List<bool>();
+         bool result = true;
 
          Invoke(
             lifecycleMethodName: "RequestClose",
-            methodInvocation: h => results.Add(h.RequestClose()),
+            methodInvocation: h => {
+               bool okToClose = h.RequestClose();
+               result &= okToClose;
+               return okToClose;
+            },
             parentCallback: () => {
                if (parentCallback != null) {
-                  results.Add(parentCallback());
+                  bool okToClose = parentCallback();
+                  result &= okToClose;
+                  return okToClose;
                }
+
+               return true;
             }
          );
 
-         return results.All(r => r);
+         return result;
       }
 
       internal void CloseAll(Action parentCallback = null) {
@@ -91,25 +100,62 @@
          Action<T> methodInvocation,
          Action parentCallback
       ) {
-         var invocations = Items
-            .Select(h => new {
-               Handler = h,
-               Order = InvocationOrderAttribute.GetOrder(h, lifecycleMethodName)
+         Func<T, bool> advancedMethodInvocation = target => {
+            methodInvocation(target);
+            return true;
+         };
+
+         Func<bool> advancedParentCallback = null;
+         if (parentCallback != null) {
+            advancedParentCallback = () => {
+               parentCallback();
+               return true;
+            };
+         }
+
+         Invoke(
+            lifecycleMethodName,
+            advancedMethodInvocation,
+            advancedParentCallback
+         );
+      }
+
+      /// <param name="methodInvocation">
+      ///   Return true to continue invocations.
+      /// </param>
+      internal void Invoke(
+         string lifecycleMethodName,
+         Func<T, bool> methodInvocation,
+         Func<bool> parentCallback
+      ) {
+         parentCallback = parentCallback ?? (() => true);
+
+         var methodArgs = Items
+            .Select(target => new {
+               Target = target,
+               Order = InvocationOrderAttribute.GetOrder(target, lifecycleMethodName)
             })
             .OrderBy(i => i.Order)
             .ToArray();
 
-         invocations
+         var beforeParent = methodArgs
             .Where(i => i.Order < InvocationOrder.Parent)
-            .ForEach(i => methodInvocation(i.Handler));
+            .Select(i => new Func<bool>(() => methodInvocation(i.Target)));
 
-         if (parentCallback != null) {
-            parentCallback();
-         }
-
-         invocations
+         var afterParent = methodArgs
             .Where(i => i.Order >= InvocationOrder.Parent)
-            .ForEach(i => methodInvocation(i.Handler));
+            .Select(i => new Func<bool>(() => methodInvocation(i.Target)));
+
+         IEnumerable<Func<bool>> invocations = beforeParent
+            .Union(new[] { parentCallback })
+            .Union(afterParent);
+
+         foreach (var i in invocations) {
+            bool stop = !i();
+            if (stop) {
+               return;
+            }
+         }
       }
    }
 }
