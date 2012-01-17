@@ -58,6 +58,19 @@
       }
 
       /// <summary>
+      ///   Removes the behavior defined by '<paramref name="key"/>' from the behavior
+      ///   chain returned by <see cref="CreateChain"/>.
+      /// </summary>
+      public void Disable(BehaviorKey key) {
+         Contract.Requires<ArgumentNullException>(key != null);
+         Contract.Requires<ArgumentException>(Contains(key));
+         RequireNotSealed();
+
+         var item = GetItem(key);
+         item.IsEnabled = false;
+      }
+
+      /// <summary>
       ///   Calls the '<paramref name="configurationAction"/>' with the behavior
       ///   specified by '<paramref name="key"/>' that will be inserted in the 
       ///   behavior chain. This method implicitly calls <see 

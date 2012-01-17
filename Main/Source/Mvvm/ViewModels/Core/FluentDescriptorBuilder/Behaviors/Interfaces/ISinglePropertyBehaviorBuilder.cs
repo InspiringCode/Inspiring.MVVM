@@ -25,6 +25,8 @@
          IBehavior behaviorInstance = null
       );
 
+      ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> Disable(BehaviorKey key);
+
       ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> AppendBehavior(
          IBehavior behaviorInstance,
          BehaviorKey key = null
