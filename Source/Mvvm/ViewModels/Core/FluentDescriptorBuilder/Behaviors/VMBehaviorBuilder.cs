@@ -57,6 +57,12 @@
             return this;
          }
 
+         /// <inheritdoc />
+         ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue>.Disable(BehaviorKey key) {
+            _propertyConfiguration.Disable(key);
+            return this;
+         }
+
          ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue>.AppendBehavior(
             IBehavior behaviorInstance,
             BehaviorKey key = null
