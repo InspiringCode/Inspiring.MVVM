@@ -1,11 +1,14 @@
 ﻿namespace Inspiring.MvvmContribTest.ApiTests.ViewModels {
    using Inspiring.Mvvm;
    using Inspiring.Mvvm.ViewModels;
+   using Inspiring.MvvmTest;
 
-   internal sealed class UserVM : DefaultViewModelWithSourceBase<UserVMDescriptor, User> {
+   internal sealed class UserVM : TestViewModel<UserVMDescriptor> {
       public UserVM(UserVMDescriptor descriptor, IServiceLocator serviceLocator = null)
-         : base(descriptor, serviceLocator) {
+         : base(descriptor, serviceLocator: serviceLocator) {
       }
+
+      public User Source { get; set; }
 
       public string Name {
          get { return GetValue(Descriptor.Name); }
@@ -25,6 +28,11 @@
 
       public void RefreshDepartment() {
          Refresh(Descriptor.Department);
+      }
+
+      public void InitializeFrom(User source) {
+         Source = source;
+         Revalidate(ValidationScope.SelfAndLoadedDescendants);
       }
    }
 

@@ -34,7 +34,7 @@
          //      which calls GetValue and ProvideValue.
 
          var collection = GetValue(context);
-         Repopulate(context, collection, reason: null);
+         Repopulate(context, collection, InitialPopulationChangeReason.Instance);
 
          base.OnInitialize(context);
       }

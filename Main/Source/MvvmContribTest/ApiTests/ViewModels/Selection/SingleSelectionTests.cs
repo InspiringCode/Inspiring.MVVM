@@ -609,9 +609,10 @@
          oldItem = null;
          oldItems.Clear();
          source.Department = null;
-
+         
          vm.Department.Refresh();
-
+         vm.OnChangeInvocations.Clear();
+         
          GC.Collect();
          Assert.IsFalse(gcDetectorVM.IsAlive);
          Assert.IsFalse(gcDetectorSource.IsAlive);

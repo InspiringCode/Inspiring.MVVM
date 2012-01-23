@@ -204,6 +204,7 @@
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\DependencyTargetBuilder.cs" />
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\Interfaces\IRefreshTargetBuilder.cs" />
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Properties\Interfaces\ICustomPropertyFactoryProvider.cs" />
+    <Compile Include="ViewModels\Core\Properties\CollectionProperty\InitialPopulationChangeReason.cs" />
     <Compile Include="ViewModels\Core\Properties\Common\BehaviorInterfaces\IChangeNotifierBehavior.cs" />
     <Compile Include="ViewModels\Core\Properties\SimpleProperty\Behaviors\ValueCacheBehavior.cs" />
     <Compile Include="ViewModels\Core\Properties\ViewModelProperty\Behaviors\ViewModelPropertyChangedNotifierBehavior.cs" />

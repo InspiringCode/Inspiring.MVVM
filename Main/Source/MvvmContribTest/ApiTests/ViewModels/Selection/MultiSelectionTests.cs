@@ -435,6 +435,23 @@
       }
 
       [TestMethod]
+      public void GetAllItems_Initially_RaisesChangeWithInitialPopulationReason() {
+         UserVM vm = CreateUserVMWithItems();
+
+         vm.Groups.Load(x => x.SelectedItems);
+
+         ChangeArgs args = vm
+            .OnChangeInvocations
+            .SingleOrDefault(x => 
+               x.ChangedVM == vm.Groups && 
+               x.ChangeType == ChangeType.CollectionPopulated
+            );
+
+         Assert.IsNotNull(args);
+         Assert.AreEqual(InitialPopulationChangeReason.Instance, args.Reason);
+      }
+
+      [TestMethod]
       public void DataErrorInfoForSelectedItems_ReturnsAggregatedErrorMessages() {
          string itemPropertyError = "Item Property error.";
          string itemViewModelError = "Item VM error.";

@@ -3,6 +3,7 @@
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
+   using Inspiring.MvvmTest;
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -51,7 +52,7 @@
          }
       }
 
-      internal sealed class UserVM : DefaultViewModelWithSourceBase<UserVMDescriptor, User> {
+      internal sealed class UserVM : TestViewModel<UserVMDescriptor> {
          public static UserVMDescriptor ClassDescriptor = VMDescriptorBuilder
             .OfType<UserVMDescriptor>()
             .For<UserVM>()
@@ -72,8 +73,10 @@
          public UserVM(IEnumerable<Group> allSourceGroups)
             : base(ClassDescriptor) {
             AllSourceGroups = allSourceGroups;
-            SetSource(new User());
+            InitializeFrom(new User());
          }
+
+         public User Source { get; set; }
 
          public IEnumerable<Group> AllSourceGroups { get; set; }
 
@@ -87,6 +90,10 @@
 
          public SingleSelectionVM<Department> Department {
             get { return GetValue(Descriptor.Department); }
+         }
+
+         public void InitializeFrom(User source) {
+            Source = source;
          }
       }
 
