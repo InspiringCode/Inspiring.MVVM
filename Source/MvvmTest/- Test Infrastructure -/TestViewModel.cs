@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.MvvmTest {
    using System;
    using System.Collections.Generic;
+   using Inspiring.Mvvm;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Core;
 
@@ -10,8 +11,8 @@
 
       private string _name;
 
-      public TestViewModel(TDescriptor descriptor, string name = null)
-         : base(descriptor) {
+      public TestViewModel(TDescriptor descriptor, string name = null, IServiceLocator serviceLocator = null)
+         : base(descriptor, serviceLocator) {
          _name = name;
          OnChangeInvocations = new List<ChangeArgs>();
       }

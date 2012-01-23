@@ -11,14 +11,14 @@
    public class CollectionAccessorBehaviorFixture : TestBase {
       protected const string RefreshItemLog = "RefreshItem ";
       protected NextBehavior Next { get; set; }
-      protected IBehaviorContext Context { get; set; }
+      protected BehaviorContextStub Context { get; set; }
 
       [TestInitialize]
       public void BaseSetup() {
          Next = new NextBehavior();
       }
 
-      protected IBehaviorContext CreateContext(IBehavior collectionAccessorBehavior) {
+      protected BehaviorContextStub CreateContext(IBehavior collectionAccessorBehavior) {
          return PropertyStub
             .WithBehaviors(collectionAccessorBehavior, Next)
             .GetContext();

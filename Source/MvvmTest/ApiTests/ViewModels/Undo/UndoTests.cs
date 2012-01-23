@@ -543,6 +543,25 @@
          Assert.IsFalse(EmployeeVM.Source.Projects.Contains(newProject));
       }
 
+      [TestMethod]
+      public void RollbackTo_WhenCollectionLoadedAfterRollbackPoint_DoesNotClearCollection() {
+         Employee employee = new Employee();
+         employee.Projects.Add(new Project());
+         
+         EmployeeVM.InitializeFrom(employee);
+
+         IRollbackPoint rollbackPoint = EmployeeVM.UndoManager.GetRollbackPoint();
+         
+         ViewModelAssert.IsNotLoaded(EmployeeVM, x => x.Projects);
+         EmployeeVM.Load(x => x.Projects);
+         Assert.AreEqual(1, EmployeeVM.Projects.Count);
+
+         EmployeeVM.UndoManager.RollbackTo(rollbackPoint);
+
+         ViewModelAssert.IsLoaded(EmployeeVM, x => x.Projects);
+         Assert.AreEqual(1, EmployeeVM.Projects.Count);
+      }
+
       private Employee CreateEmployee(
          string name = "Employee",
          Project currentProject = null,
