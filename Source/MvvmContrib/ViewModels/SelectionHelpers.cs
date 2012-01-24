@@ -2,6 +2,7 @@
    using System.Collections;
    using System.Collections.Generic;
    using System.Linq;
+   using Inspiring.Mvvm.Common;
 
    internal sealed class SelectionHelpers {
       internal static IEnumerable<TItemSource> GetSelectableSourceItems<TSourceObject, TItemSource>(
@@ -16,7 +17,7 @@
          TItemSource sourceItem
       ) {
          IEnumerable<TItemSource> allSourceItems = GetAllSourceItems<TItemSource>(selectionVM);
-         return allSourceItems.Contains(sourceItem);
+         return allSourceItems.Contains(sourceItem, ReferenceEqualityComparer<TItemSource>.CreateSmartComparer());
       }
 
       internal static IEnumerable<TItemSource> GetAllSourceItems<TItemSource>(IViewModel selectionVM) {

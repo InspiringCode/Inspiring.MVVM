@@ -28,7 +28,7 @@
 
          _reusabilitySourceComparer =
             reusabilitySourceComparer ??
-            new ReferenceEqualityComparer<TItemSource>();
+            ReferenceEqualityComparer<TItemSource>.CreateSmartComparer();
       }
 
       IEnumerable<TItemSource> IValueAccessorBehavior<IEnumerable<TItemSource>>.GetValue(IBehaviorContext context) {
