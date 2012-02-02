@@ -92,6 +92,17 @@
       }
 
       public bool Result { get; private set; }
+
+      // TODO: Document these properties and maybe add extension methods for setting appropriate results.
+
+      public bool IsOK {
+         get { return Result; }
+      }
+
+      public bool IsCancelled {
+         get { return !Result; }
+      }
+
       public object Data { get; private set; }
    }
 
