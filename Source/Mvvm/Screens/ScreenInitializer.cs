@@ -34,11 +34,16 @@
          IScreenLifecycle handler,
          Action<IScreenLifecycle> initializer
       ) {
-         Initialize(handler, initializer, InvocationOrder.First);
-         Initialize(handler, initializer, InvocationOrder.BeforeParent);
-         Initialize(handler, initializer, InvocationOrder.Parent);
-         Initialize(handler, initializer, InvocationOrder.AfterParent);
-         Initialize(handler, initializer, InvocationOrder.Last);
+         try {
+            Initialize(handler, initializer, InvocationOrder.First);
+            Initialize(handler, initializer, InvocationOrder.BeforeParent);
+            Initialize(handler, initializer, InvocationOrder.Parent);
+            Initialize(handler, initializer, InvocationOrder.AfterParent);
+            Initialize(handler, initializer, InvocationOrder.Last);
+         } catch (Exception) {
+            handler.Close();
+            throw;
+         }
       }
 
       private static void Initialize(

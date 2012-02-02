@@ -103,7 +103,10 @@
             // a command handler or on a Dispatcher action), ShowDialog rethrows this
             // exception but leaves the Window open and visible.
             if (dialogWindow.IsVisible) {
-               dialogWindow.Close();
+               // If we would call 'Window.Close', RequestClose would be called on the
+               // screen but in case of an exception we do not want to ask the user for
+               // permission to close the screen for example!
+               screen.CloseDialog(new DialogScreenResult(false));
             }
 
             throw;

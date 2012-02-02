@@ -28,7 +28,7 @@
       }
 
       [TestMethod]
-      public void ShowDialog_WhenInitializeThrowsException_DoesNotShowDialog() {
+      public void ShowDialog_WhenInitializeThrowsException_DoesNotShowDialogAndCallsClose() {
          var screen = new ScreenMock { ThrowOnInitialize = true };
 
          ShowDialogAndExpectException(screen);
@@ -38,7 +38,7 @@
          Assert.IsFalse(screen.WasActivated);
          Assert.IsFalse(screen.WasCloseRequested);
          Assert.IsFalse(screen.WasDeactivated);
-         Assert.IsFalse(screen.WasClosed);
+         Assert.IsTrue(screen.WasClosed);
       }
 
       [TestMethod]
@@ -51,7 +51,7 @@
 
          Assert.IsFalse(screen.WasCloseRequested);
          Assert.IsFalse(screen.WasDeactivated);
-         Assert.IsFalse(screen.WasClosed);
+         Assert.IsTrue(screen.WasClosed);
       }
 
       [TestMethod]
@@ -65,7 +65,7 @@
 
          ShowDialogAndExpectException(screen);
 
-         Assert.IsFalse(screen.WasClosed);
+         Assert.IsTrue(screen.WasClosed);
          Assert.IsFalse(WindowService.LastWindow.IsVisible);
       }
 

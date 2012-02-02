@@ -10,13 +10,23 @@
          TScreen screen = default(TScreen);
 
          screen = factory.Create(initializationCallback);
-         screen.Activate();
+
+         try {
+            screen.Activate();
+         } catch (Exception) {
+            screen.Close();
+            throw;
+         }
+
          return screen;
       }
 
       public void DeactivateAndCloseScreen(IScreenBase screen) {
-         screen.Deactivate();
-         screen.Close();
+         try {
+            screen.Deactivate();
+         } finally {
+            screen.Close();
+         }
       }
    }
 }
