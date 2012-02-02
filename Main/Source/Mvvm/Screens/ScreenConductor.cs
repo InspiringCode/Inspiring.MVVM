@@ -156,6 +156,10 @@
       }
 
       public void ImmediateCloseScreen(IScreenBase screen) {
+         if (!_screens.Items.Contains(screen)) {
+            throw new ArgumentException(ExceptionTexts.ScreenNotContainedByConductor);
+         }
+
          _activatedScreensHistory.Remove(screen);
 
          try {

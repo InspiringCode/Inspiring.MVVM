@@ -46,6 +46,17 @@
       }
 
       [TestMethod]
+      public void OpenScreen_WhenInitializeThrowsException_CallsClose() {
+         ScreenConductor condcutor = CreateScreenConductor();
+         ScreenMock alreadyOpen = OpenNewScreen(condcutor);
+
+         ScreenMock newScreen = new ScreenMock { ThrowOnInitialize = true };
+         OpenScreen(condcutor, newScreen);
+
+         Assert.IsTrue(newScreen.WasClosed);
+      }
+
+      [TestMethod]
       public void OpenScreen_WhenInitializeThrowsException_DoesNotAddScreenAndDoesNotChangeActiveScreen() {
          ScreenConductor condcutor = CreateScreenConductor();
          ScreenMock alreadyOpen = OpenNewScreen(condcutor);
@@ -79,15 +90,15 @@
       }
 
       [TestMethod]
-      public void ImmediateCloseScreen_WhenInitializeThrewException_DoesNotCallDeactivateAndCallsClose() {
+      public void ImmediateCloseScreen_WhenInitializeThrewException_ThrowsArgumentException() {
          ScreenConductor condcutor = CreateScreenConductor();
          ScreenMock newScreen = new ScreenMock { ThrowOnInitialize = true };
 
          OpenScreen(condcutor, newScreen);
-         condcutor.ImmediateCloseScreen(newScreen);
 
-         Assert.IsFalse(newScreen.WasDeactivated);
-         Assert.IsTrue(newScreen.WasClosed);
+         AssertHelper.Throws<ArgumentException>(() =>
+            condcutor.ImmediateCloseScreen(newScreen)
+         );
       }
 
       [TestMethod]
@@ -100,23 +111,6 @@
 
          Assert.IsTrue(newScreen.WasDeactivated);
          Assert.IsTrue(newScreen.WasClosed);
-      }
-
-      [TestMethod]
-      public void ImmediateCloseScreen_WhenInitializeThrewException_DoesNotChangeActiveScreen() {
-         ScreenConductor condcutor = CreateScreenConductor();
-         ScreenMock alreadyOpen = OpenNewScreen(condcutor);
-
-         PropertyChangedCounter pc = CreateActiveScreenChangedListener(condcutor);
-
-         ScreenMock newScreen = new ScreenMock { ThrowOnInitialize = true };
-         OpenScreen(condcutor, newScreen);
-
-         condcutor.ImmediateCloseScreen(newScreen);
-
-         Assert.IsFalse(condcutor.Screens.Contains(newScreen));
-         Assert.AreEqual(alreadyOpen, condcutor.ActiveScreen);
-         pc.AssertNoRaise();
       }
 
       [TestMethod]
