@@ -1,4 +1,30 @@
 ﻿namespace Inspiring.Mvvm.Screens {
+   using System;
+   using System.Diagnostics;
+
+   public class ScreenLifecycle_ {
+      // State transitions
+      // etc.
+
+
+      public void RegisterHandler<TArgs>(
+         ScreenEvent<TArgs> @event,
+         Action<TArgs> handler
+      ) where TArgs : ScreenEventArgs {
+
+         // State Created
+         //  On Initialize transition to Initialized
+      }
+
+      public void test() {
+         RegisterHandler(ScreenEvents.Initialize<Stopwatch>(), Initialize);
+      }
+
+      private void Initialize(InitializeEventArgs<Stopwatch> subject) {
+
+      }
+   }
+
 
    public abstract class ScreenLifecycle : IScreenLifecycle {
       public virtual IScreenLifecycle Parent { get; set; }
