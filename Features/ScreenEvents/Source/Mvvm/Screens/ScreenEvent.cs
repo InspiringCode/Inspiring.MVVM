@@ -1,8 +1,18 @@
 ﻿namespace Inspiring.Mvvm.Screens {
+   using Inspiring.Mvvm.Common;
 
-   internal sealed class ScreenEvent<TArgs>
-      where TArgs : ScreenEventArgs {
+   public sealed class ScreenEvent<TArgs> :
+      IEvent<TArgs>
+      where TArgs : ScreenEventArgs_ {
 
 
+
+      void IEvent<TArgs>.Publish(
+         IEventSubscriptionRepository allSubscriptions, 
+         TArgs payload
+      ) {
+         
+         throw new System.NotImplementedException();
+      }
    }
 }

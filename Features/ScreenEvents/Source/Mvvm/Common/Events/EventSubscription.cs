@@ -13,7 +13,7 @@
          IEvent<TPayload> @event,
          Action<TPayload> handler,
          ExecutionOrder executionOrder,
-         IEventCondition<TPayload>[] conditions = null
+         IEventCondition<TPayload>[] conditions
       ) {
          Contract.Requires<ArgumentNullException>(@event != null);
          Contract.Requires<ArgumentNullException>(handler != null);

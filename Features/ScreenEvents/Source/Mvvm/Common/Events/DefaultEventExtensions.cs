@@ -17,6 +17,21 @@
          return new SubscriptionBuilderInterface<TPayload>(builder);
       }
 
+      public static SubscriptionBuilderInterface<TArgs> On<TTarget, TArgs>(
+         this SubscriptionBuilderInterface root,
+         HierarchicalEvent<TTarget, TArgs> @event,
+         TTarget target
+      ) where TArgs : HierarchicalEventArgs<TTarget> {
+         Contract.Requires<ArgumentNullException>(root != null);
+         Contract.Requires<ArgumentNullException>(@event != null);
+
+         var builder = new HierarchicalEventSubscriptionBuilder<TTarget, TArgs>(root, target) {
+            Event = @event
+         };
+
+         return new SubscriptionBuilderInterface<TArgs>(builder);
+      }
+
       public static SubscriptionBuilderInterface<TPayload> When<TPayload>(
          this SubscriptionBuilderInterface<TPayload> builder,
          Func<TPayload, bool> condition
@@ -27,6 +42,29 @@
             .Add(new DelegateEventCondition<TPayload>(condition));
 
          return builder;
+      }
+
+      private class HierarchicalEventSubscriptionBuilder<TTarget, TArgs> : EventSubscriptionBuilder<TArgs> {
+         public HierarchicalEventSubscriptionBuilder(
+            SubscriptionBuilderInterface builderInterface,
+            TTarget target
+         )
+            : base(builderInterface) {
+
+            Target = target;
+         }
+
+         public TTarget Target { get; private set; }
+
+         protected override IEventSubscription CreateSubscription(IEventCondition<TArgs>[] conditions) {
+            return new HierarchicalEventSubscription<TTarget, TArgs>(
+               Event,
+               Handler,
+               ExecutionOrder,
+               conditions,
+               Target
+            );
+         }
       }
    }
 }

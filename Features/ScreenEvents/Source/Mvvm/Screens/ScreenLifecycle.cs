@@ -10,13 +10,13 @@
       public void RegisterHandler<TArgs>(
          ScreenEvent<TArgs> @event,
          Action<TArgs> handler
-      ) where TArgs : ScreenEventArgs {
+      ) where TArgs : ScreenEventArgs_ {
 
          // State Created
          //  On Initialize transition to Initialized
       }
 
-      public void test() {
+      private void test() {
          RegisterHandler(ScreenEvents.Initialize<Stopwatch>(), Initialize);
       }
 

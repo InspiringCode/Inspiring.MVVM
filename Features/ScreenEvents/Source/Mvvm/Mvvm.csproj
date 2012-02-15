@@ -112,6 +112,8 @@
     <Compile Include="Common\Events\EventSubscription.cs" />
     <Compile Include="Common\Events\EventSubscriptionManager.cs" />
     <Compile Include="Common\Events\ExecutionOrder.cs" />
+    <Compile Include="Common\Events\HierarchicalEvent.cs" />
+    <Compile Include="Common\Events\HierarchicalEventSubscription.cs" />
     <Compile Include="Common\Events\IEvent.cs" />
     <Compile Include="Common\Events\IEventCondition.cs" />
     <Compile Include="Common\Events\SubscriptionBuilderInterface.cs" />
