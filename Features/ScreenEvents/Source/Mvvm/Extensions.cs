@@ -3,6 +3,7 @@
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
    using System.Linq;
+   using System.Threading;
 
    internal static class Extensions {
       public static void ForEach<TValue>(this IEnumerable<TValue> collection, Action<TValue> func) {
@@ -22,6 +23,15 @@
          Contract.Requires(args != null);
 
          return string.Format(format, args);
+      }
+
+      public static bool IsCritical(this Exception ex) {
+         return
+            ex is StackOverflowException ||
+            ex is OutOfMemoryException ||
+            ex is ThreadAbortException ||
+            ex is AccessViolationException ||
+            ex is InvalidProgramException;
       }
    }
 }

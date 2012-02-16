@@ -4,6 +4,7 @@
    using System.Diagnostics.Contracts;
    using System.Linq;
    using System.Reflection;
+   using Inspiring.Mvvm.Common;
 
    internal static class ViewFactory {
       public static bool TryInitializeView(object view, object withModel) {
@@ -96,9 +97,7 @@
       }
 
       private static bool IsIViewInterface(Type itf) {
-         return
-            itf.IsGenericType &&
-            itf.GetGenericTypeDefinition() == typeof(IView<>);
+         return TypeService.ClosesGenericType(itf, typeof(IView<>));
       }
 
       private static Type GetModelTypeOfIViewInterface(Type viewInterface) {

@@ -1,17 +1,13 @@
 ﻿namespace Inspiring.Mvvm.Screens {
+   using System.Collections.Generic;
    using Inspiring.Mvvm.Common;
 
    public sealed class ScreenEvent<TArgs> :
-      IEvent<TArgs>
-      where TArgs : ScreenEventArgs_ {
+      HierarchicalEvent<IScreenLifecycle, ScreenEventArgs>
+      where TArgs : ScreenEventArgs {
 
 
-
-      void IEvent<TArgs>.Publish(
-         IEventSubscriptionRepository allSubscriptions, 
-         TArgs payload
-      ) {
-         
+      protected override IEnumerable<IScreenLifecycle> GetHierarchyNodes(IScreenLifecycle root) {
          throw new System.NotImplementedException();
       }
    }

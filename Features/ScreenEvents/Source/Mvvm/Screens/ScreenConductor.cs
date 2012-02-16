@@ -5,8 +5,8 @@
    using System.Linq;
    using Inspiring.Mvvm.Common;
 
-   public class ScreenEventArgs : EventArgs {
-      internal ScreenEventArgs(
+   public class ConductorEventArgs : EventArgs {
+      internal ConductorEventArgs(
          ScreenConductor conductor,
          IScreenBase screen
       ) {
@@ -21,7 +21,7 @@
       public IScreenBase Screen { get; private set; }
    }
 
-   public sealed class ScreenOpenedEventArgs : ScreenEventArgs {
+   public sealed class ScreenOpenedEventArgs : ConductorEventArgs {
       internal ScreenOpenedEventArgs(
          ScreenConductor conductor,
          IScreenBase screen,
@@ -50,7 +50,7 @@
       /// <remarks>
       ///   This event may for example be handled by a view to save view settings.
       /// </remarks>
-      public static readonly Event<ScreenEventArgs> ScreenClosedEvent = new Event<ScreenEventArgs>();
+      public static readonly Event<ConductorEventArgs> ScreenClosedEvent = new Event<ConductorEventArgs>();
 
       private readonly ScreenLifecycleCollection<IScreenBase> _screens;
       private readonly List<IScreenBase> _activatedScreensHistory;
@@ -146,7 +146,7 @@
 
             _eventAggregator.Publish(
                ScreenClosedEvent,
-               new ScreenEventArgs(this, screen)
+               new ConductorEventArgs(this, screen)
             );
 
             return true;

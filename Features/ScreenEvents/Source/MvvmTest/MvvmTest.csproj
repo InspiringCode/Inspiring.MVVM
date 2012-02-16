@@ -204,6 +204,7 @@
     <Compile Include="Screens\LifecycleTreeWalkerTests.cs" />
     <Compile Include="Screens\ScreenCreationBehaviorTest.cs" />
     <Compile Include="Screens\ScreenInitializerTests.cs" />
+    <Compile Include="Screens\ScreenLifecycleStateMachineTests.cs" />
     <Compile Include="Stubs\BehaviorContextStub.cs" />
     <Compile Include="Stubs\ServiceLocatorStub.cs" />
     <Compile Include="Stubs\ViewModelStub.cs" />
