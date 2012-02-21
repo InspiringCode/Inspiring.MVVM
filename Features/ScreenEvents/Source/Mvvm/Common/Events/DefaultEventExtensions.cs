@@ -56,7 +56,7 @@
 
          public TTarget Target { get; private set; }
 
-         protected override IEventSubscription CreateSubscription(IEventCondition<TArgs>[] conditions) {
+         protected override IEventSubscription CreateSubscription(IEventCondition[] conditions) {
             return new HierarchicalEventSubscription<TTarget, TArgs>(
                Event,
                Handler,

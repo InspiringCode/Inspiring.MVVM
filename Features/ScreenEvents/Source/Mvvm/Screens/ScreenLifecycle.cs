@@ -1,7 +1,7 @@
 ﻿namespace Inspiring.Mvvm.Screens {
    using System;
    using System.Collections.Generic;
-   using System.Collections.ObjectModel;
+   using System.Diagnostics.Contracts;
    using System.Linq;
    using Inspiring.Mvvm.Common;
 
@@ -18,6 +18,9 @@
       private EventAggregator _aggregator;
       private IScreenBase _target;
 
+      private ScreenLifecycleOperations() {
+      }
+
       public static ScreenLifecycleOperations For(
          EventAggregator aggregator,
          IScreenBase target
@@ -29,11 +32,14 @@
       }
 
       public void Initialize() {
-         PublishEvent(ScreenEvents.Initialize(), new ScreenEventArgs(_target));
+         PublishEvent(ScreenEvents.Initialize(), new InitializeEventArgs(_target));
       }
 
       public void Initialize<TSubject>(TSubject subject) {
-         PublishEvent(ScreenEvents.Initialize<TSubject>(), new InitializeEventArgs<TSubject>(_target));
+         PublishEvent(
+            ScreenEvents.Initialize<TSubject>(),
+            new InitializeEventArgs<TSubject>(_target, subject)
+         );
       }
 
       public void Activate() {
@@ -57,7 +63,7 @@
 
       private void PublishEvent<TArgs>(
          ScreenEvent<TArgs> @event,
-         ScreenEventArgs args
+         TArgs args
       ) where TArgs : ScreenEventArgs {
          try {
             _aggregator.Publish(@event, args);
@@ -74,28 +80,29 @@
       }
    }
 
-   public class ScreenLifecycle_ {
-      private static readonly Action DoNothingAction = () => { };
-      private static readonly Func<EventArgs, bool> AlwaysCondition = (_) => true;
+   public partial class ScreenLifecycle_ {
+      private static readonly Func<EventPublication, bool> AlwaysTrueCondition = (_) => true;
+      private static readonly ScreenEvent<ScreenEventArgs> AnyEvent = null;
 
       private readonly IScreenBase _parent;
-      private readonly EventSubscriptionManager _sm;
-
-      private readonly List<HandlerRegistration> _handlers = new List<HandlerRegistration>();
-      private readonly StateTransitionCollection _transitions = new StateTransitionCollection();
-      private readonly List<IEvent> _handledEvents = new List<IEvent>();
+      private readonly EventSubscriptionManager _subscriptionManager;
+      private readonly LifecycleStateMachine _sm;
+      private readonly List<IEventSubscription> _handlers = new List<IEventSubscription>();
 
       public ScreenLifecycle_(EventAggregator aggregator, IScreenBase parent) {
          _parent = parent;
-         _sm = new EventSubscriptionManager(aggregator);
+         _subscriptionManager = new EventSubscriptionManager(aggregator);
+         _sm = new LifecycleStateMachine(_parent);
 
-         State = LifecycleState.Created;
          DefineTransitions();
+
+         _subscriptionManager.Subscribe(b => 
+            b.AddSubscription(_sm)
+         );
       }
 
       public LifecycleState State {
-         get;
-         private set;
+         get { return _sm.State; }
       }
 
       public void RegisterHandler<TArgs>(
@@ -103,17 +110,39 @@
          Action<TArgs> handler,
          ExecutionOrder order = ExecutionOrder.Default
       ) where TArgs : ScreenEventArgs {
-         var r = new HandlerRegistration(
-            @event,
-            order,
-            args => handler((TArgs)args)
-         );
+         IEventSubscription sub;
+         bool isInitializeWithoutSubject = typeof(TArgs) == typeof(InitializeEventArgs);
+         bool isInitializeWithSubject = typeof(InitializeEventArgs).IsAssignableFrom(typeof(TArgs));
 
-         _handlers.Add(r);
+         if (isInitializeWithoutSubject) {
+            sub = new InitializeSubscription(
+               @event,
+               order,
+               (Action<InitializeEventArgs>)handler
+            );
+         } else if (isInitializeWithSubject) {
+            Type subjectType = typeof(TArgs)
+               .GetGenericArguments()
+               .Single();
 
-         if (IsInitializeEventWithSubject(@event)) {
-            EnsureInitializeWithSubjectTransition(@event);
+            Type subscriptionType = typeof(InitializeSubscription<>)
+               .MakeGenericType(subjectType);
+
+            sub = (IEventSubscription)Activator.CreateInstance(
+               subscriptionType,
+               @event,
+               order,
+               handler
+            );
+         } else {
+            sub = new EventSubscription<TArgs>(
+               @event,
+               handler,
+               order
+            );
          }
+
+         _handlers.Add(sub);
       }
 
       private void DefineTransitions() {
@@ -125,62 +154,98 @@
       }
 
       private void DefineCreatedTransitions() {
-         DefineTransition(LifecycleState.Created, ScreenEvents.Initialize(), LifecycleState.Initialized);
+         DefineTransition(
+            LifecycleState.Created,
+            LifecycleState.Initialized,
+            AnyEvent,
+            ExecuteHandlers,
+            condition: pub => pub.Payload is InitializeEventArgs
+         );
       }
 
       private void DefineInitializedTransitions() {
-         DefineTransition(LifecycleState.Initialized, ScreenEvents.Activate, LifecycleState.Activated);
-         DefineTransition(LifecycleState.Initialized, ScreenEvents.Close, LifecycleState.Closed);
-
          DefineTransition(
             LifecycleState.Initialized,
-            ScreenEvents.RequestClose,
-            LifecycleState.Initialized,
-            condition: args => args.IsCloseAllowed
+            LifecycleState.Activated,
+            ScreenEvents.Activate,
+            ExecuteHandlers
          );
 
          DefineTransition(
             LifecycleState.Initialized,
-            ScreenEvents.LifecycleExceptionOccured,
+            LifecycleState.Closed,
+            ScreenEvents.Close,
+            ExecuteHandlers
+         );
+
+         DefineTransition(
+            LifecycleState.Initialized,
+            LifecycleState.Initialized,
+            ScreenEvents.RequestClose,
+            ExecuteHandlers,
+            condition: CloseWasNotCancelled
+         );
+
+         DefineTransition(
+            LifecycleState.Initialized,
             LifecycleState.ExceptionOccured,
-            transitionAction: InvokeClose
+            ScreenEvents.LifecycleExceptionOccured,
+            InvokeClose
          );
       }
 
       private void DefineActivatedTransitions() {
-         DefineTransition(LifecycleState.Activated, ScreenEvents.Deactivate, LifecycleState.Deactivated);
-
          DefineTransition(
             LifecycleState.Activated,
-            ScreenEvents.RequestClose,
-            LifecycleState.Activated,
-            condition: args => args.IsCloseAllowed
+            LifecycleState.Deactivated,
+            ScreenEvents.Deactivate,
+            ExecuteHandlers
          );
 
          DefineTransition(
             LifecycleState.Activated,
-            ScreenEvents.LifecycleExceptionOccured,
+            LifecycleState.Activated,
+            ScreenEvents.RequestClose,
+            ExecuteHandlers,
+            condition: CloseWasNotCancelled
+         );
+
+         DefineTransition(
+            LifecycleState.Activated,
             LifecycleState.ExceptionOccured,
-            transitionAction: InvokeDeactivateAndClose
+            ScreenEvents.LifecycleExceptionOccured,
+            InvokeDeactivateAndClose
          );
       }
 
       private void DefineDeactivatedTransitions() {
-         DefineTransition(LifecycleState.Deactivated, ScreenEvents.Activate, LifecycleState.Activated);
-         DefineTransition(LifecycleState.Deactivated, ScreenEvents.Close, LifecycleState.Closed);
-
          DefineTransition(
             LifecycleState.Deactivated,
-            ScreenEvents.RequestClose,
-            LifecycleState.Deactivated,
-            condition: args => args.IsCloseAllowed
+            LifecycleState.Activated,
+            ScreenEvents.Activate,
+            ExecuteHandlers
          );
 
          DefineTransition(
             LifecycleState.Deactivated,
-            ScreenEvents.LifecycleExceptionOccured,
+            LifecycleState.Closed,
+            ScreenEvents.Close,
+            ExecuteHandlers
+         );
+
+         DefineTransition(
+            LifecycleState.Deactivated,
+            LifecycleState.Deactivated,
+            ScreenEvents.RequestClose,
+            ExecuteHandlers,
+            condition: CloseWasNotCancelled
+         );
+
+         DefineTransition(
+            LifecycleState.Deactivated,
             LifecycleState.ExceptionOccured,
-            transitionAction: InvokeClose
+            ScreenEvents.LifecycleExceptionOccured,
+            InvokeClose
          );
       }
 
@@ -188,149 +253,205 @@
          // ?
       }
 
-      private void InvokeDeactivateAndClose() {
-         ExecuteHandlers(ScreenEvents.Deactivate, new ScreenEventArgs(_parent));
-         InvokeClose();
-      }
-
-      private void InvokeClose() {
-         ExecuteHandlers(ScreenEvents.Close, new ScreenEventArgs(_parent));
-      }
-
-      private void EnsureInitializeWithSubjectTransition<TArgs>(
-         ScreenEvent<TArgs> @event
-      ) where TArgs : ScreenEventArgs {
-         DefineTransition(LifecycleState.Initialized, @event, LifecycleState.Initialized);
-      }
-
       private void DefineTransition<TArgs>(
          LifecycleState from,
-         ScreenEvent<TArgs> trigger,
          LifecycleState to,
-         Func<TArgs, bool> condition = null,
-         Action transitionAction = null
+         ScreenEvent<TArgs> on,
+         Action<EventPublication> action,
+         Func<EventPublication, bool> condition = null
       ) where TArgs : ScreenEventArgs {
-         EnsureEventAggregatorRegistration(trigger);
+         condition = condition ?? AlwaysTrueCondition;
 
-         transitionAction = transitionAction ?? DoNothingAction;
-
-         Func<EventArgs, bool> untypedCondition = condition != null ?
-            (EventArgs args) => condition((TArgs)args) :
-            AlwaysCondition;
-
-         var key = new StateTransitionKey(from, trigger);
-         var t = new StateTransition(key, to, untypedCondition, transitionAction);
-         _transitions.Add(t);
-      }
-
-      private void EnsureEventAggregatorRegistration<TArgs>(
-         ScreenEvent<TArgs> @event
-      ) where TArgs : ScreenEventArgs {
-         if (!_handledEvents.Contains(@event)) {
-            _sm.Subscribe(b => b
-               .On(@event, _parent)
-               .Execute(args => HandleEvent(@event, args))
-            );
-
-            _handledEvents.Add(@event);
-         }
-      }
-
-      private void HandleEvent(IEvent @event, EventArgs args) {
-         var key = new StateTransitionKey(State, @event);
-
-         if (!_transitions.Contains(key)) {
-            throw new InvalidOperationException(); // TODO: Message
+         if (on != null) {
+            condition = pub =>
+               pub.Event == on && condition(pub);
          }
 
-         StateTransition transition = _transitions[key];
-
-         try {
-            ExecuteHandlers(@event, args);
-            transition.TransitionAction();
-         } finally {
-            State = transition.ToState;
-         }
+         _sm.DefineTransition(from, to, condition, action);
       }
 
-      private void ExecuteHandlers(IEvent @event, EventArgs args) {
-         IEnumerable<HandlerRegistration> matching = _handlers
-            .Where(h => h.Event == @event)
-            .OrderBy(h => h.Order);
+      private void ExecuteHandlers(EventPublication publication) {
+         IEnumerable<IEventSubscription> matching = _handlers
+            .Where(s => s.Matches(publication))
+            .OrderBy(h => h.ExecutionOrder);
 
          foreach (var registration in matching) {
-            registration.Handler(args);
+            registration.Invoke(publication);
          }
       }
 
-      private static bool IsInitializeEventWithSubject<TArgs>(
-         ScreenEvent<TArgs> @event
-      ) where TArgs : ScreenEventArgs {
-         return TypeService.ClosesGenericType(
-            typeof(TArgs),
-            typeof(InitializeEventArgs<>)
-         );
+      private void InvokeDeactivateAndClose(EventPublication originalPublication) {
+         var pub = new EventPublication(ScreenEvents.Deactivate, new ScreenEventArgs(_parent));
+         ExecuteHandlers(pub);
+         InvokeClose(originalPublication);
       }
 
-      private struct StateTransitionKey {
-         private readonly LifecycleState _fromState;
-         private readonly IEvent _trigger;
+      private void InvokeClose(EventPublication originalPublication) {
+         var pub = new EventPublication(ScreenEvents.Close, new ScreenEventArgs(_parent));
+         ExecuteHandlers(pub);
+      }
 
-         public StateTransitionKey(
-            LifecycleState from,
-            IEvent trigger
+      private static bool CloseWasNotCancelled(EventPublication publication) {
+         Contract.Requires(publication.Event == ScreenEvents.RequestClose);
+
+         RequestCloseEventArgs args = (RequestCloseEventArgs)publication.Payload;
+         return args.IsCloseAllowed;
+      }
+
+      private class LifecycleStateMachine :
+         SimpleStateMachine<EventPublication, LifecycleState>,
+         IHierarchicalEventSubscription<IScreenBase> {
+
+         private readonly IScreenBase _target;
+
+         public LifecycleStateMachine(IScreenBase parent) {
+            _target = parent;
+         }
+
+         public IEvent Event {
+            get { return null; }
+         }
+
+         public ExecutionOrder ExecutionOrder {
+            get { return ExecutionOrder.Default; }
+         }
+
+         public bool Matches(EventPublication publication) {
+            return true;
+         }
+
+         public void Invoke(EventPublication publication) {
+            HandleEvent(publication);
+         }
+
+         public IScreenBase Target {
+            get { return _target; }
+         }
+      }
+
+      private abstract class AbstractInitializeSubscription : IEventSubscription {
+         private readonly IEvent _event;
+         private readonly ExecutionOrder _executionOrder;
+
+         public AbstractInitializeSubscription(
+            IEvent @event,
+            ExecutionOrder executionOrder
          ) {
-            _fromState = from;
-            _trigger = trigger;
+            _event = @event;
+            _executionOrder = executionOrder;
          }
 
-         public LifecycleState FromState {
-            get { return _fromState; }
+         public IEvent Event {
+            get { return _event; }
          }
 
-         public IEvent Trigger {
-            get { return _trigger; }
+         public ExecutionOrder ExecutionOrder {
+            get { return _executionOrder; }
+         }
+
+         public bool Matches(EventPublication publication) {
+            return publication.Payload is InitializeEventArgs;
+         }
+
+         public void Invoke(EventPublication publication) {
+            TryInvokeCore((InitializeEventArgs)publication.Payload);
+         }
+
+         public abstract void TryInvokeCore(InitializeEventArgs args);
+      }
+
+      private class InitializeSubscription : AbstractInitializeSubscription {
+         private readonly Action<InitializeEventArgs> _handler;
+
+         public InitializeSubscription(
+            IEvent @event,
+            ExecutionOrder executionOrder,
+            Action<InitializeEventArgs> handler
+         )
+            : base(@event, executionOrder) {
+            _handler = handler;
+         }
+
+         public override void TryInvokeCore(InitializeEventArgs args) {
+            _handler(args);
          }
       }
 
-      private class StateTransition {
-         public StateTransition(
-            StateTransitionKey key,
-            LifecycleState to,
-            Func<EventArgs, bool> condition,
-            Action transitionAction
-         ) {
-            Key = key;
-            ToState = to;
-            Condition = condition;
-            TransitionAction = transitionAction;
+      private class InitializeSubscription<TSubject> : AbstractInitializeSubscription {
+         private readonly Action<InitializeEventArgs<TSubject>> _handler;
+
+         public InitializeSubscription(
+            IEvent @event,
+            ExecutionOrder executionOrder,
+            Action<InitializeEventArgs<TSubject>> handler
+         )
+            : base(@event, executionOrder) {
+            _handler = handler;
          }
 
-         public StateTransitionKey Key { get; private set; }
-         public LifecycleState ToState { get; private set; }
-         public Func<EventArgs, bool> Condition { get; private set; }
-         public Action TransitionAction { get; private set; }
-      }
-
-      private class StateTransitionCollection : KeyedCollection<StateTransitionKey, StateTransition> {
-         protected override StateTransitionKey GetKeyForItem(StateTransition item) {
-            return item.Key;
+         public override void TryInvokeCore(InitializeEventArgs args) {
+            if (args.CanConvertTo<TSubject>()) {
+               InitializeEventArgs<TSubject> subjectArgs = args.ConvertTo<TSubject>();
+               _handler(subjectArgs);
+            }
          }
-      }
-
-      private class HandlerRegistration {
-         public HandlerRegistration(IEvent @event, ExecutionOrder order, Action<EventArgs> handler) {
-            Event = @event;
-            Order = order;
-            Handler = handler;
-         }
-
-         public IEvent Event { get; private set; }
-         public ExecutionOrder Order { get; private set; }
-         public Action<EventArgs> Handler { get; private set; }
       }
    }
 
+   public partial class ScreenLifecycle_ {
+      private class SimpleStateMachine<TEvent, TState> {
+         private readonly List<StateTransition> _transitions = new List<StateTransition>();
+
+         public TState State {
+            get;
+            private set;
+         }
+
+         public void DefineTransition(
+            TState fromState,
+            TState toState,
+            Func<TEvent, bool> condition,
+            Action<TEvent> action
+         ) {
+            var t = new StateTransition(fromState, toState, condition, action);
+            _transitions.Add(t);
+         }
+
+         public void HandleEvent(TEvent @event) {
+            var transition = _transitions
+               .SingleOrDefault(t =>
+                  Object.Equals(t.FromState, State) &&
+                  t.Condition(@event)
+               );
+
+            if (transition == null) {
+               throw new InvalidOperationException(); // TODO: Message
+            }
+
+            State = transition.ToState;
+            transition.Action(@event);
+         }
+
+         private class StateTransition {
+            public StateTransition(
+               TState fromState,
+               TState toState,
+               Func<TEvent, bool> condition,
+               Action<TEvent> action
+            ) {
+               FromState = fromState;
+               ToState = toState;
+               Condition = condition;
+               Action = action;
+            }
+
+            public TState FromState { get; private set; }
+            public TState ToState { get; private set; }
+            public Func<TEvent, bool> Condition { get; private set; }
+            public Action<TEvent> Action { get; private set; }
+         }
+      }
+   }
 
    public abstract class ScreenLifecycle : IScreenLifecycle {
       public virtual IScreenLifecycle Parent { get; set; }

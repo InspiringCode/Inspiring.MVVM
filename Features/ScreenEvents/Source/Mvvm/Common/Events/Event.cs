@@ -4,15 +4,14 @@
 
    public class Event<TPayload> : IEvent<TPayload> {
       void IEvent<TPayload>.Publish(IEventSubscriptionRepository allSubscriptions, TPayload payload) {
-         var publication = new EventPublication<TPayload>(this, payload);
+         var publication = new EventPublication(this, payload);
 
-         IEnumerable<IEventSubscription<TPayload>> matching = allSubscriptions
+         IEnumerable<IEventSubscription> matching = allSubscriptions
             .GetSubscriptions(publication)
-            .OfType<EventSubscription<TPayload>>()
             .OrderBy(x => x.ExecutionOrder);
 
          foreach (var subscription in matching) {
-            subscription.Invoke(payload);
+            subscription.Invoke(publication);
          }
       }
    }

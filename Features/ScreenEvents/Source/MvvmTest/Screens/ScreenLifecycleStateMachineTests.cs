@@ -21,8 +21,6 @@
             .Run(ExecuteTestCase);
       }
 
-
-
       private void ExecuteTestCase(EventTestCase test) {
          test.Run();
       }
@@ -53,33 +51,35 @@
 
       private class TriggerEvent {
          public static readonly TriggerEvent Initialize =
-            new TriggerEvent(ScreenEvents.Initialize(), t => new ScreenEventArgs(t));
+            new TriggerEvent((a, t) => a.Publish(ScreenEvents.Initialize(), new InitializeEventArgs(t)));
 
          public static readonly TriggerEvent InitializeSubject =
-            new TriggerEvent(ScreenEvents.Initialize(), t => new ScreenEventArgs(t));
+            new TriggerEvent((a, t) => a.Publish(ScreenEvents.Initialize(), new InitializeEventArgs<TestSubject>(t, new TestSubject())));
 
          public static readonly TriggerEvent Activate =
-            new TriggerEvent(ScreenEvents.Activate, t => new ScreenEventArgs(t));
+            new TriggerEvent((a, t) => a.Publish(ScreenEvents.Activate, new ScreenEventArgs(t)));
 
          public static readonly TriggerEvent Deactivate =
-            new TriggerEvent(ScreenEvents.Deactivate, t => new ScreenEventArgs(t));
+            new TriggerEvent((a, t) => a.Publish(ScreenEvents.Deactivate, new ScreenEventArgs(t)));
 
          public static readonly TriggerEvent RequestClose =
-            new TriggerEvent(ScreenEvents.RequestClose, t => new ScreenEventArgs(t));
+            new TriggerEvent((a, t) => a.Publish(ScreenEvents.RequestClose, new RequestCloseEventArgs(t)));
 
          public static readonly TriggerEvent Close =
-            new TriggerEvent(ScreenEvents.Close, t => new ScreenEventArgs(t));
+            new TriggerEvent((a, t) => a.Publish(ScreenEvents.Close, new ScreenEventArgs(t)));
 
          public static readonly TriggerEvent LifecycleException =
-            new TriggerEvent(ScreenEvents.LifecycleExceptionOccured, t => new ScreenEventArgs(t));
+            new TriggerEvent((a, t) => a.Publish(ScreenEvents.LifecycleExceptionOccured, new ScreenEventArgs(t)));
 
-         private TriggerEvent(IEvent<ScreenEventArgs> @event, Func<IScreenBase, ScreenEventArgs> argFactory) {
-            Event = @event;
-            ArgFactory = argFactory;
+         private readonly Action<EventAggregator, IScreenBase> _publishAction;
+
+         private TriggerEvent(Action<EventAggregator, IScreenBase> publishAction) {
+            _publishAction = publishAction;
          }
 
-         public IEvent<ScreenEventArgs> Event { get; private set; }
-         public Func<IScreenBase, ScreenEventArgs> ArgFactory { get; private set; }
+         public void PublishEvent(EventAggregator aggregator, IScreenBase target) {
+            _publishAction(aggregator, target);
+         }
       }
 
       private class EventTestCase {
@@ -106,8 +106,6 @@
          }
 
          protected void SetLifecycleStateTo(LifecycleState state) {
-            Screen = new TestScreen();
-
             var operations = ScreenLifecycleOperations.For(Aggregator, Screen);
 
             if (state == LifecycleState.Created) {
@@ -165,7 +163,7 @@
             SetLifecycleStateTo(InitialState);
             AttachEventHandlers();
 
-            Aggregator.Publish(Trigger.Event, Trigger.ArgFactory(Screen));
+            Trigger.PublishEvent(Aggregator, Screen);
 
             Assert.AreEqual(ExpectedStateAfterTransition, Lifecycle.State);
 

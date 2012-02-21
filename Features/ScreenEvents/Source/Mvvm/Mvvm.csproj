@@ -149,6 +149,7 @@
     <Compile Include="Screens\IDialogService.cs" />
     <Compile Include="Screens\ILocatableScreen.cs" />
     <Compile Include="Screens\INeedsInitialization.cs" />
+    <Compile Include="Screens\InitializeEventArgs.cs" />
     <Compile Include="Screens\InvocationOrder.cs" />
     <Compile Include="Screens\IScreen.cs" />
     <Compile Include="Screens\IScreenFactory.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="Screens\Screen.cs" />
     <Compile Include="Screens\ScreenConductor.cs" />
     <Compile Include="Screens\ScreenFactory.cs" />
+    <Compile Include="Screens\ScreenLifecycleException.cs" />
     <Compile Include="Screens\ScreenService.cs" />
     <Compile Include="ServiceLocator.cs" />
     <Compile Include="Testing\ArgumentValue.cs" />

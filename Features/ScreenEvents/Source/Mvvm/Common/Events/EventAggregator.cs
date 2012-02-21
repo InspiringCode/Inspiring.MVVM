@@ -20,12 +20,11 @@
          _subscriptionStores.Add(store);
       }
 
-      IEnumerable<IEventSubscription<TPayload>> IEventSubscriptionRepository.GetSubscriptions<TPayload>(
-         EventPublication<TPayload> publication
+      IEnumerable<IEventSubscription> IEventSubscriptionRepository.GetSubscriptions(
+         EventPublication publication
       ) {
          return _subscriptionStores
             .SelectMany(x => x.Subscriptions)
-            .OfType<IEventSubscription<TPayload>>()
             .Where(x => x.Matches(publication))
             .ToArray();
       }
