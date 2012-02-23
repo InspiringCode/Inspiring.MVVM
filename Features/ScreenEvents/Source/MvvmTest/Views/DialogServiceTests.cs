@@ -15,7 +15,7 @@
       [TestInitialize]
       public void Setup() {
          WindowService = new WindowServiceStub();
-         DialogSerivce = new DialogService(WindowService, new EventAggregator());
+         DialogSerivce = new DialogService(new EventAggregator(), WindowService);
       }
 
       [TestMethod]
@@ -116,6 +116,11 @@
          Assert.IsFalse(screen.WasClosed);
       }
 
+      [TestCleanup]
+      public void CleanUp() {
+         Dispatcher.CurrentDispatcher.InvokeShutdown();
+      }
+
       private void ShowDialogAndExpectException(IScreenBase screen) {
          AssertHelper.Throws<ScreenMockException>(
             () => ShowDialog(screen),
@@ -148,30 +153,28 @@
          public bool ShowRealWindow { get; set; }
          public bool ThrowViewInitializationException { get; set; }
 
-         protected override Window CreateDialogWindow() {
+         public override Window CreateWindow(Window owner, string title, bool modal) {
             return new WindowView(ThrowViewInitializationException);
          }
 
-         internal override bool? InvokeShowDialog(Window dialog) {
+         public override void ShowWindow(Window window, bool modal) {
             WasShown = true;
-            LastWindow = dialog;
+            LastWindow = window;
 
-            dialog.Loaded += delegate {
+            window.Loaded += delegate {
                if (WindowLoaded != null) {
-                  WindowLoaded(dialog);
+                  WindowLoaded(window);
                }
             };
 
-            dialog.Opacity = 0;
-            dialog.AllowsTransparency = true;
-            dialog.WindowStyle = WindowStyle.None;
-            dialog.ShowInTaskbar = false;
+            window.Opacity = 0;
+            window.AllowsTransparency = true;
+            window.WindowStyle = WindowStyle.None;
+            window.ShowInTaskbar = false;
 
             if (ShowRealWindow) {
-               return base.InvokeShowDialog(dialog);
-            } else {
-               return true;
-            }
+               base.ShowWindow(window, modal);
+            }            
          }
       }
 

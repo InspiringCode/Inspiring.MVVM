@@ -138,7 +138,7 @@
          }
 
 
-         public IScreenLifecycle Parent {
+         public IScreenBase Parent {
             get {
                throw new NotImplementedException();
             }

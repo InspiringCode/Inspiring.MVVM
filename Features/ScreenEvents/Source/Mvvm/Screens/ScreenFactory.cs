@@ -31,17 +31,14 @@
       }
 
       private abstract class AbstractFactory<TScreen> where TScreen : IScreenBase {
-         public TScreen Create(Action<TScreen> initializationCallback = null) {
+         public TScreen Create(Action<TScreen> preInitializationCallback = null) {
             TScreen screen = CreateScreen();
 
-            InitializeScreen(screen);
-
-            // The callback may require that the screen is already initialized
-            // (e.g. the callback may add the screen to a screen collection which
-            // requires that the data of the screen is already loaded).
-            if (initializationCallback != null) {
-               initializationCallback(screen);
+            if (preInitializationCallback != null) {
+               preInitializationCallback(screen);
             }
+
+            InitializeScreen(screen);
 
             return screen;
          }

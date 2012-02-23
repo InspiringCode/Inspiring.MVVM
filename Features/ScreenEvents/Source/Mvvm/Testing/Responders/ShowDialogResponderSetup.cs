@@ -3,6 +3,7 @@
    using System.Windows;
    using Inspiring.Mvvm.Screens;
    using Inspiring.Mvvm.Views;
+using Inspiring.Mvvm.Common;
 
    public abstract class ShowDialogResponderSetup : ResponderBase {
       internal ShowDialogResponderSetup(DialogServiceMethod method)
@@ -53,9 +54,12 @@
       ShowDialogResponderSetup
       where TScreen : IScreenBase {
 
-      internal ShowDialogResponderSetup(DialogServiceMethod method, Action<TScreen> dialogTestAction)
+      private EventAggregator _aggregator;
+
+      internal ShowDialogResponderSetup(DialogServiceMethod method, Action<TScreen> dialogTestAction, EventAggregator aggregator)
          : base(method) {
          DialogTestAction = dialogTestAction;
+         _aggregator = aggregator;
       }
 
       internal Action<TScreen> DialogTestAction { get; private set; }
@@ -65,35 +69,11 @@
          IScreenFactory<T> screen
       ) {
          IScreenBase s = screen.Create();
-         s.Children.Add(new DialogLifecycle());
-         var closeHandler = new DialogCloseHandler(s);
-         closeHandler.AttachTo(new Window());
-
+         s.Children.Add(new DialogLifecycle(_aggregator));
+         
          IScreenBase parent = (IScreenBase)invocation.Parent.Value;
 
-         if (parent != null) {
-            // HACK
-            if (s.Children != null) {
-               s.Children.Expose<ScreenHierarchyLifecycle>().Opener = parent;
-            }
-            // HACK
-            if (parent.Children != null) {
-               parent.Children.Expose<ScreenHierarchyLifecycle>().OpenedScreens.Add(s);
-            }
-         }
-
          DialogTestAction((TScreen)s);
-
-         if (parent != null) {
-            // HACK
-            if (s.Children != null) {
-               s.Children.Expose<ScreenHierarchyLifecycle>().Opener = null;
-            }
-            // HACK
-            if (parent.Children != null) {
-               parent.Children.Expose<ScreenHierarchyLifecycle>().OpenedScreens.Remove(s);
-            }
-         }
 
          var dl = DialogLifecycle.GetDialogLifecycle(s);
          return dl.ScreenResult ?? new DialogScreenResult(false);

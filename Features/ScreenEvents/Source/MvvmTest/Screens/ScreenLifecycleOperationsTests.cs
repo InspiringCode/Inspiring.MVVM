@@ -19,7 +19,7 @@ using System.Collections.Generic;
       public void Setup() {
          Aggregator = new EventAggregator();
          Screen = new TestScreen();
-         Operations = ScreenLifecycleOperations.For(Aggregator, Screen);
+         Operations = new ScreenLifecycleOperations(Aggregator, Screen);
          PublishedEvents = new List<IEvent>();
 
          _sm = new EventSubscriptionManager(Aggregator);

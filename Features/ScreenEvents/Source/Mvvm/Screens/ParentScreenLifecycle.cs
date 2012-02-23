@@ -3,13 +3,11 @@
 
    public class ParentScreenLifecycle : NotifyObject, IScreenLifecycle {
       public ParentScreenLifecycle() {
-         Children = new ScreenLifecycleCollection<IScreenLifecycle>(this);
-         Children.Add(new ScreenHierarchyLifecycle());
+         // HACK
+         Children = new ScreenLifecycleCollection<IScreenLifecycle>((IScreenBase)this);
       }
 
       public ScreenLifecycleCollection<IScreenLifecycle> Children { get; private set; }
-
-      public IScreenLifecycle Parent { get; set; }
 
       void IScreenLifecycle.Activate() {
          Children.ActivateAll(parentCallback: OnActivate);

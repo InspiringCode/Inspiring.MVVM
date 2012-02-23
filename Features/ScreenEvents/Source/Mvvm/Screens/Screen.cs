@@ -6,7 +6,7 @@
    using Inspiring.Mvvm.ViewModels;
 
    public class ScreenBase : ParentScreenLifecycle, IScreenBase {
-
+      public IScreenBase Parent { get; set; }
    }
 
    public class ViewModelScreenBase<TDescriptor> :
@@ -17,18 +17,16 @@
       public ViewModelScreenBase(IServiceLocator serviceLocator = null)
          : base(serviceLocator) {
          Children = new ScreenLifecycleCollection<IScreenLifecycle>(this);
-         Children.Add(new ScreenHierarchyLifecycle());
       }
 
       public ViewModelScreenBase(TDescriptor descriptor, IServiceLocator serviceLocator = null)
          : base(descriptor, serviceLocator) {
          Children = new ScreenLifecycleCollection<IScreenLifecycle>(this);
-         Children.Add(new ScreenHierarchyLifecycle());
       }
 
       public ScreenLifecycleCollection<IScreenLifecycle> Children { get; private set; }
 
-      public IScreenLifecycle Parent { get; set; }
+      public IScreenBase Parent { get; set; }
 
       void IScreenLifecycle.Activate() {
          Children.ActivateAll(parentCallback: OnActivate);

@@ -7,9 +7,9 @@
 
    public class ScreenLifecycleCollection<T> where T : IScreenLifecycle {
       private const bool ContineInvocations = true;
-      private IScreenLifecycle _parent;
+      private IScreenBase _parent;
 
-      internal ScreenLifecycleCollection(IScreenLifecycle parent) {
+      internal ScreenLifecycleCollection(IScreenBase parent) {
          _parent = parent;
          Items = new ObservableCollection<T>();
       }
@@ -18,15 +18,25 @@
 
       public void Add(T handler) {
          Contract.Requires<ArgumentNullException>(handler != null);
-         handler.Parent = _parent;
+         
+         // HACK
+         IScreenBase screen = handler as IScreenBase;
+         if (screen != null) {
+            screen.Parent = _parent;
+         }
+         
          Items.Add(handler);
       }
 
       public TScreen AddNew<TScreen>(IScreenFactory<TScreen> screen)
          where TScreen : T, IScreenBase {
-         return screen.Create(s => {
-            Add(s);
-         });
+         TScreen s = screen.Create();
+
+         // The screen is added AFTER it was initialized by the screen
+         // factory.
+         Add(s);
+
+         return s;
       }
 
       public bool Contains<TChild>()

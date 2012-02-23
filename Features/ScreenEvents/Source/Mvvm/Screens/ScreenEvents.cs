@@ -8,6 +8,8 @@
       public static readonly ScreenEvent<ScreenEventArgs> Close = new ScreenEvent<ScreenEventArgs>();
       public static readonly ScreenEvent<ScreenEventArgs> LifecycleExceptionOccured = new ScreenEvent<ScreenEventArgs>();
 
+      internal static readonly Event<InitiateCloseEventArgs> InitiateClose = new Event<InitiateCloseEventArgs>();
+
       private static readonly ScreenEvent<InitializeEventArgs> InitializeInstance = new ScreenEvent<InitializeEventArgs>();
 
       public static ScreenEvent<InitializeEventArgs> Initialize() {
@@ -22,6 +24,17 @@
          public static readonly ScreenEvent<InitializeEventArgs<TSubject>> Instance =
             new ScreenEvent<InitializeEventArgs<TSubject>>();
       }
+   }
+
+   internal class InitiateCloseEventArgs : ScreenEventArgs {
+      public InitiateCloseEventArgs(IScreenBase target, bool skipRequestClose)
+         : base(target) {
+         SkipRequestClose = skipRequestClose;
+      }
+
+      public bool SkipRequestClose { get; private set; }
+
+      public bool Handled { get; set; }
    }
 
    public class ScreenEventArgs : HierarchicalEventArgs<IScreenBase> {

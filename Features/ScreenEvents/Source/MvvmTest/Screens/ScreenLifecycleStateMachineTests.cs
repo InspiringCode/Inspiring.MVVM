@@ -106,7 +106,7 @@
          }
 
          protected void SetLifecycleStateTo(LifecycleState state) {
-            var operations = ScreenLifecycleOperations.For(Aggregator, Screen);
+            var operations = new ScreenLifecycleOperations(Aggregator, Screen);
 
             if (state == LifecycleState.Created) {
                return;

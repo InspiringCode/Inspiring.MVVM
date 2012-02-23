@@ -6,7 +6,10 @@
       ///   If an exception occurs during initialization it should be rethrown by
       ///   the implementation.
       /// </remarks>
-      TScreen Create(Action<TScreen> initializationCallback = null);
+      /// <param name="preInitializationCallback">
+      ///   Indended for things that should happen before the screen is initialized.
+      /// </param>
+      TScreen Create(Action<TScreen> preInitializationCallback = null);
 
       /// <summary>
       ///   Returns true, if the <see cref="IScreenFactory{TScreen}"/> would create 

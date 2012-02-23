@@ -1,13 +1,16 @@
 ﻿namespace Inspiring.Mvvm.Screens {
    using System;
-   using System.Diagnostics.Contracts;
+   using System.Linq;
+   using Inspiring.Mvvm.Common;
 
    internal sealed class DialogLifecycle : ScreenLifecycle {
-      public Nullable<bool> WindowResult { get; set; }
+      private readonly EventAggregator _aggregator;
+
+      public DialogLifecycle(EventAggregator aggregator) {
+         _aggregator = aggregator;
+      }
 
       public DialogScreenResult ScreenResult { get; set; }
-
-      public event EventHandler CloseWindow;
 
       public static DialogLifecycle GetDialogLifecycle(IScreenBase forScreen) {
          var lifecycle = TryGetDialogLifecycle(forScreen);
@@ -24,20 +27,15 @@
       }
 
       private static DialogLifecycle TryGetDialogLifecycle(IScreenBase forScreen) {
-         // TODO: Is this the best semantic?
-         for (IScreenLifecycle s = forScreen; s != null; s = s.Parent) {
-            IScreenBase scr = s as IScreenBase;
-            if (scr != null && scr.Children.Contains<DialogLifecycle>()) {
-               return scr.Children.Expose<DialogLifecycle>();
-            }
-         }
-
-         return null;
+         return ScreenTreeHelper
+            .GetAncestorsOf(forScreen)
+            .SelectMany(x => x.Children.Items.OfType<DialogLifecycle>())
+            .FirstOrDefault();
       }
 
-      public void RaiseCloseWindow() {
-         Contract.Assert(CloseWindow != null);
-         CloseWindow(this, EventArgs.Empty);
+      // TODO: Clean this up
+      public void RaiseCloseWindow(IScreenBase screen) {
+         ScreenHelper.Close(_aggregator, screen, true);
       }
    }
 }

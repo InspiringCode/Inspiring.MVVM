@@ -18,19 +18,14 @@
       private EventAggregator _aggregator;
       private IScreenBase _target;
 
-      private ScreenLifecycleOperations() {
-      }
-
-      public static ScreenLifecycleOperations For(
+      public ScreenLifecycleOperations(
          EventAggregator aggregator,
          IScreenBase target
       ) {
-         return new ScreenLifecycleOperations {
-            _aggregator = aggregator,
-            _target = target
-         };
+         _aggregator = aggregator;
+         _target = target;
       }
-
+      
       public void Initialize() {
          PublishEvent(ScreenEvents.Initialize(), new InitializeEventArgs(_target));
       }
@@ -96,7 +91,7 @@
 
          DefineTransitions();
 
-         _subscriptionManager.Subscribe(b => 
+         _subscriptionManager.Subscribe(b =>
             b.AddSubscription(_sm)
          );
       }
