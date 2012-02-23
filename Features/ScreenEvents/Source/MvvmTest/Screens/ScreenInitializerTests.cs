@@ -1,14 +1,22 @@
 ﻿namespace Inspiring.MvvmTest.Screens {
+   using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.Screens;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
    public class ScreenInitializerTests {
+      private EventAggregator Aggregator { get; set; }
+
+      [TestInitialize]
+      public void Setup() {
+         Aggregator = new EventAggregator();
+      }
+
       [TestMethod]
       public void Initialize_WithSubjectOfExactType_CallsInitialize() {
          var subject = new DerivedSubject();
          var screen = new TestScreen<DerivedSubject>();
-         ScreenInitializer.Initialize(screen, subject);
+         Initialize(screen, subject);
          Assert.AreEqual(subject, screen.LastSubject);
       }
 
@@ -16,7 +24,7 @@
       public void Initialize_WithSubjectOfDerivedType_CallsInitialize() {
          var subject = new DerivedSubject();
          var screen = new TestScreen<BaseSubject>();
-         ScreenInitializer.Initialize(screen, subject);
+         Initialize(screen, subject);
          Assert.AreEqual(subject, screen.LastSubject);
       }
 
@@ -27,7 +35,7 @@
          var child = new TestScreen<BaseSubject>();
          parent.Children.Add(child);
 
-         ScreenInitializer.Initialize(parent, subject);
+         Initialize(parent, subject);
          Assert.AreEqual(subject, parent.LastSubject, "Initialize was not called on parent.");
          Assert.AreEqual(subject, child.LastSubject, "Initialize was not called on child.");
       }
@@ -36,7 +44,7 @@
       public void Initialize_WhenScreenExpectsInterface_CallsInitialize() {
          var subject = new DerivedSubject();
          var screen = new ScreenWithInterfaceSubject();
-         ScreenInitializer.Initialize(screen, subject);
+         Initialize(screen, subject);
          Assert.AreEqual(subject, screen.LastSubject);
       }
 
@@ -44,7 +52,7 @@
       public void Initialize_WhenCompileTimeTypeOfSubjectIsInterface_CallsInitializeOverloadOfRuntimeType() {
          var subject = new DerivedSubject();
          var screen = new TestScreen<BaseSubject>();
-         ScreenInitializer.Initialize(screen, (ISubject)subject);
+         Initialize(screen, (ISubject)subject);
          Assert.AreEqual(subject, screen.LastSubject);
       }
 
@@ -55,14 +63,22 @@
          var child = new TestScreen<BaseSubject>();
          parent.Children.Add(child);
 
-         ScreenInitializer.Initialize(parent, subject);
+         Initialize(parent, subject);
          Assert.AreEqual(subject, child.LastSubject, "Initialize was not called on child.");
       }
 
+      private void Initialize<TSubject>(IScreenBase screen, TSubject subject) {
+         new ScreenLifecycleOperations(Aggregator, screen)
+            .Initialize(subject);
+      }
+
       private class NonInitializableParentScreen : ScreenBase {
+         public NonInitializableParentScreen()
+            : base(new EventAggregator()) {
+         }
       }
 
-      private class InitializableParentScreen<TSubject> : ScreenBase, INeedsInitialization<TSubject> {
+      private class InitializableParentScreen<TSubject> : DefaultTestScreen, INeedsInitialization<TSubject> {
          public TSubject LastSubject { get; set; }
 
          public void Initialize(TSubject subject) {
@@ -70,7 +86,7 @@
          }
       }
 
-      private class TestScreen<TSubject> : ScreenBase, INeedsInitialization<TSubject> {
+      private class TestScreen<TSubject> : DefaultTestScreen, INeedsInitialization<TSubject> {
          public TSubject LastSubject { get; set; }
 
          public void Initialize(TSubject subject) {
@@ -78,7 +94,7 @@
          }
       }
 
-      private class ScreenWithInterfaceSubject : ScreenBase, INeedsInitialization<ISubject> {
+      private class ScreenWithInterfaceSubject : DefaultTestScreen, INeedsInitialization<ISubject> {
          public ISubject LastSubject { get; set; }
 
          void INeedsInitialization<ISubject>.Initialize(ISubject subject) {

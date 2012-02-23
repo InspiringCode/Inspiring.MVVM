@@ -84,7 +84,7 @@ using System.Collections.Generic;
          });
       }
 
-      private class TestScreen : ScreenBase { }
+      private class TestScreen : DefaultTestScreen { }
 
       private interface ISubject {
          object Dummy { get; set; }

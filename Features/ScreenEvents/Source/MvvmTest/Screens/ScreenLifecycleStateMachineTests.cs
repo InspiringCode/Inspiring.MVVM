@@ -203,7 +203,7 @@
          }
       }
 
-      private class TestScreen : ScreenBase { }
+      private class TestScreen : DefaultTestScreen { }
 
       private class TestSubject { }
    }

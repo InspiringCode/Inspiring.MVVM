@@ -1,6 +1,8 @@
 ﻿namespace Inspiring.MvvmTest.Screens {
    using System;
+   using System.Collections.Generic;
    using Inspiring.Mvvm;
+   using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.Screens;
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -8,6 +10,13 @@
 
    [TestClass]
    public class ScreenFactoryTest : TestBase {
+      private EventAggregator Aggregator { get; set; }
+
+      [TestInitialize]
+      public void Setup() {
+         Aggregator = new EventAggregator();
+      }
+
       [TestMethod]
       public void TestServiceLocatorIsUsed() {
          var locatorMock = new Mock<IServiceLocator>();
@@ -17,7 +26,7 @@
 
          TestScreen screen = ScreenFactory
             .For<TestScreen>(locatorMock.Object)
-            .Create();
+            .Create(Aggregator);
 
          Assert.AreEqual("Test", screen.Dependency);
       }
@@ -26,7 +35,7 @@
       public void TestCreateWithDefaultServiceLocator() {
          TestScreen screen = ScreenFactory
             .For<TestScreen>()
-            .Create();
+            .Create(Aggregator);
 
          Assert.IsNotNull(screen);
       }
@@ -59,7 +68,7 @@
          IScreenFactory<TestScreen> concreteFactory = ScreenFactory.For<TestScreen>();
          IScreenFactory<IScreenBase> factory = concreteFactory;
 
-         IScreenBase screen = factory.Create();
+         IScreenBase screen = factory.Create(Aggregator);
          Assert.IsInstanceOfType(screen, typeof(TestScreen));
       }
 
@@ -68,8 +77,8 @@
          var expected = new InitializableScreen();
 
          IScreenFactory<InitializableScreen> factory = ScreenFactory.For<InitializableScreen>();
-         
-         var actual = factory.Create();
+
+         var actual = factory.Create(Aggregator);
          Assert.IsTrue(actual.InitializeWasCalled);
       }
 
@@ -79,11 +88,11 @@
 
          IScreenFactory<InitializableScreen> factory = ScreenFactory.For(expected);
 
-         var actual = factory.Create();
+         var actual = factory.Create(Aggregator);
          Assert.AreEqual(expected, actual);
       }
 
-      private class InitializableScreen : ScreenBase, INeedsInitialization {
+      private class InitializableScreen : DefaultTestScreen, INeedsInitialization {
          public bool InitializeWasCalled { get; set; }
 
          public void Initialize() {
@@ -91,13 +100,13 @@
          }
       }
 
-      private class FirstScreen : ScreenBase {
+      private class FirstScreen : DefaultTestScreen {
       }
 
-      private class SecondScreen : ScreenBase {
+      private class SecondScreen : DefaultTestScreen {
       }
 
-      private class TestScreen : ScreenBase {
+      private class TestScreen : DefaultTestScreen {
          public TestScreen() {
          }
 
@@ -109,35 +118,6 @@
       }
 
       private class SimpleScreen : IScreenBase {
-         public string Title {
-            get { throw new NotImplementedException(); }
-         }
-
-         public void Initialize() {
-            throw new NotImplementedException();
-         }
-
-         public void Activate() {
-            throw new NotImplementedException();
-         }
-
-         public void Deactivate() {
-            throw new NotImplementedException();
-         }
-
-         public void RequestClose() {
-            throw new NotImplementedException();
-         }
-
-         public void Close() {
-            throw new NotImplementedException();
-         }
-
-         public void Corrupt(object data = null) {
-            throw new NotImplementedException();
-         }
-
-
          public IScreenBase Parent {
             get {
                throw new NotImplementedException();
@@ -147,11 +127,8 @@
             }
          }
 
-         bool IScreenLifecycle.RequestClose() {
-            throw new NotImplementedException();
-         }
 
-         public ScreenLifecycleCollection<IScreenLifecycle> Children {
+         ICollection<object> IScreenBase.Children {
             get { throw new NotImplementedException(); }
          }
       }

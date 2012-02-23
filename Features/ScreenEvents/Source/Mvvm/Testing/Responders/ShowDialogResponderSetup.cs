@@ -68,7 +68,7 @@ using Inspiring.Mvvm.Common;
          DialogServiceInvocation invocation,
          IScreenFactory<T> screen
       ) {
-         IScreenBase s = screen.Create();
+         IScreenBase s = screen.Create(_aggregator);
          s.Children.Add(new DialogLifecycle(_aggregator));
          
          IScreenBase parent = (IScreenBase)invocation.Parent.Value;

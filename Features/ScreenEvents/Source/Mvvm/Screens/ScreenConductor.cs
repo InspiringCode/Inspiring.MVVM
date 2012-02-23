@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.Mvvm.Screens {
    using System;
    using System.Collections.Generic;
+   using System.ComponentModel;
    using System.Diagnostics.Contracts;
    using System.Linq;
    using Inspiring.Mvvm.Common;
@@ -34,7 +35,7 @@
       public bool WasAlreadyOpen { get; private set; }
    }
 
-   public class ScreenConductor : ScreenBase {
+   public class ScreenConductor : ScreenBase, INotifyPropertyChanged {
       /// <summary>
       ///   An event that is raised whenever <see cref="OpenScreen{TScreen}"/> is called.
       /// </summary>
@@ -52,17 +53,18 @@
       /// </remarks>
       public static readonly Event<ConductorEventArgs> ScreenClosedEvent = new Event<ConductorEventArgs>();
 
-      private readonly ScreenLifecycleCollection<IScreenBase> _screens;
+      private readonly ScreenChildrenCollection<IScreenBase> _screens;
       private readonly List<IScreenBase> _activatedScreensHistory;
       private readonly EventAggregator _eventAggregator;
 
       private IScreenBase _activeScreen;
       private bool _isActivated;
 
-      public ScreenConductor(EventAggregator eventAggregator) {
+      public ScreenConductor(EventAggregator eventAggregator)
+         : base(eventAggregator) {
          Contract.Requires<ArgumentNullException>(eventAggregator != null);
 
-         _screens = new ScreenLifecycleCollection<IScreenBase>(this);
+         _screens = new ScreenChildrenCollection<IScreenBase>(this);
          _activatedScreensHistory = new List<IScreenBase>();
          _eventAggregator = eventAggregator;
       }
@@ -73,7 +75,7 @@
             if (value != _activeScreen) {
                try {
                   if (_activeScreen != null && _isActivated) {
-                     _activeScreen.Deactivate();
+                     //_activeScreen.Deactivate();
                   }
                } finally {
                   _activeScreen = value;
@@ -85,10 +87,10 @@
 
                   try {
                      if (_activeScreen != null && _isActivated) {
-                        _activeScreen.Activate();
+                        //_activeScreen.Activate();
                      }
                   } finally {
-                     OnPropertyChanged(() => ActiveScreen);
+                     OnPropertyChanged(ExpressionService.GetPropertyName(() => ActiveScreen));
                   }
                }
             }
@@ -96,7 +98,7 @@
       }
 
       public IEnumerable<IScreenBase> Screens {
-         get { return _screens.Items; }
+         get { return _screens.ObservableItems; }
       }
 
       // TODO: Maybe set the ScreenConductor as Opener of the new Screen.
@@ -137,26 +139,26 @@
       }
 
       public bool CloseScreen(IScreenBase screen) {
-         if (!_screens.Items.Contains(screen)) {
+         if (!_screens.Contains(screen)) {
             throw new ArgumentException(ExceptionTexts.ScreenNotContainedByConductor);
          }
 
-         if (screen.RequestClose()) {
-            ImmediateCloseScreen(screen);
+         //if (screen.RequestClose()) {
+         ImmediateCloseScreen(screen);
 
-            _eventAggregator.Publish(
-               ScreenClosedEvent,
-               new ConductorEventArgs(this, screen)
-            );
+         _eventAggregator.Publish(
+            ScreenClosedEvent,
+            new ConductorEventArgs(this, screen)
+         );
 
-            return true;
-         }
+         return true;
+         //}
 
          return false;
       }
 
       public void ImmediateCloseScreen(IScreenBase screen) {
-         if (!_screens.Items.Contains(screen)) {
+         if (!_screens.Contains(screen)) {
             throw new ArgumentException(ExceptionTexts.ScreenNotContainedByConductor);
          }
 
@@ -171,33 +173,41 @@
             // to close the view. In this stage the screen may still be accessed by the
             // view. If 'Close' was called before, the screen may already be in an
             // disposed state (e.g. database session closed).
-            _screens.Items.Remove(screen);
+            _screens.Remove(screen);
          }
 
-         screen.Close();
+         //screen.Close();
       }
 
-      protected override void OnActivate() {
+      protected void OnActivate() {
          _isActivated = true;
          if (_activeScreen != null) {
-            _activeScreen.Activate();
+            //_activeScreen.Activate();
          }
       }
 
-      protected override void OnDeactivate() {
+      protected void OnDeactivate() {
          _isActivated = false;
          if (_activeScreen != null) {
-            _activeScreen.Deactivate();
+            //_activeScreen.Deactivate();
          }
       }
 
-      protected override bool OnRequestClose() {
-         return _screens.RequestCloseAll();
+      protected bool OnRequestClose() {
+         //return _screens.RequestCloseAll();
+         return true;
       }
 
-      protected override void OnClose() {
-         while (_screens.Items.Any()) {
-            ImmediateCloseScreen(_screens.Items.Last());
+      protected void OnClose() {
+         while (_screens.Any()) {
+            ImmediateCloseScreen(_screens.Last());
+         }
+      }
+
+      protected void OnPropertyChanged(string propertyName) {
+         var h = PropertyChanged;
+         if (h != null) {
+            h(this, new PropertyChangedEventArgs(propertyName));
          }
       }
 
@@ -211,5 +221,7 @@
             attr.CreationBehavior :
             ScreenCreationBehavior.MultipleInstances;
       }
+
+      public event PropertyChangedEventHandler PropertyChanged;
    }
 }

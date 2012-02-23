@@ -3,6 +3,10 @@
    using Inspiring.Mvvm.Screens;
 
    public sealed class SaveDiscardScreen : ScreenBase, INeedsInitialization<SaveDiscardScreenSubject> {
+      public SaveDiscardScreen(EventAggregator aggregator)
+         : base(aggregator) {
+      }
+
       public IScreenBase Content { get; internal set; }
 
       public SaveDiscardVM VM { get; internal set; }

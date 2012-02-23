@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.MvvmTest.Views {
    using System;
+   using System.Linq;
    using System.Windows;
    using System.Windows.Threading;
    using Inspiring.Mvvm.Common;
@@ -24,7 +25,7 @@
 
          var screen = new ScreenMock();
          DialogSerivce.ShowDialog(ScreenFactory.For(screen));
-         Assert.IsFalse(screen.Children.Contains<DialogLifecycle>());
+         Assert.IsFalse(screen.Children.OfType<DialogLifecycle>().Any());
       }
 
       [TestMethod]

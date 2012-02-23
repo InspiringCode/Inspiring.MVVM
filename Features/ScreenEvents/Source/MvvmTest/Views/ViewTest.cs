@@ -123,10 +123,10 @@
          ).Containing("is registered");
       }
 
-      private class SimpleScreen : ScreenBase {
+      private class SimpleScreen : DefaultTestScreen {
       }
 
-      private class BaseScreen : ScreenBase {
+      private class BaseScreen : DefaultTestScreen {
       }
 
       private class DerivedScreen : BaseScreen {

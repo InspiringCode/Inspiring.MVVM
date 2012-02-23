@@ -3,6 +3,10 @@
    using Inspiring.Mvvm.Screens;
 
    public sealed class OkCancelScreen : ScreenBase, INeedsInitialization<OkCancelScreenSubject> {
+      public OkCancelScreen(EventAggregator aggregator)
+         : base(aggregator) {
+      }
+
       public IScreenBase Content { get; internal set; }
 
       public OkCancelVM VM { get; internal set; }

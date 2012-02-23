@@ -1,10 +1,9 @@
 ﻿namespace Inspiring.MvvmTest.Testing {
    using System;
-   using System.Linq;
-   using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Inspiring.Mvvm.Testing;
-   using Inspiring.Mvvm.Screens;
    using Inspiring.Mvvm.Common;
+   using Inspiring.Mvvm.Screens;
+   using Inspiring.Mvvm.Testing;
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
    public class DialogTestServiceTests {
@@ -26,7 +25,7 @@ using Inspiring.Mvvm.Testing;
       }
 
       private class TestScreenFactory : IScreenFactory<IScreenBase> {
-         public IScreenBase Create(Action<IScreenBase> initializationCallback = null) {
+         public IScreenBase Create(EventAggregator aggregator, Action<IScreenBase> initializationCallback = null) {
             Assert.Fail();
             throw new InvalidOperationException();
          }

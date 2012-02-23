@@ -107,6 +107,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="- Test Infrastructure -\DefaultTestScreen.cs" />
     <Compile Include="- Test Infrastructure -\NullValidator.cs" />
     <Compile Include="- Test Infrastructure -\ParameterizedTest.cs" />
     <Compile Include="- Test Infrastructure -\ScreenLifecycleTestBase.cs" />
@@ -202,7 +203,7 @@
     <Compile Include="MSTestAdapter.cs" />
     <Compile Include="PropertyChangedCounter.cs" />
     <Compile Include="ReflectionServiceLocator.cs" />
-    <Compile Include="Screens\LifecycleTreeWalkerTests.cs" />
+    <Compile Include="Screens\ScreenTreeHelperTests.cs" />
     <Compile Include="Screens\ScreenCreationBehaviorTest.cs" />
     <Compile Include="Screens\ScreenInitializerTests.cs" />
     <Compile Include="Screens\ScreenLifecycleOperationsTests.cs" />
@@ -312,7 +313,6 @@
     <Compile Include="DynamicFields\DynamicFieldsTest.cs" />
     <Compile Include="EmployeeVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MockFactory.cs" />
     <Compile Include="Screens\ScreenConductorTest.cs" />
     <Compile Include="Screens\ScreenFactoryTest.cs" />
     <Compile Include="Screens\ScreenTest.cs" />
@@ -333,7 +333,6 @@
     <Compile Include="Views\PersonView.xaml.cs">
       <DependentUpon>PersonView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ScreenConductorAdapterTest.cs" />
     <Compile Include="Views\ViewBinderTest.cs" />
     <Compile Include="Views\ViewFactoryTests.cs" />
     <Compile Include="Views\ViewTest.cs" />

@@ -100,7 +100,7 @@
       public Window GetAssociatedWindow(IScreenBase screen) {
          WindowLifecycle lf = ScreenTreeHelper
             .GetAncestorsOf(screen)
-            .SelectMany(s => s.Children.Items.OfType<WindowLifecycle>())
+            .SelectMany(s => s.Children.OfType<WindowLifecycle>())
             .FirstOrDefault();
 
          if (lf != null) {

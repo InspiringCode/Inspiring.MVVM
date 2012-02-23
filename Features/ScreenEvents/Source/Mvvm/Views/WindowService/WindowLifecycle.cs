@@ -5,7 +5,7 @@
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.Screens;
 
-   internal sealed class WindowLifecycle : ScreenLifecycle {
+   internal sealed class WindowLifecycle {
       private readonly EventAggregator _aggregator;
       private readonly IWindowService _windowService;
       private readonly Window _window;
@@ -53,7 +53,7 @@
 
       private void Show(IScreenFactory<IScreenBase> screenFactory) {
          try {
-            _screen = screenFactory.Create();
+            _screen = screenFactory.Create(_aggregator);
             Initialize();
             _windowService.ShowWindow(_window, modal: false);
          } finally {
@@ -66,6 +66,7 @@
 
          try {
             _screen = screenFactory.Create(
+               _aggregator,
                s => s.Children.Add(dialogLifecycle)
             );
 

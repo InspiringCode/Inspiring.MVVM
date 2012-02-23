@@ -1,8 +1,8 @@
 ﻿namespace Inspiring.Mvvm.Testing {
    using System;
    using System.Collections.Generic;
+   using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.Screens;
-using Inspiring.Mvvm.Common;
 
    public class DialogTestService : IDialogService {
       private Queue<ResponderBase> _responders = new Queue<ResponderBase>();
@@ -71,7 +71,7 @@ using Inspiring.Mvvm.Common;
       public TestScreenResult ShowDialog<TScreen>(
         IScreenFactory<TScreen> screen
       ) where TScreen : IScreenBase {
-         IScreenBase s = screen.Create();
+         IScreenBase s = screen.Create(_aggregator);
          var lifecycle = new DialogLifecycle(_aggregator);
          s.Children.Add(lifecycle);
          return new TestScreenResult(lifecycle);

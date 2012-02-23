@@ -168,19 +168,19 @@
       }
 
       [ScreenCreationBehavior(ScreenCreationBehavior.MultipleInstances)]
-      public class MultipleInstancesScreen : ScreenBase {
+      public class MultipleInstancesScreen : DefaultTestScreen {
       }
 
       [ScreenCreationBehavior(ScreenCreationBehavior.SingleInstance)]
-      public class SingleInstanceScreen : ScreenBase {
+      public class SingleInstanceScreen : DefaultTestScreen {
       }
 
-      public class DefaultCreationBehaviorScreen : ScreenBase {
+      public class DefaultCreationBehaviorScreen : DefaultTestScreen {
       }
 
       [ScreenCreationBehavior(ScreenCreationBehavior.UseScreenLocation)]
       public class LocatableScreen :
-         ScreenBase,
+         DefaultTestScreen,
          ILocatableScreen<BaseSubject>,
          INeedsInitialization<BaseSubject> {
 

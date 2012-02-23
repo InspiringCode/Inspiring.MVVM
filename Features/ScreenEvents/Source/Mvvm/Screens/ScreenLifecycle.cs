@@ -25,7 +25,7 @@
          _aggregator = aggregator;
          _target = target;
       }
-      
+
       public void Initialize() {
          PublishEvent(ScreenEvents.Initialize(), new InitializeEventArgs(_target));
       }
@@ -445,26 +445,6 @@
             public Func<TEvent, bool> Condition { get; private set; }
             public Action<TEvent> Action { get; private set; }
          }
-      }
-   }
-
-   public abstract class ScreenLifecycle : IScreenLifecycle {
-      public virtual IScreenLifecycle Parent { get; set; }
-
-      public virtual void Activate() {
-      }
-
-      public virtual void Deactivate() {
-      }
-
-      public virtual bool RequestClose() {
-         return true;
-      }
-
-      public virtual void Close() {
-      }
-
-      public void Corrupt(object data = null) {
       }
    }
 }

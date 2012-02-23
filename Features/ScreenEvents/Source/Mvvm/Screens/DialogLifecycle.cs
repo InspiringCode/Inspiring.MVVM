@@ -3,7 +3,7 @@
    using System.Linq;
    using Inspiring.Mvvm.Common;
 
-   internal sealed class DialogLifecycle : ScreenLifecycle {
+   internal sealed class DialogLifecycle {
       private readonly EventAggregator _aggregator;
 
       public DialogLifecycle(EventAggregator aggregator) {
@@ -29,7 +29,7 @@
       private static DialogLifecycle TryGetDialogLifecycle(IScreenBase forScreen) {
          return ScreenTreeHelper
             .GetAncestorsOf(forScreen)
-            .SelectMany(x => x.Children.Items.OfType<DialogLifecycle>())
+            .SelectMany(x => x.Children.OfType<DialogLifecycle>())
             .FirstOrDefault();
       }
 

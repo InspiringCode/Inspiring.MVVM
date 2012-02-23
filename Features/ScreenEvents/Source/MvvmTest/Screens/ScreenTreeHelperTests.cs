@@ -5,13 +5,13 @@
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class LifecycleTreeWalkerTests : TestBase {
+   public class ScreenTreeHelperTests : TestBase {
       [TestMethod]
       public void GetSelfAndChildren_WhenNoChildren_ReturnsOnlySelf() {
          var s = new Child();
          CollectionAssert.AreEqual(
             new[] { s },
-            LifecycleTreeWalker.GetSelfAndChildren(s).ToArray()
+            ScreenTreeHelper.GetChildrenOf(s, includeSelf: true).ToArray()
          );
       }
 
@@ -21,7 +21,7 @@
          var c = new Child();
          p.Children.Add(c);
 
-         var result = LifecycleTreeWalker.GetSelfAndChildren(p).ToArray();
+         var result = ScreenTreeHelper.GetChildrenOf(p, includeSelf: true).ToArray();
          CollectionAssert.Contains(result, p);
          CollectionAssert.Contains(result, c);
       }
@@ -34,16 +34,16 @@
          p.Children.Add(child);
          child.Children.Add(grand);
 
-         var result = LifecycleTreeWalker.GetSelfAndChildren(p).ToArray();
+         var result = ScreenTreeHelper.GetChildrenOf(p, includeSelf: true).ToArray();
          CollectionAssert.Contains(result, p);
          CollectionAssert.Contains(result, child);
          CollectionAssert.DoesNotContain(result, grand);
       }
 
-      private class Parent : ScreenBase {
+      private class Parent : DefaultTestScreen {
       }
 
-      private class Child : ScreenLifecycle {
+      private class Child : DefaultTestScreen {
       }
    }
 }

@@ -174,8 +174,10 @@
          OpenScreen(conductor, second);
          OpenScreen(conductor, third);
 
-         IScreenLifecycle c = conductor;
-         Assert.IsFalse(c.RequestClose(), "RequestClose should return false.");
+         bool result = new ScreenLifecycleOperations(EventAggregator, conductor)
+            .RequestClose();
+
+         Assert.IsFalse(result, "RequestClose should return false.");
          Assert.IsTrue(first.WasCloseRequested);
          Assert.IsTrue(second.WasCloseRequested);
          Assert.IsFalse(third.WasCloseRequested);
@@ -183,8 +185,10 @@
 
       private ScreenConductor CreateScreenConductor() {
          ScreenConductor conductor = new ScreenConductor(EventAggregator);
-         IScreenBase s = conductor;
-         s.Activate();
+         
+         new ScreenLifecycleOperations(EventAggregator, conductor)
+            .Activate();
+
          return conductor;
       }
 
@@ -226,7 +230,7 @@
       }
 
       [ScreenCreationBehavior(ScreenCreationBehavior.SingleInstance)]
-      private class SingleInstanceScreen : ScreenBase {
+      private class SingleInstanceScreen : DefaultTestScreen {
       }
    }
 }

@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.Screens {
    using System;
+   using Inspiring.Mvvm.Common;
 
    public interface IScreenFactory<out TScreen> where TScreen : IScreenBase {
       /// <remarks>
@@ -9,7 +10,7 @@
       /// <param name="preInitializationCallback">
       ///   Indended for things that should happen before the screen is initialized.
       /// </param>
-      TScreen Create(Action<TScreen> preInitializationCallback = null);
+      TScreen Create(EventAggregator aggregator, Action<TScreen> preInitializationCallback = null);
 
       /// <summary>
       ///   Returns true, if the <see cref="IScreenFactory{TScreen}"/> would create 

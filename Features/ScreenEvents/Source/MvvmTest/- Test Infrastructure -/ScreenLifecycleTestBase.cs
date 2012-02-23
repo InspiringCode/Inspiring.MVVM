@@ -2,10 +2,11 @@
    using System;
    using Inspiring.Mvvm.Screens;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Inspiring.Mvvm.Common;
 
    [TestClass]
    public abstract class ScreenLifecycleTestBase {
-      protected class ScreenMock : ScreenBase, INeedsInitialization {
+      protected class ScreenMock : DefaultTestScreen {
          private int _activateInvocations = 0;
          private int _deactivateInvocations = 0;
 
@@ -22,11 +23,22 @@
 
          public bool RequestCloseResult { get; set; }
 
-         public ScreenMock() {
+         public ScreenMock(EventAggregator aggregator) 
+            : base(aggregator) {
             RequestCloseResult = true;
+
+            Lifecycle.RegisterHandler(ScreenEvents.Initialize(), Initialize);
+            Lifecycle.RegisterHandler(ScreenEvents.Activate, OnActivate);
+            Lifecycle.RegisterHandler(ScreenEvents.Deactivate, OnDeactivate);
+            Lifecycle.RegisterHandler(ScreenEvents.RequestClose, OnRequestClose);
+            Lifecycle.RegisterHandler(ScreenEvents.Close, OnClose);
          }
 
-         public void Initialize() {
+         public ScreenMock() : 
+            base(new EventAggregator()) {
+         }
+
+         public void Initialize(InitializeEventArgs args) {
             Assert.IsFalse(WasInitialized, "Initialize was called twice.");
             WasInitialized = true;
             if (ThrowOnInitialize) {
@@ -34,7 +46,7 @@
             }
          }
 
-         protected override void OnActivate() {
+         protected void OnActivate(ScreenEventArgs args) {
             _activateInvocations++;
 
             Assert.AreEqual(
@@ -43,14 +55,12 @@
                "Activate was called twice."
             );
 
-            base.OnActivate();
-
             if (ThrowOnActivate) {
                throw new ScreenMockException();
             }
          }
 
-         protected override void OnDeactivate() {
+         protected void OnDeactivate(ScreenEventArgs args) {
             _deactivateInvocations++;
 
             Assert.AreEqual(
@@ -59,22 +69,19 @@
                "Deactivate was called twice."
             );
 
-            base.OnDeactivate();
-
             if (ThrowOnDeactivate) {
                throw new ScreenMockException();
             }
          }
 
-         protected override bool OnRequestClose() {
+         protected void OnRequestClose(RequestCloseEventArgs args) {
             Assert.IsFalse(WasCloseRequested, "RequestClose was called twice.");
             WasCloseRequested = true;
-            return base.OnRequestClose() && RequestCloseResult;
+            args.IsCloseAllowed = RequestCloseResult;
          }
 
-         protected override void OnClose() {
+         protected void OnClose(ScreenEventArgs args) {
             Assert.IsFalse(WasClosed, "Close was called twice.");
-            base.OnClose();
             WasClosed = true;
             if (ThrowOnClose) {
                throw new ScreenMockException();

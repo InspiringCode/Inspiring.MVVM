@@ -150,10 +150,8 @@
     <Compile Include="Screens\ILocatableScreen.cs" />
     <Compile Include="Screens\INeedsInitialization.cs" />
     <Compile Include="Screens\InitializeEventArgs.cs" />
-    <Compile Include="Screens\InvocationOrder.cs" />
     <Compile Include="Screens\IScreen.cs" />
     <Compile Include="Screens\IScreenFactory.cs" />
-    <Compile Include="Screens\IScreenLifecycle.cs" />
     <Compile Include="Screens\IViewModelScreen.cs" />
     <Compile Include="Screens\ScreenCreationBehavior.cs" />
     <Compile Include="Screens\ScreenCreationBehaviorAttribute.cs" />
@@ -161,12 +159,9 @@
     <Compile Include="Screens\ScreenEvents.cs" />
     <Compile Include="Screens\ScreenExtensions.cs" />
     <Compile Include="Screens\ScreenHelper.cs" />
-    <Compile Include="Screens\ScreenInitializer.cs" />
     <Compile Include="Screens\ScreenLifecycle.cs" />
-    <Compile Include="Screens\ScreenLifecycleCollection.cs" />
-    <Compile Include="Screens\LifecycleTreeWalker.cs" />
-    <Compile Include="Screens\ParentScreenLifecycle.cs" />
-    <Compile Include="Screens\Screen.cs" />
+    <Compile Include="Screens\ScreenChildrenCollection.cs" />
+    <Compile Include="Screens\ScreenBase.cs" />
     <Compile Include="Screens\ScreenConductor.cs" />
     <Compile Include="Screens\ScreenFactory.cs" />
     <Compile Include="Screens\ScreenLifecycleException.cs" />
