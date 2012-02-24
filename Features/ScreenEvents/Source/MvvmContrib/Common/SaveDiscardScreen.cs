@@ -28,7 +28,7 @@
       ) where TScreen : IScreenBase, ISaveDiscardHandler {
          return new SaveDiscardScreenSubject {
             InitializeSaveDiscardScreen = dialogScreen => {
-               TScreen contentScreen = dialogScreen.Children.AddNew(content);
+               TScreen contentScreen = dialogScreen.Children.AddScreen(content);
 
                dialogScreen.Content = contentScreen;
 

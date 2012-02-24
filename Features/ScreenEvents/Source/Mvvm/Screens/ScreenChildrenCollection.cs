@@ -38,7 +38,7 @@
          ObservableItems.Add(handler);
       }
 
-      public TScreen AddNew<TScreen>(IScreenFactory<TScreen> screen)
+      public TScreen AddScreen<TScreen>(IScreenFactory<TScreen> screen)
          where TScreen : T, IScreenBase {
          TScreen s = screen.Create(null); // HACK
 

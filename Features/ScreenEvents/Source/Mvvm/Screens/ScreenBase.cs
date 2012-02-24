@@ -19,7 +19,7 @@
          get { return Children; }
       }
 
-      protected ScreenLifecycle_ Lifecycle { get; private set; }
+      protected ScreenLifecycle Lifecycle { get; private set; }
    }
 
    public class ViewModelScreenBase<TDescriptor> :

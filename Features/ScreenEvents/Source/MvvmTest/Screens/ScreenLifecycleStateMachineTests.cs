@@ -87,7 +87,7 @@
             ActuallyHandlerExecutions = new List<IEvent>();
             Aggregator = new EventAggregator();
             Screen = new TestScreen();
-            Lifecycle = new ScreenLifecycle_(Aggregator, Screen);
+            Lifecycle = new ScreenLifecycle(Aggregator, Screen);
          }
 
          public TriggerEvent Trigger { get; set; }
@@ -98,7 +98,7 @@
 
          protected TestScreen Screen { get; set; }
 
-         protected ScreenLifecycle_ Lifecycle { get; set; }
+         protected ScreenLifecycle Lifecycle { get; set; }
 
          protected List<IEvent> ActuallyHandlerExecutions { get; set; }
 

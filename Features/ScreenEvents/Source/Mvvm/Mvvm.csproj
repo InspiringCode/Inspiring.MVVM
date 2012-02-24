@@ -165,6 +165,7 @@
     <Compile Include="Screens\ScreenConductor.cs" />
     <Compile Include="Screens\ScreenFactory.cs" />
     <Compile Include="Screens\ScreenLifecycleException.cs" />
+    <Compile Include="Screens\ScreenLifecycleOperations.cs" />
     <Compile Include="Screens\ScreenTreeHelper.cs" />
     <Compile Include="ServiceLocator.cs" />
     <Compile Include="Testing\ArgumentValue.cs" />

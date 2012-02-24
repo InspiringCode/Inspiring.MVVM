@@ -53,46 +53,80 @@
       /// </remarks>
       public static readonly Event<ConductorEventArgs> ScreenClosedEvent = new Event<ConductorEventArgs>();
 
+      private readonly List<IScreenBase> _activatedScreensHistory = new List<IScreenBase>();
       private readonly ScreenChildrenCollection<IScreenBase> _screens;
-      private readonly List<IScreenBase> _activatedScreensHistory;
       private readonly EventAggregator _eventAggregator;
 
       private IScreenBase _activeScreen;
-      private bool _isActivated;
+      private bool _updatingActiveScreen;
 
       public ScreenConductor(EventAggregator eventAggregator)
          : base(eventAggregator) {
+
          Contract.Requires<ArgumentNullException>(eventAggregator != null);
 
          _screens = new ScreenChildrenCollection<IScreenBase>(this);
-         _activatedScreensHistory = new List<IScreenBase>();
          _eventAggregator = eventAggregator;
+
+         Lifecycle.RegisterHandler(ScreenEvents.Activate, HandleActivate);
+         Lifecycle.RegisterHandler(ScreenEvents.Deactivate, HandleDeactivate);
+         Lifecycle.RegisterHandler(ScreenEvents.RequestClose, HandleRequestClose);
+         Lifecycle.RegisterHandler(ScreenEvents.Close, HandleClose);
       }
 
       public IScreenBase ActiveScreen {
          get { return _activeScreen; }
          set {
-            if (value != _activeScreen) {
+            IScreenBase oldActive = _activeScreen;
+            IScreenBase newActive = value;
+
+            if (newActive == oldActive) {
+               return;
+            }
+
+            try {
+               // When activation/deactivate fails, the failing screen is removed from
+               // the 'Screens' collection WHILE we are updating the 'ActiveScreen'.
+               // A client may handle the 'CollectionChanged' event and try to update
+               // the 'ActiveScreen' property again which may lead to a corrupt state.
+               // We just ignore this second set operation and always raise 'PropertyChanged'
+               // event so the UI is guaranteed to be updated.
+               //
+               // An alternative approach would be to remove the failed screens at the end
+               // of this method, but this could lead to scenarios, where the UI tries to
+               // set the 'ActiveScreen' property to a failed screen.
+               if (_updatingActiveScreen) {
+                  return;
+               }
+
+               _updatingActiveScreen = true;
+
+               // If the following code fails to activate the new screen, 'ActiveScreen'
+               // is set to null.
+               _activeScreen = null;
+
                try {
-                  if (_activeScreen != null && _isActivated) {
-                     //_activeScreen.Deactivate();
+                  try {
+                     // If the deactivation fails, the exception is propagated to the 
+                     // caller but we still try to activate the new screen and update 
+                     // the 'ActivateScreen'.
+                     DeactivateScreen(oldActive);
+                  } finally {
+                     // If 'ActivateScreen' and 'DeactivateScreen' throws an exception,
+                     // .NET swallows exception of the deactivation which is the most
+                     // natural behavior (since activation is what we are actually
+                     // doing and deactivation is more a side effect).
+                     ActivateScreen(newActive);
+                     UpdateHistory(newActive);
+                     _activeScreen = newActive;
                   }
                } finally {
-                  _activeScreen = value;
-
-                  if (_activeScreen != null) {
-                     _activatedScreensHistory.Remove(_activeScreen);
-                     _activatedScreensHistory.Add(_activeScreen);
-                  }
-
-                  try {
-                     if (_activeScreen != null && _isActivated) {
-                        //_activeScreen.Activate();
-                     }
-                  } finally {
-                     OnPropertyChanged(ExpressionService.GetPropertyName(() => ActiveScreen));
-                  }
+                  // We always raise the 'PropertyChanged' event to make sure the UI is
+                  // updated.
+                  OnPropertyChanged(ExpressionService.GetPropertyName(() => ActiveScreen));
                }
+            } finally {
+               _updatingActiveScreen = false;
             }
          }
       }
@@ -101,113 +135,204 @@
          get { return _screens.ObservableItems; }
       }
 
-      // TODO: Maybe set the ScreenConductor as Opener of the new Screen.
+      public event PropertyChangedEventHandler PropertyChanged;
+
       public void OpenScreen<TScreen>(IScreenFactory<TScreen> factory)
          where TScreen : class, IScreenBase {
 
-         var creationBehavior = GetCreationBehavior(factory);
-
+         ScreenCreationBehavior creationBehavior = GetCreationBehavior(factory);
          IScreenBase alreadyOpenScreen = null;
 
          switch (creationBehavior) {
             case ScreenCreationBehavior.MultipleInstances:
                break;
             case ScreenCreationBehavior.SingleInstance:
-               alreadyOpenScreen = Screens
-                  .OfType<TScreen>()
+               alreadyOpenScreen = _screens
+                  .OfType<TScreen>() // TODO: This is incorrect!
                   .SingleOrDefault();
                break;
             case ScreenCreationBehavior.UseScreenLocation:
                alreadyOpenScreen = Screens
-                  .FirstOrDefault(s => factory.CreatesScreensEquivalentTo(s));
+                  .FirstOrDefault(x => factory.CreatesScreensEquivalentTo(x));
                break;
          }
 
-         bool alreadyOpen = alreadyOpenScreen != null;
+         bool wasAlreadyOpen = alreadyOpenScreen != null;
 
-         if (alreadyOpen) {
-            ActiveScreen = alreadyOpenScreen;
-         } else {
-            IScreenBase newScreen = _screens.AddNew(factory);
-            ActiveScreen = newScreen;
-         }
+         // We the constructor or Initialize handler of the screen throws an 
+         // exception we exit here and 'ActiveScreen' is not changed. The screen
+         // itself makes sure that is consistently closed in case of an exception.
+         IScreenBase s = wasAlreadyOpen ?
+            alreadyOpenScreen :
+            _screens.AddScreen(factory);
+
+         // Activate does handle exceptions correctly and rethrows them, so we skip
+         // the publishing of the 'ScreenOpenedEvent'.
+         ActiveScreen = s;
 
          _eventAggregator.Publish(
             ScreenOpenedEvent,
-            new ScreenOpenedEventArgs(this, ActiveScreen, alreadyOpen)
+            new ScreenOpenedEventArgs(this, s, wasAlreadyOpen)
          );
       }
 
-      public bool CloseScreen(IScreenBase screen) {
+      public bool CloseScreen(IScreenBase screen, bool skipRequestClose = false) {
          if (!_screens.Contains(screen)) {
             throw new ArgumentException(ExceptionTexts.ScreenNotContainedByConductor);
          }
 
-         //if (screen.RequestClose()) {
-         ImmediateCloseScreen(screen);
+         bool shouldClose;
 
-         _eventAggregator.Publish(
-            ScreenClosedEvent,
-            new ConductorEventArgs(this, screen)
-         );
-
-         return true;
-         //}
-
-         return false;
-      }
-
-      public void ImmediateCloseScreen(IScreenBase screen) {
-         if (!_screens.Contains(screen)) {
-            throw new ArgumentException(ExceptionTexts.ScreenNotContainedByConductor);
+         try {
+            // 
+            shouldClose = skipRequestClose ?
+               true :
+               GetLifecycleOps(screen).RequestClose();
+         } catch (ScreenLifecycleException) {
+            _screens.Remove(screen);
+            _activatedScreensHistory.Remove(screen);
+            throw;
          }
 
+         if (!shouldClose) {
+            return false;
+         }
+
+         // We have to remove the screen BEFORE we say 'LastOrDefault'.
          _activatedScreensHistory.Remove(screen);
 
          try {
-            // Deactivate may throw an exception
-            ActiveScreen = _activatedScreensHistory.LastOrDefault();
+            if (ActiveScreen == screen) {
+               // Exception cases:
+               //   (1) Deactivate of 'screen' fails: It is correctly removed by the
+               //       'ActiveScreen' property and a new screen is activated.
+               //   (2) Activate of new screen fails. The old screen is correctly
+               //       deactivated.
+               ActiveScreen = _activatedScreensHistory.LastOrDefault();
+            }
          } finally {
-            // It is important to FIRST remove the screen and THEN call 'Close'. The
-            // removal triggers a collection change which causes the view reprenstation
-            // to close the view. In this stage the screen may still be accessed by the
-            // view. If 'Close' was called before, the screen may already be in an
-            // disposed state (e.g. database session closed).
-            _screens.Remove(screen);
+            // If Deactivate fails, 'DeactivateScreen' removes the screen from the 
+            // 'Screens' collection.
+            bool deactivateSucceded = Screens.Contains(screen);
+            if (deactivateSucceded) {
+               try {
+                  // It is important to FIRST remove the screen and THEN call 'Close'. The
+                  // removal triggers a collection change which causes the view reprenstation
+                  // to close the view. In this stage the screen may still be accessed by the
+                  // view. If 'Close' was called before, the screen may already be in an
+                  // disposed state (e.g. database session closed).
+                  // 
+                  // 'Remove' may throw an arbitrary exception if a 'CollectionChanged' handler
+                  // accesses a failed screen. In this case we still try to close the screen.
+                  _screens.Remove(screen);
+               } finally {
+                  GetLifecycleOps(screen).Close();
+               }
+
+               // We only publish the event if 'Deactivate' and 'Close' succeeds.
+               _eventAggregator.Publish(
+                  ScreenClosedEvent,
+                  new ConductorEventArgs(this, screen)
+               );
+            }
          }
 
-         //screen.Close();
-      }
-
-      protected void OnActivate() {
-         _isActivated = true;
-         if (_activeScreen != null) {
-            //_activeScreen.Activate();
-         }
-      }
-
-      protected void OnDeactivate() {
-         _isActivated = false;
-         if (_activeScreen != null) {
-            //_activeScreen.Deactivate();
-         }
-      }
-
-      protected bool OnRequestClose() {
-         //return _screens.RequestCloseAll();
          return true;
       }
 
-      protected void OnClose() {
-         while (_screens.Any()) {
-            ImmediateCloseScreen(_screens.Last());
-         }
-      }
-
-      protected void OnPropertyChanged(string propertyName) {
+      protected virtual void OnPropertyChanged(string propertyName) {
          var h = PropertyChanged;
          if (h != null) {
             h(this, new PropertyChangedEventArgs(propertyName));
+         }
+      }
+
+      private bool RequestClose(IScreenBase screen) {
+         try {
+            return GetLifecycleOps(screen).RequestClose();
+         } catch (ScreenLifecycleException) {
+            _activatedScreensHistory.Remove(screen);
+
+            try {
+               // 'Remove' may throw an arbitrary exception
+               _screens.Remove(screen);
+            } finally {
+               if (ActiveScreen == screen) {
+                  ActiveScreen = _activatedScreensHistory.LastOrDefault();
+               }
+            }
+
+            throw;
+         }
+      }
+
+      private void DeactivateScreen(IScreenBase screen) {
+         if (screen == null || Lifecycle.State != LifecycleState.Activated) {
+            return;
+         }
+
+         // 'ScreenConductor.RequestClose' removes the screen if the 'RequestClose'
+         // event throws an exception and sets the 'ActiveScreen' to the last active
+         // screen. In this case the currently active screen may already be in an
+         // error state in which case we must not call 'Deactivate'.
+         if (!Screens.Contains(screen)) {
+            return;
+         }
+
+         try {
+            GetLifecycleOps(screen).Deactivate();
+         } catch (ScreenLifecycleException) {
+            _activatedScreensHistory.Remove(screen);
+
+            // 'Remove' may throw an arbitrary exception
+            _screens.Remove(screen);
+            throw;
+         }
+      }
+
+      private void ActivateScreen(IScreenBase screen) {
+         if (screen == null || Lifecycle.State != LifecycleState.Activated) {
+            return;
+         }
+
+         try {
+            GetLifecycleOps(screen).Activate();
+         } catch (ScreenLifecycleException) {
+            _activatedScreensHistory.Remove(screen);
+
+            // 'Remove' may throw an arbitrary exception
+            _screens.Remove(screen);
+            throw;
+         }
+      }
+
+      private void HandleActivate(ScreenEventArgs args) {
+         if (_activeScreen != null) {
+            GetLifecycleOps(_activeScreen).Activate();
+         }
+      }
+
+      private void HandleDeactivate(ScreenEventArgs args) {
+         if (_activeScreen != null) {
+            GetLifecycleOps(_activeScreen).Deactivate();
+         }
+      }
+
+      private void HandleRequestClose(RequestCloseEventArgs args) {
+         args.IsCloseAllowed = _screens
+            .All(s => GetLifecycleOps(s).RequestClose());
+      }
+
+      private void HandleClose(ScreenEventArgs args) {
+         while (_screens.Any()) {
+            CloseScreen(_screens.Last(), skipRequestClose: true);
+         }
+      }
+
+      private void UpdateHistory(IScreenBase mostRecentlyActivatedScreen) {
+         if (mostRecentlyActivatedScreen != null) {
+            _activatedScreensHistory.Remove(mostRecentlyActivatedScreen);
+            _activatedScreensHistory.Add(mostRecentlyActivatedScreen);
          }
       }
 
@@ -222,6 +347,8 @@
             ScreenCreationBehavior.MultipleInstances;
       }
 
-      public event PropertyChangedEventHandler PropertyChanged;
+      private ScreenLifecycleOperations GetLifecycleOps(IScreenBase screen) {
+         return new ScreenLifecycleOperations(_eventAggregator, screen);
+      }
    }
 }

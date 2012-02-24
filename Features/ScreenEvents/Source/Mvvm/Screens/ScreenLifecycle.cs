@@ -14,68 +14,7 @@
       ExceptionOccured
    }
 
-   internal class ScreenLifecycleOperations {
-      private EventAggregator _aggregator;
-      private IScreenBase _target;
-
-      public ScreenLifecycleOperations(
-         EventAggregator aggregator,
-         IScreenBase target
-      ) {
-         _aggregator = aggregator;
-         _target = target;
-      }
-
-      public void Initialize() {
-         PublishEvent(ScreenEvents.Initialize(), new InitializeEventArgs(_target));
-      }
-
-      public void Initialize<TSubject>(TSubject subject) {
-         PublishEvent(
-            ScreenEvents.Initialize<TSubject>(),
-            new InitializeEventArgs<TSubject>(_target, subject)
-         );
-      }
-
-      public void Activate() {
-         PublishEvent(ScreenEvents.Activate, new ScreenEventArgs(_target));
-      }
-
-      public void Deactivate() {
-         PublishEvent(ScreenEvents.Deactivate, new ScreenEventArgs(_target));
-      }
-
-      public bool RequestClose() {
-
-
-         throw new NotImplementedException();
-
-      }
-
-      public void Close() {
-         throw new NotImplementedException();
-      }
-
-      private void PublishEvent<TArgs>(
-         ScreenEvent<TArgs> @event,
-         TArgs args
-      ) where TArgs : ScreenEventArgs {
-         try {
-            _aggregator.Publish(@event, args);
-         } catch (Exception ex) {
-            if (ex.IsCritical()) {
-               throw;
-            }
-
-            _aggregator.Publish(
-               ScreenEvents.LifecycleExceptionOccured,
-               new ScreenEventArgs(_target)
-            );
-         }
-      }
-   }
-
-   public partial class ScreenLifecycle_ {
+   public partial class ScreenLifecycle {
       private static readonly Func<EventPublication, bool> AlwaysTrueCondition = (_) => true;
       private static readonly ScreenEvent<ScreenEventArgs> AnyEvent = null;
 
@@ -84,7 +23,7 @@
       private readonly LifecycleStateMachine _sm;
       private readonly List<IEventSubscription> _handlers = new List<IEventSubscription>();
 
-      public ScreenLifecycle_(EventAggregator aggregator, IScreenBase parent) {
+      public ScreenLifecycle(EventAggregator aggregator, IScreenBase parent) {
          _parent = parent;
          _subscriptionManager = new EventSubscriptionManager(aggregator);
          _sm = new LifecycleStateMachine(_parent);
@@ -393,7 +332,7 @@
       }
    }
 
-   public partial class ScreenLifecycle_ {
+   public partial class ScreenLifecycle {
       private class SimpleStateMachine<TEvent, TState> {
          private readonly List<StateTransition> _transitions = new List<StateTransition>();
 

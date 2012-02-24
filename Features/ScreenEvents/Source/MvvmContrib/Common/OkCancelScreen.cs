@@ -27,7 +27,7 @@
       ) where TScreen : IScreenBase, IOkCancelHandler {
          return new OkCancelScreenSubject {
             InitializeOkCancelScreen = dialogScreen => {
-               TScreen contentScreen = dialogScreen.Children.AddNew(content);
+               TScreen contentScreen = dialogScreen.Children.AddScreen(content);
 
                dialogScreen.Content = contentScreen;
 

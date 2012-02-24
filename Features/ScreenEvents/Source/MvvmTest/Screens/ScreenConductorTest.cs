@@ -97,7 +97,7 @@
          OpenScreen(condcutor, newScreen);
 
          AssertHelper.Throws<ArgumentException>(() =>
-            condcutor.ImmediateCloseScreen(newScreen)
+            condcutor.CloseScreen(newScreen, skipRequestClose: true)
          );
       }
 
@@ -107,7 +107,7 @@
          ScreenMock newScreen = new ScreenMock { ThrowOnActivate = true };
 
          OpenScreen(condcutor, newScreen);
-         condcutor.ImmediateCloseScreen(newScreen);
+         condcutor.CloseScreen(newScreen, skipRequestClose: true);
 
          Assert.IsTrue(newScreen.WasDeactivated);
          Assert.IsTrue(newScreen.WasClosed);
@@ -123,7 +123,7 @@
          OpenScreen(condcutor, newScreen);
 
          PropertyChangedCounter pc = CreateActiveScreenChangedListener(condcutor);
-         condcutor.ImmediateCloseScreen(newScreen);
+         condcutor.CloseScreen(newScreen, skipRequestClose: true);
 
          Assert.IsFalse(condcutor.Screens.Contains(newScreen));
          Assert.AreEqual(alreadyOpen, condcutor.ActiveScreen);

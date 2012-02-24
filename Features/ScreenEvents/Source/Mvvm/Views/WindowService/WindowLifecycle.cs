@@ -2,6 +2,7 @@
    using System;
    using System.ComponentModel;
    using System.Windows;
+   using System.Windows.Threading;
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.Screens;
 
@@ -13,7 +14,8 @@
 
       private IScreenBase _screen;
       private ScreenLifecycleOperations _screenOps;
-      private ScreenLifecycleException _windowHandlerException;
+      private ScreenLifecycleException _lastWindowHandlerException;
+      private bool _modal;
 
       public WindowLifecycle(
          EventAggregator aggregator,
@@ -52,6 +54,8 @@
       }
 
       private void Show(IScreenFactory<IScreenBase> screenFactory) {
+         _modal = false;
+
          try {
             _screen = screenFactory.Create(_aggregator);
             Initialize();
@@ -62,6 +66,8 @@
       }
 
       private DialogScreenResult ShowModal(IScreenFactory<IScreenBase> screenFactory) {
+         _modal = true;
+
          DialogLifecycle dialogLifecycle = new DialogLifecycle(_aggregator);
 
          try {
@@ -85,8 +91,8 @@
                throw;
             }
 
-            if (_windowHandlerException != null) {
-               throw _windowHandlerException;
+            if (_lastWindowHandlerException != null) {
+               throw _lastWindowHandlerException;
             }
          } finally {
             Disconnect();
@@ -107,6 +113,8 @@
       }
 
       private void Initialize() {
+         _window.Closed += HandleWindowClosedToDisconnected;
+
          _screenOps = new ScreenLifecycleOperations(_aggregator, _screen);
          _screenOps.Activate();
 
@@ -261,7 +269,14 @@
       ///     so that is treated as an unhandled application excpetion.</para>
       /// </remarks>
       private void ProcessWindowEventHandlerException(ScreenLifecycleException ex) {
-
+         if (_modal) {
+            _lastWindowHandlerException = ex;
+         } else {
+            Dispatcher.CurrentDispatcher.BeginInvoke(
+               new Action(() => { throw ex; }),
+               DispatcherPriority.Send
+            );
+         }
       }
    }
 }
