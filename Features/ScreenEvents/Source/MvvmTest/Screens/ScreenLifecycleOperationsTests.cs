@@ -1,100 +1,161 @@
 ﻿namespace Inspiring.MvvmTest.Screens {
    using System;
+   using System.Collections.Generic;
    using System.Linq;
-   using Microsoft.VisualStudio.TestTools.UnitTesting;
+   using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.Screens;
-using Inspiring.Mvvm.Common;
-using System.Collections.Generic;
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
    public class ScreenLifecycleOperationsTests {
       private EventSubscriptionManager _sm;
-
-      private TestScreen Screen { get; set; }
       private EventAggregator Aggregator { get; set; }
-      private ScreenLifecycleOperations Operations { get; set; }
       private List<IEvent> PublishedEvents { get; set; }
 
       [TestInitialize]
       public void Setup() {
          Aggregator = new EventAggregator();
-         Screen = new TestScreen();
-         Operations = new ScreenLifecycleOperations(Aggregator, Screen);
-         PublishedEvents = new List<IEvent>();
-
          _sm = new EventSubscriptionManager(Aggregator);
-
-         AddEventHandlerFor(ScreenEvents.Initialize());
-         AddEventHandlerFor(ScreenEvents.Initialize<BaseSubject>());
-         AddEventHandlerFor(ScreenEvents.Initialize<DerivedSubject>());
-         AddEventHandlerFor(ScreenEvents.Initialize<ISubject>());
-         AddEventHandlerFor(ScreenEvents.Activate);
-         AddEventHandlerFor(ScreenEvents.Deactivate);
-         AddEventHandlerFor(ScreenEvents.RequestClose);
-         AddEventHandlerFor(ScreenEvents.Close);
-         AddEventHandlerFor(ScreenEvents.LifecycleExceptionOccured);
       }
 
       [TestMethod]
-      public void InitializeWithSubject_PublishesNonGenericInitializeAndGenericInitializeEventsForAllBaseClassesAndInterfacesOfSubject() {
-         ISubject subject = new DerivedSubject();
+      public void VariousOperations_PublishCorrectEvents() {
+         ParameterizedTest
+            .TestCase<Action<ScreenLifecycleOperations>, IEvent>(x => x.Initialize(), ScreenEvents.Initialize())
+            .TestCase(x => x.Initialize(new Subject()), ScreenEvents.Initialize<Subject>())
+            .TestCase(x => x.Activate(), ScreenEvents.Activate)
+            .TestCase(x => x.Deactivate(), ScreenEvents.Deactivate)
+            .TestCase(x => x.RequestClose(), ScreenEvents.RequestClose)
+            .TestCase(x => x.Close(), ScreenEvents.Close)
+            .Run((lifecycleAction, expectedEvent) => {
+               List<IEvent> actualEvents = new List<IEvent>();
+               TestScreen screen = new TestScreen();
+               ScreenLifecycleOperations ops = new ScreenLifecycleOperations(Aggregator, screen);
 
-         Operations.Initialize(subject);
+               AddEventHandlerForAllEvents(
+                  screen,
+                  handlerAction: actualEvents.Add,
+                  includeExceptionOccured: true
+               );
 
-         CollectionAssert.AreEquivalent(
-            new IEvent[] { 
-               ScreenEvents.Initialize(),
-               ScreenEvents.Initialize<DerivedSubject>(),
-               ScreenEvents.Initialize<BaseSubject>(),
-               ScreenEvents.Initialize<ISubject>()
-            },
-            PublishedEvents
-         );
+               lifecycleAction(ops);
+
+               IEvent actualEvent = actualEvents.SingleOrDefault();
+               Assert.AreEqual(expectedEvent, actualEvent);
+            });
       }
 
       [TestMethod]
-      public void Activate_WhenHandlerThrowsException_RaisesLifecycleExceptionOccuredEventAndThrowsScreenLifecycleException() {
-         InvalidOperationException sourceException = new InvalidOperationException();
+      public void VariousOperations_WhenHandlerThrowsException_RaiseLifecycleExceptionOccuredEventAndThrowLifecycleException() {
+         ParameterizedTest
+            .TestCase<Action<ScreenLifecycleOperations>, IEvent>(x => x.Initialize(), ScreenEvents.Initialize())
+            .TestCase(x => x.Initialize(new Subject()), ScreenEvents.Initialize<Subject>())
+            .TestCase(x => x.Activate(), ScreenEvents.Activate)
+            .TestCase(x => x.Deactivate(), ScreenEvents.Deactivate)
+            .TestCase(x => x.RequestClose(), ScreenEvents.RequestClose)
+            .TestCase(x => x.Close(), ScreenEvents.Close)
+            .Run((lifecycleAction, expectedEvent) => {
+               List<IEvent> actualEvents = new List<IEvent>();
+               TestScreen screen = new TestScreen();
+               ScreenLifecycleOperations ops = new ScreenLifecycleOperations(Aggregator, screen);
 
-         AddEventHandlerFor(ScreenEvents.Initialize(), () => { throw sourceException; });
+               InvalidOperationException sourceException = new InvalidOperationException();
 
-         var actualException = AssertHelper.Throws<ScreenLifecycleException>(() => 
-            Operations.Initialize(new BaseSubject())
+               AddEventHandlerForAllEvents(
+                  screen,
+                  handlerAction: e => {
+                     actualEvents.Add(e);
+                     throw sourceException;
+                  },
+                  includeExceptionOccured: false
+               );
+
+               AddEventHandlerFor(
+                  ScreenEvents.LifecycleExceptionOccured,
+                  screen,
+                  handlerAction: (ev, _) => actualEvents.Add(ev)
+               );
+
+               var exceptionExpr = AssertHelper.Throws<ScreenLifecycleException>(() =>
+                  lifecycleAction(ops)
+               );
+
+               CollectionAssert.AreEquivalent(
+                  new IEvent[] { 
+                     expectedEvent,
+                     ScreenEvents.LifecycleExceptionOccured
+                  },
+                  actualEvents
+               );
+
+               Assert.AreEqual(sourceException, exceptionExpr.Exception.InnerException);
+            });
+      }
+
+      [TestMethod]
+      public void RequestClose_ReturnsTrueIfNoHandlerSetsIsCloseAllowedToFalse() {
+         TestScreen screen = new TestScreen();
+         ScreenLifecycleOperations ops = new ScreenLifecycleOperations(Aggregator, screen);
+
+         bool result = new ScreenLifecycleOperations(Aggregator, screen)
+            .RequestClose();
+
+         Assert.IsTrue(result);
+
+         AddEventHandlerFor(
+            ScreenEvents.RequestClose,
+            screen,
+            (ev, args) => { }
          );
 
-         CollectionAssert.AreEquivalent(
-            new IEvent[] { 
-               ScreenEvents.Initialize(),
-               ScreenEvents.LifecycleExceptionOccured
-            },
-            PublishedEvents
+         result = new ScreenLifecycleOperations(Aggregator, screen)
+            .RequestClose();
+
+         Assert.IsTrue(result);
+
+         AddEventHandlerFor(
+            ScreenEvents.RequestClose,
+            screen,
+            (ev, args) => { args.IsCloseAllowed = false; }
          );
 
-         Assert.AreEqual(sourceException, actualException.Exception.InnerException);
+         result = new ScreenLifecycleOperations(Aggregator, screen)
+            .RequestClose();
+
+         Assert.IsFalse(result);
+      }
+
+      private void AddEventHandlerForAllEvents(
+         IScreenBase target,
+         Action<IEvent> handlerAction,
+         bool includeExceptionOccured = false
+      ) {
+         Action<IEvent, object> action = (ev, _) => handlerAction(ev);
+
+         AddEventHandlerFor(ScreenEvents.Initialize(), target, action);
+         AddEventHandlerFor(ScreenEvents.Initialize<Subject>(), target, action);
+         AddEventHandlerFor(ScreenEvents.Activate, target, action);
+         AddEventHandlerFor(ScreenEvents.Deactivate, target, action);
+         AddEventHandlerFor(ScreenEvents.RequestClose, target, action);
+         AddEventHandlerFor(ScreenEvents.Close, target, action);
+
+         if (includeExceptionOccured) {
+            AddEventHandlerFor(ScreenEvents.LifecycleExceptionOccured, target, action);
+         }
       }
 
       private void AddEventHandlerFor<TArgs>(
-         ScreenEvent<TArgs> @event, 
-         Action handlerAction = null
+         ScreenEvent<TArgs> @event,
+         IScreenBase screen,
+         Action<ScreenEvent<TArgs>, TArgs> handlerAction
       ) where TArgs : ScreenEventArgs {
-         handlerAction = handlerAction ?? (() => PublishedEvents.Add(@event));
-
          _sm.Subscribe(b => {
-            b.On(@event, Screen).Execute(args => handlerAction());
+            b.On(@event, screen).Execute(args => handlerAction(@event, args));
          });
       }
 
       private class TestScreen : DefaultTestScreen { }
 
-      private interface ISubject {
-         object Dummy { get; set; }
-      }
-
-      private class BaseSubject : ISubject {
-         object ISubject.Dummy { get; set; }
-      }
-
-      private class DerivedSubject : BaseSubject {
-      }
+      private class Subject { }
    }
 }

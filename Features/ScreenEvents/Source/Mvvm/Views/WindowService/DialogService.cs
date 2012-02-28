@@ -98,6 +98,10 @@
       }
 
       public Window GetAssociatedWindow(IScreenBase screen) {
+         if (screen == null) {
+            return null;
+         }
+
          WindowLifecycle lf = ScreenTreeHelper
             .GetAncestorsOf(screen)
             .SelectMany(s => s.Children.OfType<WindowLifecycle>())

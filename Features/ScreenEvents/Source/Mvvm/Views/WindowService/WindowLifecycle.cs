@@ -10,7 +10,7 @@
       private readonly EventAggregator _aggregator;
       private readonly IWindowService _windowService;
       private readonly Window _window;
-      private readonly EventSubscriptionManager _sm;
+      private readonly ScreenCloseHandler _closeHandler;
 
       private IScreenBase _screen;
       private ScreenLifecycleOperations _screenOps;
@@ -25,11 +25,7 @@
          _aggregator = aggregator;
          _windowService = windowService;
          _window = window;
-
-         _sm = new EventSubscriptionManager(aggregator);
-         _sm.Subscribe(b => {
-            b.On(ScreenEvents.InitiateClose).Execute(HandleInitiateClose);
-         });
+         _closeHandler = new ScreenCloseHandler(HandleClose);
       }
 
       public Window Window {
@@ -138,7 +134,7 @@
             new InitializeWindowEventArgs(_screen, _window)
          );
 
-         AttachCloseHandlers();
+         AttachHandlers();
       }
 
       /// <summary>
@@ -153,15 +149,11 @@
       ///   A lifecycle event handler (RequestClose, Deactivate or Close) of the screen
       ///   has thrown an exception.
       /// </exception>
-      private void HandleInitiateClose(InitiateCloseEventArgs args) {
-         if (args.Target != _screen) {
-            return;
-         }
-
+      private void HandleClose(bool skipRequestClose) {
          bool shouldClose;
 
          try {
-            if (args.SkipRequestClose) {
+            if (skipRequestClose) {
                shouldClose = true;
             } else {
                shouldClose = _screenOps.RequestClose();
@@ -194,12 +186,12 @@
       ///   or <see cref="HandleWindowClosed"/>.
       /// </summary>
       private void CloseWindowImmediatately() {
-         DetachCloseHandlers();
+         DetachHandlers();
          _window.Close();
       }
 
       private void Disconnect() {
-         DetachCloseHandlers();
+         DetachHandlers();
          _screen.Children.Remove(this);
          _window.Closed -= HandleWindowClosedToDisconnected;
       }
@@ -208,14 +200,18 @@
       //   W I N D O W   E V E N T   H A N D L I N G
       // 
 
-      private void AttachCloseHandlers() {
+      private void AttachHandlers() {
          _window.Closed += HandleWindowClosed;
          _window.Closing += HandleWindowClosing;
+
+         _screen.Children.Add(_closeHandler);
       }
 
-      private void DetachCloseHandlers() {
+      private void DetachHandlers() {
          _window.Closed -= HandleWindowClosed;
          _window.Closing -= HandleWindowClosing;
+
+         _screen.Children.Remove(_closeHandler);
       }
 
       /// <summary>

@@ -65,7 +65,7 @@
 
          Contract.Requires<ArgumentNullException>(eventAggregator != null);
 
-         _screens = new ScreenChildrenCollection<IScreenBase>(this);
+         _screens = new ScreenChildrenCollection<IScreenBase>(eventAggregator, this);
          _eventAggregator = eventAggregator;
 
          Lifecycle.RegisterHandler(ScreenEvents.Activate, HandleActivate);
@@ -166,6 +166,9 @@
             alreadyOpenScreen :
             _screens.AddScreen(factory);
 
+         s.Children
+            .Add(new ScreenCloseHandler(skipRequestClose => CloseScreen(s, skipRequestClose)));
+
          // Activate does handle exceptions correctly and rethrows them, so we skip
          // the publishing of the 'ScreenOpenedEvent'.
          ActiveScreen = s;
@@ -234,6 +237,15 @@
                   ScreenClosedEvent,
                   new ConductorEventArgs(this, screen)
                );
+            }
+
+            var closeHandlers = screen
+               .Children
+               .OfType<ScreenCloseHandler>()
+               .ToArray();
+
+            foreach (var h in closeHandlers) {
+               screen.Children.Remove(h);
             }
          }
 

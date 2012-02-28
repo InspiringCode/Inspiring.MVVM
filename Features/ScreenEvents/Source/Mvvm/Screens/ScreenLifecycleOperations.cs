@@ -54,10 +54,17 @@
                throw;
             }
 
-            _aggregator.Publish(
-               ScreenEvents.LifecycleExceptionOccured,
-               new ScreenEventArgs(_target)
-            );
+            try {
+               _aggregator.Publish(
+                  ScreenEvents.LifecycleExceptionOccured,
+                  new ScreenEventArgs(_target)
+               );
+            } finally {
+               throw new ScreenLifecycleException(
+                  ExceptionTexts.LifecycleExceptionOccured,
+                  ex
+               );
+            }
          }
       }
    }

@@ -19,7 +19,7 @@
       public void GetSelfAndChildren_WithChildren_ReturnsSelfAndChildren() {
          var p = new Parent();
          var c = new Child();
-         p.Children.Add(c);
+         p.Children.Attach(c);
 
          var result = ScreenTreeHelper.GetChildrenOf(p, includeSelf: true).ToArray();
          CollectionAssert.Contains(result, p);
@@ -31,8 +31,8 @@
          var p = new Parent();
          var child = new Parent();
          var grand = new Child();
-         p.Children.Add(child);
-         child.Children.Add(grand);
+         p.Children.Attach(child);
+         child.Children.Attach(grand);
 
          var result = ScreenTreeHelper.GetChildrenOf(p, includeSelf: true).ToArray();
          CollectionAssert.Contains(result, p);
@@ -40,6 +40,40 @@
          CollectionAssert.DoesNotContain(result, grand);
       }
 
+      [TestMethod]
+      public void GetDescendantsOfWithSelf_ReturnsSelfChildrenAndGrandchildren() {
+         var p = new Parent();
+         var child = new Parent();
+         var grand = new Child();
+
+         p.Children.Attach(child);
+         child.Children.Attach(grand);
+
+         var result = ScreenTreeHelper.GetDescendantsOf(p, includeSelf: true);
+
+         CollectionAssert.AreEqual(
+            new IScreenBase[] { p, child, grand },
+            result.ToArray()
+         );
+      }
+
+      [TestMethod]
+      public void GetDescendantsOfWithoutSelf_ReturnsChildrenAndGrandchildren() {
+         var p = new Parent();
+         var child = new Parent();
+         var grand = new Child();
+
+         p.Children.Attach(child);
+         child.Children.Attach(grand);
+
+         var result = ScreenTreeHelper.GetDescendantsOf(p, includeSelf: false);
+
+         CollectionAssert.AreEqual(
+            new IScreenBase[] { child, grand },
+            result.ToArray()
+         );
+      }
+      
       private class Parent : DefaultTestScreen {
       }
 

@@ -297,4 +297,10 @@
   <data name="OperationInvalidForBindingType" xml:space="preserve">
     <value>This binding configuration cannot be applied to the given type of binding.</value>
   </data>
+  <data name="ScreenLifecycleNoTransition" xml:space="preserve">
+    <value>No matching transition from the state '{0}' defined.</value>
+  </data>
+  <data name="LifecycleExceptionOccured" xml:space="preserve">
+    <value>A lifecycle event handler of a screen (Initialize, Activate, Deactivate, Close, RequestClose) threw an exception.</value>
+  </data>
 </root>

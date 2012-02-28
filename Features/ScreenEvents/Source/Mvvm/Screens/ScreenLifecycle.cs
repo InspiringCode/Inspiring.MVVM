@@ -196,12 +196,11 @@
       ) where TArgs : ScreenEventArgs {
          condition = condition ?? AlwaysTrueCondition;
 
-         if (on != null) {
-            condition = pub =>
-               pub.Event == on && condition(pub);
-         }
+         Func<EventPublication, bool> c = on != null ?
+            pub => pub.Event == on && condition(pub) :
+            condition;
 
-         _sm.DefineTransition(from, to, condition, action);
+         _sm.DefineTransition(from, to, c, action);
       }
 
       private void ExecuteHandlers(EventPublication publication) {
@@ -359,7 +358,9 @@
                );
 
             if (transition == null) {
-               throw new InvalidOperationException(); // TODO: Message
+               throw new InvalidOperationException(
+                  ExceptionTexts.ScreenLifecycleNoTransition.FormatWith(State)
+               );
             }
 
             State = transition.ToState;

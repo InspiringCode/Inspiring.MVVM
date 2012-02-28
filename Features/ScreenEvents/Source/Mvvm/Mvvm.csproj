@@ -94,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArrayUtils.cs" />
+    <Compile Include="Common\AbstractCollection.cs" />
     <Compile Include="Common\Behaviors\BehaviorChainTemplateKeys.cs" />
     <Compile Include="Common\Behaviors\BehaviorFactory.cs" />
     <Compile Include="Common\Behaviors\BehaviorFactoryConfiguration.cs" />
@@ -153,6 +154,7 @@
     <Compile Include="Screens\IScreen.cs" />
     <Compile Include="Screens\IScreenFactory.cs" />
     <Compile Include="Screens\IViewModelScreen.cs" />
+    <Compile Include="Screens\ScreenCloseHandler.cs" />
     <Compile Include="Screens\ScreenCreationBehavior.cs" />
     <Compile Include="Screens\ScreenCreationBehaviorAttribute.cs" />
     <Compile Include="Screens\ScreenEvent.cs" />

@@ -1,14 +1,12 @@
 ﻿namespace Inspiring.Mvvm.Screens {
-   using System;
    using System.Collections.Generic;
-   using System.Linq.Expressions;
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.ViewModels;
 
    public class ScreenBase : IScreenBase {
       public ScreenBase(EventAggregator aggregator) {
-         Children = new ScreenChildrenCollection<object>(this);
-
+         Children = new ScreenChildrenCollection<object>(aggregator, this);
+         Lifecycle = new ScreenLifecycle(aggregator, this);
       }
 
       public IScreenBase Parent { get; set; }
@@ -27,14 +25,16 @@
       IViewModelScreenBase
       where TDescriptor : IVMDescriptor {
 
-      public ViewModelScreenBase(IServiceLocator serviceLocator = null)
+      public ViewModelScreenBase(EventAggregator aggregator, IServiceLocator serviceLocator = null)
          : base(serviceLocator) {
-         Children = new ScreenChildrenCollection<object>(this);
+         Children = new ScreenChildrenCollection<object>(aggregator, this);
+         Lifecycle = new ScreenLifecycle(aggregator, this);
       }
 
-      public ViewModelScreenBase(TDescriptor descriptor, IServiceLocator serviceLocator = null)
+      public ViewModelScreenBase(TDescriptor descriptor, EventAggregator aggregator, IServiceLocator serviceLocator = null)
          : base(descriptor, serviceLocator) {
-         Children = new ScreenChildrenCollection<object>(this);
+         Children = new ScreenChildrenCollection<object>(aggregator, this);
+         Lifecycle = new ScreenLifecycle(aggregator, this);
       }
 
       public ScreenChildrenCollection<object> Children { get; private set; }
@@ -45,10 +45,6 @@
          get { return Children; }
       }
 
-      // TODO: Required, senseful?
-      protected void OnPropertyChanged<T>(Expression<Func<T>> propertySelector) {
-         string propertyName = ExpressionService.GetPropertyName(propertySelector);
-         OnPropertyChanged(propertyName);
-      }
+      protected ScreenLifecycle Lifecycle { get; private set; }
    }
 }

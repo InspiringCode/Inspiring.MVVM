@@ -38,7 +38,7 @@
             IScreenBase current = queue.Dequeue();
 
             foreach (IScreenBase child in GetChildrenOf(current)) {
-               yield return current;
+               yield return child;
                queue.Enqueue(child);
             }
          }

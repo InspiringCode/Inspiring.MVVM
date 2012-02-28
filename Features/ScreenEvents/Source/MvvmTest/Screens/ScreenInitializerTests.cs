@@ -15,7 +15,7 @@
       [TestMethod]
       public void Initialize_WithSubjectOfExactType_CallsInitialize() {
          var subject = new DerivedSubject();
-         var screen = new TestScreen<DerivedSubject>();
+         var screen = new TestScreen<DerivedSubject>(Aggregator);
          Initialize(screen, subject);
          Assert.AreEqual(subject, screen.LastSubject);
       }
@@ -23,7 +23,7 @@
       [TestMethod]
       public void Initialize_WithSubjectOfDerivedType_CallsInitialize() {
          var subject = new DerivedSubject();
-         var screen = new TestScreen<BaseSubject>();
+         var screen = new TestScreen<BaseSubject>(Aggregator);
          Initialize(screen, subject);
          Assert.AreEqual(subject, screen.LastSubject);
       }
@@ -31,9 +31,9 @@
       [TestMethod]
       public void Initialize_WithSubjectOfDerivedType_CallsInitializeOnScreenAndItsChildren() {
          var subject = new DerivedSubject();
-         var parent = new InitializableParentScreen<DerivedSubject>();
-         var child = new TestScreen<BaseSubject>();
-         parent.Children.Add(child);
+         var parent = new InitializableParentScreen<DerivedSubject>(Aggregator);
+         var child = new TestScreen<BaseSubject>(Aggregator);
+         parent.Children.Attach(child);
 
          Initialize(parent, subject);
          Assert.AreEqual(subject, parent.LastSubject, "Initialize was not called on parent.");
@@ -43,7 +43,7 @@
       [TestMethod]
       public void Initialize_WhenScreenExpectsInterface_CallsInitialize() {
          var subject = new DerivedSubject();
-         var screen = new ScreenWithInterfaceSubject();
+         var screen = new ScreenWithInterfaceSubject(Aggregator);
          Initialize(screen, subject);
          Assert.AreEqual(subject, screen.LastSubject);
       }
@@ -51,7 +51,7 @@
       [TestMethod]
       public void Initialize_WhenCompileTimeTypeOfSubjectIsInterface_CallsInitializeOverloadOfRuntimeType() {
          var subject = new DerivedSubject();
-         var screen = new TestScreen<BaseSubject>();
+         var screen = new TestScreen<BaseSubject>(Aggregator);
          Initialize(screen, (ISubject)subject);
          Assert.AreEqual(subject, screen.LastSubject);
       }
@@ -59,9 +59,9 @@
       [TestMethod]
       public void Initialize_WhenScreenDoesNotImplementInterface_CallsInitializeOnChildren() {
          var subject = new DerivedSubject();
-         var parent = new NonInitializableParentScreen();
-         var child = new TestScreen<BaseSubject>();
-         parent.Children.Add(child);
+         var parent = new NonInitializableParentScreen(Aggregator);
+         var child = new TestScreen<BaseSubject>(Aggregator);
+         parent.Children.Attach(child);
 
          Initialize(parent, subject);
          Assert.AreEqual(subject, child.LastSubject, "Initialize was not called on child.");
@@ -73,32 +73,47 @@
       }
 
       private class NonInitializableParentScreen : ScreenBase {
-         public NonInitializableParentScreen()
-            : base(new EventAggregator()) {
+         public NonInitializableParentScreen(EventAggregator aggregator)
+            : base(aggregator) {
          }
       }
 
-      private class InitializableParentScreen<TSubject> : DefaultTestScreen, INeedsInitialization<TSubject> {
+      private class InitializableParentScreen<TSubject> : DefaultTestScreen {
+         public InitializableParentScreen(EventAggregator aggregator)
+            : base(aggregator) {
+            Lifecycle.RegisterHandler(ScreenEvents.Initialize<TSubject>(), HandleInitialize);
+         }
+
          public TSubject LastSubject { get; set; }
 
-         public void Initialize(TSubject subject) {
-            LastSubject = subject;
+         private void HandleInitialize(InitializeEventArgs<TSubject> args) {
+            LastSubject = args.Subject;
          }
       }
 
-      private class TestScreen<TSubject> : DefaultTestScreen, INeedsInitialization<TSubject> {
+      private class TestScreen<TSubject> : DefaultTestScreen {
+         public TestScreen(EventAggregator aggregator)
+            : base(aggregator) {
+            Lifecycle.RegisterHandler(ScreenEvents.Initialize<TSubject>(), HandleInitialize);
+         }
+
          public TSubject LastSubject { get; set; }
 
-         public void Initialize(TSubject subject) {
-            LastSubject = subject;
+         private void HandleInitialize(InitializeEventArgs<TSubject> args) {
+            LastSubject = args.Subject;
          }
       }
 
-      private class ScreenWithInterfaceSubject : DefaultTestScreen, INeedsInitialization<ISubject> {
+      private class ScreenWithInterfaceSubject : DefaultTestScreen {
+         public ScreenWithInterfaceSubject(EventAggregator aggregator)
+            : base(aggregator) {
+            Lifecycle.RegisterHandler(ScreenEvents.Initialize<ISubject>(), HandleInitialize);
+         }
+
          public ISubject LastSubject { get; set; }
 
-         void INeedsInitialization<ISubject>.Initialize(ISubject subject) {
-            LastSubject = subject;
+         private void HandleInitialize(InitializeEventArgs<ISubject> args) {
+            LastSubject = args.Subject;
          }
       }
 
