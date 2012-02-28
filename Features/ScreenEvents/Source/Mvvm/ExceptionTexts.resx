@@ -298,7 +298,7 @@
     <value>This binding configuration cannot be applied to the given type of binding.</value>
   </data>
   <data name="ScreenLifecycleNoTransition" xml:space="preserve">
-    <value>No matching transition from the state '{0}' defined.</value>
+    <value>The event '{0}' is not allowed for the current state '{1}' (no matching transition is defined).</value>
   </data>
   <data name="LifecycleExceptionOccured" xml:space="preserve">
     <value>A lifecycle event handler of a screen (Initialize, Activate, Deactivate, Close, RequestClose) threw an exception.</value>

@@ -484,7 +484,7 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No matching transition from the state &apos;{0}&apos; defined..
+        ///   Looks up a localized string similar to The event &apos;{0}&apos; is not allowed for the current state &apos;{1}&apos; (no matching transition is defined)..
         /// </summary>
         internal static string ScreenLifecycleNoTransition {
             get {

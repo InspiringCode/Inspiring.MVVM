@@ -21,6 +21,71 @@
             .Run(ExecuteTestCase);
       }
 
+      [TestMethod]
+      public void InitializedState_HandlesEventsCorrectly() {
+         ParameterizedTest
+            .TestCase(Success(LifecycleState.Initialized, TriggerEvent.Initialize, LifecycleState.Initialized))
+            .TestCase(Success(LifecycleState.Initialized, TriggerEvent.InitializeSubject, LifecycleState.Initialized))
+            .TestCase(Success(LifecycleState.Initialized, TriggerEvent.Activate, LifecycleState.Activated, ScreenEvents.Activate))
+            .TestCase(Success(LifecycleState.Initialized, TriggerEvent.Close, LifecycleState.Closed, ScreenEvents.Close))
+            .TestCase(Success(LifecycleState.Initialized, TriggerEvent.RequestClose, LifecycleState.Initialized, ScreenEvents.RequestClose))
+            .TestCase(Success(LifecycleState.Initialized, TriggerEvent.LifecycleException, LifecycleState.ExceptionOccured, ScreenEvents.Close))
+            .TestCase(InvalidStateException(LifecycleState.Initialized, TriggerEvent.Deactivate))
+            .Run(ExecuteTestCase);
+      }
+
+      [TestMethod]
+      public void ActivatedState_HandlesEventsCorrectly() {
+         ParameterizedTest
+            .TestCase(Success(LifecycleState.Activated, TriggerEvent.Deactivate, LifecycleState.Deactivated, ScreenEvents.Deactivate))
+            .TestCase(Success(LifecycleState.Activated, TriggerEvent.RequestClose, LifecycleState.Activated, ScreenEvents.RequestClose))
+            .TestCase(Success(LifecycleState.Activated, TriggerEvent.LifecycleException, LifecycleState.ExceptionOccured, ScreenEvents.Deactivate, ScreenEvents.Close))
+            .TestCase(InvalidStateException(LifecycleState.Activated, TriggerEvent.Initialize))
+            .TestCase(InvalidStateException(LifecycleState.Activated, TriggerEvent.InitializeSubject))
+            .TestCase(InvalidStateException(LifecycleState.Activated, TriggerEvent.Activate))
+            .TestCase(InvalidStateException(LifecycleState.Activated, TriggerEvent.Close))
+            .Run(ExecuteTestCase);
+      }
+
+      [TestMethod]
+      public void DeactivatedState_HandlesEventsCorrectly() {
+         ParameterizedTest
+            .TestCase(Success(LifecycleState.Deactivated, TriggerEvent.Activate, LifecycleState.Activated, ScreenEvents.Activate))
+            .TestCase(Success(LifecycleState.Deactivated, TriggerEvent.Close, LifecycleState.Closed, ScreenEvents.Close))
+            .TestCase(Success(LifecycleState.Deactivated, TriggerEvent.RequestClose, LifecycleState.Deactivated, ScreenEvents.RequestClose))
+            .TestCase(Success(LifecycleState.Deactivated, TriggerEvent.LifecycleException, LifecycleState.ExceptionOccured, ScreenEvents.Close))
+            .TestCase(InvalidStateException(LifecycleState.Deactivated, TriggerEvent.Initialize))
+            .TestCase(InvalidStateException(LifecycleState.Deactivated, TriggerEvent.InitializeSubject))
+            .TestCase(InvalidStateException(LifecycleState.Deactivated, TriggerEvent.Deactivate))
+            .Run(ExecuteTestCase);
+      }
+
+      [TestMethod]
+      public void ClosedState_HandlesEventsCorrectly() {
+         ParameterizedTest
+            .TestCase(Success(LifecycleState.Closed, TriggerEvent.LifecycleException, LifecycleState.ExceptionOccured))
+            .TestCase(InvalidStateException(LifecycleState.Closed, TriggerEvent.Initialize))
+            .TestCase(InvalidStateException(LifecycleState.Closed, TriggerEvent.InitializeSubject))
+            .TestCase(InvalidStateException(LifecycleState.Closed, TriggerEvent.Activate))
+            .TestCase(InvalidStateException(LifecycleState.Closed, TriggerEvent.Deactivate))
+            .TestCase(InvalidStateException(LifecycleState.Closed, TriggerEvent.RequestClose))
+            .TestCase(InvalidStateException(LifecycleState.Closed, TriggerEvent.Close))
+            .Run(ExecuteTestCase);
+      }
+
+      [TestMethod]
+      public void ExceptionState_HandlesEventsCorrectly() {
+         ParameterizedTest
+            .TestCase(InvalidStateException(LifecycleState.ExceptionOccured, TriggerEvent.LifecycleException))
+            .TestCase(InvalidStateException(LifecycleState.ExceptionOccured, TriggerEvent.Initialize))
+            .TestCase(InvalidStateException(LifecycleState.ExceptionOccured, TriggerEvent.InitializeSubject))
+            .TestCase(InvalidStateException(LifecycleState.ExceptionOccured, TriggerEvent.Activate))
+            .TestCase(InvalidStateException(LifecycleState.ExceptionOccured, TriggerEvent.Deactivate))
+            .TestCase(InvalidStateException(LifecycleState.ExceptionOccured, TriggerEvent.RequestClose))
+            .TestCase(InvalidStateException(LifecycleState.ExceptionOccured, TriggerEvent.Close))
+            .Run(ExecuteTestCase);
+      }
+
       private void ExecuteTestCase(EventTestCase test) {
          test.Run();
       }
@@ -49,36 +114,56 @@
          };
       }
 
-      private class TriggerEvent {
+      private abstract class TriggerEvent {
          public static readonly TriggerEvent Initialize =
-            new TriggerEvent((a, t) => a.Publish(ScreenEvents.Initialize(), new InitializeEventArgs(t)));
+            Create(ScreenEvents.Initialize(), t => new InitializeEventArgs(t));
 
          public static readonly TriggerEvent InitializeSubject =
-            new TriggerEvent((a, t) => a.Publish(ScreenEvents.Initialize(), new InitializeEventArgs<TestSubject>(t, new TestSubject())));
+            Create(ScreenEvents.Initialize(), t => new InitializeEventArgs<TestSubject>(t, new TestSubject()));
 
          public static readonly TriggerEvent Activate =
-            new TriggerEvent((a, t) => a.Publish(ScreenEvents.Activate, new ScreenEventArgs(t)));
+            Create(ScreenEvents.Activate, t => new ScreenEventArgs(t));
 
          public static readonly TriggerEvent Deactivate =
-            new TriggerEvent((a, t) => a.Publish(ScreenEvents.Deactivate, new ScreenEventArgs(t)));
+            Create(ScreenEvents.Deactivate, t => new ScreenEventArgs(t));
 
          public static readonly TriggerEvent RequestClose =
-            new TriggerEvent((a, t) => a.Publish(ScreenEvents.RequestClose, new RequestCloseEventArgs(t)));
+            Create(ScreenEvents.RequestClose, t => new RequestCloseEventArgs(t));
 
          public static readonly TriggerEvent Close =
-            new TriggerEvent((a, t) => a.Publish(ScreenEvents.Close, new ScreenEventArgs(t)));
+            Create(ScreenEvents.Close, t => new ScreenEventArgs(t));
 
          public static readonly TriggerEvent LifecycleException =
-            new TriggerEvent((a, t) => a.Publish(ScreenEvents.LifecycleExceptionOccured, new ScreenEventArgs(t)));
+            Create(ScreenEvents.LifecycleExceptionOccured, t => new ScreenEventArgs(t));
 
-         private readonly Action<EventAggregator, IScreenBase> _publishAction;
+         public abstract void PublishEvent(EventAggregator aggregator, IScreenBase target);
 
-         private TriggerEvent(Action<EventAggregator, IScreenBase> publishAction) {
-            _publishAction = publishAction;
+         private static TriggerEvent Create<TArgs>(
+            ScreenEvent<TArgs> @event,
+            Func<IScreenBase, TArgs> argsFactory
+         ) where TArgs : ScreenEventArgs {
+            return new GenericTriggerEvent<TArgs>(@event, argsFactory);
          }
 
-         public void PublishEvent(EventAggregator aggregator, IScreenBase target) {
-            _publishAction(aggregator, target);
+         private class GenericTriggerEvent<TArgs> :
+            TriggerEvent
+            where TArgs : ScreenEventArgs {
+
+            private readonly ScreenEvent<TArgs> _event;
+            private readonly Func<IScreenBase, TArgs> _argsFactory;
+
+            public GenericTriggerEvent(ScreenEvent<TArgs> @event, Func<IScreenBase, TArgs> argsFactory) {
+               _event = @event;
+               _argsFactory = argsFactory;
+            }
+
+            public override void PublishEvent(EventAggregator aggregator, IScreenBase target) {
+               aggregator.Publish(_event, _argsFactory(target));
+            }
+
+            public override string ToString() {
+               return _event.ToString();
+            }
          }
       }
 
@@ -136,7 +221,14 @@
                return;
             }
 
-            throw new NotSupportedException();
+            if (state == LifecycleState.ExceptionOccured) {
+               Aggregator.Publish(
+                  ScreenEvents.LifecycleExceptionOccured,
+                  new ScreenEventArgs(Screen)
+               );
+            } else {
+               throw new NotSupportedException();
+            }
          }
 
          protected void AttachEventHandlers() {
@@ -189,9 +281,11 @@
       private class InvalidStateCase : EventTestCase {
 
          public override void Run() {
-            //AssertHelper.Throws<InvalidOperationException>(() => 
+            SetLifecycleStateTo(InitialState);
 
-            //);
+            AssertHelper.Throws<InvalidOperationException>(() =>
+               Trigger.PublishEvent(Aggregator, Screen)
+            );
          }
 
          public override string ToString() {

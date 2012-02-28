@@ -12,5 +12,9 @@
 
       public IEvent Event { get; private set; }
       public object Payload { get; private set; }
+
+      public override string ToString() {
+         return Event.ToString();
+      }
    }
 }

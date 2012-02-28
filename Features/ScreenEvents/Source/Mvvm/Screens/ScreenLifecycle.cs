@@ -16,6 +16,7 @@
 
    public partial class ScreenLifecycle {
       private static readonly Func<EventPublication, bool> AlwaysTrueCondition = (_) => true;
+      private static readonly Action<EventPublication> DoNothing = (pub) => { };
       private static readonly ScreenEvent<ScreenEventArgs> AnyEvent = null;
 
       private readonly IScreenBase _parent;
@@ -84,6 +85,7 @@
          DefineInitializedTransitions();
          DefineActivatedTransitions();
          DefineDeactivatedTransitions();
+         DefineClosedTransitions();
          DefineExceptionOccuredTransitions();
       }
 
@@ -118,6 +120,14 @@
             ScreenEvents.RequestClose,
             ExecuteHandlers,
             condition: CloseWasNotCancelled
+         );
+
+         DefineTransition(
+            LifecycleState.Initialized,
+            LifecycleState.Initialized,
+            AnyEvent,
+            DoNothing,
+            condition: pub => pub.Payload is InitializeEventArgs
          );
 
          DefineTransition(
@@ -180,6 +190,15 @@
             LifecycleState.ExceptionOccured,
             ScreenEvents.LifecycleExceptionOccured,
             InvokeClose
+         );
+      }
+
+      private void DefineClosedTransitions() {
+         DefineTransition(
+            LifecycleState.Closed,
+            LifecycleState.ExceptionOccured,
+            ScreenEvents.LifecycleExceptionOccured,
+            DoNothing
          );
       }
 
@@ -359,7 +378,7 @@
 
             if (transition == null) {
                throw new InvalidOperationException(
-                  ExceptionTexts.ScreenLifecycleNoTransition.FormatWith(State)
+                  ExceptionTexts.ScreenLifecycleNoTransition.FormatWith(@event, State)
                );
             }
 
