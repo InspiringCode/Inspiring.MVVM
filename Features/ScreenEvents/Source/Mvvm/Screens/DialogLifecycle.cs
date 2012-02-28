@@ -2,12 +2,14 @@
    using System;
    using System.Linq;
    using Inspiring.Mvvm.Common;
+   using System.Diagnostics.Contracts;
 
    internal sealed class DialogLifecycle {
-      private readonly EventAggregator _aggregator;
+      private readonly IScreenBase _parent;
 
-      public DialogLifecycle(EventAggregator aggregator) {
-         _aggregator = aggregator;
+      public DialogLifecycle(IScreenBase parent) {
+         Contract.Requires(parent != null);
+         _parent = parent;
       }
 
       public DialogScreenResult ScreenResult { get; set; }
@@ -28,14 +30,13 @@
 
       private static DialogLifecycle TryGetDialogLifecycle(IScreenBase forScreen) {
          return ScreenTreeHelper
-            .GetAncestorsOf(forScreen)
+            .GetAncestorsOf(forScreen, includeSelf: true)
             .SelectMany(x => x.Children.OfType<DialogLifecycle>())
             .FirstOrDefault();
       }
 
-      // TODO: Clean this up
-      public void RaiseCloseWindow(IScreenBase screen) {
-         ScreenHelper.Close(_aggregator, screen, true);
+      public void RaiseCloseWindow() {
+         ScreenHelper.Close(_parent, true);
       }
    }
 }

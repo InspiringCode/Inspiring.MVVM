@@ -72,7 +72,7 @@
         IScreenFactory<TScreen> screen
       ) where TScreen : IScreenBase {
          IScreenBase s = screen.Create(_aggregator);
-         var lifecycle = new DialogLifecycle(_aggregator);
+         var lifecycle = new DialogLifecycle(s);
          s.Children.Add(lifecycle);
          return new TestScreenResult(lifecycle);
       }

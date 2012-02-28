@@ -1,10 +1,19 @@
 ﻿namespace Inspiring.Mvvm.Screens {
    using System;
-   using Inspiring.Mvvm.Common;
+   using System.Linq;
 
    internal static class ScreenHelper {
-      public static void Close(EventAggregator aggregator, IScreenBase screen, bool skipRequestClose) {
-         throw new NotImplementedException();
+      public static void Close(IScreenBase screen, bool skipRequestClose) {
+         ScreenCloseHandler h = screen
+            .Children
+            .OfType<ScreenCloseHandler>()
+            .SingleOrDefault();
+
+         if (h == null) {
+            throw new ArgumentException();
+         }
+
+         h.Execute(skipRequestClose);
       }
    }
 }

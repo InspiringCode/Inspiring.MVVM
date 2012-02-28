@@ -9,7 +9,6 @@
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   [Ignore]
    public class DialogServiceTests : ScreenLifecycleTestBase {
       private EventAggregator Aggregator { get; set; }
       private WindowServiceStub WindowService { get; set; }
@@ -126,7 +125,7 @@
       }
 
       private void ShowDialogAndExpectException(IScreenBase screen) {
-         AssertHelper.Throws<ScreenMockException>(
+         AssertHelper.Throws<ScreenLifecycleException>(
             () => ShowDialog(screen),
             unwrapTargetInvocationException: true
          );
@@ -137,7 +136,7 @@
       }
 
       private void CloseDialogAndExpectException(IScreenBase screen) {
-         AssertHelper.Throws<ScreenMockException>(() =>
+         AssertHelper.Throws<ScreenLifecycleException>(() =>
             CloseDialog(screen)
          );
       }

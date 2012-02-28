@@ -64,12 +64,15 @@
       private DialogScreenResult ShowModal(IScreenFactory<IScreenBase> screenFactory) {
          _modal = true;
 
-         DialogLifecycle dialogLifecycle = new DialogLifecycle(_aggregator);
+         DialogLifecycle dialogLifecycle = null;
 
          try {
             _screen = screenFactory.Create(
                _aggregator,
-               s => s.Children.Add(dialogLifecycle)
+               s => {
+                  dialogLifecycle = new DialogLifecycle(s);
+                  s.Children.Add(dialogLifecycle);
+               }
             );
 
             Initialize();
@@ -90,6 +93,8 @@
             if (_lastWindowHandlerException != null) {
                throw _lastWindowHandlerException;
             }
+
+            return dialogLifecycle.ScreenResult ?? new DialogScreenResult(false);
          } finally {
             Disconnect();
 
@@ -104,8 +109,6 @@
                _window.Owner.Activate();
             }
          }
-
-         return dialogLifecycle.ScreenResult ?? new DialogScreenResult(false);
       }
 
       private void Initialize() {
