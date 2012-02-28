@@ -6,10 +6,12 @@
       AbstractCollection<T> {
 
       private readonly EventAggregator _aggregator;
+      private readonly IScreenBase _parent;
 
       internal ScreenChildrenCollection(EventAggregator aggregator, IScreenBase parent)
          : this(new ObservableCollection<T>()) {
          _aggregator = aggregator;
+         _parent = parent;
       }
 
       private ScreenChildrenCollection(ObservableCollection<T> observableItems)
@@ -22,6 +24,8 @@
       public TScreen AddScreen<TScreen>(IScreenFactory<TScreen> screen)
          where TScreen : T, IScreenBase {
          TScreen s = screen.Create(_aggregator);
+
+         s.Parent = _parent;
 
          // The screen is added AFTER it was initialized by the screen
          // factory.

@@ -203,6 +203,7 @@
     <Compile Include="MSTestAdapter.cs" />
     <Compile Include="PropertyChangedCounter.cs" />
     <Compile Include="ReflectionServiceLocator.cs" />
+    <Compile Include="Screens\ScreenChildrenCollectionTests.cs" />
     <Compile Include="Screens\ScreenTreeHelperTests.cs" />
     <Compile Include="Screens\ScreenCreationBehaviorTest.cs" />
     <Compile Include="Screens\ScreenInitializerTests.cs" />
