@@ -11,10 +11,13 @@
    [TestClass]
    public class ScreenFactoryTest : TestBase {
       private EventAggregator Aggregator { get; set; }
+      private ServiceLocatorStub Locator { get; set; }
 
       [TestInitialize]
       public void Setup() {
          Aggregator = new EventAggregator();
+         Locator = new ServiceLocatorStub();
+         Locator.Register<InitializableScreen>(() => new InitializableScreen(Aggregator));
       }
 
       [TestMethod]
@@ -74,9 +77,9 @@
 
       [TestMethod]
       public void Create_ScreenFactoryForInstance_CallsInitialize() {
-         var expected = new InitializableScreen();
+         var expected = new InitializableScreen(Aggregator);
 
-         IScreenFactory<InitializableScreen> factory = ScreenFactory.For<InitializableScreen>();
+         IScreenFactory<InitializableScreen> factory = ScreenFactory.For<InitializableScreen>(Locator);
 
          var actual = factory.Create(Aggregator);
          Assert.IsTrue(actual.InitializeWasCalled);
@@ -84,7 +87,7 @@
 
       [TestMethod]
       public void Create_ScreenFactoryForInstance_ReturnsThisInstance() {
-         var expected = new InitializableScreen();
+         var expected = new InitializableScreen(Aggregator);
 
          IScreenFactory<InitializableScreen> factory = ScreenFactory.For(expected);
 
@@ -92,12 +95,17 @@
          Assert.AreEqual(expected, actual);
       }
 
-      private class InitializableScreen : DefaultTestScreen, INeedsInitialization {
-         public bool InitializeWasCalled { get; set; }
+      private class InitializableScreen : DefaultTestScreen {
+         public InitializableScreen(EventAggregator aggregator)
+            : base(aggregator) {
 
-         public void Initialize() {
-            InitializeWasCalled = true;
+            Lifecycle.RegisterHandler(
+               ScreenEvents.Initialize(),
+               args => InitializeWasCalled = true
+            );
          }
+
+         public bool InitializeWasCalled { get; set; }
       }
 
       private class FirstScreen : DefaultTestScreen {

@@ -3,25 +3,25 @@
    using System;
 
    internal sealed class ScreenEvents {
-      public static readonly ScreenEvent<ScreenEventArgs> Activate = new ScreenEvent<ScreenEventArgs>("Activate");
-      public static readonly ScreenEvent<ScreenEventArgs> Deactivate = new ScreenEvent<ScreenEventArgs>("Deactivate");
-      public static readonly ScreenEvent<RequestCloseEventArgs> RequestClose = new ScreenEvent<RequestCloseEventArgs>("RequestClose");
-      public static readonly ScreenEvent<ScreenEventArgs> Close = new ScreenEvent<ScreenEventArgs>("Close");
-      public static readonly ScreenEvent<ScreenEventArgs> LifecycleExceptionOccured = new ScreenEvent<ScreenEventArgs>("LifecycleExceptionOccured");
+      public static readonly ScreenLifecycleEvent<ScreenEventArgs> Activate = new ScreenLifecycleEvent<ScreenEventArgs>("Activate");
+      public static readonly ScreenLifecycleEvent<ScreenEventArgs> Deactivate = new ScreenLifecycleEvent<ScreenEventArgs>("Deactivate");
+      public static readonly ScreenLifecycleEvent<RequestCloseEventArgs> RequestClose = new ScreenLifecycleEvent<RequestCloseEventArgs>("RequestClose");
+      public static readonly ScreenLifecycleEvent<ScreenEventArgs> Close = new ScreenLifecycleEvent<ScreenEventArgs>("Close");
+      public static readonly ScreenLifecycleEvent<ScreenEventArgs> LifecycleExceptionOccured = new ScreenLifecycleEvent<ScreenEventArgs>("LifecycleExceptionOccured");
 
-      private static readonly ScreenEvent<InitializeEventArgs> InitializeInstance = new ScreenEvent<InitializeEventArgs>("Initialize");
+      private static readonly ScreenLifecycleEvent<InitializeEventArgs> InitializeInstance = new ScreenLifecycleEvent<InitializeEventArgs>("Initialize");
 
-      public static ScreenEvent<InitializeEventArgs> Initialize() {
+      public static ScreenLifecycleEvent<InitializeEventArgs> Initialize() {
          return InitializeInstance;
       }
 
-      public static ScreenEvent<InitializeEventArgs<TSubject>> Initialize<TSubject>() {
+      public static ScreenLifecycleEvent<InitializeEventArgs<TSubject>> Initialize<TSubject>() {
          return GenericInitializeSingleton<TSubject>.Instance;
       }
 
       private static class GenericInitializeSingleton<TSubject> {
-         public static readonly ScreenEvent<InitializeEventArgs<TSubject>> Instance =
-            new ScreenEvent<InitializeEventArgs<TSubject>>(
+         public static readonly ScreenLifecycleEvent<InitializeEventArgs<TSubject>> Instance =
+            new ScreenLifecycleEvent<InitializeEventArgs<TSubject>>(
                String.Format("Initialize<{0}>", TypeService.GetFriendlyName(typeof(TSubject)))
             );
       }

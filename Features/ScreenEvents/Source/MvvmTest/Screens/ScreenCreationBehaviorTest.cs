@@ -5,31 +5,44 @@
    using Inspiring.Mvvm.Screens;
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
-   using Moq;
 
    [TestClass]
    public class ScreenCreationBehaviorTest : TestBase {
+      private EventAggregator Aggregator { get; set; }
+      private ServiceLocatorStub Locator { get; set; }
+
+      [TestInitialize]
+      public void Setup() {
+         Aggregator = new EventAggregator();
+         Locator = new ServiceLocatorStub();
+         Locator.Register<MultipleInstancesScreen>(() => new MultipleInstancesScreen(Aggregator));
+         Locator.Register<SingleInstanceScreen>(() => new SingleInstanceScreen(Aggregator));
+         Locator.Register<DefaultCreationBehaviorScreen>(() => new DefaultCreationBehaviorScreen(Aggregator));
+         Locator.Register<LocatableScreen>(() => new LocatableScreen(Aggregator));
+         Locator.Register<DerivedLocatableScreen>(() => new DerivedLocatableScreen(Aggregator));
+      }
+
       [TestMethod]
       public void MultipleInstances() {
          ScreenConductor c = CreateConductor();
-         c.OpenScreen(ScreenFactory.For<MultipleInstancesScreen>());
-         c.OpenScreen(ScreenFactory.For<MultipleInstancesScreen>());
+         c.OpenScreen(ScreenFactory.For<MultipleInstancesScreen>(Locator));
+         c.OpenScreen(ScreenFactory.For<MultipleInstancesScreen>(Locator));
          Assert.AreEqual(2, c.Screens.Count());
       }
 
       [TestMethod]
       public void SingleInstance() {
          ScreenConductor c = CreateConductor();
-         c.OpenScreen(ScreenFactory.For<SingleInstanceScreen>());
-         c.OpenScreen(ScreenFactory.For<SingleInstanceScreen>());
+         c.OpenScreen(ScreenFactory.For<SingleInstanceScreen>(Locator));
+         c.OpenScreen(ScreenFactory.For<SingleInstanceScreen>(Locator));
          Assert.AreEqual(1, c.Screens.Count());
       }
 
       [TestMethod]
       public void DefaultCreationBehavior() {
          ScreenConductor c = CreateConductor();
-         c.OpenScreen(ScreenFactory.For<DefaultCreationBehaviorScreen>());
-         c.OpenScreen(ScreenFactory.For<DefaultCreationBehaviorScreen>());
+         c.OpenScreen(ScreenFactory.For<DefaultCreationBehaviorScreen>(Locator));
+         c.OpenScreen(ScreenFactory.For<DefaultCreationBehaviorScreen>(Locator));
          Assert.AreEqual(2, c.Screens.Count());
       }
 
@@ -41,19 +54,19 @@
 
          conductor.OpenScreen(
             ScreenFactory
-               .For<MultipleInstancesScreen>()
+               .For<MultipleInstancesScreen>(Locator)
          );
 
          conductor.OpenScreen(
             ScreenFactory
                .WithSubject(firstSubject)
-               .For<LocatableScreen>()
+               .For<LocatableScreen>(Locator)
          );
 
          conductor.OpenScreen(
             ScreenFactory
                .WithSubject(differentSubject)
-               .For<LocatableScreen>()
+               .For<LocatableScreen>(Locator)
          );
 
          CollectionAssert.AreEqual(
@@ -70,13 +83,13 @@
          conductor.OpenScreen(
             ScreenFactory
                .WithSubject(singleSubject)
-               .For<LocatableScreen>()
+               .For<LocatableScreen>(Locator)
          );
 
          conductor.OpenScreen(
             ScreenFactory
                .WithSubject(singleSubject)
-               .For<LocatableScreen>()
+               .For<LocatableScreen>(Locator)
          );
 
          CollectionAssert.AreEqual(
@@ -93,13 +106,13 @@
          conductor.OpenScreen(
             ScreenFactory
                .WithSubject(singleSubject)
-               .For<DerivedLocatableScreen>()
+               .For<DerivedLocatableScreen>(Locator)
          );
 
          conductor.OpenScreen(
             ScreenFactory
                .WithSubject(singleSubject)
-               .For<DerivedLocatableScreen>()
+               .For<DerivedLocatableScreen>(Locator)
          );
 
          CollectionAssert.AreEqual(
@@ -117,12 +130,12 @@
          conductor.OpenScreen(
             ScreenFactory
                .WithSubject(singleSubject)
-               .For<DerivedLocatableScreen>()
+               .For<DerivedLocatableScreen>(Locator)
          );
 
          IScreenFactory<IScreenBase> downcasted = ScreenFactory
             .WithSubject(singleSubject)
-            .For<DerivedLocatableScreen>();
+            .For<DerivedLocatableScreen>(Locator);
 
          conductor.OpenScreen(downcasted);
 
@@ -140,13 +153,13 @@
          conductor.OpenScreen(
             ScreenFactory
                .WithSubject(singleSubject)
-               .For<LocatableScreen>()
+               .For<LocatableScreen>(Locator)
          );
 
          conductor.OpenScreen(
             ScreenFactory
                .WithSubject(singleSubject)
-               .For<LocatableScreen>()
+               .For<LocatableScreen>(Locator)
          );
 
          CollectionAssert.AreEqual(
@@ -164,38 +177,55 @@
       }
 
       private ScreenConductor CreateConductor() {
-         return new ScreenConductor(new EventAggregator());
+         return new ScreenConductor(Aggregator);
       }
 
       [ScreenCreationBehavior(ScreenCreationBehavior.MultipleInstances)]
       public class MultipleInstancesScreen : DefaultTestScreen {
+         public MultipleInstancesScreen(EventAggregator aggregator)
+            : base(aggregator) {
+         }
       }
 
       [ScreenCreationBehavior(ScreenCreationBehavior.SingleInstance)]
       public class SingleInstanceScreen : DefaultTestScreen {
+         public SingleInstanceScreen(EventAggregator aggregator)
+            : base(aggregator) {
+         }
       }
 
       public class DefaultCreationBehaviorScreen : DefaultTestScreen {
+         public DefaultCreationBehaviorScreen(EventAggregator aggregator)
+            : base(aggregator) {
+         }
       }
 
       [ScreenCreationBehavior(ScreenCreationBehavior.UseScreenLocation)]
       public class LocatableScreen :
          DefaultTestScreen,
-         ILocatableScreen<BaseSubject>,
-         INeedsInitialization<BaseSubject> {
+         ILocatableScreen<BaseSubject> {
+
+         public LocatableScreen(EventAggregator aggregator)
+            : base(aggregator) {
+
+            Lifecycle.RegisterHandler(
+               ScreenEvents.Initialize<BaseSubject>(),
+               args => Subject = args.Subject
+            );
+         }
 
          public BaseSubject Subject { get; set; }
 
          public bool PresentsSubject(BaseSubject subject) {
             return Subject.Value == subject.Value;
          }
-
-         public void Initialize(BaseSubject subject) {
-            Subject = subject;
-         }
       }
 
-      public class DerivedLocatableScreen : LocatableScreen { }
+      public class DerivedLocatableScreen : LocatableScreen {
+         public DerivedLocatableScreen(EventAggregator aggregator)
+            : base(aggregator) {
+         }
+      }
 
       public class BaseSubject {
          public string Value { get; set; }

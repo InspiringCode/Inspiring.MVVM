@@ -3,7 +3,7 @@
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
-   public class ScreenEventTests {
+   public class ScreenLifecycleEventTests {
       [TestMethod]
       public void ChildrenFirstEvent_CallsHandlersOfChildrenBeforeParent() {
 

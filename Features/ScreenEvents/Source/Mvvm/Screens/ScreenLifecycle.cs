@@ -17,7 +17,7 @@
    public partial class ScreenLifecycle {
       private static readonly Func<EventPublication, bool> AlwaysTrueCondition = (_) => true;
       private static readonly Action<EventPublication> DoNothing = (pub) => { };
-      private static readonly ScreenEvent<ScreenEventArgs> AnyEvent = null;
+      private static readonly ScreenLifecycleEvent<ScreenEventArgs> AnyEvent = null;
 
       private readonly IScreenBase _parent;
       private readonly EventSubscriptionManager _subscriptionManager;
@@ -41,7 +41,7 @@
       }
 
       public void RegisterHandler<TArgs>(
-         ScreenEvent<TArgs> @event,
+         ScreenLifecycleEvent<TArgs> @event,
          Action<TArgs> handler,
          ExecutionOrder order = ExecutionOrder.Default
       ) where TArgs : ScreenEventArgs {
@@ -209,7 +209,7 @@
       private void DefineTransition<TArgs>(
          LifecycleState from,
          LifecycleState to,
-         ScreenEvent<TArgs> on,
+         ScreenLifecycleEvent<TArgs> on,
          Action<EventPublication> action,
          Func<EventPublication, bool> condition = null
       ) where TArgs : ScreenEventArgs {
@@ -269,7 +269,8 @@
          }
 
          public bool Matches(EventPublication publication) {
-            return true;
+            Type eventType = publication.Event.GetType();
+            return TypeService.ClosesGenericType(eventType, typeof(ScreenLifecycleEvent<>));
          }
 
          public void Invoke(EventPublication publication) {

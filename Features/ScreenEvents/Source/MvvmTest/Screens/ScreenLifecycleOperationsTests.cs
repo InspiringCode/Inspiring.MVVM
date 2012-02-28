@@ -145,9 +145,9 @@
       }
 
       private void AddEventHandlerFor<TArgs>(
-         ScreenEvent<TArgs> @event,
+         ScreenLifecycleEvent<TArgs> @event,
          IScreenBase screen,
-         Action<ScreenEvent<TArgs>, TArgs> handlerAction
+         Action<ScreenLifecycleEvent<TArgs>, TArgs> handlerAction
       ) where TArgs : ScreenEventArgs {
          _sm.Subscribe(b => {
             b.On(@event, screen).Execute(args => handlerAction(@event, args));

@@ -3,18 +3,18 @@
    using System.Collections.Generic;
    using Inspiring.Mvvm.Common;
 
-   public sealed class ScreenEvent<TArgs> :
+   public sealed class ScreenLifecycleEvent<TArgs> :
       HierarchicalEvent<IScreenBase, TArgs>
       where TArgs : ScreenEventArgs {
 
       private readonly string _name;
 
-      public ScreenEvent(string name) {
+      public ScreenLifecycleEvent(string name) {
          _name = name;
       }
 
       public override string ToString() {
-         return String.Format("{{ScreenEvent {0}}}", _name);
+         return String.Format("{{LifecycleEvent {0}}}", _name);
       }
 
       protected override IEnumerable<IScreenBase> GetHierarchyNodes(IScreenBase root) {

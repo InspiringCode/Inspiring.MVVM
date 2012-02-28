@@ -1,8 +1,8 @@
 ﻿namespace Inspiring.MvvmTest {
    using System;
+   using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.Screens;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Inspiring.Mvvm.Common;
 
    [TestClass]
    public abstract class ScreenLifecycleTestBase {
@@ -20,10 +20,11 @@ using Inspiring.Mvvm.Common;
          public bool ThrowOnActivate { get; set; }
          public bool ThrowOnDeactivate { get; set; }
          public bool ThrowOnClose { get; set; }
+         public bool ThrowOnRequestClose { get; set; }
 
          public bool RequestCloseResult { get; set; }
 
-         public ScreenMock(EventAggregator aggregator) 
+         public ScreenMock(EventAggregator aggregator)
             : base(aggregator) {
             RequestCloseResult = true;
 
@@ -32,10 +33,6 @@ using Inspiring.Mvvm.Common;
             Lifecycle.RegisterHandler(ScreenEvents.Deactivate, OnDeactivate);
             Lifecycle.RegisterHandler(ScreenEvents.RequestClose, OnRequestClose);
             Lifecycle.RegisterHandler(ScreenEvents.Close, OnClose);
-         }
-
-         public ScreenMock() : 
-            base(new EventAggregator()) {
          }
 
          public void Initialize(InitializeEventArgs args) {
@@ -77,6 +74,11 @@ using Inspiring.Mvvm.Common;
          protected void OnRequestClose(RequestCloseEventArgs args) {
             Assert.IsFalse(WasCloseRequested, "RequestClose was called twice.");
             WasCloseRequested = true;
+
+            if (ThrowOnRequestClose) {
+               throw new ScreenMockException();
+            }
+
             args.IsCloseAllowed = RequestCloseResult;
          }
 

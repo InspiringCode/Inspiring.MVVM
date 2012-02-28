@@ -44,7 +44,7 @@
       }
 
       private void PublishEvent<TArgs>(
-         ScreenEvent<TArgs> @event,
+         ScreenLifecycleEvent<TArgs> @event,
          TArgs args
       ) where TArgs : ScreenEventArgs {
          try {

@@ -187,13 +187,18 @@
          bool shouldClose;
 
          try {
-            // 
             shouldClose = skipRequestClose ?
                true :
                GetLifecycleOps(screen).RequestClose();
          } catch (ScreenLifecycleException) {
-            _screens.Remove(screen);
-            _activatedScreensHistory.Remove(screen);
+            // We always propagate the exception that occured in 'RequestClose' to
+            // the client, because thats the method he is actually calling.
+            try {
+               _screens.Remove(screen);
+               _activatedScreensHistory.Remove(screen);
+               ActiveScreen = _activatedScreensHistory.LastOrDefault();
+            } catch { }
+
             throw;
          }
 

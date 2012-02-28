@@ -139,7 +139,7 @@
          public abstract void PublishEvent(EventAggregator aggregator, IScreenBase target);
 
          private static TriggerEvent Create<TArgs>(
-            ScreenEvent<TArgs> @event,
+            ScreenLifecycleEvent<TArgs> @event,
             Func<IScreenBase, TArgs> argsFactory
          ) where TArgs : ScreenEventArgs {
             return new GenericTriggerEvent<TArgs>(@event, argsFactory);
@@ -149,10 +149,10 @@
             TriggerEvent
             where TArgs : ScreenEventArgs {
 
-            private readonly ScreenEvent<TArgs> _event;
+            private readonly ScreenLifecycleEvent<TArgs> _event;
             private readonly Func<IScreenBase, TArgs> _argsFactory;
 
-            public GenericTriggerEvent(ScreenEvent<TArgs> @event, Func<IScreenBase, TArgs> argsFactory) {
+            public GenericTriggerEvent(ScreenLifecycleEvent<TArgs> @event, Func<IScreenBase, TArgs> argsFactory) {
                _event = @event;
                _argsFactory = argsFactory;
             }
@@ -241,7 +241,7 @@
             AttachHandler(ScreenEvents.LifecycleExceptionOccured);
          }
 
-         private void AttachHandler<TArgs>(ScreenEvent<TArgs> @event) where TArgs : ScreenEventArgs {
+         private void AttachHandler<TArgs>(ScreenLifecycleEvent<TArgs> @event) where TArgs : ScreenEventArgs {
             Lifecycle.RegisterHandler(@event, args => ActuallyHandlerExecutions.Add(@event));
          }
 
