@@ -159,7 +159,6 @@
     <Compile Include="Screens\ScreenCreationBehaviorAttribute.cs" />
     <Compile Include="Screens\ScreenLifecycleEvent.cs" />
     <Compile Include="Screens\ScreenEvents.cs" />
-    <Compile Include="Screens\ScreenExtensions.cs" />
     <Compile Include="Screens\ScreenHelper.cs" />
     <Compile Include="Screens\ScreenLifecycle.cs" />
     <Compile Include="Screens\ScreenChildrenCollection.cs" />

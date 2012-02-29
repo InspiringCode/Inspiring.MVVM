@@ -2,7 +2,7 @@
    using System;
    using Inspiring.Mvvm.Common;
 
-   internal class ScreenLifecycleOperations {
+   public class ScreenLifecycleOperations {
       private EventAggregator _aggregator;
       private IScreenBase _target;
 

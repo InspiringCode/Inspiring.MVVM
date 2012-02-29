@@ -34,9 +34,5 @@
             .SelectMany(x => x.Children.OfType<DialogLifecycle>())
             .FirstOrDefault();
       }
-
-      public void RaiseCloseWindow() {
-         ScreenHelper.Close(_parent, true);
-      }
    }
 }

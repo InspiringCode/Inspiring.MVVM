@@ -167,7 +167,7 @@
             _screens.AddScreen(factory);
 
          s.Children
-            .Add(new ScreenCloseHandler(skipRequestClose => CloseScreen(s, skipRequestClose)));
+            .Add(new ScreenCloseHandler(requestClose => CloseScreen(s, requestClose)));
 
          // Activate does handle exceptions correctly and rethrows them, so we skip
          // the publishing of the 'ScreenOpenedEvent'.
@@ -179,7 +179,7 @@
          );
       }
 
-      public bool CloseScreen(IScreenBase screen, bool skipRequestClose = false) {
+      public bool CloseScreen(IScreenBase screen, bool requestClose = false) {
          if (!_screens.Contains(screen)) {
             throw new ArgumentException(ExceptionTexts.ScreenNotContainedByConductor);
          }
@@ -187,9 +187,9 @@
          bool shouldClose;
 
          try {
-            shouldClose = skipRequestClose ?
-               true :
-               GetLifecycleOps(screen).RequestClose();
+            shouldClose = requestClose ?
+               GetLifecycleOps(screen).RequestClose() :
+               true;
          } catch (ScreenLifecycleException) {
             // We always propagate the exception that occured in 'RequestClose' to
             // the client, because thats the method he is actually calling.
@@ -342,7 +342,7 @@
 
       private void HandleClose(ScreenEventArgs args) {
          while (_screens.Any()) {
-            CloseScreen(_screens.Last(), skipRequestClose: true);
+            CloseScreen(_screens.Last(), requestClose: true);
          }
       }
 

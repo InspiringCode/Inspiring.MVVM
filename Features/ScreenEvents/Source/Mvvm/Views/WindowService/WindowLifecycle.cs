@@ -150,11 +150,11 @@
       ///   The dialog was shown modal and a lifecycle event handler (RequestClose, 
       ///   Deactivate or Close) of the screen has thrown an exception.
       /// </exception>
-      private void HandleClose(bool skipRequestClose) {
+      private void HandleClose(bool requestClose) {
          bool shouldClose;
 
          if (_modal) {
-            if (skipRequestClose) {
+            if (!requestClose) {
                _window.Closing -= HandleWindowClosing;
             }
 
@@ -165,10 +165,10 @@
             // caller of 'HandleClose' because 'Window.Close' would rethrow the any
             // exception on the dispatcher.
             try {
-               if (skipRequestClose) {
-                  shouldClose = true;
-               } else {
+               if (requestClose) {
                   shouldClose = _screenOps.RequestClose();
+               } else {
+                  shouldClose = true;
                }
             } catch (ScreenLifecycleException) {
                // The screen itself makes sure that is consistently closed in case of

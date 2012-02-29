@@ -2,7 +2,7 @@
    using System.Collections.Generic;
    using System.Linq;
 
-   internal static class ScreenTreeHelper {
+   public static class ScreenTreeHelper {
       public static IEnumerable<IScreenBase> GetChildrenOf(IScreenBase screen, bool includeSelf = false) {
          IEnumerable<IScreenBase> children = screen
             .Children

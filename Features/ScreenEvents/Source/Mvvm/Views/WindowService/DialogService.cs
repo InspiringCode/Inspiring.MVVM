@@ -19,7 +19,11 @@
          _windowService = windowService;
       }
 
-      public void Show(
+      /// <remarks>
+      ///   Note to inheritors: This method does not call <see 
+      ///   cref="Show(Window,IScreenFactory{IScreenBase},bool)"/>.
+      /// </remarks>
+      public virtual void Show(
          IScreenFactory<IScreenBase> screen,
          IScreenBase parent = null,
          string title = null
@@ -36,7 +40,11 @@
          );
       }
 
-      public DialogScreenResult ShowDialog(
+      /// <remarks>
+      ///   Note to inheritors: This method does not call <see 
+      ///   cref="Show(Window, IScreenFactory{IScreenBase}, bool)"/>.
+      /// </remarks>
+      public virtual DialogScreenResult ShowDialog(
          IScreenFactory<IScreenBase> screen,
          IScreenBase parent = null,
          string title = null
@@ -50,6 +58,20 @@
             window,
             screen,
             modal: true
+         );
+      }
+
+      public virtual DialogScreenResult Show(
+         Window window,
+         IScreenFactory<IScreenBase> screen,
+         bool modal
+      ) {
+         return WindowLifecycle.Show(
+            _aggregator,
+            _windowService,
+            window,
+            screen,
+            modal
          );
       }
 

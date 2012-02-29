@@ -147,7 +147,7 @@
       }
 
       private void CloseDialog(IScreenBase screen) {
-         screen.CloseDialog(new DialogScreenResult(true));
+         ScreenHelper.Close(screen, new DialogScreenResult(true));
       }
 
       private class WindowServiceStub : WindowService {

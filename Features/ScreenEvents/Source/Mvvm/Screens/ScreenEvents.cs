@@ -1,8 +1,8 @@
 ﻿namespace Inspiring.Mvvm.Screens {
-   using Inspiring.Mvvm.Common;
    using System;
+   using Inspiring.Mvvm.Common;
 
-   internal sealed class ScreenEvents {
+   public sealed class ScreenEvents {
       public static readonly ScreenLifecycleEvent<ScreenEventArgs> Activate = new ScreenLifecycleEvent<ScreenEventArgs>("Activate");
       public static readonly ScreenLifecycleEvent<ScreenEventArgs> Deactivate = new ScreenLifecycleEvent<ScreenEventArgs>("Deactivate");
       public static readonly ScreenLifecycleEvent<RequestCloseEventArgs> RequestClose = new ScreenLifecycleEvent<RequestCloseEventArgs>("RequestClose");
@@ -25,17 +25,6 @@
                String.Format("Initialize<{0}>", TypeService.GetFriendlyName(typeof(TSubject)))
             );
       }
-   }
-
-   internal class InitiateCloseEventArgs : ScreenEventArgs {
-      public InitiateCloseEventArgs(IScreenBase target, bool skipRequestClose)
-         : base(target) {
-         SkipRequestClose = skipRequestClose;
-      }
-
-      public bool SkipRequestClose { get; private set; }
-
-      public bool Handled { get; set; }
    }
 
    public class ScreenEventArgs : HierarchicalEventArgs<IScreenBase> {

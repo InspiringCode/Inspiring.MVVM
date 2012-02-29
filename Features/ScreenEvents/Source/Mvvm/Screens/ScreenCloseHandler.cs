@@ -8,8 +8,8 @@
          _closeAction = closeAction;
       }
 
-      public void Execute(bool skipRequestClose) {
-         _closeAction(skipRequestClose);
+      public void Execute(bool requestClose) {
+         _closeAction(requestClose);
       }
    }
 }

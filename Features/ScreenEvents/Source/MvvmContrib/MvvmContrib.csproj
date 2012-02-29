@@ -94,14 +94,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\OkCancelScreen.cs" />
-    <Compile Include="Common\OkCancelVM.cs" />
     <Compile Include="Common\Optional.cs" />
     <Compile Include="Common\ReferenceEqualityComparer.cs" />
-    <Compile Include="Common\SaveDiscardScreen.cs" />
-    <Compile Include="Common\SaveDiscardVM.cs" />
-    <Compile Include="Common\IOkCancelHandler.cs" />
-    <Compile Include="Common\ISaveDiscardHandler.cs" />
     <Compile Include="ExceptionTexts.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

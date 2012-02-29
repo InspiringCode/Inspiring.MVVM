@@ -51,7 +51,7 @@
          ScreenMock uncontainedScreen = new ScreenMock(Aggregator);
 
          AssertHelper.Throws<ArgumentException>(() =>
-            condcutor.CloseScreen(uncontainedScreen, skipRequestClose: true)
+            condcutor.CloseScreen(uncontainedScreen, requestClose: true)
          );
       }
 
