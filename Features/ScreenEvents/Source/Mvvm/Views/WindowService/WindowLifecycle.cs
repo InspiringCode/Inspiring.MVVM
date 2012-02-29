@@ -87,6 +87,8 @@
                   CloseWindowImmediatately();
                }
 
+               CloseScreen();
+
                throw;
             }
 
@@ -144,37 +146,45 @@
       ///   This method is called when the close is triggered by code (instead of the
       ///   user clicking on the 'X' for example).
       /// </summary>
-      /// <remarks>
-      ///   We do not simply call 'Window.Close' but reimplement the close process
-      ///   because 'Window.Close' would swallow exceptions.
-      /// </remarks>
       /// <exception cref="ScreenLifecycleException">
-      ///   A lifecycle event handler (RequestClose, Deactivate or Close) of the screen
-      ///   has thrown an exception.
+      ///   The dialog was shown modal and a lifecycle event handler (RequestClose, 
+      ///   Deactivate or Close) of the screen has thrown an exception.
       /// </exception>
       private void HandleClose(bool skipRequestClose) {
          bool shouldClose;
 
-         try {
+         if (_modal) {
             if (skipRequestClose) {
-               shouldClose = true;
-            } else {
-               shouldClose = _screenOps.RequestClose();
+               _window.Closing -= HandleWindowClosing;
             }
-         } catch (ScreenLifecycleException) {
-            // The screen itself makes sure that is consistently closed in case of
-            // an exception.
-            CloseWindowImmediatately();
-            throw;
-         }
 
-         if (shouldClose) {
-            // First close the 'Window' than the 'Screen' because the 'Screen' may
-            // still be accessed by the 'Window'.
-            CloseWindowImmediatately();
+            // Any exception is rethrown by 'ShowModal'.
+            _window.Close();
+         } else {
+            // We reimplement the close process to propagate exceptions back to the
+            // caller of 'HandleClose' because 'Window.Close' would rethrow the any
+            // exception on the dispatcher.
+            try {
+               if (skipRequestClose) {
+                  shouldClose = true;
+               } else {
+                  shouldClose = _screenOps.RequestClose();
+               }
+            } catch (ScreenLifecycleException) {
+               // The screen itself makes sure that is consistently closed in case of
+               // an exception.
+               CloseWindowImmediatately();
+               throw;
+            }
 
-            // Exceptions are propagated to the caller.
-            CloseScreen();
+            if (shouldClose) {
+               // First close the 'Window' than the 'Screen' because the 'Screen' may
+               // still be accessed by the 'Window'.
+               CloseWindowImmediatately();
+
+               // Exceptions are propagated to the caller.
+               CloseScreen();
+            }
          }
       }
 
@@ -195,7 +205,11 @@
 
       private void Disconnect() {
          DetachHandlers();
-         _screen.Children.Remove(this);
+
+         if (_screen != null) {
+            _screen.Children.Remove(this);
+         }
+
          _window.Closed -= HandleWindowClosedToDisconnected;
       }
 
@@ -214,7 +228,9 @@
          _window.Closed -= HandleWindowClosed;
          _window.Closing -= HandleWindowClosing;
 
-         _screen.Children.Remove(_closeHandler);
+         if (_screen != null) {
+            _screen.Children.Remove(_closeHandler);
+         }
       }
 
       /// <summary>

@@ -53,17 +53,17 @@
          Assert.IsFalse(WindowService.WasShown);
 
          Assert.IsFalse(screen.WasCloseRequested);
-         Assert.IsFalse(screen.WasDeactivated);
+         Assert.IsTrue(screen.WasDeactivated);
          Assert.IsTrue(screen.WasClosed);
       }
 
       [TestMethod]
-      public void CloseDialog_WhenDeactivateThrowsException_ClosesDialog() {
+      public void CloseDialog_WhenDeactivateThrowsException_ClosesDialogAndOnlyShowDialogThrowsException() {
          var screen = new ScreenMock(Aggregator) { ThrowOnDeactivate = true };
 
          WindowService.WindowLoaded += (Window win) => {
             Assert.IsTrue(win.IsVisible);
-            CloseDialogAndExpectException(screen);
+            CloseDialog(screen);
          };
 
          ShowDialogAndExpectException(screen);
@@ -73,12 +73,12 @@
       }
 
       [TestMethod]
-      public void CloseDialog_WhenOnCloseThrowsException_ClosesDialog() {
+      public void CloseDialog_WhenOnCloseThrowsException_ClosesDialogAndOnlyShowDialogThrowsException() {
          var screen = new ScreenMock(Aggregator) { ThrowOnClose = true };
 
          WindowService.WindowLoaded += (Window win) => {
             Assert.IsTrue(win.IsVisible);
-            CloseDialogAndExpectException(screen);
+            CloseDialog(screen);
          };
 
          ShowDialogAndExpectException(screen);
@@ -99,11 +99,13 @@
             );
          };
 
-         ShowDialogAndExpectException(screen);
+         AssertHelper.Throws<ScreenMockException>(() =>
+            ShowDialog(screen)
+         );
 
          Assert.IsFalse(WindowService.LastWindow.IsVisible);
-         Assert.IsFalse(screen.WasDeactivated);
-         Assert.IsFalse(screen.WasClosed);
+         Assert.IsTrue(screen.WasDeactivated);
+         Assert.IsTrue(screen.WasClosed);
       }
 
       [TestMethod]
@@ -111,12 +113,15 @@
          WindowService.ThrowViewInitializationException = true;
 
          var screen = new ScreenMock(Aggregator);
-         ShowDialogAndExpectException(screen);
+         
+         AssertHelper.Throws<ScreenMockException>(() =>
+            ShowDialog(screen)
+         );
 
          Assert.IsFalse(WindowService.WasShown);
 
-         Assert.IsFalse(screen.WasDeactivated);
-         Assert.IsFalse(screen.WasClosed);
+         Assert.IsTrue(screen.WasDeactivated);
+         Assert.IsTrue(screen.WasClosed);
       }
 
       [TestCleanup]
