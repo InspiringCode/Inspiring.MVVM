@@ -33,5 +33,16 @@
             ex is AccessViolationException ||
             ex is InvalidProgramException;
       }
+
+      public static IEnumerable<T> Traverse<T>(
+         this T root,
+         Func<T, T> getNext
+      ) where T : class {
+         yield return root;
+
+         while ((root = getNext(root)) != null) {
+            yield return root;
+         }
+      }
    }
 }

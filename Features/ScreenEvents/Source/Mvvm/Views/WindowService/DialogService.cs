@@ -125,7 +125,7 @@
          }
 
          WindowLifecycle lf = ScreenTreeHelper
-            .GetAncestorsOf(screen)
+            .GetAncestorsOf(screen, includeSelf: true)
             .SelectMany(s => s.Children.OfType<WindowLifecycle>())
             .FirstOrDefault();
 

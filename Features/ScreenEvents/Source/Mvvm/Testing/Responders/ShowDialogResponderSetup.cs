@@ -1,9 +1,7 @@
 ﻿namespace Inspiring.Mvvm.Testing {
    using System;
-   using System.Windows;
+   using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.Screens;
-   using Inspiring.Mvvm.Views;
-using Inspiring.Mvvm.Common;
 
    public abstract class ShowDialogResponderSetup : ResponderBase {
       internal ShowDialogResponderSetup(DialogServiceMethod method)
@@ -70,7 +68,8 @@ using Inspiring.Mvvm.Common;
       ) {
          IScreenBase s = screen.Create(_aggregator);
          s.Children.Add(new DialogLifecycle(s));
-         
+         s.Children.Add(new ScreenCloseHandler(_ => { }));
+
          IScreenBase parent = (IScreenBase)invocation.Parent.Value;
 
          DialogTestAction((TScreen)s);

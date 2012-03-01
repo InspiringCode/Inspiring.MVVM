@@ -111,12 +111,14 @@
     <Compile Include="- Test Infrastructure -\NullValidator.cs" />
     <Compile Include="- Test Infrastructure -\ParameterizedTest.cs" />
     <Compile Include="- Test Infrastructure -\ScreenLifecycleTestBase.cs" />
+    <Compile Include="- Test Infrastructure -\ScreenTestBase.cs" />
     <Compile Include="- Test Infrastructure -\TestViewModel.cs" />
     <Compile Include="- Test Infrastructure -\ValidatorMockConfiguration.cs" />
     <Compile Include="- Test Infrastructure -\ValidatorMockConfigurationFluent.cs" />
     <Compile Include="ApiTests\Common\EventTests.cs" />
     <Compile Include="ApiTests\Common\HierarchicalEventTests.cs" />
     <Compile Include="ApiTests\Screens\ScreenLifecycleEventTests.cs" />
+    <Compile Include="ApiTests\Screens\ScreenTests.cs" />
     <Compile Include="ApiTests\ViewModels\CommandHandlerTests.cs" />
     <Compile Include="ApiTests\ViewModels\Core\PathDefinitionTests.cs" />
     <Compile Include="ApiTests\ViewModels\Core\VMKernelTests.cs" />
@@ -334,6 +336,7 @@
     <Compile Include="Views\PersonView.xaml.cs">
       <DependentUpon>PersonView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ScreenConductorAdapterTests.cs" />
     <Compile Include="Views\ViewBinderTest.cs" />
     <Compile Include="Views\ViewFactoryTests.cs" />
     <Compile Include="Views\ViewTest.cs" />

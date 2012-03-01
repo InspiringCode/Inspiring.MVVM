@@ -31,7 +31,7 @@
       [TestMethod]
       public void Initialize_WithSubjectOfDerivedType_CallsInitializeOnScreenAndItsChildren() {
          var subject = new DerivedSubject();
-         var parent = new InitializableParentScreen<DerivedSubject>(Aggregator);
+         var parent = new ParentScreenWithHandler<DerivedSubject>(Aggregator);
          var child = new TestScreen<BaseSubject>(Aggregator);
          parent.Children.Attach(child);
 
@@ -59,7 +59,7 @@
       [TestMethod]
       public void Initialize_WhenScreenDoesNotImplementInterface_CallsInitializeOnChildren() {
          var subject = new DerivedSubject();
-         var parent = new NonInitializableParentScreen(Aggregator);
+         var parent = new ParentScreenWithoutHandler(Aggregator);
          var child = new TestScreen<BaseSubject>(Aggregator);
          parent.Children.Attach(child);
 
@@ -67,19 +67,33 @@
          Assert.AreEqual(subject, child.LastSubject, "Initialize was not called on child.");
       }
 
+      [TestMethod]
+      public void Initialize_WhenScreenImplementsINeedsInitialization_CallsVariousImplementations() {
+         var subject = new DerivedSubject();
+         var screen = new InitializableDerivedScreen(Aggregator);
+
+         Initialize(screen, subject);
+
+         Assert.AreEqual(subject, screen.DerivedSubject);
+         Assert.AreEqual(subject, screen.BaseSubject);
+         Assert.AreEqual(subject, screen.ISubject);
+         Assert.AreEqual(1, screen.GeneralInitializeDerivedInvocations);
+         Assert.AreEqual(1, screen.GeneralInitializeBaseInvocations);
+      }
+
       private void Initialize<TSubject>(IScreenBase screen, TSubject subject) {
          new ScreenLifecycleOperations(Aggregator, screen)
             .Initialize(subject);
       }
 
-      private class NonInitializableParentScreen : ScreenBase {
-         public NonInitializableParentScreen(EventAggregator aggregator)
+      private class ParentScreenWithoutHandler : ScreenBase {
+         public ParentScreenWithoutHandler(EventAggregator aggregator)
             : base(aggregator) {
          }
       }
 
-      private class InitializableParentScreen<TSubject> : DefaultTestScreen {
-         public InitializableParentScreen(EventAggregator aggregator)
+      private class ParentScreenWithHandler<TSubject> : DefaultTestScreen {
+         public ParentScreenWithHandler(EventAggregator aggregator)
             : base(aggregator) {
             Lifecycle.RegisterHandler(ScreenEvents.Initialize<TSubject>(), HandleInitialize);
          }
@@ -126,6 +140,54 @@
       }
 
       private class DerivedSubject : BaseSubject {
+      }
+
+      private class InitializableBaseScreen :
+         DefaultTestScreen,
+         INeedsInitialization<DerivedSubject>,
+         INeedsInitialization<ISubject>,
+         INeedsInitialization {
+
+         public InitializableBaseScreen(EventAggregator aggregator)
+            : base(aggregator) {
+         }
+
+         public ISubject ISubject { get; private set; }
+         public DerivedSubject DerivedSubject { get; private set; }
+         public int GeneralInitializeBaseInvocations { get; private set; }
+
+         void INeedsInitialization<ISubject>.Initialize(ISubject subject) {
+            ISubject = subject;
+         }
+
+         void INeedsInitialization<DerivedSubject>.Initialize(DerivedSubject subject) {
+            DerivedSubject = subject;
+         }
+
+         void INeedsInitialization.Initialize() {
+            GeneralInitializeBaseInvocations++;
+         }
+      }
+
+      private class InitializableDerivedScreen :
+         InitializableBaseScreen,
+         INeedsInitialization<BaseSubject>,
+         INeedsInitialization {
+
+         public InitializableDerivedScreen(EventAggregator aggregator)
+            : base(aggregator) {
+         }
+
+         public BaseSubject BaseSubject { get; private set; }
+         public int GeneralInitializeDerivedInvocations { get; private set; }
+
+         void INeedsInitialization<BaseSubject>.Initialize(BaseSubject subject) {
+            BaseSubject = subject;
+         }
+
+         void INeedsInitialization.Initialize() {
+            GeneralInitializeDerivedInvocations++;
+         }
       }
    }
 }

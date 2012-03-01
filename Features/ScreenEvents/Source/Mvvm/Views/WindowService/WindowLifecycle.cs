@@ -52,13 +52,9 @@
       private void Show(IScreenFactory<IScreenBase> screenFactory) {
          _modal = false;
 
-         try {
-            _screen = screenFactory.Create(_aggregator);
-            Initialize();
-            _windowService.ShowWindow(_window, modal: false);
-         } finally {
-            Disconnect();
-         }
+         _screen = screenFactory.Create(_aggregator);
+         Initialize();
+         _windowService.ShowWindow(_window, modal: false);
       }
 
       private DialogScreenResult ShowModal(IScreenFactory<IScreenBase> screenFactory) {

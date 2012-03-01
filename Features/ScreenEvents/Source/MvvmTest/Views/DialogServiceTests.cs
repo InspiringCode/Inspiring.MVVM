@@ -12,7 +12,7 @@
    public class DialogServiceTests : ScreenLifecycleTestBase {
       private EventAggregator Aggregator { get; set; }
       private WindowServiceStub WindowService { get; set; }
-      private IDialogService DialogSerivce { get; set; }
+      private DialogService DialogSerivce { get; set; }
 
       [TestInitialize]
       public void Setup() {
@@ -22,12 +22,44 @@
       }
 
       [TestMethod]
-      public void ShowDialogWithCertainScreenInsatnce_ScreenLifecycleDoesntContainDialogLifecycleAfterShowDialog() {
+      public void ShowDialogWithCertainScreenInstance_ScreenLifecycleDoesntContainDialogLifecycleAfterShowDialog() {
          WindowService.ShowRealWindow = false;
 
          var screen = new ScreenMock(Aggregator);
          DialogSerivce.ShowDialog(ScreenFactory.For(screen));
          Assert.IsFalse(screen.Children.OfType<DialogLifecycle>().Any());
+      }
+
+      [TestMethod]
+      public void Close_WithoutRequestClose_DoesNotCallRequestClose() {
+         WindowService.ShowRealWindow = true;
+         
+         var screen = new ScreenMock(Aggregator);
+
+         WindowService.WindowLoaded += delegate {
+            ScreenHelper.Close(screen, new DialogScreenResult(false), requestClose: false);
+         };
+
+         ShowDialog(screen);
+
+         Assert.IsTrue(screen.WasClosed);
+         Assert.IsFalse(screen.WasCloseRequested);
+      }
+
+      [TestMethod]
+      public void Close_WithtRequestClose_CallsRequestClose() {
+         WindowService.ShowRealWindow = true;
+
+         var screen = new ScreenMock(Aggregator);
+
+         WindowService.WindowLoaded += delegate {
+            ScreenHelper.Close(screen, new DialogScreenResult(false), requestClose: true);
+         };
+
+         ShowDialog(screen);
+
+         Assert.IsTrue(screen.WasClosed);
+         Assert.IsTrue(screen.WasCloseRequested);
       }
 
       [TestMethod]
@@ -113,7 +145,7 @@
          WindowService.ThrowViewInitializationException = true;
 
          var screen = new ScreenMock(Aggregator);
-         
+
          AssertHelper.Throws<ScreenMockException>(() =>
             ShowDialog(screen)
          );
@@ -122,6 +154,39 @@
 
          Assert.IsTrue(screen.WasDeactivated);
          Assert.IsTrue(screen.WasClosed);
+      }
+
+      [TestMethod]
+      public void Show_AttachesAppropriateChildren() {
+         WindowService.ShowRealWindow = false;
+
+         var screen = new ScreenMock(Aggregator);
+
+         DialogSerivce.Show(
+            new WindowView(false),
+            ScreenFactory.For(screen),
+            modal: false
+         );
+
+         Assert.IsTrue(screen.Children.OfType<WindowLifecycle>().Any());
+         Assert.IsTrue(screen.Children.OfType<ScreenCloseHandler>().Any());
+         Assert.IsFalse(screen.Children.OfType<DialogLifecycle>().Any());
+      }
+
+      [TestMethod]
+      public void GetAssociatedWindow_ReturnsWindow() {
+         WindowService.ShowRealWindow = false;
+         
+         WindowView window = new WindowView(false);
+         ScreenMock screen = new ScreenMock(Aggregator);
+
+         DialogSerivce.Show(
+            window,
+            ScreenFactory.For(screen),
+            modal: false
+         );
+
+         Assert.AreEqual(window, DialogSerivce.GetAssociatedWindow(screen));
       }
 
       [TestCleanup]
@@ -182,7 +247,7 @@
 
             if (ShowRealWindow) {
                base.ShowWindow(window, modal);
-            }            
+            }
          }
       }
 

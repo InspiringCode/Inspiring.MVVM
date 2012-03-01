@@ -74,6 +74,7 @@
          IScreenBase s = screen.Create(_aggregator);
          var lifecycle = new DialogLifecycle(s);
          s.Children.Add(lifecycle);
+         s.Children.Add(new ScreenCloseHandler(_ => { })); // TODO: Remove code duplication between here and responder
          return new TestScreenResult(lifecycle);
       }
 

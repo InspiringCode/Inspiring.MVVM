@@ -3,6 +3,7 @@
    using System.Collections.Generic;
    using System.Diagnostics.Contracts;
    using System.Linq;
+   using System.Reflection;
    using Inspiring.Mvvm.Common;
 
    public enum LifecycleState {
@@ -19,6 +20,13 @@
       private static readonly Action<EventPublication> DoNothing = (pub) => { };
       private static readonly ScreenLifecycleEvent<ScreenEventArgs> AnyEvent = null;
 
+      private static readonly MethodInfo RegisterHandlerMethod = typeof(ScreenLifecycle)
+         .GetMethod("RegisterHandler");
+
+      private static readonly MethodInfo GetGenericInitializeEventMethod = typeof(ScreenEvents)
+         .GetMethods()
+         .Single(m => m.Name == "Initialize" && m.IsGenericMethod);
+
       private readonly IScreenBase _parent;
       private readonly EventSubscriptionManager _subscriptionManager;
       private readonly LifecycleStateMachine _sm;
@@ -34,6 +42,53 @@
          _subscriptionManager.Subscribe(b =>
             b.AddSubscription(_sm)
          );
+
+         RegisterHandlerForINeedsInitializationImplementations();
+      }
+
+      private void RegisterHandlerForINeedsInitializationImplementations() {
+         Type screenType = _parent.GetType();
+
+         var genericImplementations = screenType
+            .GetInterfaces()
+            .Where(i => TypeService.ClosesGenericType(i, typeof(INeedsInitialization<>)))
+            .Select(i =>
+               new {
+                  SubjectType = i.GetGenericArguments().Single(),
+                  HandlerMethod = screenType
+                     .GetInterfaceMap(i)
+                     .TargetMethods
+                     .Single()
+               }
+            );
+
+         foreach (var impl in genericImplementations) {
+            InvokeRegisterGenericInitializeHandler(
+               impl.SubjectType,
+               impl.HandlerMethod
+            );
+         }
+
+         IEnumerable<MethodInfo> nonGenericImplementations = screenType
+            .Traverse(x => x.BaseType)
+            .SelectMany(t => t
+               .GetInterfaces()
+               .Where(i => i == typeof(INeedsInitialization))
+               .Select(i => t
+                  .GetInterfaceMap(i)
+                  .TargetMethods
+                  .Single()
+               )
+            )
+            .Distinct();
+
+         foreach (MethodInfo impl in nonGenericImplementations) {
+            MethodInfo implReference = impl;
+            RegisterHandler(
+               ScreenEvents.Initialize(),
+               args => implReference.Invoke(_parent, null)
+            );
+         }
       }
 
       public LifecycleState State {
@@ -80,6 +135,26 @@
          _handlers.Add(sub);
       }
 
+      private void InvokeRegisterGenericInitializeHandler(
+         Type subjectType,
+         MethodInfo initializeMethod
+      ) {
+         GetType()
+            .GetMethod(
+               "RegisterGenericInitializeHandler",
+               BindingFlags.NonPublic | BindingFlags.Instance
+             )
+            .MakeGenericMethod(subjectType)
+            .Invoke(this, new Object[] { initializeMethod });
+      }
+
+      private void RegisterGenericInitializeHandler<TSubject>(MethodInfo initializeMethod) {
+         RegisterHandler(
+            ScreenEvents.Initialize<TSubject>(),
+            args => initializeMethod.Invoke(_parent, new Object[] { args.Subject })
+         );
+      }
+
       private void DefineTransitions() {
          DefineCreatedTransitions();
          DefineInitializedTransitions();
@@ -118,8 +193,7 @@
             LifecycleState.Initialized,
             LifecycleState.Initialized,
             ScreenEvents.RequestClose,
-            ExecuteHandlers,
-            condition: CloseWasNotCancelled
+            ExecuteRequestCloseHandlers
          );
 
          DefineTransition(
@@ -150,8 +224,7 @@
             LifecycleState.Activated,
             LifecycleState.Activated,
             ScreenEvents.RequestClose,
-            ExecuteHandlers,
-            condition: CloseWasNotCancelled
+            ExecuteRequestCloseHandlers
          );
 
          DefineTransition(
@@ -181,8 +254,7 @@
             LifecycleState.Deactivated,
             LifecycleState.Deactivated,
             ScreenEvents.RequestClose,
-            ExecuteHandlers,
-            condition: CloseWasNotCancelled
+            ExecuteRequestCloseHandlers
          );
 
          DefineTransition(
@@ -223,13 +295,27 @@
       }
 
       private void ExecuteHandlers(EventPublication publication) {
-         IEnumerable<IEventSubscription> matching = _handlers
-            .Where(s => s.Matches(publication))
-            .OrderBy(h => h.ExecutionOrder);
-
-         foreach (var registration in matching) {
+         foreach (var registration in GetSubscriptionsFor(publication)) {
             registration.Invoke(publication);
          }
+      }
+
+      private void ExecuteRequestCloseHandlers(EventPublication publication) {
+         foreach (var registration in GetSubscriptionsFor(publication)) {
+            RequestCloseEventArgs args = (RequestCloseEventArgs)publication.Payload;
+
+            if (!args.IsCloseAllowed) {
+               break;
+            }
+
+            registration.Invoke(publication);
+         }
+      }
+
+      private IEnumerable<IEventSubscription> GetSubscriptionsFor(EventPublication publication) {
+         return _handlers
+            .Where(s => s.Matches(publication))
+            .OrderBy(h => h.ExecutionOrder);
       }
 
       private void InvokeDeactivateAndClose(EventPublication originalPublication) {
@@ -241,13 +327,6 @@
       private void InvokeClose(EventPublication originalPublication) {
          var pub = new EventPublication(ScreenEvents.Close, new ScreenEventArgs(_parent));
          ExecuteHandlers(pub);
-      }
-
-      private static bool CloseWasNotCancelled(EventPublication publication) {
-         Contract.Requires(publication.Event == ScreenEvents.RequestClose);
-
-         RequestCloseEventArgs args = (RequestCloseEventArgs)publication.Payload;
-         return args.IsCloseAllowed;
       }
 
       private class LifecycleStateMachine :

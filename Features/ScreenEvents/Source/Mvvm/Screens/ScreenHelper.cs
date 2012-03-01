@@ -13,7 +13,7 @@
             throw new ArgumentException();
          }
 
-         h.Execute(!requestClose);
+         h.Execute(requestClose);
       }
 
       public static void Close(IScreenBase dialog, DialogScreenResult result, bool requestClose = false) {

@@ -10,5 +10,9 @@
       public DefaultTestScreen(EventAggregator aggregator)
          : base(aggregator) {
       }
+
+      public new ScreenLifecycle Lifecycle {
+         get { return base.Lifecycle; }
+      }
    }
 }
