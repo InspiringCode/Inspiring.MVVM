@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.Mvvm.Screens {
    using System;
    using System.Diagnostics.Contracts;
+   using Inspiring.Mvvm.Common;
 
    public static partial class ScreenFactory {
       public static IScreenFactory<TScreen> For<TScreen>(IServiceLocator resolveWith = null) where TScreen : IScreenBase {
@@ -31,22 +32,19 @@
       }
 
       private abstract class AbstractFactory<TScreen> where TScreen : IScreenBase {
-         public TScreen Create(Action<TScreen> initializationCallback = null) {
+         public TScreen Create(EventAggregator aggregator, Action<TScreen> preInitializationCallback = null) {
             TScreen screen = CreateScreen();
 
-            InitializeScreen(screen);
-
-            // The callback may require that the screen is already initialized
-            // (e.g. the callback may add the screen to a screen collection which
-            // requires that the data of the screen is already loaded).
-            if (initializationCallback != null) {
-               initializationCallback(screen);
+            if (preInitializationCallback != null) {
+               preInitializationCallback(screen);
             }
+
+            InitializeScreen(aggregator, screen);
 
             return screen;
          }
 
-         protected abstract void InitializeScreen(TScreen screen);
+         protected abstract void InitializeScreen(EventAggregator aggregator, TScreen screen);
 
          protected abstract TScreen CreateScreen();
       }
@@ -84,8 +82,9 @@
             return false;
          }
 
-         protected override void InitializeScreen(TScreen screen) {
-            ScreenInitializer.Initialize(screen);
+         protected override void InitializeScreen(EventAggregator aggregator, TScreen screen) {
+            new ScreenLifecycleOperations(aggregator, screen)
+               .Initialize();
          }
       }
 
@@ -109,8 +108,9 @@
                false;
          }
 
-         protected override void InitializeScreen(TScreen screen) {
-            ScreenInitializer.Initialize(screen, _subject);
+         protected override void InitializeScreen(EventAggregator aggregator, TScreen screen) {
+            new ScreenLifecycleOperations(aggregator, screen)
+               .Initialize(_subject);
          }
       }
 
@@ -133,8 +133,9 @@
             return Object.Equals(concreteScreen, _instance);
          }
 
-         protected override void InitializeScreen(TScreen screen) {
-            ScreenInitializer.Initialize(_instance);
+         protected override void InitializeScreen(EventAggregator aggregator, TScreen screen) {
+            new ScreenLifecycleOperations(aggregator, screen)
+               .Initialize();
          }
 
          protected override TScreen CreateScreen() {

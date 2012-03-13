@@ -1,12 +1,16 @@
 ﻿namespace Inspiring.Mvvm.Screens {
    using System;
+   using Inspiring.Mvvm.Common;
 
    public interface IScreenFactory<out TScreen> where TScreen : IScreenBase {
       /// <remarks>
       ///   If an exception occurs during initialization it should be rethrown by
       ///   the implementation.
       /// </remarks>
-      TScreen Create(Action<TScreen> initializationCallback = null);
+      /// <param name="preInitializationCallback">
+      ///   Indended for things that should happen before the screen is initialized.
+      /// </param>
+      TScreen Create(EventAggregator aggregator, Action<TScreen> preInitializationCallback = null);
 
       /// <summary>
       ///   Returns true, if the <see cref="IScreenFactory{TScreen}"/> would create 

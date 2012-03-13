@@ -74,7 +74,6 @@
     <Compile Include="ApiTests\ViewModels\Selection\VMs\DepartmentVM.cs" />
     <Compile Include="AssertHelper.cs" />
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Common\SaveDiscardVMTest.cs" />
     <Compile Include="EnumLocalizations.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -134,7 +133,9 @@
       <LastGenOutput>KeyGestureLocalizations.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Common\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

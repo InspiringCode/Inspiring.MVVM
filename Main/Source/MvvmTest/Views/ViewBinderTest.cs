@@ -72,7 +72,7 @@
          }
       }
 
-      private class PersonScreen : ScreenBase {
+      private class PersonScreen : DefaultTestScreen {
          public PersonVM VM { get; private set; }
       }
    }

@@ -1,11 +1,14 @@
 ﻿namespace Inspiring.Mvvm.Common {
 
    public interface IEventSubscription {
+      /// <summary>
+      ///   The event for which this subscription listens. Null if the subscription
+      ///   does not listen for a specific event.
+      /// </summary>
       IEvent Event { get; }
-   }
 
-   public interface IEventSubscription<TPayload> : IEventSubscription {
-      bool Matches(EventPublication<TPayload> publication);
-      void Invoke(TPayload payload);
+      ExecutionOrder ExecutionOrder { get; }
+      bool Matches(EventPublication publication);
+      void Invoke(EventPublication publication);
    }
 }

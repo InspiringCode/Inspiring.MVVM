@@ -68,40 +68,5 @@
             )
          );
       }
-
-      //   private static Type FindViewInterface(object view, object model) {
-      //      Type viewType = view.GetType();
-      //      Type viewInterface = viewType
-      //         .GetInterfaces()
-      //         .FirstOrDefault(i =>
-      //            i.IsGenericType &&
-      //            i.GetGenericTypeDefinition() == typeof(IView<>) && (
-      //               model == null ||
-      //               i.GetGenericArguments().Single().IsAssignableFrom(model.GetType())
-      //            )
-      //         );
-
-      //      return viewInterface;
-      //   }
-
-      //   private static object CreateView(Type modelType, out Type actualViewInterface) {
-      //      object view = null;
-
-      //      Type t = modelType;
-      //      do {
-      //         actualViewInterface = typeof(IView<>).MakeGenericType(t);
-      //         view = ServiceLocator.Current.TryGetInstance(actualViewInterface);
-      //         t = t.BaseType;
-      //      } while (t != null && view == null);
-
-      //      if (view == null) {
-      //         throw new ArgumentException(
-      //            ExceptionTexts.CouldNotResolveView.FormatWith(modelType.Name)
-      //         );
-      //      }
-
-      //      return view;
-      //   }
-
    }
 }

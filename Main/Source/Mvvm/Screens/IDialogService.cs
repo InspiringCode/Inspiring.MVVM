@@ -72,17 +72,17 @@
          Nullable<Environment.SpecialFolder> specialFolder = null
       );
 
-      void Show<TScreen>(
-         IScreenFactory<TScreen> screen,
+      void Show(
+         IScreenFactory<IScreenBase> screen,
          IScreenBase parent = null,
          string title = null
-      ) where TScreen : IScreenBase;
+      );
 
-      DialogScreenResult ShowDialog<TScreen>(
-         IScreenFactory<TScreen> screen,
+      DialogScreenResult ShowDialog(
+         IScreenFactory<IScreenBase> screen,
          IScreenBase parent = null,
          string title = null
-      ) where TScreen : IScreenBase;
+      );
    }
 
    public class DialogScreenResult {
@@ -104,13 +104,5 @@
       }
 
       public object Data { get; private set; }
-   }
-
-   internal sealed class ExceptionResult {
-      public ExceptionResult(Exception exception) {
-         Exception = exception;
-      }
-
-      public Exception Exception { get; private set; }
    }
 }

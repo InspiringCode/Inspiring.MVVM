@@ -36,9 +36,7 @@
       }
 
       public static bool IsNullableType(Type type) {
-         return
-            type.IsGenericType &&
-            type.GetGenericTypeDefinition() == typeof(Nullable<>);
+         return ClosesGenericType(type, typeof(Nullable<>));
       }
 
       public static Type GetItemType(Type collectionType) {
@@ -57,10 +55,16 @@
          return null;
       }
 
-      private static bool IsEnumerableInterface(Type interfaceType) {
+      public static bool ClosesGenericType(Type t, Type generic) {
+         Contract.Requires(generic.IsGenericTypeDefinition);
+
          return
-            interfaceType.IsGenericType &&
-            interfaceType.GetGenericTypeDefinition() == typeof(IEnumerable<>);
+            t.IsGenericType &&
+            t.GetGenericTypeDefinition() == generic;
+      }
+
+      private static bool IsEnumerableInterface(Type interfaceType) {
+         return ClosesGenericType(interfaceType, typeof(IEnumerable<>));
       }
    }
 }

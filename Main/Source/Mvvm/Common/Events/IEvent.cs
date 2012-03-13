@@ -2,7 +2,7 @@
    public interface IEvent {
    }
 
-   public interface IEvent<TPayload> : IEvent {
+   public interface IEvent<in TPayload> : IEvent {
       void Publish(IEventSubscriptionRepository allSubscriptions, TPayload payload);
    }
 }
