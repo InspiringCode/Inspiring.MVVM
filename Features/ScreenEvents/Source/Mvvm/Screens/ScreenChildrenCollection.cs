@@ -25,8 +25,6 @@
          where TScreen : T, IScreenBase {
          TScreen s = screen.Create(_aggregator);
 
-         s.Parent = _parent;
-
          // The screen is added AFTER it was initialized by the screen
          // factory.
          Attach(s);
@@ -40,6 +38,28 @@
 
       public void Remove(T item) {
          RemoveCore(item);
+      }
+
+      protected override void AddCore(T item) {
+         IScreenBase s = item as IScreenBase;
+
+         if (s != null && s.Parent == null) {
+            s.Parent = _parent;
+         }
+
+         base.AddCore(item);
+      }
+
+      protected override bool RemoveCore(T item) {
+         bool result = base.RemoveCore(item);
+
+         IScreenBase s = item as IScreenBase;
+
+         if (s != null && s.Parent == _parent) {
+            s.Parent = null;
+         }
+
+         return result;
       }
    }
 }

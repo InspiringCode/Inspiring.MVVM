@@ -204,6 +204,18 @@
          Assert.IsFalse(third.WasCloseRequested);
       }
 
+      [TestMethod]
+      public void CloseScreen_SetsParentToNull() {
+         ScreenConductor conductor = CreateScreenConductor();
+         ScreenMock s = new ScreenMock(Aggregator);
+
+         OpenScreen(conductor, s);
+         Assert.AreEqual(conductor, s.Parent);
+
+         CloseScreen(conductor, s, false);
+         Assert.IsNull(s.Parent);
+      }
+
       private ScreenConductor CreateScreenConductor() {
          ScreenConductor conductor = ScreenFactory
             .For(new ScreenConductor(Aggregator))

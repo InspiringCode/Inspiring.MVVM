@@ -148,8 +148,7 @@
                break;
             case ScreenCreationBehavior.SingleInstance:
                alreadyOpenScreen = _screens
-                  .OfType<TScreen>() // TODO: This is incorrect!
-                  .SingleOrDefault();
+                  .SingleOrDefault(x => x.GetType() == factory.ScreenType);
                break;
             case ScreenCreationBehavior.UseScreenLocation:
                alreadyOpenScreen = Screens
@@ -342,7 +341,7 @@
 
       private void HandleClose(ScreenEventArgs args) {
          while (_screens.Any()) {
-            CloseScreen(_screens.Last(), requestClose: true);
+            CloseScreen(_screens.Last(), requestClose: false);
          }
       }
 

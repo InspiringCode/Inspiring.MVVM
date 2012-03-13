@@ -28,6 +28,18 @@
       }
 
       [TestMethod]
+      public void Remove_ClearsParent()
+      {
+         TestScreen s = new TestScreen(Aggregator);
+         
+         Collection.Attach(s);
+         Assert.AreEqual(Parent, s.Parent);
+
+         Collection.Remove(s);
+         Assert.IsNull(s.Parent);
+      }
+
+      [TestMethod]
       public void AddScreen_CallsInitialize() {
          Object subject = new Object();
          TestScreen s = Collection.AddScreen(

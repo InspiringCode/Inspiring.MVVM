@@ -222,7 +222,7 @@
     <Compile Include="TestUtils\ComparisonObjectTests.cs" />
     <Compile Include="TestUtils\GenericComparisonObjectTests.cs" />
     <Compile Include="ValidationTestBase.cs" />
-    <Compile Include="ViewModels\- No Namespace -\ViewModelExtensionTests.cs" />
+    <Compile Include="ViewModels\- No Namespace -\ViewModelTreeHelperTests.cs" />
     <Compile Include="ViewModels\- No Namespace -\ViewModelTests.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMCollectionCallModificationBehaviorTests.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMCollectionTests.cs" />

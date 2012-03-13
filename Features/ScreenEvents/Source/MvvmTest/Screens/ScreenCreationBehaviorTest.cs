@@ -20,6 +20,7 @@
          Locator.Register<DefaultCreationBehaviorScreen>(() => new DefaultCreationBehaviorScreen(Aggregator));
          Locator.Register<LocatableScreen>(() => new LocatableScreen(Aggregator));
          Locator.Register<DerivedLocatableScreen>(() => new DerivedLocatableScreen(Aggregator));
+         Locator.Register<SecondSingleInstanceScreen>(() => new SecondSingleInstanceScreen(Aggregator));
       }
 
       [TestMethod]
@@ -44,6 +45,32 @@
          c.OpenScreen(ScreenFactory.For<DefaultCreationBehaviorScreen>(Locator));
          c.OpenScreen(ScreenFactory.For<DefaultCreationBehaviorScreen>(Locator));
          Assert.AreEqual(2, c.Screens.Count());
+      }
+
+      [TestMethod]
+      public void OpenScreen_WithBaseClassScreenFactory_OpensScreenIfActualTypesDoNotMatch() {
+         ScreenConductor c = CreateConductor();
+         c.OpenScreen(ScreenFactory.For<SingleInstanceScreen>(Locator));
+
+         IScreenFactory<IScreenBase> baseFactory = ScreenFactory
+            .For<SecondSingleInstanceScreen>(Locator);
+
+         c.OpenScreen(baseFactory);
+
+         Assert.AreEqual(2, c.Screens.Count());
+      }
+
+      [TestMethod]
+      public void OpenScreen_WithBaseClassScreenFactory_DoesNotOpenScreenIfActualTypesMatch() {
+         ScreenConductor c = CreateConductor();
+         c.OpenScreen(ScreenFactory.For<SingleInstanceScreen>(Locator));
+
+         IScreenFactory<IScreenBase> baseFactory = ScreenFactory
+            .For<SingleInstanceScreen>(Locator);
+
+         c.OpenScreen(baseFactory);
+
+         Assert.AreEqual(1, c.Screens.Count());
       }
 
       [TestMethod]
@@ -190,6 +217,13 @@
       [ScreenCreationBehavior(ScreenCreationBehavior.SingleInstance)]
       public class SingleInstanceScreen : DefaultTestScreen {
          public SingleInstanceScreen(EventAggregator aggregator)
+            : base(aggregator) {
+         }
+      }
+
+      [ScreenCreationBehavior(ScreenCreationBehavior.SingleInstance)]
+      public class SecondSingleInstanceScreen : DefaultTestScreen {
+         public SecondSingleInstanceScreen(EventAggregator aggregator)
             : base(aggregator) {
          }
       }
