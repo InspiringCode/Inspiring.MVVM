@@ -149,9 +149,17 @@
          IScreenBase screen,
          Action<ScreenLifecycleEvent<TArgs>, TArgs> handlerAction
       ) where TArgs : ScreenEventArgs {
-         _sm.Subscribe(b => {
-            b.On(@event, screen).Execute(args => handlerAction(@event, args));
-         });
+         var subscription = new HierarchicalEventSubscription<IScreenBase, TArgs>(
+            @event,
+            args => handlerAction(@event, args),
+            ExecutionOrder.Default,
+            null,
+            screen
+         );
+
+         _sm.Subscribe(b =>
+            b.AddSubscription(subscription)
+         );
       }
 
       private class TestScreen : DefaultTestScreen { }

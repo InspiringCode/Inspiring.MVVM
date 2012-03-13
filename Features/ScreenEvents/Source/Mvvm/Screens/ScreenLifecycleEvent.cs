@@ -4,7 +4,7 @@
    using Inspiring.Mvvm.Common;
 
    public sealed class ScreenLifecycleEvent<TArgs> :
-      HierarchicalEvent<IScreenBase, TArgs>
+      HierarchicalEventBase<IScreenBase, TArgs>
       where TArgs : ScreenEventArgs {
 
       private readonly string _name;

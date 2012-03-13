@@ -20,13 +20,6 @@
       private static readonly Action<EventPublication> DoNothing = (pub) => { };
       private static readonly ScreenLifecycleEvent<ScreenEventArgs> AnyEvent = null;
 
-      private static readonly MethodInfo RegisterHandlerMethod = typeof(ScreenLifecycle)
-         .GetMethod("RegisterHandler");
-
-      private static readonly MethodInfo GetGenericInitializeEventMethod = typeof(ScreenEvents)
-         .GetMethods()
-         .Single(m => m.Name == "Initialize" && m.IsGenericMethod);
-
       private readonly IScreenBase _parent;
       private readonly EventSubscriptionManager _subscriptionManager;
       private readonly LifecycleStateMachine _sm;
