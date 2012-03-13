@@ -50,7 +50,7 @@
       }
 
 
-      public class ParentScreen : ScreenBase {
+      public class ParentScreen : DefaultTestScreen {
          //private IScreenFactory<ILifecycleHandler> _mockFactory;
 
          //public ParentScreen(IScreenFactory<ILifecycleHandler> mockFactory) {

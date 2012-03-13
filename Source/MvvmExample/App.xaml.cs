@@ -2,7 +2,6 @@
    using System;
    using System.Windows;
    using Inspiring.Mvvm;
-   using Inspiring.Mvvm.Screens;
    using Inspiring.Mvvm.Views;
    using Inspiring.MvvmExample.Screens;
    using Inspiring.MvvmExample.Views;
@@ -32,7 +31,8 @@
       }
 
       protected override Window CreateAndShowShellWindow(IWindowService windowService) {
-         Window window = windowService.CreateWindow(ScreenFactory.For<ShellScreen>());
+         // TODO: ScreenFactory.For<ShellScreen>()
+         Window window = windowService.CreateWindow(null, null, false);
          window.Show();
          return window;
       }

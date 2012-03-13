@@ -1,165 +1,87 @@
 ﻿namespace Inspiring.Mvvm.Views {
    using System;
    using System.Diagnostics.Contracts;
+   using System.Linq;
    using System.Windows;
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.Screens;
    using Microsoft.Win32;
 
-   // TODO: Refactor this stuff (see 'WindowService')
    public class DialogService : IDialogService {
-      public static readonly Event<EventArgs> DialogOpeningEvent = new Event<EventArgs>();
-      public static readonly Event<EventArgs> DialogClosedEvent = new Event<EventArgs>();
-
       private readonly EventAggregator _aggregator;
-      private readonly ScreenService _screenService = new ScreenService();
+      private readonly IWindowService _windowService;
 
-      public DialogService(IWindowService windowService, EventAggregator aggregator) {
-         Contract.Requires<ArgumentNullException>(windowService != null);
+      public DialogService(EventAggregator aggregator, IWindowService windowService) {
          Contract.Requires<ArgumentNullException>(aggregator != null);
+         Contract.Requires<ArgumentNullException>(windowService != null);
 
-         WindowService = windowService;
          _aggregator = aggregator;
+         _windowService = windowService;
       }
 
-      protected IWindowService WindowService { get; private set; }
-
-      public void Show<TScreen>(
-         IScreenFactory<TScreen> screen,
+      /// <remarks>
+      ///   Note to inheritors: This method does not call <see 
+      ///   cref="Show(Window,IScreenFactory{IScreenBase},bool)"/>.
+      /// </remarks>
+      public virtual void Show(
+         IScreenFactory<IScreenBase> screen,
          IScreenBase parent = null,
          string title = null
-      ) where TScreen : IScreenBase {
-         OnDialogOpening();
-         ShowCore<TScreen>(screen, parent, title);
-         OnDialogClosed();
-      }
-
-      public DialogScreenResult ShowDialog<TScreen>(
-         IScreenFactory<TScreen> screen,
-         IScreenBase parent = null,
-         string title = null
-      ) where TScreen : IScreenBase {
-         OnDialogOpening();
-         var result = ShowDialogCore(screen, parent, title);
-         OnDialogClosed();
-
-         return result;
-      }
-
-      public bool ShowOpenFileDialog(
-         IScreenBase parent,
-         out string fileName,
-         string filter = null,
-         string initialDirectory = null
       ) {
-         OnDialogOpening();
-         var result = ShowOpenFileDialogCore(parent, out fileName, filter, initialDirectory);
-         OnDialogClosed();
+         Window ownerWin = GetAssociatedWindow(parent);
+         Window window = _windowService.CreateWindow(ownerWin, title, false);
 
-         return result;
-      }
-
-      public bool ShowFolderBrowseDialog(
-         IScreenBase parent,
-         out string selectedPath,
-         string message,
-         Environment.SpecialFolder? specialFolder = null
-      ) {
-         OnDialogOpening();
-         var result = ShowFolderBrowseDialogCore(parent, out selectedPath, message, specialFolder);
-         OnDialogClosed();
-
-         return result;
-      }
-
-      public void Info(string message, string caption) {
-         OnDialogOpening();
-         InfoCore(message, caption);
-         OnDialogClosed();
-      }
-
-      public void Warning(string message, string caption) {
-         OnDialogOpening();
-         WarningCore(message, caption);
-         OnDialogClosed();
-      }
-
-      public void Error(string message, string caption) {
-         OnDialogOpening();
-         ErrorCore(message, caption);
-         OnDialogClosed();
-      }
-
-      public CustomDialogResult YesNo(string message, string caption, CustomDialogResult defaultResult, CustomDialogIcon icon = CustomDialogIcon.Question) {
-         OnDialogOpening();
-         var result = YesNoCore(message, caption, defaultResult, icon);
-         OnDialogClosed();
-
-         return result;
-      }
-
-      public CustomDialogResult YesNoCancel(string message, string caption, CustomDialogResult defaultResult, CustomDialogIcon icon = CustomDialogIcon.Question) {
-         OnDialogOpening();
-         var result = YesNoCancelCore(message, caption, defaultResult, icon);
-         OnDialogClosed();
-
-         return result;
-      }
-
-      public CustomDialogResult OkCancel(string message, string caption, CustomDialogResult defaultResult, CustomDialogIcon icon = CustomDialogIcon.Information) {
-         OnDialogOpening();
-         var result = OkCancelCore(message, caption, defaultResult, icon);
-         OnDialogClosed();
-
-         return result;
-      }
-
-      protected virtual void ShowCore<TScreen>(
-         IScreenFactory<TScreen> screen,
-         IScreenBase parent = null,
-         string title = null
-      ) where TScreen : IScreenBase {
-         Window window = WindowService.CreateDialogWindow(screen);
-         window.Show();
-      }
-
-      protected virtual DialogScreenResult ShowDialogCore<TScreen>(
-         IScreenFactory<TScreen> screen,
-         IScreenBase parent = null,
-         string title = null
-      ) where TScreen : IScreenBase {
-         TScreen s = _screenService.CreateAndActivateScreen(
+         WindowLifecycle.Show(
+            _aggregator,
+            _windowService,
+            window,
             screen,
-            initializationCallback: x => x.Children.Add(new DialogLifecycle())
+            modal: false
          );
-
-         DialogScreenResult result = null;
-
-         try {
-            WindowService.ShowDialogWindow(s, parent, title);
-         } finally {
-            if (DialogLifecycle.HasDialogLifecycle(s)) {
-               var dl = DialogLifecycle.GetDialogLifecycle(s);
-               s.Children.Remove(dl);
-
-               result = dl.ScreenResult ?? new DialogScreenResult(false);
-            }
-         }
-
-         if (result.Data is ExceptionResult) {
-            throw ((ExceptionResult)result.Data).Exception;
-         }
-
-         return result;
       }
 
-      protected virtual bool ShowOpenFileDialogCore(
+      /// <remarks>
+      ///   Note to inheritors: This method does not call <see 
+      ///   cref="Show(Window, IScreenFactory{IScreenBase}, bool)"/>.
+      /// </remarks>
+      public virtual DialogScreenResult ShowDialog(
+         IScreenFactory<IScreenBase> screen,
+         IScreenBase parent = null,
+         string title = null
+      ) {
+         Window ownerWin = GetAssociatedWindow(parent);
+         Window window = _windowService.CreateWindow(ownerWin, title, true);
+
+         return WindowLifecycle.Show(
+            _aggregator,
+            _windowService,
+            window,
+            screen,
+            modal: true
+         );
+      }
+
+      public virtual DialogScreenResult Show(
+         Window window,
+         IScreenFactory<IScreenBase> screen,
+         bool modal
+      ) {
+         return WindowLifecycle.Show(
+            _aggregator,
+            _windowService,
+            window,
+            screen,
+            modal
+         );
+      }
+
+      public virtual bool ShowOpenFileDialog(
          IScreenBase parent,
          out string fileName,
          string filter = null,
          string initialDirectory = null
       ) {
-         Window owner = WindowService.GetAssociatedWindow(parent);
+         Window ownerWin = GetAssociatedWindow(parent);
          OpenFileDialog ofd = new OpenFileDialog();
 
          if (filter != null) {
@@ -170,18 +92,18 @@
             ofd.InitialDirectory = initialDirectory;
          }
 
-         var result = ofd.ShowDialog(owner);
+         var result = ofd.ShowDialog(ownerWin);
          fileName = ofd.FileName;
          return result.Value;
       }
 
-      protected virtual bool ShowFolderBrowseDialogCore(
+      public virtual bool ShowFolderBrowseDialog(
          IScreenBase parent,
          out string selectedPath,
          string message,
          Environment.SpecialFolder? specialFolder = null
       ) {
-         Window owner = WindowService.GetAssociatedWindow(parent);
+         Window ownerWin = GetAssociatedWindow(parent);
 
          FolderBrowserDialog fbd = new FolderBrowserDialog();
          if (specialFolder != null) {
@@ -190,14 +112,31 @@
 
          fbd.Description = message;
 
-         bool result = fbd.ShowDialog(owner);
+         bool result = fbd.ShowDialog(ownerWin);
 
          selectedPath = result ? fbd.SelectedPath : String.Empty;
 
          return result;
       }
 
-      protected virtual void InfoCore(string message, string caption) {
+      public Window GetAssociatedWindow(IScreenBase screen) {
+         if (screen == null) {
+            return null;
+         }
+
+         WindowLifecycle lf = ScreenTreeHelper
+            .GetAncestorsOf(screen, includeSelf: true)
+            .SelectMany(s => s.Children.OfType<WindowLifecycle>())
+            .FirstOrDefault();
+
+         if (lf != null) {
+            return lf.Window;
+         }
+
+         throw new ArgumentException(ExceptionTexts.NoAssociatedWindow);
+      }
+
+      public virtual void Info(string message, string caption) {
          MessageBox.Show(
             message,
             caption,
@@ -206,7 +145,7 @@
          );
       }
 
-      protected virtual void WarningCore(string message, string caption) {
+      public virtual void Warning(string message, string caption) {
          MessageBox.Show(
             message,
             caption,
@@ -215,7 +154,7 @@
          );
       }
 
-      protected virtual void ErrorCore(string message, string caption) {
+      public virtual void Error(string message, string caption) {
          MessageBox.Show(
             message,
             caption,
@@ -224,7 +163,12 @@
          );
       }
 
-      protected virtual CustomDialogResult YesNoCore(string message, string caption, CustomDialogResult defaultResult, CustomDialogIcon icon = CustomDialogIcon.Question) {
+      public virtual CustomDialogResult YesNo(
+         string message,
+         string caption,
+         CustomDialogResult defaultResult,
+         CustomDialogIcon icon = CustomDialogIcon.Question
+      ) {
          return MapResult(
             MessageBox.Show(
                message,
@@ -236,7 +180,12 @@
          );
       }
 
-      protected virtual CustomDialogResult YesNoCancelCore(string message, string caption, CustomDialogResult defaultResult, CustomDialogIcon icon = CustomDialogIcon.Question) {
+      public virtual CustomDialogResult YesNoCancel(
+         string message,
+         string caption,
+         CustomDialogResult defaultResult,
+         CustomDialogIcon icon = CustomDialogIcon.Question
+      ) {
          return MapResult(
             MessageBox.Show(
                message,
@@ -248,7 +197,12 @@
          );
       }
 
-      protected virtual CustomDialogResult OkCancelCore(string message, string caption, CustomDialogResult defaultResult, CustomDialogIcon icon = CustomDialogIcon.Information) {
+      public virtual CustomDialogResult OkCancel(
+         string message,
+         string caption,
+         CustomDialogResult defaultResult,
+         CustomDialogIcon icon = CustomDialogIcon.Information
+      ) {
          return MapResult(
             MessageBox.Show(
                message,
@@ -258,14 +212,6 @@
                MapResult(defaultResult)
             )
          );
-      }
-
-      protected virtual void OnDialogOpening() {
-         _aggregator.Publish(DialogOpeningEvent, EventArgs.Empty);
-      }
-
-      protected virtual void OnDialogClosed() {
-         _aggregator.Publish(DialogClosedEvent, EventArgs.Empty);
       }
 
       protected static MessageBoxImage MapIcon(CustomDialogIcon icon) {

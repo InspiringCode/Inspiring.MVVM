@@ -11,7 +11,7 @@
          Contract.Requires<ArgumentNullException>(builderInterface != null);
 
          _builderInterface = builderInterface;
-         Conditions = new List<IEventCondition<TPayload>>();
+         Conditions = new List<IEventCondition>();
       }
 
       public IEvent<TPayload> Event { get; set; }
@@ -20,18 +20,21 @@
 
       public Action<TPayload> Handler { get; set; }
 
-      public ICollection<IEventCondition<TPayload>> Conditions { get; private set; }
+      public ICollection<IEventCondition> Conditions { get; private set; }
 
       public void Build() {
-         IEventSubscription s = CreateSubscription();
-         _builderInterface.AddSubscription(s);
-      }
-
-      protected virtual IEventSubscription CreateSubscription() {
-         IEventCondition<TPayload>[] conditions = Conditions.Any() ?
+         IEventCondition[] conditions = Conditions.Any() ?
             Conditions.ToArray() :
             null;
 
+         IEventSubscription s = CreateSubscription(conditions);
+
+         _builderInterface.AddSubscription(s);
+      }
+
+      protected virtual IEventSubscription CreateSubscription(
+         IEventCondition[] conditions
+      ) {
          return new EventSubscription<TPayload>(
             Event,
             Handler,

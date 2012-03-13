@@ -1,15 +1,21 @@
 ﻿namespace Inspiring.Mvvm.Testing {
    using System;
    using System.Collections.Generic;
+   using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.Screens;
 
    public class DialogTestService : IDialogService {
       private Queue<ResponderBase> _responders = new Queue<ResponderBase>();
+      private EventAggregator _aggregator;
+
+      public DialogTestService(EventAggregator aggregator) {
+         _aggregator = aggregator;
+      }
 
       public ShowDialogResponderSetup<TScreen> EnqueueShowDialogResponder<TScreen>(
          Action<TScreen> dialogTestAction
       ) where TScreen : IScreenBase {
-         var resp = new ShowDialogResponderSetup<TScreen>(DialogServiceMethod.OpenDialog, dialogTestAction);
+         var resp = new ShowDialogResponderSetup<TScreen>(DialogServiceMethod.OpenDialog, dialogTestAction, _aggregator);
          _responders.Enqueue(resp);
          return resp;
       }
@@ -65,20 +71,21 @@
       public TestScreenResult ShowDialog<TScreen>(
         IScreenFactory<TScreen> screen
       ) where TScreen : IScreenBase {
-         IScreenBase s = screen.Create();
-         var lifecycle = new DialogLifecycle();
+         IScreenBase s = screen.Create(_aggregator);
+         var lifecycle = new DialogLifecycle(s);
          s.Children.Add(lifecycle);
+         s.Children.Add(new ScreenCloseHandler(_ => { })); // TODO: Remove code duplication between here and responder
          return new TestScreenResult(lifecycle);
       }
 
-      DialogScreenResult IDialogService.ShowDialog<TScreen>(IScreenFactory<TScreen> screen, IScreenBase parent, string title) {
+      DialogScreenResult IDialogService.ShowDialog(IScreenFactory<IScreenBase> screen, IScreenBase parent, string title) {
          var invocation = new DialogServiceInvocation(DialogServiceMethod.OpenDialog);
          invocation.Caption.SetValue(title);
          invocation.Parent.SetValue(parent);
          return DequeueResponder().ProcessScreenDialogInvocation(invocation, screen);
       }
 
-      void IDialogService.Show<TScreen>(IScreenFactory<TScreen> screen, IScreenBase parent, string title) {
+      void IDialogService.Show(IScreenFactory<IScreenBase> screen, IScreenBase parent, string title) {
          // TODO
          throw new NotImplementedException();
       }

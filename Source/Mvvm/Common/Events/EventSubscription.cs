@@ -1,27 +1,30 @@
 ﻿namespace Inspiring.Mvvm.Common {
    using System;
+   using System.Collections.Generic;
    using System.Diagnostics.Contracts;
    using System.Linq;
 
-   public class EventSubscription<TPayload> : IEventSubscription<TPayload> {
+   public class EventSubscription<TPayload> : IEventSubscription {
+      public static readonly IEvent<TPayload> AnyEvent = null;
+
+      private static readonly IEnumerable<IEventCondition> NoConditions = Enumerable.Empty<IEventCondition>();
       private readonly IEvent<TPayload> _event;
       private readonly Action<TPayload> _handler;
       private readonly ExecutionOrder _executionOrder;
-      private readonly IEventCondition<TPayload>[] _conditions;
+      private readonly IEnumerable<IEventCondition> _conditions;
 
       public EventSubscription(
          IEvent<TPayload> @event,
          Action<TPayload> handler,
          ExecutionOrder executionOrder,
-         IEventCondition<TPayload>[] conditions = null
+         IEventCondition[] conditions = null
       ) {
-         Contract.Requires<ArgumentNullException>(@event != null);
          Contract.Requires<ArgumentNullException>(handler != null);
 
          _event = @event;
          _handler = handler;
          _executionOrder = executionOrder;
-         _conditions = conditions;
+         _conditions = conditions ?? NoConditions;
       }
 
       public IEvent Event {
@@ -32,20 +35,14 @@
          get { return _executionOrder; }
       }
 
-      public bool Matches(EventPublication<TPayload> publication) {
+      public bool Matches(EventPublication publication) {
          return
-            publication.Event == _event &&
-            ConditionsMatch(publication.Payload);
+            (Event == AnyEvent || publication.Event == _event) &&
+            _conditions.All(x => x.IsTrue(publication.Payload));
       }
 
-      public void Invoke(TPayload payload) {
-         _handler(payload);
-      }
-
-      private bool ConditionsMatch(TPayload payload) {
-         return
-            _conditions == null ||
-            _conditions.All(x => x.IsTrue(payload));
+      public void Invoke(EventPublication publication) {
+         _handler((TPayload)publication.Payload);
       }
    }
 }

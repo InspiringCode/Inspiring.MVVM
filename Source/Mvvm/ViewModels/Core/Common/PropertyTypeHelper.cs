@@ -1,6 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Linq;
+   using Inspiring.Mvvm.Common;
 
    // TODO: Still needed?
    internal sealed class PropertyTypeHelper {
@@ -28,9 +29,7 @@
       }
 
       private static bool IsVMCollectionInterface(Type type) {
-         return
-            type.IsGenericType &&
-            type.GetGenericTypeDefinition() == typeof(IVMCollection<>);
+         return TypeService.ClosesGenericType(type, typeof(IVMCollection<>));
       }
    }
 }

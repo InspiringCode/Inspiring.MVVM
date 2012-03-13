@@ -94,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArrayUtils.cs" />
+    <Compile Include="Common\AbstractCollection.cs" />
     <Compile Include="Common\Behaviors\BehaviorChainTemplateKeys.cs" />
     <Compile Include="Common\Behaviors\BehaviorFactory.cs" />
     <Compile Include="Common\Behaviors\BehaviorFactoryConfiguration.cs" />
@@ -112,6 +113,9 @@
     <Compile Include="Common\Events\EventSubscription.cs" />
     <Compile Include="Common\Events\EventSubscriptionManager.cs" />
     <Compile Include="Common\Events\ExecutionOrder.cs" />
+    <Compile Include="Common\Events\HierarchicalEvent.cs" />
+    <Compile Include="Common\Events\HierarchicalEventBase.cs" />
+    <Compile Include="Common\Events\HierarchicalEventSubscription.cs" />
     <Compile Include="Common\Events\IEvent.cs" />
     <Compile Include="Common\Events\IEventCondition.cs" />
     <Compile Include="Common\Events\SubscriptionBuilderInterface.cs" />
@@ -147,24 +151,24 @@
     <Compile Include="Screens\IDialogService.cs" />
     <Compile Include="Screens\ILocatableScreen.cs" />
     <Compile Include="Screens\INeedsInitialization.cs" />
-    <Compile Include="Screens\InvocationOrder.cs" />
+    <Compile Include="Screens\InitializeEventArgs.cs" />
     <Compile Include="Screens\IScreen.cs" />
     <Compile Include="Screens\IScreenFactory.cs" />
-    <Compile Include="Screens\IScreenLifecycle.cs" />
     <Compile Include="Screens\IViewModelScreen.cs" />
+    <Compile Include="Screens\ScreenCloseHandler.cs" />
     <Compile Include="Screens\ScreenCreationBehavior.cs" />
     <Compile Include="Screens\ScreenCreationBehaviorAttribute.cs" />
-    <Compile Include="Screens\ScreenExtensions.cs" />
-    <Compile Include="Screens\ScreenHierarchyLifecycle.cs" />
-    <Compile Include="Screens\ScreenInitializer.cs" />
+    <Compile Include="Screens\ScreenLifecycleEvent.cs" />
+    <Compile Include="Screens\ScreenEvents.cs" />
+    <Compile Include="Screens\ScreenHelper.cs" />
     <Compile Include="Screens\ScreenLifecycle.cs" />
-    <Compile Include="Screens\ScreenLifecycleCollection.cs" />
-    <Compile Include="Screens\LifecycleTreeWalker.cs" />
-    <Compile Include="Screens\ParentScreenLifecycle.cs" />
-    <Compile Include="Screens\Screen.cs" />
+    <Compile Include="Screens\ScreenChildrenCollection.cs" />
+    <Compile Include="Screens\ScreenBase.cs" />
     <Compile Include="Screens\ScreenConductor.cs" />
     <Compile Include="Screens\ScreenFactory.cs" />
-    <Compile Include="Screens\ScreenService.cs" />
+    <Compile Include="Screens\ScreenLifecycleException.cs" />
+    <Compile Include="Screens\ScreenLifecycleOperations.cs" />
+    <Compile Include="Screens\ScreenTreeHelper.cs" />
     <Compile Include="ServiceLocator.cs" />
     <Compile Include="Testing\ArgumentValue.cs" />
     <Compile Include="Testing\Responders\FolderDialogResponderSetup.cs" />
@@ -178,7 +182,7 @@
     <Compile Include="ViewModels\- No Namespace -\Validation\ValidationScope.cs" />
     <Compile Include="ViewModels\- No Namespace -\Validation\ValidationResultScope.cs" />
     <Compile Include="ViewModels\- No Namespace -\ViewModel.cs" />
-    <Compile Include="ViewModels\- No Namespace -\ViewModelExtensions.cs" />
+    <Compile Include="ViewModels\- No Namespace -\ViewModelTreeHelper.cs" />
     <Compile Include="ViewModels\- No Namespace -\VMDescriptorBuilder.cs" />
     <Compile Include="ViewModels\- No Namespace -\BehaviorExtensions.cs" />
     <Compile Include="ViewModels\Core\Common\IPropertySelector.cs" />
@@ -442,7 +446,6 @@
     <Compile Include="Views\LegacyBinder\DefaultPropertyBuildStep.cs" />
     <Compile Include="Views\LegacyBinder\VMPropertyBinder.cs" />
     <Compile Include="Views\CommonBehaviors.cs" />
-    <Compile Include="Views\WindowService\DialogCloseHandler.cs" />
     <Compile Include="Views\WindowService\DialogService.cs" />
     <Compile Include="Views\IView.cs" />
     <Compile Include="Views\WindowService\IWindowService.cs" />
@@ -450,7 +453,7 @@
     <Compile Include="Views\View.cs" />
     <Compile Include="Views\ViewBinder.cs" />
     <Compile Include="Views\ViewFactory.cs" />
-    <Compile Include="Views\WindowService\WindowCloseHandler.cs" />
+    <Compile Include="Views\WindowService\WindowLifecycle.cs" />
     <Compile Include="Views\WindowService\WindowService.cs" />
   </ItemGroup>
   <ItemGroup>

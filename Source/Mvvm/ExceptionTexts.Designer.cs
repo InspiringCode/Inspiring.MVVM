@@ -322,6 +322,15 @@ namespace Inspiring.Mvvm {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A lifecycle event handler of a screen (Initialize, Activate, Deactivate, Close, RequestClose) threw an exception..
+        /// </summary>
+        internal static string LifecycleExceptionOccured {
+            get {
+                return ResourceManager.GetString("LifecycleExceptionOccured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The collection contains no &apos;IScreenLifecycle&apos; of type &apos;{0}&apos;. Use &apos;Contains&apos; to check if an &apos;IScreenLifecycle&apos; is contained in a collection..
         /// </summary>
         internal static string LifecycleTypeNotFound {
@@ -471,6 +480,15 @@ namespace Inspiring.Mvvm {
         internal static string ScreenIsNoDialog {
             get {
                 return ResourceManager.GetString("ScreenIsNoDialog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The event &apos;{0}&apos; is not allowed for the current state &apos;{1}&apos; (no matching transition is defined)..
+        /// </summary>
+        internal static string ScreenLifecycleNoTransition {
+            get {
+                return ResourceManager.GetString("ScreenLifecycleNoTransition", resourceCulture);
             }
         }
         

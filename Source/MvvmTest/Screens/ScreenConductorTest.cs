@@ -7,11 +7,11 @@
 
    [TestClass]
    public class ScreenConductorTest : ScreenLifecycleTestBase {
-      private EventAggregator EventAggregator { get; set; }
+      private EventAggregator Aggregator { get; set; }
 
       [TestInitialize]
       public void Setup() {
-         EventAggregator = new EventAggregator();
+         Aggregator = new EventAggregator();
       }
 
       [TestMethod]
@@ -46,14 +46,13 @@
       }
 
       [TestMethod]
-      public void OpenScreen_WhenInitializeThrowsException_CallsClose() {
+      public void CloseScreen_WhenScreenIsNotContained_ThrowsArgumentException() {
          ScreenConductor condcutor = CreateScreenConductor();
-         ScreenMock alreadyOpen = OpenNewScreen(condcutor);
+         ScreenMock uncontainedScreen = new ScreenMock(Aggregator);
 
-         ScreenMock newScreen = new ScreenMock { ThrowOnInitialize = true };
-         OpenScreen(condcutor, newScreen);
-
-         Assert.IsTrue(newScreen.WasClosed);
+         AssertHelper.Throws<ArgumentException>(() =>
+            condcutor.CloseScreen(uncontainedScreen, requestClose: true)
+         );
       }
 
       [TestMethod]
@@ -63,85 +62,107 @@
 
          PropertyChangedCounter pc = CreateActiveScreenChangedListener(condcutor);
 
-         ScreenMock newScreen = new ScreenMock { ThrowOnInitialize = true };
+         ScreenMock newScreen = new ScreenMock(Aggregator) { ThrowOnInitialize = true };
          OpenScreen(condcutor, newScreen);
 
-         Assert.IsFalse(condcutor.Screens.Contains(newScreen));
          Assert.IsFalse(newScreen.WasActivated);
+         Assert.IsFalse(condcutor.Screens.Contains(newScreen));
          Assert.AreEqual(alreadyOpen, condcutor.ActiveScreen);
          pc.AssertNoRaise();
       }
 
       [TestMethod]
-      public void OpenScreen_WhenActivateThrowException_AddsScreenAndSetsActiveScreen() {
-         ScreenConductor condcutor = CreateScreenConductor();
-         ScreenMock alreadyOpen = OpenNewScreen(condcutor);
+      public void OpenScreen_WhenActivateThrowsException_DoesNotAddScreenAndSetsActivateScreenToNull() {
+         ScreenConductor conductor = CreateScreenConductor();
+         ScreenMock alreadyOpen = OpenNewScreen(conductor);
 
-         PropertyChangedCounter pc = CreateActiveScreenChangedListener(condcutor);
+         PropertyChangedCounter pc = CreateActiveScreenChangedListener(conductor);
 
-         ScreenMock newScreen = new ScreenMock { ThrowOnActivate = true };
-         OpenScreen(condcutor, newScreen);
+         ScreenMock newScreen = new ScreenMock(Aggregator) { ThrowOnActivate = true };
+         OpenScreen(conductor, newScreen);
 
-         Assert.IsTrue(condcutor.Screens.Contains(newScreen));
          Assert.IsTrue(newScreen.WasInitialized);
          Assert.IsTrue(newScreen.WasActivated);
-         Assert.AreEqual(newScreen, condcutor.ActiveScreen);
+         Assert.IsFalse(conductor.Screens.Contains(newScreen));
+         Assert.IsNull(conductor.ActiveScreen);
          pc.AssertOneRaise();
       }
 
       [TestMethod]
-      public void ImmediateCloseScreen_WhenInitializeThrewException_ThrowsArgumentException() {
-         ScreenConductor condcutor = CreateScreenConductor();
-         ScreenMock newScreen = new ScreenMock { ThrowOnInitialize = true };
+      public void OpenScreen_WhenDeactivateThrowsException_AddsScreenAndUpdatesActiveScreen() {
+         ScreenConductor conductor = CreateScreenConductor();
+         ScreenMock alreadyOpen = OpenNewScreen(conductor);
 
-         OpenScreen(condcutor, newScreen);
+         ScreenMock oldScreen = new ScreenMock(Aggregator) { ThrowOnDeactivate = true };
+         OpenScreen(conductor, oldScreen);
 
-         AssertHelper.Throws<ArgumentException>(() =>
-            condcutor.ImmediateCloseScreen(newScreen)
-         );
+         PropertyChangedCounter pc = CreateActiveScreenChangedListener(conductor);
+
+         ScreenMock newScreen = new ScreenMock(Aggregator);
+         OpenScreen(conductor, newScreen);
+
+         Assert.IsTrue(newScreen.WasInitialized);
+         Assert.IsTrue(newScreen.WasActivated);
+         Assert.IsTrue(conductor.Screens.Contains(newScreen));
+         Assert.AreEqual(newScreen, conductor.ActiveScreen);
+
+         Assert.IsFalse(conductor.Screens.Contains(oldScreen));
+
+         pc.AssertOneRaise();
       }
 
       [TestMethod]
-      public void ImmediateCloseScreen_WhenActivateThrewException_CallsDeactivateAndClose() {
-         ScreenConductor condcutor = CreateScreenConductor();
-         ScreenMock newScreen = new ScreenMock { ThrowOnActivate = true };
+      public void CloseScreen_WhenActivateOfPreviouslyActiveThrowsException_RemovesPreviouslyActiveAndSetsActiveScreenToNull() {
+         ScreenConductor conductor = CreateScreenConductor();
+         OpenNewScreen(conductor);
 
-         OpenScreen(condcutor, newScreen);
-         condcutor.ImmediateCloseScreen(newScreen);
+         ScreenMock previouslyActive = new ScreenMock(Aggregator);
+         OpenScreen(conductor, previouslyActive);
 
-         Assert.IsTrue(newScreen.WasDeactivated);
-         Assert.IsTrue(newScreen.WasClosed);
+         ScreenMock newScreen = new ScreenMock(Aggregator);
+         OpenScreen(conductor, newScreen);
+
+         PropertyChangedCounter pc = CreateActiveScreenChangedListener(conductor);
+
+         previouslyActive.ThrowOnActivate = true;
+
+         CloseScreen(conductor, newScreen, false);
+
+         Assert.IsFalse(conductor.Screens.Contains(newScreen));
+         Assert.IsFalse(conductor.Screens.Contains(previouslyActive));
+         Assert.IsNull(conductor.ActiveScreen);
+         pc.AssertOneRaise();
       }
 
       [TestMethod]
-      public void ImmediateCloseScreen_WhenActivateThrewException_SetsActiveScreenToLastActive() {
+      public void CloseScreen_WhenRequestCloseThrowsException_RemovesScreen() {
          ScreenConductor condcutor = CreateScreenConductor();
          ScreenMock alreadyOpen = OpenNewScreen(condcutor);
 
-
-         ScreenMock newScreen = new ScreenMock { ThrowOnActivate = true };
+         ScreenMock newScreen = new ScreenMock(Aggregator) { ThrowOnRequestClose = true };
          OpenScreen(condcutor, newScreen);
 
          PropertyChangedCounter pc = CreateActiveScreenChangedListener(condcutor);
-         condcutor.ImmediateCloseScreen(newScreen);
+
+         CloseScreen(condcutor, newScreen, false);
 
          Assert.IsFalse(condcutor.Screens.Contains(newScreen));
          Assert.AreEqual(alreadyOpen, condcutor.ActiveScreen);
          pc.AssertOneRaise();
       }
-
+      
       [TestMethod]
       public void CloseScreen_WhenDeactivateThrowsException_RemovesScreen() {
          ScreenConductor condcutor = CreateScreenConductor();
          ScreenMock alreadyOpen = OpenNewScreen(condcutor);
 
-         ScreenMock newScreen = new ScreenMock { ThrowOnDeactivate = true };
+         ScreenMock newScreen = new ScreenMock(Aggregator) { ThrowOnDeactivate = true };
          OpenScreen(condcutor, newScreen);
 
          PropertyChangedCounter pc = CreateActiveScreenChangedListener(condcutor);
-         CloseScreen(condcutor, newScreen);
 
-         Assert.IsFalse(newScreen.WasClosed);
+         CloseScreen(condcutor, newScreen, false);
+
          Assert.IsFalse(condcutor.Screens.Contains(newScreen));
          Assert.AreEqual(alreadyOpen, condcutor.ActiveScreen);
          pc.AssertOneRaise();
@@ -152,11 +173,11 @@
          ScreenConductor condcutor = CreateScreenConductor();
          ScreenMock alreadyOpen = OpenNewScreen(condcutor);
 
-         ScreenMock newScreen = new ScreenMock { ThrowOnClose = true };
+         ScreenMock newScreen = new ScreenMock(Aggregator) { ThrowOnClose = true };
          OpenScreen(condcutor, newScreen);
 
          PropertyChangedCounter pc = CreateActiveScreenChangedListener(condcutor);
-         CloseScreen(condcutor, newScreen);
+         CloseScreen(condcutor, newScreen, false);
 
          Assert.IsFalse(condcutor.Screens.Contains(newScreen));
          Assert.AreEqual(alreadyOpen, condcutor.ActiveScreen);
@@ -166,30 +187,48 @@
       [TestMethod]
       public void RequestClose_StopsAfterFirstChildReturnsFalse() {
          ScreenConductor conductor = CreateScreenConductor();
-         var first = new ScreenMock { RequestCloseResult = true };
-         var second = new ScreenMock { RequestCloseResult = false };
-         var third = new ScreenMock { RequestCloseResult = true };
+         var first = new ScreenMock(Aggregator) { RequestCloseResult = true };
+         var second = new ScreenMock(Aggregator) { RequestCloseResult = false };
+         var third = new ScreenMock(Aggregator) { RequestCloseResult = true };
 
          OpenScreen(conductor, first);
          OpenScreen(conductor, second);
          OpenScreen(conductor, third);
 
-         IScreenLifecycle c = conductor;
-         Assert.IsFalse(c.RequestClose(), "RequestClose should return false.");
+         bool result = new ScreenLifecycleOperations(Aggregator, conductor)
+            .RequestClose();
+
+         Assert.IsFalse(result, "RequestClose should return false.");
          Assert.IsTrue(first.WasCloseRequested);
          Assert.IsTrue(second.WasCloseRequested);
          Assert.IsFalse(third.WasCloseRequested);
       }
 
+      [TestMethod]
+      public void CloseScreen_SetsParentToNull() {
+         ScreenConductor conductor = CreateScreenConductor();
+         ScreenMock s = new ScreenMock(Aggregator);
+
+         OpenScreen(conductor, s);
+         Assert.AreEqual(conductor, s.Parent);
+
+         CloseScreen(conductor, s, false);
+         Assert.IsNull(s.Parent);
+      }
+
       private ScreenConductor CreateScreenConductor() {
-         ScreenConductor conductor = new ScreenConductor(EventAggregator);
-         IScreenBase s = conductor;
-         s.Activate();
+         ScreenConductor conductor = ScreenFactory
+            .For(new ScreenConductor(Aggregator))
+            .Create(Aggregator);
+
+         new ScreenLifecycleOperations(Aggregator, conductor)
+            .Activate();
+
          return conductor;
       }
 
       private ScreenMock OpenNewScreen(ScreenConductor conductor) {
-         ScreenMock screen = new ScreenMock();
+         ScreenMock screen = new ScreenMock(Aggregator);
          OpenScreen(conductor, screen);
          return screen;
       }
@@ -197,14 +236,14 @@
       private void OpenScreen(ScreenConductor conductor, IScreenBase screen) {
          try {
             conductor.OpenScreen(ScreenFactory.For(screen));
-         } catch (ScreenMockException) {
+         } catch (ScreenLifecycleException) {
          }
       }
 
-      private void CloseScreen(ScreenConductor conductor, IScreenBase screen) {
+      private void CloseScreen(ScreenConductor conductor, IScreenBase screen, bool skipRequestClose) {
          try {
-            conductor.CloseScreen(screen);
-         } catch (ScreenMockException) {
+            conductor.CloseScreen(screen, skipRequestClose);
+         } catch (ScreenLifecycleException) {
          }
       }
 
@@ -215,7 +254,7 @@
       private ScreenOpenedEventArgs ExpectScreenOpenedEvent(Action triggerAction) {
          ScreenOpenedEventArgs args = null;
 
-         var sm = new EventSubscriptionManager(EventAggregator, b => {
+         var sm = new EventSubscriptionManager(Aggregator, b => {
             b.On(ScreenConductor.ScreenOpenedEvent).Execute(a => args = a);
          });
 
@@ -226,7 +265,7 @@
       }
 
       [ScreenCreationBehavior(ScreenCreationBehavior.SingleInstance)]
-      private class SingleInstanceScreen : ScreenBase {
+      private class SingleInstanceScreen : DefaultTestScreen {
       }
    }
 }

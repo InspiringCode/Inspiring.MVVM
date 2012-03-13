@@ -3,6 +3,7 @@
    using System.Diagnostics.Contracts;
    using System.Windows.Input;
 
+   // TODO: Remove?
    public static class DelegateCommand {
       public static readonly ICommand AlwaysDisabled = DelegateCommand.For(
          execute: () => { },
@@ -31,6 +32,7 @@
       }
    }
 
+   // TODO: Remove?
    public class DelegateCommand<TParameter> : ICommand {
       private Func<TParameter, bool> _canExecute;
       private Action<TParameter> _execute;

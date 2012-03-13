@@ -48,9 +48,9 @@
          }
       }
 
-      public bool CloseView(object view) {
+      public bool CloseView(object view, bool requestClose = true) {
          IScreenBase screen = GetScreenForView(view);
-         return _screens.CloseScreen(screen);
+         return _screens.CloseScreen(screen, requestClose);
       }
 
       protected virtual void OnActiveViewChanged(object view) {
