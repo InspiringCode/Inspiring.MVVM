@@ -16,21 +16,32 @@
    internal sealed class DelegateValidatorCondition<TOwnerVM, TTargetVM> :
       ICondition<ValidationRequest> {
 
-      private Func<ValidatorConditionArgs<TOwnerVM, TTargetVM>, bool> _predicate;
+      private readonly Func<ValidatorConditionArgs<TOwnerVM, TTargetVM>, bool> _predicate;
+      private readonly int _pathTargetIndex;
 
       public DelegateValidatorCondition(
-         Func<ValidatorConditionArgs<TOwnerVM, TTargetVM>, bool> predicate
+         Func<ValidatorConditionArgs<TOwnerVM, TTargetVM>, bool> predicate,
+         int pathTargetIndex
       ) {
          Contract.Requires(predicate != null);
+
          _predicate = predicate;
+         _pathTargetIndex = pathTargetIndex;
       }
 
       public bool IsTrue(ValidationRequest request) {
-         var args = new ValidatorConditionArgs<TOwnerVM, TTargetVM>(
-            (TOwnerVM)PathHelper.GetRootVM(request.TargetPath),
-            (TTargetVM)request.Target
-         );
+         TOwnerVM owner = (TOwnerVM)request
+            .TargetPath[0]
+            .ViewModel;
 
+         TTargetVM target = (TTargetVM)request
+            .TargetPath[_pathTargetIndex]
+            .ViewModel;
+
+         Contract.Assert(owner != null);
+         Contract.Assert(target != null);
+
+         var args = new ValidatorConditionArgs<TOwnerVM, TTargetVM>(owner, target);
          return _predicate(args);
       }
 

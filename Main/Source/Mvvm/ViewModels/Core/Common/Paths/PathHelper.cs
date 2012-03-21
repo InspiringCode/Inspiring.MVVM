@@ -81,5 +81,17 @@
 
          return path[0].ViewModel;
       }
+
+      //public static IViewModel GetLastVM(this Path path) {
+      //   Contract.Requires<ArgumentException>(!path.IsEmpty);
+
+      //   for (int i = path.Length - 1; i >= 0; i--) {
+      //      if (path[i].Type == PathStepType.ViewModel) {
+      //         return path[i].ViewModel;
+      //      }
+      //   }
+
+      //   throw new ArgumentException();
+      //}
    }
 }

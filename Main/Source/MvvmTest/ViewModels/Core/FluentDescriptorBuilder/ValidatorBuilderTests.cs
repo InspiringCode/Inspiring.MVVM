@@ -274,34 +274,35 @@
          Func<ValidatorConditionArgs<EmployeeVM, IViewModel<ProjectVMDescriptor>>, bool> condition1 = null,
          Func<ValidatorConditionArgs<EmployeeVM, IViewModel<ProjectVMDescriptor>>, bool> condition2 = null
       ) {
-         var expected = new ValidatorExecutorBehavior();
-
-         IValidator expectedValidator = new ConditionalValidator(
-            new ValidationTargetCondition(targetPath),
-            new ConditionalValidator(
-               new ValidationStepCondition(step),
-               validator
-            )
-         );
+         IValidator expectedValidator = validator;
 
          if (condition2 != null) {
             expectedValidator = new ConditionalValidator(
-               new DelegateValidatorCondition<EmployeeVM, IViewModel<ProjectVMDescriptor>>(condition2),
+               new DelegateValidatorCondition<EmployeeVM, IViewModel<ProjectVMDescriptor>>(condition2, 0),
                expectedValidator
             );
          }
 
          if (condition1 != null) {
             expectedValidator = new ConditionalValidator(
-               new DelegateValidatorCondition<EmployeeVM, IViewModel<ProjectVMDescriptor>>(condition1),
+               new DelegateValidatorCondition<EmployeeVM, IViewModel<ProjectVMDescriptor>>(condition1, 0),
                expectedValidator
             );
          }
 
-         expected.AddValidator(expectedValidator);
+         expectedValidator = new ConditionalValidator(
+            new ValidationStepCondition(step),
+            new ConditionalValidator(
+               new ValidationTargetCondition(targetPath),
+               expectedValidator
+            )
+         );
+
+         ValidatorExecutorBehavior expectedBehavior = new ValidatorExecutorBehavior();
+         expectedBehavior.AddValidator(expectedValidator);
 
          Assert.AreEqual(
-            expected.ToString(),
+            expectedBehavior.ToString(),
             descriptor
                .Behaviors
                .GetNextBehavior<ValidatorExecutorBehavior>()
