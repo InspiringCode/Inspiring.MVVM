@@ -18,6 +18,24 @@
 
       internal IValidatorBuilderOperationProvider OperationProvider { get; private set; }
 
+      public ValidatorBuilder<TOwnerVM, TTarget, TDescriptor> When(
+         Func<ValidatorConditionArgs<TOwnerVM, TTarget>, bool> predicate
+      ) {
+         var op = OperationProvider.GetOperation();
+
+         var condition = new DelegateValidatorCondition<TOwnerVM, TTarget>(predicate);
+
+         op.BuildActions.Push(() => {
+            var inner = op.ActionArgs.Pop();
+
+            op.ActionArgs.Push(
+               new ConditionalValidator(condition, inner)
+            );
+         });
+
+         return new ValidatorBuilder<TOwnerVM,TTarget,TDescriptor>(op, _descriptor);
+      }
+
       /// <summary>
       ///   Defines a custom validator that is executed every time the VM or 
       ///   any descendant VM has changed.

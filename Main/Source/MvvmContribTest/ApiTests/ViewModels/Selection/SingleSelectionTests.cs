@@ -694,7 +694,9 @@
                d.Department = builder.Of<DepartmentVM>(descriptorConfigurationAction);
             })
             .WithValidators(b => {
-               b.OnlyExistingItemsAreSelected(x => x.Department);
+               b
+                  .When(x => true)
+                  .OnlyExistingItemsAreSelected(x => x.Department);
             })
             .Build();
 

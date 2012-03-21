@@ -217,6 +217,7 @@
             })
             .WithValidators(b => {
                b.ValidateDescendant(x => x.Status)
+                  .When(x => true)
                   .OnlyExistingItemsAreSelected();
             })
             .Build();

@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
+   using System;
    using System.Diagnostics.Contracts;
 
    internal struct PathHelperResult {
@@ -72,6 +73,13 @@
             path.Length >= 2 &&
             path[0].Type == PathStepType.ViewModel &&
             path[1].Type == PathStepType.ViewModel;
+      }
+
+      public static IViewModel GetRootVM(this Path path) {
+         Contract.Requires<ArgumentException>(!path.IsEmpty);
+         Contract.Requires<ArgumentException>(path[0].Type == PathStepType.ViewModel); // TODO: Shouldn't this be an invariant?
+
+         return path[0].ViewModel;
       }
    }
 }

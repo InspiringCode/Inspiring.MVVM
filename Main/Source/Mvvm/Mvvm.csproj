@@ -215,6 +215,7 @@
     <Compile Include="ViewModels\Core\Properties\ViewModelProperty\Behaviors\ViewModelPropertyChangedNotifierBehavior.cs" />
     <Compile Include="ViewModels\Core\Undo\Actions\UserDefinedCompensationAction.cs" />
     <Compile Include="ViewModels\Core\Validation\Behaviors\ViewModelBehaviors\CachingValidationResultAggregatorBehavior.cs" />
+    <Compile Include="ViewModels\Core\Validation\Validators\DelegateValidatorCondition.cs" />
     <Compile Include="ViewModels\Core\ValueStage.cs" />
     <Compile Include="ViewModels\Core\ViewModel\Behaviors\DeclarativeDependencyBehavior.cs" />
     <Compile Include="ViewModels\Core\FluentDescriptorBuilder\Dependencies\Interfaces\IActionOrAnyDescendantBuilder.cs" />

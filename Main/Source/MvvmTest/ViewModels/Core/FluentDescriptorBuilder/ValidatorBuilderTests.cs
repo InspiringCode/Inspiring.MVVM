@@ -6,6 +6,24 @@
 
    [TestClass]
    public class ValidatorBuilderTests {
+      private static readonly Func<
+            EmployeeVMDescriptor,
+            IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<ProjectVMDescriptor>>>>
+         ProjectsCollectionSelector = x => x.Projects;
+
+      private static readonly Action<
+            PropertyValidationArgs<EmployeeVM, IViewModel<ProjectVMDescriptor>, DateTime>>
+         ProjectPropertyValidatorAction = x => { };
+
+      private static readonly Action<
+            ViewModelValidationArgs<EmployeeVM, IViewModel<ProjectVMDescriptor>>>
+         ProjectViewModelValidatorAction = x => { };
+
+      private static readonly Action<
+            CollectionValidationArgs<EmployeeVM, IViewModel<ProjectVMDescriptor>, DateTime>>
+         ProjectCollectionPropertyValidatorAction = x => { };
+
+
       [TestMethod]
       public void PropertyValidator_AddsValidators() {
          Action<PropertyValidationArgs<EmployeeVM, EmployeeVM, string>> validationAction = (args) => { };
@@ -27,12 +45,10 @@
 
       [TestMethod]
       public void PropertyValidator_ForDescendantViewModel_AddsValidators() {
-         Action<PropertyValidationArgs<EmployeeVM, IViewModel<ProjectVMDescriptor>, DateTime>> validationAction = (args) => { };
-
          var d = BuildDescriptor(b => b
             .ValidateDescendant(x => x.SelectedProject)
             .Check(x => x.EndDate)
-            .Custom(validationAction)
+            .Custom(ProjectPropertyValidatorAction)
          );
 
          AssertStandardValidators(
@@ -42,30 +58,26 @@
                .Empty
                .Append(new Func<EmployeeVMDescriptor, IVMPropertyDescriptor<ProjectVM>>(x => x.SelectedProject))
                .Append((ProjectVMDescriptor x) => x.EndDate),
-            DelegateValidator.For(validationAction)
+            DelegateValidator.For(ProjectPropertyValidatorAction)
          );
       }
 
       [TestMethod]
       public void PropertyValidator_ForDescendantCollection_AddsValidators() {
-         Action<PropertyValidationArgs<EmployeeVM, IViewModel<ProjectVMDescriptor>, DateTime>> validationAction = (args) => { };
-
          var d = BuildDescriptor(b => b
             .ValidateDescendant(x => x.Projects)
             .Check(x => x.EndDate)
-            .Custom(validationAction)
+            .Custom(ProjectPropertyValidatorAction)
          );
-
-         var collectionSelector = new Func<EmployeeVMDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<ProjectVMDescriptor>>>>(x => x.Projects);
 
          AssertStandardValidators(
             d,
             ValidationStep.Value,
             PathDefinition
                .Empty
-               .Append(collectionSelector)
+               .Append(ProjectsCollectionSelector)
                .Append((ProjectVMDescriptor x) => x.EndDate),
-            DelegateValidator.For(validationAction)
+            DelegateValidator.For(ProjectPropertyValidatorAction)
          );
       }
 
@@ -90,23 +102,19 @@
 
       [TestMethod]
       public void CollectionPropertyValidators_AddsValidators() {
-         Action<CollectionValidationArgs<EmployeeVM, IViewModel<ProjectVMDescriptor>, DateTime>> validationAction = (args) => { };
-
          var d = BuildDescriptor(b => b
             .CheckCollection(x => x.Projects, x => x.EndDate)
-            .Custom(validationAction)
+            .Custom(ProjectCollectionPropertyValidatorAction)
          );
-
-         var collectionSelector = new Func<EmployeeVMDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<IViewModelExpression<ProjectVMDescriptor>>>>(x => x.Projects);
 
          AssertStandardValidators(
             d,
             ValidationStep.Value,
             PathDefinition
                .Empty
-               .AppendCollection(collectionSelector)
+               .AppendCollection(ProjectsCollectionSelector)
                .AppendCollectionProperty((ProjectVMDescriptor x) => x.EndDate),
-            DelegateValidator.For(validationAction)
+            DelegateValidator.For(ProjectCollectionPropertyValidatorAction)
          );
       }
 
@@ -128,11 +136,9 @@
 
       [TestMethod]
       public void ViewModelValidator_ForDescendantViewModel_AddsValidators() {
-         Action<ViewModelValidationArgs<EmployeeVM, IViewModel<ProjectVMDescriptor>>> validationAction = (args) => { };
-
          var d = BuildDescriptor(b => b
             .ValidateDescendant(x => x.SelectedProject)
-            .CheckViewModel(validationAction)
+            .CheckViewModel(ProjectViewModelValidatorAction)
          );
 
          AssertStandardValidators(
@@ -141,7 +147,7 @@
             PathDefinition
                .Empty
                .Append(new Func<EmployeeVMDescriptor, IVMPropertyDescriptor<ProjectVM>>(x => x.SelectedProject)),
-            DelegateValidator.For(validationAction)
+            DelegateValidator.For(ProjectViewModelValidatorAction)
          );
       }
 
@@ -194,6 +200,56 @@
          Assert.IsTrue(IsEnabled<ValueValidationSourceBehavior<string>>(d, x => x.Name));
       }
 
+      [TestMethod]
+      public void Condition_ForPropertyValidatorOfDescendantCollection_AddsConditionalValidators() {
+         var d = BuildDescriptor(b => b
+            .ValidateDescendant(x => x.Projects)
+            .When(ValidatorPredicate1)
+            .Check(x => x.EndDate)
+            .Custom(ProjectPropertyValidatorAction)
+         );
+
+         AssertStandardValidators(
+            d,
+            ValidationStep.Value,
+            PathDefinition
+               .Empty
+               .Append(ProjectsCollectionSelector)
+               .Append((ProjectVMDescriptor x) => x.EndDate),
+            DelegateValidator.For(ProjectPropertyValidatorAction),
+            ValidatorPredicate1
+         );
+      }
+
+      [TestMethod]
+      public void Conditions_ForViewModelValidatorOfDescendantViewModel_AddsConditionalValidators() {
+         var d = BuildDescriptor(b => b
+            .ValidateDescendant(x => x.SelectedProject)
+            .When(ValidatorPredicate1)
+            .When(ValidatorPredicate2)
+            .CheckViewModel(ProjectViewModelValidatorAction)
+         );
+
+         AssertStandardValidators(
+            d,
+            ValidationStep.ViewModel,
+            PathDefinition
+               .Empty
+               .Append(new Func<EmployeeVMDescriptor, IVMPropertyDescriptor<ProjectVM>>(x => x.SelectedProject)),
+            DelegateValidator.For(ProjectViewModelValidatorAction),
+            ValidatorPredicate1,
+            ValidatorPredicate2
+         );
+      }
+
+      private static bool ValidatorPredicate1(ValidatorConditionArgs<EmployeeVM, IViewModel<ProjectVMDescriptor>> args) {
+         throw new NotSupportedException();
+      }
+
+      private static bool ValidatorPredicate2(ValidatorConditionArgs<EmployeeVM, IViewModel<ProjectVMDescriptor>> args) {
+         throw new NotSupportedException();
+      }
+
       private bool IsEnabled<TPropertyBehavior>(
          EmployeeVMDescriptor d,
          Func<EmployeeVMDescriptor, IVMPropertyDescriptor> propertySelector
@@ -210,39 +266,39 @@
          return d.Behaviors.TryGetBehavior(out b);
       }
 
-      //private static Func<TDescriptor, IVMPropertyDescriptor<IVMCollection<IViewModelExpression<TItemDescriptor>>>>
-      //   CollectionSelector<TDescriptor, TItemDescriptor>()
-      //   where TDescriptor : VMDescriptorBase
-      //   where TItemDescriptor : VMDescriptorBase {
-
-      //   return new Func<TDescriptor, IVMPropertyDescriptor<IVMCollection<IViewModelExpression<TItemDescriptor>>>>(x => null);
-      //}
-
-      //private static Func<TDescriptor, IVMPropertyDescriptor<IViewModel<TChildDescriptor>>>
-      //   ViewModelSelector<TDescriptor, TChildDescriptor>()
-      //   where TDescriptor : IVMDescriptor
-      //   where TChildDescriptor : IVMDescriptor {
-
-      //   return new Func<TDescriptor, IVMPropertyDescriptor<IViewModel<TChildDescriptor>>>(x => null);
-      //}
-
       private void AssertStandardValidators(
          IVMDescriptor descriptor,
          ValidationStep step,
          PathDefinition targetPath,
-         IValidator validator
+         IValidator validator,
+         Func<ValidatorConditionArgs<EmployeeVM, IViewModel<ProjectVMDescriptor>>, bool> condition1 = null,
+         Func<ValidatorConditionArgs<EmployeeVM, IViewModel<ProjectVMDescriptor>>, bool> condition2 = null
       ) {
          var expected = new ValidatorExecutorBehavior();
 
-         expected.AddValidator(
+         IValidator expectedValidator = new ConditionalValidator(
+            new ValidationTargetCondition(targetPath),
             new ConditionalValidator(
-               new ValidationTargetCondition(targetPath),
-               new ConditionalValidator(
-                  new ValidationStepCondition(step),
-                  validator
-               )
+               new ValidationStepCondition(step),
+               validator
             )
          );
+
+         if (condition2 != null) {
+            expectedValidator = new ConditionalValidator(
+               new DelegateValidatorCondition<EmployeeVM, IViewModel<ProjectVMDescriptor>>(condition2),
+               expectedValidator
+            );
+         }
+
+         if (condition1 != null) {
+            expectedValidator = new ConditionalValidator(
+               new DelegateValidatorCondition<EmployeeVM, IViewModel<ProjectVMDescriptor>>(condition1),
+               expectedValidator
+            );
+         }
+
+         expected.AddValidator(expectedValidator);
 
          Assert.AreEqual(
             expected.ToString(),
