@@ -32,14 +32,10 @@
       ///   the VM is added to/removed from a collection.
       /// </remarks>
       public void Custom(IValidator validator) {
-         var val = new ConditionalValidator(
-            new ValidationStepCondition(ValidationStep.Value),
-            validator
+         _operation.PushValidatorBuildActions(
+            validator,
+            ValidationStep.Value
          );
-
-         _operation.BuildActions.Push(() => {
-            _operation.ActionArgs.Push(val);
-         });
       }
    }
 }

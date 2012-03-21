@@ -67,6 +67,21 @@
          }
       }
 
+      public static TValue EnsureItem<TKey, TValue>(
+         this Dictionary<TKey, TValue> dictionary,
+         TKey key,
+         Func<TValue> valueFactory
+      ) {
+         TValue value;
+
+         if (!dictionary.TryGetValue(key, out value)) {
+            value = valueFactory();
+            dictionary.Add(key, value);
+         }
+
+         return value;
+      }
+
       private static void AddUnique<T>(List<T> list, IEnumerable<T> additional) {
          IEnumerable<T> unique = additional
             .Where(x => !list.Contains(x));

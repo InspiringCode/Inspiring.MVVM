@@ -1,10 +1,19 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using System.Linq;
 
+   internal enum BuildActionOrder {
+      Validator = 100,
+      UserConditions = 200,
+      PredefinedConditions = 300,
+      Other = 400
+   }
+
    internal sealed class ValidatorBuilderOperation : IValidatorBuilderOperationProvider {
+      private readonly Dictionary<BuildActionOrder, Stack<Action>> _buildActions =
+         new Dictionary<BuildActionOrder, Stack<Action>>();
+
       public ValidatorBuilderOperation(
          IVMDescriptor descriptor,
          VMDescriptorConfiguration config
@@ -12,15 +21,51 @@
          Descriptor = descriptor;
          Config = config;
          Path = PathDefinition.Empty;
-         BuildActions = new Stack<Action>();
          ActionArgs = new Stack<IValidator>();
       }
 
       public IVMDescriptor Descriptor { get; private set; }
       public VMDescriptorConfiguration Config { get; private set; }
       public PathDefinition Path { get; set; }
-      public Stack<Action> BuildActions { get; private set; }
       public Stack<IValidator> ActionArgs { get; private set; }
+
+      public void PushGeneralBuildAction(BuildActionOrder order, Action action) {
+         Stack<Action> stack = _buildActions
+            .EnsureItem(order, () => new Stack<Action>());
+
+         stack.Push(action);
+      }
+
+      public void PushValidatorBuildActions(
+         IValidator validator,
+         ValidationStep step
+      ) {
+         PushGeneralBuildAction(
+            BuildActionOrder.Validator, 
+            () => ActionArgs.Push(validator)
+         );
+
+         PushConditionBuildAction(
+            BuildActionOrder.PredefinedConditions,
+            new ValidationStepCondition(step)
+         );
+      }
+
+      public void PushConditionBuildAction(
+         BuildActionOrder order,
+         ICondition<ValidationRequest> condition
+      ) {
+         PushGeneralBuildAction(order, () => {
+            IValidator inner = ActionArgs.Pop();
+
+            IValidator conditional = new ConditionalValidator(
+               condition,
+               inner
+            );
+
+            ActionArgs.Push(conditional);
+         });
+      }
 
       public void EnableViewModelValidationSourceBehavior() {
          EnableValidationExecutorBehavior();
@@ -43,19 +88,37 @@
       }
 
       public void Execute() {
-         if (BuildActions.Any()) {
-            while (BuildActions.Any()) {
-               var action = BuildActions.Pop();
+         if (!_buildActions.Any()) {
+            return;
+         }
+
+         PushGeneralBuildAction(BuildActionOrder.PredefinedConditions, () => {
+            IValidator inner = ActionArgs.Pop();
+
+            IValidator conditional = new ConditionalValidator(
+               new ValidationTargetCondition(Path),
+               inner
+            );
+
+            ActionArgs.Push(conditional);
+         });
+
+         IEnumerable<Stack<Action>> orderedActions = _buildActions
+            .OrderBy(x => x.Key)
+            .Select(x => x.Value);
+
+         foreach (Stack<Action> actions in orderedActions) {
+            while (actions.Any()) {
+               var action = actions.Pop();
                action();
             }
 
-            Contract.Assert(ActionArgs.Count == 1);
-
-            AddValidator(ActionArgs.Single());
          }
+
+         AddValidatorToBehavior(ActionArgs.Single());
       }
 
-      private void AddValidator(IValidator validator) {
+      private void AddValidatorToBehavior(IValidator validator) {
          Config
             .ViewModelConfiguration
             .ConfigureBehavior<ValidatorExecutorBehavior>(

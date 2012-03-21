@@ -28,19 +28,13 @@
 
       [TestMethod]
       public void ViewModelCollectionValidation_WhenItemConditionIsFalse_IsNotExecuted() {
-         bool condition = true;
-
          ProjectVM project1 = new ProjectVM();
          ProjectVM project2 = new ProjectVM();
 
          EmployeeVM vm = CreateVM(b => b
-            .When(args => condition)
             .ValidateDescendant(x => x.Projects)
-            .CheckViewModel(args => {
-               if (args.Target == project2) {
-                  args.AddError("Test error");
-               }
-            })
+            .When(args => args.Target == project2)
+            .CheckViewModel(args => args.AddError("Test error"))
          );
          
          vm.Projects.Add(project1);
@@ -50,11 +44,6 @@
 
          ValidationAssert.IsValid(project1);
          ValidationAssert.IsInvalid(project2);
-         
-         condition = false;
-         vm.Revalidate(ValidationScope.SelfAndAllDescendants);
-
-         ValidationAssert.IsValid(vm);
       }
 
       private EmployeeVM CreateVM(

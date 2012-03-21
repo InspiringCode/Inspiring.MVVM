@@ -23,15 +23,29 @@
       ) {
          var op = OperationProvider.GetOperation();
 
-         var condition = new DelegateValidatorCondition<TOwnerVM, TTarget>(predicate);
+         // Depending on the position where 'When' is called, we have different 
+         // target VMs:
+         //   (a) b.When(x => true)
+         //          .ValidateDescendant(x => x.Customer)
+         //          .Check(x => x.Name)
+         //          .HasValue();
+         //   (b) b.ValidateDescendant(x => x.Customer)
+         //          .When(x => true)
+         //          .Check(x => x.Name)
+         //          .HasValue();
+         // In case (a) x.Target is the ParentVM and in case (b) it is the 
+         // CustomerVM.
+         int pathTargetIndex = op.Path.Length;
 
-         op.BuildActions.Push(() => {
-            var inner = op.ActionArgs.Pop();
+         var condition = new DelegateValidatorCondition<TOwnerVM, TTarget>(
+            predicate,
+            pathTargetIndex 
+         );
 
-            op.ActionArgs.Push(
-               new ConditionalValidator(condition, inner)
-            );
-         });
+         op.PushConditionBuildAction(
+            BuildActionOrder.UserConditions,
+            condition
+         );
 
          return new ValidatorBuilder<TOwnerVM,TTarget,TDescriptor>(op, _descriptor);
       }
@@ -47,17 +61,10 @@
             op.EnableViewModelValidationSourceBehavior();
          }
 
-         var val = new ConditionalValidator(
-            new ValidationTargetCondition(op.Path),
-            new ConditionalValidator(
-               new ValidationStepCondition(ValidationStep.ViewModel),
-               DelegateValidator.For(validatorAction)
-            )
+         op.PushValidatorBuildActions(
+            DelegateValidator.For(validatorAction), 
+            ValidationStep.ViewModel
          );
-
-         op.BuildActions.Push(() => {
-            op.ActionArgs.Push(val);
-         });
       }
 
       /// <summary>
@@ -74,17 +81,6 @@
          }
 
          op.Path = op.Path.Append(propertySelector);
-
-         var targetPathCondition = new ValidationTargetCondition(op.Path);
-
-         op.BuildActions.Push(() => {
-            var inner = op.ActionArgs.Pop();
-
-            op.ActionArgs.Push(
-               new ConditionalValidator(targetPathCondition, inner)
-            );
-         });
-
          return new PropertyValidatorBuilder<TOwnerVM, TTarget, TValue>(op);
       }
 
@@ -97,17 +93,6 @@
          var op = OperationProvider.GetOperation();
 
          op.Path = op.Path.AppendCollection(collectionSelector);
-
-         var targetPathCondition = new ValidationTargetCondition(op.Path);
-
-         op.BuildActions.Push(() => {
-            var inner = op.ActionArgs.Pop();
-
-            op.ActionArgs.Push(
-               new ConditionalValidator(targetPathCondition, inner)
-            );
-         });
-
          return new CollectionValidatorBuilder<TOwnerVM, TItemVM>(op);
       }
 
@@ -131,16 +116,6 @@
             .Path
             .AppendCollection(collectionSelector)
             .AppendCollectionProperty(itemPropertySelector);
-
-         var targetPathCondition = new ValidationTargetCondition(op.Path);
-
-         op.BuildActions.Push(() => {
-            var inner = op.ActionArgs.Pop();
-
-            op.ActionArgs.Push(
-               new ConditionalValidator(targetPathCondition, inner)
-            );
-         });
 
          return new CollectionValidatorBuilder<TOwnerVM, TItemDescriptor, TValue>(op);
       }

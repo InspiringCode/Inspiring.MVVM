@@ -21,14 +21,10 @@
       ///   changed (a property or its validation state).
       /// </remarks>
       public void Custom(Action<CollectionValidationArgs<TOwnerVM, TItemVM>> validationAction) {
-         var val = new ConditionalValidator(
-            new ValidationStepCondition(ValidationStep.ViewModel),
-            DelegateValidator.For(validationAction)
+         _operation.PushValidatorBuildActions(
+            DelegateValidator.For(validationAction),
+            ValidationStep.ViewModel
          );
-
-         _operation.BuildActions.Push(() => {
-            _operation.ActionArgs.Push(val);
-         });
       }
    }
 
@@ -53,14 +49,10 @@
       public void Custom<TItemVM>(
          Action<CollectionValidationArgs<TOwnerVM, TItemVM, TValue>> validationAction
       ) where TItemVM : IViewModel {
-         var val = new ConditionalValidator(
-            new ValidationStepCondition(ValidationStep.Value),
-            DelegateValidator.For(validationAction)
+         _operation.PushValidatorBuildActions(
+            DelegateValidator.For(validationAction),
+            ValidationStep.Value
          );
-
-         _operation.BuildActions.Push(() => {
-            _operation.ActionArgs.Push(val);
-         });
       }
    }
 }
