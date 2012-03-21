@@ -100,7 +100,6 @@
       [TestMethod]
       public void SetValueToDifferentInvalidValue_TriggersChangeNotification() {
          bool addError = false;
-         int onChangedEvents = 0;
 
          var vm = EmployeeVM.Create(b => b
             .Check(x => x.Name)

@@ -1,5 +1,5 @@
-﻿using System;
-namespace Inspiring.Mvvm.ViewModels.Core {
+﻿namespace Inspiring.Mvvm.ViewModels.Core {
+   using System;
 
    // TODO: Is it OK for me to be public?
    public sealed class Path {
@@ -13,6 +13,10 @@ namespace Inspiring.Mvvm.ViewModels.Core {
 
       public int Length {
          get { return _steps.Length; }
+      }
+
+      public bool IsEmpty {
+         get { return _steps.Length == 0; }
       }
 
       public PathStep this[int index] {
