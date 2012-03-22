@@ -2,6 +2,7 @@
    using System;
    using System.Windows;
    using System.Windows.Interop;
+   using System.Windows.Threading;
    using Inspiring.Mvvm.Common.Core;
 
    public class InterprocessMessenger : WindowMessageInterprocessMessenger {
@@ -32,11 +33,21 @@
 
       protected override void StopListeningCore() {
          if (IsListening) {
-            _hiddenWindow.Close();
-            _hiddenWindow = null;
+            // It is especially important to dispatch call if Dispose is called
+            // from the finalizer!
+            Dispatcher d = _hiddenWindow.Dispatcher;
+            d.Invoke(
+               new Action(ReleaseWindow),
+               DispatcherPriority.Send
+            );
 
             _isListening = false;
          }
+      }
+
+      private void ReleaseWindow() {
+         _hiddenWindow.Close();
+         _hiddenWindow = null;
       }
 
       protected override bool IsOwnWindow(IntPtr windowHandle) {
