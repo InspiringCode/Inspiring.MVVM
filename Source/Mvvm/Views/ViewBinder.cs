@@ -103,6 +103,7 @@
       IOptionsExpression<T> PropertyChanged();
       IOptionsExpression<T> With(IValueConverter converter, object parameter = null);
       IOptionsExpression<T> FallbackValue(object value);
+      IOptionsExpression<T> NullValue(object value);
       IOptionsExpression<T> StringFormat(string format);
    }
 
@@ -166,7 +167,7 @@
 
          return this;
       }
-      
+
       public IOptionsExpression<T> TwoWay() {
          ConfigureBinding<Binding>(x => x.Mode = BindingMode.TwoWay);
          return this;
@@ -181,7 +182,7 @@
          ConfigureBinding<Binding>(x => x.Mode = BindingMode.OneWayToSource);
          return this;
       }
-      
+
       public IOptionsExpression<T> OneTime() {
          ConfigureBinding<Binding>(x => x.Mode = BindingMode.OneTime);
          return this;
@@ -197,7 +198,7 @@
             x.Converter = converter;
             x.ConverterParameter = parameter;
          });
-         
+
          return this;
       }
 
@@ -208,6 +209,11 @@
 
       public IOptionsExpression<T> FallbackValue(object value) {
          ConfigureBinding<BindingBase>(x => x.FallbackValue = value);
+         return this;
+      }
+
+      public IOptionsExpression<T> NullValue(object value) {
+         ConfigureBinding<Binding>(x => x.TargetNullValue = value);
          return this;
       }
 
