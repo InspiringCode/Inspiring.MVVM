@@ -1,0 +1,382 @@
+All samples have the same VMDescriptor:
+
+public class PersonVMDescriptor : VMDescriptor {
+	public VMProperty<string> FirstName { get; set; }
+	public VMProperty<string> LastName { get; set; }
+	public VMProperty<string> Name { get; set; }
+	public VMProperty<DateTime> BirthDateName { get; set; }
+	public VMProperty<decimal> Provision { get; set; }
+	public VMProperty<bool> IsSelected { get; set; }
+}
+
+Variante 1a:
+===============================================================================
+The user has to know:
+	- That 'ViewModel.CreateDescriptor<PersonVM>' must be called
+	- That property factories must be created to create VMProperties
+	- The a new PersonVMDescriptor has to be created and its properties initialized using the property factories.
+	- That the 'ConfigureValidations' and 'ConfigureDependencies' methods has to be called
+
+public class PersonVM : ViewModel {
+	public static readonly PersonVMDescriptor Descriptor = CreateDescriptor<PersonVM>(c => {
+		v = c.GetPropertyFactory();
+		p = c.GetPropertyFactory(v => v.Person);
+			
+		PersonVMDescriptor d = new PersonVMDescriptor {
+			FirstName = p.Map(x => x.FirstName),
+			LastName = p.Map(x => x.LastName),
+			BirthDate = p.Mapped(x => x.BirthDate),
+			
+			Name = p.Calculated(x => x.FirstName + " " + x.LastName),
+			Provision = p.Calculated(x => x.GetProvision(null))
+
+			IsSelected = v.InstanceProperty<bool>();
+		};
+
+		c.ConfigureValidations((d, c) => {
+			c.Check(d.FirstName, d.LastName)
+				.HasValue();
+			c.Check(d.Salary)
+				.HasValue().If.Property(d.Position).EqualTo(Position.Manager)
+				.And.Between(100, 10000);
+			c.Check(d.Email1, d.Email2)
+				.HasValue()
+				.And.Email();
+			c.Check(d.PersonNr)
+				.Match("INF\d{4}");
+		});
+
+		c.ConfigureDependencies((d, c) => {
+			c.Properties(d.Name)
+				.DependOn(d.FirstName, d.LastName);
+		});
+
+		return d;
+	});
+
+	public PersonVM(Person person) 
+		: base(Descriptor) {
+		Person = person;
+	}
+
+	private Person Person { get; set; }
+}
+
+Variante 1b:
+===============================================================================
+Uses 'VMDescriptorBuilder.BuildFor<PersonVM>' instead of 'CreateDescriptor<PersonVM>'.
+Advantage: Propably easier to discover using IntelliSense.
+
+public class PersonVM : ViewModel {
+	public static readonly PersonVMDescriptor Descriptor = VMDescriptorFactory.CreateFor<PersonVM>(c => {
+		[...]
+	});
+
+	[...]
+}
+
+Variante 1c:
+===============================================================================
+Differences:
+	- The user has to declare a static constructor 
+	- He has to create the property factories using a constructor
+	- He has to call the ConfigureValidations and ConfigureDepedencies on the PersonVMDescriptor instance.
+	
+public class PersonVM : ViewModel {
+	public static readonly PersonVMDescriptor Descriptor;
+
+	static PersonVM() {
+		var v = new VMPropertyFactory<PersonVM>();
+		var p = new VMPropertyFactory<PersonVM>(x => x.Person);
+
+		PersonVMDescriptor d = new PersonVMDescriptor {
+			FirstName = p.Map(x => x.FirstName),
+			[...]
+		};
+
+		d.ConfigureValidations(c => {
+			[...]
+		});
+
+		d.ConfigureDependencies(c => {
+			[...]
+		});
+
+		Descriptor = d;
+	}
+
+	public PersonVM(Person person) 
+		: base(Descriptor) {
+		Person = person;
+	}
+
+	private Person { get; set; }
+}
+
+
+Variante 2a:
+------------------------------------------------------------------------------
+	- A bit mor fluent thant (1)
+	- IntelliSense for assigning properties is less conventient than with 
+	  property initializer syntax (the prop init syntax hides members that
+	  are already assigned).
+
+public class PersonVM : ViewModel {
+	public static readonly PersonVMDescriptor Descriptor = VMDescriptor
+		.Create<PersonVMDescriptor>()
+		.For<PersonVM>()
+		.CreateProperties((d, c) => {
+			var v = c.GetPropertyFactory();
+			var p = c.GetPropertyFactory(x => x.Person);
+
+			d.FirstName = p.Mapped(x => x.FirstName);
+			d.LastName = p.Mapped(x => x.LastName);
+			d.BirthDate = p.Mapped(x => x.BirthDate);
+
+			d.Name = p.Calculated(x => x.FirstName + " " + x.LastName);
+			d.Provision = p.Calculated(x => x.GetProvision(null));
+			
+			d.IsSelected = v.Instance<bool>();
+		})
+		.ConfigureValidations((d, c) => {
+			[...]
+		})
+		.ConfigureDependencies((d, c) => {
+			[...]
+		})
+		.Build();
+	
+	public PersonVM(Person person) 
+		: base(Descriptor) {
+		Person = person;
+	}
+
+	private Person { get; set; }
+}
+
+Variante 2b:
+------------------------------------------------------------------------------
+Difference:
+	- The VM property objects are created and assigned "automagically" by the framework
+	- No property factories required, but configure properties has to be called multiple
+	  times (once for each source object).
+
+		[...]
+		.ConfigureProperties(x => x.Person, (d, c) => {
+			c.Map(d => d.FirstName, p => p.FirstName);
+			c.Map(d => d.LastName, p => p.LastName);
+			c.Map(d => d.BirthDate, p => p.BirthDate);
+			c.Calculate(d => d.Name).Get(p => p.FirstName + " " + p.LastName);
+			c.Calculate(d => d.Provision).Get(p => p.GetProvision(null));
+		})
+		.ConfigureProperties((d, c) => {
+			c.InstanceProperty(d => d.IsSelected);
+		})
+		[...]
+
+*** Variante 2c:
+------------------------------------------------------------------------------
+
+public class PersonVM : ViewModel<PersonVM> {
+	public static readonly PersonVMDescriptor Descriptor = VMDescriptorBuilder
+		.For<PersonVM>
+		.CreateDescriptor(c => {
+			var v = c.GetPropertyFactory();
+			var p = c.GetPropertyFactory(x => x.Person);
+
+			reutrn new PersonVMDescriptor {
+				FirstName = p.Map(x => x.FirstName),
+				LastName = p.Map(x => x.LastName),
+				BirthDate = p.Mapped(x => x.BirthDate),
+			
+				Name = p.Calculated(x => x.FirstName + " " + x.LastName),
+				Provision = p.Calculated(x => x.GetProvision(null))
+
+				IsSelected = v.InstanceProperty<bool>();
+			};
+		})
+		.ConfigureValidations((d, c) => {
+			[...]
+		})
+		.ConfigureDependencies((d, c) => {
+			[...]
+		})
+		.Build();
+	
+	public PersonVM(Person person) 
+		: base(Descriptor) {
+		Person = person;
+	}
+
+	private Person { get; set; }
+}
+
+*** Variante 3a:
+===============================================================================
+ - Maybe more intuitive for first time users
+	
+public class PersonVM : ViewModel {
+	public static readonly PersonVMDescriptor Descriptor = new PersonVMDescriptor();
+
+	static PersonVM() {
+		Descriptor.ConfigureFor<PersonVM>((d, c) => {
+			var v = new c.GetPropertyFactory<PersonVM>();
+			var p = new c.GetPropertyFactory<PersonVM>(x => x.Person);
+
+			d.FirstName = p.Map(x => x.FirstName);
+			[...]
+
+			c.ConfigureValidations(val => {
+				[...]
+			});
+
+			c.ConfigureDependencies(dep => {
+				[...]
+			});
+		});
+	}
+
+	public PersonVM(Person person) 
+		: base(Descriptor) {
+		Person = person;
+	}
+
+	private Person { get; set; }
+}
+
+
+Variante 3b:
+===============================================================================
+ - User can't forget to assign properties
+ - Maybe too much "magic"
+ - Assignment is maybe a simple concept
+	
+public class PersonVM : ViewModel {
+	public static readonly PersonVMDescriptor Descriptor = new PersonVMDescriptor();
+
+	static PersonVM() {
+		Descriptor.ConfigureFor<PersonVM>((d, c) => {
+			var vc = c.GetPropertyConfigurator();
+			var pc = c.GetPropertyConfigurator(x => x.Person);
+
+			pc.Map(v => v.FirstName, p => p.FirstName);
+			vc.InstaneProperty(v => v.IsSelected);
+			[...]
+
+			c.ConfigureValidations(val => {
+				[...]
+			});
+
+			c.ConfigureDependencies(dep => {
+				[...]
+			});
+		});
+	}
+
+	public PersonVM(Person person) 
+		: base(Descriptor) {
+		Person = person;
+	}
+
+	private Person { get; set; }
+}
+
+* Variante 3c:
+===============================================================================
+ - Less lambas, less parameter variables
+ - A bit less self explaining
+ - No hard separation between mappings, validations and dependencies
+	
+public class PersonVM : ViewModel {
+	public static readonly PersonVMDescriptor Descriptor = new PersonVMDescriptor();
+
+	static PersonVM() {
+		Descriptor.ConfigureFor<PersonVM>((d, c) => {
+			var v = new c.GetPropertyFactory<PersonVM>();
+			var p = new c.GetPropertyFactory<PersonVM>(x => x.Person);
+
+			d.FirstName = p.Map(x => x.FirstName);
+			[...]
+
+			c.Validate(d.FirstName, d.LastName)
+				.HasValue();
+			c.Validate(d.Salary)
+				.HasValue().If.Property(d.Position).EqualTo(Position.Manager)
+				.And.Between(100, 10000);
+			c.Validate(d.Email1, d.Email2)
+				.HasValue()
+				.And.Email();
+			c.Validate(d.PersonNr)
+				.Match("INF\d{4}");
+
+			c.DependantProperties(d.Name)
+				.DependOn(d.FirstName, d.LastName);
+		});
+	}
+
+	public PersonVM(Person person) 
+		: base(Descriptor) {
+		Person = person;
+	}
+
+	private Person { get; set; }
+}
+
+
+
+
+Variante 4:
+===============================================================================
+ - Less complexity
+ - More verbose binding code
+ - Less compile time checking
+
+public class PersonVM : ViewModel {
+	public static readonly VMProperty<string> FirstNameProperty;
+	public static readonly VMProperty<string> LastNameProperty;
+	public static readonly VMProperty<string> NameProperty;
+	public static readonly VMProperty<DateTime> BirthDateNameProperty;
+	public static readonly VMProperty<decimal> ProvisionProperty;
+	public static readonly VMProperty<bool> IsSelectedProperty;
+
+	static PersonVM() {
+			var v = new GetPropertyFactory<PersonVM>();
+			var p = new GetPropertyFactory<PersonVM>(x => x.Person);
+
+			FirstNameProperty = p.Map(x => x.FirstName);
+			[...]
+
+			Validate(FirstNameProperty, LastNameProperty)
+				.HasValue();
+			Validate(SalaryProperty)
+				.HasValue().If.Property(PositionProperty).EqualTo(Position.Manager)
+				.And.Between(100, 10000);
+			Validate(PositionProperty, PositionProperty)
+				.HasValue()
+				.And.Email();
+			Validate(PersonNrProperty)
+				.Match("INF\d{4}");
+
+			DependantProperties(NameProperty)
+				.DependOn(FirstNameProperty, LastNameProperty);
+	}
+
+	public PersonVM(Person person) 
+		: base(Descriptor) {
+		Person = person;
+	}
+
+	private Person { get; set; }
+}
+
+
+
+
+Use Case: Create a new view model
+Actor: Developer
+Steps:
+  1. Create a new class derived from ViewModel
+  2. Define what properties should be available to the UI
+  3. Define how the properties get their value
+  4. Define validations, dependencies
+  5.
