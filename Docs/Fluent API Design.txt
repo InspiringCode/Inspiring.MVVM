@@ -1,0 +1,290 @@
+b.Check(
+	x => x.Name,
+	x => x.FirstName,
+	x => x.LastName
+).IsRequired();
+
+b.Properties(x => x.Name)
+	.DependOn(x => x.FirstName,	x => x.LastName);
+
+b.For(x => x.FirstName, x => x.LastName)
+	.Enable(BehaviorKeys.Foobar);
+
+
+b.Check(x => x.Name)
+	.And(x => x.FirstName)
+	.And(x => x.LastName)
+	.IsRequired();
+
+b.Property(x => x.Name)
+	.DependsOn(x => x.FirstName)
+	.And(x => x.LastName);
+
+b.For(x => x.FirstName)
+	.And(x => x.LastName)
+	.Enable(BehaviorKeys.Foobar);
+
+
+b.Properties(l => l
+	.Property(x => x.FirstName)
+	.And(x => x.LastName)
+).DependOn(l => l
+	.Property(x => x.Name)
+	.And(x => x.Title)
+);
+
+
+b.Check(path => path
+	.Child(x => x.Projects)
+	.Child(x => x.Customer)
+	.Property(x => x.Name)
+).IsRequired();
+
+
+
+b.Check(x => x.FirstName) 
+	.And(x => x.LastName)
+	.And(x => x.Salary)
+	.IsRequired();
+
+b.Property(x => x.FirstName)
+	.IsRequired();
+
+b.Property(x => x.FirstName) 
+	.And(x => x.LastName)
+	.And(x => x.Salary)
+	.IsRequired();
+
+
+
+Validation I:
+=========================================
+
+b.Check(x => x.FirstName).IsRequired();
+
+b.Check(x => x.FirstName) 
+	.And(x => x.LastName)
+	.And(x => x.Salary)
+.IsRequired();
+
+b.Check(path => path
+	.Child(x => x.Projects)
+	.Child(x => x.Customer)
+	.Property(x => x.Name)
+).IsRequired();
+
+Validation II:
+=========================================
+
+b.Check(x => x.FirstName).IsRequired();
+
+b.Check(
+	x => x.FirstName,
+	x => x.LastName, 
+	x => x.Salary
+).IsRequired();
+
+b.CheckDescendant()
+	.Child(x => x.Projects)
+	.Child(x => x.Customer)
+	.Property(x => x.Name)
+.IsRequired();
+
+
+Validation III:
+==========================================
+b
+	.Descendant(x => x.Projects)
+	.Descendant(x => x.Customer)
+	.Check(x => x.FirstName)
+	.IsRequired();
+
+b
+	.Descendant(x => x.Projects)
+	.Descendant(x => x.Customer)
+	.ViewModelValidation(...);
+
+Validation IV:
+==========================================
+
+b.Check(b
+	.Descendant(x => x.Projects)
+	.Descendant(x => x.Customer)
+	.Property(x => x.FirstName)
+).IsRequired();
+
+
+Dependencies I:
+==========================================
+
+b.Property(x => x.Name).DependsOn(x => x.FirstName);
+
+b
+	.Property(x => x.Name)
+	.And(x => x.Salary)
+.DependsOn
+	.Property(x => x.FirstName)
+	.And(x => x.LastName);
+
+b.Descendant(path => path
+	.Child(x => x.Projects)
+	.Child(x => x.Customer)
+	.Property(x => x.Name)
+).DependsOn(path => path
+	.Child(x => x.State)
+	.Property(x => x.SelectedItem)
+);
+
+Dependencies II:
+==========================================
+
+b.Property(x => x.Name).DependsOn(x => x.FirstName);
+
+b.Properties(x => x.Name, x.Salary)
+	.DependOn(x => x.FirstName, x => x.LastName);
+
+b.Descendant()
+	.Child(x => x.Projects)
+	.Child(x => x.Customer)
+	.Property(x => x.Name)
+.DependsOnDescendant()
+	.Child(x => x.State)
+	.Property(x => x.SelectedItem);
+
+Dependencies III:
+===========================================
+b
+	.Property(x => x.Name)
+	.DependsOn
+	.Property(x => x.FirstName);
+
+b
+	.Property(x => x.Name)
+	.And(x => x.Salary)
+.DependsOn
+	.Property(x => x.FirstName)
+	.And(x => x.LastName);
+
+b
+	.Descendant(x => x.Projects)
+	.Descendant(x => x.Customer)
+	.Property(x => x.FirstName)
+.DependsOn
+	.Descendant(x => x.State)
+	.Property(x => SelectedItem);
+
+Dependencies III:
+===========================================
+b.Property(x => x.Name).DependsOn(x => x.FirstName);
+
+b
+	.Property(x => x.Name)
+	.And(x => x.Salary)
+.DependsOn
+	.Property(x => x.FirstName)
+	.And(x => x.LastName);
+
+b.Property(b
+	.Descendant(x => x.Projects)
+	.Descendant(x => x.Customer)
+	.Property(x => x.FirstName)
+).DependsOn(b
+	.Descendant(x => x.State)
+	.Property(x => SelectedItem)
+);
+
+
+Behaviors:
+===========================================
+
+b.For(x => x.Name).Enable(BehaviorKeys.Foobar);
+
+b.For(x => x.Name, x.FirstName, x.LastName).Enable(BehaviorKeys.Foobar);
+
+
+Binder:
+===========================================
+
+b.Bind(x => x.Name).To(...);
+
+b.Bind()
+	.Child(x => x.Projects)
+	.Child(x.Customer)
+	.Property(x => x.Name)
+.To(...);
+
+
+
+b.Check(b
+	.Property(x => x.FirstName)
+	.And(x => x.LastName)
+	.And(x => x.Salary)
+).IsRequired();
+
+
+b.CheckDescendant
+	.Child(x => x.Projects)
+	.Child(x => x.Customer)
+	.Property(x => x.Name)
+.IsRequired();
+
+
+CheckDescendant(VMPropertyPath descendantPath)
+
+b.Check(Func<...>)
+b.Check(VMPropertyPath descendantPath)
+b.Descendant(Func<...>)
+b.Descendant(Func<...>)
+b.CheckViewModel
+b....
+
+b.Descendant(...) : ViewModelPath
+
+ViewModelPath
+	.Property(...): VMPropertyPath
+
+
+b
+	.Descendant(x => x.Projects)
+	.Descendant(x => x.Customer)
+	.Check(x => x.FirstName)
+	.IsRequired();
+
+b
+	.Descendant(x => x.Projects)
+	.Descendant(x => x.Customer)
+	.ViewModelValidation(...);
+
+
+b
+	.Descendant(x => x.Projects)
+	.Descendant(x => x.Customer)
+	.Property(x => x.FirstName)
+.DependsOn
+	.Descendant(x => x.State)
+	.Property(x => SelectedItem);
+
+b
+	.Descendant(x => x.Projects)
+	.Descendant(x => x.Customer)
+	.Property(x => x.FirstName)
+	.DependsOn(b
+		.Descendant(x => x.Projects)
+		.Descendant(x => x.Customer)
+		.Property(x => x.State)
+	);
+
+
+b.Check(b
+	.Descendant(x => x.Projects)
+	.Descendant(x => x.Customer)
+	.Property(x => x.FirstName)
+).IsRequired();
+
+
+b.Check(b
+	.Property(x => x.FirstName)
+	.And(x => x.LastName)
+).IsRequired();
+
+

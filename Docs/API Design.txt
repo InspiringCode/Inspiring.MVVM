@@ -1,0 +1,668 @@
+Variante 1:
+===============================================================================
+
++ Alle Properties werden in einem Codeblock definiert
++ IntelliSense schlägt nur Properties vor, die noch nicht zugewiesen wurden
+- Sehr viel implizites Wissen erforderlich
+
+public class PersonVM : ViewModel {
+	public static readonly PersonVMDescriptor Descriptor;
+
+	static PersonVM() {
+		var v = ViewModel.GetPropertyFactory<PersonVM>();
+		var p = ViewModel.GetPropertyFactory<PersonVM>(x => x.Person);
+
+		PersonVMDescriptor d = new PersonVMDescriptor {
+			FirstName = p.Map(x => x.FirstName),
+			LastName = p.Map(x => x.LastName),
+			BirthDate = p.Mapped(x => x.BirthDate),
+			
+			Name = p.Calculated(x => x.FirstName + " " + x.LastName),
+			Provision = p.Calculated(x => x.GetProvision(null))
+
+			IsSelected = v.InstanceProperty<bool>();
+		};
+
+		d.ConfigureValidations(c => {
+			c.Check(d.FirstName, d.LastName)
+				.HasValue();
+			c.Check(d.Salary)
+				.HasValue().If.Property(d.Position).EqualTo(Position.Manager)
+				.And.Between(100, 10000);
+			c.Check(d.Email1, d.Email2)
+				.HasValue()
+				.And.Email();
+			c.Check(d.PersonNr)
+				.Match("INF\d{4}");
+		});
+
+		d.ConfigureDependencies(c => {
+			c.Properties(d.Name)
+				.DependOn(d.FirstName, d.LastName);
+		});
+
+		Descriptor = d;
+	}
+
+	public PersonVM(Person person) 
+		: base(Descriptor) {
+		Person = person;
+	}
+
+	private Person { get; set; }
+}
+
+// This is the same for all examples...
+public class PersonVMDescriptor : VMDescriptor {
+	public VMProperty<string> FirstName { get; set; }
+	public VMProperty<string> LastName { get; set; }
+	public VMProperty<string> Name { get; set; }
+	public VMProperty<DateTime> BirthDateName { get; set; }
+	public VMProperty<decimal> Provision { get; set; }
+	public VMProperty<bool> IsSelected { get; set; }
+}
+
+Variante 1.5:
+===============================================================================
+
++ Alle Properties werden in einem Codeblock definiert
++ IntelliSense schlägt nur Properties vor, die noch nicht zugewiesen wurden
+- Sehr viel implizites Wissen erforderlich
+
+public class PersonVM : ViewModel {
+	public static readonly PersonVMDescriptor Descriptor;
+
+	static PersonVM() {
+		var v = ViewModel.GetPropertyFactory<PersonVM>();
+		var p = ViewModel.GetPropertyFactory<PersonVM>(x => x.Person);
+
+		PersonVMDescriptor d = new PersonVMDescriptor {
+			FirstName = p.Map(x => x.FirstName),
+			LastName = p.Map(x => x.LastName),
+			BirthDate = p.Mapped(x => x.BirthDate),
+			
+			Name = p.Calculated(x => x.FirstName + " " + x.LastName),
+			Provision = p.Calculated(x => x.GetProvision(null))
+
+			IsSelected = v.InstanceProperty<bool>();
+		};
+
+		ViewModel.ConfigureValidations<PersonVM>(d, c => {
+			c.Check(d.FirstName, d.LastName)
+				.HasValue();
+			c.Check(d.Salary)
+				.HasValue().If.Property(d.Position).EqualTo(Position.Manager)
+				.And.Between(100, 10000);
+			c.Check(d.Email1, d.Email2)
+				.HasValue()
+				.And.Email();
+			c.Check(d.PersonNr)
+				.Match("INF\d{4}");
+		});
+
+		ViewModel.ConfigureDependencies<PersonVM>(d, c=> {
+			c.Properties(d.Name)
+				.DependOn(d.FirstName, d.LastName);
+		});
+
+		Descriptor = d;
+	}
+
+	private Person { get; set; }
+}
+
+Variante 1.6:
+===============================================================================
+
++ Alle Properties werden in einem Codeblock definiert
++ IntelliSense schlägt nur Properties vor, die noch nicht zugewiesen wurden
+- Sehr viel implizites Wissen erforderlich
+
+public class PersonVM : ViewModel {
+	public static readonly PersonVMDescriptor Descriptor;
+
+	static PersonVM() {
+		Configurator f = GetConfigurator<PersonVM>();
+		var v = f.GetPropertyFactory();
+		var p = f.GetPropertyFactory(x => x.Person);
+
+		PersonVMDescriptor d = new PersonVMDescriptor {
+			FirstName = p.Map(x => x.FirstName),
+			LastName = p.Map(x => x.LastName),
+			BirthDate = p.Mapped(x => x.BirthDate),
+			
+			Name = p.Calculated(x => x.FirstName + " " + x.LastName),
+			Provision = p.Calculated(x => x.GetProvision(null))
+
+			IsSelected = v.InstanceProperty<bool>();
+		};
+
+		f.ConfigureValidations(d, c => {
+			c.Check(d.FirstName, d.LastName)
+				.HasValue();
+			c.Check(d.Salary)
+				.HasValue().If.Property(d.Position).EqualTo(Position.Manager)
+				.And.Between(100, 10000);
+			c.Check(d.Email1, d.Email2)
+				.HasValue()
+				.And.Email();
+			c.Check(d.PersonNr)
+				.Match("INF\d{4}");
+		});
+
+		f.ConfigureDependencies(d, c=> {
+			c.Properties(d.Name)
+				.DependOn(d.FirstName, d.LastName);
+		});
+
+		Descriptor = d;
+	}
+
+	private Person { get; set; }
+}
+
+Variante 1.7:
+===============================================================================
+
+public class PersonVM : ViewModel {
+	public static readonly PersonVMDescriptor Descriptor = CreateDescriptor<PersonVM>(c => {
+		v = c.GetPropertyFactory();
+		p = c.GetPropertyFactory(v => v.Person);
+			
+		PersonVMDescriptor d = new PersonVMDescriptor {
+			FirstName = p.Map(x => x.FirstName),
+			LastName = p.Map(x => x.LastName),
+			BirthDate = p.Mapped(x => x.BirthDate),
+			
+			Name = p.Calculated(x => x.FirstName + " " + x.LastName),
+			Provision = p.Calculated(x => x.GetProvision(null))
+
+			IsSelected = v.InstanceProperty<bool>();
+		};
+
+		c.ConfigureValidations((d, c) => {
+			c.Check(d.FirstName, d.LastName)
+				.HasValue();
+			c.Check(d.Salary)
+				.HasValue().If.Property(d.Position).EqualTo(Position.Manager)
+				.And.Between(100, 10000);
+			c.Check(d.Email1, d.Email2)
+				.HasValue()
+				.And.Email();
+			c.Check(d.PersonNr)
+				.Match("INF\d{4}");
+		});
+
+		c.ConfigureDependencies((d, c) => {
+			c.Properties(d.Name)
+				.DependOn(d.FirstName, d.LastName);
+		});
+
+		return d;
+	});
+
+	public PersonVM(Person person) 
+		: base(Descriptor) {
+		Person = person;
+	}
+
+	private Person Person { get; set; }
+}
+
+Variante 1.8:
+===============================================================================
+
+public class PersonVM : ViewModel {
+	public static readonly PersonVMDescriptor Descriptor = VMDescriptorBuilder.BuildFor<PersonVM>(c => {
+		v = c.GetPropertyFactory();
+		p = c.GetPropertyFactory(v => v.Person);
+			
+		PersonVMDescriptor d = new PersonVMDescriptor {
+			FirstName = p.Map(x => x.FirstName),
+			LastName = p.Map(x => x.LastName),
+			BirthDate = p.Mapped(x => x.BirthDate),
+			
+			Name = p.Calculated(x => x.FirstName + " " + x.LastName),
+			Provision = p.Calculated(x => x.GetProvision(null))
+
+			IsSelected = v.InstanceProperty<bool>();
+		};
+
+		c.ConfigureValidations((d, c) => {
+			c.Check(d.FirstName, d.LastName)
+				.HasValue();
+			c.Check(d.Salary)
+				.HasValue().If.Property(d.Position).EqualTo(Position.Manager)
+				.And.Between(100, 10000);
+			c.Check(d.Email1, d.Email2)
+				.HasValue()
+				.And.Email();
+			c.Check(d.PersonNr)
+				.Match("INF\d{4}");
+		});
+
+		c.ConfigureDependencies((d, c) => {
+			c.Properties(d.Name)
+				.DependOn(d.FirstName, d.LastName);
+		});
+
+		return d;
+	});
+
+	public PersonVM(Person person) 
+		: base(Descriptor) {
+		Person = person;
+	}
+
+	private Person Person { get; set; }
+}
+
+
+Variante 2 + 3:
+==============================================================================
++ Eher fluent, der Benutzer wird von IntelliSense geleitet
+- Sehr viele Lamdba-Ausdrücke
+
+Variante 2:
+------------------------------------------------------------------------------
++ Keine magischen Assignments
++ Etwas weniger Code
+
+public class PersonVM : ViewModel {
+	public static readonly PersonVMDescriptor Descriptor = VMDescriptor
+		.Create<PersonVMDescriptor>()
+		.For<PersonVM>()
+		.AssignProperties(x => x.Person, (d, f) => {
+			d.FirstName = f.Mapped(x => x.FirstName);
+			d.LastName = f.Mapped(x => x.LastName);
+			d.BirthDate = f.Mapped(x => x.BirthDate);
+
+			d.Name = f.Calculated(x => x.FirstName + " " + x.LastName);
+			d.Provision = f.Calculated(x => x.GetProvision(null));
+		})
+		.AssignProperties((d, f) => {
+			d.IsSelected = f.Instance<bool>();
+		})
+		.ConfigureValidations((d, c) => {
+			c.Check(d.FirstName, d.LastName)
+				.HasValue();
+			c.Check(d.Salary)
+				.HasValue().If.Property(d.Position).EqualTo(Position.Manager)
+				.And.Between(100, 10000);
+			c.Check(d.Email1, d.Email2)
+				.HasValue()
+				.And.Email();
+			c.Check(d.PersonNr)
+				.Match("INF\d{4}");
+		})
+		.ConfigureDependencies((d, c) => {
+			c.Properties(d.Name)
+				.DependOn(d.FirstName, d.LastName);
+		});
+	
+	public PersonVM(Person person) 
+		: base(Descriptor) {
+		Person = person;
+	}
+
+	private Person { get; set; }
+}
+
+Variante 2.5:
+------------------------------------------------------------------------------
+
+public class PersonVM : ViewModel {
+	public static readonly PersonVMDescriptor Descriptor = VMDescriptor
+		.Create<PersonVMDescriptor>()
+		.For<PersonVM>()
+		.CreateProperties((d, c) => {
+			var v = c.GetPropertyFactory();
+			var p = c.GetPropertyFactory(x => x.Person);
+
+			d.FirstName = p.Mapped(x => x.FirstName);
+			d.LastName = p.Mapped(x => x.LastName);
+			d.BirthDate = p.Mapped(x => x.BirthDate);
+
+			d.Name = p.Calculated(x => x.FirstName + " " + x.LastName);
+			d.Provision = p.Calculated(x => x.GetProvision(null));
+			
+			d.IsSelected = v.Instance<bool>();
+		})
+		.ConfigureValidations((d, c) => {
+			c.Check(d.FirstName, d.LastName)
+				.HasValue();
+			c.Check(d.Salary)
+				.HasValue().If.Property(d.Position).EqualTo(Position.Manager)
+				.And.Between(100, 10000);
+			c.Check(d.Email1, d.Email2)
+				.HasValue()
+				.And.Email();
+			c.Check(d.PersonNr)
+				.Match("INF\d{4}");
+		})
+		.ConfigureDependencies((d, c) => {
+			c.Properties(d.Name)
+				.DependOn(d.FirstName, d.LastName);
+		})
+		.Build();
+	
+	public PersonVM(Person person) 
+		: base(Descriptor) {
+		Person = person;
+	}
+
+	private Person { get; set; }
+}
+
+Variante 3:
+------------------------------------------------------------------------------
++ Alle Blöcke sind ähnlich
++ Der Benutzer kann nicht die Zuweisung vergessen
++ Der Setter der VMProperties kann private sein
+
+public class PersonVM : ViewModel {
+	public static readonly PersonVMDescriptor Descriptor = VMDescriptor
+		.Create<PersonVMDescriptor>()
+		.For<PersonVM>()
+		.ConfigureProperties(x => x.Person, (d, c) => {
+			c.Map(d => d.FirstName, p => p.FirstName);
+			c.Map(d => d.LastName, p => p.LastName);
+			c.Map(d => d.BirthDate, p => p.BirthDate);
+			c.Calculate(d => d.Name).Get(p => p.FirstName + " " + p.LastName);
+			c.Calculate(d => d.Provision).Get(p => p.GetProvision(null));
+		})
+		.ConfigureProperties((d, c) => {
+			c.InstanceProperty(d => d.IsSelected);
+		})
+		.ConfigureValidations((d, c) => {
+			c.Check(d.FirstName, d.LastName)
+				.HasValue();
+			c.Check(d.Salary)
+				.HasValue().If.Property(d.Position).EqualTo(Position.Manager)
+				.And.Between(100, 10000);
+			c.Check(d.Email1, d.Email2)
+				.HasValue()
+				.And.Email();
+			c.Check(d.PersonNr)
+				.Match("INF\d{4}");
+		})
+		.ConfigureDependencies((d, c) => {
+			c.Properties(d.Name)
+				.DependOn(d.FirstName, d.LastName);
+		});
+	
+	public PersonVM(Person person) 
+		: base(Descriptor) {
+		Person = person;
+	}
+
+	private Person { get; set; }
+}
+
+Variante 4
+=========================
+
+public class PersonVM : ViewModel<PersonVMDescriptor> {
+	static PersonVM() {
+		Configure<PersonVM>(c => {
+			v = c.GetPropertyFactory();
+			p = c.GetPropertyFactory(v => v.Person);
+			
+			PersonVMDescriptor d = new PersonVMDescriptor {
+				FirstName = p.Map(x => x.FirstName),
+				LastName = p.Map(x => x.LastName),
+				BirthDate = p.Mapped(x => x.BirthDate),
+			
+				Name = p.Calculated(x => x.FirstName + " " + x.LastName),
+				Provision = p.Calculated(x => x.GetProvision(null))
+
+				IsSelected = v.InstanceProperty<bool>();
+			};
+
+			c.ConfigureValidations(d, c => {
+				c.Check(d.FirstName, d.LastName)
+					.HasValue();
+				c.Check(d.Salary)
+					.HasValue().If.Property(d.Position).EqualTo(Position.Manager)
+					.And.Between(100, 10000);
+				c.Check(d.Email1, d.Email2)
+					.HasValue()
+					.And.Email();
+				c.Check(d.PersonNr)
+					.Match("INF\d{4}");
+			});
+
+			c.ConfigureDependencies(d, c => {
+				c.Properties(d.Name)
+					.DependOn(d.FirstName, d.LastName);
+			});
+
+			return d;
+		});
+	}
+
+	private Person { get; set; }
+}
+
+
+Variante 6:
+------------------------------------------------------------------------------
+
+public class PersonVM : ViewModel {
+	public static readonly PersonVMDescriptor Descriptor = VMDescriptor
+		.Create<PersonVMDescriptor>()
+		.For<PersonVM>()
+		.CreateProperties((d, c) => {
+			var v = c.GetPropertyFactory();
+			var p = c.GetPropertyFactory(x => x.Person);
+
+			d.FirstName = p.Mapped(x => x.FirstName);
+			d.LastName = p.Mapped(x => x.LastName);
+			d.BirthDate = p.Mapped(x => x.BirthDate);
+
+			d.Name = p.Calculated(x => x.FirstName + " " + x.LastName);
+			d.Provision = p.Calculated(x => x.GetProvision(null));
+			
+			d.IsSelected = v.Instance<bool>();
+		})
+		.ConfigureValidations((d, c) => {
+			c.Check(d.FirstName, d.LastName)
+				.HasValue();
+			c.Check(d.Salary)
+				.HasValue().If.Property(d.Position).EqualTo(Position.Manager)
+				.And.Between(100, 10000);
+			c.Check(d.Email1, d.Email2)
+				.HasValue()
+				.And.Email();
+			c.Check(d.PersonNr)
+				.Match("INF\d{4}");
+		})
+		.ConfigureDependencies((d, c) => {
+			c.Properties(d.Name)
+				.DependOn(d.FirstName, d.LastName);
+		})
+		.Build();
+	
+	public PersonVM(Person person) 
+		: base(Descriptor) {
+		Person = person;
+	}
+
+	private Person { get; set; }
+}
+
+
+Variante 7:
+------------------------------------------------------------------------------
+
+public class PersonVM : ViewModel<PersonVMDescriptor> {
+	public static readonly PersonVMDescriptor Descriptor = 
+		CreateDescriptor<PersonVM>(c => {
+			var v = c.GetPropertyFactory();
+			var p = c.GetPropertyFactory(x => x.Person);
+
+			return new PersonVMDescriptor {
+				FirstName = p.Map(x => x.FirstName),
+				LastName = p.Map(x => x.LastName),
+				BirthDate = p.Mapped(x => x.BirthDate),
+			
+				Name = p.Calculated(x => x.FirstName + " " + x.LastName),
+				Provision = p.Calculated(x => x.GetProvision(null))
+
+				IsSelected = v.InstanceProperty<bool>();
+			};
+		})
+		.ConfigureValidations((d, c) => {
+			c.Check(d.FirstName, d.LastName)
+				.HasValue();
+			c.Check(d.Salary)
+				.HasValue().If.Property(d.Position).EqualTo(Position.Manager)
+				.And.Between(100, 10000);
+			c.Check(d.Email1, d.Email2)
+				.HasValue()
+				.And.Email();
+			c.Check(d.PersonNr)
+				.Match("INF\d{4}");
+		})
+		.ConfigureDependencies((d, c) => {
+			c.Properties(d.Name)
+				.DependOn(d.FirstName, d.LastName);
+		})
+		.Build();
+	
+	public PersonVM(Person person) 
+		: base(Descriptor) {
+		Person = person;
+	}
+
+	private Person { get; set; }
+}
+
+
+
+
+Createa a new VMDescriptor for a concrete ViewModel, create and assign its property descriptors and configure their validations and dependencies.
+
+
+
+
+
+
+
+
+
+
+
+public static readonly PersonVMDescriptor Descriptor = VMDescriptor
+	.Create<PersonVMDescriptor>()
+	.For<PersonVM>()
+	.WithProperties(x => x.Person, c => {
+		c.Map(d => d.FirstName, p => p.FirstName);
+		c.Map(d => d.LastName, p => p.LastName);
+		c.Map(d => d.BirthDate, p => p.BirthDate);
+		c.Calculate(d => d.Name).Get(p => p.FirstName + " " + p.LastName);
+		c.Calculate(d => d.Provision).Get(p => p.GetProvision(null));
+	})
+	.WithProperties(c => {
+		c.InstanceProperty(d => d.IsSelected);
+	})
+	.WithValidations((d, c) => {
+		c.Check(d.FirstName, d.LastName)
+			.HasValue();
+		c.Check(d.Salary)
+			.HasValue().If.Property(d.Position).EqualTo(Position.Manager)
+			.And.Between(100, 10000);
+		c.Check(d.Email1, d.Email2)
+			.HasValue()
+			.And.Email();
+		c.Check(d.PersonNr)
+			.Match("INF\d{4}");
+	})
+	.WithDependencies((d, c) => {
+		c.Properties(d.Name)
+			.DependOn(d.FirstName, d.LastName);
+	});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+public static readonly PersonVMDescriptor Descriptor = VMDescriptor
+	.Create<PersonVMDescriptor>()
+	.For<PersonVM>()
+	.DefineProperties(x => x.Person, (d, f) => {
+		d.FirstName = f.Mapped(x => x.FirstName);
+		d.LastName = f.Mapped(x => x.LastName);
+		d.Name = f.Calculated(x => x.FirstName + x.LastName);
+	})
+	.DefineProperties((d, f) => {
+		d.IsSelected = f.Instance<bool>();
+	})
+	.DefineValidations((d, f) => {
+		f.Validate(d.BirthDate).Required();
+
+		f.Min(100).Max(10000).Required().Properties(...);
+
+		f.Validate(d.FirstName, d.LastName).IsRequired();
+
+		d.FirstName.IsRequired();
+		d.LastName.IsRequired();
+		d.Salary.IsRequired().Between(100, 10000);
+		d.Email1.IsRequired().Email();
+		d.Email2.IsRequired().Email();
+		d.PersonNr.Matches("INF\d{4}");
+
+		f.Require(d.FirstName, d.LastName);
+		f.Min(d.Salary, 100);
+		f.Max(d.Salary, 10000);
+
+		f.Check(d.FirstName, d.LastName)
+			.HasValue();
+		f.Check(d.Salary)
+			.HasValue().If.Property(d.Position).EqualTo(Position.Manager)
+			.And.Between(100, 10000);
+		f.Check(d.Email1, d.Email2)
+			.HasValue()
+			.And.Email();
+		f.Check(d.PersonNr)
+			.Match("INF\d{4}");
+
+		f.Properties(d.FirstName, d.LastName).Required();
+		f.Properties(d.Salary).Required().Between(100, 10000);
+		f.Properties(d.Email1, d.Email2).Required().Email();
+		f.Properties(d.PersonNr).Match("INF\d{4}");
+		
+		f.Properties(d.FirstName, d.LastName, d.Salary, d.Email1, d.Email2).Required();
+		f.Properties(d.Salary).Between(100, 10000);
+		f.Properties(d.Email1, d.Email2).Email();
+		f.Properties(d.PersonNr).Match("INF\d{4}");
+
+		f.Required(d.FirstName, d.LastName);
+		f.Required(d.Salary).And.Between(100, 10000);
+		f.Required(d.Email1, d.Email2).And.Email();
+		f.Match(d.PersonNr, "INF\d{4}");
+
+		f.Required(d.FirstName, d.LastName, d.Salary, d.Email1, d.Email2);
+		f.Between(100, 10000, d.Salary);
+		f.Email(d.Email1, d.Email2);
+		f.Matches("INF\d{4}", d.PersonNr);
+
+	})
+	.DefineDependencies((d, f) => {
+		f.Properties(d.Name).DependentOn(d.FirstName, d.LastName);
+	});
