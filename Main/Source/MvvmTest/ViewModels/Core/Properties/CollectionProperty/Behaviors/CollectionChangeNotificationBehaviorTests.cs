@@ -77,8 +77,7 @@
          HandleCollectionPopulated(oldItems);
 
          AssertChangeArgs(
-            ChangeArgs.ItemsRemoved(Collection, oldItems: oldItems),
-            ChangeArgs.CollectionPopulated(Collection)
+            ChangeArgs.CollectionPopulated(Collection, oldItems)
          );
       }
 

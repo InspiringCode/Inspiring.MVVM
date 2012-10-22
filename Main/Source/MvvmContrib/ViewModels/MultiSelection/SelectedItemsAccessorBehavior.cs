@@ -37,7 +37,10 @@
 
       private void Repopulate(IBehaviorContext context, IVMCollection<TItemVM> collection, IChangeReason reason) {
          var sourceItems = this.GetValueNext<IEnumerable<TItemSource>>(context);
-         var items = sourceItems.Select(sourceItem => GetItemVM(context, sourceItem));
+         
+         var items = sourceItems
+            .Select(sourceItem => GetItemVM(context, sourceItem));
+         
          collection.ReplaceItems(items, reason);
       }
 

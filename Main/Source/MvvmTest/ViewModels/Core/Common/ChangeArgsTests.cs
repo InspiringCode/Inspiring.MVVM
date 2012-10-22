@@ -49,11 +49,12 @@
             .Build();
 
          var newItems = collection.ToArray();
-         var args = ChangeArgs.CollectionPopulated(collection);
+         var oldItems = new[] { ViewModelStub.Build(), ViewModelStub.Build() };
+         var args = ChangeArgs.CollectionPopulated(collection, oldItems);
 
          Assert.AreEqual(ChangeType.CollectionPopulated, args.ChangeType);
          CollectionAssert.AreEqual(newItems, args.NewItems.ToArray());
-         Assert.IsFalse(args.OldItems.Any());
+         CollectionAssert.AreEqual(oldItems, args.OldItems.ToArray());
          DomainAssert.AreEqual(Path.Empty.Append(collection), args.ChangedPath);
       }
 

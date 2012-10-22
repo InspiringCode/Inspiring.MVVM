@@ -567,6 +567,28 @@
          Assert.AreEqual(1, providerCalls);
       }
 
+      [TestMethod]
+      public void Refresh_DoesNotClearSourceItems() {
+         var selectedGroups = new[] { Group1, Group2 };
+
+         UserVM vm = CreateUserVM(
+            allGroups: new[] { Group1, Group2, Group3, InactiveGroup },
+            selectedGroups: selectedGroups
+         );
+
+         vm.GetValue(x => x.Groups).Load(x => x.SelectedItems);
+         vm.GetValue(x => x.Groups).Load(x => x.AllItems);
+
+         vm.Refresh();
+
+         var actualSelectedSource = vm
+            .Source
+            .Groups
+            .ToArray();
+
+         CollectionAssert.AreEqual(selectedGroups, actualSelectedSource);
+      }
+
       /// <summary>
       ///   Asserts that the source groups of the 'AllItems' property of the
       ///   selection VM are equal to the given source items.
