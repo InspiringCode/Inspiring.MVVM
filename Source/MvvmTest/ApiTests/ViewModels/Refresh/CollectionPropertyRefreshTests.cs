@@ -89,7 +89,9 @@
 
       [TestMethod]
       public void Refresh_OfWrapperCollectionProperty_CallsNotifyChangeForCollectionPopulation() {
-         VM.WrapperProperty.Add(new ChildVM(new ChildSource()));
+         var oldItem = new ChildVM(new ChildSource());
+         
+         VM.WrapperProperty.Add(oldItem);
          var oldItems = VM.WrapperProperty.ToArray();
          VM.OnChangeInvocations.Clear();
 
@@ -100,10 +102,7 @@
 
          var expectedChangeArgs = new[] {
             ChangeArgs
-               .ItemsRemoved(VM.WrapperProperty, oldItems)
-               .PrependViewModel(VM),
-            ChangeArgs
-               .CollectionPopulated(VM.WrapperProperty)
+               .CollectionPopulated(VM.WrapperProperty, new[] { oldItem })
                .PrependViewModel(VM)
          };
 
@@ -140,10 +139,7 @@
 
          var expectedChangeArgs = new[] {
             ChangeArgs
-               .ItemsRemoved(VM.PopulatedProperty, oldItems)
-               .PrependViewModel(VM),
-            ChangeArgs
-               .CollectionPopulated(VM.PopulatedProperty)
+               .CollectionPopulated(VM.PopulatedProperty, oldItems)
                .PrependViewModel(VM)
          };
 

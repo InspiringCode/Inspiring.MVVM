@@ -88,7 +88,11 @@
          ) { ChangedProperty = property };// TODO: Remove
       }
 
-      internal static ChangeArgs CollectionPopulated(IVMCollection collection, IChangeReason reason = null) {
+      internal static ChangeArgs CollectionPopulated(
+         IVMCollection collection,
+         IEnumerable<IViewModel> oldItems,
+         IChangeReason reason = null
+      ) {
          Contract.Requires(collection != null);
 
          var newItems = (IEnumerable<IViewModel>)collection;
@@ -98,6 +102,7 @@
             ValueStage.ValidatedValue,
             Path.Empty.Append(collection),
             newItems: newItems,
+            oldItems: oldItems,
             reason: reason
          );
       }
