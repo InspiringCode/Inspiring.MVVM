@@ -102,6 +102,18 @@
          ValidationAssert.IsValid(Owner);
       }
 
+      [TestMethod]
+      public void OwnerResult_WhenDelegatedViewModelPropertyIsLoadedAndReturnsNewInvalidViewModel_ContainsError() {
+         // This IsValid call is important, otherwise the bug that is tested here isn't triggered!
+         ValidationAssert.IsValid(Owner);
+
+         var invalidChild = CreateInvalidItem();
+         Owner.DelegatedPropertyResultToReturn = invalidChild;
+         Owner.Load(x => x.DelegatedProperty);
+
+         ValidationAssert.ErrorMessages(Owner.ValidationResult, invalidChild.ErrorToReturn);
+      }
+
       private ItemVM CreateInvalidItem() {
          var item = new ItemVM { ErrorToReturn = "Item error" };
          item.Revalidate();

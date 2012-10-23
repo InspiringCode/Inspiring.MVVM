@@ -91,10 +91,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExcepetionTexts.Designer.cs">
+    <Compile Include="ExceptionTexts.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ExcepetionTexts.resx</DependentUpon>
+      <DependentUpon>ExceptionTexts.resx</DependentUpon>
     </Compile>
     <Compile Include="HashCodeService.cs" />
     <Compile Include="ITestFrameworkAdapter.cs" />
@@ -117,9 +117,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ExcepetionTexts.resx">
+    <EmbeddedResource Include="ExceptionTexts.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ExcepetionTexts.Designer.cs</LastGenOutput>
+      <LastGenOutput>ExceptionTexts.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

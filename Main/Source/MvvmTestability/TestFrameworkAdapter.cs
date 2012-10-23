@@ -8,7 +8,7 @@
       internal static ITestFrameworkAdapter Current {
          get {
             if (_current == null) {
-               throw new InvalidOperationException(ExcepetionTexts.NoTestFrameworkAdapterConfigured);
+               throw new InvalidOperationException(ExceptionTexts.NoTestFrameworkAdapterConfigured);
             }
             return _current;
          }
