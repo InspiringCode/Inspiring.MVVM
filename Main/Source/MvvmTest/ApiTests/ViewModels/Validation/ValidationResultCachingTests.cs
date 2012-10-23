@@ -114,6 +114,18 @@
          ValidationAssert.ErrorMessages(Owner.ValidationResult, invalidChild.ErrorToReturn);
       }
 
+      [TestMethod]
+      public void OwnerResult_WhenPopulatedCollectionPropertyIsLoadedAndReturnsNewInvalidViewModel_ContainsError() {
+         // This IsValid call is important, otherwise the bug that is tested here isn't triggered!
+         ValidationAssert.IsValid(Owner);
+
+         var invalidChild = CreateInvalidItem();
+         Owner.PopulatedCollectionPropertyItemToReturn = invalidChild;
+         Owner.Load(x => x.PopulatedCollection);
+
+         ValidationAssert.ErrorMessages(Owner.ValidationResult, invalidChild.ErrorToReturn);
+      }
+
       private ItemVM CreateInvalidItem() {
          var item = new ItemVM { ErrorToReturn = "Item error" };
          item.Revalidate();
@@ -131,6 +143,11 @@
                d.CollectionTwo = v.Collection.Of<ItemVM>(ItemVM.ClassDescriptor);
                d.ItemProperty = v.VM.Of<ItemVM>();
                d.DelegatedProperty = v.VM.DelegatesTo(x => x.DelegatedPropertyResultToReturn);
+
+               d.PopulatedCollection = v
+                  .Collection
+                  .PopulatedWith(x => new[] { x.PopulatedCollectionPropertyItemToReturn })
+                  .With(ItemVM.ClassDescriptor);
             })
             .Build();
 
@@ -139,6 +156,8 @@
          }
 
          public ItemVM DelegatedPropertyResultToReturn { get; set; }
+
+         public ItemVM PopulatedCollectionPropertyItemToReturn { get; set; }
 
          public IVMCollection<ItemVM> CollectionOne {
             get { return GetValue(Descriptor.CollectionOne); }
@@ -162,6 +181,7 @@
       private class OwnerVMDescriptor : VMDescriptor {
          public IVMPropertyDescriptor<IVMCollection<ItemVM>> CollectionOne { get; set; }
          public IVMPropertyDescriptor<IVMCollection<ItemVM>> CollectionTwo { get; set; }
+         public IVMPropertyDescriptor<IVMCollection<ItemVM>> PopulatedCollection { get; set; }
          public IVMPropertyDescriptor<ItemVM> ItemProperty { get; set; }
          public IVMPropertyDescriptor<ItemVM> DelegatedProperty { get; set; }
       }
