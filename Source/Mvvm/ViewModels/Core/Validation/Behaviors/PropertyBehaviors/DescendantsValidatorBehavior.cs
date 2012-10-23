@@ -48,7 +48,7 @@
          this.RevalidateDescendantsNext(context, scope);
       }
 
-      public void InitializeValue(IBehaviorContext context) {
+      public virtual void InitializeValue(IBehaviorContext context) {
          this.InitializeValueNext(context);
 
          State s = GetState(context);

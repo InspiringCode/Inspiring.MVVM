@@ -44,6 +44,26 @@ namespace Inspiring.Mvvm.ViewModels.Core {
          );
       }
 
+      public override void InitializeValue(IBehaviorContext context) {
+         base.InitializeValue(context);
+
+         TValue childVM = this.GetValueNext<TValue>(context);
+         if (childVM != null) {
+            ValidationResult childValidatonResult = childVM
+               .Kernel
+               .GetValidationResult();
+
+            if (!childValidatonResult.IsValid) {
+               // If 'PopulatedWith' returns an already invalid item, the aggregated
+               // validation state of the collection owner changes, therefore an
+               // 'ValidationResultChanged' event should be raised.
+               if (!childValidatonResult.IsValid) {
+                  context.NotifyChange(ChangeArgs.ValidationResultChanged());
+               }
+            }
+         }
+      }
+
       protected override void RevalidateDescendantsCore(IBehaviorContext context, ValidationScope scope) {
          var childVM = this.GetValueNext<TValue>(context);
          if (childVM != null) {
