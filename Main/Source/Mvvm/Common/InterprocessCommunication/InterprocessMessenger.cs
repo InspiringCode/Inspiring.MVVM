@@ -23,6 +23,9 @@
       protected override void StartListeningCore() {
          _hiddenWindow = new Window();
 
+         // Set the title of the Window so it can be identified as a valid receiver later.
+         _hiddenWindow.Title = SharedIdentifier;
+
          IntPtr hwnd = new WindowInteropHelper(_hiddenWindow).EnsureHandle();
          HwndSource source = HwndSource.FromHwnd(hwnd);
 

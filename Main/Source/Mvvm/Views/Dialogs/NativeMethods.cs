@@ -3,31 +3,30 @@
    using System.Runtime.InteropServices;
    using System.Text;
 
-   static class NativeMethods {
+   internal static class NativeMethods {
+      [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+      internal static extern IntPtr GetActiveWindow();
 
-      [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
-      public static extern IntPtr GetActiveWindow();
-
-      [DllImport("shell32.dll", SetLastError = true)]
-      public static extern int SHGetSpecialFolderLocation(IntPtr hwndOwner, Environment.SpecialFolder nFolder, ref IntPtr ppidl);
-
-      [DllImport("user32.dll")]
-      public static extern IntPtr SendMessage(IntPtr hWnd, FolderBrowserDialogMessage msg, IntPtr wParam, IntPtr lParam);
+      [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
+      internal static extern int SHGetSpecialFolderLocation(IntPtr hwndOwner, Environment.SpecialFolder nFolder, ref IntPtr ppidl);
 
       [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-      public static extern IntPtr SendMessage(IntPtr hWnd, FolderBrowserDialogMessage msg, IntPtr wParam, string lParam);
+      internal static extern IntPtr SendMessage(IntPtr hWnd, FolderBrowserDialogMessage msg, IntPtr wParam, IntPtr lParam);
+
+      [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+      internal static extern IntPtr SendMessage(IntPtr hWnd, FolderBrowserDialogMessage msg, IntPtr wParam, string lParam);
 
       [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
       [return: MarshalAs(UnmanagedType.Bool)]
-      public static extern bool SHGetPathFromIDList(IntPtr pidl, StringBuilder pszPath);
+      internal static extern bool SHGetPathFromIDList(IntPtr pidl, StringBuilder pszPath);
 
       [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
-      public static extern IntPtr SHBrowseForFolder(ref BROWSEINFO lpbi);
+      internal static extern IntPtr SHBrowseForFolder(ref BROWSEINFO lpbi);
 
-      [DllImport("shell32.dll", PreserveSig = false)]
-      public static extern IMalloc SHGetMalloc();
+      [DllImport("shell32.dll", CharSet = CharSet.Unicode, PreserveSig = false)]
+      internal static extern IMalloc SHGetMalloc();
 
-      public enum FolderBrowserDialogMessage {
+      internal enum FolderBrowserDialogMessage {
          Initialized = 1,
          SelChanged = 2,
          ValidateFailedA = 3,
@@ -36,10 +35,10 @@
          SetSelection = 0x467
       }
 
-      public delegate int BrowseCallbackProc(IntPtr hwnd, FolderBrowserDialogMessage msg, IntPtr lParam, IntPtr wParam);
+      internal delegate int BrowseCallbackProc(IntPtr hwnd, FolderBrowserDialogMessage msg, IntPtr lParam, IntPtr wParam);
 
       [Flags]
-      public enum BrowseInfoFlags {
+      internal enum BrowseInfoFlags {
          ReturnOnlyFsDirs = 0x00000001,
          DontGoBelowDomain = 0x00000002,
          StatusText = 0x00000004,
@@ -60,7 +59,7 @@
       }
 
       [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-      public struct BROWSEINFO {
+      internal struct BROWSEINFO {
          public IntPtr hwndOwner;
          public IntPtr pidlRoot;
          public string pszDisplayName;

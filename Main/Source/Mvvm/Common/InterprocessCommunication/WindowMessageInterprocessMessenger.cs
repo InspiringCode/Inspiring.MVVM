@@ -3,9 +3,10 @@
    using System.IO;
    using System.Runtime.InteropServices;
    using System.Runtime.Serialization.Formatters.Binary;
+   using System.Text;
 
    public abstract class WindowMessageInterprocessMessenger : AbstractInterprocessMessenger {
-      private const int CopyDataResultSuccess = 0xFFFF;
+      private static readonly IntPtr CopyDataResultSuccess = new IntPtr(0xFFFF);
 
       public WindowMessageInterprocessMessenger(string sharedIdentifier = null)
          : base(sharedIdentifier) {
@@ -30,7 +31,7 @@
          if (envelope != null && envelope.SharedIdentifier == SharedIdentifier) {
             InvokeMessageHandlers(envelope.Message);
             handled = true;
-            return new IntPtr(CopyDataResultSuccess);
+            return CopyDataResultSuccess;
          }
 
          return IntPtr.Zero;
@@ -48,7 +49,7 @@
          switch (target) {
             case DispatchTarget.FirstOtherProcess:
                enumProc = delegate(IntPtr hWnd, IntPtr lParam) {
-                  if (!IsOwnWindow(hWnd)) {
+                  if (ShouldSendToWindow(hWnd)) {
                      bool wasHandled = SendMessage(hWnd, message);
 
                      if (wasHandled) {
@@ -63,7 +64,7 @@
             case DispatchTarget.AllOtherProcesses:
                successfullyDispatched = true;
                enumProc = delegate(IntPtr hWnd, IntPtr lParam) {
-                  if (!IsOwnWindow(hWnd)) {
+                  if (ShouldSendToWindow(hWnd)) {
                      SendMessage(hWnd, message);
                   }
 
@@ -78,18 +79,28 @@
          return successfullyDispatched;
       }
 
+      private bool ShouldSendToWindow(IntPtr hWnd) {
+         if (IsOwnWindow(hWnd)) {
+            return false;
+         }
+
+         int length = NativeMethods.GetWindowTextLength(hWnd);
+         StringBuilder sb = new StringBuilder(length + 1);
+         NativeMethods.GetWindowText(hWnd, sb, sb.Capacity);
+         return sb.ToString() == SharedIdentifier;
+      }
+
       private bool SendMessage(IntPtr targetWindowHandle, object message) {
          var envelope = new MessageEnvelope(SharedIdentifier, message);
 
          using (EnvelopeCopyDataStruct cds = new EnvelopeCopyDataStruct(envelope)) {
-
-            int result;
-            int success = NativeMethods.SendMessageTimeout(
+            IntPtr result;
+            NativeMethods.SendMessageTimeout(
                hWnd: targetWindowHandle,
                Msg: NativeMethods.WM_COPYDATA,
                wParam: IntPtr.Zero,
                lParam: cds.Pointer,
-               fuFlags: NativeMethods.SMTO_BLOCK | NativeMethods.SMTO_ABORTIFHUNG,
+               fuFlags: SendMessageTimeoutFlags.SMTO_BLOCK | SendMessageTimeoutFlags.SMTO_ABORTIFHUNG,
                uTimeout: 10000,
                lpdwResult: out result
             );
@@ -177,29 +188,41 @@
       }
 
       private static class NativeMethods {
-         public const int WM_COPYDATA = 0x004A;
+         internal const uint WM_COPYDATA = 0x004A;
 
-         public const int SMTO_ABORTIFHUNG = 0x0002;
-         public const int SMTO_BLOCK = 0x0001;
+         internal const bool StopWindowEnumeration = false;
+         internal const bool ContinueWindowEnumeration = true;
 
-         public const int StopWindowEnumeration = 0;
-         public const int ContinueWindowEnumeration = 1;
+         internal delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
 
-         public delegate int EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
+         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+         [return: MarshalAs(UnmanagedType.Bool)]
+         internal static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
 
-         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-         public static extern int EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
+         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+         internal static extern int GetWindowTextLength(IntPtr hWnd);
 
-         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-         public static extern int SendMessageTimeout(
+         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+         internal static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
+
+         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+         internal static extern IntPtr SendMessageTimeout(
             IntPtr hWnd,
-            int Msg,
+            uint Msg,
             IntPtr wParam,
             IntPtr lParam,
-            int fuFlags,
-            int uTimeout,
-            out int lpdwResult
+            SendMessageTimeoutFlags fuFlags,
+            uint uTimeout,
+            out IntPtr lpdwResult
          );
+      }
+
+      [Flags]
+      private enum SendMessageTimeoutFlags : uint {
+         SMTO_NORMAL = 0x0,
+         SMTO_BLOCK = 0x1,
+         SMTO_ABORTIFHUNG = 0x2,
+         SMTO_NOTIMEOUTIFNOTHUNG = 0x8
       }
    }
 }
