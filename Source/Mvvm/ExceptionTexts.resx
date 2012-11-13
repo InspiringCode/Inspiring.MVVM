@@ -303,4 +303,7 @@
   <data name="LifecycleExceptionOccured" xml:space="preserve">
     <value>A lifecycle event handler of a screen (Initialize, Activate, Deactivate, Close, RequestClose) threw an exception.</value>
   </data>
+  <data name="RegisterWindowMessageFailed" xml:space="preserve">
+    <value>Could not initialize the InterprocessMessenger. RegisterWindowMessage failed.</value>
+  </data>
 </root>

@@ -17,6 +17,8 @@
                .FullName;
 
             SharedIdentifier = "IPC:" + entryTypeNamespace;
+         } else {
+            SharedIdentifier = sharedIdentifier;
          }
 
          MessageQueue = new Queue<object>();
