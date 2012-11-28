@@ -46,6 +46,23 @@
       }
 
       [TestMethod]
+      public void OpenScreen_WhenScrenIsAlreadyOpen_DoesNotAddScreenCloseHandler() {
+         var conductor = CreateScreenConductor();
+         var alreadyOpenedScreen = new SingleInstanceScreen();
+         conductor.OpenScreen(ScreenFactory.For(alreadyOpenedScreen));
+
+         conductor.OpenScreen(ScreenFactory.For(alreadyOpenedScreen));
+
+         Assert.AreEqual(
+            1,
+            alreadyOpenedScreen
+               .Children
+               .OfType<ScreenCloseHandler>()
+               .Count()
+         );
+      }
+
+      [TestMethod]
       public void CloseScreen_WhenScreenIsNotContained_ThrowsArgumentException() {
          ScreenConductor condcutor = CreateScreenConductor();
          ScreenMock uncontainedScreen = new ScreenMock(Aggregator);
@@ -150,7 +167,7 @@
          Assert.AreEqual(alreadyOpen, condcutor.ActiveScreen);
          pc.AssertOneRaise();
       }
-      
+
       [TestMethod]
       public void CloseScreen_WhenDeactivateThrowsException_RemovesScreen() {
          ScreenConductor condcutor = CreateScreenConductor();

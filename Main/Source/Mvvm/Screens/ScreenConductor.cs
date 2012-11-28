@@ -158,15 +158,18 @@
 
          bool wasAlreadyOpen = alreadyOpenScreen != null;
 
-         // We the constructor or Initialize handler of the screen throws an 
-         // exception we exit here and 'ActiveScreen' is not changed. The screen
-         // itself makes sure that is consistently closed in case of an exception.
-         IScreenBase s = wasAlreadyOpen ?
-            alreadyOpenScreen :
-            _screens.AddScreen(factory);
+         IScreenBase s;
 
-         s.Children
-            .Add(new ScreenCloseHandler(requestClose => CloseScreen(s, requestClose)));
+         if (wasAlreadyOpen) {
+            s = alreadyOpenScreen;
+         } else {
+            // If the constructor or Initialize handler of the screen throws an 
+            // exception we exit here and 'ActiveScreen' is not changed. The screen
+            // itself makes sure that is consistently closed in case of an exception.
+            s = _screens.AddScreen(factory);
+            s.Children
+               .Add(new ScreenCloseHandler(requestClose => CloseScreen(s, requestClose)));
+         }
 
          // Activate does handle exceptions correctly and rethrows them, so we skip
          // the publishing of the 'ScreenOpenedEvent'.
