@@ -4,15 +4,7 @@
 
    public static class ScreenHelper {
       public static void Close(IScreenBase screen, bool requestClose = false) {
-         ScreenCloseHandler h = screen
-            .Children
-            .OfType<ScreenCloseHandler>()
-            .SingleOrDefault();
-
-         if (h == null) {
-            throw new ArgumentException();
-         }
-
+         ScreenCloseHandler h = GetChild<ScreenCloseHandler>(screen);
          h.Execute(requestClose);
       }
 
@@ -33,6 +25,19 @@
       public static void SetDialogResult(IScreenBase dialog, DialogScreenResult result) {
          DialogLifecycle dl = DialogLifecycle.GetDialogLifecycle(dialog);
          dl.ScreenResult = result;
+      }
+
+      internal static TChild GetChild<TChild>(IScreenBase screen) {
+         TChild child = screen
+            .Children
+            .OfType<TChild>()
+            .SingleOrDefault();
+
+         if (child == null) {
+            throw new ArgumentException();
+         }
+
+         return child;
       }
    }
 }

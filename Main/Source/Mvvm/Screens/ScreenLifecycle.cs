@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.Screens {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using System.Linq;
    using System.Reflection;
    using Inspiring.Mvvm.Common;
@@ -37,6 +36,8 @@
          );
 
          RegisterHandlerForINeedsInitializationImplementations();
+
+         _parent.Children.Add(this);
       }
 
       private void RegisterHandlerForINeedsInitializationImplementations() {
@@ -86,6 +87,14 @@
 
       public LifecycleState State {
          get { return _sm.State; }
+      }
+
+      internal bool CanDeactivate {
+         get { return _sm.IsTransitionDefined(State, LifecycleState.Deactivated); }
+      }
+
+      internal bool CanClose {
+         get { return _sm.IsTransitionDefined(State, LifecycleState.Closed); }
       }
 
       public void RegisterHandler<TArgs>(
@@ -440,6 +449,14 @@
          ) {
             var t = new StateTransition(fromState, toState, condition, action);
             _transitions.Add(t);
+         }
+
+         public bool IsTransitionDefined(TState fromState, TState toState) {
+            return _transitions
+               .Any(t =>
+                  Object.Equals(t.FromState, fromState) &&
+                  Object.Equals(t.ToState, toState)
+               );
          }
 
          public void HandleEvent(TEvent @event) {

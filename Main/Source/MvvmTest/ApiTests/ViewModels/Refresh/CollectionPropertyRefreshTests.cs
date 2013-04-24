@@ -68,8 +68,6 @@
          Assert.AreEqual(2, VM.WrapperProperty.Count);
          Assert.IsTrue(VM.WrapperProperty[0].WasRefreshed);
          Assert.IsFalse(VM.WrapperProperty[1].WasRefreshed);
-
-         RefreshTrace.WriteToFile("D:\\trace.txt");
       }
 
       [TestMethod]
@@ -90,7 +88,7 @@
       [TestMethod]
       public void Refresh_OfWrapperCollectionProperty_CallsNotifyChangeForCollectionPopulation() {
          var oldItem = new ChildVM(new ChildSource());
-         
+
          VM.WrapperProperty.Add(oldItem);
          var oldItems = VM.WrapperProperty.ToArray();
          VM.OnChangeInvocations.Clear();
