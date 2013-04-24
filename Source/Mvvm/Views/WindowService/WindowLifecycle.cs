@@ -83,7 +83,11 @@
                   CloseWindowImmediatately();
                }
 
-               CloseScreen();
+               // It's possible that 'HandleClose' or 'HandleWindowClosed' was already executed
+               // but 'ShowDialog' still threw an exception. In that case we have to check the
+               // current state of the screen to prevent invalid state transitions.
+               // TODO: Write a Unit Test when it's known how to reproduce it!
+               CloseScreen(checkState: true);
 
                throw;
             }
@@ -122,7 +126,7 @@
             }
          } catch (Exception ex) {
             if (!ex.IsCritical()) {
-               CloseScreen();
+               CloseScreen(checkState: false);
             }
 
             throw;
@@ -179,15 +183,22 @@
                CloseWindowImmediatately();
 
                // Exceptions are propagated to the caller.
-               CloseScreen();
+               CloseScreen(checkState: false);
             }
          }
       }
 
-      private void CloseScreen() {
+      private void CloseScreen(bool checkState) {
+         var screenLifecycle = ScreenHelper.GetChild<ScreenLifecycle>(_screen);
          var ops = new ScreenLifecycleOperations(_aggregator, _screen);
-         ops.Deactivate();
-         ops.Close();
+
+         if (!checkState || screenLifecycle.CanDeactivate) {
+            ops.Deactivate();
+         }
+
+         if (!checkState || screenLifecycle.CanClose) {
+            ops.Close();
+         }
       }
 
       /// <summary>
@@ -256,7 +267,7 @@
       /// </remarks>
       private void HandleWindowClosed(object sender, EventArgs e) {
          try {
-            CloseScreen();
+            CloseScreen(checkState: false);
          } catch (ScreenLifecycleException ex) {
             ProcessWindowEventHandlerException(ex);
          }
