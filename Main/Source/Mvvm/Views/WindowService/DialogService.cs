@@ -97,6 +97,29 @@
          return result.Value;
       }
 
+      public bool ShowSaveFileDialog(
+         IScreenBase parent,
+         ref string fileName,
+         string filter = null,
+         string initialDirectory = null
+      ) {
+         Window ownerWin = GetAssociatedWindow(parent);
+         SaveFileDialog sfd = new SaveFileDialog();
+         sfd.FileName = fileName;
+
+         if (filter != null) {
+            sfd.Filter = filter;
+         }
+
+         if (initialDirectory != null) {
+            sfd.InitialDirectory = initialDirectory;
+         }
+
+         var result = sfd.ShowDialog(ownerWin);
+         fileName = sfd.FileName;
+         return result.Value;
+      }
+
       public virtual bool ShowFolderBrowseDialog(
          IScreenBase parent,
          out string selectedPath,
