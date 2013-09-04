@@ -29,7 +29,6 @@
       No
    }
 
-   // TODO: Save dialog
    public interface IDialogService {
       void Error(string message, string caption);
 
@@ -61,6 +60,13 @@
       bool ShowOpenFileDialog(
          IScreenBase parent,
          out string fileName,
+         string filter = null,
+         string initialDirectory = null
+      );
+
+      bool ShowSaveFileDialog(
+         IScreenBase parent,
+         ref string fileName,
          string filter = null,
          string initialDirectory = null
       );

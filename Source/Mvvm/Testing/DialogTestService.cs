@@ -99,6 +99,11 @@
          return DequeueResponder().ProcessFileDialogInvocation(invocation, out fileName);
       }
 
+      bool IDialogService.ShowSaveFileDialog(IScreenBase parent, ref string fileName, string filter, string initialDirectory) {
+         // TODO
+         throw new NotImplementedException();
+      }
+
       bool IDialogService.ShowFolderBrowseDialog(IScreenBase parent, out string selectedPath, string message, Environment.SpecialFolder? specialFolder = null) {
          var invocation = new DialogServiceInvocation(DialogServiceMethod.ShowOpenFileDialog);
          invocation.Message.SetValue(message);
