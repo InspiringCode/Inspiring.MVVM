@@ -308,10 +308,9 @@
       }
 
       protected override PropertyDescriptorCollection GetPropertyDescriptors() {
-         Contract.Requires<InvalidOperationException>(
-            Descriptor != null,
-            ExceptionTexts.DescriptorNotSet
-         );
+         if (Descriptor == null) {
+            ThrowDescriptorNotSetException();
+         }
 
          return Descriptor.GetPropertyDescriptors();
       }

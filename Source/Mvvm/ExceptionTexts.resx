@@ -192,9 +192,6 @@
   <data name="UnsupportedTargetTypeForModelProperty" xml:space="preserve">
     <value>Cannot set the attached property 'View.Model' on an object of type '{0}' to an object of type '{1}'. Make sure the value is of a type 'T' for which you have registered an 'IView&lt;T&gt;' implementation. Also note that this property can only be set on instances of 'ContentControl', 'ContentPresenter' and 'IView&lt;T&gt;' where T is '{1}' (or a base type).</value>
   </data>
-  <data name="ParameterMustBeABinderExpression" xml:space="preserve">
-    <value>Parameter 'binderExpression' must be a 'BinderExpression' (or subtype).</value>
-  </data>
   <data name="BehaviorNotContainedByConfiguration" xml:space="preserve">
     <value>This configuration does not contain the specified behavior '{0}'.</value>
   </data>
@@ -238,7 +235,7 @@
     <value>'PrependCollection' is only valid for 'InstancePath's with at least one step because the collection is always associated with the last prepended VM. Make sure you have called 'PrependVM' at least once before calling 'PrependCollection'.</value>
   </data>
   <data name="DescriptorNotSet" xml:space="preserve">
-    <value>The operation is not valid because no 'VMDescriptor' is set on the VM. Make sure that the 'DescriptorBase' property is set before calling any operation by either passing the 'VMDescriptor' to the 'ViewModel' constructur or by adding the VM to a 'VMCollection'.</value>
+    <value>The operation is not valid because no 'VMDescriptor' is set on the VM. Make sure that the 'DescriptorBase' property is set before calling any operation by either passing the 'VMDescriptor' to the 'ViewModel' constructor or by adding the VM to a 'VMCollection'.</value>
   </data>
   <data name="VMCollectionOutOfSync" xml:space="preserve">
     <value>The VM collection is not in sync with its source collection anymore. Call 'Kernel.UpdateFromSource(Descriptor.&lt;the collection property&gt;)' to repopulate the collection from its source.</value>
