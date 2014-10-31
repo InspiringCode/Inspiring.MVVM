@@ -27,10 +27,9 @@
       ///   Throws an exception if the behavior is not initialized.
       /// </summary>
       protected void RequireInitialized() {
-         Contract.Requires<InvalidOperationException>(
-            IsInitialized,
-            ExceptionTexts.BehaviorNotInitialized
-         );
+         if (!IsInitialized) {
+            throw new InvalidOperationException(ExceptionTexts.BehaviorNotInitialized);
+         }
       }
    }
 }

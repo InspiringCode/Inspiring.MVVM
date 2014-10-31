@@ -28,14 +28,13 @@
       }
 
       /// <summary>
-      ///   Thorws an <see cref="InvalidOperationException"/> if the object is
+      ///   Throws an <see cref="InvalidOperationException"/> if the object is
       ///   sealed.
       /// </summary>
       protected void RequireNotSealed() {
-         Contract.Requires<InvalidOperationException>(
-            !IsSealed,
-            ExceptionTexts.ObjectIsSealed
-         );
+         if (IsSealed) {
+            throw new InvalidOperationException(ExceptionTexts.ObjectIsSealed);
+         }
       }
    }
 }

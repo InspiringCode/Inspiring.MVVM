@@ -1,9 +1,9 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
-   using System;
    using System.Diagnostics.Contracts;
+   using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.ViewModels.Core;
 
-   public abstract class VMDescriptorBase : IVMDescriptor {
+   public abstract class VMDescriptorBase : SealableObject, IVMDescriptor {
       private VMPropertyCollection _properties;
       private readonly FieldDefinitionCollection _fields;
 
@@ -31,17 +31,8 @@
 
       public BehaviorChain Behaviors { get; set; }
 
-      public bool IsSealed { get; private set; }
-
       public void Modify() {
-         Contract.Requires<InvalidOperationException>(
-            !IsSealed,
-            ExceptionTexts.ObjectIsSealed
-         );
-      }
-
-      public void Seal() {
-         IsSealed = true;
+         RequireNotSealed();
       }
 
       protected abstract VMPropertyCollection DiscoverProperties();

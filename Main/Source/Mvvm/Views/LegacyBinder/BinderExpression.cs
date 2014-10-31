@@ -12,10 +12,7 @@
 
       public static void ExposeContext(object binderExpression, Action<BinderContext> contextAction) {
          Contract.Requires<ArgumentNullException>(binderExpression != null);
-         Contract.Requires<ArgumentException>(
-            binderExpression is BinderExpression,
-            ExceptionTexts.ParameterMustBeABinderExpression
-         );
+         Contract.Requires<ArgumentException>(binderExpression is BinderExpression);
 
          BinderExpression exp = (BinderExpression)binderExpression;
          contextAction(exp._context);
