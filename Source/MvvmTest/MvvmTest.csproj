@@ -353,14 +353,7 @@
       <Name>Mvvm</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ApiTests\Bugs\" />
-    <Folder Include="ApiTests\ViewModels\BasicTests\" />
-    <Folder Include="API\" />
-    <Folder Include="Shell\" />
-    <Folder Include="ViewModels\Behaviors\" />
-    <Folder Include="ViewModels\Core\Behaviors\PropertyBehaviors\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Page Include="Views\PersonView.xaml">
       <SubType>Designer</SubType>
