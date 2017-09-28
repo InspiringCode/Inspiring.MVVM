@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm {
    using System;
-   using System.Diagnostics.Contracts;
 
    public static class ServiceLocator {
       private static IServiceLocator _current;
@@ -15,7 +14,7 @@
       }
 
       public static void SetServiceLocator(IServiceLocator locator) {
-         Contract.Requires<ArgumentNullException>(locator != null);
+         Check.NotNull(locator, nameof(locator));
          _current = locator;
       }
    }

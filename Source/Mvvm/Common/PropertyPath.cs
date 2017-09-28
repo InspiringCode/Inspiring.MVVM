@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.Common {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using System.Linq;
    using System.Linq.Expressions;
    using System.Reflection;
@@ -105,7 +104,7 @@
             useDefaultValue,
             defaultValue
          ) {
-         Contract.Requires(properties != null);
+         Check.NotNull(properties, nameof(properties));
       }
 
       /// <summary>
@@ -154,7 +153,7 @@
       ///   property path should be returned.
       /// </summary>
       public TValue GetValue(TSource source) {
-         Contract.Requires<ArgumentNullException>(source != null);
+         Check.NotNull(source, nameof(source));
 
          if (IsEmpty) {
             return (TValue)(object)source;
@@ -165,7 +164,7 @@
          if (_useDefaultValue && prefixValue == null) {
             return _defaultValue;
          } else {
-            Contract.Assert(prefixValue != null);
+            Check.Requires<InvalidOperationException>(prefixValue != null);
             return (TValue)_lastStep.Accessor(prefixValue);
          }
       }
@@ -177,7 +176,7 @@
       ///   property path should be set.
       /// </summary>
       public void SetValue(TSource source, TValue value) {
-         Contract.Requires<ArgumentNullException>(source != null);
+         Check.NotNull(source, nameof(source));
 
          if (IsEmpty) {
             throw new InvalidOperationException(ExceptionTexts.CannotSetValueOfEmptyPropertyPath);
@@ -188,7 +187,7 @@
          if (_useDefaultValue && prefixValue == null) {
             // Do nothing
          } else {
-            Contract.Assert(prefixValue != null);
+            Check.Requires<InvalidOperationException>(prefixValue != null);
 
             if (_lastStep.Mutator == null) {
                throw new InvalidOperationException(
@@ -224,7 +223,7 @@
       /// 'source'.
       /// </summary>
       private object GetPrefixValue(object source) {
-         Contract.Requires(source != null);
+         Check.NotNull(source, nameof(source));
 
          object stepValue = source;
 
@@ -293,7 +292,7 @@
             .GetMethod("CreateWeakPropertyMutator", BindingFlags.NonPublic | BindingFlags.Static);
 
          internal Step(PropertyInfo property) {
-            Contract.Requires(property != null);
+            Check.NotNull(property, nameof(property));
 
             PropertyName = property.Name;
             Accessor = CreateAccessor(property);
@@ -364,7 +363,7 @@
                   property.GetGetMethod(true)
                );
 
-            return delegate(object target) {
+            return delegate (object target) {
                TObject typedTarget = (TObject)target;
                return strongAccessor(typedTarget);
             };
@@ -387,7 +386,7 @@
                   property.GetSetMethod(true)
                );
 
-            return delegate(object target, object value) {
+            return delegate (object target, object value) {
                TObject typedTarget = (TObject)target;
                TProperty typedValue = (TProperty)value;
                strongMutator(typedTarget, typedValue);

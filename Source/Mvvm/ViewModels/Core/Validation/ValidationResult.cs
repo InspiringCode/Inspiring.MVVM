@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using System.Linq;
    using Inspiring.Mvvm.Common;
 
@@ -24,12 +23,12 @@
 
       public ValidationResult(ValidationError error)
          : this(new[] { error }) {
-         Contract.Requires(error != null);
+         Check.NotNull(error, nameof(error));
       }
 
       public ValidationResult(IEnumerable<ValidationError> errors)
          : this(errors.ToArray()) {
-         Contract.Requires(errors != null);
+         Check.NotNull(errors, nameof(errors));
       }
 
       private ValidationResult(ValidationError[] errors) {
@@ -83,7 +82,7 @@
                allErrors.Add(error);
             }
          }
-         
+
          return new ValidationResult(allErrors);
       }
 

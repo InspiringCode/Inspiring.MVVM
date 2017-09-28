@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.Views.Binder {
    using System;
-   using System.Diagnostics.Contracts;
-
+   
    public class BinderExpression {
       private BinderContext _context;
 
@@ -11,8 +10,8 @@
       }
 
       public static void ExposeContext(object binderExpression, Action<BinderContext> contextAction) {
-         Contract.Requires<ArgumentNullException>(binderExpression != null);
-         Contract.Requires<ArgumentException>(binderExpression is BinderExpression);
+         Check.NotNull(binderExpression, nameof(binderExpression));
+         Check.Requires(binderExpression is BinderExpression);
 
          BinderExpression exp = (BinderExpression)binderExpression;
          contextAction(exp._context);

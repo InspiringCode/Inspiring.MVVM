@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.ViewModels.Core;
 
    public class SingleSelectionBuilder<TSourceObject, TItemSource> {
@@ -20,7 +19,7 @@
          IVMPropertyBuilder<TSourceObject> sourceObjectPropertyBuilder,
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<TItemSource>> selectedSourceItemPropertyFactory
       ) {
-         Contract.Requires(sourceObjectPropertyBuilder != null);
+         Check.NotNull(sourceObjectPropertyBuilder, nameof(sourceObjectPropertyBuilder));
          _sourceObjectPropertyBuilder = sourceObjectPropertyBuilder;
          _selectedSourceItemPropertyFactory = selectedSourceItemPropertyFactory;
       }
@@ -43,7 +42,7 @@
       public SingleSelectionBuilder<TSourceObject, TItemSource> WithItems(
          Func<TSourceObject, IEnumerable<TItemSource>> allSourceItemsSelector
       ) {
-         _allSourceItemsPropertyFactory = delegate(IVMPropertyBuilder<TSourceObject> factory) {
+         _allSourceItemsPropertyFactory = delegate (IVMPropertyBuilder<TSourceObject> factory) {
             return factory.Property.DelegatesTo(allSourceItemsSelector);
          };
 
@@ -55,7 +54,7 @@
       )
          where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
-         Contract.Assert(_selectedSourceItemPropertyFactory != null);
+         Check.Requires<InvalidOperationException>(_selectedSourceItemPropertyFactory != null);
 
          var allSourceItemsPropertyFactory =
             _allSourceItemsPropertyFactory ??
@@ -94,8 +93,8 @@
          Func<TItemSource, string> captionGetter,
          Action<SingleSelectionWithCaptionDescriptorBuilder<TSourceObject, TItemSource>> descriptorConfigurationAction = null
       ) {
-         Contract.Requires<ArgumentNullException>(captionGetter != null);
-         Contract.Assert(_selectedSourceItemPropertyFactory != null);
+         Check.NotNull(captionGetter, nameof(captionGetter));
+         Check.Requires<InvalidOperationException>(_selectedSourceItemPropertyFactory != null);
 
          var builder = VMDescriptorBuilder
             .OfType<SelectionItemVMDescriptor>()
@@ -156,7 +155,7 @@
       ///   object for an <see cref="IEnumerable{T}"/>.
       /// </summary>
       private Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> CreateLocatingPropertyFactory() {
-         return delegate(IVMPropertyBuilder<TSourceObject> factory) {
+         return delegate (IVMPropertyBuilder<TSourceObject> factory) {
             // Only PropertyWithSource is cachable!
             return factory.Custom.PropertyWithSource<IEnumerable<TItemSource>>(valueAccessor: new LocatingItemSourceBehavior());
          };

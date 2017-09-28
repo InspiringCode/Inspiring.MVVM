@@ -1,13 +1,12 @@
 ﻿namespace Inspiring.Mvvm.Common {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
 
    public sealed class EventSubscriptionManager : IEventSubscriptionStore {
       private readonly List<IEventSubscription> _subscriptions;
 
       public EventSubscriptionManager(EventAggregator aggregator) {
-         Contract.Requires<ArgumentNullException>(aggregator != null);
+         Check.NotNull(aggregator, nameof(aggregator));
 
          _subscriptions = new List<IEventSubscription>();
 
@@ -33,7 +32,7 @@
       }
 
       public void RemoveSubscriptionsTo(IEvent @event) {
-         Contract.Requires<ArgumentNullException>(@event != null);
+         Check.NotNull(@event, nameof(@event));
          _subscriptions.RemoveAll(x => x.Event == @event);
       }
 

@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Diagnostics.Contracts;
    using System.Linq;
    using Inspiring.Mvvm.Common;
 
@@ -13,8 +12,8 @@
       private TDescriptor _descriptor;
 
       internal ViewModelBehaviorBuilder(VMDescriptorConfiguration configuration, TDescriptor descriptor) {
-         Contract.Requires(configuration != null);
-         Contract.Requires(configuration.ViewModelConfiguration != null);
+         Check.NotNull(configuration, nameof(configuration));
+         Check.NotNull(configuration.ViewModelConfiguration, nameof(configuration));
 
          _configuration = configuration;
          _descriptor = descriptor;

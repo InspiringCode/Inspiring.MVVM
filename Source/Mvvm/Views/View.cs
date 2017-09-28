@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.Views {
    using System;
-   using System.Diagnostics.Contracts;
    using System.Windows;
    using System.Windows.Controls;
 
@@ -36,7 +35,7 @@
       }
 
       public static void HandleModelChanged(DependencyObject view, DependencyPropertyChangedEventArgs e) {
-         Contract.Assert(view != null);
+         Check.NotNull(view, nameof(view));
 
          object model = e.NewValue;
 

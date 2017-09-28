@@ -2,11 +2,10 @@
    using System;
    using System.Collections.Generic;
    using System.Linq;
-   using System.Diagnostics.Contracts;
 
    internal static class DelegateUtils {
       public static string GetFriendlyName(Delegate dlg) {
-         Contract.Requires(dlg != null);
+         Check.NotNull(dlg, nameof(dlg));
 
          Type declaringType = dlg.Method.DeclaringType;
          string methodName = dlg.Method.Name;

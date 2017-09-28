@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.Common;
 
    public interface IValidationTarget {
@@ -41,7 +40,7 @@
          IViewModel vm,
          IVMPropertyDescriptor property = null
       ) {
-         Contract.Requires(vm != null);
+         Check.NotNull(vm, nameof(vm));
          return new ValidationTarget(step) { VM = vm, Property = property };
       }
 
@@ -50,7 +49,7 @@
          IVMCollection collection,
          IVMPropertyDescriptor property = null
       ) {
-         Contract.Requires(collection != null);
+         Check.NotNull(collection, nameof(collection));
          return new ValidationTarget(step) { Collection = collection, Property = property };
       }
 
@@ -60,7 +59,7 @@
          IVMCollection collection = null,
          IVMPropertyDescriptor property = null
       ) {
-         Contract.Requires(vm != null);
+         Check.NotNull(vm, nameof(vm));
 
          return new ValidationTarget(step) {
             VM = vm,

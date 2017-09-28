@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
-   using System.Diagnostics.Contracts;
-
+   
    /// <summary>
    ///   Holds transient information about the <see cref="BehaviorChainConfiguration"/>s
    ///   of a VM descriptor and its properties.
@@ -11,7 +10,7 @@
    /// </remarks>
    public sealed class VMDescriptorConfiguration {
       public VMDescriptorConfiguration(BehaviorChainConfiguration viewModelConfiguration) {
-         Contract.Requires(viewModelConfiguration != null);
+         Check.NotNull(viewModelConfiguration, nameof(viewModelConfiguration));
 
          PropertyConfigurations = new BehaviorChainConfigurationCollection();
          ViewModelConfiguration = viewModelConfiguration;
@@ -27,7 +26,6 @@
       ///   name="descriptor"/> and its VM properties.
       /// </summary>
       internal void ApplyTo(IVMDescriptor descriptor) {
-         Contract.Ensures(descriptor.Behaviors != null);
 
          var chain = ViewModelConfiguration.CreateChain();
          chain.Initialize(descriptor);

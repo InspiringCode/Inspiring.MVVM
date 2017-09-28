@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using System.Linq;
    using Inspiring.Mvvm.Testability;
    using Inspiring.Mvvm.ViewModels.Core;
@@ -43,7 +42,7 @@
             .Errors
             .Select(x => x.Message)
             .ToArray();
-         
+
          bool allActualWereExpected = actualMessages
             .All(act => expectedMessageSubstrings.Any(exp => act.Contains(exp)));
 
@@ -269,9 +268,9 @@
          IEnumerable<ValidationError> second,
          IEqualityComparer<ValidationError> comparer
       ) {
-         Contract.Requires(first != null);
-         Contract.Requires(second != null);
-         Contract.Requires(comparer != null);
+         Check.NotNull(first, nameof(first));
+         Check.NotNull(second, nameof(second));
+         Check.NotNull(comparer, nameof(comparer));
 
          return first.Union(second).All(error =>
             first.Count(x => comparer.Equals(x, error)) == second.Count(x => comparer.Equals(x, error))

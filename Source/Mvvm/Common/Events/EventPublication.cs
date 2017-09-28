@@ -1,10 +1,8 @@
 ﻿namespace Inspiring.Mvvm.Common {
-   using System.Diagnostics.Contracts;
-
    public sealed class EventPublication {
       public EventPublication(IEvent @event, object payload) {
-         Contract.Requires(@event != null);
-         Contract.Requires(payload != null);
+         Check.NotNull(@event, nameof(@event));
+         Check.NotNull(payload, nameof(payload));
 
          Event = @event;
          Payload = payload;

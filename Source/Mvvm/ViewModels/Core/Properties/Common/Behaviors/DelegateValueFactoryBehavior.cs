@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.Common;
 
    // TODO: Throw this away? Currently not used...
@@ -15,8 +14,8 @@
          PropertyPath<TVM, TSource> sourceObjectPath,
          Func<IBehaviorContext, TVM, TSource, TValue> factoryMethod
       ) {
-         Contract.Requires(sourceObjectPath != null);
-         Contract.Requires(factoryMethod != null);
+         Check.NotNull(sourceObjectPath, nameof(sourceObjectPath));
+         Check.NotNull(factoryMethod, nameof(factoryMethod));
 
          _sourceObjectPath = sourceObjectPath;
          _factoryMethod = factoryMethod;

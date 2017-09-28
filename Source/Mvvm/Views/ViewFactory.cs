@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.Views {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using System.Linq;
    using System.Reflection;
    using Inspiring.Mvvm.Common;
@@ -53,7 +52,7 @@
       }
 
       public static object CreateView(object forModel) {
-         Contract.Requires<ArgumentNullException>(forModel != null);
+         Check.NotNull(forModel, nameof(forModel));
 
          Type modelType = forModel.GetType();
          object view = null;
@@ -61,7 +60,7 @@
          foreach (Type viewInterface in GetPossibleViewInterfaces(modelType)) {
             if ((view = ServiceLocator.Current.TryGetInstance(viewInterface)) != null) {
                bool initializationWasSuccessful = TryInitializeView(view, forModel);
-               Contract.Assert(initializationWasSuccessful);
+               Check.Requires<InvalidOperationException>(initializationWasSuccessful);
                return view;
             }
          }

@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Diagnostics.Contracts;
-
+   
    public sealed class PropertyValidationArgs<TOwnerVM, TTargetVM, TValue> :
       ValidationArgs<TOwnerVM>
       where TTargetVM : IViewModel
@@ -15,8 +14,8 @@
          IVMPropertyDescriptor<TValue> targetProperty
       )
          : base(step, validator, owner) {
-         Contract.Requires(target != null);
-         Contract.Requires(targetProperty != null);
+         Check.NotNull(target, nameof(target));
+         Check.NotNull(targetProperty, nameof(targetProperty));
 
          Target = target;
          TargetProperty = targetProperty;
@@ -31,7 +30,7 @@
       }
 
       public void AddError(string message, object details = null) {
-         Contract.Requires<ArgumentNullException>(message != null);
+         Check.NotNull(message, nameof(message));
 
          var target = ValidationTarget.ForError(Step, Target, null, TargetProperty);
          var error = new ValidationError(Validator, target, message, details);

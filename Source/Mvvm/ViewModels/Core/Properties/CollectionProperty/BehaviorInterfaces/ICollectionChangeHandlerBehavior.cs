@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using System.Linq;
 
    /// <summary>
@@ -79,9 +78,9 @@
          TItemVM newItem,
          int index
       ) {
-         Contract.Requires(collection != null);
-         Contract.Requires(newItem != null);
-         Contract.Requires(0 <= index && index < collection.Count);
+         Check.NotNull(collection, nameof(collection));
+         Check.NotNull(newItem, nameof(newItem));
+         Check.Requires(0 <= index && index < collection.Count);
 
          return new CollectionChangedArgs<TItemVM>(
             CollectionChangeType.ItemAdded,
@@ -96,9 +95,9 @@
          TItemVM oldItem,
          int index
       ) {
-         Contract.Requires(collection != null);
-         Contract.Requires(oldItem != null);
-         Contract.Requires(0 <= index && index <= collection.Count);
+         Check.NotNull(collection, nameof(collection));
+         Check.NotNull(oldItem, nameof(oldItem));
+         Check.Requires(0 <= index && index <= collection.Count);
 
          return new CollectionChangedArgs<TItemVM>(
             CollectionChangeType.ItemRemoved,
@@ -114,10 +113,10 @@
          TItemVM newItem,
          int index
       ) {
-         Contract.Requires(collection != null);
-         Contract.Requires(oldItem != null);
-         Contract.Requires(newItem != null);
-         Contract.Requires(0 <= index && index < collection.Count);
+         Check.NotNull(collection, nameof(collection));
+         Check.NotNull(oldItem, nameof(oldItem));
+         Check.NotNull(newItem, nameof(newItem));
+         Check.Requires(0 <= index && index < collection.Count);
 
          return new CollectionChangedArgs<TItemVM>(
             CollectionChangeType.ItemSet,
@@ -132,8 +131,8 @@
          IVMCollection<TItemVM> collection,
          TItemVM[] oldItems
       ) {
-         Contract.Requires(collection != null);
-         Contract.Requires(oldItems != null);
+         Check.NotNull(collection, nameof(collection));
+         Check.NotNull(oldItems, nameof(oldItems));
 
          return new CollectionChangedArgs<TItemVM>(
             CollectionChangeType.ItemsCleared,
@@ -147,8 +146,8 @@
          TItemVM[] oldItems,
          IChangeReason reason = null
       ) {
-         Contract.Requires(collection != null);
-         Contract.Requires(oldItems != null);
+         Check.NotNull(collection, nameof(collection));
+         Check.NotNull(oldItems, nameof(oldItems));
 
          return new CollectionChangedArgs<TItemVM>(
             CollectionChangeType.Populated,

@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Diagnostics.Contracts;
-
+   
    internal sealed class ValidatorExecutorBehavior :
       Behavior,
       IValidationExecutorBehavior {
@@ -9,7 +8,7 @@
       private CompositeValidator _compositeValidator = new CompositeValidator();
 
       public void AddValidator(IValidator validator) {
-         Contract.Requires(validator != null);
+         Check.NotNull(validator, nameof(validator));
          RequireNotSealed();
 
          _compositeValidator = _compositeValidator.Add(validator);

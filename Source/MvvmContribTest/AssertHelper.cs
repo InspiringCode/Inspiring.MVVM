@@ -2,11 +2,11 @@
    using System;
    using System.Collections.Generic;
    using System.ComponentModel;
-   using System.Diagnostics.Contracts;
    using System.Linq;
    using System.Linq.Expressions;
    using System.Reflection;
    using System.Text.RegularExpressions;
+   using Inspiring.Mvvm;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    internal static class AssertHelper {
@@ -37,7 +37,7 @@
       ) where TObject : INotifyPropertyChanged {
          bool called = false;
          string expectedPropertyName = GetPropertyName(propertySelector);
-         PropertyChangedEventHandler handler = delegate(object sender, PropertyChangedEventArgs args) {
+         PropertyChangedEventHandler handler = delegate (object sender, PropertyChangedEventArgs args) {
             Assert.IsFalse(called);
             called = true;
             Assert.AreEqual(expectedPropertyName, args.PropertyName);
@@ -58,8 +58,7 @@
       private static PropertyInfo[] GetProperties<TObject, TProperty>(
          Expression<Func<TObject, TProperty>> propertyPathSelector
       ) {
-         Contract.Requires(propertyPathSelector != null);
-         Contract.Ensures(Contract.Result<PropertyInfo[]>() != null);
+         Check.NotNull(propertyPathSelector, nameof(propertyPathSelector));
 
          List<PropertyInfo> propertyPath = new List<PropertyInfo>();
          MemberExpression exp = propertyPathSelector.Body as MemberExpression;
@@ -114,7 +113,7 @@
       private static string GetPropertyName<TObject, TProperty>(
          Expression<Func<TObject, TProperty>> propertySelector
       ) {
-         Contract.Requires(propertySelector != null);
+         Check.NotNull(propertySelector, nameof(propertySelector));
 
          PropertyInfo[] propertyPath = GetProperties(propertySelector);
 

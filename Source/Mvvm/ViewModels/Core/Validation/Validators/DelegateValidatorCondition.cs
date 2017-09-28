@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.Common;
 
    public sealed class ValidatorConditionArgs<TOwnerVM, TTargetVM> {
@@ -23,7 +22,7 @@
          Func<ValidatorConditionArgs<TOwnerVM, TTargetVM>, bool> predicate,
          int pathTargetIndex
       ) {
-         Contract.Requires(predicate != null);
+         Check.NotNull(predicate, nameof(predicate));
 
          _predicate = predicate;
          _pathTargetIndex = pathTargetIndex;
@@ -38,8 +37,8 @@
             .TargetPath[_pathTargetIndex]
             .ViewModel;
 
-         Contract.Assert(owner != null);
-         Contract.Assert(target != null);
+         Check.Requires<InvalidOperationException>(owner != null);
+         Check.Requires<InvalidOperationException>(target != null);
 
          var args = new ValidatorConditionArgs<TOwnerVM, TTargetVM>(owner, target);
          return _predicate(args);

@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.Common;
 
    internal sealed class VMBehaviorBuilder<TVM, TDescriptor> :
@@ -14,7 +13,7 @@
          TDescriptor descriptor
       )
          : base(configuration) {
-         Contract.Requires(configuration != null);
+         Check.NotNull(configuration, nameof(configuration));
          _descriptor = descriptor;
       }
 
@@ -43,7 +42,7 @@
 
          public SinglePropertyBehaviorBuilder(VMDescriptorConfiguration configuration, BehaviorChainConfiguration propertyConfiguration, TDescriptor descriptor)
             : base(configuration) {
-            Contract.Requires(propertyConfiguration != null);
+            Check.NotNull(propertyConfiguration, nameof(propertyConfiguration));
             _propertyConfiguration = propertyConfiguration;
             _descriptor = descriptor;
          }

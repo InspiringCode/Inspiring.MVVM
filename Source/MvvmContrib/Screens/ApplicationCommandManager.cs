@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.Screens {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using System.Windows.Input;
 
    // TODO: Test this class.
@@ -25,20 +24,20 @@
 
       public ICommand this[object commandKey] {
          get {
-            Contract.Requires<ArgumentNullException>(commandKey != null);
+            Check.NotNull(commandKey, nameof(commandKey));
             return GetProxy(commandKey);
          }
       }
 
       public void RegisterCommand(object commandKey, ICommand actualImplementation) {
-         Contract.Requires<ArgumentNullException>(commandKey != null);
-         Contract.Requires<ArgumentNullException>(actualImplementation != null);
+         Check.NotNull(commandKey, nameof(commandKey));
+         Check.NotNull(actualImplementation, nameof(actualImplementation));
          GetProxy(commandKey).SetActualCommand(actualImplementation);
          RaiseRegisteredCommandsChanged();
       }
 
       public void UnregisterCommand(object commandKey) {
-         Contract.Requires<ArgumentNullException>(commandKey != null);
+         Check.NotNull(commandKey, nameof(commandKey));
          GetProxy(commandKey).SetActualCommand(null);
          RaiseRegisteredCommandsChanged();
       }

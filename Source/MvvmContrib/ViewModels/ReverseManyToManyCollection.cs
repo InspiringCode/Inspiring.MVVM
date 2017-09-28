@@ -2,7 +2,6 @@
    using System;
    using System.Collections.Generic;
    using System.Collections.ObjectModel;
-   using System.Diagnostics.Contracts;
    using System.Linq;
 
    /// <summary>
@@ -53,9 +52,9 @@
          IEnumerable<TTarget> possibleTargetObjects,
          Func<TTarget, ICollection<TSource>> backReferenceSelector
       ) {
-         Contract.Requires<ArgumentNullException>(sourceObject != null);
-         Contract.Requires<ArgumentNullException>(possibleTargetObjects != null);
-         Contract.Requires<ArgumentNullException>(backReferenceSelector != null);
+         Check.NotNull(sourceObject, nameof(sourceObject));
+         Check.NotNull(possibleTargetObjects, nameof(possibleTargetObjects));
+         Check.NotNull(backReferenceSelector, nameof(backReferenceSelector));
 
          _sourceObject = sourceObject;
          _possibleTargets = possibleTargetObjects;

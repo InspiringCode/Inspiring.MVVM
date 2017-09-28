@@ -2,7 +2,6 @@
    using System;
    using System.Collections.Generic;
    using System.ComponentModel;
-   using System.Diagnostics.Contracts;
    using System.Linq;
    using Inspiring.Mvvm;
    using Inspiring.Mvvm.ViewModels.Core;
@@ -104,27 +103,27 @@
       public event PropertyChangedEventHandler PropertyChanged;
 
       protected internal T GetValue<T>(IVMPropertyDescriptor<T> property) {
-         Contract.Requires<ArgumentNullException>(property != null);
+         Check.NotNull(property, nameof(property));
          return Kernel.GetValue<T>(property);
       }
 
       protected internal void SetValue<T>(IVMPropertyDescriptor<T> property, T value) {
-         Contract.Requires<ArgumentNullException>(property != null);
+         Check.NotNull(property, nameof(property));
          Kernel.SetValue(property, value);
       }
 
       protected internal T GetValidatedValue<T>(IVMPropertyDescriptor<T> property) {
-         Contract.Requires<ArgumentNullException>(property != null);
+         Check.NotNull(property, nameof(property));
          return property.Behaviors.GetValidatedValueNext<T>(Kernel); // TODO: Refactor.
       }
 
       protected internal object GetDisplayValue(IVMPropertyDescriptor property) {
-         Contract.Requires<ArgumentNullException>(property != null);
+         Check.NotNull(property, nameof(property));
          return Kernel.GetDisplayValue(property);
       }
 
       protected internal void SetDisplayValue(IVMPropertyDescriptor property, object value) {
-         Contract.Requires<ArgumentNullException>(property != null);
+         Check.NotNull(property, nameof(property));
          Kernel.SetDisplayValue(property, value);
       }
 
@@ -159,7 +158,7 @@
          // HACK: Validation problem with DevExpress.
          if (propertyName.Contains('.')) {
             string[] parts = propertyName.Split('.');
-            Contract.Assert(parts.Length <= 4);
+            Check.Requires<InvalidOperationException>(parts.Length <= 4);
 
             int columnNameIndex = parts.Length - 1;
 

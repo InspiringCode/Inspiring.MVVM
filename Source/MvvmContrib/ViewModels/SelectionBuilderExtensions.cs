@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using System.Linq;
    using System.Linq.Expressions;
    using Inspiring.Mvvm.Resources;
@@ -12,8 +11,8 @@
          this IVMPropertyBuilder<TSourceObject> sourceObjectPropertyFactory,
          Func<TSourceObject, ICollection<TItemSource>> selectedSourceItemsSelector
       ) {
-         Contract.Requires<ArgumentNullException>(selectedSourceItemsSelector != null);
-         Contract.Requires(sourceObjectPropertyFactory != null);
+         Check.NotNull(selectedSourceItemsSelector, nameof(selectedSourceItemsSelector));
+         Check.NotNull(sourceObjectPropertyFactory, nameof(sourceObjectPropertyFactory));
 
          var builder = new MultiSelectionBuilder<TSourceObject, TItemSource>(
             sourceObjectPropertyFactory,
@@ -28,15 +27,15 @@
          this IVMPropertyBuilder<TSourceObject> sourceObjectPropertyFactory,
          Expression<Func<TSourceObject, TItemSource>> selectedSourceItemSelector
       ) {
-         Contract.Requires<ArgumentNullException>(selectedSourceItemSelector != null);
-         Contract.Requires(sourceObjectPropertyFactory != null);
+         Check.NotNull(selectedSourceItemSelector, nameof(selectedSourceItemSelector));
+         Check.NotNull(sourceObjectPropertyFactory, nameof(sourceObjectPropertyFactory));
 
          var builder = new SingleSelectionBuilder<TSourceObject, TItemSource>(
             sourceObjectPropertyFactory,
             selectedSourceItemPropertyFactory: factory =>
                factory.Property.MapsTo(selectedSourceItemSelector)
          );
-         
+
          return builder;
       }
 
@@ -44,8 +43,8 @@
          this IVMPropertyBuilder<TSourceObject> sourceObjectPropertyFactory,
          Expression<Func<TSourceObject, TEnum>> selectedSourceItemSelector
       ) {
-         Contract.Requires<ArgumentNullException>(selectedSourceItemSelector != null);
-         Contract.Requires(sourceObjectPropertyFactory != null);
+         Check.NotNull(selectedSourceItemSelector, nameof(selectedSourceItemSelector));
+         Check.NotNull(sourceObjectPropertyFactory, nameof(sourceObjectPropertyFactory));
 
          return sourceObjectPropertyFactory
             .SingleSelection(selectedSourceItemSelector)
@@ -57,8 +56,8 @@
          this IVMPropertyBuilder<TSourceObject> sourceObjectPropertyFactory,
          Expression<Func<TSourceObject, TEnum>> selectedSourceItemSelector
       ) {
-         Contract.Requires<ArgumentNullException>(selectedSourceItemSelector != null);
-         Contract.Requires(sourceObjectPropertyFactory != null);
+         Check.NotNull(selectedSourceItemSelector, nameof(selectedSourceItemSelector));
+         Check.NotNull(sourceObjectPropertyFactory, nameof(sourceObjectPropertyFactory));
 
          return sourceObjectPropertyFactory
             .SingleSelection(selectedSourceItemSelector)

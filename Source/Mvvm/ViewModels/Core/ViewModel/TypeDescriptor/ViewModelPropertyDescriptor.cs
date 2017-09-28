@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Diagnostics.Contracts;
-
+   
    /// <summary>
    ///   A <see cref="System.ComponentModel.PropertyDescriptor"/> that allows
    ///   the WPF binding infrastructure to bind to VM properties even if no CLR
@@ -14,7 +13,7 @@
             propertyType: propertyType,
             componentType: typeof(IViewModel)
          ) {
-         Contract.Requires(property != null);
+         Check.NotNull(property, nameof(property));
 
          Property = property;
       }
@@ -36,7 +35,6 @@
       }
 
       private IViewModel CastComponent(object component) {
-         Contract.Ensures(Contract.Result<IViewModel>() != null);
 
          var vm = component as IViewModel;
 

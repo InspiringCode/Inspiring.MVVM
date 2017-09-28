@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.Common {
    using System;
-   using System.Diagnostics.Contracts;
 
    public interface IHierarchicalEventSubscription<TTarget> : IEventSubscription {
       TTarget Target { get; }
@@ -21,7 +20,7 @@
       )
          : base(@event, handler, executionOrder, conditions) {
 
-         Contract.Requires<ArgumentNullException>(target != null);
+         Check.NotNull(target, nameof(target));
          _target = target;
       }
 

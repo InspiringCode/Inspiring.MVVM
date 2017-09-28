@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
-   using System.Diagnostics.Contracts;
-
+   
    // TODO: Update documentation!!!
 
    /// <summary>
@@ -35,7 +34,7 @@
 
    public abstract class ValidationArgs {
       protected ValidationArgs(ValidationStep step, IValidator validator) {
-         Contract.Requires(validator != null);
+         Check.NotNull(validator, nameof(validator));
 
          Step = step;
          Validator = validator;
@@ -59,7 +58,7 @@
       protected ValidationArgs(ValidationStep step, IValidator validator, TOwnerVM owner)
          : base(step, validator) {
 
-         Contract.Requires(owner != null);
+         Check.NotNull(owner, nameof(owner));
          Owner = owner;
       }
 

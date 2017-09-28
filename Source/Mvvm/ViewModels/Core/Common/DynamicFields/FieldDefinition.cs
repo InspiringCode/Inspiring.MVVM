@@ -1,5 +1,4 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
-   using System.Diagnostics.Contracts;
 
    public sealed class FieldDefinition<T> {
       internal FieldDefinition(
@@ -7,7 +6,7 @@
          int groupIndex,
          int fieldIndex
       ) {
-         Contract.Requires(parent != null);
+         Check.NotNull(parent, nameof(parent));
 
          Parent = parent;
          GroupIndex = groupIndex;

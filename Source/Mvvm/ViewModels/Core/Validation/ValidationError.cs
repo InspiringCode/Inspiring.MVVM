@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.Common;
 
    /// <summary>
@@ -16,9 +15,9 @@
          string message,
          object details = null
       ) {
-         Contract.Requires(validator != null);
-         Contract.Requires(target != null);
-         Contract.Requires(message != null);
+         Check.NotNull(validator, nameof(validator));
+         Check.NotNull(target, nameof(target));
+         Check.NotNull(message, nameof(message));
 
          _validator = validator;
 
@@ -65,7 +64,7 @@
       }
 
       internal bool OriginatedFrom(ICollectionValidationTarget target) {
-         Contract.Requires(target != null);
+         Check.NotNull(target, nameof(target));
 
          return
             Target.Step == target.Step &&

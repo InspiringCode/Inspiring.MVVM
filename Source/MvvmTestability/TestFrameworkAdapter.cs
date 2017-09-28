@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.Testability {
    using System;
-   using System.Diagnostics.Contracts;
-
+   
    public static class TestFrameworkAdapter {
       private static ITestFrameworkAdapter _current;
 
@@ -15,7 +14,7 @@
       }
 
       public static void SetTestFrameworkAdapter(ITestFrameworkAdapter adapter) {
-         Contract.Requires<ArgumentNullException>(adapter != null);
+         Check.NotNull(adapter, nameof(adapter));
          _current = adapter;
       }
    }

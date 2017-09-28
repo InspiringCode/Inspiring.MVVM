@@ -1,8 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
-   using System;
    using System.Collections.Generic;
    using System.ComponentModel;
-   using System.Diagnostics.Contracts;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels.Core;
 
@@ -26,8 +24,8 @@
       ///   the <see cref="IViewModel.Parent"/> of all items.
       /// </param>
       public VMCollection(IViewModel ownerVM, IVMPropertyDescriptor ownerProperty) {
-         Contract.Requires<ArgumentNullException>(ownerVM != null);
-         Contract.Requires<ArgumentNullException>(ownerProperty != null);
+         Check.NotNull(ownerVM, nameof(ownerVM));
+         Check.NotNull(ownerProperty, nameof(ownerProperty));
 
          OwnerVM = ownerVM;
          OwnerProperty = ownerProperty;
@@ -59,8 +57,8 @@
       ///   <paramref name="toIndex"/> afterwards.
       /// </summary>
       public void Move(int fromIndex, int toIndex) {
-         Contract.Requires<ArgumentOutOfRangeException>(0 <= fromIndex && fromIndex < Count);
-         Contract.Requires<ArgumentOutOfRangeException>(0 <= toIndex && toIndex < Count);
+         Check.Requires(0 <= fromIndex && fromIndex < Count);
+         Check.Requires(0 <= toIndex && toIndex < Count);
 
          var item = this[fromIndex];
          RemoveAt(fromIndex);
@@ -124,12 +122,6 @@
          OwnerProperty.Behaviors.TryCall<ICollectionChangeHandlerBehavior<TItemVM>>(b =>
             b.HandleChange(OwnerVM.GetContext(), args)
          );
-      }
-
-      [ContractInvariantMethod]
-      private void ObjectInvariant() {
-         Contract.Invariant(OwnerProperty != null);
-         Contract.Invariant(OwnerVM != null);
       }
 
       public string GetListName(PropertyDescriptor[] listAccessors) {

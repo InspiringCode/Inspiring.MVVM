@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Diagnostics.Contracts;
 
    public abstract class InitializableBehavior : Behavior {
       /// <summary>
@@ -19,7 +18,6 @@
       ///   Marks the behavior as initialized.
       /// </summary>
       protected void SetInitialized() {
-         Contract.Ensures(IsInitialized);
          IsInitialized = true;
       }
 

@@ -1,8 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Diagnostics.Contracts;
    using System.Linq;
-   using Inspiring.Mvvm.Common;
 
    internal sealed class PropertyStep<TDescriptor> :
       PathDefinitionStep
@@ -13,7 +11,7 @@
       public PropertyStep(
          Func<TDescriptor, IVMPropertyDescriptor> propertySelector
       ) {
-         Contract.Requires(propertySelector != null);
+         Check.NotNull(propertySelector, nameof(propertySelector));
          _propertySelector = new PropertySelector<TDescriptor>(propertySelector);
       }
 
@@ -21,7 +19,7 @@
       //   Func<TDescriptor, IVMPropertyDescriptor> propertySelector,
       //   Type propertyHint
       //) {
-      //   Contract.Requires(propertySelector != null);
+      //   Check.NotNull(propertySelector, nameof(propertySelector));
       //   _propertySelector = propertySelector;
       //   _propertyNameHint = String.Format("IVMPropertyDescriptor<{0}>", TypeService.GetFriendlyName(propertyHint));
       //}
@@ -52,7 +50,7 @@
 
       public override IViewModel[] GetDescendants(
          PathDefinitionIterator definitionSteps,
-         IViewModel rootVM, 
+         IViewModel rootVM,
          bool onlyLoaded
       ) {
          var property = _propertySelector.GetProperty(rootVM.Descriptor);

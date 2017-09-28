@@ -1,14 +1,13 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Diagnostics.Contracts;
-
+   
    internal abstract class Validator<TArgs> : IValidator
       where TArgs : ValidationArgs {
 
       private readonly Func<IValidator, ValidationRequest, TArgs> _argsFactory;
 
       public Validator(Func<IValidator, ValidationRequest, TArgs> argsFactory) {
-         Contract.Requires(argsFactory != null);
+         Check.NotNull(argsFactory, nameof(argsFactory));
          _argsFactory = argsFactory;
       }
 

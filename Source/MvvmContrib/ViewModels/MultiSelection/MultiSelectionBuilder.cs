@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.ViewModels.Core;
 
    public class MultiSelectionBuilder<TSourceObject, TItemSource> {
@@ -19,7 +18,7 @@
          IVMPropertyBuilder<TSourceObject> sourceObjectPropertyBuilder,
          Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<ICollection<TItemSource>>> selectedSourceItemsPropertyFactory
        ) {
-         Contract.Requires(sourceObjectPropertyBuilder != null);
+         Check.NotNull(sourceObjectPropertyBuilder, nameof(sourceObjectPropertyBuilder));
          _sourceObjectPropertyBuilder = sourceObjectPropertyBuilder;
          _selectedSourceItemsPropertyFactory = selectedSourceItemsPropertyFactory;
       }
@@ -48,7 +47,7 @@
          Action<MultiSelectionDescriptorBuilder<TSourceObject, TItemSource, TItemVM>> descriptorConfigurationAction = null
       )
          where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
-         Contract.Assert(_selectedSourceItemsPropertyFactory != null);
+         Check.Requires<InvalidOperationException>(_selectedSourceItemsPropertyFactory != null);
 
          var allSourceItemsPropertyFactory =
             _allSourceItemsPropertyFactory ??
@@ -89,8 +88,8 @@
          Func<TItemSource, string> captionGetter,
          Action<MultiSelectionWithCaptionDescriptorBuilder<TSourceObject, TItemSource>> descriptorConfigurationAction = null
       ) {
-         Contract.Requires<ArgumentNullException>(captionGetter != null);
-         Contract.Assert(_selectedSourceItemsPropertyFactory != null);
+         Check.NotNull(captionGetter, nameof(captionGetter));
+         Check.Requires<InvalidOperationException>(_selectedSourceItemsPropertyFactory != null);
 
          SelectionItemVMDescriptor itemDescriptor = VMDescriptorBuilder
             .OfType<SelectionItemVMDescriptor>()

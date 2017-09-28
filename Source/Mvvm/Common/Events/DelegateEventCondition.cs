@@ -1,12 +1,11 @@
 ﻿namespace Inspiring.Mvvm.Common {
    using System;
-   using System.Diagnostics.Contracts;
 
    internal sealed class DelegateEventCondition<TPayload> : IEventCondition {
       private readonly Func<TPayload, bool> _condition;
 
       public DelegateEventCondition(Func<TPayload, bool> condition) {
-         Contract.Requires(condition != null);
+         Check.NotNull(condition, nameof(condition));
          _condition = condition;
       }
 

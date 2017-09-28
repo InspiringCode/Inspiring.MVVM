@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.Common;
 
    // TODO: Null handling
@@ -27,8 +26,8 @@
          Func<TSource, TValue> getter,
          Action<TSource, TValue> setter = null
       ) {
-         Contract.Requires(sourceObjectPath != null);
-         Contract.Requires(getter != null);
+         Check.NotNull(sourceObjectPath, nameof(sourceObjectPath));
+         Check.NotNull(getter, nameof(getter));
 
          _sourceObjectPath = sourceObjectPath;
          _getter = getter;

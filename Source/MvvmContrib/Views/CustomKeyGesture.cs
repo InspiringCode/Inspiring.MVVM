@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.Views {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using System.Reflection;
    using System.Resources;
    using System.Windows.Input;
@@ -16,7 +15,7 @@
       private static readonly ModifierKeysConverter ModifierKeysConverter = new ModifierKeysConverter();
       private static readonly KeyConverter KeyConverter = new KeyConverter();
 
-      private static readonly Type[] KeyGestureConstructorSignature = new Type[] { 
+      private static readonly Type[] KeyGestureConstructorSignature = new Type[] {
          typeof(Key),
          typeof(ModifierKeys),
          typeof(string),
@@ -37,7 +36,6 @@
       ///   name="key"/> and <paramref name="modifiers"/>.
       /// </summary>
       public static KeyGesture Create(Key key, ModifierKeys modifiers) {
-         Contract.Ensures(Contract.Result<KeyGesture>() != null);
 
          // The KeyGesture constructor allows only certain keys and modifiers but
          // it provides a private constructor, which allows to disable this 
@@ -70,13 +68,12 @@
       ///   texts are used.
       /// </param>
       public static void SupplyLocalization(ResourceManager resourceFile) {
-         Contract.Requires<ArgumentNullException>(resourceFile != null);
+         Check.NotNull(resourceFile, nameof(resourceFile));
 
          _localizationResourceManager = resourceFile;
       }
 
       private static string GetDisplayString(Key key, ModifierKeys modifiers) {
-         Contract.Ensures(Contract.Result<string>() != null);
 
          var elements = new List<string>();
 
@@ -112,7 +109,6 @@
       }
 
       private static string GetKeyString(Key key) {
-         Contract.Ensures(Contract.Result<string>() != null);
 
          string keyStr = null;
 
@@ -124,7 +120,6 @@
       }
 
       private static string GetModifierString(ModifierKeys modifier) {
-         Contract.Ensures(Contract.Result<string>() != null);
 
          string modifierStr = null;
 

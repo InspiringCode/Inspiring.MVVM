@@ -1,13 +1,12 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.ComponentModel;
-   using System.Diagnostics.Contracts;
-
+   
    internal sealed class ViewModelTypeDescriptor : CustomTypeDescriptor {
       private readonly IVMDescriptor _descriptor;
 
       public ViewModelTypeDescriptor(IVMDescriptor descriptor) {
-         Contract.Requires(descriptor != null);
+         Check.NotNull(descriptor, nameof(descriptor));
          _descriptor = descriptor;
       }
 

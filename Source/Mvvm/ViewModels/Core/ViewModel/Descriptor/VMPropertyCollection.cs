@@ -2,15 +2,14 @@
    using System;
    using System.Collections;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
-
+   
    public sealed class VMPropertyCollection :
       IEnumerable<IVMPropertyDescriptor> {
 
       private IVMPropertyDescriptor[] _properties;
 
       public VMPropertyCollection(IVMPropertyDescriptor[] properties) {
-         Contract.Requires<ArgumentNullException>(properties != null);
+         Check.NotNull(properties, nameof(properties));
 
          _properties = properties;
       }
@@ -31,7 +30,7 @@
       }
 
       public bool TryGetProperty(string propertyName, out IVMPropertyDescriptor property) {
-         Contract.Requires<ArgumentNullException>(propertyName != null);
+         Check.NotNull(propertyName, nameof(propertyName));
 
          property = Array.Find(_properties, p => p.PropertyName == propertyName);
          return property != null;

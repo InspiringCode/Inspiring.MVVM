@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Diagnostics.Contracts;
    using System.Linq;
 
    // TODO: modifiing definition after creating target holder
@@ -10,12 +9,12 @@
       private object[][] _fieldValues;
 
       internal FieldValueHolder(FieldDefinitionCollection parent) {
-         Contract.Requires<ArgumentNullException>(parent != null);
+         Check.NotNull(parent, nameof(parent));
          _parent = parent;
       }
 
       public bool HasValue<T>(FieldDefinition<T> field) {
-         Contract.Requires<ArgumentNullException>(field != null);
+         Check.NotNull(field, nameof(field));
          CheckField(field);
 
          T value;
@@ -23,7 +22,7 @@
       }
 
       public T GetValue<T>(FieldDefinition<T> field) {
-         Contract.Requires<ArgumentNullException>(field != null);
+         Check.NotNull(field, nameof(field));
          CheckField(field);
 
          T value;
@@ -35,7 +34,7 @@
       }
 
       public T GetValueOrDefault<T>(FieldDefinition<T> field, T defaultValue = default(T)) {
-         Contract.Requires<ArgumentNullException>(field != null);
+         Check.NotNull(field, nameof(field));
          CheckField(field);
 
          T value;
@@ -47,7 +46,7 @@
       }
 
       public bool TryGetValue<T>(FieldDefinition<T> field, out T value) {
-         Contract.Requires<ArgumentNullException>(field != null);
+         Check.NotNull(field, nameof(field));
          value = default(T);
 
          if (_fieldValues == null) {
@@ -69,7 +68,7 @@
       }
 
       public void SetValue<T>(FieldDefinition<T> field, T value) {
-         Contract.Requires<ArgumentNullException>(field != null);
+         Check.NotNull(field, nameof(field));
          CheckField(field);
 
          EnsureFieldValues(field.GroupIndex);
@@ -77,7 +76,7 @@
       }
 
       public void ClearField<T>(FieldDefinition<T> field) {
-         Contract.Requires<ArgumentNullException>(field != null);
+         Check.NotNull(field, nameof(field));
          CheckField(field);
 
          if (HasValue(field)) {
@@ -94,7 +93,7 @@
 
       private void EnsureFieldValues(int groupIndex) {
          int groupCount = _parent.GetGroupCount();
-         Contract.Assert(groupCount > groupIndex);
+         Check.Requires(groupCount > groupIndex);
 
          if (_fieldValues == null) {
             _fieldValues = new object[groupCount][];

@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using System.Linq;
 
    /// <summary>
@@ -240,7 +239,7 @@
          }
 
          public bool RemoveCachedResult(IViewModel child) {
-            Contract.Requires(child != null);
+            Check.NotNull(child, nameof(child));
 
             int removals = _entries.RemoveAll(x => x.Child == child);
             bool joinedResultHasChanged = removals >= 1;
@@ -253,7 +252,7 @@
          }
 
          public bool UpdateCachedResult(IViewModel child) {
-            Contract.Requires(child != null);
+            Check.NotNull(child, nameof(child));
 
             var newChildResult = child
                .Kernel

@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.Common {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using System.Linq;
 
    internal static class TypeService {
@@ -40,7 +39,7 @@
       }
 
       public static Type GetItemType(Type collectionType) {
-         Contract.Requires(collectionType != null);
+         Check.NotNull(collectionType, nameof(collectionType));
 
          Type enumerableInterface = collectionType
             .GetInterfaces()
@@ -56,7 +55,7 @@
       }
 
       public static bool ClosesGenericType(Type t, Type generic) {
-         Contract.Requires(generic.IsGenericTypeDefinition);
+         Check.Requires(generic.IsGenericTypeDefinition);
 
          return
             t.IsGenericType &&

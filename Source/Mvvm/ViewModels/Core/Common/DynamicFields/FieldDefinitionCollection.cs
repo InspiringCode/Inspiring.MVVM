@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
 
    public sealed class FieldDefinitionCollection {
       private List<FieldGroupInfo> _containedGroups = new List<FieldGroupInfo>();
@@ -11,8 +10,7 @@
       }
 
       public FieldDefinition<T> DefineField<T>(FieldDefinitionGroup group) {
-         Contract.Requires<ArgumentNullException>(group != null);
-         Contract.Ensures(Contract.Result<FieldDefinition<T>>() != null);
+         Check.NotNull(group, nameof(group));
 
          FieldGroupInfo info = EnsureGroup(group);
 
@@ -38,7 +36,7 @@
       internal int GetFieldCount(int groupIndex) {
          FieldGroupInfo info = _containedGroups.Find(g => g.GroupIndex == groupIndex);
 
-         Contract.Assert(
+         Check.Requires<InvalidOperationException>(
             info != null,
             "This 'FieldDefintionCollection' does not contain a group with the specifed index."
          );

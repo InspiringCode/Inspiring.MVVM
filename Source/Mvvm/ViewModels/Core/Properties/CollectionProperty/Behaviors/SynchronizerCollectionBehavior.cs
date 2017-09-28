@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using System.Linq;
 
    internal sealed class SynchronizerCollectionBehavior<TItemVM, TItemSource> :
@@ -33,7 +32,7 @@
       private IEnumerable<TItemSource> GetSourceCollection(IBehaviorContext context) {
          IEnumerable<TItemSource> collectionSource = this.GetValueNext<IEnumerable<TItemSource>>(context);
 
-         Contract.Assert(collectionSource != null);
+         Check.Requires<InvalidOperationException>(collectionSource != null);
          return collectionSource;
       }
 

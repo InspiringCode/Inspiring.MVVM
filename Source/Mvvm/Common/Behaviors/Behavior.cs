@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.Common;
 
    public class Behavior : SealableObject, IBehavior {
@@ -28,7 +27,6 @@
       ///   if no behavior that implements 'TBehavior' can be found.
       /// </summary>
       public TBehavior GetNextBehavior<TBehavior>() {
-         Contract.Ensures(Contract.Result<TBehavior>() != null);
 
          TBehavior result;
          if (!TryGetBehavior<TBehavior>(out result)) {

@@ -1,7 +1,5 @@
 ﻿namespace Inspiring.Mvvm.Testability {
-   using System;
    using System.Collections;
-   using System.Diagnostics.Contracts;
 
    /// <summary>
    ///   Helper class for implementing <see cref="Object.GetHashCode"/> in a 
@@ -36,9 +34,8 @@
       ///      property values.</para>
       ///  </param>
       public static int CalculateHashCode(object obj, params object[] propertyValues) {
-         Contract.Requires(obj != null);
-         Contract.Requires(propertyValues != null);
-         Contract.Requires(propertyValues.Length > 0);
+         Check.NotNull(obj, nameof(obj));
+         Check.NotEmpty(propertyValues, nameof(propertyValues));
 
          unchecked {
             // If two objects of different types have the same property values, they
@@ -58,7 +55,7 @@
       ///   does not matter.
       /// </summary>
       public static int CalculateCollectionHashCode(IEnumerable collection) {
-         Contract.Requires(collection != null);
+         Check.NotNull(collection, nameof(collection));
 
          unchecked {
             int hashCode = 0;

@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using System.Linq;
 
    public sealed class UndoManager {
@@ -79,7 +78,7 @@
       ///   Undo stack doesn't contain <see cref="IRollbackPoint"/>. 
       /// </exception>
       public void RollbackTo(IRollbackPoint toPoint) {
-         Contract.Requires<ArgumentException>(
+         Check.Requires(
             ContainsRollbackPoint(toPoint),
             ExceptionTexts.RollbackPointNotFound
           );
@@ -96,7 +95,7 @@
       }
 
       public bool ContainsRollbackPoint(IRollbackPoint point) {
-         Contract.Requires<ArgumentNullException>(point != null);
+         Check.NotNull(point, nameof(point));
          return _actionStack.Contains(point);
       }
 

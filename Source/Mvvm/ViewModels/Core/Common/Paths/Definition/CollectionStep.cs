@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Diagnostics.Contracts;
    using System.Linq;
 
    internal sealed class CollectionStep<TDescriptor, TItemVM> :
@@ -11,7 +10,7 @@
       private PropertySelector<TDescriptor> _propertySelector;
 
       public CollectionStep(Func<TDescriptor, IVMPropertyDescriptor<IVMCollectionExpression<TItemVM>>> propertySelector) {
-         Contract.Requires(propertySelector != null);
+         Check.NotNull(propertySelector, nameof(propertySelector));
          _propertySelector = new PropertySelector<TDescriptor>(propertySelector);
       }
 
@@ -53,7 +52,7 @@
 
       public override IViewModel[] GetDescendants(
          PathDefinitionIterator definitionSteps,
-         IViewModel rootVM, 
+         IViewModel rootVM,
          bool onlyLoaded
       ) {
          throw new NotSupportedException();

@@ -1,12 +1,11 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
-   using System.Diagnostics.Contracts;
-
+   
    internal sealed class ItemDescriptorProviderBehavior :
       Behavior,
       IItemDescriptorProviderBehavior {
 
       public ItemDescriptorProviderBehavior(IVMDescriptor itemDescriptor) {
-         Contract.Requires(itemDescriptor != null);
+         Check.NotNull(itemDescriptor, nameof(itemDescriptor));
          ItemDescriptor = itemDescriptor;
       }
 

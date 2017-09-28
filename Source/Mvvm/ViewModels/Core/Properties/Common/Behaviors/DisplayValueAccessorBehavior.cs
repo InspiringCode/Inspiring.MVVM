@@ -40,6 +40,8 @@
       private string _propertyName;
 
       public object GetDisplayValue(IBehaviorContext vm) {
+         Check.NotNull(vm, nameof(vm));
+
          IValueAccessorBehavior<TValue> accessBehavior =
             GetNextBehavior<IValueAccessorBehavior<TValue>>();
 
@@ -47,6 +49,8 @@
       }
 
       public void SetDisplayValue(IBehaviorContext vm, object value) {
+         Check.NotNull(vm, nameof(vm));
+
          IValueAccessorBehavior<TValue> accessBehavior =
             GetNextBehavior<IValueAccessorBehavior<TValue>>();
 

@@ -1,6 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
+   using System;
    using System.ComponentModel;
-   using System.Diagnostics.Contracts;
    using System.Linq;
 
    /// <summary>
@@ -37,7 +37,7 @@
       }
 
       private void AssertInitialized() {
-         Contract.Assert(_vmDescriptor != null, "Behavior is not initalized.");
+         Check.Requires<InvalidOperationException>(_vmDescriptor != null, "Behavior is not initalized.");
       }
 
       private static PropertyDescriptor GetDescriptor(IVMPropertyDescriptor property) {

@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Diagnostics.Contracts;
-
+   
    public class CollectionValidationArgs<TOwnerVM, TItemVM> :
       ValidationArgs<TOwnerVM>
       where TOwnerVM : IViewModel
@@ -14,15 +13,15 @@
        )
          : base(ValidationStep.ViewModel, validator, owner) {
 
-         Contract.Requires(items != null);
+         Check.NotNull(items, nameof(items));
          Items = items;
       }
 
       public IVMCollection<TItemVM> Items { get; private set; }
 
       public void AddError(TItemVM item, string message, object details = null) {
-         Contract.Requires<ArgumentNullException>(item != null);
-         Contract.Requires<ArgumentNullException>(message != null);
+         Check.NotNull(item, nameof(item));
+         Check.NotNull(message, nameof(message));
 
          var target = ValidationTarget.ForError(Step, item, Items, null);
          var error = new ValidationError(Validator, target, message, details);
@@ -60,8 +59,8 @@
       )
          : base(step, validator, owner) {
 
-         Contract.Requires(items != null);
-         Contract.Requires(property != null);
+         Check.NotNull(items, nameof(items));
+         Check.NotNull(property, nameof(property));
 
          Items = items;
          TargetProperty = property;
@@ -72,8 +71,8 @@
       public IVMPropertyDescriptor<TValue> TargetProperty { get; private set; }
 
       public void AddError(TItemVM item, string message, object details = null) {
-         Contract.Requires<ArgumentNullException>(item != null);
-         Contract.Requires<ArgumentNullException>(message != null);
+         Check.NotNull(item, nameof(item));
+         Check.NotNull(message, nameof(message));
 
          var target = ValidationTarget.ForError(Step, item, Items, TargetProperty);
          var error = new ValidationError(Validator, target, message, details);

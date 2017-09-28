@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.Common {
    using System;
-   using System.Diagnostics.Contracts;
 
    /// <summary>
    ///   A base class for objects that may be sealed. Once an object is sealed 
@@ -23,7 +22,6 @@
       ///   be modified.
       /// </summary>
       public void Seal() {
-         Contract.Ensures(IsSealed);
          IsSealed = true;
       }
 

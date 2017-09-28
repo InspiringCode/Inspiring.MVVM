@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.Common {
    using System;
-   using System.Diagnostics.Contracts;
 
    internal struct Optional<T> {
       private T _value;
@@ -19,7 +18,7 @@
 
       public T Value {
          get {
-            Contract.Requires<InvalidOperationException>(HasValue);
+            Check.Requires<InvalidOperationException>(HasValue);
             return _value;
          }
          set {

@@ -1,14 +1,13 @@
 ﻿namespace Inspiring.Mvvm.Common {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using System.Linq;
 
    public class EventSubscriptionBuilder<TPayload> {
       private readonly SubscriptionBuilderInterface _builderInterface;
 
       public EventSubscriptionBuilder(SubscriptionBuilderInterface builderInterface) {
-         Contract.Requires<ArgumentNullException>(builderInterface != null);
+         Check.NotNull(builderInterface, nameof(builderInterface));
 
          _builderInterface = builderInterface;
          Conditions = new List<IEventCondition>();

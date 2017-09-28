@@ -1,14 +1,12 @@
 ﻿namespace Inspiring.Mvvm.Screens {
    using System;
    using System.Linq;
-   using Inspiring.Mvvm.Common;
-   using System.Diagnostics.Contracts;
 
    internal sealed class DialogLifecycle {
       private readonly IScreenBase _parent;
 
       public DialogLifecycle(IScreenBase parent) {
-         Contract.Requires(parent != null);
+         Check.NotNull(parent, nameof(parent));
          _parent = parent;
       }
 

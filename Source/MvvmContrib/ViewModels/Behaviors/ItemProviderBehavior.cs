@@ -2,7 +2,6 @@
    using System;
    using System.Collections;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels.Core;
 
@@ -16,7 +15,7 @@
          IEnumerable<T> selectedItems,
          Func<T, bool> isActiveFilter
       ) {
-         Contract.Requires<ArgumentNullException>(allSourceItems != null);
+         Check.NotNull(allSourceItems, nameof(allSourceItems));
 
          IEnumerable<T> selectableItems = allSourceItems;
 

@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using System.Linq;
    using Inspiring.Mvvm.Common;
 
@@ -14,14 +13,14 @@
          IViewModel target,
          IVMPropertyDescriptor targetProperty
       ) {
-         Contract.Requires(target != null);
-         Contract.Requires(targetProperty != null);
+         Check.NotNull(target, nameof(target));
+         Check.NotNull(targetProperty, nameof(targetProperty));
 
          EnqueueRevalidation(new RevalidationRequest(target, targetProperty));
       }
 
       public void RequestViewModelRevalidation(IViewModel target) {
-         Contract.Requires(target != null);
+         Check.NotNull(target, nameof(target));
          EnqueueRevalidation(new RevalidationRequest(target));
       }
 

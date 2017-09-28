@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using System.Linq;
 
    internal interface IPathDefinitionBuilderContext {
@@ -29,12 +28,12 @@
       private readonly IPathDefinitionBuilderContext _context;
 
       public PathDefinitionBuilder(IPathDefinitionBuilderContext context) {
-         Contract.Requires(context != null);
+         Check.NotNull(context, nameof(context));
          _context = context;
       }
 
       public PathDefinitionBuilder(QualifiedProperties path) {
-         Contract.Requires(path != null);
+         Check.NotNull(path, nameof(path));
          _context = new NestedContext(path);
       }
 

@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Diagnostics.Contracts;
 
    public sealed class RootValidatorBuilder<TOwner, TTarget, TDescriptor> :
       ValidatorBuilder<TOwner, TTarget, TDescriptor>
@@ -26,7 +25,7 @@
       ///   Allows ancestor VMs to define property validators for this VM.
       /// </summary>
       public void EnableParentValidation<TValue>(Func<TDescriptor, IVMPropertyDescriptor<TValue>> propertySelector) {
-         Contract.Requires<ArgumentNullException>(propertySelector != null);
+         Inspiring.Mvvm.Check.NotNull(propertySelector, nameof(propertySelector));
 
          var op = OperationProvider.GetOperation();
          var property = propertySelector((TDescriptor)op.Descriptor);

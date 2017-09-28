@@ -17,8 +17,10 @@
       where TItemVM : IViewModel {
 
       /// <inheritdoc />
-      public object GetDisplayValue(IBehaviorContext context) {
-         var targetCollection = GetTargetCollection(context);
+      public object GetDisplayValue(IBehaviorContext vm) {
+         Check.NotNull(vm, nameof(vm));
+
+         var targetCollection = GetTargetCollection(vm);
 
          // This is a hack for DevExpress GridControl.
          if (targetCollection.Count == 0) {
@@ -29,7 +31,9 @@
       }
 
       /// <inheritdoc />
-      public void SetDisplayValue(IBehaviorContext context, object value) {
+      public void SetDisplayValue(IBehaviorContext vm, object value) {
+         Check.NotNull(vm, nameof(vm));
+
          IEnumerable<TItemVM> sourceCollection = null;
 
          if (value != null) {
@@ -37,7 +41,7 @@
             sourceCollection = untypedSourceCollection.Cast<TItemVM>();
          }
 
-         IVMCollection<TItemVM> targetCollection = GetTargetCollection(context);
+         IVMCollection<TItemVM> targetCollection = GetTargetCollection(vm);
 
          SynchronizeCollections(sourceCollection, targetCollection);
       }

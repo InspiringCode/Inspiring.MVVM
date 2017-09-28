@@ -1,11 +1,10 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
    using System;
-   using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.ViewModels.Core;
 
    public abstract class VMPropertyDescriptor : IVMPropertyDescriptor {
       internal VMPropertyDescriptor(Type propertyType) {
-         Contract.Requires(propertyType != null);
+         Check.NotNull(propertyType, nameof(propertyType));
 
          Behaviors = new BehaviorChain();
          PropertyType = propertyType;
@@ -13,7 +12,7 @@
 
       internal VMPropertyDescriptor(Type propertyType, string propertyName)
          : this(propertyType) {
-         Contract.Requires(propertyName != null);
+         Check.NotNull(propertyName, nameof(propertyName));
 
          Initialize(propertyName);
       }
@@ -25,17 +24,17 @@
       public Type PropertyType { get; private set; }
 
       public void Initialize(string propertyName) {
-         Contract.Requires<ArgumentNullException>(propertyName != null);
+         Check.NotNull(propertyName, nameof(propertyName));
 
          PropertyName = propertyName;
       }
-      
+
       object IVMPropertyDescriptor.GetValue(IBehaviorContext context) {
          return GetValueCore(context);
       }
 
       internal object GetDisplayValue(IBehaviorContext context) {
-         Contract.Requires(context != null);
+         Check.NotNull(context, nameof(context));
 
          return Behaviors
             .GetNextBehavior<IDisplayValueAccessorBehavior>()
@@ -43,7 +42,7 @@
       }
 
       internal void SetDisplayValue(IBehaviorContext context, object value) {
-         Contract.Requires(context != null);
+         Check.NotNull(context, nameof(context));
 
          Behaviors
             .GetNextBehavior<IDisplayValueAccessorBehavior>()
@@ -73,7 +72,7 @@
       //}
 
       internal T GetValue(IBehaviorContext context) {
-         Contract.Requires(context != null);
+         Check.NotNull(context, nameof(context));
 
          return Behaviors
             .GetNextBehavior<IValueAccessorBehavior<T>>()
@@ -81,7 +80,7 @@
       }
 
       internal void SetValue(IBehaviorContext context, T value) {
-         Contract.Requires(context != null);
+         Check.NotNull(context, nameof(context));
 
          Behaviors
             .GetNextBehavior<IValueAccessorBehavior<T>>()

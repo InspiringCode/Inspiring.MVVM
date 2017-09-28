@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Diagnostics.Contracts;
-
+   
    internal sealed class DelegateCommandExecutorBehavior<TSourceObject> :
       Behavior,
       ICommandCanExecuteBehavior,
@@ -14,7 +13,7 @@
          Action<TSourceObject> executeAction,
          Func<TSourceObject, bool> canExecutePredicate = null
       ) {
-         Contract.Requires(executeAction != null);
+         Check.NotNull(executeAction, nameof(executeAction));
 
          _executeAction = executeAction;
          _canExecutePredicate = canExecutePredicate;

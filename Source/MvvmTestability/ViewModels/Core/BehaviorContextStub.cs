@@ -41,6 +41,7 @@
       }
 
       public void NotifyChange(ChangeArgs args) {
+         Check.NotNull(args, nameof(args));
          _inner.NotifyChange(args);
          NotifyChangeInvocations.Add(args);
       }

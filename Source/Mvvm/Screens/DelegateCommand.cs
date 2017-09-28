@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.Screens {
    using System;
-   using System.Diagnostics.Contracts;
    using System.Windows.Input;
 
    // TODO: Remove?
@@ -14,7 +13,7 @@
          Action execute,
          Func<bool> canExecute = null
       ) {
-         Contract.Requires<ArgumentNullException>(execute != null);
+         Check.NotNull(execute, nameof(execute));
          return new DelegateCommand<object>(
             execute: p => execute(),
             canExecute: canExecute != null ?
@@ -27,7 +26,7 @@
          Action<TParameter> execute,
          Func<TParameter, bool> canExecute = null
       ) {
-         Contract.Requires<ArgumentNullException>(execute != null);
+         Check.NotNull(execute, nameof(execute));
          return new DelegateCommand<TParameter>(execute, canExecute);
       }
    }

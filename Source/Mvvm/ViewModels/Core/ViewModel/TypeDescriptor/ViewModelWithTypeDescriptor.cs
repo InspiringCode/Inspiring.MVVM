@@ -1,8 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
-   using System.ComponentModel;
    using System;
-   using System.Diagnostics.Contracts;
-   using Contracts;
+   using System.ComponentModel;
 
    /// <summary>
    ///   This class serves the internal infrastructure and should not be used.
@@ -13,7 +11,6 @@
    ///   except <see cref="ICustomTypeDescriptor.GetProperties"/> which is forwarded to
    ///   the abstract method <see cref="GetPropertyDescriptors"/>.
    /// </remarks>
-   [ContractClass(typeof(ViewModelTypeDescriptorContract))]
    public abstract class ViewModelWithTypeDescriptor : ICustomTypeDescriptor {
       /// <inheritdoc />
       PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties() {
@@ -82,15 +79,5 @@
       ///   cref="ICustomTypeDescriptor.GetProperties"/> is called.
       /// </summary>
       protected abstract PropertyDescriptorCollection GetPropertyDescriptors();
-   }
-
-   namespace Contracts {
-      [ContractClassFor(typeof(ViewModelWithTypeDescriptor))]
-      internal abstract class ViewModelTypeDescriptorContract : ViewModelWithTypeDescriptor {
-         protected override PropertyDescriptorCollection GetPropertyDescriptors() {
-            Contract.Ensures(Contract.Result<PropertyDescriptorCollection>() != null);
-            return default(PropertyDescriptorCollection);
-         }
-      }
    }
 }

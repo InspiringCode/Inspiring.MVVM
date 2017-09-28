@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.Common;
 
    internal static class DelegateValidator {
@@ -71,7 +70,7 @@
       )
          : base(argsFactory) {
 
-         Contract.Requires(validatorAction != null);
+         Check.NotNull(validatorAction, nameof(validatorAction));
          _validatorAction = validatorAction;
       }
 

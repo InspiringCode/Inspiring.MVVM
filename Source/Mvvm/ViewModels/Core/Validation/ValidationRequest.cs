@@ -1,13 +1,12 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Diagnostics.Contracts;
-
+   
    public sealed class ValidationRequest {
       public ValidationRequest(
          ValidationStep step,
          Path targetPath
       ) {
-         Contract.Requires(targetPath != null);
+         Check.NotNull(targetPath, nameof(targetPath));
          Step = step;
          TargetPath = targetPath;
       }
@@ -17,7 +16,7 @@
          IViewModel vm
       )
          : this(step, Path.Empty.Prepend(vm)) {
-         Contract.Requires(vm != null);
+         Check.NotNull(vm, nameof(vm));
       }
 
       public ValidationRequest(
@@ -26,8 +25,8 @@
          IVMPropertyDescriptor property
       )
          : this(step, Path.Empty.Prepend(property).Prepend(vm)) {
-         Contract.Requires(vm != null);
-         Contract.Requires(property != null);
+         Check.NotNull(vm, nameof(vm));
+         Check.NotNull(property, nameof(property));
       }
 
       public ValidationStep Step { get; private set; }

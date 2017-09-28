@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.Common;
 
    /// <summary>
@@ -20,9 +19,8 @@
    public sealed class BehaviorChainConfiguration : SealableObject {
       private List<BehaviorChainItemConfiguration> _items = new List<BehaviorChainItemConfiguration>();
 
-      [Pure]
       public bool Contains(BehaviorKey key) {
-         Contract.Requires<ArgumentNullException>(key != null);
+         Check.NotNull(key, nameof(key));
 
          return _items.Find(x => x.Key == key) != null;
       }
@@ -38,8 +36,8 @@
       ///   cref="DefaultBehaviorState.DisabledWithoutFactory"/> option.
       /// </param>
       public void Enable(BehaviorKey key, IBehavior behaviorInstance = null) {
-         Contract.Requires<ArgumentNullException>(key != null);
-         Contract.Requires<ArgumentException>(Contains(key));
+         Check.NotNull(key, nameof(key));
+         Check.Requires<InvalidOperationException>(Contains(key));
          RequireNotSealed();
 
          var item = GetItem(key);
@@ -62,8 +60,8 @@
       ///   chain returned by <see cref="CreateChain"/>.
       /// </summary>
       public void Disable(BehaviorKey key) {
-         Contract.Requires<ArgumentNullException>(key != null);
-         Contract.Requires<ArgumentException>(Contains(key));
+         Check.NotNull(key, nameof(key));
+         Check.Requires<InvalidOperationException>(Contains(key));
          RequireNotSealed();
 
          var item = GetItem(key);
@@ -84,9 +82,9 @@
          BehaviorKey key,
          Action<T> configurationAction
       ) where T : IBehavior {
-         Contract.Requires<ArgumentNullException>(key != null);
-         Contract.Requires<ArgumentException>(Contains(key));
-         Contract.Requires<ArgumentNullException>(configurationAction != null);
+         Check.NotNull(key, nameof(key));
+         Check.Requires<InvalidOperationException>(Contains(key));
+         Check.NotNull(configurationAction, nameof(configurationAction));
          RequireNotSealed();
 
          BehaviorChainItemConfiguration item = GetItem(key);
@@ -97,9 +95,8 @@
       }
 
       public TBehavior GetBehavior<TBehavior>(BehaviorKey withKey) where TBehavior : IBehavior {
-         Contract.Requires<ArgumentNullException>(withKey != null);
-         Contract.Requires<ArgumentException>(Contains(withKey));
-         Contract.Ensures(Contract.Result<TBehavior>() != null);
+         Check.NotNull(withKey, nameof(withKey));
+         Check.Requires<InvalidOperationException>(Contains(withKey));
          RequireNotSealed();
 
          BehaviorChainItemConfiguration item = GetItem(withKey);
@@ -118,7 +115,7 @@
       ///   Adds a disabled behavior configuration to the end of the chain.
       /// </summary>
       internal void Append(BehaviorKey key) {
-         Contract.Requires(key != null);
+         Check.NotNull(key, nameof(key));
          RequireNotSealed();
 
          _items.Add(new BehaviorChainItemConfiguration(key));
@@ -128,8 +125,8 @@
       ///   Adds a disabled behavior configuration to the end of the chain.
       /// </summary>
       internal void Append(BehaviorKey key, IBehavior instance) {
-         Contract.Requires(key != null);
-         Contract.Requires(instance != null);
+         Check.NotNull(key, nameof(key));
+         Check.NotNull(instance, nameof(instance));
          RequireNotSealed();
 
          var item = new BehaviorChainItemConfiguration(key) { Instance = instance };
@@ -140,8 +137,8 @@
       ///   Adds a disabled behavior configuration to the top of the chain.
       /// </summary>
       internal void Prepend(BehaviorKey key, IBehavior instance) {
-         Contract.Requires(key != null);
-         Contract.Requires(instance != null);
+         Check.NotNull(key, nameof(key));
+         Check.NotNull(instance, nameof(instance));
          RequireNotSealed();
 
          var item = new BehaviorChainItemConfiguration(key) { Instance = instance };
@@ -153,7 +150,6 @@
       ///   as configured by this object.
       /// </summary>
       internal BehaviorChain CreateChain() {
-         Contract.Ensures(Contract.Result<BehaviorChain>() != null);
 
          var chain = new BehaviorChain();
          IBehavior currentBehavior = chain;
@@ -189,11 +185,6 @@
          public BehaviorKey Key { get; private set; }
          public bool IsEnabled { get; set; }
          public IBehavior Instance { get; set; }
-
-         [ContractInvariantMethod]
-         void ObjectInvariant() {
-            Contract.Invariant(IsEnabled ? Instance != null : true);
-         }
 
          public override string ToString() {
             return Key.ToString();

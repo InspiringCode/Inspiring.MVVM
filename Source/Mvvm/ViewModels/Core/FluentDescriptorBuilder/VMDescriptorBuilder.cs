@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Diagnostics.Contracts;
-
+   
    /// <summary>
    ///   Fluent interface. See <see cref="VMDescriptorBuilder"/>.
    /// </summary>
@@ -79,7 +78,7 @@
       public IVMDescriptorBuilderWithProperties<TDescriptor, TVM> WithProperties(
          Action<TDescriptor, IVMPropertyBuilderProvider<TVM>> propertyConfigurator
       ) {
-         Contract.Requires<ArgumentNullException>(propertyConfigurator != null);
+         Check.NotNull(propertyConfigurator, nameof(propertyConfigurator));
          _propertyConfigurator += propertyConfigurator;
          return this;
       }
@@ -88,7 +87,7 @@
       public IVMDescriptorBuilderWithProperties<TDescriptor, TVM> WithDependencies(
          Action<IVMDependencyBuilder<TVM, TDescriptor>> dependencyConfigurator
       ) {
-         Contract.Requires<ArgumentNullException>(dependencyConfigurator != null);
+         Check.NotNull(dependencyConfigurator, nameof(dependencyConfigurator));
          _dependencyConfigurator += dependencyConfigurator;
          return this;
       }
@@ -97,7 +96,7 @@
       public IVMDescriptorBuilderWithProperties<TDescriptor, TVM> WithValidators(
          Action<RootValidatorBuilder<TVM, TVM, TDescriptor>> validatorConfigurator
       ) {
-         Contract.Requires<ArgumentNullException>(validatorConfigurator != null);
+         Check.NotNull(validatorConfigurator, nameof(validatorConfigurator));
          _validatorConfigurator += validatorConfigurator;
          return this;
       }
@@ -106,7 +105,7 @@
       public IVMDescriptorBuilderWithProperties<TDescriptor, TVM> WithBehaviors(
          Action<IVMBehaviorBuilder<TVM, TDescriptor>> behaviorConfigurator
       ) {
-         Contract.Requires<ArgumentNullException>(behaviorConfigurator != null);
+         Check.NotNull(behaviorConfigurator, nameof(behaviorConfigurator));
          _behaviorConfigurator += behaviorConfigurator;
          return this;
       }
@@ -115,7 +114,7 @@
       public IVMDescriptorBuilderWithProperties<TDescriptor, TVM> WithViewModelBehaviors(
          Action<ViewModelBehaviorBuilder<TVM, TDescriptor>> behaviorConfigurator
       ) {
-         Contract.Requires<ArgumentNullException>(behaviorConfigurator != null);
+         Check.NotNull(behaviorConfigurator, nameof(behaviorConfigurator));
          _viewModelBehaviorConfigurator += behaviorConfigurator;
          return this;
       }

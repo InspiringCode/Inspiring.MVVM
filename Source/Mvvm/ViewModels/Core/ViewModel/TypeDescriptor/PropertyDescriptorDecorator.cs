@@ -1,8 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.ComponentModel;
-   using System.Diagnostics.Contracts;
-
+   
    internal abstract class PropertyDescriptorDecorator<T> :
       PropertyDescriptor
       where T : PropertyDescriptor {
@@ -11,7 +10,7 @@
 
       public PropertyDescriptorDecorator(T decorated)
          : base(decorated.Name, ToArray(decorated.Attributes)) {
-         Contract.Requires(decorated != null);
+         Check.NotNull(decorated, nameof(decorated));
          Decorated = decorated;
       }
 

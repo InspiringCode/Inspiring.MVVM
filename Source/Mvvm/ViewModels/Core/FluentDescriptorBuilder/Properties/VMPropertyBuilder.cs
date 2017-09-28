@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using System.Linq.Expressions;
    using System.Windows.Input;
    using Inspiring.Mvvm.Common;
@@ -20,8 +19,8 @@
       )
          : base(configuration) {
 
-         Contract.Requires(sourceObjectPath != null);
-         Contract.Requires(configuration != null);
+         Check.NotNull(sourceObjectPath, nameof(sourceObjectPath));
+         Check.NotNull(configuration, nameof(configuration));
 
          Custom = new VMPropertyFactory<TVM, TSourceObject>(configuration, sourceObjectPath);
       }

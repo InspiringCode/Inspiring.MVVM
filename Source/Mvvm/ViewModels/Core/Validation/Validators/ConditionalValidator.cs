@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Diagnostics.Contracts;
-
+   
    internal sealed class ConditionalValidator : IValidator {
       private readonly ICondition<ValidationRequest> _condition;
       private readonly IValidator _inner;
@@ -10,8 +9,8 @@
          ICondition<ValidationRequest> condition,
          IValidator inner
       ) {
-         Contract.Requires(condition != null);
-         Contract.Requires(inner != null);
+         Check.NotNull(condition, nameof(condition));
+         Check.NotNull(inner, nameof(inner));
 
          _condition = condition;
          _inner = inner;

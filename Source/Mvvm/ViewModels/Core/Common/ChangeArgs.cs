@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using System.Linq;
    using Inspiring.Mvvm.Common;
 
@@ -53,7 +52,7 @@
       }
 
       internal static ChangeArgs PropertyChanged(IVMPropertyDescriptor property, ValueStage stage, IChangeReason reason = null) {
-         Contract.Requires(property != null);
+         Check.NotNull(property, nameof(property));
 
          return new ChangeArgs(
             ChangeType.PropertyChanged,
@@ -93,7 +92,7 @@
          IEnumerable<IViewModel> oldItems,
          IChangeReason reason = null
       ) {
-         Contract.Requires(collection != null);
+         Check.NotNull(collection, nameof(collection));
 
          var newItems = (IEnumerable<IViewModel>)collection;
 
@@ -112,9 +111,9 @@
          IEnumerable<IViewModel> newItems,
          IChangeReason reason = null
       ) {
-         Contract.Requires(collection != null);
-         Contract.Requires(newItems != null);
-         Contract.Requires(newItems.Any());
+         Check.NotNull(collection, nameof(collection));
+         Check.NotNull(newItems, nameof(newItems));
+         Check.NotEmpty(newItems, nameof(newItems));
 
          return new ChangeArgs(
             ChangeType.AddedToCollection,
@@ -130,9 +129,9 @@
          IEnumerable<IViewModel> oldItems,
          IChangeReason reason = null
       ) {
-         Contract.Requires(collection != null);
-         Contract.Requires(oldItems != null);
-         Contract.Requires(oldItems.Any());
+         Check.NotNull(collection, nameof(collection));
+         Check.NotNull(oldItems, nameof(oldItems));
+         Check.NotEmpty(oldItems, nameof(oldItems));
 
          return new ChangeArgs(
             ChangeType.RemovedFromCollection,
@@ -153,7 +152,7 @@
       }
 
       internal static ChangeArgs ValidationResultChanged(IVMPropertyDescriptor property, ValueStage stage) {
-         Contract.Requires(property != null);
+         Check.NotNull(property, nameof(property));
 
          return new ChangeArgs(
             ChangeType.ValidationResultChanged,
@@ -225,14 +224,6 @@
             ChangeType,
             ChangedPath
          );
-      }
-
-      [ContractInvariantMethod]
-      private void ObjectInvariant() {
-         //Contract.Invariant(ChangedVM != null);
-         //Contract.Invariant(
-         //   ChangeType == ChangeType.PropertyChanged ? ChangedProperty != null : true
-         //);
       }
    }
 }

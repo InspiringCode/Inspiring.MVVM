@@ -1,5 +1,4 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
-   using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.ViewModels.Core;
 
@@ -14,7 +13,6 @@
 
       public FieldDefinitionCollection Fields {
          get {
-            Contract.Ensures(Contract.Result<FieldDefinitionCollection>() != null);
             return _fields;
          }
       }

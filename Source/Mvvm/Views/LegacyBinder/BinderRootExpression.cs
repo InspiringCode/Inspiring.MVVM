@@ -1,14 +1,13 @@
 ﻿namespace Inspiring.Mvvm.Views.Binder {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
-
+   
    public abstract class BinderRootExpression {
       private List<BinderContext> _queuedExecutions = new List<BinderContext>();
       private List<IBinderBuildStep> _buildSteps = new List<IBinderBuildStep>();
 
       public void InsertBuildStep(IBinderBuildStep step) {
-         Contract.Requires<ArgumentNullException>(step != null);
+         Check.NotNull(step, nameof(step));
          _buildSteps.Insert(0, step);
       }
 

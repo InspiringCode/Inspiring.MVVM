@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.Common {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using System.Linq;
    using System.Reflection;
    using System.Reflection.Emit;
@@ -12,7 +11,7 @@
       private readonly Type _declaringType;
 
       public ILParser(MethodInfo method) {
-         Contract.Requires(method != null);
+         Check.NotNull(method, nameof(method));
 
          _ilCode = method
             .GetMethodBody()

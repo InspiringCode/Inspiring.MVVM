@@ -2,7 +2,6 @@
    using System;
    using System.Collections.Generic;
    using System.ComponentModel;
-   using System.Diagnostics.Contracts;
    using System.Linq;
    using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.ViewModels.Core;
@@ -76,7 +75,7 @@
 
       public BrowsablePropertyDescriptor(ViewModelPropertyDescriptor decorated)
          : base(decorated) {
-         Contract.Requires(decorated != null);
+         Check.NotNull(decorated, nameof(decorated));
       }
 
       public override Type PropertyType {

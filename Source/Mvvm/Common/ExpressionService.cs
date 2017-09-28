@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.Common {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using System.Linq;
    using System.Linq.Expressions;
    using System.Reflection;
@@ -17,8 +16,7 @@
       internal static PropertyInfo[] GetProperties<TObject, TProperty>(
          Expression<Func<TObject, TProperty>> propertyPathSelector
       ) {
-         Contract.Requires(propertyPathSelector != null);
-         Contract.Ensures(Contract.Result<PropertyInfo[]>() != null);
+         Check.NotNull(propertyPathSelector, nameof(propertyPathSelector));
 
          Expression root = RemoveConvertExpression(propertyPathSelector.Body);
 
@@ -84,7 +82,7 @@
       public static string GetPropertyName<TObject, TProperty>(
          Expression<Func<TObject, TProperty>> propertySelector
       ) {
-         Contract.Requires<ArgumentNullException>(propertySelector != null);
+         Check.NotNull(propertySelector, nameof(propertySelector));
 
          PropertyInfo[] propertyPath = GetProperties(propertySelector);
 
@@ -100,7 +98,7 @@
       }
 
       internal static string GetPropertyName<TProperty>(Expression<Func<TProperty>> propertySelector) {
-         Contract.Requires<ArgumentNullException>(propertySelector != null);
+         Check.NotNull(propertySelector, nameof(propertySelector));
 
          UnaryExpression unary = propertySelector.Body as UnaryExpression;
          MemberExpression exp = unary != null ?

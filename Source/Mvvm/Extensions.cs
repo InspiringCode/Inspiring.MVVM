@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using System.Linq;
    using System.Threading;
 
@@ -19,8 +18,8 @@
       }
 
       public static string FormatWith(this string format, params object[] args) {
-         Contract.Requires(format != null);
-         Contract.Requires(args != null);
+         Check.NotNull(format, nameof(format));
+         Check.NotNull(args, nameof(args));
 
          return string.Format(format, args);
       }

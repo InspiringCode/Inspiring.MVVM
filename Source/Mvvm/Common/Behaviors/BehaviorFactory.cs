@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.Common {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.ViewModels.Core;
 
    public sealed class BehaviorFactory : IBehaviorFactory {
@@ -24,15 +23,15 @@
       public BehaviorFactory RegisterBehavior<T>(
          BehaviorKey key
       ) where T : IBehavior, new() {
-         Contract.Requires(key != null);
+         Check.NotNull(key, nameof(key));
 
          RegisterBehavior(key, () => new T());
          return this;
       }
 
       public BehaviorFactory RegisterBehavior(BehaviorKey key, Func<IBehavior> factoryFunction) {
-         Contract.Requires(key != null);
-         Contract.Requires(factoryFunction != null);
+         Check.NotNull(key, nameof(key));
+         Check.NotNull(factoryFunction, nameof(factoryFunction));
 
          _behaviors[key] = factoryFunction;
          return this;

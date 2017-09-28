@@ -2,7 +2,6 @@
    using System;
    using System.Collections.Generic;
    using System.ComponentModel;
-   using System.Diagnostics.Contracts;
    using System.Linq;
    using Inspiring.Mvvm.Common;
 
@@ -11,8 +10,8 @@
          ScreenConductor conductor,
          IScreenBase screen
       ) {
-         Contract.Requires(conductor != null);
-         Contract.Requires(screen != null);
+         Check.NotNull(conductor, nameof(conductor));
+         Check.NotNull(screen, nameof(screen));
 
          Conductor = conductor;
          Screen = screen;
@@ -63,7 +62,7 @@
       public ScreenConductor(EventAggregator eventAggregator)
          : base(eventAggregator) {
 
-         Contract.Requires<ArgumentNullException>(eventAggregator != null);
+         Check.NotNull(eventAggregator, nameof(eventAggregator));
 
          _screens = new ScreenChildrenCollection<IScreenBase>(eventAggregator, this);
          _eventAggregator = eventAggregator;

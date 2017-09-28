@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.Screens {
    using System;
-   using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.Common;
 
    public static partial class ScreenFactory {
@@ -15,7 +14,7 @@
       public static IScreenFactory<TScreen> For<TScreen>(
          TScreen instance
       ) where TScreen : IScreenBase {
-         Contract.Requires<ArgumentNullException>(instance != null);
+         Check.NotNull(instance, nameof(instance));
          return new InstanceFactory<TScreen>(instance);
       }
 

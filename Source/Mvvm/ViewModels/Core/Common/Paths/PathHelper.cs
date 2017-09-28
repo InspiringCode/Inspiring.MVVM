@@ -1,7 +1,4 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
-   using System;
-   using System.Diagnostics.Contracts;
-
    internal struct PathHelperResult {
       public bool Success { get; private set; }
       public IViewModel VM { get; private set; }
@@ -28,8 +25,8 @@
 
    internal static class PathHelper {
       public static PathHelperResult SelectsOnlyPropertyOf(this Path path, IViewModel owner) {
-         Contract.Requires(path != null);
-         Contract.Requires(owner != null);
+         Check.NotNull(path, nameof(path));
+         Check.NotNull(owner, nameof(owner));
 
          bool success =
             path.Length == 2 &&
@@ -42,8 +39,8 @@
       }
 
       public static PathHelperResult SelectsOnlyCollectionOf(this Path path, IViewModel owner) {
-         Contract.Requires(path != null);
-         Contract.Requires(owner != null);
+         Check.NotNull(path, nameof(path));
+         Check.NotNull(owner, nameof(owner));
 
          bool success =
             path.Length == 2 &&
@@ -56,8 +53,8 @@
       }
 
       public static PathHelperResult SelectsOnly(this Path path, IViewModel singleViewModel) {
-         Contract.Requires(path != null);
-         Contract.Requires(singleViewModel != null);
+         Check.NotNull(path, nameof(path));
+         Check.NotNull(singleViewModel, nameof(singleViewModel));
 
          bool success =
             path.Length == 1 &&
@@ -76,14 +73,14 @@
       }
 
       public static IViewModel GetRootVM(this Path path) {
-         Contract.Requires<ArgumentException>(!path.IsEmpty);
-         Contract.Requires<ArgumentException>(path[0].Type == PathStepType.ViewModel); // TODO: Shouldn't this be an invariant?
+         Check.Requires(!path.IsEmpty);
+         Check.Requires(path[0].Type == PathStepType.ViewModel);
 
          return path[0].ViewModel;
       }
 
       //public static IViewModel GetLastVM(this Path path) {
-      //   Contract.Requires<ArgumentException>(!path.IsEmpty);
+      //   Check.Requires(!path.IsEmpty);
 
       //   for (int i = path.Length - 1; i >= 0; i--) {
       //      if (path[i].Type == PathStepType.ViewModel) {

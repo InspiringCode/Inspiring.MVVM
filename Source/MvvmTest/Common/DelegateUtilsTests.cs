@@ -7,13 +7,6 @@
    [TestClass]
    public class DelegateUtilsTests : TestBase {
       [TestMethod]
-      public void GetFriendlyName_AnonymousDelegate() {
-         Action<int> dlg = x => { };
-         string name = DelegateUtils.GetFriendlyName(dlg);
-         Assert.IsTrue(name.StartsWith("DelegateUtilsTests."));
-      }
-
-      [TestMethod]
       public void GetFriendlyName_AnonymousLambda() {
          Action<int> dlg = x => {
             this.ToString();

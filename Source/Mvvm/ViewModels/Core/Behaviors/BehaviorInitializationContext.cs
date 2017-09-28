@@ -1,12 +1,10 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
-   using System.Diagnostics.Contracts;
-
    public sealed class BehaviorInitializationContext {
       public BehaviorInitializationContext(
          IVMDescriptor descriptor,
          IVMPropertyDescriptor property = null
       ) {
-         Contract.Requires(descriptor != null);
+         Check.NotNull(descriptor, nameof(descriptor));
 
          Fields = descriptor.Fields;
          Descriptor = descriptor;
@@ -18,11 +16,5 @@
       public IVMDescriptor Descriptor { get; private set; }
 
       public IVMPropertyDescriptor Property { get; private set; }
-
-      [ContractInvariantMethod]
-      private void ObjectInvariant() {
-         Contract.Invariant(Fields != null);
-         Contract.Invariant(Descriptor != null);
-      }
    }
 }

@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
 
    /// <summary>
    ///   Holds the <see cref="BehaviorChainConfiguration"/> for all VM properties
@@ -21,8 +20,7 @@
       /// </exception>
       public BehaviorChainConfiguration this[IVMPropertyDescriptor forProperty] {
          get {
-            Contract.Requires<ArgumentNullException>(forProperty != null);
-            Contract.Ensures(Contract.Result<BehaviorChainConfiguration>() != null);
+            Check.NotNull(forProperty, nameof(forProperty));
 
             return _propertyConfigurations[forProperty];
          }
@@ -40,8 +38,8 @@
          IVMPropertyDescriptor<TValue> property,
          BehaviorChainConfiguration configuration
       ) {
-         Contract.Requires<ArgumentNullException>(property != null);
-         Contract.Requires<ArgumentNullException>(configuration != null);
+         Check.NotNull(property, nameof(property));
+         Check.NotNull(configuration, nameof(configuration));
 
          _propertyConfigurations.Add(property, configuration);
       }
@@ -55,8 +53,8 @@
          BehaviorKey key,
          Action<T> configurationAction
       ) where T : IBehavior {
-         Contract.Requires<ArgumentNullException>(key != null);
-         Contract.Requires<ArgumentNullException>(configurationAction != null);
+         Check.NotNull(key, nameof(key));
+         Check.NotNull(configurationAction, nameof(configurationAction));
 
          foreach (BehaviorChainConfiguration config in _propertyConfigurations.Values) {
             config.ConfigureBehavior(key, configurationAction);
@@ -69,7 +67,7 @@
       ///   specified '<paramref name="key"/>'.
       /// </summary>
       public void Enable(BehaviorKey key) {
-         Contract.Requires<ArgumentNullException>(key != null);
+         Check.NotNull(key, nameof(key));
 
          foreach (BehaviorChainConfiguration config in _propertyConfigurations.Values) {
             config.Enable(key);

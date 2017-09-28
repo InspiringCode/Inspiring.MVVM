@@ -1,21 +1,20 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using System.Linq;
 
    internal sealed class CompositeValidator : IValidator {
       private readonly IValidator[] _validators;
 
       public CompositeValidator(params IValidator[] validators) {
-         Contract.Requires(validators != null);
-         Contract.Requires(Contract.ForAll(validators, x => x != null));
+         Check.NotNull(validators, nameof(validators));
+         Check.Requires(validators.All(x => x != null));
 
          _validators = validators;
       }
 
       public CompositeValidator Add(IValidator validator) {
-         Contract.Requires(validator != null);
+         Check.NotNull(validator, nameof(validator));
          return new CompositeValidator(ArrayUtils.Append(_validators, validator));
       }
 

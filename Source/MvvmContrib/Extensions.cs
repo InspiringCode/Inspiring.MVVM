@@ -1,8 +1,7 @@
 ﻿namespace Inspiring.Mvvm {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
-
+   
    internal static class Extensions {
       public static void ForEach<TValue>(this IEnumerable<TValue> collection, Action<TValue> func) {
          if (collection != null) {
@@ -17,8 +16,8 @@
       //}
 
       public static string FormatWith(this string format, params object[] args) {
-         Contract.Requires(format != null);
-         Contract.Requires(args != null);
+         Check.NotNull(format, nameof(format));
+         Check.NotNull(args, nameof(args));
 
          return string.Format(format, args);
       }

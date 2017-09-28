@@ -1,12 +1,11 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Diagnostics.Contracts;
-
+   
    internal sealed class ValidationTargetCondition : ICondition<ValidationRequest> {
       private readonly PathDefinition _expectedTarget;
 
       public ValidationTargetCondition(PathDefinition expectedTarget) {
-         Contract.Requires(expectedTarget != null);
+         Check.NotNull(expectedTarget, nameof(expectedTarget));
          _expectedTarget = expectedTarget;
       }
 

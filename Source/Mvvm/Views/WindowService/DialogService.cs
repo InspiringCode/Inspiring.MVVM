@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.Views {
    using System;
-   using System.Diagnostics.Contracts;
    using System.Linq;
    using System.Windows;
    using Inspiring.Mvvm.Common;
@@ -12,8 +11,8 @@
       private readonly IWindowService _windowService;
 
       public DialogService(EventAggregator aggregator, IWindowService windowService) {
-         Contract.Requires<ArgumentNullException>(aggregator != null);
-         Contract.Requires<ArgumentNullException>(windowService != null);
+         Check.NotNull(aggregator, nameof(aggregator));
+         Check.NotNull(windowService, nameof(windowService));
 
          _aggregator = aggregator;
          _windowService = windowService;

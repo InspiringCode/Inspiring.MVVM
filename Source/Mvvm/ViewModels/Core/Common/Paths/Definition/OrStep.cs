@@ -1,14 +1,12 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
-   using System.Linq;
 
    internal sealed class OrStep : PathDefinitionStep {
       private readonly PathDefinitionStep[] _steps;
 
       public OrStep(params PathDefinitionStep[] steps) {
-         Contract.Requires<ArgumentException>(steps.Count() > 0);
+         Check.NotEmpty(steps, nameof(steps));
          _steps = steps;
       }
 

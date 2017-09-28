@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Diagnostics.Contracts;
    using System.Windows.Input;
 
    public class ViewModelCommand : ICommand {
@@ -11,8 +10,8 @@
       ///   every VM).
       /// </param>
       public ViewModelCommand(IViewModel ownerVM, IVMPropertyDescriptor ownerProperty) {
-         Contract.Requires(ownerVM != null);
-         Contract.Requires(ownerProperty != null);
+         Check.NotNull(ownerVM, nameof(ownerVM));
+         Check.NotNull(ownerProperty, nameof(ownerProperty));
 
          OwnerVM = ownerVM;
          OwnerProperty = ownerProperty;

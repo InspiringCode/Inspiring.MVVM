@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Diagnostics.Contracts;
-
+   
    public class ViewModelValidationArgs<TOwnerVM, TTargetVM> :
       ValidationArgs<TOwnerVM>
       where TOwnerVM : IViewModel
@@ -10,14 +9,14 @@
       public ViewModelValidationArgs(IValidator validator, TOwnerVM owner, TTargetVM target)
          : base(ValidationStep.ViewModel, validator, owner) {
 
-         Contract.Requires(target != null);
+         Check.NotNull(target, nameof(target));
          Target = target;
       }
 
       public TTargetVM Target { get; private set; }
 
       public void AddError(string message, object details = null) {
-         Contract.Requires<ArgumentNullException>(message != null);
+         Check.NotNull(message, nameof(message));
 
          var target = ValidationTarget.ForError(Step, Target, null, null);
          var error = new ValidationError(Validator, target, message, details);

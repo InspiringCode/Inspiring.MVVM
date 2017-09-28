@@ -1,5 +1,4 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
-   using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.Common;
 
    /// <summary>
@@ -15,7 +14,7 @@
       private PropertyPath<TVM, TValue> _path;
 
       public MappedValueAccessorBehavior(PropertyPath<TVM, TValue> path) {
-         Contract.Requires(path != null);
+         Check.NotNull(path, nameof(path));
          _path = path;
       }
 

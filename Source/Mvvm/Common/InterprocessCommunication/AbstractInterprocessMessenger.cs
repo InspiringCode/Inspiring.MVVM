@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.Common.Core {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using System.Linq;
    using System.Reflection;
 
@@ -53,7 +52,7 @@
       ///   <typeparamref name="TMessage"/> is not serializable.
       /// </exception>
       public void EnqueueMessage<TMessage>(TMessage message) {
-         Contract.Requires<ArgumentNullException>(message != null);
+         Check.NotNull(message, nameof(message));
          MessageQueue.Enqueue(message);
       }
 
@@ -62,7 +61,7 @@
       ///   <typeparamref name="TMessage"/> is received.
       /// </summary>
       public void AddMessageReceiver<TMessage>(Action<TMessage> messageReceivedAction) {
-         Contract.Requires<ArgumentNullException>(messageReceivedAction != null);
+         Check.NotNull(messageReceivedAction, nameof(messageReceivedAction));
 
          _messageHandlers += (object message) => {
             if (message is TMessage) {
@@ -76,8 +75,7 @@
       ///   shared identifier.
       /// </summary>
       public void StartListening() {
-         Contract.Requires<InvalidOperationException>(!IsListening);
-         Contract.Ensures(IsListening);
+         Check.Requires<InvalidOperationException>(!IsListening);
 
          StartListeningCore();
       }
@@ -86,8 +84,7 @@
       ///   Stops listening for messages sent by other processes.
       /// </summary>
       public void StopListening() {
-         Contract.Requires<InvalidOperationException>(IsListening);
-         Contract.Ensures(!IsListening);
+         Check.Requires<InvalidOperationException>(IsListening);
 
          StopListeningCore();
       }

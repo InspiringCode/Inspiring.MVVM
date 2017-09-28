@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Diagnostics.Contracts;
    using System.Linq.Expressions;
    using Inspiring.Mvvm.Common;
 
@@ -11,7 +10,7 @@
       private readonly VMDescriptorConfiguration _configuration;
 
       public VMPropertyBuilderProvider(VMDescriptorConfiguration configuration) {
-         Contract.Requires(configuration != null);
+         Check.NotNull(configuration, nameof(configuration));
          _configuration = configuration;
       }
 

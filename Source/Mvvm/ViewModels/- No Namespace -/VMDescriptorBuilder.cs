@@ -1,6 +1,4 @@
 ﻿namespace Inspiring.Mvvm.ViewModels {
-   using System;
-   using System.Diagnostics.Contracts;
    using Inspiring.Mvvm.ViewModels.Core;
 
    /// <summary>
@@ -27,8 +25,8 @@
       public static DerivedVMDescriptorBuilder<TBaseDescriptor> Inherits<TBaseDescriptor>(
          TBaseDescriptor descriptor
       ) where TBaseDescriptor : VMDescriptor {
-         Contract.Requires<ArgumentNullException>(descriptor != null);
-         Contract.Assert(
+         Check.NotNull(descriptor, nameof(descriptor));
+         Check.Requires(
             descriptor.Builder != null,
             "The base descriptor was not created by the 'VMDescriptorBuilder'."
          );

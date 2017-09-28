@@ -1,14 +1,13 @@
 ﻿namespace Inspiring.Mvvm.Common {
    using System;
-   using System.Diagnostics.Contracts;
 
    public static class DefaultEventExtensions {
       public static SubscriptionBuilderInterface<TPayload> On<TPayload>(
          this SubscriptionBuilderInterface root,
          Event<TPayload> @event
       ) {
-         Contract.Requires<ArgumentNullException>(root != null);
-         Contract.Requires<ArgumentNullException>(@event != null);
+         Check.NotNull(root, nameof(root));
+         Check.NotNull(@event, nameof(@event));
 
          var builder = new EventSubscriptionBuilder<TPayload>(root) {
             Event = @event
@@ -22,8 +21,8 @@
          HierarchicalEvent<TTarget, TArgs> @event,
          TTarget target
       ) where TArgs : HierarchicalEventArgs<TTarget> {
-         Contract.Requires<ArgumentNullException>(root != null);
-         Contract.Requires<ArgumentNullException>(@event != null);
+         Check.NotNull(root, nameof(root));
+         Check.NotNull(@event, nameof(@event));
 
          var builder = new HierarchicalEventSubscriptionBuilder<TTarget, TArgs>(root, target) {
             Event = @event

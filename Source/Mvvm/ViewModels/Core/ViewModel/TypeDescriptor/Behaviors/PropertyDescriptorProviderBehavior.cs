@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
    using System.ComponentModel;
-   using System.Diagnostics.Contracts;
 
    internal sealed class PropertyDescriptorProviderBehavior<TValue> :
       Behavior,
@@ -53,7 +52,7 @@
       }
 
       private void AssertInitialized() {
-         Contract.Assert(_property != null, "Behavior not initialized.");
+         Check.Requires<InvalidOperationException>(_property != null, "Behavior not initialized.");
       }
    }
 }

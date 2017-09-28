@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.Mvvm.Common {
    using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using System.Linq;
 
    public class EventSubscription<TPayload> : IEventSubscription {
@@ -19,7 +18,7 @@
          ExecutionOrder executionOrder,
          IEventCondition[] conditions = null
       ) {
-         Contract.Requires<ArgumentNullException>(handler != null);
+         Check.NotNull(handler, nameof(handler));
 
          _event = @event;
          _handler = handler;

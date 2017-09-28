@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
-   using System.Diagnostics.Contracts;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
    using Inspiring.Mvvm.ViewModels.Tracing;
@@ -14,9 +13,9 @@
       private CountingSet<IViewModel> _parents = new CountingSet<IViewModel>();
 
       public VMKernel(IViewModel vm, IVMDescriptor descriptor, IServiceLocator serviceLocator) {
-         Contract.Requires<ArgumentNullException>(vm != null);
-         Contract.Requires<ArgumentNullException>(descriptor != null);
-         Contract.Requires<ArgumentNullException>(serviceLocator != null);
+         Check.NotNull(vm, nameof(vm));
+         Check.NotNull(descriptor, nameof(descriptor));
+         Check.NotNull(serviceLocator, nameof(serviceLocator));
 
          _vm = vm;
          _descriptor = descriptor;
@@ -47,6 +46,7 @@
       }
 
       void IBehaviorContext.NotifyChange(ChangeArgs args) {
+         Check.NotNull(args, nameof(args));
          NotifyChangeCore(args.PrependViewModel(_vm));
       }
 
@@ -74,7 +74,7 @@
       }
 
       public bool IsLoaded(IVMPropertyDescriptor property) {
-         Contract.Requires<ArgumentNullException>(property != null);
+         Check.NotNull(property, nameof(property));
          return property.Behaviors.IsLoadedNext(this);
       }
 

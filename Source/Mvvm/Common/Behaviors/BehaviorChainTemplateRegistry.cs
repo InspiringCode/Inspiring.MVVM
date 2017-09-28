@@ -1,7 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
-   using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
 
    /// <summary>
    ///   A registry that holds all available <see cref="BehaviorChainTemplate"/> 
@@ -20,8 +18,8 @@
       ///   with the given <see cref="BehaviorChainTemplate"/>.
       /// </summary>
       public static void RegisterTemplate(BehaviorChainTemplateKey key, BehaviorChainTemplate template) {
-         Contract.Requires<ArgumentNullException>(key != null);
-         Contract.Requires<ArgumentNullException>(template != null);
+         Check.NotNull(key, nameof(key));
+         Check.NotNull(template, nameof(template));
 
          _templates[key] = template;
       }
@@ -33,7 +31,7 @@
       ///   No template with the given <paramref name="key"/> was registered.
       /// </exception>
       public static BehaviorChainTemplate GetTemplate(BehaviorChainTemplateKey key) {
-         Contract.Requires<ArgumentNullException>(key != null);
+         Check.NotNull(key, nameof(key));
 
          return _templates[key];
       }

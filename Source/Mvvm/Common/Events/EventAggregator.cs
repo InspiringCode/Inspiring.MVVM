@@ -1,7 +1,5 @@
 ﻿namespace Inspiring.Mvvm.Common {
-   using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
    using System.Linq;
 
    public sealed class EventAggregator : IEventSubscriptionRepository {
@@ -10,8 +8,8 @@
          new WeakCollection<IEventSubscriptionStore>();
 
       public void Publish<TPayload>(IEvent<TPayload> @event, TPayload payload) {
-         Contract.Requires<ArgumentNullException>(@event != null);
-         Contract.Requires<ArgumentNullException>(payload != null);
+         Check.NotNull(@event, nameof(@event));
+         Check.NotNull(payload, nameof(payload));
 
          @event.Publish(this, payload);
       }

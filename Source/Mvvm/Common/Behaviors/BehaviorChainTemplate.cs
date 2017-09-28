@@ -1,8 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
-   using System;
    using System.Collections.Generic;
-   using System.Diagnostics.Contracts;
-   using Inspiring.Mvvm.Common.Behaviors;
    using Inspiring.Mvvm.Common;
 
    public enum DefaultBehaviorState {
@@ -52,7 +49,7 @@
          BehaviorKey key,
          DefaultBehaviorState state = DefaultBehaviorState.Enabled
       ) {
-         Contract.Requires<ArgumentNullException>(key != null);
+         Check.NotNull(key, nameof(key));
 
          var itemTemplatesClone = new List<BehaviorChainItemTemplate>(_itemTemplates);
          itemTemplatesClone.Add(new BehaviorChainItemTemplate(key, state));
@@ -66,7 +63,7 @@
       ///   cref="IBehaviorFactoryProvider"/>.
       /// </summary>
       public BehaviorChainTemplate OverrideFactoryProvider(IBehaviorFactoryProvider factoryProvider) {
-         Contract.Requires<ArgumentNullException>(factoryProvider != null);
+         Check.NotNull(factoryProvider, nameof(factoryProvider));
 
          // The _itemTemplates list can be shared because we do not modify it.
          return new BehaviorChainTemplate(factoryProvider, _itemTemplates);
@@ -80,8 +77,7 @@
       internal BehaviorChainConfiguration CreateConfiguration(
          IBehaviorFactoryConfiguration factoryConfiguration
       ) {
-         Contract.Requires(factoryConfiguration != null);
-         Contract.Ensures(Contract.Result<BehaviorChainConfiguration>() != null);
+         Check.NotNull(factoryConfiguration, nameof(factoryConfiguration));
 
          var config = new BehaviorChainConfiguration();
          IBehaviorFactory factory = factoryConfiguration.GetFactory(_factoryProvider);
