@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Inspiring.Mvvm {
+namespace Inspiring.Mvvm.Testability {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Inspiring.Mvvm {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Inspiring.Mvvm.ExceptionTexts", typeof(ExceptionTexts).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Inspiring.Mvvm.Testability.ExceptionTexts", typeof(ExceptionTexts).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

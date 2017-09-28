@@ -8,7 +8,7 @@
     <ProjectGuid>{DDE69E0D-5034-4E89-82D2-F80DD3E82729}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Inspiring.Mvvm</RootNamespace>
+    <RootNamespace>Inspiring.Mvvm.Testability</RootNamespace>
     <AssemblyName>InspiringMvvmTestability</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

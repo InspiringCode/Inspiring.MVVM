@@ -143,6 +143,7 @@
     <Compile Include="ApiTests\ViewModels\VMs\TaskVM.cs" />
     <Compile Include="AssertHelper.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="CheckTests.cs" />
     <Compile Include="Common\Behaviors\BehaviorFactoryConfigurationTests.cs" />
     <Compile Include="Common\Behaviors\BehaviorFactoryTests.cs" />
     <Compile Include="Common\DelegateUtilsTests.cs" />

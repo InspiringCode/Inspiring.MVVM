@@ -36,10 +36,9 @@ using System.Windows.Markup;
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
-[assembly: InternalsVisibleTo("InspiringMvvmTest")]
 [assembly: XmlnsDefinition("http://inspiringcode.com/mvvm", "Inspiring.Mvvm")]
 [assembly: XmlnsDefinition("http://inspiringcode.com/mvvm", "Inspiring.Mvvm.Views")]
 
+[assembly: InternalsVisibleTo("InspiringMvvmTest")]
+[assembly: InternalsVisibleTo("InspiringMvvmTestability")]
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
-[assembly: InternalsVisibleTo("Mvvm.Tests")]
-[assembly: InternalsVisibleTo("InspiringMvvm.Explorables")]
