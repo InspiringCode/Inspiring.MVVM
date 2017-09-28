@@ -18,7 +18,7 @@
    ///      you want to add code that is executed only on manual initialization,
    ///      override <see cref="InitializeFrom"/>. If you want to add code that is
    ///      executed for manual and automatic initialization, override <see 
-   ///      cref="SetSource"/>.
+   ///      cref="SetSource"/>.</para>
    /// </remarks>
    public abstract class DefaultViewModelWithSourceBase<TDescriptor, TSourceObject> :
       ViewModel<TDescriptor>,
@@ -50,10 +50,10 @@
 
       /// <summary>
       ///   Call this method to initialize a VM manually. See remarks of <see 
-      ///   cref="DefaultViewModelWithSourceBase"/>.
+      ///   cref="DefaultViewModelWithSourceBase{TDescriptor, TSourceObject}"/>.
       /// </summary>
       /// <remarks>
-      ///   This method calls <see cref="SetSource"/> and <see cref="Revalidate"/>.
+      ///   This method calls <see cref="SetSource"/> and <see cref="ViewModel{TDescriptor}.Revalidate"/>.
       /// </remarks>
       public virtual void InitializeFrom(TSourceObject source) {
          SetSource(source);
@@ -61,7 +61,7 @@
       }
 
       /// <summary>
-      ///   See remarks of <see cref="DefaultViewModelWithSourceBase"/>.
+      ///   See remarks of <see cref="DefaultViewModelWithSourceBase{TDescriptor, TSourceObject}"/>.
       /// </summary>
       protected virtual void SetSource(TSourceObject source) {
          _source = source;

@@ -167,8 +167,8 @@
       /// </summary>
       /// <remarks>
       ///   <para>Beware that the validation state is always propagated to to the
-      ///      parent (meaning that <see cref="ViewModel.IsValid"/> returns false
-      ///      if any descendant is invalid) but <see cref="ViewModel.GetValidationState"/>
+      ///      parent (meaning that <see cref="ViewModel{TDescriptor}.IsValid"/> returns false
+      ///      if any descendant is invalid) but <see cref="ViewModel{TDescriptor}.GetValidationResult(ValidationResultScope)"/>
       ///      with <see cref="ValidationResultScope.Self"/> does not return an error
       ///      by default unless you add this validation rule.</para>
       ///   <para>This validation rule is most useful in hierarchical data structures

@@ -4,12 +4,12 @@
    using Inspiring.Mvvm.Common;
 
    /// <summary>
-   ///   A provider that returns <see cref="IVMPropertyBuilder"/> objects. Different
+   ///   A provider that returns <see cref="IVMPropertyBuilder{TSourceObject}"/> objects. Different
    ///   property factories can be created for different source objects.
    /// </summary>
    public interface IVMPropertyBuilderProvider<TVM> : IHideObjectMembers where TVM : IViewModel {
       /// <summary>
-      ///   <para>Returns a <see cref="IVMPropertyBuilder"/> which creates <see
+      ///   <para>Returns a <see cref="IVMPropertyBuilder{TSourceObject}"/> which creates <see
       ///      cref="IVMPropertyDescriptor"/> objects.</para>
       ///   <para>Mapped properties created with the returned factory have to 
       ///      specify the property path relative to the VM. For delegated 
@@ -19,7 +19,7 @@
       IVMPropertyBuilder<TVM> GetPropertyBuilder();
 
       /// <summary>
-      ///   Returns a <see cref="IVMPropertyBuilder"/> which creates <see
+      ///   Returns a <see cref="IVMPropertyBuilder{TSourceObject}"/> which creates <see
       ///   cref="IVMPropertyDescriptor"/> objects.
       /// </summary>
       /// <param name="sourceObjectSelector">

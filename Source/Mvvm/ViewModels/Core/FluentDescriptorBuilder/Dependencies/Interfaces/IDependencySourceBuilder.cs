@@ -34,7 +34,7 @@
       ///   is of interest.
       ///   Calls may be chained to select any descendant VM.
       /// </summary>
-      /// <param name="viewModelSelector">
+      /// <param name="collectionSelector">
       ///   The given function should return a collection VM property.
       /// </param>
       /// <typeparam name="D">

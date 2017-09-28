@@ -6,8 +6,7 @@
    public interface IVMCollection : IEnumerable {
       /// <summary>
       ///   Gets the view model instance that holds this collection instance. 
-      ///   The <see cref="OwnerVM"/> is the <see cref="IViewModel.Parent"/>
-      ///   of all items.
+      ///   The <see cref="OwnerVM"/> is the parent of all items.
       /// </summary>
       IViewModel OwnerVM { get; }
 

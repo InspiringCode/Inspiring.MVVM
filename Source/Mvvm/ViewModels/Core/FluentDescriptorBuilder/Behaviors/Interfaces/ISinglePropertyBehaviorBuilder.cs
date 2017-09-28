@@ -3,8 +3,10 @@
 
    /// <summary>
    ///   Implements a fluent interface to configure property behaviors. Returned
-   ///   by <see cref="IPropertyBehaviorBuilder"/>
+   ///   by <see cref="VMBehaviorBuilder{TVM, TDescriptor}"/>
    /// </summary>
+   /// <typeparam name="TVM"></typeparam>
+   /// <typeparam name="TDescriptor"></typeparam>
    /// <typeparam name="TValue">
    ///   The type of the property (such as String or EmployeeVM).
    /// </typeparam>

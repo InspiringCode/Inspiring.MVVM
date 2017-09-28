@@ -62,7 +62,7 @@
       }
 
       /// <summary>
-      ///   Calls <see cref="BehaviorChainConfiguration.Enable(BehaviorKey)"/> on
+      ///   Calls <see cref="BehaviorChainConfiguration.Enable"/> on
       ///   all configurations contained by this collection that contain the 
       ///   specified '<paramref name="key"/>'.
       /// </summary>

@@ -8,8 +8,8 @@
    /// </summary>
    /// <typeparam name="TSourceObject">
    ///   The type of source objects as selected by the <see 
-   ///   cref="IVMPropertyBuilderProvider.GetPropertyBuilder"/> method call 
-   ///   used to create the <see cref="IVMPropertyBuilder"/>.
+   ///   cref="IVMPropertyBuilderProvider{TVM}.GetPropertyBuilder"/> method call 
+   ///   used to create the <see cref="IVMPropertyBuilder{TSourceObject}"/>.
    /// </typeparam>
    public interface IValuePropertyBuilder<TSourceObject> : ICustomPropertyFactoryProvider<TSourceObject> {
       /// <summary>
@@ -22,8 +22,8 @@
       ///      by the returned property.</para>
       ///   <para>The first argument of the expression ('x' in the example) is
       ///      the VM or some object referenced by it as selected by the 
-      ///      <see cref="IVMPropertyBuilderProvider.GetPropertyBuilder"/> method
-      ///      call used to create the <see cref="IVMPropertyBuilder"/>.</para>
+      ///      <see cref="IVMPropertyBuilderProvider{TVM}.GetPropertyBuilder"/> method
+      ///      call used to create the <see cref="IVMPropertyBuilder{TSourceObject}"/>.</para>
       /// </param>
       /// <remarks>
       ///   <para>Every time the VM property is accessed on a VM the getter of 
@@ -47,7 +47,7 @@
       ///   <para>A delegate that is called by the <see cref="IVMPropertyDescriptor"/> to 
       ///      get its value.</para>
       ///   <para>The VM or some object referenced by it (as defined by the <see
-      ///      cref="IVMPropertyBuilderProvider.GetPropertyBuilder"/> method call)
+      ///      cref="IVMPropertyBuilderProvider{TVM}.GetPropertyBuilder"/> method call)
       ///      is passed to the delegate.</para>
       ///   <para>Example: 'vm => vm.Person.CalculateFee(vm.CurrentProject)'.</para>
       /// </param>
@@ -55,7 +55,7 @@
       ///   <para>A delegate that is called by the <see cref="IVMPropertyDescriptor"/> when 
       ///      its value is set.</para>
       ///   <para>The VM or some object referenced by it (as defined by the <see 
-      ///      cref="IVMPropertyFactoryProvider.GetPropertyBuilder"/> method call)
+      ///      cref="IVMPropertyBuilderProvider{TVM}.GetPropertyBuilder"/> method call)
       ///      and the new value is passed to the delegate.</para>
       ///   <para>Example: 
       ///      '(vm, value) => vm.Person.UpdateFee(vm.CurrentProject, value)'.

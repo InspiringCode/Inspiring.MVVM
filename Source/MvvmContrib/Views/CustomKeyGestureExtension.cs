@@ -5,7 +5,7 @@
 
    /// <summary>
    ///   A <see cref="MarkupExtension"/> that creates improved <see 
-   ///   cref="KeyGestures"/> using <see cref="CustomKeyGesture.Create"/>.
+   ///   cref="KeyGesture"/>s using <see cref="CustomKeyGesture.Create"/>.
    /// </summary>
    public class CustomKeyGestureExtension : MarkupExtension {
       private static readonly KeyGestureConverter KeyGestureConverter = new KeyGestureConverter();

@@ -8,8 +8,8 @@
    /// </summary>
    /// <typeparam name="TSourceObject">
    ///   The type of source objects as selected by the <see 
-   ///   cref="IVMPropertyBuilderProvider.GetPropertyBuilder"/> method call 
-   ///   used to create the <see cref="IVMPropertyBuilder"/>.
+   ///   cref="IVMPropertyBuilderProvider{TVM}.GetPropertyBuilder"/> method call 
+   ///   used to create the <see cref="IVMPropertyBuilder{TSourceObject}"/>.
    /// </typeparam>
    public interface ICollectionPropertyBuilder<TSourceObject> : ICustomPropertyFactoryProvider<TSourceObject> {
       /// <summary>
@@ -23,8 +23,7 @@
       ///      value of a source object collection or you may create and return
       ///      a new collection instance.</para> 
       ///   <para>The <see cref="IViewModel"/> or some object referenced by it (as 
-      ///      defined by the <see cref="IVMPropertyFactoryProvider.GetFactory"/>
-      ///      method) is passed to the delegate.</para>  
+      ///      defined by the GetFactory method) is passed to the delegate.</para>  
       /// </param>
       /// <param name="cacheSourceCollection">
       ///   <para>If false, the <paramref name="sourceCollectionSelector"/> is executed 
@@ -48,7 +47,7 @@
       /// <param name="itemsProvider">
       ///   A function that returns the contents of the VM collection. It is called
       ///   the first time the collection is accessed or when <see 
-      ///   cref="VMKernel.UpdateFromSource"/> is called.
+      ///   cref="VMKernel.UpdateFromSource()"/> is called.
       /// </param>
       IPopulatedCollectionPropertyBuilder<TItemVM> PopulatedWith<TItemVM>(
          Func<TSourceObject, IEnumerable<TItemVM>> itemsProvider
@@ -59,10 +58,10 @@
       /// </summary>
       /// <typeparam name="TItemVM">
       ///   The type of the collection item VM (for example PersonVM). A 
-      ///   new instance of <typeparamref name="TVM"/> is created for each item 
+      ///   new instance of <typeparamref name="TItemVM"/> is created for each item 
       ///   of the source collection using the service locator of the parent VM,
-      ///   <see cref="ICanInitializeFrom.InitializeFrom"/> is called with the 
-      ///   source item and the item VM is added to the collection.
+      ///   InitializeFrom is called with the  source item and the item VM is added to the
+      ///   collection.
       /// </typeparam>
       /// <param name="itemDescriptor">
       ///   Specifies the VM descriptor that should be used for the collection 

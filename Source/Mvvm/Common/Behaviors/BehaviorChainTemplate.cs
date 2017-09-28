@@ -39,8 +39,8 @@
       ///   chain item template added to the end of the item template list of 
       ///   this behavior chain template.
       /// </summary>
-      /// <param name="disabled">
-      ///   If true, the behavior is not enabled in a <see cref="BehaviorChainConfiguration"/> 
+      /// <param name="state">
+      ///   If 'Disabled', the behavior is not enabled in a <see cref="BehaviorChainConfiguration"/> 
       ///   created from this template. This means it will not be included in the finally 
       ///   created <see cref="BehaviorChain"/> unless <see cref="BehaviorChainConfiguration.Enable"/>
       ///   is called.

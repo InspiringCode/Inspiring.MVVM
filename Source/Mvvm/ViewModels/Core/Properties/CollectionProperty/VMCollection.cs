@@ -16,12 +16,12 @@
 
       private bool _isPopulating;
 
-      /// <param name="behaviors">
+      /// <param name="ownerProperty">
       ///   The descriptor holds the collection behaviors and other metadata.
       /// </param>
-      /// <param name="owner">
+      /// <param name="ownerVM">
       ///   The view model instance that holds this collection instance. It is
-      ///   the <see cref="IViewModel.Parent"/> of all items.
+      ///   the parent of all items.
       /// </param>
       public VMCollection(IViewModel ownerVM, IVMPropertyDescriptor ownerProperty) {
          Check.NotNull(ownerVM, nameof(ownerVM));

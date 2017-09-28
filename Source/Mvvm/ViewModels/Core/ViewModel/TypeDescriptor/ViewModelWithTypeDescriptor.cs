@@ -8,7 +8,7 @@
    /// <remarks>
    ///   A view model base class that explicitly implements <see cref="ICustomTypeDescriptor"/>
    ///   and fowards all methods to the <see cref="TypeDescriptor"/> default implementation 
-   ///   except <see cref="ICustomTypeDescriptor.GetProperties"/> which is forwarded to
+   ///   except <see cref="ICustomTypeDescriptor.GetProperties()"/> which is forwarded to
    ///   the abstract method <see cref="GetPropertyDescriptors"/>.
    /// </remarks>
    public abstract class ViewModelWithTypeDescriptor : ICustomTypeDescriptor {
@@ -76,7 +76,7 @@
       ///   Returns a <see cref="PropertyDescriptorCollection"/> with property
       ///   descriptors for all VM properties defined by the VM descriptor of 
       ///   this view model. This method is called each time when <see 
-      ///   cref="ICustomTypeDescriptor.GetProperties"/> is called.
+      ///   cref="ICustomTypeDescriptor.GetProperties()"/> is called.
       /// </summary>
       protected abstract PropertyDescriptorCollection GetPropertyDescriptors();
    }

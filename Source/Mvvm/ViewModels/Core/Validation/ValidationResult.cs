@@ -11,7 +11,7 @@
    /// </summary>
    /// <remarks>
    ///   The <see cref="ValidationResult"/> is an immutable data structure. You can 
-   ///   use <see cref="Join"/> to create states with more than one error.
+   ///   use <see cref="Join(ValidationResult, ValidationResult)"/> to create states with more than one error.
    /// </remarks>
    public sealed class ValidationResult {
       /// <summary>
@@ -87,8 +87,8 @@
       }
 
       /// <summary>
-      ///   Two <see cref="ValidationResult"/>s are equal, if there <see 
-      ///   cref="ValidationErrorCollection"/>s are equal.
+      ///   Two <see cref="ValidationResult"/>s are equal, if their <see 
+      ///   cref="ValidationError"/>s are equal.
       /// </summary>
       public override bool Equals(object obj) {
          var other = obj as ValidationResult;

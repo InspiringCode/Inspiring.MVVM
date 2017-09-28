@@ -72,7 +72,7 @@
       ///   Calls the '<paramref name="configurationAction"/>' with the behavior
       ///   specified by '<paramref name="key"/>' that will be inserted in the 
       ///   behavior chain. This method implicitly calls <see 
-      ///   cref="Enable(BehaviorKey)"/>.
+      ///   cref="Enable"/>.
       /// </summary>
       /// <typeparam name="T">
       ///   The type of the behavior to configure. This may be the concrete type

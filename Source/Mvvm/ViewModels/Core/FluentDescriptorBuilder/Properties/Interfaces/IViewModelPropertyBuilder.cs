@@ -8,8 +8,8 @@
    /// </summary>
    /// <typeparam name="TSourceObject">
    ///   The type of source objects as selected by the <see 
-   ///   cref="IVMPropertyBuilderProvider.GetPropertyBuilder"/> method call 
-   ///   used to create the <see cref="IVMPropertyBuilder"/>.
+   ///   cref="IVMPropertyBuilderProvider{TVM}.GetPropertyBuilder"/> method call 
+   ///   used to create the <see cref="IVMPropertyBuilder{TSourceObject}"/>.
    /// </typeparam>
    public interface IViewModelPropertyBuilder<TSourceObject> : ICustomPropertyFactoryProvider<TSourceObject> {
       /// <summary>
@@ -24,8 +24,8 @@
       ///      is assigned to the selected source property.</para>
       ///   <para>The first argument of the expression ('x' in the example) is
       ///      the VM or some object referenced by it as selected by the 
-      ///      <see cref="IVMPropertyBuilderProvider.GetPropertyBuilder"/> method
-      ///      call used to create the <see cref="IVMPropertyBuilder"/>.</para>
+      ///      <see cref="IVMPropertyBuilderProvider{TVM}.GetPropertyBuilder"/> method
+      ///      call used to create the <see cref="IVMPropertyBuilder{TSourceObject}"/>.</para>
       /// </param>
       IViewModelPropertyBuilderWithSource<TSourceValue> Wraps<TSourceValue>(
          Expression<Func<TSourceObject, TSourceValue>> sourceValueSelector
@@ -40,14 +40,14 @@
       ///      accessed. The returned value is used to initialize the child view
       ///      model that is held by this VM property.</para>
       ///   <para>The VM or some object referenced by it (as defined by the <see
-      ///      cref="IVMPropertyBuilderProvider.GetPropertyBuilder"/> method call)
+      ///      cref="IVMPropertyBuilderProvider{TVM}.GetPropertyBuilder"/> method call)
       ///      is passed to the delegate.</para>
       /// </param>
       /// <param name="setter">
       ///   <para>A delegate that is called when the VM property is set to a new 
       ///      view model.</para>
       ///   <para>The VM or some object referenced by it (as defined by the <see
-      ///      cref="IVMPropertyBuilderProvider.GetPropertyBuilder"/> method call)
+      ///      cref="IVMPropertyBuilderProvider{TVM}.GetPropertyBuilder"/> method call)
       ///      and the source object of the new VM is passed to the delegate.</para>
       /// </param>
       IViewModelPropertyBuilderWithSource<TSourceValue> Wraps<TSourceValue>(

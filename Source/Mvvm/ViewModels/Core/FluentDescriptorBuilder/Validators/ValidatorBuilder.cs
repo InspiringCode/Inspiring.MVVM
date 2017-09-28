@@ -39,7 +39,7 @@
 
          var condition = new DelegateValidatorCondition<TOwnerVM, TTarget>(
             predicate,
-            pathTargetIndex 
+            pathTargetIndex
          );
 
          op.PushConditionBuildAction(
@@ -47,7 +47,7 @@
             condition
          );
 
-         return new ValidatorBuilder<TOwnerVM,TTarget,TDescriptor>(op, _descriptor);
+         return new ValidatorBuilder<TOwnerVM, TTarget, TDescriptor>(op, _descriptor);
       }
 
       /// <summary>
@@ -62,7 +62,7 @@
          }
 
          op.PushValidatorBuildActions(
-            DelegateValidator.For(validatorAction), 
+            DelegateValidator.For(validatorAction),
             ValidationStep.ViewModel
          );
       }
@@ -121,9 +121,8 @@
       }
 
       /// <summary>
-      ///   Selects the child VM for which a validator should be defined. <see 
-      ///   cref="ValidateDescendant"/> calls may be chained to select any 
-      ///   descendant VM.
+      ///   Selects the child VM for which a validator should be defined.
+      ///   Calls may be chained to select any descendant VM.
       /// </summary>
       /// <param name="propertySelector">
       ///   The given function should return a child VM property.
@@ -141,9 +140,8 @@
       }
 
       /// <summary>
-      ///   Selects the child VM for which a validator should be defined. <see 
-      ///   cref="ValidateDescendant"/> calls may be chained to select any 
-      ///   descendant VM.
+      ///   Selects the child VM for which a validator should be defined.
+      ///   Calls may be chained to select any descendant VM.
       /// </summary>
       /// <param name="propertySelector">
       ///   The given function should return a collection VM property.
@@ -163,7 +161,7 @@
       /// <summary>
       ///   If a descendant is validated, it has to enable the appropriate behaviors 
       ///   itself, because we can only modify our own descriptor (the user has to 
-      ///   call <see cref="EnableParentValidation"/> manually). 
+      ///   call <see cref="RootValidatorBuilder{TOwner, TTarget, TDescriptor}.EnableParentValidation"/> manually). 
       /// </summary>
       private static bool PathSelectsDescendant(PathDefinition descendantsPath) {
          return !descendantsPath.IsEmpty;

@@ -3,7 +3,7 @@
 
    /// <summary>
    ///   Provides a fluent interface to create collection <see cref="IVMPropertyDescriptor"/>
-   ///   objects. This interface is returned by <see cref="ICollectionPropertyBuilder"/>.
+   ///   objects. This interface is returned by <see cref="ICollectionPropertyBuilder{TSourceObject}"/>.
    /// </summary>
    /// <typeparam name="TItemSource">
    ///   The type of the source value from which a collection item VM is initialized.
@@ -16,10 +16,10 @@
       /// </summary>
       /// <typeparam name="TItemVM">
       ///   The type of the collection item VM (for example PersonVM). A 
-      ///   new instance of <typeparamref name="TVM"/> is created for each item 
+      ///   new instance of <typeparamref name="TItemVM"/> is created for each item 
       ///   of the source collection using the service locator of the parent VM,
-      ///   <see cref="ICanInitializeFrom.InitializeFrom"/> is called with the 
-      ///   source item and the item VM is added to the collection.
+      ///   InitializeFrom is called with the source item and the item VM is added to the
+      ///   collection.
       /// </typeparam>
       /// <param name="itemDescriptor">
       ///   Specifies the VM descriptor that should be used for the collection 

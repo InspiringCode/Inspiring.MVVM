@@ -2,12 +2,9 @@
    using Inspiring.Mvvm.Common;
 
    /// <summary>
-   ///   Provides a fluent interface to create collection <see cref="IVMPropertyDescriptor"/>
-   ///   objects. This interface is returned by <see cref="ICollectionPropertyBuilder"/>.
+   ///   Provides a fluent interface to create collection <see cref="IVMPropertyDescriptor{T}"/>
+   ///   objects. This interface is returned by <see cref="ICollectionPropertyBuilder{TSourceObject}"/>.
    /// </summary>
-   /// <typeparam name="TItemSource">
-   ///   The type of the source value from which a collection item VM is initialized.
-   /// </typeparam>
    public interface IPopulatedCollectionPropertyBuilder<TItemVM> :
       IHideObjectMembers
       where TItemVM : IViewModel {

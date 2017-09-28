@@ -19,9 +19,6 @@
       ISelectionVM
       where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
-      /// <param name="descriptor">
-      ///   Use <see cref="CreateDescriptor"/> to create one.
-      /// </param>
       internal MultiSelectionBaseVM(
          MultiSelectionVMDescriptor<TItemSource, TItemVM> descriptor,
          IServiceLocator serviceLocator

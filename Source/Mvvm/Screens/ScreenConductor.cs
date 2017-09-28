@@ -45,7 +45,7 @@
       public static readonly Event<ScreenOpenedEventArgs> ScreenOpenedEvent = new Event<ScreenOpenedEventArgs>();
 
       /// <summary>
-      ///   An event that is raised whenever <see cref="CloseScreen{TScreen}"/> is called.
+      ///   An event that is raised whenever <see cref="CloseScreen"/> is called.
       /// </summary>
       /// <remarks>
       ///   This event may for example be handled by a view to save view settings.

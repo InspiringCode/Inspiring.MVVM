@@ -3,7 +3,7 @@
    using System.Linq;
 
    /// <summary>
-   ///   A collection behavior whose methods are called by the <see cref="VMCollection"/>
+   ///   A collection behavior whose methods are called by the <see cref="VMCollection{TItemVM}"/>
    ///   if it is modified in some way. Implement this interface if you want to do
    ///   something when items are inserted, removed or replaced.
    /// </summary>

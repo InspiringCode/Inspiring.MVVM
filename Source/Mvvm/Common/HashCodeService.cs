@@ -1,4 +1,5 @@
 ﻿namespace Inspiring.Mvvm.Common {
+   using System;
    using System.Collections;
 
    /// <summary>
@@ -27,7 +28,7 @@
       /// <param name="propertyValues">
       ///   <para>The value of the properties which should influence the hash code.
       ///      These should be the same property values that are compared in the 
-      ///      <see cref="Object.Equals"/> method.</para>
+      ///      <see cref="Object.Equals(object)"/> method.</para>
       ///   <para>If one of your properties is a collection and you want to base
       ///      the hash code on all items of the collection, you can pass the 
       ///      result of <see cref="CalculateCollectionHashCode"/> as one of the

@@ -1,5 +1,7 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using System;
+   using System.Collections.Specialized;
+   using System.ComponentModel;
 
    /// <summary>
    ///   Fluent interface. See <see cref="VMDescriptorBuilder"/>.
@@ -15,8 +17,8 @@
       ///   A delegate that should assign <see cref="IVMPropertyDescriptor"/> instances to
       ///   all properties of the <see cref="VMDescriptor"/> passed to the 
       ///   delegate (or override some of them). Use the passed in <see 
-      ///   cref="IVMPropertyBuilderProvider"/> to get a <see 
-      ///   cref="IVMPropertyBuilder"/> with which <see cref="IVMPropertyDescriptor"/>
+      ///   cref="IVMPropertyBuilderProvider{TVM}"/> to get a <see 
+      ///   cref="IVMPropertyBuilder{TSourceObject}"/> with which <see cref="IVMPropertyDescriptor"/>
       ///   objects can be created and configured.
       /// </param>
       IVMDescriptorBuilderWithProperties<TDescriptor, TVM> WithProperties(Action<TDescriptor, IVMPropertyBuilderProvider<TVM>> propertyConfigurator);
@@ -25,7 +27,7 @@
    /// <summary>
    ///   Fluent interface. See <see cref="VMDescriptorBuilder"/>.
    /// </summary>
-   public interface IVMDescriptorBuilderWithProperties<TDescriptor, TVM> : 
+   public interface IVMDescriptorBuilderWithProperties<TDescriptor, TVM> :
       IVMDescriptorBuilder<TDescriptor, TVM>
       where TDescriptor : VMDescriptor, new()
       where TVM : IViewModel {
@@ -35,7 +37,7 @@
       ///   notification (optional).
       /// </summary>
       /// <param name="dependencyConfigurator">
-      ///   A delegate that should use the passed in <see cref="IVMDependencyConfigurator"/>
+      ///   A delegate that should use the passed in <see cref="IVMDependencyBuilder{TRootVM, TRootDescriptor}"/>
       ///   to setup dependencies between VM properties.
       /// </param>
       /// <remarks>
@@ -56,7 +58,7 @@
       /// </summary>
       /// <param name="validatorConfigurator">
       ///   A delegate that should define validators using the <see 
-      ///   cref="ValidatorBuilder"/> passed to the delegate.
+      ///   cref="RootValidatorBuilder{TOwner, TTarget, TDescriptor}"/> passed to the delegate.
       /// </param>
       IVMDescriptorBuilderWithProperties<TDescriptor, TVM> WithValidators(
          Action<RootValidatorBuilder<TVM, TVM, TDescriptor>> validatorConfigurator
@@ -68,7 +70,7 @@
       /// </summary>
       /// <param name="behaviorConfigurator">
       ///   A delegate that should enable or configure behaviors using the
-      ///   <see cref="IVMBehaviorBuilder"/> passed to the delegate.
+      ///   <see cref="IVMBehaviorBuilder{TVM, TDescriptor}"/> passed to the delegate.
       /// </param>
       IVMDescriptorBuilderWithProperties<TDescriptor, TVM> WithBehaviors(
          Action<IVMBehaviorBuilder<TVM, TDescriptor>> behaviorConfigurator
@@ -80,7 +82,7 @@
       /// </summary>
       /// <param name="behaviorConfigurator">
       ///   A delegate that should enable or configure behaviors using the
-      ///   <see cref="IVMBehaviorBuilder"/> passed to the delegate.
+      ///   <see cref="ViewModelBehaviorBuilder{TVM, TDescriptor}"/> passed to the delegate.
       /// </param>
       IVMDescriptorBuilderWithProperties<TDescriptor, TVM> WithViewModelBehaviors(
          Action<ViewModelBehaviorBuilder<TVM, TDescriptor>> behaviorConfigurator

@@ -3,6 +3,7 @@
    using System.Collections.Generic;
    using System.Linq;
    using System.Reflection;
+   using System.Runtime.Serialization;
 
    public abstract class AbstractInterprocessMessenger : IDisposable {
       private Action<object> _messageHandlers = delegate { };

@@ -86,12 +86,6 @@
          Action<BehaviorChainConfiguration> chainConfigurationAction = null
       ) where TChildVM : IViewModel, IHasSourceObject<TChildSource>;
 
-      /// <summary>
-      /// 
-      /// </summary>
-      /// <param name="valueAccessor">
-      ///   Usually an <see cref="IValueAccessorBehavior{TSourceObject}"/> object.
-      /// </param>
       IVMPropertyDescriptor<ICommand> CommandProperty(
          IBehavior sourceObjectAccessor,
          IBehavior commandExecutor,

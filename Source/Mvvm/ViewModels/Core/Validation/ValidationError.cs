@@ -4,7 +4,7 @@
 
    /// <summary>
    ///   A <see cref="ValidationError"/> is the result of a failed validation
-   ///   performed by a <see cref="Validator"/>.
+   ///   performed by an <see cref="IValidator"/>.
    /// </summary>
    public sealed class ValidationError {
       private IValidator _validator;

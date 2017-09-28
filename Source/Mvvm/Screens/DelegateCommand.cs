@@ -70,10 +70,10 @@
 
    // TODO: Integrate into framework nicely and customize to coding conventions.
 
-   /// <summary>
-   ///     This class allows delegating the commanding logic to methods passed as parameters,
-   ///     and enables a View to bind commands to objects that are not part of the element tree.
-   /// </summary>
+   ///// <summary>
+   /////     This class allows delegating the commanding logic to methods passed as parameters,
+   /////     and enables a View to bind commands to objects that are not part of the element tree.
+   ///// </summary>
    //public class DelegateCommand2 : ICommand {
    //   #region Constructors
 

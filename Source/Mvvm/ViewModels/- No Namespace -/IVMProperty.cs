@@ -23,11 +23,6 @@
       ///   Gets the value that this property has on the given view model
       ///   (specified by the <paramref name="context"/> parameter).
       /// </summary>
-      /// <remarks>
-      ///   We can't implement this method as <see cref="VMPropertyExtensionMethods"/>
-      ///   extension method, because we don't know the generic type of the <see 
-      ///   cref="IPropertyAccessorBehavior"/>.
-      /// </remarks>
       object GetValue(IBehaviorContext context);
 
       //object GetDisplayValue(IBehaviorContext context);

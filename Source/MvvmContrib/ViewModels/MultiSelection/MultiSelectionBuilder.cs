@@ -11,7 +11,7 @@
       private bool _undoIsEnabled;
 
       /// <param name="sourceObjectPropertyBuilder">
-      ///   The original <see cref="VMPropertyBuilder"/> that was extended by
+      ///   The original <see cref="IVMPropertyBuilder{TSourceObject}"/> that was extended by
       ///   with the extension method.
       /// </param>
       internal MultiSelectionBuilder(

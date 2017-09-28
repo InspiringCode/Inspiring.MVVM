@@ -1,6 +1,6 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    /// <summary>
-   ///   Holds that state needed by operations of a <see cref="ViewModelBehavior"/>.
+   ///   Holds that state needed by operations of a <see cref="Behavior"/>.
    /// </summary>
    public interface IBehaviorContext {
       IViewModel VM { get; }

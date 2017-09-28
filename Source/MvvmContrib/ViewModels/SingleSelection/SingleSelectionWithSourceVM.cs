@@ -5,9 +5,6 @@
       IHasSourceObject<TSourceObject>
       where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
 
-      /// <param name="descriptor">
-      ///   Use <see cref="CreateDescriptor"/> to create one.
-      /// </param>
       internal SingleSelectionWithSourceVM(
          SingleSelectionVMDescriptor<TItemSource, SelectableItemVM<TItemSource, TItemVM>> descriptor,
          IServiceLocator serviceLocator
@@ -26,7 +23,7 @@
 
       /// <summary>
       ///   Gets the object that holds the source items. This references the
-      ///   view model that holds the <see cref="SingleSelectionWithSourceVM"/> (the parent
+      ///   view model that holds the <see cref="SingleSelectionWithSourceVM{TSourceObject, TItemSource, TItemVM}"/> (the parent
       ///   VM is simply forwarded with this property).
       /// </summary>
       internal TSourceObject SourceObject { get; set; }
@@ -50,7 +47,7 @@
 
       /// <summary>
       ///   Gets the object that holds the source items. This references the
-      ///   view model that holds the <see cref="SingleSelectionWithSourceVM"/> (the parent
+      ///   view model that holds the <see cref="SingleSelectionWithSourceVM{TSourceObject, TItemSource}"/> (the parent
       ///   VM is simply forwarded with this property).
       /// </summary>
       public TSourceObject Source { get; set; }

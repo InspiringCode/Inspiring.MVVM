@@ -8,8 +8,8 @@
    /// </summary>
    /// <typeparam name="TSourceObject">
    ///   The type of source objects as selected by the <see 
-   ///   cref="IVMPropertyBuilderProvider.GetPropertyBuilder"/> method call 
-   ///   used to create the <see cref="IVMPropertyBuilder"/>.
+   ///   cref="IVMPropertyBuilderProvider{TVM}.GetPropertyBuilder"/> method call 
+   ///   used to create the <see cref="IVMPropertyBuilder{TSourceObject}"/>.
    /// </typeparam>
    public interface IVMPropertyBuilder<TSourceObject> : ICustomPropertyFactoryProvider<TSourceObject>, IHideObjectMembers, IConfigurationProvider {
       /// <summary>
