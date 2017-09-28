@@ -144,7 +144,7 @@
       }
 
       /// <remarks>
-      ///   <para>This implementation uses logic similar to List<T>.RemoveAll, which 
+      ///   <para>This implementation uses logic similar to <see cref="List{T}.RemoveAll"/>, which 
       ///      always has O(n) time. If we would simply call Remove in a loop, the running 
       ///      time would approach O(n^2) if most items die (mass distinction).</para>
       ///   <para>Note that we can not easily use <see cref="List{T}.RemoveAll"/> because

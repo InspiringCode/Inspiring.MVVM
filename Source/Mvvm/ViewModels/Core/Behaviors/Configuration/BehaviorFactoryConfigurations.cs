@@ -1,6 +1,5 @@
 ﻿namespace Inspiring.Mvvm.ViewModels.Core {
    using Inspiring.Mvvm.Common;
-   using Inspiring.Mvvm.Common.Behaviors;
 
    internal sealed class BehaviorFactoryConfigurations : BehaviorFactoryProviderInterfaces {
       public static IBehaviorFactoryConfiguration ForSimpleProperty<TOwnerVM, TValue, TSourceObject>(

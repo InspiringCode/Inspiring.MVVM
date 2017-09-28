@@ -1,11 +1,9 @@
 ﻿namespace Inspiring.MvvmTest.Common.Behaviors {
    using System;
-   using System.Linq;
-   using Microsoft.VisualStudio.TestTools.UnitTesting;
-   using Inspiring.Mvvm.Common.Behaviors;
+   using Inspiring.Mvvm.Common;
    using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.MvvmTest.ViewModels;
-   using Inspiring.Mvvm.Common;
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
 
    [TestClass]
    public class BehaviorFactoryTests : TestBase {

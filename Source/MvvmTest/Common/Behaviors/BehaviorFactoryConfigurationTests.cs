@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.MvvmTest.Common.Behaviors {
    using System;
    using Inspiring.Mvvm.Common;
-   using Inspiring.Mvvm.Common.Behaviors;
    using Inspiring.Mvvm.ViewModels.Core;
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
