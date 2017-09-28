@@ -412,9 +412,6 @@
     <Compile Include="Views\WindowService\WindowService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="license.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Common\ECommon.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ECommon.Designer.cs</LastGenOutput>

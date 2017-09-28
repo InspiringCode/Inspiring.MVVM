@@ -119,7 +119,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Finding screens.txt" />
+    <None Include="Finding screens.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ViewModels\- Diagrams -\Selection Hierarchy.cd" />
