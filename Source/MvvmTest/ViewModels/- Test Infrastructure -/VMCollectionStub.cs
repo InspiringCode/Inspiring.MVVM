@@ -3,11 +3,9 @@
    using System.Collections.ObjectModel;
    using System.Linq;
    using Inspiring.Mvvm.ViewModels;
-using Inspiring.Mvvm.ViewModels.Core;
+   using Inspiring.Mvvm.ViewModels.Core;
 
    public class VMCollectionStub<TItemVM> : Collection<TItemVM>, IVMCollection<TItemVM> where TItemVM : IViewModel {
-      private readonly IViewModel _owner;
-
       public VMCollectionStub(IViewModel ownerVM, IVMPropertyDescriptor ownerProperty) {
          OwnerVM = ownerVM;
          OwnerProperty = ownerProperty;

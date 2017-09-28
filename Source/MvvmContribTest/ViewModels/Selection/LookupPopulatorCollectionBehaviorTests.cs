@@ -24,7 +24,7 @@
          throw new NotImplementedException();
          //behavior.Repopulate(new ContextTestHelper(employeeVM).Context, new VMCollection<ProjectVM>(new BehaviorChain(), employeeVM));
 
-         Assert.AreSame(employeeVM, passedVM);
+         //Assert.AreSame(employeeVM, passedVM);
       }
 
       [TestMethod]
@@ -49,10 +49,10 @@
          //behavior.GetValue(
          //behavior.Repopulate(context.Context, collection);
 
-         CollectionAssert.AreEquivalent(
-            new[] { projectVM },
-            collection
-         );
+         //CollectionAssert.AreEquivalent(
+         //   new[] { projectVM },
+         //   collection
+         //);
       }
 
       [TestMethod]

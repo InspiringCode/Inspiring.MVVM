@@ -53,8 +53,8 @@
       public void CheckCaptions() {
          string[] captions = GetAllItems().Select(x => GetCaption(x)).ToArray();
          CollectionAssert.AreEqual(
-            new string[] { 
-               EnumLocalizations.PersonStatus_None, 
+            new string[] {
+               EnumLocalizations.PersonStatus_None,
                EnumLocalizations.PersonStatus_Active,
                EnumLocalizations.PersonStatus_Inactive,
                EnumLocalizations.PersonStatus_Dismissed
@@ -69,7 +69,7 @@
          _vm.Refresh(PersonVM.ClassDescriptor.Status);
          PersonStatus[] status = GetAllItems().Select(x => x.Source).ToArray();
          CollectionAssert.AreEqual(
-            new PersonStatus[] { 
+            new PersonStatus[] {
                PersonStatus.None,
                PersonStatus.Active,
                PersonStatus.Inactive,
@@ -85,7 +85,7 @@
       public void CheckFilter() {
          PersonStatus[] status = GetAllFilteredItems().Select(x => x.Source).ToArray();
          CollectionAssert.AreEqual(
-            new PersonStatus[] { 
+            new PersonStatus[] {
                PersonStatus.None,
                PersonStatus.Active,
                PersonStatus.Inactive
@@ -101,7 +101,7 @@
          _vm.Refresh(PersonVM.ClassDescriptor.FilteredStatus);
          PersonStatus[] status = GetAllFilteredItems().Select(x => x.Source).ToArray();
          CollectionAssert.AreEqual(
-            new PersonStatus[] { 
+            new PersonStatus[] {
                PersonStatus.None,
                PersonStatus.Active,
                PersonStatus.Inactive,
@@ -136,8 +136,8 @@
       public void CheckNullableCaptions() {
          string[] captions = GetAllNullableItems().Select(x => GetCaptionOfNullable(x)).ToArray();
          CollectionAssert.AreEqual(
-            new string[] { 
-               EnumLocalizations.PersonStatus_None, 
+            new string[] {
+               EnumLocalizations.PersonStatus_None,
                EnumLocalizations.PersonStatus_Active,
                EnumLocalizations.PersonStatus_Inactive,
                EnumLocalizations.PersonStatus_Dismissed
@@ -151,8 +151,8 @@
          GetNullableSelection().SelectedItem = null;
          string[] captions = GetAllNullableItems().Select(x => GetCaptionOfNullable(x)).ToArray();
          CollectionAssert.AreEqual(
-            new string[] { 
-               EnumLocalizations.PersonStatus_None, 
+            new string[] {
+               EnumLocalizations.PersonStatus_None,
                EnumLocalizations.PersonStatus_Active,
                EnumLocalizations.PersonStatus_Inactive,
                EnumLocalizations.PersonStatus_Dismissed
@@ -230,7 +230,7 @@
             return GetValue(property);
          }
 
-         public new void Refresh(IVMPropertyDescriptor property) {
+         public void Refresh(IVMPropertyDescriptor property) {
             base.Refresh(property);
          }
 

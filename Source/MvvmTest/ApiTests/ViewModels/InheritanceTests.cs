@@ -37,8 +37,8 @@
 
       [TestMethod]
       public void AllowAssignmentOfSubClassToBaseClassVariable() {
-         ListOfValueEntryVM<ListOfValueEntryVMDescriptor, State> foo = null;
-         StateEntryVM bar = null;
+         //ListOfValueEntryVM<ListOfValueEntryVMDescriptor, State> foo = null;
+         //StateEntryVM bar = null;
 
          // TODO?
          //foo = bar;
@@ -128,7 +128,7 @@
             : base(ClassDescriptor) {
          }
 
-         protected new EmployeeVMDescriptor Descriptor {
+         private new EmployeeVMDescriptor Descriptor {
             get { return (EmployeeVMDescriptor)base.Descriptor; }
          }
 

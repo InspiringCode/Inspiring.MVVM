@@ -33,7 +33,7 @@
          RequireInitialized();
          throw new NotImplementedException();
 
-         this.UpdateFromSourceNext(context, property);
+         //this.UpdateFromSourceNext(context, property);
       }
 
       public void UpdateSource(IBehaviorContext context) {
@@ -49,12 +49,12 @@
          RequireInitialized();
          throw new NotImplementedException();
 
-         IManualUpdateCoordinatorBehavior next;
-         if (TryGetBehavior(out next)) {
-            next.UpdateSource(context, property);
-         }
+         //IManualUpdateCoordinatorBehavior next;
+         //if (TryGetBehavior(out next)) {
+         //   next.UpdateSource(context, property);
+         //}
 
-         this.UpdateSourceNext(context, property);
+         //this.UpdateSourceNext(context, property);
       }
 
       public void Initialize(BehaviorInitializationContext context) {

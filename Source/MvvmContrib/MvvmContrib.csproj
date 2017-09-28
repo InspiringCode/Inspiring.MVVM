@@ -68,7 +68,6 @@
     </Compile>
     <Compile Include="Screens\ApplicationCommandManager.cs" />
     <Compile Include="Screens\CommandProxy.cs" />
-    <Compile Include="Testing\MessageBoxResponderSetup.cs" />
     <Compile Include="ViewModels\Behaviors\SettableListDisplayValueBehavior.cs" />
     <Compile Include="ViewModels\Behaviors\SelectedItemsRefreshBehavior.cs" />
     <Compile Include="ViewModels\EnumLocalizer.cs" />
@@ -87,7 +86,6 @@
     <Compile Include="ViewModels\Behaviors\SelectionItemViewModelCacheBehavior.cs" />
     <Compile Include="ViewModels\SelectionItemVM.cs" />
     <Compile Include="ViewModels\Selections\SelectionDescriptorBuilder.cs" />
-    <Compile Include="Screens\IMessageBoxService.cs" />
     <Compile Include="ViewModels\Selections\SelectionVM.cs" />
     <Compile Include="ViewModels\Selections\SelectionVMDescriptor.cs" />
     <Compile Include="ViewModels\SingleSelection\SingleSelectionBuilder.cs" />
@@ -98,7 +96,6 @@
     <Compile Include="Views\CustomKeyGesture.cs" />
     <Compile Include="Views\CustomKeyGestureExtension.cs" />
     <Compile Include="Views\KeyGestureViewBinderExtension.cs" />
-    <Compile Include="Testing\MessageBoxTestService.cs" />
     <Compile Include="Views\SelectionBinderExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

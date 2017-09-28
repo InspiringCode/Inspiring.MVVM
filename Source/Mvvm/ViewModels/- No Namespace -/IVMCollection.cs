@@ -29,14 +29,14 @@
    ///   especially required by the predefined collection behaviors.
    /// </summary>
    public interface IVMCollection<TItemVM> : IVMCollectionBase<TItemVM>, IList<TItemVM>, IList where TItemVM : IViewModel {
-      int Count { get; }
-      void Clear();
-      void RemoveAt(int index);
+      new int Count { get; }
+      new void Clear();
+      new void RemoveAt(int index);
       /// <summary>
       ///   Clears the collections and adds the <paramref name="newItems"/>.
       /// </summary>
       /// <param name="newItems"></param>
       void ReplaceItems(IEnumerable<TItemVM> newItems, IChangeReason reason);
-      TItemVM this[int index] { get; set; }
+      new TItemVM this[int index] { get; set; }
    }
 }

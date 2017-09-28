@@ -208,16 +208,6 @@
          }
       }
 
-      [Obsolete("Use Refresh")]
-      protected void UpdateFromSource() {
-         Kernel.UpdateFromSource();
-      }
-
-      [Obsolete("Use Refresh")]
-      protected void UpdateFromSource(IVMPropertyDescriptor property) {
-         Kernel.UpdateFromSource(property);
-      }
-
       protected void Refresh(
          bool executeRefreshDependencies = false
       ) {

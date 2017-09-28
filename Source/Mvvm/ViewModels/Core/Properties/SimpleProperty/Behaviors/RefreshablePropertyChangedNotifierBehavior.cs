@@ -5,8 +5,6 @@
       IBehaviorInitializationBehavior,
       IRefreshBehavior {
 
-      private IVMPropertyDescriptor _property;
-
       public override void Initialize(BehaviorInitializationContext context) {
          _property = context.Property;
          base.Initialize(context);

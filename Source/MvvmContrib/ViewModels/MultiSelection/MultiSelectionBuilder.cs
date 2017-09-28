@@ -9,7 +9,6 @@
       private Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<ICollection<TItemSource>>> _selectedSourceItemsPropertyFactory;
       private Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> _allSourceItemsPropertyFactory;
       private Func<TSourceObject, TItemSource, bool> _filter;
-      private bool _validationIsEnabled;
       private bool _undoIsEnabled;
 
       /// <param name="sourceObjectPropertyBuilder">
@@ -25,11 +24,6 @@
          _selectedSourceItemsPropertyFactory = selectedSourceItemsPropertyFactory;
       }
 
-      public MultiSelectionBuilder<TSourceObject, TItemSource> EnableValidations() {
-         _validationIsEnabled = true;
-         return this;
-      }
-
       public MultiSelectionBuilder<TSourceObject, TItemSource> EnableUndo() {
          _undoIsEnabled = true;
          return this;
@@ -43,7 +37,7 @@
       public MultiSelectionBuilder<TSourceObject, TItemSource> WithItems(
          Func<TSourceObject, IEnumerable<TItemSource>> allSourceItemsSelector
       ) {
-         _allSourceItemsPropertyFactory = delegate(IVMPropertyBuilder<TSourceObject> factory) {
+         _allSourceItemsPropertyFactory = delegate (IVMPropertyBuilder<TSourceObject> factory) {
             return factory.Property.DelegatesTo(allSourceItemsSelector);
          };
 
@@ -153,7 +147,7 @@
       ///   object for an <see cref="IEnumerable{T}"/>.
       /// </summary>
       private Func<IVMPropertyBuilder<TSourceObject>, IVMPropertyDescriptor<IEnumerable<TItemSource>>> CreateLocatingPropertyFactory() {
-         return delegate(IVMPropertyBuilder<TSourceObject> factory) {
+         return delegate (IVMPropertyBuilder<TSourceObject> factory) {
             // Only PropertyWithSource is cachable!
             return factory.Custom.PropertyWithSource<IEnumerable<TItemSource>>(valueAccessor: new LocatingItemSourceBehavior());
          };

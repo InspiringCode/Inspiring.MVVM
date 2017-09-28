@@ -104,7 +104,7 @@
          throw new NotImplementedException();
       }
 
-      bool IDialogService.ShowFolderBrowseDialog(IScreenBase parent, out string selectedPath, string message, Environment.SpecialFolder? specialFolder = null) {
+      bool IDialogService.ShowFolderBrowseDialog(IScreenBase parent, out string selectedPath, string message, Environment.SpecialFolder? specialFolder) {
          var invocation = new DialogServiceInvocation(DialogServiceMethod.ShowOpenFileDialog);
          invocation.Message.SetValue(message);
          invocation.Parent.SetValue(parent);

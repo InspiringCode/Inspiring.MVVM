@@ -12,7 +12,6 @@
       IValueAccessorBehavior<TValue>
       where TVM : IViewModel {
 
-      private IVMPropertyDescriptor<TValue> _property;
       private PropertyPath<TVM, TValue> _path;
 
       public MappedValueAccessorBehavior(PropertyPath<TVM, TValue> path) {

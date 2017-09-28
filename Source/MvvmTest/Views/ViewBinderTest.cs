@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.MvvmTest.Views {
    using System.Windows.Controls;
    using System.Windows.Data;
-   using Inspiring.Mvvm.Screens;
    using Inspiring.Mvvm.Views;
    using Inspiring.MvvmTest.ViewModels;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -27,7 +26,7 @@
 
       // [TestMethod] // TODO
       public void BindCollection() {
-         PersonVM vm = null;
+         //PersonVM vm = null;
          PersonVMView view = new PersonVMView();
          DataGrid grid = new DataGrid();
 

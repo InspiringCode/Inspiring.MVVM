@@ -65,7 +65,7 @@
 
          ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue>.AppendBehavior(
             IBehavior behaviorInstance,
-            BehaviorKey key = null
+            BehaviorKey key
          ) {
             string keyString = String.Format(
                "{0} (manually configured)",
@@ -81,7 +81,7 @@
 
          ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue> ISinglePropertyBehaviorBuilder<TVM, TDescriptor, TValue>.PrependBehavior(
             IBehavior behaviorInstance,
-            BehaviorKey key = null
+            BehaviorKey key
          ) {
             string keyString = String.Format(
                "{0} (manually configured)",

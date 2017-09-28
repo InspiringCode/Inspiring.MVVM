@@ -7,7 +7,7 @@
 
    [TestClass]
    public class PropertyValidationSourceBehaviorBaseTests : ValidationTestBase {
-      private ValidationResult Error { get; set; }
+      private ValidationResult ValidationResult { get; set; }
 
       private TestValidationSourceBehavior Behavior { get; set; }
       private PropertyStub<string> Property { get; set; }
@@ -18,7 +18,7 @@
 
       [TestInitialize]
       public void Setup() {
-         Error = CreateValidationResult("Error");
+         ValidationResult = CreateValidationResult("Error");
 
          Behavior = new TestValidationSourceBehavior(ValidationStep.Value);
          Property = PropertyStub.WithBehaviors(Behavior).Of<string>();
@@ -110,7 +110,7 @@
       [TestMethod]
       public void Revalidate_ValidationFails_GetValidationResultReturnsError() {
          SetValidValue();
-         Executor.ResultToReturn = Error;
+         Executor.ResultToReturn = ValidationResult;
          Revalidate();
          Assert.IsFalse(Behavior.GetValidationResult(Context).IsValid);
       }
@@ -138,7 +138,7 @@
          // The PropertyChangedBehavior calls notify change anyhow
 
          SetValidValue();
-         Executor.ResultToReturn = Error;
+         Executor.ResultToReturn = ValidationResult;
          Revalidate();
 
          Assert.IsFalse(
@@ -149,7 +149,7 @@
       }
 
       private void SetInvalidValue(string value = "Invalid value") {
-         Executor.ResultToReturn = Error;
+         Executor.ResultToReturn = ValidationResult;
          Behavior.SetValue(Context, value);
       }
 

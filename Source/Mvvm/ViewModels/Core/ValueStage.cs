@@ -4,7 +4,7 @@
       public static readonly ValueStage Value = new ValueStage(0x0FFF);
       public static readonly ValueStage ValidatedValue = new ValueStage(0xFFFF);
 
-      protected ValueStage(int sequence) {
+      private ValueStage(int sequence) {
          Sequence = sequence;
       }
 

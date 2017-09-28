@@ -86,7 +86,6 @@
     <Compile Include="Common\Reference.cs" />
     <Compile Include="Common\ReferenceEqualityComparer.cs" />
     <Compile Include="Common\SealableObject.cs" />
-    <Compile Include="Common\ServiceRegistry.cs" />
     <Compile Include="Common\TypeService.cs" />
     <Compile Include="Common\UniqueAppKey.cs" />
     <Compile Include="Common\WeakCollection.cs" />

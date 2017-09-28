@@ -5,8 +5,6 @@
       Behavior,
       IItemDescriptorProviderBehavior {
 
-      private IVMDescriptor _itemDescriptor;
-
       public ItemDescriptorProviderBehavior(IVMDescriptor itemDescriptor) {
          Contract.Requires(itemDescriptor != null);
          ItemDescriptor = itemDescriptor;

@@ -72,8 +72,8 @@
          throw new NotImplementedException();
          //var coll = new VMCollection<KeywordVM>(this, KeywordVM.Descriptor);
 
-         IEnumerable<GroupVM> selectedItemVMs = SelectedSourceItems
-            .Select(i => AllItems.Single(x => x.Source == i));
+         //IEnumerable<GroupVM> selectedItemVMs = SelectedSourceItems
+         //   .Select(i => AllItems.Single(x => x.Source == i));
 
          //coll.Popuplate(
          //   selectedItemVMs,

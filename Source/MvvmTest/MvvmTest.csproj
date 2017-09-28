@@ -151,7 +151,6 @@
     <Compile Include="Common\HashCodeServiceTests.cs" />
     <Compile Include="Common\ILParserTests.cs" />
     <Compile Include="Common\InterprocessCommunication\InterprocessMessengerTests.cs" />
-    <Compile Include="Common\ServiceRegistryTests.cs" />
     <Compile Include="Common\TypeServiceTests.cs" />
     <Compile Include="Common\WeakCollectionTests.cs" />
     <Compile Include="DomainAssert.cs" />
@@ -183,7 +182,6 @@
     <Compile Include="ViewModels\- Test Infrastructure -\ServiceLocatorStub.cs" />
     <Compile Include="ViewModels\- Test Infrastructure -\ValidationResultAggregaturStub.cs" />
     <Compile Include="ViewModels\- Test Infrastructure -\ValidationResultProviderStub.cs" />
-    <Compile Include="ViewModels\- Test Infrastructure -\ValueAccessorStub.cs" />
     <Compile Include="ViewModels\- Test Infrastructure -\VMCollectionStub.cs" />
     <Compile Include="Common\BehaviorKeysTests.cs" />
     <Compile Include="ViewModels\Core\Common\Paths\AnyStepsStepTests.cs" />

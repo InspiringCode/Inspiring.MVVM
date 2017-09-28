@@ -121,7 +121,7 @@
             get { return GetValue(Descriptor.Department); }
          }
 
-         public new void Refresh(IVMPropertyDescriptor property) {
+         public void Refresh(IVMPropertyDescriptor property) {
             base.Refresh(property);
          }
 

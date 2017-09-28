@@ -7,6 +7,6 @@
       public ScreenLifecycleException() { }
       public ScreenLifecycleException(string message) : base(message) { }
       public ScreenLifecycleException(string message, Exception inner) : base(message, inner) { }
-      protected ScreenLifecycleException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+      private ScreenLifecycleException(SerializationInfo info, StreamingContext context) : base(info, context) { }
    }
 }

@@ -38,7 +38,7 @@
          return Kernel.IsLoaded(propertySelector(Descriptor));
       }
 
-      public void Revalidate(ValidationScope scope = ValidationScope.Self) {
+      public new void Revalidate(ValidationScope scope = ValidationScope.Self) {
          base.Revalidate(scope);
       }
 
