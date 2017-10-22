@@ -7,11 +7,11 @@ using System.Windows.Markup;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("InspiringMvvm")]
-[assembly: AssemblyDescription("inspiringmvvm.codeplex.com")]
+[assembly: AssemblyDescription("https://github.com/InspiringCode/Inspiring.MVVM")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Daniel Berghold")]
-[assembly: AssemblyProduct("InspiringMvvm")]
-[assembly: AssemblyCopyright("Copyright © Daniel Berghold")]
+[assembly: AssemblyCompany("InspiringCode")]
+[assembly: AssemblyProduct("Inspiring.MVVM")]
+[assembly: AssemblyCopyright("Copyright © InspiringCode")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
