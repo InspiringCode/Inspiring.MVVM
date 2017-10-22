@@ -35,7 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="InspiringMvvm">
-      <HintPath>..\Libs\InspiringMvvm.dll</HintPath>
+      <HintPath>..\..\..\Source\Mvvm\bin\Debug\InspiringMvvm.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
