@@ -33,7 +33,7 @@
       [TestMethod]
       public void Close_WithoutRequestClose_DoesNotCallRequestClose() {
          WindowService.ShowRealWindow = true;
-         
+
          var screen = new ScreenMock(Aggregator);
 
          WindowService.WindowLoaded += delegate {
@@ -176,7 +176,7 @@
       [TestMethod]
       public void GetAssociatedWindow_ReturnsWindow() {
          WindowService.ShowRealWindow = false;
-         
+
          WindowView window = new WindowView(false);
          ScreenMock screen = new ScreenMock(Aggregator);
 
@@ -187,11 +187,6 @@
          );
 
          Assert.AreEqual(window, DialogSerivce.GetAssociatedWindow(screen));
-      }
-
-      [TestCleanup]
-      public void CleanUp() {
-         Dispatcher.CurrentDispatcher.InvokeShutdown();
       }
 
       private void ShowDialogAndExpectException(IScreenBase screen) {

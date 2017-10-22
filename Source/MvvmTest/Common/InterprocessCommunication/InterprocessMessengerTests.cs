@@ -1,7 +1,6 @@
 ﻿namespace Inspiring.MvvmTest.Common.InterprocessCommunication {
    using System;
    using System.Runtime.CompilerServices;
-   using System.Windows.Threading;
    using Inspiring.Mvvm.Common;
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -76,7 +75,6 @@
       [TestCleanup]
       public void Cleanup() {
          Messenger.Dispose();
-         Dispatcher.CurrentDispatcher.InvokeShutdown();
       }
 
       private class TestInterprocessMessenger : InterprocessMessenger {
