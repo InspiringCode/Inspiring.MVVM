@@ -8,8 +8,10 @@
    using StructureMap;
 
    public partial class App : MvvmApplication {
+      private static readonly IContainer MainContainer = new Container();
+
       protected override void SetupContainer() {
-         ObjectFactory.Configure(c => {
+         MainContainer.Configure(c => {
             c.For<IView<ShellScreen>>().Use<ShellView>();
          });
       }
@@ -19,8 +21,8 @@
       }
 
       protected override void RegisterTypeIfMissing<TFrom, TTo>(bool registerAsSingleton) {
-         if (!ObjectFactory.Container.Model.HasImplementationsFor<TFrom>()) {
-            ObjectFactory.Configure(c => {
+         if (!MainContainer.Model.HasImplementationsFor<TFrom>()) {
+            MainContainer.Configure(c => {
                if (registerAsSingleton) {
                   c.For<TFrom>().Singleton().Use<TTo>();
                } else {
@@ -45,11 +47,11 @@
 
       private class StructureMapServiceLocator : IServiceLocator {
          public TService GetInstance<TService>() {
-            return ObjectFactory.GetInstance<TService>();
+            return MainContainer.GetInstance<TService>();
          }
 
          public object TryGetInstance(Type serviceType) {
-            return ObjectFactory.TryGetInstance(serviceType);
+            return MainContainer.TryGetInstance(serviceType);
          }
       }
    }

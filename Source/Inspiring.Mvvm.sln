@@ -14,31 +14,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvvm", "Mvvm\Mvvm.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvmExample", "MvvmExample\MvvmExample.csproj", "{BF31E840-F483-49B5-9BDF-4B7E38770159}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{F364223A-965E-4EEA-9828-AB7E2A2192A1}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StructureMap", "StructureMap", "{EDCA79D9-7E38-4FC6-A4C5-FEFB63813B28}"
-	ProjectSection(SolutionItems) = preProject
-		Libs\StructureMap\StructureMap.dll = Libs\StructureMap\StructureMap.dll
-		Libs\StructureMap\StructureMap.xml = Libs\StructureMap\StructureMap.xml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Moq", "Moq", "{13484309-5416-4ED5-BEF0-DA8BFBA37E3B}"
-	ProjectSection(SolutionItems) = preProject
-		Libs\Moq\Moq.dll = Libs\Moq\Moq.dll
-		Libs\Moq\Moq.pdb = Libs\Moq\Moq.pdb
-		Libs\Moq\Moq.xml = Libs\Moq\Moq.xml
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvmContrib", "MvvmContrib\MvvmContrib.csproj", "{7D10FFF8-1916-49C7-9532-9AFC7ED22B03}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvmContribTest", "MvvmContribTest\MvvmContribTest.csproj", "{D5D740C6-50C5-4B64-BDAA-7F848FD0F4B3}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Moq.Sequences", "Moq.Sequences", "{D017964E-FAFC-4E90-8B58-9364B52FDC87}"
-	ProjectSection(SolutionItems) = preProject
-		Libs\Moq.Sequences\Moq.Sequences.dll = Libs\Moq.Sequences\Moq.Sequences.dll
-		Libs\Moq.Sequences\Moq.Sequences.pdb = Libs\Moq.Sequences\Moq.Sequences.pdb
-		Libs\Moq.Sequences\Moq.Sequences.zip = Libs\Moq.Sequences\Moq.Sequences.zip
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvmTestability", "MvvmTestability\MvvmTestability.csproj", "{DDE69E0D-5034-4E89-82D2-F80DD3E82729}"
 EndProject
@@ -75,11 +53,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{EDCA79D9-7E38-4FC6-A4C5-FEFB63813B28} = {F364223A-965E-4EEA-9828-AB7E2A2192A1}
-		{13484309-5416-4ED5-BEF0-DA8BFBA37E3B} = {F364223A-965E-4EEA-9828-AB7E2A2192A1}
-		{D017964E-FAFC-4E90-8B58-9364B52FDC87} = {F364223A-965E-4EEA-9828-AB7E2A2192A1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A92D2282-BE91-442E-B12A-81E5AEBD52FC}
