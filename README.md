@@ -20,4 +20,4 @@ I would suggest starting with the documentation fragments I wrote back then whic
 
 The ViewBinder concept might also be of interest, it provides a way to bind XAML elements in the code behind files to get compile time safety with xaml names. A very simplistic example is sketched here: https://github.com/InspiringCode/Inspiring.MVVM/blob/master/Source/MvvmTest/Views/ViewBinderTest.cs
 
-If you have any questions do not hesitat to contact me :)
+If you have any questions do not hesitate to contact me :)
