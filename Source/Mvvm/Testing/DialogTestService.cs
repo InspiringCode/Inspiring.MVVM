@@ -90,7 +90,7 @@
          throw new NotImplementedException();
       }
 
-      bool IDialogService.ShowOpenFileDialog(IScreenBase parent, out string fileName, string filter, string initialDirectory) {
+      bool IDialogService.ShowOpenFileDialog(IScreenBase parent, out string fileName, string filter, string initialDirectory, IEnumerable<string> customPlaces) {
          var invocation = new DialogServiceInvocation(DialogServiceMethod.ShowOpenFileDialog);
          invocation.Filter.SetValue(filter);
          invocation.InitialDirectory.SetValue(initialDirectory);
@@ -99,7 +99,7 @@
          return DequeueResponder().ProcessFileDialogInvocation(invocation, out fileName);
       }
 
-      bool IDialogService.ShowSaveFileDialog(IScreenBase parent, ref string fileName, string filter, string initialDirectory) {
+      bool IDialogService.ShowSaveFileDialog(IScreenBase parent, ref string fileName, string filter, string initialDirectory, IEnumerable<string> customPlaces) {
          // TODO
          throw new NotImplementedException();
       }

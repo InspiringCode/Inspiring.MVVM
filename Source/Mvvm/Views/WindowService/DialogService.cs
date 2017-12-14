@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.Views {
    using System;
+   using System.Collections.Generic;
    using System.Linq;
    using System.Windows;
    using Inspiring.Mvvm.Common;
@@ -78,7 +79,8 @@
          IScreenBase parent,
          out string fileName,
          string filter = null,
-         string initialDirectory = null
+         string initialDirectory = null,
+         IEnumerable<string> customPlaces = null
       ) {
          Window ownerWin = GetAssociatedWindow(parent);
          OpenFileDialog ofd = new OpenFileDialog();
@@ -91,6 +93,12 @@
             ofd.InitialDirectory = initialDirectory;
          }
 
+         if (customPlaces != null) {
+            foreach (string customPlace in customPlaces) {
+               ofd.CustomPlaces.Add(new FileDialogCustomPlace(customPlace));
+            }
+         }
+
          var result = ofd.ShowDialog(ownerWin);
          fileName = ofd.FileName;
          return result.Value;
@@ -100,7 +108,8 @@
          IScreenBase parent,
          ref string fileName,
          string filter = null,
-         string initialDirectory = null
+         string initialDirectory = null,
+         IEnumerable<string> customPlaces = null
       ) {
          Window ownerWin = GetAssociatedWindow(parent);
          SaveFileDialog sfd = new SaveFileDialog();
@@ -112,6 +121,12 @@
 
          if (initialDirectory != null) {
             sfd.InitialDirectory = initialDirectory;
+         }
+
+         if (customPlaces != null) {
+            foreach (string customPlace in customPlaces) {
+               sfd.CustomPlaces.Add(new FileDialogCustomPlace(customPlace));
+            }
          }
 
          var result = sfd.ShowDialog(ownerWin);

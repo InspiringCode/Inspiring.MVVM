@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.Screens {
    using System;
+   using System.Collections.Generic;
 
    /// <summary>
    ///   The icon a message box should have. Abstracts the orginal <see 
@@ -61,14 +62,16 @@
          IScreenBase parent,
          out string fileName,
          string filter = null,
-         string initialDirectory = null
+         string initialDirectory = null,
+         IEnumerable<string> customPlaces = null
       );
 
       bool ShowSaveFileDialog(
          IScreenBase parent,
          ref string fileName,
          string filter = null,
-         string initialDirectory = null
+         string initialDirectory = null,
+         IEnumerable<string> customPlaces = null
       );
 
       bool ShowFolderBrowseDialog(
