@@ -104,7 +104,7 @@
          return result.Value;
       }
 
-      public bool ShowSaveFileDialog(
+      public virtual bool ShowSaveFileDialog(
          IScreenBase parent,
          ref string fileName,
          string filter = null,
