@@ -43,8 +43,13 @@
          return this;
       }
 
+      /// <param name="isSelectedRaisesPropertyChanged">
+      ///   'True' to raise PropertyChanged events for the <see cref="SelectableItemVM{TItemSource, TItemVM}.IsSelected"/>
+      ///   property, 'false' to suppress them.
+      /// </param>
       public IVMPropertyDescriptor<MultiSelectionVM<TItemSource, TItemVM>> Of<TItemVM>(
-         Action<MultiSelectionDescriptorBuilder<TSourceObject, TItemSource, TItemVM>> descriptorConfigurationAction = null
+         Action<MultiSelectionDescriptorBuilder<TSourceObject, TItemSource, TItemVM>> descriptorConfigurationAction = null,
+         bool isSelectedRaisesPropertyChanged = true
       )
          where TItemVM : IViewModel, IHasSourceObject<TItemSource> {
          Check.Requires<InvalidOperationException>(_selectedSourceItemsPropertyFactory != null);
@@ -54,7 +59,8 @@
             CreateLocatingPropertyFactory();
 
          var descriptorBuilder = new MultiSelectionDescriptorBuilder<TSourceObject, TItemSource, TItemVM>(
-            _filter
+            _filter,
+            isSelectedRaisesPropertyChanged
          );
 
          descriptorBuilder.WithProperties((d, b) => {

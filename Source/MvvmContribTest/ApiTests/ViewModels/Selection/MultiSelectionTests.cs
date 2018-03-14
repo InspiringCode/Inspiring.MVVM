@@ -207,6 +207,40 @@
       }
 
       [TestMethod]
+      public void RemoveSelectedItem_DefaultBehavior_ModifiesSourceCollectionAndSetsIsSelectedAndRaisesPropertyChangedForIsSelected() {
+         UserVM vm = CreateUserVMWithItems();
+
+         var selectedItems = new List<SelectableItemVM<Group, GroupVM>>(vm.Groups.SelectedItems);
+         bool propertyChangedWasRaised = false;
+         selectedItems.ForEach(x => x.PropertyChanged += (s, e) => propertyChangedWasRaised = true);
+
+         selectedItems.RemoveAt(selectedItems.Count / 2);
+         SetSelectedItems(vm, selectedItems);
+
+         AssertSelectedItemsAreEqual(vm, selectedItems);
+         AssertSelectedSourceItemsAreEqual(vm, selectedItems.Select(x => x.VM));
+         Assert.IsTrue(vm.Groups.SelectedItems.All(x => x.IsSelected == selectedItems.Contains(x)));
+         Assert.IsTrue(propertyChangedWasRaised);
+      }
+
+      [TestMethod]
+      public void RemoveSelectedItem_SuppressedIsSelectedPropertyChanged_ModifiesSourceCollectionAndSetsIsSelectedButDoesNotRaisePropertyChangedForIsSelected() {
+         UserVM vm = CreateUserVMWithItems(isSelectedRaisesPropertyChanged: false);
+
+         var selectedItems = new List<SelectableItemVM<Group, GroupVM>>(vm.Groups.SelectedItems);
+         bool propertyChangedWasRaised = false;
+         selectedItems.ForEach(x => x.PropertyChanged += (s, e) => propertyChangedWasRaised = true);
+
+         selectedItems.RemoveAt(selectedItems.Count / 2);
+         SetSelectedItems(vm, selectedItems);
+
+         AssertSelectedItemsAreEqual(vm, selectedItems);
+         AssertSelectedSourceItemsAreEqual(vm, selectedItems.Select(x => x.VM));
+         Assert.IsTrue(vm.Groups.SelectedItems.All(x => x.IsSelected == selectedItems.Contains(x)));
+         Assert.IsFalse(propertyChangedWasRaised);
+      }
+
+      [TestMethod]
       public void ClearSelectedItems_ModifiesSourceCollection() {
          UserVM vm = CreateUserVMWithItems();
 
@@ -297,8 +331,8 @@
 
          var department = vm.GetValue(x => x.Groups);
 
-         var relevantProperties = new[] { 
-            department.GetProperty(x => x.AllItems), 
+         var relevantProperties = new[] {
+            department.GetProperty(x => x.AllItems),
             department.GetProperty(x => x.SelectedItems)
          };
 
@@ -442,8 +476,8 @@
 
          ChangeArgs args = vm
             .OnChangeInvocations
-            .SingleOrDefault(x => 
-               x.ChangedVM == vm.Groups && 
+            .SingleOrDefault(x =>
+               x.ChangedVM == vm.Groups &&
                x.ChangeType == ChangeType.CollectionPopulated
             );
 
@@ -630,11 +664,15 @@
          selection.SetDisplayValue(selectionDescriptor.SelectedItems, selectedItems);
       }
 
-      private UserVM CreateUserVMWithItems(Action<RootValidatorBuilder<UserVM, UserVM, UserVMDescriptor>> validatorBuilder = null) {
+      private UserVM CreateUserVMWithItems(
+         Action<RootValidatorBuilder<UserVM, UserVM, UserVMDescriptor>> validatorBuilder = null,
+         bool isSelectedRaisesPropertyChanged = true
+      ) {
          return CreateUserVM(
             allGroups: new[] { Group1, Group2, Group3, InactiveGroup },
             selectedGroups: new[] { Group1, Group2 },
-            validatorBuilder: validatorBuilder
+            validatorBuilder: validatorBuilder,
+            isSelectedRaisesPropertyChanged: isSelectedRaisesPropertyChanged
          );
       }
 
@@ -645,6 +683,7 @@
          Func<User, IEnumerable<Group>> allGroupsSelector = null,
          Func<User, ICollection<Group>> selectedGroupsSelector = null,
          Action<RootValidatorBuilder<UserVM, UserVM, UserVMDescriptor>> validatorBuilder = null,
+         bool isSelectedRaisesPropertyChanged = true,
          params Group[] selectedGroups
       ) {
          if (allGroups != null && allGroupsSelector != null) {
@@ -667,7 +706,7 @@
             .For<UserVM>()
             .WithProperties((d, c) => {
                var u = c.GetPropertyBuilder();
-               
+
                var builder = selectedGroupsSelector != null ?
                   u.MultiSelection(x => selectedGroupsSelector(x.Source)) :
                   u.MultiSelection(x => x.Source.Groups);
@@ -691,7 +730,7 @@
                builder = builder.EnableUndo();
 
                d.Name = u.Property.MapsTo(x => x.Name);
-               d.Groups = builder.Of<GroupVM>();
+               d.Groups = builder.Of<GroupVM>(isSelectedRaisesPropertyChanged: isSelectedRaisesPropertyChanged);
             });
 
          if (validatorBuilder != null) {
