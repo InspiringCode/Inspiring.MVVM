@@ -1,0 +1,262 @@
+# http://EditorConfig.org
+
+# Don't show the following warnings with the "EditorConfig Language Service" Visual Studio extension:
+# * Multiple sections: This is done on purpose to group the properties
+# * Unknown keywords: Some properties are not supported yet
+# Suppress: EC102 EC112
+
+# This is the top-most EditorConfig file
+root = true
+
+### General code style settings
+# All files
+[*]
+indent_style             = space
+end_of_line              = crlf
+trim_trailing_whitespace = true
+# Please don't specify an indent_size here, that has too many unintended consequences
+
+# Revert solution files back to the default tab indention
+[*.sln]
+indent_style = tab
+
+# Code files
+[*.{cs,csx,vb,vbx,fs,c,cpp,h,xaml,cshtml,vbhtml}]
+indent_size          = 3
+insert_final_newline = true
+charset              = utf-8-bom
+max_line_length      = 140
+
+# XML project files
+[*.{csproj,vbproj,fsproj,vcxproj,vcxproj.filters,proj,projitems,shproj,njsproj,wixproj}]
+indent_size = 2
+
+# Configuration Files
+[*.{json,xml,xsd,xslt,yml,config,props,targets,nuspec,resx,ruleset,manifest,vsixmanifest,vsct,wxs}]
+indent_size = 2
+
+
+
+### Dotnet specific code style settings
+### Reference: https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference
+[*.{cs,csx,vb,vbx}]
+## Language Conventions
+# Avoid 'this' and 'Me' if not necessary
+dotnet_style_qualification_for_field                             = false:suggestion
+dotnet_style_qualification_for_property                          = false:suggestion
+dotnet_style_qualification_for_method                            = false:suggestion
+dotnet_style_qualification_for_event                             = false:suggestion
+
+# Use language keywords instead of framework type names for type references, but not for member access
+dotnet_style_predefined_type_for_locals_parameters_members       = true:suggestion
+dotnet_style_predefined_type_for_member_access                   = false:suggestion
+
+# Require accessibility modifiers everywhere except in interfaces
+# Note: Do not add spaces around ':' here, otherwise it will not work in VS2017 as of version 15.6.3
+dotnet_style_require_accessibility_modifiers                     = for_non_interface_members:suggestion
+
+# Suggest more modern language features when available
+dotnet_style_object_initializer                                  = true:suggestion
+dotnet_style_collection_initializer                              = true:suggestion
+dotnet_style_explicit_tuple_names                                = true:suggestion
+dotnet_style_prefer_inferred_tuple_names                         = true:suggestion
+dotnet_style_prefer_inferred_anonymous_type_member_names         = true:suggestion
+dotnet_style_coalesce_expression                                 = true:suggestion
+dotnet_style_null_propagation                                    = true:suggestion
+
+# Undocumented options
+dotnet_style_prefer_auto_properties                              = true:suggestion
+dotnet_style_prefer_is_null_check_over_reference_equality_method = false:suggestion
+
+
+## Formatting Conventions (do not support a severity)
+# Sort using and Import directives with System.* appearing first
+dotnet_sort_system_directives_first                              = true
+
+
+
+### C# specific code style settings
+### Reference: https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference
+[*.{cs,csx}]
+## Language Conventions
+# Use a consistent modifier order
+csharp_preferred_modifier_order                                          = public,private,protected,internal,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,volatile,async:suggestion
+
+# Prefer 'var' only when the type is apparent and not a build-in type
+# Note: Do not show violations about the third rule, there are cases where 'var' is more readable
+csharp_style_var_for_built_in_types                                      = false:suggestion
+csharp_style_var_when_type_is_apparent                                   = true:suggestion
+csharp_style_var_elsewhere                                               = false:none
+
+# Prefer method-like constructs to have a block body
+# Note: Do not show violations about these rules, it's mostly personal style
+# Note: Do not add spaces around ':' here, otherwise it will not work in VS2017 as of version 15.6.3
+csharp_style_expression_bodied_methods                                   = false:none
+csharp_style_expression_bodied_constructors                              = false:none
+csharp_style_expression_bodied_operators                                 = false:none
+
+# Prefer property-like constructs to have an expression-body when on a single line
+# Note: Do not show violations about these rules, it's mostly personal style
+# Note: Do not add spaces around ':' here, otherwise it will not work in VS2017 as of version 15.6.3
+csharp_style_expression_bodied_properties                                = when_on_single_line:none
+csharp_style_expression_bodied_indexers                                  = when_on_single_line:none
+csharp_style_expression_bodied_accessors                                 = when_on_single_line:none
+
+# Suggest more modern language features when available
+# Note: Do not show violations about the deconstruction rule, the best usage depends on the situation
+csharp_style_pattern_matching_over_is_with_cast_check                    = true:suggestion
+csharp_style_pattern_matching_over_as_with_null_check                    = true:suggestion
+csharp_style_inlined_variable_declaration                                = true:suggestion
+csharp_prefer_simple_default_expression                                  = true:suggestion
+csharp_style_deconstructed_variable_declaration                          = true:none
+csharp_style_pattern_local_over_anonymous_function                       = true:suggestion
+csharp_style_throw_expression                                            = true:suggestion
+csharp_style_conditional_delegate_call                                   = true:suggestion
+
+# Always prefer braces
+csharp_prefer_braces                                                     = true:suggestion
+
+
+## Formatting Conventions (do not support a severity)
+# Don't add newlines before braces or keywords
+csharp_new_line_before_open_brace                                        = none
+csharp_new_line_before_else                                              = false
+csharp_new_line_before_catch                                             = false
+csharp_new_line_before_finally                                           = false
+csharp_new_line_before_members_in_object_initializers                    = true
+csharp_new_line_before_members_in_anonymous_types                        = true
+csharp_new_line_between_query_expression_clauses                         = true
+
+# Always use indentation
+csharp_indent_case_contents                                              = true
+csharp_indent_switch_labels                                              = true
+csharp_indent_labels                                                     = one_less_than_current
+
+# Only add spaces after control flow statements
+csharp_space_after_cast                                                  = false
+csharp_space_after_keywords_in_control_flow_statements                   = true
+csharp_space_between_method_declaration_parameter_list_parentheses       = false
+csharp_space_between_method_call_parameter_list_parentheses              = false
+csharp_space_between_parentheses                                         = false
+
+# Break declarations and statements in multiple lines but leave blocks at one line
+csharp_preserve_single_line_statements                                   = false
+csharp_preserve_single_line_blocks                                       = true
+
+# Undocumented options
+csharp_indent_block_contents                                             = true
+csharp_indent_braces                                                     = false
+csharp_indent_case_contents_when_block                                   = false
+csharp_space_between_method_declaration_name_and_open_parenthesis        = false
+csharp_space_between_method_declaration_empty_parameter_list_parentheses = false
+csharp_space_between_method_call_name_and_opening_parenthesis            = false
+csharp_space_between_method_call_empty_parameter_list_parentheses        = false
+csharp_space_around_declaration_statements                               = do_not_ignore
+csharp_space_before_open_square_brackets                                 = false
+csharp_space_between_empty_square_brackets                               = false
+csharp_space_between_square_brackets                                     = false
+csharp_space_after_colon_in_inheritance_clause                           = true
+csharp_space_after_comma                                                 = true
+csharp_space_after_dot                                                   = false
+csharp_space_after_semicolon_in_for_statement                            = true
+csharp_space_before_colon_in_inheritance_clause                          = true
+csharp_space_before_comma                                                = false
+csharp_space_before_dot                                                  = false
+csharp_space_before_semicolon_in_for_statement                           = false
+csharp_space_around_binary_operators                                     = before_and_after
+
+
+
+### Dotnet specific naming conventions
+### Reference: https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-naming-conventions
+[*.{cs,csx,vb,vbx}]
+## Define naming symbols for later use
+# interface_types: Define interfaces
+dotnet_naming_symbols.interface_types.applicable_kinds             = interface
+
+# non_interface_types: Define all types except interfaces
+dotnet_naming_symbols.non_interface_types.applicable_kinds         = class,struct,enum,delegate
+
+# async_methods: Define async methods
+dotnet_naming_symbols.async_methods.applicable_kinds               = method
+dotnet_naming_symbols.async_methods.required_modifiers             = async
+
+# non_field_members: Define all members except fields
+dotnet_naming_symbols.non_field_members.applicable_kinds           = property,method,event
+
+# constant_fields: Define constant fields
+dotnet_naming_symbols.constant_fields.applicable_kinds             = field
+dotnet_naming_symbols.constant_fields.required_modifiers           = const
+
+# static_readonly_fields: Define static readonly fields
+dotnet_naming_symbols.static_readonly_fields.applicable_kinds      = field
+dotnet_naming_symbols.static_readonly_fields.required_modifiers    = static,readonly
+
+# fields: Define all fields
+dotnet_naming_symbols.fields.applicable_kinds                      = field
+
+# parameters: Define parameters
+dotnet_naming_symbols.parameters.applicable_kinds                  = parameter
+
+
+## Define naming styles for later use
+# pascal_case: Define the PascalCase style
+dotnet_naming_style.pascal_case.capitalization                     = pascal_case
+
+# pascal_case_i_prefix: Define the PascalCase style with an 'I' prefix
+dotnet_naming_style.pascal_case_i_prefix.capitalization            = pascal_case
+dotnet_naming_style.pascal_case_i_prefix.required_prefix           = I
+
+# pascal_case_async_suffix: Define the PascalCase style with an 'Async' suffix
+dotnet_naming_style.pascal_case_async_suffix.capitalization        = pascal_case
+dotnet_naming_style.pascal_case_async_suffix.required_suffix       = Async
+
+# camel_case: Define the camelCase style
+dotnet_naming_style.camel_case.capitalization                      = camel_case
+
+# camel_case_underscore: Define the camelCase style with a '_' prefix
+dotnet_naming_style.camel_case_underscore.capitalization           = camel_case
+dotnet_naming_style.camel_case_underscore.required_prefix          = _
+
+
+## Naming Rules, these use the previously defined naming symbols and naming styles
+## The first rule encountered that can be applied is the only rule that is applied!
+# Interfaces must be PascalCase with an 'I' prefix
+dotnet_naming_rule.interface_types_pascal_case_i_prefix.symbols    = interface_types
+dotnet_naming_rule.interface_types_pascal_case_i_prefix.style      = pascal_case_i_prefix
+dotnet_naming_rule.interface_types_pascal_case_i_prefix.severity   = warning
+
+# Non-interface types must be PascalCase
+dotnet_naming_rule.non_interface_types_pascal_case.symbols         = non_interface_types
+dotnet_naming_rule.non_interface_types_pascal_case.style           = pascal_case
+dotnet_naming_rule.non_interface_types_pascal_case.severity        = warning
+
+# Async methods must be PascalCase with an 'Async' suffix
+dotnet_naming_rule.async_methods_pascal_case_async_suffix.symbols  = async_methods
+dotnet_naming_rule.async_methods_pascal_case_async_suffix.style    = pascal_case_async_suffix
+dotnet_naming_rule.async_methods_pascal_case_async_suffix.severity = warning
+
+# Non-field members must be PascalCase
+dotnet_naming_rule.non_field_members_pascal_case.symbols           = non_field_members
+dotnet_naming_rule.non_field_members_pascal_case.style             = pascal_case
+dotnet_naming_rule.non_field_members_pascal_case.severity          = warning
+
+# Constant fields must be PascalCase
+dotnet_naming_rule.constant_fields_pascal_case.symbols             = constant_fields
+dotnet_naming_rule.constant_fields_pascal_case.style               = pascal_case
+dotnet_naming_rule.constant_fields_pascal_case.severity            = warning
+
+# Static readonly fields must be PascalCase
+dotnet_naming_rule.static_readonly_fields_pascal_case.symbols      = static_readonly_fields
+dotnet_naming_rule.static_readonly_fields_pascal_case.style        = pascal_case
+dotnet_naming_rule.static_readonly_fields_pascal_case.severity     = warning
+
+# Other fields must be camelCase with a '_' prefix
+dotnet_naming_rule.fields_camel_case.symbols                       = fields
+dotnet_naming_rule.fields_camel_case.style                         = camel_case_underscore
+dotnet_naming_rule.fields_camel_case.severity                      = warning
+
+# Parameters must be camelCase
+dotnet_naming_rule.parameters_camel_case.symbols                   = parameters
+dotnet_naming_rule.parameters_camel_case.style                     = camel_case
+dotnet_naming_rule.parameters_camel_case.severity                  = warning
