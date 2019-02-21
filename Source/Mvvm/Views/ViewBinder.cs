@@ -101,6 +101,7 @@
       IOptionsExpression<T> OneWayToSource();
       IOptionsExpression<T> OneTime();
       IOptionsExpression<T> PropertyChanged();
+      IOptionsExpression<T> Delay(int millisecondsDelay);
       IOptionsExpression<T> With(IValueConverter converter, object parameter = null);
       IOptionsExpression<T> FallbackValue(object value);
       IOptionsExpression<T> NullValue(object value);
@@ -193,6 +194,11 @@
          return this;
       }
 
+      public IOptionsExpression<T> Delay(int millisecondsDelay) {
+         ConfigureBinding<BindingBase>(x => x.Delay = millisecondsDelay);
+         return this;
+      }
+
       public IOptionsExpression<T> With(IValueConverter converter, object parameter = null) {
          ConfigureBinding<Binding>(x => {
             x.Converter = converter;
@@ -213,7 +219,7 @@
       }
 
       public IOptionsExpression<T> NullValue(object value) {
-         ConfigureBinding<Binding>(x => x.TargetNullValue = value);
+         ConfigureBinding<BindingBase>(x => x.TargetNullValue = value);
          return this;
       }
 
