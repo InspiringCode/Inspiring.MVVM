@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>Inspiring.MVVM</id>
+    <version>1.0.5</version>
+    <description>MVVM Library</description>
+    <authors>InspiringCode</authors>
+    <owners>InspiringCode</owners>
+    <projectUrl>https://github.com/InspiringCode/Inspiring.MVVM</projectUrl>
+  <license type="expression">EPL-1.0</license>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+  </metadata>
+  <files>
+    <file src="..\Source\Mvvm\bin\Release\InspiringMvvm.dll" target="lib\net452" />
+    <file src="..\Source\Mvvm\bin\Release\InspiringMvvm.pdb" target="lib\net452" />
+    <file src="..\Source\Mvvm\bin\Release\InspiringMvvm.xml" target="lib\net452" />
+    <file src="..\Source\Mvvm\bin\Release\de\InspiringMvvm.resources.dll" target="lib\net452\de" />
+  </files>
+</package>

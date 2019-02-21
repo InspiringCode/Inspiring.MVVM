@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>Inspiring.MVVM.Testability</id>
+    <version>1.0.5</version>
+    <description>Test helpers for Inspiring.MVVM</description>
+    <authors>InspiringCode</authors>
+    <owners>InspiringCode</owners>
+    <projectUrl>https://github.com/InspiringCode/Inspiring.MVVM</projectUrl>
+  <license type="expression">EPL-1.0</license>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <dependencies>
+      <dependency id="Inspiring.MVVM" version="1.0.5" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\Source\MvvmTestability\bin\Release\InspiringMvvmTestability.dll" target="lib\net452" />
+    <file src="..\Source\MvvmTestability\bin\Release\InspiringMvvmTestability.pdb" target="lib\net452" />
+  </files>
+</package>
