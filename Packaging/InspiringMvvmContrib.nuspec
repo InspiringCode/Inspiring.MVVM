@@ -7,7 +7,7 @@
     <authors>InspiringCode</authors>
     <owners>InspiringCode</owners>
     <projectUrl>https://github.com/InspiringCode/Inspiring.MVVM</projectUrl>
-  <license type="expression">EPL-1.0</license>
+    <license type="expression">EPL-1.0</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <dependencies>
       <dependency id="Inspiring.MVVM" version="1.0.5" />
