@@ -8,7 +8,7 @@
       public static readonly Event<InitializeWindowEventArgs> InitializeWindowEvent = new Event<InitializeWindowEventArgs>();
 
       public virtual Window CreateWindow(Window owner, string title, bool modal) {
-         Window window = new Window();
+         var window = new Window();
 
          if (title != null) {
             window.Title = title;
@@ -22,9 +22,11 @@
             window.ShowInTaskbar = false;
          }
 
+         // Needed for sharp element rendering.
+         window.UseLayoutRounding = true;
+
          // Needed for sharp text rendering.
          TextOptions.SetTextFormattingMode(window, TextFormattingMode.Display);
-         TextOptions.SetTextRenderingMode(window, TextRenderingMode.Aliased);
 
          return window;
       }
