@@ -1,5 +1,6 @@
 ﻿namespace Inspiring.Mvvm.Common.Core {
    using System;
+   using System.Diagnostics;
    using System.IO;
    using System.Runtime.InteropServices;
    using System.Runtime.Serialization.Formatters.Binary;
@@ -7,12 +8,23 @@
 
    public abstract class WindowMessageInterprocessMessenger : AbstractInterprocessMessenger {
       private static readonly IntPtr CopyDataResultSuccess = new IntPtr(0xFFFF);
+      private readonly int _currentProcessId;
 
       public WindowMessageInterprocessMessenger(string sharedIdentifier = null)
          : base(sharedIdentifier) {
+
+         using (Process process = Process.GetCurrentProcess()) {
+            _currentProcessId = process.Id;
+         }
       }
 
       protected abstract bool IsOwnWindow(IntPtr windowHandle);
+
+      protected virtual bool IsWindowInOwnProcess(IntPtr windowHandle) {
+         int processId;
+         NativeMethods.GetWindowThreadProcessId(windowHandle, out processId);
+         return processId == _currentProcessId;
+      }
 
       protected IntPtr WindowMessageHook(
          int msg,
@@ -80,7 +92,7 @@
       }
 
       private bool ShouldSendToWindow(IntPtr hWnd) {
-         if (IsOwnWindow(hWnd)) {
+         if (IsOwnWindow(hWnd) || IsWindowInOwnProcess(hWnd)) {
             return false;
          }
 
@@ -204,6 +216,9 @@
 
          [DllImport("user32.dll", CharSet = CharSet.Unicode)]
          internal static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
+
+         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+         internal static extern int GetWindowThreadProcessId(IntPtr hWnd, out int lpdwProcessId);
 
          [DllImport("user32.dll", CharSet = CharSet.Unicode)]
          internal static extern IntPtr SendMessageTimeout(

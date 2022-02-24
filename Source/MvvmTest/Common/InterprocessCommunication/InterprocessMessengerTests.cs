@@ -91,6 +91,10 @@
 
             return base.IsOwnWindow(windowHandle);
          }
+
+         protected override bool IsWindowInOwnProcess(IntPtr windowHandle) {
+            return false;
+         }
       }
 
       [Serializable]
