@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Inspiring.MVVM.Contrib</id>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
     <description>Contrib library for Inspiring.MVVM</description>
     <authors>InspiringCode</authors>
     <owners>InspiringCode</owners>
@@ -10,7 +10,7 @@
     <license type="expression">EPL-1.0</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <dependencies>
-      <dependency id="Inspiring.MVVM" version="1.0.5" />
+      <dependency id="Inspiring.MVVM" version="1.0.6" />
     </dependencies>
   </metadata>
   <files>
